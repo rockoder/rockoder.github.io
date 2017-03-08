@@ -1,7 +1,6 @@
 ---
 layout: page
 title: About Me
-permalink: /about/
 ---
 
 <img style="float:left;margin-right:20px;" src="../assets/NewID.png">
