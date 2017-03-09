@@ -3,8 +3,6 @@ layout: page
 title: About Me
 ---
 
-<img style="float:left;margin-right:20px;" src="../assets/NewID.png">
-
 My name is Ganesh Pagade.
 
 I'm a software architect living in Bangalore, India.  
