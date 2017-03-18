@@ -100,10 +100,21 @@ Any incoming mail will either go into Inbox or Deleted Items.
 
 In Inbox, after reading a mail, I:
 
-1. **Delete Permanently** - when I am sure the mail is irrelevant to me and I have no action item on it today or in future and I will never need this mail again. Example: Announcement mail of some upcoming sports event you are not interested or mail threads you are unnecessarily part of. For this, I use Quick Step defined in 5.1 above. Shortcut key: Shift + Del
-1. **Mark Read and Delete** - when there is no action item pending on me but I might need the mail for reference in near future. That near future has to be less than 2 months. So this action is for mails which would become irrelevant after few weeks and are no longer required for long term reference. The mail goes into Deleted Items and would be permanently (auto) deleted after 2 months. Example: Weekly status report/defect report sent by somebody. For this, I use Quick Step defined in 5.2 above. Shortcut key: Ctrl + q, Ctrl + d
-1. **Mark Read** - when there is no action item pending on me but the mail contains information which I might need in future. The mail remains in Inbox. I assign category/categories to the mail so that it would be easier to find it in future. If there is some trivial action item or follow up to be done, I also assign a follow up flag with reminder. But normally I use step 4 mentioned below for followups. Example would be: Mail contains information about workaround to be used for a particular product issue. Shortcut key: Ctrl + q
-1. **Keep the mail unread and in Inbox** - when there is an action item on me. I might have to perform some task, reply to the mail or followup on the mail in a day or two or simply re-read the mail/attachments. For all such situations I keep the mail unread. And once the action item is done, I again perform one of the above three actions on the mail. Example: Mail asking to update the ETAs for defects on my name. I wont permanently delete this mail unless I go and update the ETAs in our defect tracking system.
+## 2.1. Delete Permanently
+
+When I am sure the mail is irrelevant to me and I have no action item on it today or in future and I will never need this mail again. Example: Announcement mail of some upcoming sports event you are not interested or mail threads you are unnecessarily part of. For this, I use Quick Step defined in 5.1 above. Shortcut key: Shift + Del
+
+## 2.2. Mark Read and Delete
+
+When there is no action item pending on me but I might need the mail for reference in near future. That near future has to be less than 2 months. So this action is for mails which would become irrelevant after few weeks and are no longer required for long term reference. The mail goes into Deleted Items and would be permanently (auto) deleted after 2 months. Example: Weekly status report/defect report sent by somebody. For this, I use Quick Step defined in 5.2 above. Shortcut key: Ctrl + q, Ctrl + d
+
+## 2.3. Mark Read
+
+When there is no action item pending on me but the mail contains information which I might need in future. The mail remains in Inbox. I assign category/categories to the mail so that it would be easier to find it in future. If there is some trivial action item or follow up to be done, I also assign a follow up flag with reminder. But normally I use step 4 mentioned below for followups. Example would be: Mail contains information about workaround to be used for a particular product issue. Shortcut key: Ctrl + q
+
+## 2.4. Keep the mail unread and in Inbox
+
+When there is an action item on me. I might have to perform some task, reply to the mail or followup on the mail in a day or two or simply re-read the mail/attachments. For all such situations I keep the mail unread. And once the action item is done, I again perform one of the above three actions on the mail. Example: Mail asking to update the ETAs for defects on my name. I wont permanently delete this mail unless I go and update the ETAs in our defect tracking system.
 
 In Deleted Items, after reading a mail, I:
 
