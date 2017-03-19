@@ -4,6 +4,26 @@ title: Contact
 permalink: /contact/
 ---
 
+<script type="text/javascript">
+	function getParameterByName(name) {
+    	document.getElementById(name).style.visibility = "hidden";
+
+	    url = window.location.href;
+
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	    results = regex.exec(url);
+	    
+	    if (!results) return null;
+	    
+	    if (!results[2]) return '';
+
+	    document.getElementById(name).style.visibility = "visible";
+
+	    return '';
+	}
+</script>
+
 You can reach out to me on:
 <div id="social-list">
 	<div class="social">
@@ -20,19 +40,19 @@ You can reach out to me on:
     </div>
 </div>
 
-<!-- <a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github.png" ></a>
-<a target="_blank"  href="https://twitter.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/twitter.png" ></a>
-<a target="_blank"  href="http://stackoverflow.com/users/62849/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/stackoverflow.png" ></a>
-<a target="_blank"  href="http://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin.png" ></a>
- -->
+---
+
 You can also drop me a quick message using below form. The form submission will go through [formspree.io](https://formspree.io). I respect your privacy.
+
+<label style="color:blue" id="ackText">Message successfully submitted. Thank you for your message.</label>
+<script>getParameterByName('ackText');</script>
 
 <form method="POST" action="http://formspree.io/ganesh@rockoder.com">
 <ul class="form-style-1">
     <li>
         <label>Email <span class="required">*</span></label>
         <input type="email" name="email" class="field-long" />
-        <input type="hidden" name="_next" value="//{{ site.url }}/contact" />
+        <input type="hidden" name="_next" value="//{{ site.url }}/contact?ackText=1" />
     </li>
     <li>
         <label>Your Message <span class="required">*</span></label>
@@ -45,6 +65,7 @@ You can also drop me a quick message using below form. The form submission will 
 </form>
 
 ---
+
 <style type="text/css">
 	#social-list {
 	position: relative;
@@ -128,12 +149,14 @@ select{
     padding: 8px 15px 8px 15px;
     border: none;
     color: #fff;
+    font: 20px "PT Sans", Helvetica, Arial, sans-serif;
 }
 .form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
     background: #030303;
     box-shadow:none;
     -moz-box-shadow:none;
     -webkit-box-shadow:none;
+    font: 20px "PT Sans", Helvetica, Arial, sans-serif;
 }
 .form-style-1 .required{
     color:red;
