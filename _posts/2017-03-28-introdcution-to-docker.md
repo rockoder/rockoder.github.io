@@ -3,7 +3,8 @@ layout: post
 title: Introduction to Docker
 date: '2017-03-28'
 author: rockoder
-tags: docker
+tags:
+- docker
 ---
 
 Yesterday, I gave a full day training on Docker. It was a introductory level course covering basics of Docker and introducing tools like Docker Compose and Docker Swarm. I also demoed these features and conducted hands-on session.
