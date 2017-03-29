@@ -185,7 +185,7 @@ permalink: /reading-list/
 		</div>
 	</div>
 
-	<div class="book">
+<!-- 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.in/gp/product/B00I6ES8NI/ref=as_li_tl?ie=UTF8&camp=3638&creative=24630&creativeASIN=B00I6ES8NI&linkCode=as2&tag=rockoder-21&linkId=e5f546cabeef31391d1f62dce1742f8e"><img border="0" src="//ws-in.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=IN&ASIN=B00I6ES8NI&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-21" ></a><img src="//ir-in.amazon-adsystem.com/e/ir?t=rockoder-21&l=am2&o=31&a=B00I6ES8NI" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
@@ -198,6 +198,7 @@ permalink: /reading-list/
 			(hidden)
 		</div>
 	</div>
+ -->
 
 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.in/gp/product/8177866591/ref=as_li_tl?ie=UTF8&camp=3638&creative=24630&creativeASIN=8177866591&linkCode=as2&tag=rockoder-21&linkId=b2c2aaceff14d36bf053ff52b425f6f5"><img border="0" src="//ws-in.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=IN&ASIN=8177866591&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-21" ></a><img src="//ir-in.amazon-adsystem.com/e/ir?t=rockoder-21&l=am2&o=31&a=8177866591" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
@@ -228,12 +229,13 @@ permalink: /reading-list/
 		</div>
 	</div>
 
-	<div class="book">
+<!-- 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.com/gp/product/0380017601/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0380017601&linkCode=as2&tag=rockoder01-20&linkId=3aa139fbcdfaa090050ffcb205600c16"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0380017601&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0380017601" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
 	</div>
+ -->
 
 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.com/gp/product/0321334876/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321334876&linkCode=as2&tag=rockoder01-20&linkId=33da9f50a91eccded65787854322b0c9"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0321334876&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0321334876" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
