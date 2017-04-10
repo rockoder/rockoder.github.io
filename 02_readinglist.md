@@ -24,14 +24,14 @@ permalink: /reading-list/
 <div id="reading-list">
 
 	<div class="book">
-		<a target="_blank"  href="https://www.amazon.com/gp/product/0451524934/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0451524934&linkCode=as2&tag=rockoder01-20&linkId=5f181665514c2bc10b67fe48785137c7"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0451524934&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0451524934" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<a target="_blank"  href="https://www.amazon.com/gp/product/0143425323/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0143425323&linkCode=as2&tag=rockoder01-20&linkId=ad13e10229e655660b61909eb55c4d09"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0143425323&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0143425323" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
     </div>
 
 	<div class="book">
-		<a target="_blank"  href="https://www.amazon.com/gp/product/1400078393/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1400078393&linkCode=as2&tag=rockoder01-20&linkId=05c71f939fa1ec528ce841304d4d2dab"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=1400078393&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=1400078393" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<a target="_blank"  href="https://www.amazon.com/gp/product/0062316095/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0062316095&linkCode=as2&tag=rockoder01-20&linkId=c9ede006ad3f7c3e5c95a0210f6851ec"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0062316095&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0062316095" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
