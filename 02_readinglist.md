@@ -9,19 +9,34 @@ permalink: /reading-list/
 <div id="reading-list">
 
 	<div class="book">
-		<a target="_blank"  href="https://www.amazon.com/gp/product/0143425323/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0143425323&linkCode=as2&tag=rockoder01-20&linkId=ad13e10229e655660b61909eb55c4d09"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0143425323&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0143425323" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<a target="_blank"  href="https://www.amazon.com/gp/product/B00EDG3MD4/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00EDG3MD4&linkCode=as2&tag=rockoder-20&linkId=9fafc1b5dc5bf0c511dcd288b4ee65cd"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=B00EDG3MD4&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder-20&l=am2&o=1&a=B00EDG3MD4" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
     </div>
 
 	<div class="book">
-		<a target="_blank"  href="https://www.amazon.com/gp/product/0062316095/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0062316095&linkCode=as2&tag=rockoder01-20&linkId=c9ede006ad3f7c3e5c95a0210f6851ec"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0062316095&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0062316095" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<a target="_blank"  href="https://www.amazon.com/gp/product/0321125215/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321125215&linkCode=as2&tag=rockoder-20&linkId=82d3e3ae54ab9958b786d159493910eb"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0321125215&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder-20&l=am2&o=1&a=0321125215" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
     </div>
-    
+
+</div>
+
+---
+
+# 2018
+
+<div id="reading-list">
+
+	<div class="book">
+		<a target="_blank"  href="https://www.amazon.com/gp/product/1455509124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1455509124&linkCode=as2&tag=rockoder-20&linkId=55eb1b99d891cd64e15ab00bd09a9e87"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=1455509124&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder-20&l=am2&o=1&a=1455509124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<div class="book-review" style="visibility: hidden;">
+			(hidden)
+		</div>
+    </div>
+
 </div>
 
 ---
@@ -29,6 +44,20 @@ permalink: /reading-list/
 # 2017
 
 <div id="reading-list">
+
+	<div class="book">
+		<a target="_blank"  href="https://www.amazon.com/gp/product/0062316095/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0062316095&linkCode=as2&tag=rockoder01-20&linkId=c9ede006ad3f7c3e5c95a0210f6851ec"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0062316095&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0062316095" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<div class="book-review" style="visibility: hidden;">
+			(hidden)
+		</div>
+    </div>
+
+	<div class="book">
+		<a target="_blank"  href="https://www.amazon.com/gp/product/0143425323/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0143425323&linkCode=as2&tag=rockoder01-20&linkId=ad13e10229e655660b61909eb55c4d09"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0143425323&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0143425323" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+		<div class="book-review" style="visibility: hidden;">
+			(hidden)
+		</div>
+    </div>
 
 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.com/gp/product/0451524934/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0451524934&linkCode=as2&tag=rockoder01-20&linkId=5f181665514c2bc10b67fe48785137c7"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=0451524934&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder01-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder01-20&l=am2&o=1&a=0451524934" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
