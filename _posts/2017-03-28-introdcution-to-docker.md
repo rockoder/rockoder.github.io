@@ -9,6 +9,8 @@ tags:
 
 Yesterday, I gave a full day training on Docker. It was a introductory level course covering basics of Docker and introducing tools like Docker Compose and Docker Swarm. I also demoed these features and conducted hands-on session.
 
+<iframe src="https://rockoder.github.com/introduction_to_docker" title="iframe example 1" width="650" height="500"></iframe>
+
 I throughly enjoyed the process of preparation and delivering the training. I think I was able to communicate the material I had planned to deliver and was able to clear the doubts, concepts.
 
 I made my slides as verbose as possible so that the students could follow the steps after the training also.
