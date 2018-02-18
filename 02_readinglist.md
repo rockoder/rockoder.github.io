@@ -32,8 +32,8 @@ permalink: /reading-list/
 
 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.com/gp/product/1455509124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1455509124&linkCode=as2&tag=rockoder-20&linkId=55eb1b99d891cd64e15ab00bd09a9e87"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN=1455509124&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-20" ></a><img src="//ir-na.amazon-adsystem.com/e/ir?t=rockoder-20&l=am2&o=1&a=1455509124" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-		<div class="book-review" style="visibility: hidden;">
-			(hidden)
+		<div class="book-review">
+			<a href="{{ site.url }}/2018/02/11/so-good-they-cant-ignore-you/">(read my review)</a>
 		</div>
     </div>
 
