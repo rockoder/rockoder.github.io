@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Dockerizing Your Product (Part 1)
+title: Dockerizing Your Product
 date: '2017-02-12T16:36:00.000+05:30'
 author: rockoder
 tags: 
@@ -16,7 +16,7 @@ Here are few steps that could help you through the process and get you a startin
 
 # Understand the Product Installation
 
-![]({{ site.url }}/public/images/posts/2017-02-12-dockerizing-your-product-part-1/product+installation.png)
+![]({{ site.url }}/public/images/posts/2017-02-12-dockerizing-your-product/product+installation.png)
 
 In this section, we'll talk about the research you need to do and data that you need to collect which will be useful later while creating the Dockerfile and other scripts.
 
