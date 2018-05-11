@@ -1,17 +1,15 @@
 ---
 layout: post
-title: 'And Just Like That I Did My First Open Source Project Contribution'
+title: 'Just Like That I Did My First Open Source Project Contribution'
 date: '2018-05-11'
 author: rockoder
 tags:
 - hacking
 ---
 
-Sometimes, the harder you try, the harder the thing gets. 
+Sometimes, the harder you try, the harder the thing gets. That's the story of your contribution to open source projects so far.
 
-That was the story of my contribution to open source projects.
-
-And then all of a sudden, while you are working in the office on a tight deadline, you find a feature missing in an open source library you are heavily dependent on.
+And then all of a sudden, while working in the office on a tight deadline, you find a feature missing in an open source library you are heavily dependent on.
 
 You post on the projects discussion forum and they confirm its missing and welcome you to contribute. You are already overworked and have a tight deadline at the office. There is no way you can do it during office hours. You still can't resist yourself and commit to file a Jira ticket and own it.
 
