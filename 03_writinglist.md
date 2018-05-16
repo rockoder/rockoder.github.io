@@ -6,9 +6,9 @@ permalink: /writing-list/
 
 Apart from my personal website, I have been writing on few websites. Following is list of articles I have written so far. Have you read any?
 
-[To be published] Introduction to Java 10
-[16-May-2018] [Java 10 Performance Improvements](http://www.baeldung.com/java-10-performance-improvements)
-[16-May-2018] [Java 10 LocalVariable Type-Inference](http://www.baeldung.com/java-10-local-variable-type-inference)
+[To be published] Introduction to Java 10  
+[16-May-2018] [Java 10 Performance Improvements](http://www.baeldung.com/java-10-performance-improvements)  
+[16-May-2018] [Java 10 LocalVariable Type-Inference](http://www.baeldung.com/java-10-local-variable-type-inference)  
 [07-Mar-2018] [A Guide to Streams in Java 8: In-Depth Tutorial with Examples](https://stackify.com/streams-guide-java-8/)  
 [12-Feb-2018] [Priority-based Job Scheduling in Java](http://www.baeldung.com/java-priority-job-schedule)  
 [16-Jan-2018] [Java 8 StringJoiner](http://www.baeldung.com/java-string-joiner)  
