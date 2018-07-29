@@ -305,14 +305,6 @@ permalink: /reading-list/
 		</div>
 	</div>
 
-<!-- TODO: Apurvai 
-	<div class="book">
-		<img src="//www.rasik.com/database/marathi/books/b85890/cover.gif" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-		<div class="book-review" style="visibility: hidden;">
-			(hidden)
-		</div>
-	</div> -->
-
 <!-- Vyakti ani Valli -->
 	<div class="book">
 		<a target="_blank"  href="https://www.amazon.in/gp/product/8174868984/ref=as_li_tl?ie=UTF8&camp=3638&creative=24630&creativeASIN=8174868984&linkCode=as2&tag=rockoder-21&linkId=0547625e9b7bbd95d7eca84df230814b"><img border="0" src="//ws-in.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=IN&ASIN=8174868984&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=rockoder-21" ></a><img src="//ir-in.amazon-adsystem.com/e/ir?t=rockoder-21&l=am2&o=31&a=8174868984" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
@@ -423,7 +415,7 @@ permalink: /reading-list/
 		<div class="book-review" style="visibility: hidden;">
 			(hidden)
 		</div>
-	</div>
+	</div
  -->
 
 </div>
