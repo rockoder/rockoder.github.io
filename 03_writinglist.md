@@ -6,7 +6,7 @@ permalink: /writing-list/
 
 Apart from my personal website, I have been writing on few websites. Following is list of articles I have written so far. Have you read any?
 
-[04-Nov-2018] [Rate Limiting in Spring Cloud Netflix Zuul](https://www.baeldung.com/spring-cloud-zuul-rate-limit)
+[04-Nov-2018] [Rate Limiting in Spring Cloud Netflix Zuul](https://www.baeldung.com/spring-cloud-zuul-rate-limit)  
 [04-Aug-2018] [Sample Application with Spring Boot and Vaadin](https://www.baeldung.com/spring-boot-vaadin)  
 [26-May-2018] [Guide to Java 10](http://www.baeldung.com/java-10-overview)  
 [16-May-2018] [Java 10 Performance Improvements](http://www.baeldung.com/java-10-performance-improvements)  
