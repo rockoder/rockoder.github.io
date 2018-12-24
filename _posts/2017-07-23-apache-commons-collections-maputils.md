@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Apache Commons Collections MapUtils'
-date: ''
+date: '2017-07-23'
 author: rockoder
 tags:
 - hacking, tech-writing, baeldung
