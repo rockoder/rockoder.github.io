@@ -7,7 +7,7 @@ tags:
 - hacking, tech-writing, baeldung
 ---
 
-Here's my new article on [Baeldung](https://www.baeldung.com/)
+Here's my new article on [Baeldung](https://www.baeldung.com/):  
 [Rate Limiting in Spring Cloud Netflix Zuul](https://www.baeldung.com/spring-cloud-zuul-rate-limit)
 
 What do you think?
