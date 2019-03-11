@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Java 11 Local Variable Syntax for Lambda Parameters'
-date: '2018-12-15'
+date: '2018-12-16'
 author: rockoder
 tags:
 - hacking, tech-writing, baeldung
