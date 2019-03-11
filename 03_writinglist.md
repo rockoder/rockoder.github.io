@@ -8,6 +8,11 @@ Apart from my personal website, I have been writing on few websites. Following i
 
 |     Date    |                                                    Title                                                    |
 |-------------|-------------------------------------------------------------------------------------------------------------|
+| 11-Mar-2019 | [Serializing and Deserializing a List with Gson](https://www.baeldung.com/gson-list)				 		|
+| 01-Jan-2019 | [Java 11 Nest Based Access Control](https://www.baeldung.com/java-nest-based-access-control)		 		|
+| 19-Dec-2019 | [Java 11 String API Additions](https://www.baeldung.com/java-11-string-api) 								|
+| 15-Dec-2018 | [Java 11 Local Variable Syntax for Lambda Parameters](https://www.baeldung.com/java-var-lambda-params) 		|
+| 15-Dec-2018 | [Java 11 Single File Source Code](https://www.baeldung.com/java-single-file-source-code) 					|
 | 04-Nov-2018 | [Rate Limiting in Spring Cloud Netflix Zuul](https://www.baeldung.com/spring-cloud-zuul-rate-limit) 		|
 | 04-Aug-2018 | [Sample Application with Spring Boot and Vaadin](https://www.baeldung.com/spring-boot-vaadin) 				|
 | 26-May-2018 | [Guide to Java 10](http://www.baeldung.com/java-10-overview) 												|
