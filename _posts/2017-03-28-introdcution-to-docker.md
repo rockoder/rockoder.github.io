@@ -9,7 +9,7 @@ tags:
 
 Yesterday, I gave a full day training on Docker. It was a introductory level course covering basics of Docker and introducing tools like Docker Compose and Docker Swarm. I also demoed these features and conducted hands-on session.
 
-<iframe src="https://rockoder.github.com/introduction_to_docker" title="iframe example 1" width="650" height="500"></iframe>
+<iframe src="http://rockoder.com/introduction_to_docker" title="iframe example 1" width="650" height="500"></iframe>
 
 I throughly enjoyed the process of preparation and delivering the training. I think I was able to communicate the material I had planned to deliver and was able to clear the doubts, concepts.
 
@@ -26,7 +26,7 @@ Anyway, the final output of my slides was satisfying and I would prefer reveal.j
 
 Finally here is the link to my presentation. Press ***s*** key to see the presenter notes:
 
-[https://rockoder.github.com/introduction_to_docker](https://rockoder.github.com/introduction_to_docker)
+[http://rockoder.com/introduction_to_docker](http://rockoder.com/introduction_to_docker)
 
 If you want to refer the Markdown code for these slides check out [docker_slides.md](https://github.com/rockoder/introduction_to_docker/blob/master/docker_slides.md) on my github repo.
 
