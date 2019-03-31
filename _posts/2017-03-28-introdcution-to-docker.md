@@ -22,7 +22,7 @@ I made my slides as verbose as possible so that the students could follow the st
 - reveal.js and Markdown were does not help you much with diagrams. I explored Typora, however it does not support drawing simple block diagrams (typical high level architectural diagrams) in it. And eventually you end up exporting the image file out of it and embedding it into your md file. I ended up creating/editing images myself.
 - Animation of diagrams was another problem I faced. I ended up creating bulk images each showing part of the animation and sliding them one after the other. Need some better way to do this with reveal.js and Markdown.
 
-Anyway, the final output of my slides was satisfying and I would prefer reveal.js instead of using any binary format like PowerPoint etc. In fact, I coming days I plan to convert all my old presentations into reveal.js.
+Anyway, the final output of my slides was satisfying and I would prefer reveal.js instead of using any binary format like PowerPoint etc. In fact, in coming days I plan to convert all my old presentations into reveal.js.
 
 Finally here is the link to my presentation. Press ***s*** key to see the presenter notes:
 
