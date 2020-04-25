@@ -8,6 +8,7 @@ Apart from my personal website, I have been writing on few websites. Following i
 
 |     Date    |                                                    Title                                                    |
 |-------------|-------------------------------------------------------------------------------------------------------------|
+| 24-Apr-2020 | [A Guide to jpackage in Java 14](https://www.baeldung.com/java14-jpackage)		    		 		        |
 | 11-Mar-2019 | [Serializing and Deserializing a List with Gson](https://www.baeldung.com/gson-list)				 		|
 | 01-Jan-2019 | [Java 11 Nest Based Access Control](https://www.baeldung.com/java-nest-based-access-control)		 		|
 | 19-Dec-2019 | [Java 11 String API Additions](https://www.baeldung.com/java-11-string-api) 								|
