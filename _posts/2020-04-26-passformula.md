@@ -7,7 +7,7 @@ tags:
 - hacking, productivity
 ---
 
-![](https://xkcd.com/936/)
+![](https://imgs.xkcd.com/comics/password_strength.png)
 
 In this post, I would like to share a simple but highly effective strategy to come up with a strong, unique password each time a new account is created on some website which and which is easy to recall at a later point in time. I call it Passformula, based on the existing [Passphrase](https://en.wikipedia.org/wiki/Passphrase) strategy.
 
