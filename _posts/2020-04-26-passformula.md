@@ -16,7 +16,7 @@ In this post, I would like to share a simple but highly effective strategy to co
 <br/>
 I came up with Passformula around 5 years back when one of my email accounts reported login attempts using my 'favorite' password from a country I had never visited. I had used the same password on many websites and one of the websites was compromised risking all the other accounts. Luckily the email provider's security check saved my account. But it was a wake-up call for me.
 
-The idea is to create a one-time, well-defined formula to create a password from the name for the service/website domain you're trying to log in. You would apply this formula each time you create an account on any website and later use the same formula to get the password at the time of the login.
+**The idea is to create a one-time, well-defined formula to create a password from the name for the service/website domain you're trying to log in. You would apply this formula each time you create an account on any website and later use the same formula to get the password at the time of the login.**
 
 For example, let's say this is your Passformula you would apply to a website's domain name:
 - Take the second letter of the domain name in the upper case
@@ -42,4 +42,4 @@ Before I wrap up, here are some special cases I encountered while using the Pass
 
 Hope you find this useful. Let me know what you think.
 
-Disclaimer - Needless to say, this is just a strategy to create a password and does not automatically make your account full proof. It could also have reverse effect, if you manage to leak your Passformula.
+*Disclaimer: Needless to say, this is just a strategy to create a password and does not automatically make your account full proof. It could also have reverse effect, if you manage to leak your Passformula.*
