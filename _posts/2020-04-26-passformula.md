@@ -7,14 +7,8 @@ tags:
 - hacking, productivity
 ---
 
-![](https://imgs.xkcd.com/comics/password_strength.png =900x640)
-
+<img src="https://imgs.xkcd.com/comics/password_strength.png" alt="drawing" height="440" width="600"/>
 <br/>
-
----
-
-<img src="https://imgs.xkcd.com/comics/password_strength.png" alt="drawing" height="640" width="900"/>
-
 In this post, I would like to share a simple but highly effective strategy to come up with a strong, unique password each time a new account is created on some website which and which is easy to recall at a later point in time. I call it Passformula, based on the existing [Passphrase](https://en.wikipedia.org/wiki/Passphrase) strategy.
 
 I came up with Passformula around 5 years back when one of my email accounts reported login attempts using my 'favorite' password from a country I had never visited. Luckily the email provider's security check saved my account. But it was a wake-up call for me. It was no longer a bad thing you read in the news but happened to me.
