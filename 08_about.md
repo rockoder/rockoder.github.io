@@ -6,7 +6,7 @@ permalink: /about/
 
 My name is Ganesh Pagade.
 
-I'm a software architect living in Bangalore, India.  
+I'm a Software Engineering Lead living in Berlin, Germany. I currently work at Zalando.  
 
 I've studied at [ISSC](http://issc.unipune.ac.in/) (Computer Science Masters) and [Symbiosis](http://www.siu.edu.in/) (Executive MBA).  
 
