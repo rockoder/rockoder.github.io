@@ -1,16 +1,16 @@
 ---
 layout: post
-title: 'Passformula: Simple Idea to Remember All Your Passwords'
+title: 'Passformula: Create Complex, Unique Passwords and Remember Them All'
 date: '2020-04-26'
 author: rockoder
 tags:
 - hacking, productivity
 ---
 
+In this post, I would like to share a simple but highly effective strategy to come up with a strong, unique password each time a new account is created on some website which and which is easy to recall at a later point in time. I call it Passformula, based on the existing [Passphrase](https://en.wikipedia.org/wiki/Passphrase) strategy.
+<br/>
 <img src="https://imgs.xkcd.com/comics/password_strength.png" alt="drawing" height="440" width="600"/>
 <br/>
-In this post, I would like to share a simple but highly effective strategy to come up with a strong, unique password each time a new account is created on some website which and which is easy to recall at a later point in time. I call it Passformula, based on the existing [Passphrase](https://en.wikipedia.org/wiki/Passphrase) strategy.
-
 I came up with Passformula around 5 years back when one of my email accounts reported login attempts using my 'favorite' password from a country I had never visited. Luckily the email provider's security check saved my account. But it was a wake-up call for me. It was no longer a bad thing you read in the news but happened to me.
 
 The idea is to create a one time, well-defined formula to derive a password from the name for the service/website domain you're trying to log in. You would apply this formula each time you create an account on any new website. And later use the same formula to get the password at the time of the login.
