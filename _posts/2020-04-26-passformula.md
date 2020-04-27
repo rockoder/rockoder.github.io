@@ -11,7 +11,7 @@ In this post, I would like to share a simple but highly effective strategy to co
 <br/>
 <br/>
 <a href="https://xkcd.com/936/">
-<img src="https://imgs.xkcd.com/comics/password_strength.png" alt="drawing" height="440" width="600"/>
+<img src="https://imgs.xkcd.com/comics/password_strength.png" alt="drawing" height="500"/>
 </a>
 <br/>
 I came up with Passformula around 5 years back when one of my email accounts reported login attempts using my 'favorite' password from a country I had never visited. I had used the same password on many websites and one of the websites was compromised risking all the other accounts. Luckily the email provider's security check saved my account. But it was a wake-up call for me.
