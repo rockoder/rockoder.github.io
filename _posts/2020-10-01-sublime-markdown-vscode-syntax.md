@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Copy VS Code Markdown Color Highlighting to Sublime Text for Solarized (Light) Color Scheme'
+title: 'How to Make Sublime Text's Markdown Syntax Highlighting Same as VS Code'
 date: '2020-04-26'
 author: rockoder
 tags:
@@ -20,30 +20,32 @@ I could not find any easy extension to do this. Finally, I ended up modifying th
 1. Go inside the uncompressed directory
 1. Make following changes/additions in the file `Solarized (light).sublime-color-scheme`:
 ```json
-		{
-            "scope": "entity.name.section",
-            "foreground": "var(blue)"
-        },
-		{
-            "scope": "markup.heading, punctuation.definition.heading.markdown",
-            "foreground": "var(blue)",
-            "font_style": "bold"
-        },
-        {
-            "scope": "markup.list.unnumbered.markdown, markup.list.unnumbered.bullet.markdown, markup.list.numbered.markdown, markup.list.numbered.bullet.markdown",
-            "foreground": "var(yellow)",
-        },
-        {
-            "name": "Markdown em",
-            "scope": "markup.italic",
-            "font_style": "italic",
-            "foreground": "var(magenta)"
-        },
-        {
-            "scope": "markup.bold",
-            "font_style": "bold",
-            "foreground": "var(magenta)"
-        },
+[
+    {
+        "scope": "entity.name.section",
+        "foreground": "var(blue)"
+    },
+    {
+        "scope": "markup.heading, punctuation.definition.heading.markdown",
+        "foreground": "var(blue)",
+        "font_style": "bold"
+    },
+    {
+        "scope": "markup.list.unnumbered.markdown, markup.list.unnumbered.bullet.markdown, markup.list.numbered.markdown, markup.list.numbered.bullet.markdown",
+        "foreground": "var(yellow)",
+    },
+    {
+        "name": "Markdown em",
+        "scope": "markup.italic",
+        "font_style": "italic",
+        "foreground": "var(magenta)"
+    },
+    {
+        "scope": "markup.bold",
+        "font_style": "bold",
+        "foreground": "var(magenta)"
+    }
+]
 ```
 1. Zip the directory.
 1. Rename ~/temp/Solarized Color Scheme.zip to ~/temp/Solarized Color Scheme.sublime-package
@@ -52,4 +54,4 @@ I could not find any easy extension to do this. Finally, I ended up modifying th
 
 This may not cover advance Markdown parsing and syntax highlighting. But this was sufficient for me to continue using Sublime Text.
 
-This delayed my switch to Visual Studio Code. For now.
+This has delayed my switch to Visual Studio Code. For now.
