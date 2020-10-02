@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'How to Make Sublime Text's Markdown Syntax Highlighting Same as VS Code'
+title: 'How to Make Sublime Text Markdown Syntax Highlighting Same as VS Code'
 date: '2020-04-26'
 author: rockoder
 tags:
