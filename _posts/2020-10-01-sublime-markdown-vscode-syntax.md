@@ -31,6 +31,11 @@ I could not find any easy extension to do this. Finally, I ended up modifying th
         "font_style": "bold"
     },
     {
+        "scope": "markup.heading.1.markdown",
+        "foreground": "var(red)",
+        "font_style": "bold"
+    },
+    {
         "scope": "markup.list.unnumbered.markdown, markup.list.unnumbered.bullet.markdown, markup.list.numbered.markdown, markup.list.numbered.bullet.markdown",
         "foreground": "var(yellow)",
     },
