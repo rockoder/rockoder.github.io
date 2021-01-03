@@ -12,7 +12,7 @@ List of some of the books that I read in the past.
 |         	| [Radical Candor](https://www.amazon.com/Radical-Candor-Revised-Kick-Ass-Humanity/dp/1250235375) 	|
 |         	| [Zero to One](https://www.amazon.com/Zero-One-Notes-Startups-Future/dp/0804139296)              	|
 | 2019    	| [Black Swan](https://www.amazon.com/Black-Swan-Improbable-Robustness-Fragility/dp/081297381X)   	|
-| 2018    	| [So Good They Can't Ignore You](https://www.amazon.com/gp/product/1455509124)                   	|
+| 2018    	| [So Good They Can't Ignore You](https://www.amazon.com/gp/product/1455509124) [(my review)]({{ site.url }}/2018/02/11/so-good-they-cant-ignore-you/)                   	|
 |         	| [The 4-Hour Work Week](https://www.amazon.com/gp/product/0091929113)                            	|
 |         	| [The Lessons Of History](https://www.amazon.com/gp/product/143914995X)                          	|
 |         	| [On The Shortness Of Life](https://www.amazon.com/gp/product/B00UMAQLG0)                        	|
@@ -26,7 +26,7 @@ List of some of the books that I read in the past.
 |         	| [Brain Rules](https://www.amazon.com/gp/product/098326337X)                                     	|
 |         	| [Masters of Doom](https://www.amazon.com/gp/product/0812972155)                                 	|
 | Earlier 	| [Prakashvata](https://www.amazon.in/gp/product/B00IBYD0QS) [(my review)]({{ site.url }}/2013/09/28/book-review-prakashvata/)                           |
-|         	| [The Lean Startup](https://www.amazon.com/gp/product/0307887898)                                	|
+|         	| [The Lean Startup](https://www.amazon.com/gp/product/0307887898) [(my review)]({{ site.url }}/2013/01/26/book-review-lean-startup/)                                	|
 |         	| [The Last Lecture](https://www.amazon.com/gp/product/1401323251)                                	|
 |         	| [The E-myth Revisited](https://www.amazon.com/gp/product/0887307280)                            	|
 |         	| [The 7 Habits of Highly Effective People](https://www.amazon.com/gp/product/1451639619)         	|
