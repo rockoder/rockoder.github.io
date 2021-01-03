@@ -11,6 +11,8 @@ List of some of the books that I read in the past.
 | 2020    	| [Atomic Habit](https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299)                                                                	|
 |         	| [Radical Candor](https://www.amazon.com/Radical-Candor-Revised-Kick-Ass-Humanity/dp/1250235375)                                                      	|
 |         	| [Zero to One](https://www.amazon.com/Zero-One-Notes-Startups-Future/dp/0804139296)                                                                   	|
+|         	| [The Hitchhiker's Guide to the Galaxy](https://www.amazon.com/Hitchhikers-Guide-Galaxy-Douglas-Adams/dp/0345418913)                                                                   |
+|         	| [The Restaurant at the End of the Universe](https://www.amazon.com/gp/product/B001ODEQCU)                                                                   |
 | 2019    	| [Black Swan](https://www.amazon.com/Black-Swan-Improbable-Robustness-Fragility/dp/081297381X)                                                        	|
 | 2018    	| [So Good They Can't Ignore You](https://www.amazon.com/gp/product/1455509124) [(my review)]({{ site.url }}/2018/02/11/so-good-they-cant-ignore-you/) 	|
 |         	| [The 4-Hour Work Week](https://www.amazon.com/gp/product/0091929113)                                                                                 	|
