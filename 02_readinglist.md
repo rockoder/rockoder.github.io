@@ -25,7 +25,7 @@ List of some of the books that I read in the past.
 |         	| [Search Inside Yourself](https://www.amazon.com/gp/product/0062116932)                          	|
 |         	| [Brain Rules](https://www.amazon.com/gp/product/098326337X)                                     	|
 |         	| [Masters of Doom](https://www.amazon.com/gp/product/0812972155)                                 	|
-| Earlier 	| [Prakashvata](https://www.amazon.in/gp/product/B00IBYD0QS)                                      	|
+| Earlier 	| [Prakashvata](https://www.amazon.in/gp/product/B00IBYD0QS)[(my review)]({{ site.url }}/2013/09/28/book-review-prakashvata/)                           |
 |         	| [The Lean Startup](https://www.amazon.com/gp/product/0307887898)                                	|
 |         	| [The Last Lecture](https://www.amazon.com/gp/product/1401323251)                                	|
 |         	| [The E-myth Revisited](https://www.amazon.com/gp/product/0887307280)                            	|
