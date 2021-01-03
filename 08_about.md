@@ -16,6 +16,6 @@ I've taught graduate and post graduate computer science courses.
 
 I've worked as a freelance software developer.  
 
-Besides [in respect and admiration, to the spirit that lives in the computer](http://web.mit.edu/alexmv/6.037/sicp.pdf#7), I enjoy reading about working of human brain.
+Besides [in respect and admiration, to the spirit that lives in the computer](http://sarabander.github.io/sicp/html/Dedication.xhtml#Dedication), I enjoy reading about working of human brain.
 
 **rockoder** - I did some online freelance coding while in college. This is the account name you come up with when listening too much music and writing too much code. Pronounced as rock-coder.
