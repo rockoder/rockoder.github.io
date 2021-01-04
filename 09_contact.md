@@ -27,13 +27,10 @@ permalink: /contact/
 You can reach out to me on:
 <div id="social-list">
 	<div class="social">
-		<a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github.png" ></a>
-    </div>
-	<div class="social">
 		<a target="_blank"  href="https://twitter.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/twitter.png" ></a>
     </div>
 	<div class="social">
-		<a target="_blank"  href="http://stackoverflow.com/users/62849/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/stackoverflow.png" ></a>
+		<a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github.png" ></a>
     </div>
 	<div class="social">
 		<a target="_blank"  href="http://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin.png" ></a>
