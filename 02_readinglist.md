@@ -9,6 +9,7 @@ List of some of the books that I read in the past.
 | Year    	| Title                                                                                                                                                	|
 |---------	|------------------------------------------------------------------------------------------------------------------------------------------------------	|
 | 2021    	| [Dune](https://www.amazon.com/Dune-Sequence-Book-1-ebook/dp/B004KA9UXO)                                                                	|
+|         	| [Cognitive Behavioral Therapy Made Simple](https://www.amazon.com/-/de/dp/1939754852)                                                                	|
 | 2020    	| [Atomic Habit](https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299)                                                                	|
 |         	| [Radical Candor](https://www.amazon.com/Radical-Candor-Revised-Kick-Ass-Humanity/dp/1250235375)                                                      	|
 |         	| [Zero to One](https://www.amazon.com/Zero-One-Notes-Startups-Future/dp/0804139296)                                                                   	|
