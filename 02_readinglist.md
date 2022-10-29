@@ -9,6 +9,7 @@ List of some of the books that I read in the past.
 | Year    	| Title                                                                                                                                                	|
 |---------	|------------------------------------------------------------------------------------------------------------------------------------------------------	|
 | 2022    	| [$100M Offers: How To Make Offers So Good People Feel Stupid Saying No](https://www.amazon.com/100M-Offers-People-Stupid-Saying-ebook/dp/B099QVG1H8)                                                                	|
+|         	| [Mistborn: The Final Empire](https://www.amazon.com/Mistborn-Final-Empire-Brandon-Sanderson/dp/0765377136)                                                                	|
 | 2021    	| [Dune](https://www.amazon.com/Dune-Sequence-Book-1-ebook/dp/B004KA9UXO)                                                                	|
 |         	| [Cognitive Behavioral Therapy Made Simple](https://www.amazon.com/-/de/dp/1939754852)                                                                	|
 |         	| [Eat That Frog!](https://www.amazon.com/Eat-That-Frog-Great-Procrastinating/dp/162656941X)                                                                	|
