@@ -4,9 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-My name is Ganesh Pagade.
-
-I'm a Software Engineering Lead living in Berlin, Germany. I currently work at Zalando.  
+My name is Ganesh Pagade, living in Berlin, Germany. I work at [Zalando](https://zalando.de/) as an Engineering Manager.  
 
 I've studied at [ISSC](http://issc.unipune.ac.in/) (Computer Science Masters) and [Symbiosis](http://www.siu.edu.in/) (Executive MBA).  
 
