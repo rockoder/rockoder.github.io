@@ -8,6 +8,7 @@ List of some of the books that I read in the past.
 
 | Year    	| Title                                                                                                                                                	|
 |---------	|------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| 2023    	| [Mistborn: The Well of Ascension](https://www.amazon.com/Well-Ascension-Book-Two-Mistborn-ebook/dp/B000UZQI0Q)                                           	|
 | 2022    	| [$100M Offers: How To Make Offers So Good People Feel Stupid Saying No](https://www.amazon.com/100M-Offers-People-Stupid-Saying-ebook/dp/B099QVG1H8) 	|
 |         	| [Mistborn: The Final Empire](https://www.amazon.com/Mistborn-Final-Empire-Brandon-Sanderson/dp/0765377136)                                           	|
 |         	| [Turn the Ship Around!: A True Story of Turning Followers into Leaders](https://www.amazon.com/Turn-Ship-Around-Turning-Followers/dp/B08V4TFFCK)      |
