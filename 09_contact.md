@@ -33,7 +33,7 @@ You can reach out to me on:
 		<a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github.png" ></a>
     </div>
 	<div class="social">
-		<a target="_blank"  href="http://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin.png" ></a>
+		<a target="_blank"  href="https://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin.png" ></a>
     </div>
 </div>
 
@@ -44,7 +44,7 @@ You can also drop me a quick message using below form. The form submission will 
 <label style="color:blue" id="ackText">Message successfully submitted. Thank you for your message.</label>
 <script>getParameterByName('ackText');</script>
 
-<form method="POST" action="http://formspree.io/ganesh@rockoder.com">
+<form method="POST" action="https://formspree.io/ganesh@rockoder.com">
 <ul class="form-style-1">
     <li>
         <label>Email <span class="required">*</span></label>
