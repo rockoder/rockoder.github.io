@@ -17,4 +17,4 @@ However, detachment does not presume omniscience; it requires humility and a com
 
 Detachment in the Game is not about superiority but balance. It tempers the urgency of vested interest with the clarity of impartiality. In a world fractured by tribal loyalties, the detached observer reminds us that sometimes, the clearest view comes from stepping back.
 
-[This post was crafted with the assistance of ChatGPT, though the central ideas and perspectives are my own.]
+*This post was crafted with the assistance of ChatGPT, though the central ideas and perspectives are my own.*
