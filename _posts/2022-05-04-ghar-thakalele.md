@@ -7,6 +7,6 @@ tags:
 - poem, marathi
 ---
 
-One of my favorite poem and I don't exactly know why.
+One of my favorite poems. I found many online versions with typos, so I decided to create my own. Don't ask how long I spent finding the perfect font!
 
 ![]({{ site.url }}/public/images/posts/2022-05-04-ghar-thakalele/ghar-thakalele.png)
