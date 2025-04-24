@@ -9,4 +9,4 @@ tags:
 
 One of my favorite poem and I don't exactly know why.
 
-![]({{ site.url }}/public/images/posts/2022-05-04-ghar-thakaleleghar-thakalele.png)
+![]({{ site.url }}/public/images/posts/2022-05-04-ghar-thakalele/ghar-thakalele.png)
