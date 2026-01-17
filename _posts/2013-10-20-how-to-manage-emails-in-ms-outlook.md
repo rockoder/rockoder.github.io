@@ -24,7 +24,7 @@ To be in control of your mails, you should be explicitly marking the mails as re
 
 So first thing is to change the Outlook settings. To do this in Outlook 2010, go to View -> Reading Pane (in Layout) -> Options. Following window should pop up. Unselect first two check boxes.
 
-![]({{ site.url }}/public/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/KeepRead.png)
+![]({{ site.url }}/assets/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/KeepRead.png)
 
 These two check boxes, if checked, marks the mail as read automatically. This caused my mails getting marked as read even when I had no intention to do so. This resulted in missing out on important mails and action items. I had to explicitly mark a mail as unread, if I wanted to revisit it again and that was error prone and not so convenient.
 
@@ -47,7 +47,7 @@ Note that even though a mail goes directly into Deleted Items folder, it is stil
 ## 1.3. Create Rules to move mails to Deleted Items
 Action to be performed by all your rules will be to move the mail to Deleted Items folder.
 
-![]({{ site.url }}/public/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/MoveToDeletedItems.png)
+![]({{ site.url }}/assets/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/MoveToDeletedItems.png)
 
 All mailing lists, auto-generated mails, alert/notification mails etc go directly into Deleted Items. For ex: daily build pass/fail mails, check-in mail alerts, test case failures, forums where people ask for help etc. should go to Deleted Items. Rest all go into Inbox. 
 
@@ -73,7 +73,7 @@ After categories, create Search Folders for each category. This keeps your mails
 
 In Outlook 2010 you can define 'Quick Steps' which performs set of actions on a mail.
 
-![]({{ site.url }}/public/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/QuickSteps.png)
+![]({{ site.url }}/assets/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/QuickSteps.png)
 
 Create two Quick Steps:
 
@@ -82,7 +82,7 @@ Create two Quick Steps:
 
 You can also assign short-cut keys to perform the Quick Steps defined.
 
-![]({{ site.url }}/public/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/ReadAndDelete.png)
+![]({{ site.url }}/assets/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/ReadAndDelete.png)
 
 ## 1.6. Know your Server Settings
 
@@ -129,7 +129,7 @@ After replying to a mail, I:
 
 Finally, change the view of your Inbox and Delete Items folders to view only unread mails:
 
-![]({{ site.url }}/public/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/View.png)
+![]({{ site.url }}/assets/images/posts/2013-10-20-how-to-manage-emails-in-ms-outlook/View.png)
 
 This will keep your focus on the mails which has some action items pending on you. You would occasionally change this view, to search for some mails or view the mails marked read. But for most of the time you would only see the unread mails present in your Inbox and Deleted Items.
 

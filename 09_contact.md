@@ -25,17 +25,23 @@ permalink: /contact/
 </script>
 
 You can reach out to me on:
-<div id="social-list">
-	<div class="social">
-		<a target="_blank"  href="https://twitter.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/twitter.png" ></a>
+<div id="social-list1" class="contact-socials">
+	<div class="social1">
+		<a target="_blank" href="https://twitter.com/rockoder" aria-label="Twitter">{% include icon-twitter.svg %}</a>
     </div>
-	<div class="social">
-		<a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github.png" ></a>
+	<div class="social1">
+		<a target="_blank" href="https://github.com/rockoder" aria-label="GitHub">{% include icon-github.svg %}</a>
     </div>
-	<div class="social">
-		<a target="_blank"  href="https://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin.png" ></a>
+	<div class="social1">
+		<a target="_blank" href="https://www.linkedin.com/in/rockoder" aria-label="LinkedIn">{% include icon-linkedin.svg %}</a>
     </div>
 </div>
+
+<style>
+  .contact-socials .social1 svg path {
+    fill: var(--link-color) !important;
+  }
+</style>
 
 ---
 
@@ -64,20 +70,9 @@ You can also drop me a quick message using below form. The form submission will 
 ---
 
 <style type="text/css">
-	#social-list {
-	position: relative;
-	overflow: hidden;
-	}
-	.social {
-		position: relative;
-	    float: left;
-	    margin-right: 20px;
-	}
-
 .form-style-1 {
     max-width: 400px;
     padding: 0px 12px 10px 0px;
-    font: 20px "PT Sans", Helvetica, Arial, sans-serif;
 }
 .form-style-1 li {
     padding: 0;
@@ -91,69 +86,32 @@ You can also drop me a quick message using below form. The form submission will 
     display:block;
     font-weight: bold;
 }
-.form-style-1 input[type=text],
-.form-style-1 input[type=date],
-.form-style-1 input[type=datetime],
-.form-style-1 input[type=number],
-.form-style-1 input[type=search],
-.form-style-1 input[type=time],
-.form-style-1 input[type=url],
 .form-style-1 input[type=email],
-textarea,
-select{
+textarea {
     box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border:1px solid #BEBEBE;
-    padding: 7px;
-    margin:0px;
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none; 
-}
-.form-style-1 input[type=text]:focus,
-.form-style-1 input[type=date]:focus,
-.form-style-1 input[type=datetime]:focus,
-.form-style-1 input[type=number]:focus,
-.form-style-1 input[type=search]:focus,
-.form-style-1 input[type=time]:focus,
-.form-style-1 input[type=url]:focus,
-.form-style-1 input[type=email]:focus,
-.form-style-1 textarea:focus,
-.form-style-1 select:focus{
-    -moz-box-shadow: 0 0 8px #BCBCBC;
-    -webkit-box-shadow: 0 0 8px #BCBCBC;
-    box-shadow: 0 0 8px #BCBCBC;
-    border: 1px solid #BCBCBC;
-}
-.form-style-1 .field-divided{
-    width: 49%;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin: 0px;
+    width: 100%;
+    background: var(--body-bg);
+    color: var(--body-color);
+    border-radius: 4px;
 }
 
-.form-style-1 .field-long{
-    width: 100%;
-}
-.form-style-1 .field-select{
-    width: 100%;
-}
 .form-style-1 .field-textarea{
     height: 100px;
 }
-.form-style-1 input[type=submit], .form-style-1 input[type=button]{
-    background: #202020;
-    padding: 8px 15px 8px 15px;
+.form-style-1 input[type=submit] {
+    background: var(--sidebar-bg);
+    padding: 10px 20px;
     border: none;
     color: #fff;
-    font: 20px "PT Sans", Helvetica, Arial, sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
 }
-.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
-    background: #030303;
-    box-shadow:none;
-    -moz-box-shadow:none;
-    -webkit-box-shadow:none;
-    font: 20px "PT Sans", Helvetica, Arial, sans-serif;
+.form-style-1 input[type=submit]:hover {
+    background: #000;
 }
 .form-style-1 .required{
     color:red;

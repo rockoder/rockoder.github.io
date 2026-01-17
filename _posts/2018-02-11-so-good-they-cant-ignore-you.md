@@ -11,8 +11,8 @@ I recently completed reading [So Good They Can't Ignore You](https://www.amazon.
 
 I would highly recommend the book, especially to students and professionals in early stage for their career.
 
-I wanted to write a summary of the book for my reference. I ended up creating a flow chart instead. [Here](https://github.com/rockoder/rockoder.github.io/blob/master/public/images/posts/2018-02-11-so-good-they-cant-ignore-you) is the XML file generated using [http://draw.io](http://draw.io). Please feel free to edit and raise PR if you find something to improve.
+I wanted to write a summary of the book for my reference. I ended up creating a flow chart instead. [Here](https://github.com/rockoder/rockoder.github.io/blob/master/assets/images/posts/2018-02-11-so-good-they-cant-ignore-you) is the XML file generated using [http://draw.io](http://draw.io). Please feel free to edit and raise PR if you find something to improve.
 
 Note that some loop completions and abstractions for simplification are my derivations and not necessarily directly mentioned in the book.
 
-![]({{ site.url }}/public/images/posts/2018-02-11-so-good-they-cant-ignore-you/so-good-they-cant-ignore-you-flow-chart.png)
+![]({{ site.url }}/assets/images/posts/2018-02-11-so-good-they-cant-ignore-you/so-good-they-cant-ignore-you-flow-chart.png)

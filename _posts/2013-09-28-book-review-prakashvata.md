@@ -10,7 +10,7 @@ blogger_id: tag:blogger.com,1999:blog-101508721195247855.post-457605489430039000
 blogger_orig_url: http://blog.rockoder.com/2013/09/book-review-prakashvata.html
 ---
 
-<img style="float:left;margin-right:20px;" src="{{ site.url }}/public/images/posts/2013-09-28-book-review-prakashvata/Prakashvata.jpg">
+<img style="float:left;margin-right:20px;" src="{{ site.url }}/assets/images/posts/2013-09-28-book-review-prakashvata/Prakashvata.jpg">
 
 Rating: 9/10  
 
