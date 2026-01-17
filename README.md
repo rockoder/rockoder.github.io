@@ -18,6 +18,6 @@ For a full technical audit, including identified issues and recommendations for 
 ## Future Upgrades (Next Task)
 - [ ] Upgrade to Jekyll 4.x and Ruby 3.x
 - [ ] Migrate from Universal Analytics to GA4
-- [ ] Fix post rendering issues (missing extensions)
+- [x] Fix post rendering issues (missing extensions) - **Fixed**
 - [ ] Modernize theme and asset organization
 - [ ] Implement GitHub Actions for CI/CD
