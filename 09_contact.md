@@ -38,6 +38,9 @@ You can reach out to me on:
 </div>
 
 <style>
+  .contact-socials {
+    justify-content: flex-start !important;
+  }
   .contact-socials .social1 svg path {
     fill: var(--link-color) !important;
   }
