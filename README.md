@@ -20,4 +20,4 @@ For details on the technical stack and maintenance, please refer to [AGENTS.md](
 - [x] Migrate from Universal Analytics to GA4
 - [x] Fix post rendering issues (missing extensions)
 - [x] Implement GitHub Actions for CI/CD
-- [ ] Modernize theme and asset organization (Optional next step)
+- [x] Modernize theme and asset organization

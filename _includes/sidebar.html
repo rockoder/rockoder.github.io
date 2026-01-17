@@ -1,60 +1,45 @@
-<link rel="stylesheet" href="/public/css/rockoder1.css">
-<style type="text/css">
-	#social-list1 {
-	position: relative;
-	overflow: hidden;
-	float: center;
-	}
-	.social1 {
-		display: inline-block;  
-		position: relative;
-		justify-content: center;	    
-		margin-right: 20px;
-	}
-</style>
-
 <div class="sidebar">
   <div class="container">
     <div class="img-circular"></div>
     <div class="sidebar-about">
-    <center>
-      <h3>
-        <a href="{{ "/" | relative_url }}">
-          {{ site.myname }}
-        </a>
-      </h3>
-      <p class="lead" style="font-size:15px">{{ site.description }}</p>
-      <p class="lead" style="font-size:15px">
+      <center>
+        <h3>
+          <a href="{{ "/" | relative_url }}">
+            {{ site.myname }}
+          </a>
+        </h3>
+        <p class="lead" style="font-size:15px">{{ site.description }}</p>
+
         <div id="social-list1">
           <div class="social1">
-            <a target="_blank"  href="https://twitter.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/twitter-white.png" ></a>
+            <a target="_blank" href="https://twitter.com/{{ site.twitter_username }}" aria-label="Twitter">
+              {% include icon-twitter.svg %}
+            </a>
           </div>
           <div class="social1">
-            <a target="_blank"  href="https://github.com/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/github-white.png" ></a>
+            <a target="_blank" href="https://github.com/{{ site.github_username }}" aria-label="GitHub">
+              {% include icon-github.svg %}
+            </a>
           </div>
           <div class="social1">
-           <a target="_blank"  href="https://www.linkedin.com/in/rockoder"><img border="0" src="{{ site.url }}/public/images/icons/linkedin-white.png" ></a>
+            <a target="_blank" href="https://www.linkedin.com/in/{{ site.linkedin_username }}" aria-label="LinkedIn">
+              {% include icon-linkedin.svg %}
+            </a>
           </div>
         </div>
-      </p>
-    </center>
-  </div>
+      </center>
+    </div>
 
     <hr>
-    <!-- </br></br></br></br></br></br></br></br> -->
+
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ "/" | relative_url }}">Home</a>
+      <a class="sidebar-nav-item{% if page.url == "/" %} active{% endif %}" href="{{ "/" | relative_url }}">Home</a>
 
-      {% comment %}
-        The code below dynamically generates a sidebar nav of pages with
-        `layout: page` in the front-matter. See readme for usage.
-      {% endcomment %}
-
-      {% assign pages_list = site.pages %}
+      {% assign pages_list = site.pages | sort: 'order' %}
       {% for node in pages_list %}
         {% if node.title != null %}
           {% if node.layout == "page" %}
-            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url | relative_url }}">{{ node.title }}</a>
           {% endif %}
         {% endif %}
       {% endfor %}
