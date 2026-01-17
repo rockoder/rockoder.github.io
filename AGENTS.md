@@ -2,37 +2,31 @@
 
 This document provides a technical assessment of the rockoder.com blog to assist with future upgrades and maintenance.
 
-## Tech Stack
-- **Framework**: [Jekyll](https://jekyllrb.com/) 3.4.1 (Released Jan 2017)
-- **Language**: Ruby 2.4.2p198 (End-of-Life since March 2020)
-- **Bundler**: 1.16.1
-- **Theme**: [Hyde](https://github.com/poole/hyde) (a legacy [Poole](http://getpoole.com) theme)
-- **Hosting**: GitHub Pages (Legacy build process)
-- **Domain**: www.rockoder.com (configured via `CNAME`)
+## Tech Stack (Upgraded)
+- **Framework**: [Jekyll](https://jekyllrb.com/) 4.3.4
+- **Language**: Ruby 3.3.x
+- **Build System**: GitHub Actions
+- **Hosting**: GitHub Pages
+- **Domain**: www.rockoder.com
 
-## Dependencies
-- `jekyll-feed` (0.9.1)
-- `jekyll-paginate` (1.1.0)
-- `tzinfo-data` (for Windows compatibility)
+## Key Changes in 2026 Upgrade
+1.  **Framework Upgrade**: Moved from Jekyll 3.4.1 to 4.3.4.
+2.  **Ruby Upgrade**: Moved from EOL Ruby 2.4.2 to Ruby 3.3.
+3.  **Deployment**: Switched to GitHub Actions for automated builds and deployments.
+4.  **Analytics**: Migrated to `gtag.js` to support GA4.
+5.  **Configuration**: Modernized `_config.yml` (e.g., `plugins` instead of `gems`).
 
-## Configuration Analysis (`_config.yml`)
-- **Deprecated Key**: Uses `gems:` instead of `plugins:` for Jekyll plugins.
-- **Empty `url`**: The `url` field is set to `""`. This should ideally be `https://www.rockoder.com`.
-- **Markdown**: Uses `kramdown`.
-- **Highlighter**: `pygments` is commented out; Jekyll 3.4+ defaults to `rouge`.
+## Current Configuration (`_config.yml`)
+- **URL**: `https://www.rockoder.com`
+- **Markdown**: `kramdown`
+- **Highlighter**: `rouge` (Jekyll 4 default)
 
-## Critical Issues & Technical Debt
-1. **Outdated Ruby/Jekyll**: The environment is significantly out of date. Ruby 2.4.2 is EOL and may have security vulnerabilities. Jekyll 3.4.1 lacks many modern features and performance improvements found in Jekyll 4.x.
-2. **Universal Analytics (Deprecated)**: The site uses Google Universal Analytics (`UA-92971876-1`), which has been deprecated by Google in favor of GA4. No data is likely being collected currently.
-3. **Asset Organization**: Assets are stored in `public/`, while modern Jekyll conventions often use `assets/`.
-4. **No CI/CD**: There is no explicit GitHub Actions workflow. The site relies on the default GitHub Pages build service.
-
-## Recommendations for Next Steps
-1. **Upgrade Jekyll and Ruby**: Migration to Jekyll 4.x and a modern Ruby version (3.x) is highly recommended.
-2. **Migrate to GA4**: Replace the Universal Analytics tag with a Google Analytics 4 (GA4) measurement ID.
-3. **Modernize Theme**: Consider updating to a modern, responsive theme or a newer version of Hyde/Poole.
-4. **Set up GitHub Actions**: Implement a custom GitHub Actions workflow for more control over the build and deployment process.
-5. **Update Configuration**: Change `gems:` to `plugins:` and set the `url` in `_config.yml`.
+## Maintenance Notes
+- The site is built via the `.github/workflows/jekyll.yml` workflow.
+- Dependencies are managed via `Gemfile`.
+- To update tracking, change `google_analytics` ID in `_config.yml`.
 
 ## Resolved Issues
-- **Fixed Post Extension**: Renamed `_posts/2026-01-17-website-migration` to `_posts/2026-01-17-website-migration.md` to enable Jekyll rendering.
+- **Fixed Post Extension**: Renamed `_posts/2026-01-17-website-migration` to `_posts/2026-01-17-website-migration.md`.
+- **Legacy Tech Stack**: Upgraded Ruby, Jekyll, and Build system.
+- **Broken Analytics**: Migrated to GA4-compatible snippet.
