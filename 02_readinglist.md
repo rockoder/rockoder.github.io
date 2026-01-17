@@ -8,6 +8,8 @@ List of some of the books that I read in the past.
 
 | Year    	| Title                                                                                                                                                	|
 |---------	|------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| 2025    	| [Project Hail Mary](https://a.co/d/25Y5rHA)                                                                                                          |
+|         	| [Fish!: A Remarkable Way To Boost Morale And Improve Results](https://a.co/d/cbiB2dj)                                                                |
 | 2024    	| [Amp It Up](https://www.amazon.com/Amp-Unlocking-Hypergrowth-Expectations-Intensity/dp/1119836115)                                                    |
 |         	| [Foundation](https://www.amazon.com/gp/product/B000FC1PWA)                                                    |
 |         	| [The Coaching Habit](https://www.amazon.com/Coaching-Habit-Less-Change-Forever/dp/0978440749)                  |
