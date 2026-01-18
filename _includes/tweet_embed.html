@@ -1,16 +1,12 @@
+{% assign target = include.post | default: page %}
 <div class="tweet-card">
-  {% if page.screenshot %}
+  {% if target.screenshot %}
     <div class="tweet-screenshot">
-      <img src="{{ site.baseurl }}{{ page.screenshot }}" alt="Tweet Screenshot" class="tweet-img">
+      <img src="{{ site.baseurl }}{{ target.screenshot }}" alt="Tweet Screenshot" class="tweet-img">
     </div>
   {% endif %}
 
-  <div class="tweet-fallback-link">
-    <blockquote class="twitter-tweet" data-dnt="true">
-      <p lang="en" dir="ltr">{{ content }}</p>
-      &mdash; {{ site.twitter_username }} (@{{ site.twitter_username }})
-      <a href="{{ page.tweet_url }}">View on X</a>
-    </blockquote>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <div class="tweet-footer">
+    <a href="{{ target.tweet_url }}" target="_blank" class="view-on-x">View original on X</a>
   </div>
 </div>

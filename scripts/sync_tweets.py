@@ -82,7 +82,15 @@ def generate_post(tweet_data, screenshot_path):
         print(f"Post {post_filename} already exists. Skipping.")
         return
 
-    title = f"Tweet from {date_str}"
+    # Generate a descriptive title from content
+    clean_content = content.replace('\n', ' ').strip()
+    if len(clean_content) > 50:
+        title = clean_content[:47] + "..."
+    else:
+        title = clean_content
+
+    if not title:
+        title = f"Tweet from {date_str}"
 
     front_matter = f"""---
 layout: tweet
