@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import requests
 from playwright.sync_api import sync_playwright
 from datetime import datetime
 from dotenv import load_dotenv
