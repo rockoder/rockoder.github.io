@@ -1,0 +1,75 @@
+.tweet-post {
+  .tweet-container {
+    margin: 2rem 0;
+    max-width: 100%;
+  }
+
+  .tweet-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--body-bg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .tweet-screenshot {
+    .tweet-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 0; // The card already has border-radius and overflow: hidden
+      margin-bottom: 0;
+    }
+  }
+
+  .tweet-fallback-link {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+
+    // Hide the blockquote if screenshot is present, but keep script for possible live embed enhancement
+    // Actually, let's keep it as a text fallback below the image.
+  }
+
+  .tweet-content {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .tweet-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+
+    .view-on-x {
+      display: inline-block;
+      background-color: var(--header-color);
+      color: var(--body-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Dark Mode overrides if necessary (most use CSS variables)
+@media (prefers-color-scheme: dark) {
+  .tweet-card {
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
