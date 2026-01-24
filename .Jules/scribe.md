@@ -1,0 +1,3 @@
+## 2026-01-24 – The Aesthetic Trap and the Logic Gap
+**Learning:** Hacker News discourse often falls into two opposing traps. The first is "Intellectual Consumerism," where high-level abstractions (mental models) are collected as status symbols rather than tools for understanding. The second is "Vibecoding Mania," where the thrill of cheap implementation (agents) leads to a dangerous devaluation of first-principles understanding.
+**Implication:** Future writing should bridge these gaps by grounding high-level "models" in gritty, low-level technical realities (the "Richard Stevens" approach) and by reframing the agent revolution not as a replacement for engineering, but as a shift in where the engineer's sovereignty resides (design and logic ownership vs. syntax).
