@@ -6,19 +6,17 @@ permalink: /contact/
 
 <script type="text/javascript">
 	function getParameterByName(name) {
-    	document.getElementById(name).style.visibility = "hidden";
-
-	    url = window.location.href;
-
+	    var url = window.location.href;
 	    name = name.replace(/[\[\]]/g, "\\$&");
 	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
 	    results = regex.exec(url);
 	    
-	    if (!results) return null;
-	    
-	    if (!results[2]) return '';
+	    if (!results || !results[2]) return null;
 
-	    document.getElementById(name).style.visibility = "visible";
+	    var element = document.getElementById(name);
+	    if (element) {
+	        element.style.display = "block";
+	    }
 
 	    return '';
 	}
@@ -50,19 +48,21 @@ You can reach out to me on:
 
 You can also drop me a quick message using below form. The form submission will go through [formspree.io](https://formspree.io). I respect your privacy.
 
-<label style="color:blue" id="ackText">Message successfully submitted. Thank you for your message.</label>
+<div id="ackText" class="status-message success" style="display: none;">
+  Message successfully submitted. Thank you for your message.
+</div>
 <script>getParameterByName('ackText');</script>
 
 <form method="POST" action="https://formspree.io/ganesh@rockoder.com">
 <ul class="form-style-1">
     <li>
-        <label>Email <span class="required">*</span></label>
-        <input type="email" name="email" class="field-long" />
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" class="field-long" required />
         <input type="hidden" name="_next" value="//{{ site.url }}/contact?ackText=1" />
     </li>
     <li>
-        <label>Your Message <span class="required">*</span></label>
-        <textarea name="message" id="message" class="field-long field-textarea"></textarea>
+        <label for="message">Your Message <span class="required">*</span></label>
+        <textarea name="message" id="message" class="field-long field-textarea" required></textarea>
     </li>
     <li>
         <input type="submit" value="Submit" />
@@ -99,10 +99,39 @@ textarea {
     background: var(--body-bg);
     color: var(--body-color);
     border-radius: 4px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-style-1 input[type=email]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 3px rgba(38, 139, 210, 0.2);
 }
 
 .form-style-1 .field-textarea{
     height: 100px;
+}
+
+.status-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+@media (prefers-color-scheme: dark) {
+    .status-message.success {
+        background-color: #1c3321;
+        color: #8fdfa1;
+        border-color: #2b4c33;
+    }
 }
 .form-style-1 input[type=submit] {
     background: var(--sidebar-bg);
