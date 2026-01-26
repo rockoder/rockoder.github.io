@@ -145,6 +145,10 @@ textarea:focus {
 .form-style-1 input[type=submit]:hover {
     background: #000;
 }
+.form-style-1 input[type=submit]:focus-visible {
+    outline: 3px solid var(--link-color);
+    outline-offset: 2px;
+}
 .form-style-1 .required{
     color:red;
 }
