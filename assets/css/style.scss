@@ -189,28 +189,32 @@ blockquote {
 }
 
 // Container & Content
-.content {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-
-  @media (min-width: 48em) {
-    max-width: 38rem;
-    margin-left: 20rem;
-    margin-right: 2rem;
-  }
-
-  @media (min-width: 64em) {
-    margin-left: 22rem;
-    margin-right: 4rem;
-  }
-}
-
 .container {
   max-width: 38rem;
   padding-left: 1rem;
   padding-right: 1rem;
   margin-left: auto;
   margin-right: auto;
+}
+
+.content {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+
+  // Use higher specificity (.content.container) to ensure sidebar offset
+  // takes precedence over generic .container centering on desktop.
+  &, &.container {
+    @media (min-width: 48em) {
+      max-width: 38rem;
+      margin-left: 20rem;
+      margin-right: 2rem;
+    }
+
+    @media (min-width: 64em) {
+      margin-left: 22rem;
+      margin-right: 4rem;
+    }
+  }
 }
 
 // Posts
