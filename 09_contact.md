@@ -48,7 +48,7 @@ You can reach out to me on:
 
 You can also drop me a quick message using below form. The form submission will go through [formspree.io](https://formspree.io). I respect your privacy.
 
-<div id="ackText" class="status-message success" style="display: none;">
+<div id="ackText" class="status-message success" style="display: none;" role="status" aria-live="polite">
   Message successfully submitted. Thank you for your message.
 </div>
 <script>getParameterByName('ackText');</script>
@@ -58,7 +58,7 @@ You can also drop me a quick message using below form. The form submission will 
     <li>
         <label for="email">Email <span class="required">*</span></label>
         <input type="email" id="email" name="email" class="field-long" required />
-        <input type="hidden" name="_next" value="//{{ site.url }}/contact?ackText=1" />
+        <input type="hidden" name="_next" value="{{ site.url }}/contact?ackText=1" />
     </li>
     <li>
         <label for="message">Your Message <span class="required">*</span></label>
