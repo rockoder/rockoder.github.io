@@ -11,6 +11,23 @@
     <div id="content" class="content container">
       {{ content }}
     </div>
-
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('pre').forEach((pre) => {
+          const code = pre.querySelector('code'); if (!code) return;
+          const btn = document.createElement('button');
+          btn.className = 'copy-code-button'; btn.innerText = 'Copy';
+          const container = pre.parentElement.classList.contains('highlight') ? pre.parentElement : pre;
+          if (container === pre) pre.style.position = 'relative';
+          container.appendChild(btn);
+          btn.onclick = () => {
+            navigator.clipboard.writeText(code.innerText.trim()).then(() => {
+              btn.innerText = 'Copied!'; btn.classList.add('copied');
+              setTimeout(() => { btn.innerText = 'Copy'; btn.classList.remove('copied'); }, 2000);
+            });
+          };
+        });
+      });
+    </script>
   </body>
 </html>
