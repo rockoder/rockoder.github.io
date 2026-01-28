@@ -283,15 +283,9 @@ img {
 }
 
 .img-circular {
-  width: 110px;
-  height: 110px;
-  background-image: url('../images/id/id.png');
-  background-size: cover;
-  background-position: center; // Ensure the photo is centered
-  display: block;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
-  border: 3px solid rgba(255, 255, 255, 0.1); // Modern border
+  width: 110px; height: 110px; object-fit: cover; display: block;
+  border-radius: 50%; margin: 0 auto 1.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 // Tables
@@ -341,8 +335,7 @@ tbody tr:nth-child(odd) th {
 
 // Syntax Highlighting
 .highlight {
-  margin-bottom: 1rem;
-  border-radius: 8px;
+  position: relative; margin-bottom: 1rem; border-radius: 8px;
   pre { margin-bottom: 0; }
 
   .c { color: #999; } // Comment
@@ -353,6 +346,17 @@ tbody tr:nth-child(odd) th {
   .nc { color: #0a8; font-weight: bold; } // Name.Class
   .nf { color: #c0f; } // Name.Function
 }
+.copy-code-button {
+  position: absolute; top: 0.6rem; right: 0.6rem; padding: 0.3rem 0.6rem;
+  font-size: 0.7rem; font-weight: bold; text-transform: uppercase;
+  color: var(--body-color); background-color: var(--body-bg);
+  border: 1px solid var(--border-color); border-radius: 4px;
+  cursor: pointer; opacity: 0; transition: all 0.2s ease; z-index: 10;
+  &:hover { background-color: var(--code-bg); border-color: var(--link-color); }
+  &:focus-visible { opacity: 1; outline: 2px solid var(--link-color); outline-offset: 2px; }
+  &.copied { color: #fff; background-color: #28a745; border-color: #28a745; }
+}
+.highlight:hover .copy-code-button, pre:hover .copy-code-button { opacity: 1; }
 
 // Pagination
 .pagination {

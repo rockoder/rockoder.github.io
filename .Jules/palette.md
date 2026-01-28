@@ -5,3 +5,7 @@
 ## 2026-01-26 - [Standardizing Keyboard Navigation and Skip Links]
 **Learning:** For sites with a significant sidebar, a "Skip to Content" link is a critical but often overlooked micro-UX win. Additionally, relying on global focus states can be insufficient for specialized components like social icons or custom-styled buttons; explicit `:focus-visible` styling ensures accessibility without degrading the visual experience for mouse users.
 **Action:** Always include a skip-to-content link in layouts with sidebars and audit interactive elements for high-contrast focus indicators using `:focus-visible`.
+
+## 2026-01-28 - [Accessible Media and Interactive Code Blocks]
+**Learning:** Using `div` with `background-image` for profile photos is a common anti-pattern that hides content from screen readers and prevents standard browser image interactions (like "open image in new tab"). Furthermore, technical readers highly value "Copy" utilities on code blocks, which can be implemented as a progressive enhancement using a small, accessible button injected via JavaScript.
+**Action:** Prefer semantic `img` tags over background images for content-carrying visuals. Implement utility features like "Copy to Clipboard" with focus-visible states and clear success feedback.
