@@ -9,3 +9,7 @@
 ## 2026-01-28 - [Accessible Media and Interactive Code Blocks]
 **Learning:** Using `div` with `background-image` for profile photos is a common anti-pattern that hides content from screen readers and prevents standard browser image interactions (like "open image in new tab"). Furthermore, technical readers highly value "Copy" utilities on code blocks, which can be implemented as a progressive enhancement using a small, accessible button injected via JavaScript.
 **Action:** Prefer semantic `img` tags over background images for content-carrying visuals. Implement utility features like "Copy to Clipboard" with focus-visible states and clear success feedback.
+
+## 2026-01-28 - [Clarifying Pagination Affordance and Directionality]
+**Learning:** Generic "Older" and "Newer" buttons without visual cues or distinct states lead to user confusion, especially when one is disabled but looks identical to the other. Using directional arrows (affordance), swapping placement to match chronological intuition (Newer on the left), and significantly reducing opacity with a `not-allowed` cursor for disabled states provides an immediate, unambiguous mental model for site navigation.
+**Action:** Always differentiate active vs. disabled pagination items using both visual (opacity, color) and behavioral (cursor, pointer-events) cues. Ensure button placement aligns with standard user expectations for "Previous/Next" chronological flow.
