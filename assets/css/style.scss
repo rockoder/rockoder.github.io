@@ -367,21 +367,39 @@ tbody tr:nth-child(odd) th {
   display: flex;
   justify-content: space-between;
   margin: 4rem 0;
-  font-weight: bold;
 }
 
 .pagination-item {
+  display: inline-block;
   padding: 0.8rem 1.6rem;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: var(--body-bg);
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+a.pagination-item {
   color: var(--body-color);
-  transition: all 0.2s;
-  &:hover {
-    background: var(--code-bg);
-    text-decoration: none;
+
+  &:hover, &:focus {
+    background-color: var(--link-color);
+    color: #fff;
     border-color: var(--link-color);
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+span.pagination-item {
+  color: var(--body-color);
+  cursor: not-allowed;
+  opacity: 0.3;
 }
 
 .tweet-post {
