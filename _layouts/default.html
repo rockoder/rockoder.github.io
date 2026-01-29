@@ -4,9 +4,11 @@
   {% include head.html %}
 
   <body>
+    {% if page.layout == "post" or page.layout == "tweet" %}
     <div class="progress-container" aria-hidden="true">
       <div id="reading-progress-bar"></div>
     </div>
+    {% endif %}
     <a href="#content" class="skip-link">Skip to main content</a>
 
     {% include sidebar.html %}
@@ -16,6 +18,7 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        {% if page.layout == "post" or page.layout == "tweet" %}
         const progressBar = document.getElementById('reading-progress-bar');
         if (progressBar) {
           const updateProgress = () => {
@@ -27,6 +30,7 @@
           window.addEventListener('scroll', updateProgress);
           updateProgress();
         }
+        {% endif %}
 
         document.querySelectorAll('pre').forEach((pre) => {
           const code = pre.querySelector('code'); if (!code) return;
