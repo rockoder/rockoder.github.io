@@ -20,14 +20,26 @@
       document.addEventListener('DOMContentLoaded', () => {
         {% if page.layout == "post" or page.layout == "tweet" %}
         const progressBar = document.getElementById('reading-progress-bar');
-        if (progressBar) {
+        const post = document.querySelector('.post');
+        if (progressBar && post) {
           const updateProgress = () => {
-            const winScroll = window.scrollY || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-            progressBar.style.width = scrolled + '%';
+            const winScroll = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const postRect = post.getBoundingClientRect();
+            const postBottom = postRect.bottom + winScroll;
+            const totalScrollable = postBottom - windowHeight;
+
+            if (totalScrollable <= 0) {
+              progressBar.parentElement.style.display = 'none';
+            } else {
+              progressBar.parentElement.style.display = 'block';
+              let percentage = (winScroll / totalScrollable) * 100;
+              percentage = Math.max(0, Math.min(100, percentage));
+              progressBar.style.width = percentage + '%';
+            }
           };
           window.addEventListener('scroll', updateProgress);
+          window.addEventListener('resize', updateProgress);
           updateProgress();
         }
         {% endif %}
