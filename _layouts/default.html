@@ -4,6 +4,10 @@
   {% include head.html %}
 
   <body>
+    {% if page.layout == "post" %}
+    <div id="reading-progress-bar" class="reading-progress-bar"></div>
+    {% endif %}
+
     <a href="#content" class="skip-link">Skip to main content</a>
 
     {% include sidebar.html %}
@@ -13,6 +17,18 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById("reading-progress-bar");
+        if (progressBar) {
+          const updateProgress = () => {
+            const winScroll = window.scrollY || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+          };
+          window.addEventListener('scroll', updateProgress);
+          updateProgress();
+        }
+
         document.querySelectorAll('pre').forEach((pre) => {
           const code = pre.querySelector('code'); if (!code) return;
           const btn = document.createElement('button');
