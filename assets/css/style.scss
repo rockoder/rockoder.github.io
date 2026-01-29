@@ -86,6 +86,10 @@ html {
   line-height: 1.6;
   background-color: var(--body-bg);
   -webkit-text-size-adjust: 100%;
+
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 @media (min-width: 38em) {
@@ -361,6 +365,17 @@ tbody tr:nth-child(odd) th {
   &.copied { color: #fff; background-color: #28a745; border-color: #28a745; }
 }
 .highlight:hover .copy-code-button, pre:hover .copy-code-button { opacity: 1; }
+
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background-color: var(--link-color);
+  z-index: 10000;
+  transition: width 0.1s ease-out;
+}
 
 // Pagination
 .pagination {

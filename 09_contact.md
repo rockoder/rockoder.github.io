@@ -25,13 +25,13 @@ permalink: /contact/
 You can reach out to me on:
 <div id="social-list1" class="contact-socials">
 	<div class="social1">
-		<a target="_blank" href="https://twitter.com/rockoder" aria-label="Twitter">{% include icon-twitter.svg %}</a>
+		<a target="_blank" rel="noopener" href="https://twitter.com/rockoder" aria-label="Twitter">{% include icon-twitter.svg %}</a>
     </div>
 	<div class="social1">
-		<a target="_blank" href="https://github.com/rockoder" aria-label="GitHub">{% include icon-github.svg %}</a>
+		<a target="_blank" rel="noopener" href="https://github.com/rockoder" aria-label="GitHub">{% include icon-github.svg %}</a>
     </div>
 	<div class="social1">
-		<a target="_blank" href="https://www.linkedin.com/in/rockoder" aria-label="LinkedIn">{% include icon-linkedin.svg %}</a>
+		<a target="_blank" rel="noopener" href="https://www.linkedin.com/in/rockoder" aria-label="LinkedIn">{% include icon-linkedin.svg %}</a>
     </div>
 </div>
 

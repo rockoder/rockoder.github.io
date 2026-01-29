@@ -13,3 +13,7 @@
 ## 2026-01-28 - [Clarifying Pagination Affordance and Directionality]
 **Learning:** Generic "Older" and "Newer" buttons without visual cues or distinct states lead to user confusion, especially when one is disabled but looks identical to the other. Using directional arrows (affordance), swapping placement to match chronological intuition (Newer on the left), and significantly reducing opacity with a `not-allowed` cursor for disabled states provides an immediate, unambiguous mental model for site navigation.
 **Action:** Always differentiate active vs. disabled pagination items using both visual (opacity, color) and behavioral (cursor, pointer-events) cues. Ensure button placement aligns with standard user expectations for "Previous/Next" chronological flow.
+
+## 2026-01-29 - [Visualizing Reading Progress and Velocity]
+**Learning:** For a technical blog, providing immediate feedback on reading depth (via a progress bar) and time commitment (reading time estimation) significantly reduces cognitive load. Initializing the progress bar on load (not just on scroll) prevents a "jumpy" UX for users who return to a bookmarked position.
+**Action:** Always include estimated reading time and a progress bar for long-form content. Ensure the progress bar state is calculated immediately upon page load to maintain visual consistency.
