@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-01-30 - [Contextual Metadata for Content Curation]
+**Learning:** For a technical audience of "busy experts," surface-level metadata like "Estimated Reading Time" provides a critical heuristic for content consumption, allowing users to budget their time before committing to a post. Centralizing this logic in a reusable Liquid snippet ensures visual and logical consistency across different views (index vs. post layouts) without duplicating maintenance overhead.
+**Action:** Always provide reading time estimates for long-form content. Use centralized snippets for metadata calculation to ensure consistency across the UI.
