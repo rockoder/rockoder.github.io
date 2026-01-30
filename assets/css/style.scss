@@ -186,10 +186,28 @@ blockquote {
 
 .sidebar-nav-item {
   display: block;
-  line-height: 1.8; // Reduced line height
-  font-size: 0.95rem; // Reduced font size
-  &.active { font-weight: bold; }
-  &:hover, &:focus { text-decoration: underline; }
+  line-height: 1.8;
+  font-size: 0.95rem;
+  padding: 0.2rem 1rem;
+  transition: all 0.2s;
+  &.active {
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--link-color);
+    padding-left: calc(1rem - 3px);
+  }
+  &:hover, &:focus { text-decoration: none; background: rgba(255, 255, 255, 0.1); }
+}
+
+#back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+  background: var(--link-color); color: #fff; border: none; border-radius: 50%;
+  width: 3rem; height: 3rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,.2); transition: .3s; opacity: 0; visibility: hidden;
+  svg { width: 1.2rem; height: 1.2rem; fill: currentColor; }
+  &:hover { transform: scale(1.1); }
+  &.show { opacity: 1; visibility: visible; }
+  @media (min-width: 80em) { right: 22rem; }
 }
 
 // Container & Content
