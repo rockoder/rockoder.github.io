@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-05 - [Reducing Friction in Long-Form Navigation]
+**Learning:** For long-form technical content, providing a "Back to Top" button improves mobile and long-scroll UX by reducing physical interaction effort. Furthermore, surfacing estimated reading time in post metadata helps busy, expert readers manage their attention and expectations before committing to an article.
+**Action:** Include estimated reading time in post headers and implement a conditional "Back to Top" button for scroll-heavy layouts.
