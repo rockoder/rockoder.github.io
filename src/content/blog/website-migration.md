@@ -93,4 +93,4 @@ This is what AI assistants are actually good for. Not replacing engineers, but l
 
 I could have done this migration myself. I chose not to. My time is more valuable than eleven dollars a month.
 
-Now, if you’ll excuse me, I have an EC2 instance to terminate.
+Now, if you’ll excuse me, I have an EC2 instance to terminate
