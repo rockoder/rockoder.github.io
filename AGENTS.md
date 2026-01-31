@@ -3,37 +3,43 @@
 This document provides a technical assessment of the rockoder.com blog to assist with future upgrades and maintenance.
 
 ## Tech Stack (Modernized)
-- **Framework**: [Jekyll](https://jekyllrb.com/) 4.3.4
-- **Language**: Ruby 3.3.x
+- **Framework**: [Astro](https://astro.build/) 5.17.1
+- **Language**: TypeScript
 - **Build System**: GitHub Actions
-- **Styles**: SCSS with System Font Stack & Dark Mode support
+- **Styling**: Tailwind CSS v4
 - **Hosting**: GitHub Pages
 - **Domain**: www.rockoder.com
 
 ## Key Changes in 2026 Upgrade
-1.  **Framework Upgrade**: Moved from Jekyll 3.4.1 to 4.3.4.
-2.  **Ruby Upgrade**: Moved from EOL Ruby 2.4.2 to Ruby 3.3.
-3.  **Deployment**: Switched to GitHub Actions for automated builds and deployments.
-4.  **Theme Modernization**:
-    *   Converted CSS to SCSS in `assets/css/style.scss`.
-    *   Implemented a modern system font stack.
-    *   Added automatic Dark Mode support.
-    *   Migrated assets from `public/` to `assets/`.
-    *   Switched sidebar and contact socials to high-quality SVG icons.
-5.  **Analytics**: Migrated to `gtag.js` to support GA4.
-6.  **Configuration**: Modernized `_config.yml`.
+1.  **Framework Migration**: Moved from Jekyll 3.4.1 to Astro 5.17.1.
+2.  **Build System**: Switched to GitHub Actions for automated builds and deployments.
+3.  **Theme Modernization**:
+    *   Migrated from SCSS to Tailwind CSS v4
+    *   Implemented modern system font stack
+    *   Added automatic Dark Mode support
+    *   Migrated assets to Astro's standard structure
+    *   Switched sidebar and contact socials to high-quality SVG icons
+4.  **Content Migration**: 43 blog posts and 79 notes migrated from Jekyll
+5.  **Features Added**:
+    *   Command palette
+    *   Reading progress bar
+    *   Table of contents with active highlighting
+    *   Tag cloud sidebar on homepage and individual posts
+6.  **Configuration**: Modernized Astro configuration
 
-## Current Configuration (`_config.yml`)
+## Current Configuration
 - **URL**: `https://www.rockoder.com`
-- **Markdown**: `kramdown`
-- **Highlighter**: `rouge`
+- **Framework**: Astro 5.17.1
+- **Styling**: Tailwind CSS v4
+- **Build Process**: npm scripts with Astro CLI
 
 ## Maintenance Notes
-- The site is built via the `.github/workflows/jekyll.yml` workflow.
-- Styles are managed in `assets/css/style.scss`.
-- To update tracking, change `google_analytics` ID in `_config.yml`.
+- The site is built via the `.github/workflows/deploy.yml` workflow.
+- Styles are managed through Tailwind CSS.
+- To update tracking, change `google_analytics` ID in `_config.yml` (still needed for legacy compatibility).
 
 ## Resolved Issues
-- **Fixed Post Extension**: Renamed `_posts/2026-01-17-website-migration` to `_posts/2026-01-17-website-migration.md`.
-- **Legacy Tech Stack**: Upgraded Ruby, Jekyll, and Build system.
-- **Legacy Theme**: Modernized typography, icons, and asset organization.
+- **Framework Migration**: Successfully migrated from Jekyll to Astro 5.x
+- **Content Migration**: All 43 blog posts and 79 notes migrated
+- **Legacy Tech Stack**: Upgraded from Jekyll to Astro
+- **Legacy Theme**: Modernized styling with Tailwind CSS v4
