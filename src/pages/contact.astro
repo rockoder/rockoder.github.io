@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Ganesh Pagade"
+>
+  <div class="mx-auto max-w-xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10 text-center">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Get in Touch</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        I'd love to hear from you. Send me a message and I'll respond as soon as possible.
+      </p>
+    </header>
+
+    <form
+      action="https://formspree.io/f/xwpkpkka"
+      method="POST"
+      class="space-y-6"
+    >
+      <div>
+        <label for="name" class="block text-sm font-medium text-[var(--foreground)]">
+          Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          required
+          class="mt-1 block w-full rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] px-4 py-3 text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          placeholder="Your name"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-[var(--foreground)]">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          required
+          class="mt-1 block w-full rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] px-4 py-3 text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          placeholder="your@email.com"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-medium text-[var(--foreground)]">
+          Message
+        </label>
+        <textarea
+          name="message"
+          id="message"
+          rows="5"
+          required
+          class="mt-1 block w-full rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] px-4 py-3 text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)] resize-none"
+          placeholder="Your message..."
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full rounded-lg bg-[var(--accent)] px-4 py-3 font-medium text-white hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--background)] transition-colors"
+      >
+        Send Message
+      </button>
+    </form>
+
+    <div class="mt-12 pt-8 border-t border-[var(--border)] text-center">
+      <p class="text-sm text-[var(--foreground-muted)] mb-4">
+        Or connect with me on social media
+      </p>
+      <SocialLinks size="lg" class="justify-center" />
+    </div>
+
+    <div class="mt-8 text-center">
+      <a
+        href="mailto:ganesh@rockoder.com"
+        class="text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+      >
+        ganesh@rockoder.com
+      </a>
+    </div>
+  </div>
+</BaseLayout>

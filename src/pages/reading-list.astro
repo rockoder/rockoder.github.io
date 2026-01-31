@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { books, getBooksByYear, getTotalBooks } from '../data/books';
+
+const booksByYear = getBooksByYear();
+const totalBooks = getTotalBooks();
+const years = Array.from(booksByYear.keys());
+---
+
+<BaseLayout
+  title="Reading List"
+  description="Books I have read and found worth sharing"
+>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Reading List</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        {totalBooks} books I have read and found worth sharing
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      {years.map((year) => {
+        const yearBooks = booksByYear.get(year) || [];
+        return (
+          <section>
+            <h2 class="text-lg font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
+              <span class="text-[var(--accent)]">{year}</span>
+              <span class="text-sm font-normal text-[var(--foreground-subtle)]">
+                ({yearBooks.length} {yearBooks.length === 1 ? 'book' : 'books'})
+              </span>
+            </h2>
+
+            <ul class="space-y-3">
+              {yearBooks.map((book) => (
+                <li class="flex items-start gap-3 group">
+                  <span class="text-[var(--foreground-subtle)] mt-1">-</span>
+                  <div class="flex-1">
+                    <a
+                      href={book.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[var(--foreground)] hover:text-[var(--accent)] transition-colors"
+                    >
+                      {book.title}
+                    </a>
+                    {book.review && (
+                      <a
+                        href={book.review}
+                        class="ml-2 text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+                      >
+                        (Review)
+                      </a>
+                    )}
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-[var(--foreground-subtle)] opacity-0 group-hover:opacity-100 transition-opacity"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

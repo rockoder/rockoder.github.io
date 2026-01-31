@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all case studies
+const caseStudies = await getCollection('case-studies', ({ data }) => !data.draft);
+---
+
+<BaseLayout
+  title="Case Studies"
+  description="Selected projects and professional experiences"
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Case Studies</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        Selected projects and professional experiences
+      </p>
+    </header>
+
+    {caseStudies.length === 0 ? (
+      <div class="text-center py-12">
+        <p class="text-[var(--foreground-muted)]">Case studies coming soon.</p>
+      </div>
+    ) : (
+      <div class="space-y-6">
+        {caseStudies.map((study) => (
+          <article class="card p-6 group hover:border-[var(--border-hover)] transition-colors">
+            <a href={`/case-studies/${study.slug}/`} class="block">
+              <div class="flex flex-wrap items-center gap-2 text-sm text-[var(--accent)] mb-2">
+                <span>{study.data.company}</span>
+                <span class="text-[var(--border)]">/</span>
+                <span>{study.data.role}</span>
+              </div>
+
+              <h2 class="text-xl font-semibold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">
+                {study.data.title}
+              </h2>
+
+              <p class="text-[var(--foreground-muted)] mt-2">
+                {study.data.summary}
+              </p>
+
+              <div class="flex items-center justify-between mt-4">
+                <span class="text-sm text-[var(--foreground-subtle)]">
+                  {study.data.period}
+                </span>
+
+                <div class="flex flex-wrap gap-2">
+                  {study.data.technologies.slice(0, 3).map((tech) => (
+                    <span class="text-xs px-2 py-0.5 rounded bg-[var(--background-secondary)] text-[var(--foreground-subtle)]">
+                      {tech}
+                    </span>
+                  ))}
+                  {study.data.technologies.length > 3 && (
+                    <span class="text-xs px-2 py-0.5 text-[var(--foreground-subtle)]">
+                      +{study.data.technologies.length - 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

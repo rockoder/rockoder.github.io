@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getAllTags, getPostsByTag } from '../../../data/tags';
+
+export async function getStaticPaths() {
+  const tags = await getAllTags();
+
+  return tags.map((tag) => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+const posts = await getPostsByTag(tag);
+const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title={`Posts tagged "${tag}"`}
+  description={`All posts tagged with ${tag}`}
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <a
+        href="/blog/"
+        class="text-sm text-[var(--foreground-muted)] hover:text-[var(--accent)] transition-colors"
+      >
+        &larr; All posts
+      </a>
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mt-4">
+        #{tag}
+      </h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        {sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'}
+      </p>
+    </header>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {sortedPosts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          date={post.data.date}
+          slug={post.slug}
+          tags={post.data.tags}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

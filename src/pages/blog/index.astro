@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get all blog posts
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Get all unique tags
+const allTags = [...new Set(sortedPosts.flatMap((post) => post.data.tags || []))].sort();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Technical articles, tutorials, and thoughts on software engineering"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Blog</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        {sortedPosts.length} posts on software engineering, book reviews, and more
+      </p>
+    </header>
+
+    <!-- Search -->
+    <div class="mb-6">
+      <div class="relative max-w-md">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search posts..."
+          class="w-full bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg px-4 py-2 pl-10 text-[var(--foreground)] placeholder-[var(--foreground-subtle)] focus:outline-none focus:border-[var(--accent)]"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--foreground-subtle)]"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tag Filter -->
+    <div class="mb-8">
+      <div class="flex flex-wrap gap-2">
+        <button
+          data-tag=""
+          class="tag-btn active rounded-full px-3 py-1 text-sm font-medium transition-colors bg-[var(--accent)] text-white"
+        >
+          All
+        </button>
+        {allTags.map((tag) => (
+          <button
+            data-tag={tag.toLowerCase()}
+            class="tag-btn rounded-full px-3 py-1 text-sm font-medium transition-colors bg-[var(--background-secondary)] text-[var(--foreground-muted)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]"
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Posts Grid -->
+    <div id="posts-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {sortedPosts.map((post) => (
+        <div
+          class="post-item"
+          data-title={post.data.title.toLowerCase()}
+          data-tags={(post.data.tags || []).join(',').toLowerCase()}
+        >
+          <PostCard
+            title={post.data.title}
+            date={post.data.date}
+            slug={post.slug}
+            tags={post.data.tags}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- No results message -->
+    <div id="no-results" class="hidden text-center py-12 text-[var(--foreground-muted)]">
+      No posts found matching your search.
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const tagButtons = document.querySelectorAll('.tag-btn');
+  const noResults = document.getElementById('no-results');
+  const postItems = document.querySelectorAll('.post-item');
+
+  let selectedTag = '';
+
+  function filterPosts() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    let visibleCount = 0;
+
+    postItems.forEach((item) => {
+      const title = item.getAttribute('data-title') || '';
+      const tags = item.getAttribute('data-tags') || '';
+
+      const matchesSearch = !searchTerm || title.includes(searchTerm);
+      const matchesTag = !selectedTag || tags.includes(selectedTag);
+
+      if (matchesSearch && matchesTag) {
+        (item as HTMLElement).style.display = '';
+        visibleCount++;
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+
+    if (noResults) {
+      noResults.classList.toggle('hidden', visibleCount > 0);
+    }
+  }
+
+  function updateTagButtonStyles() {
+    tagButtons.forEach((btn) => {
+      const btnTag = btn.getAttribute('data-tag') || '';
+      if (btnTag === selectedTag) {
+        btn.classList.remove('bg-[var(--background-secondary)]', 'text-[var(--foreground-muted)]');
+        btn.classList.add('bg-[var(--accent)]', 'text-white', 'active');
+      } else {
+        btn.classList.add('bg-[var(--background-secondary)]', 'text-[var(--foreground-muted)]');
+        btn.classList.remove('bg-[var(--accent)]', 'text-white', 'active');
+      }
+    });
+  }
+
+  searchInput?.addEventListener('input', filterPosts);
+
+  tagButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedTag = btn.getAttribute('data-tag') || '';
+      updateTagButtonStyles();
+      filterPosts();
+    });
+  });
+</script>

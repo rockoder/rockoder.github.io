@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get all notes
+const allNotes = await getCollection('notes');
+const sortedNotes = allNotes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Notes"
+  description="Thoughts, quotes, and observations shared on X (Twitter)"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Notes</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        {sortedNotes.length} thoughts, quotes, and observations shared on X
+      </p>
+    </header>
+
+    <!-- Notes Grid -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {sortedNotes.map((note) => (
+        <NoteCard
+          title={note.data.title}
+          date={note.data.date}
+          slug={note.slug}
+          screenshot={note.data.screenshot}
+          tweet_url={note.data.tweet_url}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

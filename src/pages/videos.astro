@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { videos, getYouTubeThumbnail } from '../data/videos';
+---
+
+<BaseLayout
+  title="Videos"
+  description="Curated videos that have influenced my thinking"
+>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Videos</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        Curated videos that have influenced my thinking
+      </p>
+    </header>
+
+    <div class="space-y-6">
+      {videos.map((video) => {
+        const thumbnail = getYouTubeThumbnail(video.link);
+
+        return (
+          <article class="card overflow-hidden group">
+            <a
+              href={video.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block"
+            >
+              {thumbnail && (
+                <div class="relative aspect-video bg-[var(--background-tertiary)]">
+                  <img
+                    src={thumbnail}
+                    alt={video.title}
+                    loading="lazy"
+                    class="w-full h-full object-cover"
+                  />
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              )}
+
+              <div class="p-5">
+                <h3 class="font-semibold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">
+                  {video.title}
+                </h3>
+                <p class="text-sm text-[var(--foreground-muted)] mt-2">
+                  {video.comment}
+                </p>
+                <div class="flex items-center gap-1 mt-3 text-xs text-[var(--foreground-subtle)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  <span>Watch on {video.link.includes('youtube') ? 'YouTube' : video.link.includes('pbs.org') ? 'PBS' : 'External'}</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

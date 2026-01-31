@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  slug: string;
+  screenshot?: string;
+  tweet_url?: string;
+  compact?: boolean;
+}
+
+const { title, date, slug, screenshot, tweet_url, compact = false } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="card group overflow-hidden">
+  <a
+    href={tweet_url || `/notes/${slug}/`}
+    target={tweet_url ? '_blank' : undefined}
+    rel={tweet_url ? 'noopener noreferrer' : undefined}
+    class="block"
+  >
+    {screenshot && (
+      <div class="bg-[var(--background-tertiary)]">
+        <img
+          src={screenshot}
+          alt={title}
+          loading="lazy"
+          class="w-full h-auto"
+        />
+      </div>
+    )}
+
+    <div class="p-4">
+      <time
+        datetime={date.toISOString()}
+        class="text-xs text-[var(--foreground-subtle)]"
+      >
+        {formattedDate}
+      </time>
+
+      {!compact && (
+        <p class="text-sm text-[var(--foreground-muted)] mt-2 line-clamp-2">
+          {title}
+        </p>
+      )}
+
+      {tweet_url && (
+        <div class="flex items-center gap-1 mt-2 text-xs text-[var(--foreground-subtle)]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          <span>View on X</span>
+        </div>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

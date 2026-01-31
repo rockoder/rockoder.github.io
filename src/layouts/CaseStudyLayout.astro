@@ -1,0 +1,89 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  company: string;
+  role: string;
+  period: string;
+  technologies: string[];
+  summary: string;
+  impact?: string;
+}
+
+const { title, company, role, period, technologies, summary, impact } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`${title} | Case Study`}
+      description={summary}
+      type="article"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+
+    <main class="flex-1">
+      <article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <!-- Case Study Header -->
+        <header class="mb-10 pb-8 border-b border-[var(--border)]">
+          <div class="flex flex-wrap items-center gap-2 text-sm text-[var(--accent)] mb-3">
+            <span>{company}</span>
+            <span class="text-[var(--border)]">/</span>
+            <span>{role}</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4">
+            {title}
+          </h1>
+
+          <p class="text-lg text-[var(--foreground-muted)] mb-6">
+            {summary}
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 text-sm text-[var(--foreground-muted)]">
+            <span>{period}</span>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            {technologies.map((tech) => (
+              <span class="rounded-full bg-[var(--background-secondary)] px-3 py-1 text-xs font-medium text-[var(--foreground-muted)]">
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {impact && (
+            <div class="mt-6 p-4 bg-[var(--accent-muted)] border border-[var(--accent)] rounded-lg">
+              <p class="text-sm font-medium text-[var(--accent)]">Impact</p>
+              <p class="mt-1 text-[var(--foreground)]">{impact}</p>
+            </div>
+          )}
+        </header>
+
+        <!-- Case Study Content -->
+        <div class="prose">
+          <slot />
+        </div>
+
+        <!-- Back to case studies -->
+        <footer class="mt-12 pt-8 border-t border-[var(--border)]">
+          <a
+            href="/case-studies/"
+            class="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+          >
+            &larr; Back to case studies
+          </a>
+        </footer>
+      </article>
+    </main>
+
+    <Footer />
+  </body>
+</html>

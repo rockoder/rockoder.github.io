@@ -1,0 +1,30 @@
+---
+// Reading progress bar component - shows scroll progress
+---
+
+<div id="reading-progress" class="reading-progress" aria-hidden="true"></div>
+
+<script>
+  const progressBar = document.getElementById('reading-progress');
+  const article = document.getElementById('article-content');
+
+  if (progressBar && article) {
+    const updateProgress = () => {
+      const articleTop = article.offsetTop;
+      const articleHeight = article.offsetHeight;
+      const windowHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      // Calculate progress within the article
+      const scrollableDistance = articleHeight - windowHeight + articleTop;
+      const scrolled = Math.max(0, scrollY - articleTop + windowHeight);
+      const progress = Math.min(100, (scrolled / scrollableDistance) * 100);
+
+      progressBar.style.width = `${progress}%`;
+    };
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress, { passive: true });
+    updateProgress();
+  }
+</script>

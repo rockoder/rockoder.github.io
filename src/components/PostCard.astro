@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  slug: string;
+  description?: string;
+  tags?: string[];
+  compact?: boolean;
+}
+
+const { title, date, slug, description, tags = [], compact = false } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="card group">
+  <a href={`/blog/${slug}/`} class="block p-5 h-full">
+    <time
+      datetime={date.toISOString()}
+      class="text-xs text-[var(--foreground-subtle)]"
+    >
+      {formattedDate}
+    </time>
+
+    <h3 class:list={[
+      'font-semibold text-[var(--foreground)] mt-2 group-hover:text-[var(--accent)] transition-colors line-clamp-2',
+      compact ? 'text-base' : 'text-lg',
+    ]}>
+      {title}
+    </h3>
+
+    {!compact && description && (
+      <p class="text-sm text-[var(--foreground-muted)] mt-2 line-clamp-2">
+        {description}
+      </p>
+    )}
+
+    {!compact && tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-3">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="text-xs text-[var(--foreground-subtle)] bg-[var(--background-tertiary)] px-2 py-0.5 rounded">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </a>
+</article>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

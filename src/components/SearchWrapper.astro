@@ -1,0 +1,38 @@
+---
+import SearchDialog from './SearchDialog';
+import { getCollection } from 'astro:content';
+
+// Get all searchable content
+const blogPosts = await getCollection('blog', ({ data }) => !data.draft);
+const notes = await getCollection('notes');
+
+// Build search items
+const searchItems = [
+  // Pages
+  { title: 'Home', href: '/', type: 'page' as const },
+  { title: 'Blog', href: '/blog/', type: 'page' as const },
+  { title: 'Notes', href: '/notes/', type: 'page' as const },
+  { title: 'About', href: '/about/', type: 'page' as const },
+  { title: 'Contact', href: '/contact/', type: 'page' as const },
+  { title: 'Reading List', href: '/reading-list/', type: 'page' as const },
+  { title: 'Writing', href: '/writing/', type: 'page' as const },
+  { title: 'Videos', href: '/videos/', type: 'page' as const },
+  { title: 'Case Studies', href: '/case-studies/', type: 'page' as const },
+
+  // Blog posts
+  ...blogPosts.map((post) => ({
+    title: post.data.title,
+    href: `/blog/${post.slug}/`,
+    type: 'blog' as const,
+  })),
+
+  // Notes
+  ...notes.map((note) => ({
+    title: note.data.title,
+    href: note.data.tweet_url || `/notes/`,
+    type: 'note' as const,
+  })),
+];
+---
+
+<SearchDialog client:only="react" items={searchItems} />

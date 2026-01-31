@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { articles, getArticlesByPublication, getTotalArticles } from '../data/writing';
+
+const articlesByPublication = getArticlesByPublication();
+const totalArticles = getTotalArticles();
+---
+
+<BaseLayout
+  title="Writing"
+  description="Technical articles published on Baeldung, Stackify, and other publications"
+>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)]">Technical Writing</h1>
+      <p class="text-[var(--foreground-muted)] mt-2">
+        {totalArticles} articles published on external publications
+      </p>
+    </header>
+
+    <!-- Author Profile -->
+    <div class="card p-6 mb-10">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-[var(--accent-muted)] flex items-center justify-center">
+          <span class="text-[var(--accent)] font-semibold text-lg">GP</span>
+        </div>
+        <div>
+          <h3 class="font-semibold text-[var(--foreground)]">Baeldung Author</h3>
+          <a
+            href="http://www.baeldung.com/author/ganesh-pagade/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+          >
+            View author profile &rarr;
+          </a>
+        </div>
+      </div>
+      <p class="text-sm text-[var(--foreground-muted)] mt-4">
+        Baeldung is a technical site focused on the Java ecosystem, with a reach of about 2.5M page views per month.
+        My articles primarily cover advanced topics in Java and Spring.
+      </p>
+    </div>
+
+    <!-- Articles by Publication -->
+    <div class="space-y-10">
+      {Array.from(articlesByPublication.entries()).map(([publication, pubArticles]) => (
+        <section>
+          <h2 class="text-lg font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
+            <span class="text-[var(--accent)]">{publication}</span>
+            <span class="text-sm font-normal text-[var(--foreground-subtle)]">
+              ({pubArticles.length} articles)
+            </span>
+          </h2>
+
+          <div class="space-y-4">
+            {pubArticles.map((article) => (
+              <article class="card p-4 group hover:border-[var(--border-hover)] transition-colors">
+                <a
+                  href={article.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block"
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                      <h3 class="font-medium text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">
+                        {article.title}
+                      </h3>
+                      <time class="text-sm text-[var(--foreground-subtle)] mt-1 block">
+                        {article.date}
+                      </time>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-[var(--foreground-subtle)] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Topics -->
+    <div class="mt-12 pt-8 border-t border-[var(--border)]">
+      <h3 class="text-lg font-semibold text-[var(--foreground)] mb-4">Topics I Write About</h3>
+      <div class="flex flex-wrap gap-2">
+        {['Java', 'Spring', 'Spring Boot', 'Java 8-14', 'gRPC', 'Microservices', 'API Design'].map((topic) => (
+          <span class="px-3 py-1 text-sm rounded-full bg-[var(--background-secondary)] text-[var(--foreground-muted)]">
+            {topic}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

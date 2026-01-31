@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TagCloud from '../components/TagCloud.astro';
+import { getCollection } from 'astro:content';
+
+// Get latest blog posts
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latestPosts = sortedPosts.slice(0, 10);
+
+// Get excerpt from post body
+function getExcerpt(body: string) {
+  const cleaned = body
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to text
+    .replace(/[#*_`]/g, '')
+    .trim();
+
+  if (cleaned.length <= 160) return cleaned;
+  return cleaned.slice(0, 160).trim() + '...';
+}
+---
+
+<BaseLayout title="rockoder">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
+      <!-- Main Content: Posts -->
+      <main>
+        <div class="space-y-10">
+          {latestPosts.map((post) => {
+            const formattedDate = post.data.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+            const excerpt = getExcerpt(post.body || '');
+
+            return (
+              <article>
+                <a href={`/blog/${post.slug}/`} class="group block">
+                  <time
+                    datetime={post.data.date.toISOString()}
+                    class="text-sm text-[var(--foreground-subtle)]"
+                  >
+                    {formattedDate}
+                  </time>
+                  <h2 class="text-xl font-semibold text-[var(--foreground)] mt-1 group-hover:text-[var(--accent)] transition-colors">
+                    {post.data.title}
+                  </h2>
+                  {excerpt && (
+                    <p class="text-[var(--foreground-muted)] mt-2 leading-relaxed">
+                      {excerpt}
+                    </p>
+                  )}
+                </a>
+              </article>
+            );
+          })}
+        </div>
+
+        {sortedPosts.length > 10 && (
+          <div class="mt-12 pt-8 border-t border-[var(--border)]">
+            <a
+              href="/blog/"
+              class="text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+            >
+              View all {sortedPosts.length} posts &rarr;
+            </a>
+          </div>
+        )}
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-20">
+          <TagCloud />
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

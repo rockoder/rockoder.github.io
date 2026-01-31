@@ -1,0 +1,30 @@
+---
+import { getTagCloud } from '../data/tags';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+const tagCloud = await getTagCloud();
+---
+
+{tagCloud.length > 0 && (
+  <nav class:list={['tag-cloud', className]} aria-label="Tags">
+    <h2 class="text-sm font-medium text-[var(--foreground-muted)] mb-3">Tags</h2>
+    <div class="flex flex-wrap gap-x-3 gap-y-2">
+      {tagCloud.map(({ tag, count, fontSize }) => (
+        <a
+          href={`/blog/tag/${tag}/`}
+          class="text-[var(--foreground-muted)] hover:text-[var(--accent)] transition-colors"
+          style={`font-size: ${fontSize}rem`}
+          title={`${count} ${count === 1 ? 'post' : 'posts'}`}
+          aria-label={`${tag}: ${count} ${count === 1 ? 'post' : 'posts'}`}
+        >
+          {tag}
+        </a>
+      ))}
+    </div>
+  </nav>
+)}
