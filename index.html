@@ -12,7 +12,12 @@ title: Home
       </a>
     </h1>
 
-    <span class="post-date">{{ post.date | date_to_string }}</span>
+    <span class="post-date">
+      {{ post.date | date_to_string }}
+      {% if post.layout != 'tweet' %}
+        &nbsp;&bull;&nbsp; {% include reading_time.html content=post.content %}
+      {% endif %}
+    </span>
 
     {% if post.layout == 'tweet' %}
       <div class="tweet-container">
