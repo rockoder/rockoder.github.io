@@ -1,23 +1,43 @@
-# rockoder.com
+# Astro Starter Kit: Minimal
 
-This repository contains the source code for the personal blog [www.rockoder.com](https://www.rockoder.com/).
+```sh
+npm create astro@latest -- --template minimal
+```
 
-## Current Status (as of Jan 2026)
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-The blog has been recently modernized to use the latest stable Jekyll and Ruby versions.
+## 🚀 Project Structure
 
-- **Framework**: Jekyll 4.3.4
-- **Language**: Ruby 3.3
-- **Theme**: Hyde (Legacy, but compatible)
-- **Deployment**: Automated via GitHub Actions
+Inside of your Astro project, you'll see the following folders and files:
 
-## Detailed Assessment
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-For details on the technical stack and maintenance, please refer to [AGENTS.md](./AGENTS.md).
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-## Completed Upgrades
-- [x] Upgrade to Jekyll 4.x and Ruby 3.x
-- [x] Migrate from Universal Analytics to GA4
-- [x] Fix post rendering issues (missing extensions)
-- [x] Implement GitHub Actions for CI/CD
-- [x] Modernize theme and asset organization
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+
+Any static assets, like images, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
