@@ -1,0 +1,137 @@
+Title: Giving up upstream-ing my patches and feel free to pick them up
+Author: csmantle
+Score: 154 points
+Link: https://mail.openjdk.org/pipermail/hotspot-dev/2026-January/118080.html
+
+Article Content:
+--------------------
+Giving up upstream-ing my patches & feel free to pick them up
+xtex
+xtex at envs.net
+Sat Jan 31 09:51:36 UTC 2026
+Hi,
+About one year ago, in Jan. 2025, I began my adventure of the OpenJDK
+codebase. Later I attempted to make some patches into the repository.
+I checked the documentation and learned that I have to sign an Oracle
+Contributor Agreement before submitting patches to OpenJDK. At that time, I
+dreamed that it was just a pretty normal CLA, like the ones I signed for other
+projects and shall just take at most several days.
+A few days later, I received an email asking me to update some information in
+the agreement. I did. After that, I have sent 5 emails to
+opensource_ww_grp at oracle.com asking if there was anything wrong (once a month
+from January to May). For each of my emails, I got a reply, saying that they
+"sincerely apologize" and "@Dalibor Topic Can you please review...", with no
+actual progress being made. Now it has been (more than) one year since I
+submitted my first OCA submission. And I have been tired of "/touch"-ing my PR
+once a month.
+I wonder if there is a reason for not reviewing my OCA submission. I do live
+in Chinese Mainland but I have no contractual or subordinate or teacher-
+student relationship with any entities that are restricted by the US import/
+export control laws (according to OpenSanctions). If you think that I have
+such a relationship or should be rejected for any other reasons, please simply
+reject my OCA submission, instead of hanging it for months.
+As I no longer have enough interest and spare time to work on OpenJDK, I
+decided to give up upstreaming those patches.
+If anyone is interested in them, please feel free to pick up and submit these
+patches, most of which are small but I believe they are useful.
+As OCA requires that "each contribution that you submit is and shall be an
+original work of authorship", you may rewrite my patches from scratch so it is
+an original work, and you don't need to sign my name or ping me.
+I would like to give a list of the patches that I wanted to upstream but
+failed:
+- Checks if "llvm-config" is broken:
+https://github.com/AOSC-Tracking/jdk/commit/
+6a8b12b1ad700d994a2803de593ca06e698ef1a9
+- Extend default thread stack size for zero:
+This addresses the stack overflow exception in javac when building JDK 24 with
+zero variants.
+https://github.com/AOSC-Tracking/jdk/commit/
+4534fcaafc149f649105dc9914c7cf4aaf8c802c
+https://www.mail-archive.com/build-dev@openjdk.org/msg14818.html
+Some patches that are not for the upstream OpenJDK but Loongson's fork of JDK
+and were also blocked by OCA:
+https://github.com/loongson/jdk/pull/134
+https://github.com/loongson/jdk/pull/126
+https://github.com/loongson/jdk/pull/125
+https://github.com/loongson/jdk/pull/135
+https://github.com/loongson/jdk/pull/136
+https://github.com/AOSC-Tracking/jdk/commit/
+913dcb2b2759437876ae3a40a1b074eeb1bfe09f
+https://github.com/AOSC-Tracking/jdk/commit/
+caba8e6de73fd9ffa078d6c257d6be8500b9d16a
+Best wishes,
+Bye.
+--
+Bingwu Zhang (a.k.a. xtex) @ Sat, 31 Jan 2026 08:42:31 +0000
+More information about the hotspot-dev
+mailing list
+
+Comments:
+--------------------
+Thread 1:
+Regardless of the contents,
+> For each of my emails, I got a reply, saying that they "sincerely apologize" and "@Dalibor Topic Can you please review...", with no actual progress being made.
+then
+> Sorry to hear this. .... @Dalibor Topic <dalibor.topic at oracle.com>, can we get this prioritized?
+This is pretty morbidly funny.
+  Reply 1: Anyone who has been a freelancer negotiating a contract with a big company feels this sort of thing in their bones.
+  Reply 2: Never had this issue. Its just as simple as start to work without contract and the promise of department head to get a contract and after two weeks mention to the contracting that you work since two weeks and have still not signed a NDA.
+Next sentence is: I don't fear to not get my money, but currently I don't know if you pay or someone else...
+
+Thread 2:
+I confess, I'm an old guy, who was around when Open Source was still young. Being able to read the code, learn to be z better programmer, tweak it to my needs, control what was running on my machine.
+Reading other comments on this thread it seems like the mood has shifted. Now there seems to be an expectation that Open Source means "you should promptly review and accept my changes".
+There is much wailing that corporates (who, by the way, never used to release code at all) are somehow at fault for either existing, or not responding quick enough or requiring paperwork(!).
+I'm not sure when pushing code upstream to Open Source became an entitlement. I'm pretty sure it wasn't there at the beginning and it's nor part if any license I'm aware of.
+  Reply 1: I'm very much from the same era, "stfu and fork it", "PoC or GTFO".
+And as I got older, I realized "I am not the customer, there is no money in responding to me, I am a net negative cost to your business".
+And uhh... I'll shuffle the F out now then? And try and catch-up on 200 years of math.
+I don't think anything has changed IRL, aside from my knees hurting
+
+Thread 3:
+I have been trying to upstream patches to kubernetes and etcd for about a year and ended up giving up. It is impossible to get someone from the project to review my PRs, and since I cannot get PRs under my belt I can not become a maintainer either.
+My suspicion is that you get ghosted if you don’t have a @google or @redhat email address and really the only way to become a contributor is  to be buddies with someone who works on the project already.
+I have considered going to one of the CNCF committee meetings and being like, hey you guys are not accepting new contributions which goes against your mandate. But in the end I just maintain local patches that don’t get upstreamed which is easier.
+  Reply 1: I haven't seen your PRs and I don't work on those project. I have small projects that receive few patches.
+My experience of the few patches I have received though is they are 100% without exception, bad patches. Bad in that, without me putting an hour or 2 of work into them I can't just accept them. The most common case is no tests. The patch fixes an issue, but the issue exists because there was no test for the case the patch is fixing. So, to accept the PR, I have to download it and spend time writing a test.
+Other common experiences are bad coding practices and non-matching styles so I have two choices
+(1) spend 30-60 minutes downloading the patch, fixing these issues myself
+(2) spend 40-60 minutes adding comments to try to get the person who posted the PR to make their patch acceptable (40-60 mins includes the back and forth).
+More often than not, (2) never gets a response. The contributor's POV is they provided a fix and I should be happy to take it as is. I get that. At a certain level they are correct. But, these projects are hobby projects and I have limited time. So I generally don't do (2) because if they ignore the comments then it's wasted time, and (1) has the hurdle that I need to take an hour out to deal with it.
+  Reply 2: Your first example should be solved by the maintainers outlining clear contribution guidelines. It’s not hard to point some automation at a pr and comment if someone didn’t follow contribution guidelines.
+Nonmatching styles can be mostly solved with linting and static analysis
+There’s no fix for bad code outside of manual review beyond that. But doing those things should significantly cut down on your noise.
+  Reply 3: Trust me it’s not being solved by a CONTRIBUTING.md with guidelines.
+90% of contributors won’t read it at all or only some parts of it and ignore the rest.
+Most PRs you get solve some super specific individual problem and aren’t relevant for the wider community that uses your OSS.
+It’s not their fault really but most contributions are so bad it doesn’t serve to spend any time on reviewing them earnestly.
+(Been maintaining several popular projects for the last 7 years)
+  Reply 4: Can I get your opinion on
+https://github.com/Judahmeek/frogs
+ as an open-source maintainer?
+Edit:
+https://judahmeek.com/p/we-need-frogs-to-defend-foss
+ may be the better link to start with.
+  Reply 5: I haven't seen static analyis cover the things I'm concerned with.
+Examples, calculating something twice instead of pulling the calculation out of the loop (one case) or into a separate function so that 2 separated places where it's calculated don't get out of sync (a different case). Another might be using an let x; if (cond) x = v1 else x = v2 (which is 3-9 lines depending on your brace style) vs const x = cond ? v1 : v2. When v1 and v2 are relatively simple expressons. I haven't seen a checker that will find stuff like this.
+
+Thread 4:
+I know Java has a complicated history of ownership, but I'm not sure I understand why Oracle is able to block contributions to OpenJDK. I thought the point of OpenJDK was to be separate from Oracle. I'm not a Java developer, just curious how this works.
+  Reply 1: It's still their project and the Oracle Contributor Agreement means they get to asset joint ownership of your contributions.
+That's broadly the point of CLAs, but for a beefy project like OpenJDK with so much shared code baked deep into enterprise deployment, Oracle will feel it's critical they can pull freely given code into the depths of their closed Java builds.
+It's their project. It does absolutely block contributions (employers are unhappy sacrificing their engineering output to Oracle). If you don't like it, fork it.
+  Reply 2: So TL;DR I'm right to be skeptical of everything Java because even OpenJDK is pretty much owned and controlled by Oracle? Good to know. I'll keep avoiding it like the plague then, with slightly more confidence:
+  Reply 3: Not really. OpenJDK is exactly what OpenJDK is, and there are plenty of builds provided by other vendors who have nothing to do with Oracle. All Oracle "owning" it really means is that they basically have unilateral ability to make changes to Java[1], where said changes will be reflected in their official binary releases. And they charge for their releases (and have some auditing / licensing terms which many find off-putting) which is only important if it's really important for you to use an Official Oracle Build for some reason, as opposed to Eclipse Temurin, Amazon Corretto, BellSoft Liberica, Red Hat's build, etc.
+Personally I just use the OpenJDK builds provided by my linux distro and never give it a second thought.
+[1]: And so far, Oracle haven't shown much, if any, propensity for abusing their control of Java. There's a process and they seem to mostly stick to it.
+  Reply 4: OpenJDK is the "default" implementation of Java and it's maintained by Oracle. Beyond that, there exists at least OpenJ9, which is a completely independent implementation, maintained by Eclipse Foundation.
+  Reply 5: Isn't OpenJ9 "just" the VM and not the class library? Also it's IBM-backed so it's more a case of pick your poison there.
+
+Thread 5:
+Despite their OSS contributions, and the fact that they have their own Linux distro, oracle is one of the worst companies to deal with in terms of OSS.  Very NIH syndrome, very gatekeep-y.  I refuse to use grub because I know I'll never get bugs fixed since oracle claims ownership of the repo there as well.
+  Reply 1: >I refuse to use grub because I know I'll never get bugs fixed since oracle claims ownership of the repo there as well.
+Wait what? Source on this? GRUB is supposed to be a GNU Project, I would've thought they'd rather die than accept any sort of Oracle ownership of it.
+  Reply 2: GNU GRUB is a
+GNU
+ project, yes. No idea what OP is talking about
+https://www.gnu.org/software/grub/

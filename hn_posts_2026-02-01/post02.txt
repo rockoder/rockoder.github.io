@@ -1,0 +1,117 @@
+Title: Mobile carriers can get your GPS location
+Author: cbeuw
+Score: 613 points
+Link: https://an.dywa.ng/carrier-gnss.html
+
+Article Content:
+--------------------
+Mobile carriers can get your GPS location
+In iOS 26.3, Apple introduced a new privacy feature which limits “precise location” data made available to cellular networks via cell towers. The feature is only available to devices with Apple’s in-house modem introduced in 2025. The announcement1 says
+Cellular networks can determine your location based on which cell towers your device connects to.
+This is well-known. I have served on a jury where the prosecution obtained location data from cell towers. Since cell towers are sparse (especially before 5G), the accuracy is in the range of tens to hundreds of metres2.
+But this is not the whole truth, because cellular standards have built-in protocols that make your device silently send GNSS (i.e. GPS, GLONASS, Galileo, BeiDou) location to the carrier. This would have the same precision as what you see in your Map apps, in single-digit metres.
+In 2G and 3G this is called Radio Resources LCS Protocol (RRLP)
+So the network simply asks “tell me your GPS coordinates if you know them” and the phone will respond3.
+In 4G and 5G this is called LTE Positioning Protocol (LPP)
+RRLP, RRC, and LPP are natively control-plane positioning protocols. This means that they are transported in the inner workings of cellular networks and are practically invisible to end users4.
+It’s worth noting that GNSS location is never meant to leave your device. GNSS coordinates are calculated entirely passively, your device doesn’t need to send a single bit of information. Using GNSS is like finding out where you are by reading a road sign: you don’t have to tell anyone else you read a road sign, anyone can read a road sign, and the people who put up road signs don’t know who read which road sign when.
+These capabilities are not secrets but somehow they have mostly slid under the radar of the public consciousness. They have been used in the wild for a long time, such as by the DEA in the US in 200656:
+[T]he DEA agents procured a court order (but not a search warrant) to obtain GPS coordinates from the courier’s phone via a ping, or signal requesting those coordinates, sent by the phone company to the phone.
+And by Shin Bet in Israel, which tracks everyone everywhere all the time7:
+The GSS Tool was based on centralized cellular tracking operated by Israel’s General Security Services (GSS). The technology was based on a framework that tracks all the cellular phones running in Israel through the cellular companies’ data centers. According to news sources, it routinely collects information from cellular companies and identifies the location of all phones through cellular antenna triangulation and GPS data7.
+Notably, the Israeli government started using the data for contact tracing in March 202078, only a few weeks after the first Israeli COVID-19 case. An individual would be sent an SMS message informing them of close contact with a COVID patient and required to quarantine. This is good evidence that the location data Israeli carriers are collecting are far more precise than what cell towers alone can achieve.
+A major caveat is that I don’t know if RRLP and LPP are the exact techniques, and the only techniques, used by DEA, Shin Bet, and possibly others to collect GNSS data; there could be other protocols or backdoors we’re not privy to.
+Another unknown is whether these protocols can be exploited remotely by a foreign carrier. Saudi Arabia has abused SS7 to spy on people in the US9, but as far as I know this only locates a device to the coverage area of a Mobile Switching Center, which is less precise than cell tower data. Nonetheless, given the abysmal culture, competency, and integrity in the telecom industry, I would not be shocked if it’s possible for a state actor to obtain the precise GNSS coordinates of anyone on earth using a phone number/IMEI.
+Apple made a good step in iOS 26.3 to limit at least one vector of mass surveillance, enabled by having full control of the modem silicon and firmware. They must now allow users to disable GNSS location responses to mobile carriers, and notify the user when such attempts are made to their device.
+-
+https://transition.fcc.gov/pshs/911/Apps Wrkshp 2015/911_Help_SMS_WhitePaper0515.pdf ↩
+-
+https://laforge.gnumonks.org/blog/20101217-learning_about_gps/ ↩
+-
+Comment on United States v. Skinner, 690 F.3d 772 (6th Cir. 2012) https://harvardlawreview.org/print/vol-126/sixth-circuit-holds-that-pinging-a-targets-cell-phone-to-obtain-gps-data-is-not-a-search-subject-to-warrant-requirement-ae-united-states-v-skinner-690-f-3d-772-6th-cir-2012-rehae/ ↩
+-
+https://www.cato.org/blog/skinning-fourth-amendment-sixth-circuits-awful-gps-tracking-decision ↩
+-
+https://www.ericsson.com/en/blog/2020/12/5g-positioning--what-you-need-to-know ↩
+-
+Eran Toch and Oshrat Ayalon. 2023. How Mass surveillance Crowds Out Installations of COVID-19 Contact Tracing Applications. https://doi.org/10.1145/3579491 ↩ ↩2 ↩3
+-
+https://www.nytimes.com/2020/03/16/world/middleeast/israel-coronavirus-cellphone-tracking.html ↩
+-
+https://www.theguardian.com/world/2020/mar/29/revealed-saudis-suspected-of-phone-spying-campaign-in-us ↩
+
+Comments:
+--------------------
+Thread 1:
+"and notify the user when such attempts are made to their device."
+We aren't going to remove the security state. We should make all attempts to, but it won't happen. What needs to happen is accountability. I should be able to turn off sharing personal information and if someone tries I should be notified and have recourse. This should also be retroactive. If I have turned off sharing and someone finds a technical loophole and uses it, there should be consequences. The only way to stop the rampant abuse is to treat data like fire. If you have it and it gets out of control you get burned, badly.
+  Reply 1: > We aren't going to remove the security state
+We definitely won't get rid of it if we accept failure. I get that it seems extremely unlikely, but there's no use in trying to just mitigate the risk short term. One way or another that power
+will
+ be abused eventually (if it isn't already).
+  Reply 2: Idealist views like this get us nowhere either tho.
+The reality is somewhat more murky. On a long enough time horizon your point makes sense, we might be able to get rid of the security state by slowly chipping away at ig over hundreds or thousands of years.
+Most of us are going to be dead in about 40 years tho. Security state isn't going anywhere in that timeframe.
+  Reply 3: Why not? Change like that happens slowly, then all at once. I can't say I'm optimistic that it will be gotten rid of, but if its worth fighting for then it doesn't matter if it seems likely.
+  Reply 4: I'm curious to hear someone explain why you're being downvoted
+  Reply 5: Maybe the dead in forty years comment. Though considering accelerating climate collapse and the possibility of nuclear conflict it’s not completely unreasonable in my view.
+
+Thread 2:
+This community should be talking about meshcore more imho.
+It's a peer to peer network based on Lora. It really only allows text messaging but with up to 20km hops between peers coverage is surprisingly huge. Incredibly useful if you go hiking with friends (if you get split up you can still stay in touch).
+See
+https://eastmesh.au/
+ and scroll down to the map for the Victoria and now more widely Australia network that's sprung up.
+  Reply 1: Reticulum gets around a lot of these problems, as the (better) encryption is app-level (or even more fine-grained.) Its also not tied to lora, so you can interop easily with other transports. I made a websocket transport for it, and there is already TCP and UDP, and a couple non-lora radio transports. I also made a (works on web) js and Arduino client lib, and it has a few native client libs, so it can sort of be used on anything, even over traditional networks, or web clients. Meshcore and meshtastic are way more popular, but reticulum seems so much better, to me, for most things. It can still have overload problems, like any radio network, but no client is required to forward, so you can build a different kind of network ("only forward messages that are for my peeps" and marked correctly.) It also has "it costs compute PoW to send to me" which can greatly cut down on spam.
+  Reply 2: I only recently discovered Reticulum, only to then learn that the developer has retired from working on it. Do you know if there's still any community members carrying the torch?
+  Reply 3: The discord is still very active, and there are still commits from original developer, so I am not sure. Its a simple enough protocol, though, and it's been reimplemented a few times. I made my own no-class python version, js, C, etc. Someone made a rust version.
+  Reply 4: Great for small networks. Once bad actors find it, it will be attacked. See gnutella as the case study on unsupervised peer to peer networks
+  Reply 5: I just read gnutella page on Wikipedia, no mention of bad actors
+
+Thread 3:
+More abuse done to us. We never agreed for our GPS coordinates to tag along with calls for some assholes to see exactly where we are.
+It is tiring. I am doing something about it by making technical contributions. If you are able to do the same, please do.
+  Reply 1: I mean we kinda did when we decided that emergency services calls would be special and give first responders the ability to find you. Wireless carriers are
+required
+ to provide GPS quality (actually better than GPS) location data to EMS and this is how they built it.
+The only way to actually do this was develop a way to ask the phone because the tower isn't accurate enough. In the US it could have been more privacy preserving by being push but I imagine carriers don't want to maintain and update a list of current emergency numbers. "Sorry person in a car crash, we can't find you because cellular modem firmware is out of date and your emergency number isn't on list" is a PR disaster waiting to happen. Easier to coordinate with police and fire and let them do the asking.
+
+Thread 4:
+euhm, well. 112 programmer here. There are multiple levels. Cell tower triangulation come in automatically from providers. But they are only in tower numbers. They might be wrongly entered by engineers, hence the confirming question about where you are. Second is subscription information, as in registered address. Chances are if called from nearby your address, you are at your address. Next is a text to your phone number, which is intercepted by firmware and sends gps coords back. This can be turned off, since implementation.
+  Reply 1: American carriers have a different protocol than the EU. The EU (and probably EU derived networks) uses a """secret""" SMS format that's opt-in, but the 911 system works differently.
+The 911 feature can be activated fully remotely, the 112 feature is supposed to only activate when dialing an emergency number.
+  Reply 2: The US one is called E911:
+https://en.wikipedia.org/wiki/Enhanced_911
+  Reply 3: >The 911 feature can be activated fully remotely
+Source? Even if the phone isn't actively doing a 911 call?
+  Reply 4: GP likely means any 911 call automatically has geo tracing.
+>The dispatcher's computer receives information from the telephone company about the physical address (for landlines) or geographic coordinates (for wireless) of the caller.
+  Reply 5: Wait wait, so if I know the "secret" SMS format I can text someone's phone and get their coordinates back?
+
+Thread 5:
+What you need
+iPhone Air, iPhone 16e, or iPad Pro (M5) Wi-Fi + Cellular
+iOS 26.3 or later
+A supported carrier:
+Germany: Telekom
+United Kingdom: EE, BT
+United States: Boost Mobile
+Thailand: AIS, True
+Turn limit precise location on or off
+Open Settings, then tap Cellular.
+Tap Cellular Data Options.
+If you have more than one phone number under SIMs, tap one of your lines.
+Scroll down to Limit Precise Location.
+Turn the setting on or off. You might be prompted to restart your device.
+  Reply 1: Apple doc:
+https://support.apple.com/en-us/126101
+Only Boost Mobile in the U.S. Weird. About 7.5M subscribers. Maybe it requires 5G? Wonder if it works when roaming?
+https://en.wikipedia.org/wiki/Boost_Mobile
+https://en.wikipedia.org/wiki/List_of_mobile_network_operato...
+https://en.wikipedia.org/wiki/5G_NR
+  Reply 2: AFAIK, other than maybe some 5G, Boost Mobile just resells service from AT&T.
+  Reply 3: Boost Mobile (under Dish Network), until a few months ago, ran their own custom-built 5G network that covered about 30% of the US population. They built it after the acquisition of Sprint by T-Mobile, in an effort to maintain a fourth nationwide wireless carrier.
+Unfortunately Boost/Dish struggled significantly with finances and customer attraction post COVID, largely due to two problems (seamless roaming between their own network and partners’, and more importantly, getting manufacturers like Apple to build compatible phones). When the current president came into the picture, the FCC essentially forced the sale of Dish’s primary spectrum licenses to administration-friendly SpaceX, for future Starlink use.
+As of now, they are in the process of moving their customers to AT&T (and possibly a secondary agreement with T-Mobile), but they seem to be maintaining their own network core - that’s likely why they’re able to implement support for this, while AT&T does not.
+  Reply 4: Kinda funny that the most secure phone setup in the US is an iPhone Air on Boost Mobile. Who could have predicted that!
+  Reply 5: It isn’t restricted to Boost Mobile. It is only available on devices with the C1 or C1X modem, though. I assume this is because of specifics with the third party modems that most models in the wild have vs what Apple is doing in-house with their C1(X). If you call emergency services it will still provide precise location.

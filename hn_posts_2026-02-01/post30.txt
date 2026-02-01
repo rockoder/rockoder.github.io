@@ -1,0 +1,88 @@
+Title: Ask HN: Any real OpenClaw (Clawd Bot/Molt Bot) users? What's your experience?
+Author: cvhc
+Score: 79 points
+Link: https://news.ycombinator.com/item?id=46838946
+
+Article Content:
+--------------------
+I've read many mind-boggling stories from those appeared to be genuine OpenClaw users, like how their assistants (from useful to dramatic) (1) plan a travel and book everything; (2) started a company and build things; (3) entered stock market and lost all the money... Moltbook added more funs.
+Interestingly, I cannot find a single user of OpenClaw in my familiar communities, presumbly because it takes some effort to setup and the concept of AI taking control of everything is too scary for average tech enthusiasts.
+I scan through comments on HN, many of which were discussing about the ideas, but not sharing first-hand user experiences. A few HN users who did try it gave up / failed for various reasons:
+-
+https://news.ycombinator.com/item?id=46822562
+ (burning too many tokens)
+-
+https://news.ycombinator.com/item?id=46786628
+ (ditto + security implication)
+-
+https://news.ycombinator.com/item?id=46762521
+ (installation failed due to sandboxing)
+-
+https://news.ycombinator.com/item?id=46831031
+ (moltbook didn't work)
+I smell hype in the air... HN users, have any of you actually run OpenClaw and let it do any things useful or interesting? Can you share your experience?
+
+Comments:
+--------------------
+Thread 1:
+Yes, I’m running it with a minimal set of plugins.
+When I’m driving or out I can ask Siri to send a iMessage to Clawdbot something like “Can you find out if anything is playing at the local concert venue, and figure in how much 2 tickets would cost”, and a few minutes later it will give me a few options. It even surprised me and researched the different seats and recommended a cheaper one or free activities as an alternative that weekend.
+Basically: This is the product that Apple and Google were unable to build despite having billions of dollars and thousands of engineers because it’s a threat to their business model.
+It also runs on my own computer, and the latest frontier open source models are able to drive it (Kimi, etc). The future is going to be locally hosted and ad free and there’s nothing Big Tech can do about it. It’s glorious.
+  Reply 1: > This is the product that Apple and Google were unable to build
+It's not they're
+unable
+ to build it, it's that their businesses are built on "engagement" and wasting
+human
+ time. A bot "engaging" with the ads and wasting its time would signal the end of their business model.
+  Reply 2: >
+It also runs on my own computer, and the latest frontier open source models are able to drive it (Kimi, etc). The future is going to be locally hosted and ad free and there’s nothing Big Tech can do about it. It’s glorious.
+After messing with openclaw on an old 2018 Windows laptop running WSL2 that I was about to recycle, I am coming to the same conclusion, and the paradigm shift is blowing my mind. Tinkerers paradise.
+The future is glorious indeed.
+  Reply 3: How are you running Kimi locally?
+  Reply 4: Quantized, heavily, and offloading everything possible to sysram. You can run it this way, just barely reachable with consumer hardware with 16 to 24gb vram and 256gb sysram. Before the spike in prices you could just about build such a system for $2500, but the ram along probably adds another $2k onto that now. Nvidia dgx boxes and similar setups with 256gb unified ram can probably manage it more slowly ~1-2 tokens per second. Unsloth has the quantized models. I’ve test Kimi though don’t have quite the headroom at home for it, and I don’t yet see a significant enough difference between it and the Qwen 3 models that can run in more modest setups: I get a highly usable 50 tokens per second out of the A3B instruct that fits into 16gb VRAM with enough left over not to choke Netflix and other browser tasks, it performs on par with what I ask out of Haiku in Claude Code, and better as my own tweaking improves with the also ever better tooling that comes out near weekly.
+  Reply 5: > The future is going to be locally hosted and ad free and there’s nothing Big Tech can do about it.
+I wouldn't be so certain of that. Someone is paying to train and create these models. Ultimately, the money to do that is going to have to come from somewhere.
+
+Thread 2:
+It is amazing how much they’re gaming the twitter algorithm, everything in my feed is claw/molt/whatever for the last week.
+It’s a masterclass in spammy marketing, I wonder if it’s actually converting into actual users.
+  Reply 1: I think Karpathy[1] summarized why he thinks this is the case quite well (as described he was himself hyping it up a bit much, but there are some foundational reasons why it's a very interesting experiment).
+[1]
+https://x.com/karpathy/status/2017442712388309406
+  Reply 2: "it's nothing new and it's a lot of scams and garbage, but it's just bigger than before, but I still think there will be something transformative there eventually"
+Seems like a Rorschach test. If you think this sort of thing is gonna change the world in a good way: here's evidence of it getting to scale. If you think it's gonna be scams, garbage, and destruction: here's evidence of that.
+  Reply 3: Agents are many things but they are definitely not "scams" - if you think this you've probably stubbornly avoided using Claude Code etc.
+  Reply 4: Karpathy is one of the biggest tech grifters of our time, so finding out that he's jumped on this grift train as well comes as no surprise.
+Actually, hang on... yep, to absolutely nobody's surprise, Simon Willison has also hyped this up on his blog just yesterday. The entire grift gang is here, folks.
+  Reply 5: How exactly has Simon been grifting?
+
+Thread 3:
+Here is what I have my openclaw agent setup to do in my wsl environment on my 22 core development workstation in my office:
+#1) I can chat with the openclaw agent (his name is "Patch") through a telegram chat, and Patch can spawn a shared tmux instance on my 22 core development workstation.
+#2) I can then use the `blink` app on my iphone + tailscale and that allows me to use a command in blink `ssh dev` which connects me via ssh to my dev workstation in my office, from my iphone `blink` app.
+Meanwhile, my agent "Patch" has provided me a connection command string to use in my blink app, which is a `tmux <string> attach` command that allows me to attach to a SHARED tmux instance with Patch.
+Why is this so fking cool and foundationally game changing?
+Because now, my agent Patch and I can spin up MULTIPLE CLAUDE CODE instances, and work on any repository (or repositories) I want, with parallel agents.
+Well, I could already spawn multiple agents through my iphone connection without Patch, but the problem is then I need to MANAGE each spawned agent, micromanaging each agent instance myself. But now, I have a SUPERVISOR for all my agents, Patch is the SUPERVISOR of my muliple claude code instances.
+This means I no longer have to context switch by brain between five or 10 or 20 different tmux on my own to command and control multiple different claude code instances. I can now just let my SUPERVISOR agent, Patch, command and control the mulitple agents and then report back to me the status or any issues. All through a single telegram chat with my supervisor agent, Patch.
+This frees up my brain to only have to just have to manage Patch the supervisor, instead of micro-managing all the different agents myself. Now, I have a true management structure which allows me to more easily scale. This is AWESOME.
+  Reply 1: This feels like the "prompt engineering" wave of 2023 all over again. A bunch of hype about a specific point-in-time activity based on a lot of manual setup of prompts compared to naive "do this thing for me" that eventually faded as the tooling started integrating all the lessons learned directly.
+I'd expect that if there is a usable quality of output from these approaches it will get rolled into existing tools similarly, like how multi-agents using worktrees already was.
+  Reply 2: 2023 was the year of “look at this dank prompt I wrote yo”-weekly demos.
+  Reply 3: I can't imagine letting a current gen LLM supervise Claude Code instances. How could that possibly lead to even remotely acceptable software quality?
+  Reply 4: I spec out everything in excruciating detail with spec docs. Then I actually read them. Finally, we create granular tasks called "beads" (see
+https://github.com/steveyegge/beads
+). The beads allows us to create epics/tasks/subtasks and associated dependency structure down to a granular bead, and then the agents pull a "bead" to implement. So, mostly we're either creating spec docs and creating beads or implementing, quality checking, and testing the code created from an agent implementing a bead. I can say this produces better code than I could write after 10yrs of focused daily coding myself. However, I don't think "vibe coders" that have never truly learned to code, have any realistic chance of creating decent code in a large complex code base that requires a complex backend schema to be built. They can only build relatively trivial apps. But, I do believe what I am building is as solid as if I had a millions of dollars of staff doing it with me.
+  Reply 5: But how is that less work and allows you to do that in Disneyland with your kids? For me, personally, there is little difference between "speccing out everything in excruciating detail in spec docs" and "writing actual implementation in high-level code". Speccing in detail requires deep thought, whiteboard, experimentation etc. All of this cannot be done in Disneyland, and no AI can do this at good level (that's why you "spec out everything in detail", create "beads" and so on?)
+
+Thread 4:
+It seems there are a bots on here commenting and upvoting each other.  If HN is susceptible to this, it feels like there's no chance for the rest of the web.   Damn.
+
+Thread 5:
+I'm running it on an old MacBook that I wiped a few months ago and had lying around. I tried installing it on an old raspberry pi first, but it was super slow and the skills ecosystem wants to use brew which doesn't work so well on the pi.
+First impressions are that it's actually pretty interesting from an interface perspective. I could see a bigger provider using this to great success. Obviously it's not as revolutionary as people are hyping it up to be, but it's a step in the right direction. It reimagines where an agent interface should be in relation to the user and their device. For some reason it's easier to think of an agent as a dedicated machine, and it feels more capable when it's your own.
+I think this project nails a new type of UX for LLM agents. It feels very similar to the paradigm shift felt after using Claude Code --dangerously-skip-permissions on a codebase, except this is for your whole machine. It also feels much less ephemeral than normal LLM sessions. But it still fills up its context pretty quickly, so you see diminishing returns.
+I was a skeptic until I actually installed it and messed around with it. So far I'm not doing anything that I couldn't already do with Claude Code, but it is kind of cool to be able to text with an agent that lives on your hardware and has a basic memory of what you're using it for, who you are, etc. It feels more like a personal assistant than Claude Code which feels more like a disposable consultant.
+I don't know if it really lives up to the hype, but it does make you think a little differently about how these tools should be presented and what their broader capabilities might be.  I like the local files first mentality.  It makes me excited for a time when running local models becomes easier.
+I should add that it's very buggy.  It worked great last night, now none of my prompts go through.

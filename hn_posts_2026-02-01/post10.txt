@@ -1,0 +1,261 @@
+Title: Guix System First Impressions as a Nix User
+Author: todsacerdoti
+Score: 166 points
+Link: https://nemin.hu/guix.html
+
+Article Content:
+--------------------
+Guix System First Impressions as a Nix User
+Table of Contents
+1. My Journey to Guix System
+Feel free to skip this section if you don't really care about backstories. I just figured it makes sense to recap how and why one might start having an interest in declarative distros before tackling the main topic.
+I've been a Linux-only1 user for about ten years now and, like many others, I too embarked on the arduous journey of distro-hopping. I started with Mint and when that felt too slow, I switched to Ubuntu. When Ubuntu felt too handholdy2, I switched to Arch, which proved to be my main driver for well over five or so years. And when I couldn't resist the Siren's call, I moved on to Gentoo, thinking surely "harder is better". Which resulted in severe burnout in a few months, so I capitulated and switched to Fedora, which was very stable and honestly an all around excellent system. But once more, my interest was piqued, and (before today's adventure) I finally switched to NixOS.
+I've always had a passing interest towards Nix ever since I've first heard about it, but until fairly recently, I always dismissed it as a tool for DevOps guys. The syntax was weird, the need for reproducible environments seemingly irrelevant, and stuff like the oft-recommended Nix Pills seemed anything but newbie-friendly.
+So then why would someone like me, who's so adamant about not needing Nix eventually choose to go all-in? I guess it was at first less about Nix being better and just the rest being worse.
+Of the two big reasons for the switch, one was that I realized that having per-directory environments for your projects is actually a very handy thing to do when you like to toy around with many technologies. I used to generate my other blog using Jekyll and, no matter which distro I used, it was always a pain in the neck to have a good Ruby environment set up. bundler install
+didn't really want to work without privileges and I wasn't really a fan of unleashing sudo
+on it, but usually that was the only way I could get things to work.
+With Nix, however, it was a matter of just describing a few packages in a shell and boom, Ruby in one folder, no Ruby (and thus no mess) everywhere else. I was hooked! I started adding shell.nix
+files to all my little projects, hell, I started planning projects by first adding a shell.nix
+with all the dependencies I would reasonably need.
+The other reason, which ultimately cemented that I need to commit, was that I was getting tired of my installed packages slowly drifting out of control. Sure, every package manager has some method of listing what's installed, but these are usually cumbersome and completely ephemeral (in the sense that any listing becomes invalid the moment you change anything).
+With NixOS, the equation is flipped on its head: No longer did I query the system to tell me what's installed and what's not, it was now the system that worked based on files that I edit. The difference sounds small on paper, but for me it was an extremely liberating feeling to know that I could edit my system configuration in a versionable, explicit, and centralized way.
+But NixOS isn't the only declarative distro out there. In fact GNU forked Nix fairly early and made their own spin called Guix, whose big innovation is that, instead of using the unwieldy Nix-language, it uses Scheme. Specifically Guile Scheme, GNU's sanctioned configuration language. I've been following Guix for a bit, but it never felt quite ready to me with stuff like KDE being only barely supported and a lot of hardware not working out of the box.
+However, now that (after three years) Guix announced its 1.5.0 release with a lot of stuff stabilized and KDE finally a first-party citizen, I figured now is the best time to give it a fresh shot. This post captures my experiences from installation to the first 3-4 days.
+2. Installer Impressions
+Plug your USB in, dd
+the file onto the drive, reboot, nothing unusual. If you've ever installed a Linux system, it's more of the same.
+After selecting the pendrive in my BIOS settings, the monitor began to glow in a deep, radiant blue as the Guix System logo appeared on my screen… only to suddenly switch to a menacing red: My CPU's integrated GPU is not supported by free firmware. A helpful popup gave me a gentle nudge about picking free hardware next time (buddy, have you seen the PC part prices these days?) and off I went into the installer proper.
+Figure 1: Picture of the installer graciously borrowed from the Guix installer manual.
+The installer itself is refreshingly barebones and I mean this in a positive way. It asks all the necessary questions and provides a nice basic configuration file, all done in a retro Ncurses-based TUI. I was really happy to see that, unlike my last attempt at using Guix System in the early 2020-s, KDE Plasma is now a first-party choice during installation. I never really vibed too much with GNOME and the other options didn't appeal either, so the choice was obvious.
+Now, I'm not sure if I just picked the worst possible time or if the Guix servers were facing unusual load or whatever may have happened, but after such a breeze of a setup, the moment I pressed install, my PC became unusable for the next 2.5 hours. Which is unacceptable for an installation process these days in my opinion. I am lucky enough to live in a household with fiber-optic internet, that merely shrugs at bandwidth of up to a gigabyte per second and yet nearly all packages downloaded with a whopping 50 kilobytes per second, meaning even small-ish 5-10 megabyte packages took long minutes to download.3
+A reboot later my issues only got worse.
+3. I Can't Find my Way-land
+I was assuming I'd get SDDM after having chosen KDE Plasma, but (what a later, closer read of the manual made me realize is the expected outcome for a default config) it was GDM that loaded in. I entered my name and password, and I was greeted with the familiar Plasma 6 spinner. The first hint that something might be off was that it loaded a bit longer than usual, but I was not going to get mad at waiting 10 seconds instead of 3. After all, I did just wait magnitudes longer to get here.
+With practically nothing installed beyond the very basics, I clicked on Konsole, hoping to start prodding around my config and add some of my day to day apps. To my horror, it opened in the top left corner, without a titlebar and without any borders. What's more, no matter what I did, I couldn't move it. It also didn't show up on the menu bar, despite the application launcher still being completely usable. At this point I was fairly exhausted by these antics, but I figured,
+Well, it's a brand new release, perhaps this just snuck in. Let's give updating a shot and see if that helps.
+So I issued guix pull
+… The download whizzed by with speed quite unexpected after what I experienced with the installer… Only to crash into the brick wall that's indexing. Okay, whatever, another 10-12 minutes down the drain, at least now I have newest version.
+Figure 2: Better than before download speeds
+Except I didn't. Because, unlike Nix, the guix
+executable is not an omnipresent, unique thing that anyone and everyone uses on your PC. Not only does every user have their own instance, if you don't issue a certain set of commands, you won't start using the new version, despite updating it.
+To Guix's credit, the CLI does scream at you to update your environment or else you'll keep using the old version, but I still find this system very disorientating compared to Nix. I'm certain experienced Guixheads are long past being tripped up by this sort of stuff and might even struggle to remember that there was a time they had to do these special steps too, but as a new user it felt a bit rough, especially consdering this is Guix System, i.e. the system whose whole purpose is to be integrate Guix as much as it can.
+Back to our issue at hand. I issued sudo -s
+and guix pull
+-ed again. Once more 10-12 minutes passed indexing. But at least I could finally call guix system reconfigure /etc/config.scm
+. Interestingly things are much faster this time around, I saw speeds up to 30-50 Mbps. Before long the system was updated to the newest commit and I rebooted with high hopes.
+High hopes, that were immediately dashed when Plasma loaded in the same messed up way. At this point I started to suspect this might be an issue with the GPU driver, so I enabled the LXQT desktop environment and rebooted once more. Thankfully that one worked like a charm and I was able to boot up both Emacs (editing Scheme with GNU Nano is a pain I do not wish on anyone) and LibreWolf (Firefox's de-Mozilla-d variant).
+Not having found anything too useful in the docs, I decided to make my problem someone else's so I fired up ERC4 and connected to Libera.chat's #guix
+channel. After around half an hour of wait, a user by the name of Rutherther stepped up and offered me some help. We were able to figure it out that Nouveau wasn't able to drive my GPU (an RTX 5070), so his recommendation was that I should try booting with nomodeset
+. I did, but it sadly didn't help much either.
+4. Sympathy for the Devil
+At this point I was out of ideas. Ideas of solving this using pure-Guix System, that is. There was still one option I wanted to avoid as long as I could, but alas, it seemed like the only option, that still had a realistic chance of working.
+Figure 3: Nonguix's official logo, self-described to be "dark and evil".
+Enter Nonguix, the Mr. Hyde to Guix's Dr. Jekyll, the shady guy who offers you a hit and first time's for free, the… Erm, in a nutshell, it's the repository for non-free applications and drivers packages for Guix System, basically. Interestingly enough, by Guix's own findings about 64% of users utilize the Nonguix channel, which is perhaps not "literally everyone", but it does paint a picture that there is still stuff out there that you simply cannot replace with FOSS software yet.
+1: (cons* (channel 2: (name 'nonguix) 3: (url "https://gitlab.com/nonguix/nonguix") 4: ;; Enable signature verification: 5: (introduction 6: (make-channel-introduction 7: "897c1a470da759236cc11798f4e0a5f7d4d59fbc" 8: (openpgp-fingerprint 9: "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5")))) 10: %default-channels)
+Enabling the repo wasn't exactly difficult. You just paste the short excerpt from above (also found in the README) into your ~/.config/guix/channels.scm
+and /etc/guix/channels.scm
+files, guix pull
+, let it index to its heart's content again, and then you have access to all that is nasty (yet occasionally useful) in the world.
+I figured perhaps if Linux-libre and its free firmware couldn't deal with my GPU, then surely Linux proper with its binary blobs could. Hell, for good measure I threw in the NVIDIA transform, which is supposed to automagically translate all dependencies to use the proprietary drivers.
+Figure 4: What haste and half-reading manuals gets you…
+Turns out my eagerness was a mistake. Not only did the process take yet another half an hour (if not more, I stopped counting), upon reboot all I was met with was a kernel panic about the driver not being able to cope with the GPU it found and a massive spew of FSCK logs.
+Figure 5: 'FSCK' was indeed very close to the first words that came to my mind at this moment.
+With no better ideas in mind, I took out my pendrive again and burned Nonguix's own pre-built ISO on it using my partner's PC. While it ultimately did get me a working system, this version has three unfortunate hindrances:
+- It was built in 2022, far before Guix's migration to Codeberg, meaning it still attempts to pull content from the unfathomably slow GNU Savannah mirror. I had to manually override my
+channels.scm
+to point at the Codeberg repo instead, but with no easy means of finding its "channel introduction"5, I had to pass in--disable-authentication
+to Guix when updating my system. A bit scary, but I trust the Codeberg repo. - Because of its age, I got a lot of somewhat intimidating errors about hardware not being recognized and other stuff I couldn't even decipher, but ultimately the system booted to the installer without issue.
+- For some reason while the installer itself does include Nonguix stuff, it actually does not include the repo in the resulting channels files, nor the substitution server for the project. The README has a warning about this, but if you happen to miss it, you could accidentally install a non-Nonguix Guix System (say that three times fast).
+None of these were particularly hard to fix, however, and soon enough I was back where I started. That is to say, in a nomodeset
+X11 session, except this time running i3, as LXQT wasn't an available option on an installer this old. There was certainly a bit of a hacker-ish vibe to messing with code files in an environment like that, but I was honestly much more looking forward to finally having a usable desktop.
+Having learned from my hastiness, this time I was smarter. I only enabled the full kernel and firmware blobs, without going anywhere near the NVIDIA transform. I issued another guix system reconfigure
+and, after having time for another tea session, my update was finally finished.
+I rebooted with tentative nervousness and… Success? Huh.
+5. Goals
+Obviously there is little point in throwing Guix System on my PC and declaring success. I wanted to be able to at least reproduce the kind of workflow I'm used to using NixOS. For that, I need the following:
+- A browser: preferably Firefox, as I'm not a huge fan of Chrome / Chromium,
+- An E-mail client: preferably Thunderbird,
+- A basic office suite: preferably LibreOffice,
+- Dev environments: for Rust, Zig, Scheme, and TypeScript (with the option for more, if possible),
+- Emacs: I do almost all my text editing in it these days, falling back to Neovim for quick tasks,
+- Discord: for chatting with friends,
+- Telegram: for chatting with family,
+- Steam: for the very rare occasions I want to game,
+- NVIDIA drivers: I prefer to offload day-to-day usage to my CPU's integrated GPU, as it cuts my energy usage in half.
+Of these it was obvious that two would be relatively hard and one "outright impossible". The two being Steam and the drivers (as both are non-free and thus not in Guix's default repos) and the "impossible" one being Discord (which not even the non-free repo has packaged). But I was ready to compromise a little bit since I am requesting stuff that's explicitly against Guix's goals.
+6. Results
+Figure 6: My desktop running Wezterm packaged by me and Emacs.
+While there has been occasional bumps and hitches along the ride, I must say I'm very impressed with Guix System so far. Let's go through this list in order:
+- Browser: So far I'm really enjoying LibreWolf. It feels a lot snappier than Firefox and I'm really baffled how much speed I was apparently missing out on.
+- E-mails: I installed Icedove, which is basically just Thunderbird without Mozilla branding. It works as expected.
+- Office suite: LibreOffice is available as expected. Not much to say about it. I guess it's interesting that Guix isn't following the usual
+-stale
+/-fresh
+packaging schema, but I don't really mind not having cutting edge versions of an office suite :) - Dev environments: I've only briefly toyed with development environments so far, but to me it seems like for simple use-cases it might be even easier to use than
+shell.nix
+(you don't need any sort of ceremony, just amanifest.scm
+file with a(specifications->manifest <list of packages>)
+form inside and you have a dev env ready to go.) - Emacs: Installed just fine. I had to install
+emacs-vterm
+to make Vterm work, but all that took was the very simple process of adding the library to my home configuration and then referencing it in my Emacs config as per this Reddit post. - Discord: I decided to just use Discord's browser version, which works just as fine (if not better). It's trading a tiny bit of convenience in return for not having to figure out how to manually add a package for it from some random third-party source. From what I've read elsewhere Flatpak is also an option, but I prefer having just one package manager at a time.
+- Steam: Installed shockingly easily. I have to really give props to the Nonguix team. I tested Portal 2 with the Nouveau driver, it is a little disheartening to see a 15 years old game6 lag, but I understand the people's hands are tied when it comes to the free drivers. After I managed to install the proprietary drivers, I was able to play even Portal RTX, which is something I never managed to get to work using NixOS.
+- NVIDIA drivers: This time I actually read the docs properly and it didn't take long for me to realize the initial problem that caused my previous install to be unbootable was of course found between the chair and keyboard. This time, after making sure I enabled the open drivers and kernel mode-setting, I crossed my fingers, issued a reconfigure and it works beautifully!
+6.1. The Good
+Helpful community: While I do feel like Guix's community could be much larger (see below), the one that exists is very helpful and nice from my limited experience. In all places I've looked so far (Libera's
+#guix
+, /r/Guix, and the guix/guix Codeberg repository) I was met with genuinely kind and helpful people.That is not to say I haven't seen some bad eggs, especially in posts from years ago, but I don't think there is any community without those, so I'm not going to cite this as a negative.
+- Home configuration: Having
+guix home
+be a built-in, first class citizen, instead of a community made "extension" is excellent. Instead of needing to consult a third-party resource like Home Manager's documentation you can simply use what you already know about Guix and, if you happen to hit a wall, you can just read the official handbook which is guaranteed to always stay up to date with the rest of the system. - Package availability: As long as you largely use FOSS stuff (which is much easier than one might think), the amount of choice is awesome. I could basically just copy over the list of packages from my Nix config and practically everything had an equivalent.
+Scheme: I'm not really a seasoned Schemer, but I have dabbled in the language previously and it feels so much better to me than Nix (the language) ever did. One great benefit of this is that it's a lot easier to start digging into package definitions to figure things out for yourself.
+This is "Freedom 1" of GNU's Four Essential Freedoms in effect. Since the code is pretty much just Scheme and the different mechanisms available are fairly well documented (see caveat below), the barrier to entry is much lower than with Nix in my opinion.7
+Another nice benefit of this is that you can use Emacs' extensive Scheme support to help your configuration. Tools like Geiser can plug right into Guix and help you find package and function names and, once you're experienced enough, debug your config/packages on the fly. I personally haven't yet achieved mastery of such level yet, but having the REPL confirm if I've entered names in correctly before running the code is already a boon.
+Ease of hacking: In the "to tinker on" sense, rather than "being insecure". With Nix, merely pulling in Nixpkgs is an effort, due to the repository being massive. My otherwise beefy machine struggled to switch between branches and make commits, which doesn't exactly inspire confidence in contributing, even though it was otherwise something I was excited to do. Meanwhile, with Guix I was able to get a fully functioning development environment in 15 minutes tops, which includes cloning the repo, authenticating all commits, generating bytecode for the entire repository, and getting Emacs set up to work nice with the codebase.
+Not to mention, at the time of writing my Nixpkgs PR of guile-colorized is still not accepted, despite being open since October, 2025. Which is kind of disheartening, when the package is really trivial and has a very low blast-radius. With Guix I got an answer to an extremely noobish question on my first PR in mere hours.
+On a separate, but related note, I also found it a lot easier to test my package in a "live" environment as
+guix pull
+supports a parameter called--url
+which you can easily point to a folder on your own PC. So once I was confident my code should work, I could just "check out" my local repository clone and build it like I was an end user. This let me make sure it really does work.
+6.2. The Ambiguous
+Search:
+guix search
+not taking an extra parameter likenix search
+is both very convenient and a bit of a bummer.Its absence is not a deal breaker, but I really loved how with Nix, you could search in anything, that has a flake. Be that Nixpkgs, a repo you downloaded, a repo that's on a git forge, etc. I remember being awestruck that I could just do
+nix search github:mozilla/nixpkgs-mozilla
+and search for their builds of Firefox without having to manually check out anything.The documentation: Oof, this one is a bit hard to pass definite judgment on.
+On one hand I love the thoroughness of it all. You can get a fairly decent idea of what Guix, what it can do for your, how to use it, and how to extend it, just by reading the manual. It is evident that the Guix team and GNU in general takes its mission to educate using free software very seriously. Stuff like the Packaging tutorial make it very easy for complete beginners to hack together package definitions without needing to consult any other resource.
+On the other hand, it really is just a manual, not a tutorial. What I mean by this is that concepts that could belong together aren't placed near each other. A simple example would be services and customizing them. Assuming, you're in one of the sub-pages of Services and you suddenly realize you want to replace/modify one of the services, you are left completely clueless how that works. You have to go to a completely different chapter and find one particular function's description and then apply what you learn there. The Guix Cookbook has some examples, but you have to know about the cookbook in the first place.
+And before anyone misunderstands me, I'm fine with RTFM, but in my opinion one of the preconditions of mass-appeal is having "pre-chewed" solutions for common problems, that don't require perusing multiple chapters.
+6.3. The Bad
+- Substitute server stability: I imagine this is an issue that only a massive bag of money could fix, but the CI/CD servers could definitely use some more processing power. It's really annoying when you're trying to test something and you're suddenly forced to wait 10-15 minutes because the server can only spare 50-100 kbps for you.
+Content out there: Clearly this isn't the Guix team's fault (and it's something I'm trying to lessen with this post, even if just a tiny bit), but it's really hard to find good quality material when it comes to Guix.
+I mean, sure, there is the excellent System Crafters tutorial series, and the odd gems like DThompson's dev env tutorial, but as a whole you're largely left to your own to trawl through the manual, IRC logs, Reddit threads, Codeberg and the previous issue tracker, etc. It's not an impossible task, especially if you're used to doing Linux things "the hard way", but it's certainly a far cry from such one-stop shops as the Nix Flakes book or Wombat's Book of Nix.
+- Guix's own build speed: Nix excels in speed, so I was hoping Guix would be the same. Yet stuff like
+guix pull
+really bog things down. Doubly so, if you want to update not just your ownguix
+instance, but also root's. - Clarity of commands: The fact that all concerns are lumped together (unlike Nix's many utilities) means that to the new user the many commands such as
+guix pull
+,guix {system, home} reconfigure
+,guix update
+can easily feel overwhelming and unclear what's updating/changing what. With time I'm sure you obtain a sort of mental muscle memory and you never think about it again, but starting out it's definitely a confusing part.
+7. Overall
+1: (define-module (guix-home-config) 2: #:use-module (nongnu packages) 3: #:use-module (gnu packages) 4: #:use-module (gnu home) 5: #:use-module (gnu home services) 6: #:use-module (gnu home services shells) 7: #:use-module (gnu services) 8: #:use-module (gnu system shadow) 9: #:use-module (guix gexp)) 10: 11: (define %packages 12: (list "git" "openssh" "librewolf" "ripgrep" 13: "bat" "eza" "fd" "zoxide" "bc" "gimp" 14: "libreoffice" "jujutsu" "starship" "direnv" 15: "okular" "gwenview" "bitwarden-desktop" 16: "icedove-wayland" "telegram-desktop" 17: "emacs-vterm" "ispell" "hunspell" "wezterm")) 18: 19: (define %nonfree-packages 20: (list "steam-nvidia" 21: "mpv-nvidia")) 22: 23: (define home-config 24: (home-environment 25: (packages (specifications->packages (append %nonfree-packages %packages))) 26: (services 27: (append 28: (list 29: (service home-bash-service-type 30: (home-bash-configuration 31: (aliases '(("ls" . "eza"))) 32: (bashrc (list (local-file "./bashrc.sh"))))) 33: 34: (service home-files-service-type 35: `((".guile" ,%default-dotguile) 36: (".Xdefaults" ,%default-xdefaults))) 37: 38: (service home-xdg-configuration-files-service-type 39: `(("gdb/gdbinit" ,%default-gdbinit) 40: ("nano/nanorc" ,%default-nanorc)))) 41: 42: %base-home-services)))) 43: 44: home-config
+In a nutshell I'm very positively surprised by Guix System. After struggling so much with it years ago, this time everything just clicked after a much shorter battle. So much so that I'm happy to make it my daily driver for the foreseeable future. Beyond the slightly slower execution speed, I'm getting a comparable experience to NixOS, with all the usual pros a declarative environment brings and without having to put up with Nixlang.
+My only recurring issues so far are the occasional slow download speeds and that I have to start my kernel in nomodeset
+because otherwise the graphical environment crashes without me being able to switch to a TTY. It's a bummer, but honestly, I'm not too bothered by it so far. I'm trusting a driver update will fix it soon enough and, if not, it's not exactly difficult to throw in a kernel parameter into your config.
+I'm hoping to do a followup post about packaging in Guix, because I've been dipping my toes into it by trying to package Wezterm and the journey there was similarly arduous as installing the system itself.
+Till then, thank you for reading and see you next time!
+8. Notes
+The stuff you see below are all I managed to write down mid-process. Some of these I threw it into the file from Nano, some from half-broken X11 sessions. Because of this, it's not exactly well-edited, but I hope it might provide a glimpse into my mind at the time.
+- The installer is decently simple
+- I appreciate the warning about incompatible hardware
+- 2.5 hours at least to install (mirrors throttle connection to 50kbps)
+- KDE is simply not working out of the box (titlebars are missing)
+- It seems to also default to X11, when I'm looking for Wayland
+- The first
+guix pull
+is horrendously slow- Wayland continues to elude me, seems to be an Nvidia issue
+- IRC recommends
+nomodeset
+, doesn't help- Try enabling Nonguix, system no longer boots
+- Try installing using the Nonguix ISO
+- Lots of errors, terribly old release
+- Having to
+guix pull
+myself to the present day again- Also I'm missing the introduction, so I have to run it using
+--disable-authentication
+, not great, but I trust the Codeberg repo- At least the download speed seems to have normalized
+- It isn't entirely clear when you have to use
+sudo
+- Running
+i3
+on a shitty low-res has a certain vibe to it, but I'd prefer a system working out of the box
+Footnotes:
+Well, if only life was so easy. What I mean here is that on my personal computer, I've not had Windows since about 2015. For work purposes my hands are currently chained to MacOS (though even there I use a Debian-based container).
+No disrespect to Ubuntu-users, past and present! My opinion at the time was quite ignorant and nowadays I far more appreciate an easy to maintain system as you'll see from the rest of this post.
+It's merely a hunch, but it feels to me that the servers are far slower during the (Central-European) night. During midday, I get really good download speeds, but after around 8 PM, it slows to a crawl.
+Which, for the uninitiated, is an IRC client built into Emacs. This editor continues to wow me every day.
+I probably could have figured it out in time. But at this point I was a bit exasperated and I really didn't want to type in an 10x4 character hexadecimal code by hand.
+Goodness gracious, Portal 2 is almost 15 years old…
+That being said, my Nix experience was still very much helpful here. Understanding stuff such as build phases, why packages need to be patched and how this usually works, and what the different build flags mean is pretty much a must if you want to attain an understanding deeper than just "kinda getting it."
+
+Comments:
+--------------------
+Thread 1:
+I've had a passing curiosity about Guix, so it was good to read this report.
+One thing I didn't find is Guix on servers. I am all-in on NixOS for both my daily driver desktop and couple of servers, and adding more of either will be simple modifications to my flake repository. I really appreciate that simplicity and consistency. Does Guix offer that?
+The other thing is package availability: it's amazing on Nix. Plus, they remain relatively fresh on the unstable channel. How's that on Guix?
+  Reply 1: The scheme syntax gets a while to get used to if you are not familiar with it, and in the end having a real programming language is quite awesome, you can do lots of fun stuff like programmatically create a file or dir for every user of a certain group, etc.
+Take a look at this
+https://guix-hosting.com/docs/tuto/getting-started.html
+To see how one can use macros to redefine the syntax to get an imperative-like syntax for defining services.
+Disclaimer: i run guix-hosting.com
+  Reply 2: > programmatically create a file or dir for every user of a certain group
+To be fair here, NixOS module system also makes this a breeze. Whether via `systemd.tmpfiles` or via generated scripts.
+It might be nicer to have some more DSL capabilities in nix though.
+  Reply 3: > The other thing is package availability: it's amazing on Nix. Plus, they remain relatively fresh on the unstable channel. How's that on Guix?
+The article says it seemed good. If you want a quantified look, Repology has some stats.
+GNU Guix:
+https://repology.org/repository/gnuguix
+Nixpkgs unstable:
+https://repology.org/repository/nix_unstable
+However, note that the Guix entry
+doesn't
+ include Nonguix AFAICT. So, it's a bit higher if you are using nonguix.
+  Reply 4: Guix on servers is ok. I run Guix in my homelab.
+The vast majority of what you’d want in a Guix server can be found in the services section and parts of the documentation that lay out how to build services. But it doesn’t have as many services available as nix.
+  Reply 5: For servers you might want to try 'guix deploy':
+https://guix.gnu.org/manual/devel/en/html_node/Invoking-guix...
+
+Thread 2:
+> merely pulling in Nixpkgs is an effort, due to the repository being massive.
+I've embraced daily shallow clone/fetches and the burden is now mostly just the 2GB of disk space.
+It's a bit annoying though that git doesn't make it easier. No one would shallow clone later screw up and download every commit anyway, I feel shallow clone repos should be set up with a different configuration that fully-embraces shallow history (not that the configuration options even exist today AFAIK).
+  Reply 1: I just tried 2hrs and it only uses 375M
+    git clone \
+        --single-branch \
+        --shallow-since '-2 hours' \
+        --origin 'upstream' \
+        gh:NixOS/nixpkgs
+
+
+What's annoying later is that you MUST remember to always use shallow fetch and hard resets into upstream/$BRANCH
+    git fetch \
+       --shallow-since '-2 hours' \
+       upstream \
+       master nixos-unstable
+  Reply 2: Interesting, I have taken a stab at maintaining a repo on the nixpkgs and using  a --sparse approach, i.e. `git clone --filter=blob:none --sparse --branch nixos-25.11
+https://github.com/NixOS/nixpkgs.git
+ nixpkgs-dorion
+cd nixpkgs-dorion`
+  Reply 3: I have a non-shallow clone and the .git directory is less than 3GB.
+  Reply 4: Oh, maybe I had a full clone on my laptop before I started doing shallow fetches, but since fetching takes quite a while I've been using a shallow clone on my workstation.
+  Reply 5: I've only been doing this for a few weeks, so too early to tell if it's a good setup, but I added a GitHub Action that rebases my personal fork atop nixpkgs-weekly.  I'm hoping that will help keep me from having a stale-by-default personal nixpkgs.  (I use a personal nixpkgs to stage PRs waiting to be merged upstream.)
+https://github.com/appsforartists/nixpkgs/commit/769a72d3a6f...
+
+Thread 3:
+My favourite line in the article.
+> it didn't take long for me to realize the initial problem that caused my previous install to be unbootable was of course found between the chair and keyboard.
+I think we’ve all been there! It still happens to me, exactly 5 seconds after calling Claude/Codex/Gemini names and dismissing their ability to follow instructions.
+
+Thread 4:
+> I am lucky enough to live in a household with fiber-optic internet, that merely shrugs at bandwidth of up to a gigabyte per second...
+Probably a typo, unless the author really has 8gigabit network
+  Reply 1: Quantum Fiber provides 8gbps, so it's not unheard of.
+
+Thread 5:
+>"But NixOS isn't the only
+declarative distro
+ out there. In fact GNU forked Nix fairly early and made their own spin called Guix, whose big innovation is that, instead of using the unwieldy Nix-language, it uses Scheme. Specifically Guile Scheme..."
+I'd be curious if a list exists of
+all declarative Linux distros
+ out there, along with the configuration language (Nix, Scheme, etc.)
+I'd also be curious as to how easy it would be to convert Scheme to the Nix language or vice-versa, in other words, it seems to me that there might be a "parent language" (for lack of a better term) out there for all lisplike and functional programming language (a subset of Haskell, F#, or some other functional programming language perhaps) that sort of might act as an intermediary conversion step (again, for lack of a better term!) between one functional or lisplike programming language and another...
+Probably unrelated (but maybe somewhat related!) -- consider Pandoc... Pandoc is a Haskell program that basically uses a document tree structure to convert between one type of document format and another... maybe in terms of programming languages you'd call that an AST, an Abstract Syntax Tree... so maybe there's some kind of simplified AST (or something like that) out there that works as the base tree for all functional and lisp-like programming language (yes, lisp/lisplikes sort of preserve its/their own tree; their own AST -- via their intrinsic data structure, and that would seem to be true about functional programming languages too... so what is the base tree/AST of all of these, that all languages in this family can "map on to" (for lack of better terminology), that could be used (with AI / LLM's) as an "Intermediary Language" or "Intermediary Data Structure" (choose your terminology) to allow easily converting between one and the other?
+Anyway, if we had that or something like that, then Nix configurations could (in theory) be easily converted to Guix, and vice-versa, automatically, as could any other Linux configured by a functional and/or lisplike language...
+That, and I found the article very interesting!
+I may have to try Guix in the future!
+  Reply 1: I was thinking the same thing. Since scheme is in the Lisp family, it should be straightforward to modernize it to something like Clojure, which is similar to Haskell as you mentioned. Being functional, but from a Java/Lisp ecosystem that might be more viable in the typical modern software environment.
+  Reply 2: Wouldn't that just make it harder to bootstrap an OS, needing to start with JVM and all...
+  Reply 3: With Lisp you already have an AST.

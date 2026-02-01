@@ -1,0 +1,73 @@
+Title: Automatic Programming
+Author: dvrp
+Score: 215 points
+Link: https://antirez.com/news/159
+
+Article Content:
+--------------------
+In my YouTube channel, for some time now I started to refer to the process of writing software using AI assistance (soon to become just "the process of writing software", I believe) with the term "Automatic Programming". In case you didn't notice, automatic programming produces vastly different results with the same LLMs depending on the human that is guiding the process with their intuition, design, continuous steering and idea of software. Please, stop saying "Claude vibe coded this software for me". Vibe coding is the process of generating software using AI without being part of the process at all. You describe what you want in very general terms, and the LLM will produce whatever happens to be the first idea/design/code it would spontaneously, given the training, the specific sampling that happened to dominate in that run, and so forth. The vibe coder will, at most, report things not working or not in line with what they expected. When the process is actual software production where you know what is going on, remember: it is the software *you* are producing. Moreover remember that the pre-training data, while not the only part where the LLM learns (RL has its big weight) was produced by humans, so we are not appropriating something else. We can pretend AI generated code is "ours", we have the right to do so. Pre-training is, actually, our collective gift that allows many individuals to do things they could otherwise never do, like if we are now linked in a collective mind, in a certain way. That said, if vibe coding is the process of producing software without much understanding of what is going on (which has a place, and democratizes software production, so it is totally ok with me), automatic programming is the process of producing software that attempts to be high quality and strictly following the producer's vision of the software (this vision is multi-level: can go from how to do, exactly, certain things, at a higher level, to stepping in and tell the AI how to write a certain function), with the help of AI assistance. Also a fundamental part of the process is, of course, *what* to do. I'm a programmer, and I use automatic programming. The code I generate in this way is mine. My code, my output, my production. I, and you, can be proud. If you are not completely convinced, think to Redis. In Redis there is not much technical novelty, especially at its start it was just a sum of basic data structures and networking code that every competent system programmer could write. So, why it became a very useful piece of software? Because of the ideas and visions it contained. Programming is now automatic, vision is not (yet).
+
+Comments:
+--------------------
+Thread 1:
+I have 30+ years of industry experience and I've been leaning heavily into spec driven development at work and it is a game changer.  I love programming and now I get to program at one level higher: the spec.
+I spend hours on a spec, working with Claude Code to first generate and iterate on all the requirements, going over the requirements using self-reviews in Claude first using Opus 4.5 and then CoPilot using GPT-5.2.  The self-reviews are prompts to review the spec using all the roles and perspectives it thinks are appropriate.  This self review process is critical and really polishes the requirements (I normally run 7-8 rounds of self-review).
+Once the requirements are polished and any questions answered by stakeholders I use Claude Code again to create a extremely detailed and phased implementation plan with full code, again all in the spec (using a new file is the requirements doc is so large is fills the context window).  The implementation plan then goes though the same multi-round self review using two models to polish (again, 7 or 8 rounds), finalized with a review by me.
+The result?  I can then tell Claude Code to implement the plan and it is usually done in 20 minutes.  I've delivered major features using this process with zero changes in acceptance testing.
+What is funny is that everything old is new again. When I started in industry I worked in defense contracting, working on the project to build the "black box" for the F-22.  When I joined the team they were already a year into the spec writing process with zero code produced and they had (iirc) another year on the schedule for the spec.  At my third job I found a literal shelf containing multiple binders that laid out the spec for a mainframe hosted publishing application written in the 1970s.
+Looking back I've come to realize the agile movement, which was a backlash against this kind of heavy waterfall process I experienced at the start of my career, was basically an attempt to "vibe code" the overall system design.  At least for me AI assisted mini-waterfall ("augmented cascade"?) seems a path back to producing better quality software that doesn't suffer from the agile "oh, I didn't think of that".
+  Reply 1: Waterfall can work great when: 1/ the focus is long-term both in terms of knowing that she company can take a few years to get the thing live but also that it will be around for many more years, 2/ the people writing the spec and the code are largely the same people.
+Agile was really pushing to make sure companies could get software live before they died (number 1) and to remedy the anti-pattern that appeared with number 2 where non-technical business people would write the (half-assed) spec and then technical people would be expected do the monkey work of implementing it.
+  Reply 2: No.
+Agile core is the feedback loop. I can't believe people still don't get it. Feedback from reality is always faster than guessing on the air.
+Waterfall is never great. The only time when you need something else than Agile is when lives are at stake, you need there  formal specifications and rigorous testing.
+SDD allows better output than traditional programming. It is similar to waterfall in the sense that the model helps you to write design docs in hours instead of days and take more into account as a result. But the feedback loop is there and it is still the key part in the process.
+  Reply 3: > Feedback from reality is always faster than guessing on the air
+Only if you have no idea what the results will be.
+Professional engineering takes parts with specific tolerances, tested for a specific application, using a tried-and-true design, combines them into the solution that other people have already made, and watches it work, exactly as predicted. That's how we can build a skyscraper "the first time" and have it not fall down. We don't need to build 20 tiny versions of a building until we get a working skyscraper.
+  Reply 4: I've live through both eras...
+Agile, hardly any planning, write 3 times.
+Waterfall, weeks of planning, write 3 times anyway.
+The point is, people don't know what they want or are asking for, until it's in front of them. No system is perfect, but waterfall leads to bigger disasters.
+  Reply 5: Any real software (that delivers value over time) is constantly rewritten and that's a good thing.  The question is whether the same people are rewriting it that wrote it and what percentage of that rewriting is based off of a spec or based off of feedback from elsewhere in the system.
+
+Thread 2:
+I arrived at a very similar conclusion since trying Claude Code with Opus 4.5 (a huge paradigm shift in terms of tech and tools). I've been calling it "zen coding", where you treat the codebase like a zen garden. You maintain a mental map of the codebase, spec everything before prompting for the implementation, and review every diff line by line. The AI is a tool to implement the system design, not the system designer itself (at least not for now...).
+The distinction drawn between both concepts matters. The expertise is in knowing what to spec and catching when the output deviates from your design. Though, the tech is so good now that a carefully reviewed spec will be reliably implemented by a state-of-the-art LLM. The same LLM that produces mediocre code for a vague request will produce solid code when guided by someone who understands the system deeply enough to constrain it. This is the difference between vibe coding and zen coding.
+Zen coders are masters of their craft; vibe coders are amateurs having fun.
+And to be clear, nothing wrong with being an amateur and having fun. I "vibe code" several areas with AI that are not really coding, but other fields where I don't have professional knowledge in. And it's great, because LLMs try to bring you closer to the top of human knowledge on any field, so as an amateur it is incredible to experience it.
+
+Thread 3:
+> Pre-training is, actually, our collective gift that allows many individuals to do things they could otherwise never do, like if we are now linked in a collective mind, in a certain way.
+Is not a gift if it was stolen.
+Anyway, in my opinion the code that was generated by the LLM is yours as long as you're responsible for it. When I look at a PR I'm reading the output of a person, independently of the tools that person used.
+There's conflict perhaps when the submitter doesn't take full ownership of the code. So I agree with Antirez on that part
+  Reply 1: >Is not a gift if it was stolen.
+Yeah, I had a visceral reaction to that statement.
+  Reply 2: Yet nobody is changing their licenses to exclude AI use. So I assume they are OK with it.
+  Reply 3: Licenses mean nothing if AI training on your data is fair use, which courts have yet to determine.
+You can have a license that says "NO AI TRAINING EVER" in no uncertain terms and it would mean absolutely nothing because fair use isn't dictated by licenses.
+  Reply 4: What's the point of changing the license? It will be scrapped anyway.
+'The only winning move is not to play' - stop contributing to OSS.
+  Reply 5: It is knowledge, it can't be stolen. It is stolen only in the sense of someone gatekeeping knowledge. Which is as a practice, the least we can say, dubious. because is math stolen ?  if you stole math to build your knowledge on top of it, you own nothing and can claim to have been stolen yourself
+
+Thread 4:
+> I'm a programmer, and I use automatic programming. The code I generate in this way is mine. My code, my output, my production. I, and you, can be proud.
+I disagree. The code you wrote is a collaboration with the model you used. To frame it this way, you are taking credit for the work the model did on your behalf. There is a  difference between I wrote this code entirely by myself and I wrote the code with a partner. For me, it is analogous to the author of the score of an opera taking credit for the libretto because they gave the libretto author the rough narrative arc. If you didn't do it yourself, it isn't yours.
+I generally prefer integrated works or at least ones that clearly acknowledge the collaboration and give proper credit.
+  Reply 1: Also it's not only the work of "the model" it's the work of human beings the model is trained on, often illegally.
+  Reply 2: Copyright infringement is a tort.  “Illegal” is almost always used to refer to breaking of criminal law.
+This seems like intentionally conflating them to imply that appropriating code for model training is a criminal offense, when, even in the most anti-AI, pro-IP view, it is plainly not.
+  Reply 3: > “Illegal” is almost always used to refer to breaking of criminal law.
+This is false, at least in general usage. It is very common to hear about civil offenses being referred to as illegal behavior.
+  Reply 4: https://www.justice.gov/archives/jm/criminal-resource-manual...
+  Reply 5: >
+There are four essential elements to a charge of criminal copyright infringement. In order to sustain a conviction under section 506(a), the government must demonstrate: (1) that a valid copyright; (2) was infringed by the defendant; (3) willfully; and (4) for purposes of commercial advantage or private financial gain.
+I think it’s very much an open debate if training a model on publicly available data counts as infringement or not.
+
+Thread 5:
+Every time I hear someone mention they vibed a thing or claude gave them something, it just reads as a sort of admission that I'm about to read some _very_ "first draft"-feeling code. I get this even from people who spend a lot of time talking about needing to own code you send up.
+People need to stop apologizing for their work product because of the tools they use. Just make the work product better and you don't have to apologize or waste people's time.
+Especially given that you have these tools to make cleanup easier (in theory)!
+  Reply 1: The problem is that it's become feasible to get further in a design without caring about architecture or code quality.
+  Reply 2: Yep. And they should also raise their expectations and work on delivering better vibecoded apps. Likely also with automation.

@@ -1,0 +1,181 @@
+Title: We have ipinfo at home or how to geolocate IPs in your CLI using latency
+Author: jimaek
+Score: 212 points
+Link: https://blog.globalping.io/we-have-ipinfo-at-home-or-how-to-geolocate-ips-in-your-cli-using-latency/
+
+Article Content:
+--------------------
+We have ipinfo at home or how to geolocate IPs in your CLI using latency
+TLDR: I made a CLI tool that can resolve an IP address to a country, US state and even a city. https://github.com/jimaek/geolocation-tool
+It works well and confirms ipinfo's findings.
+Recently, I read how ipinfo finally proved what most technical people assumed: VPN providers don't actually maintain a crazy amount of infrastructure in hundreds of countries. They simply fake the IP geolocation by intentionally providing wrong location data to ARIN, RIPE, and Geo DB providers via geofeeds.
+They achieved their results using a novel approach compared to other geo IP providers. Based on their blog and HackerNews comments, they built a large probe network and used it to trace and ping every (or most) IP addresses on the internet.
+This latency and hop data, most likely along with advanced algorithms and data cross-reference, provides a reliable way of correctly detecting the physical geolocation of an IP address, without relying on faked data available in public sources.
+This is a very interesting approach that makes total sense, and I'm sure their clients appreciate it and heavily rely on it.
+While I can't ping every single IP address on the internet from hundreds of locations just yet, I can do it to a limited subset using Globalping. So I decided to try it out and see if I can replicate their results and build a small tool to allow anyone to do the same.
+Globalping is an open-source, community-powered project that allows users to self-host container-based probes. These probes then become part of our public network, which allows anyone to use them to run network testing tools such as ping and traceroute.
+At the moment, the network has more than 3000 probes, which in theory should be plenty to geolocate almost any IP address down to a country and even a US state level.
+To automate and simplify this process, I made a little CLI tool using the globalping-ts library. My original idea was simple:
+- Accept a single IP as input
+- Ping it a few times per continent to select the continent
+- Then ping the IP from many different probes on that continent
+- Group and sort the results; the country with the lowest latency should be the correct one
+- And as a bonus, repeat the same process for USA states if the winning country was the US
+Essentially, what I had to do was simply create a few measurements and pass the location I needed using Globalping’s magic field, which would automatically figure out what I was looking for and select a few pseudo-random probes that fit the location and limit.
+Now initially, I used ping
+with 2 packets to run all measurements as quickly as possible, but I quickly realized it wasn’t a good idea as most networks block ICMP traffic. Next, I tried switching to TCP-based ping
+, which required trying a few popular ports to get it to work. I quickly realized this was too complicated and unreliable and switched to traceroute
+.
+It worked perfectly. Even though traceroute
+uses ICMP by default, it did not matter to me if the target IP’s network allowed ICMP or not, I simply analyzed the latency of the last available hop. Even if you block ICMP, your upstream most likely allows it, and in most cases, it’s located in the same country.
+Of course, this means the resulting data is not 100% perfect. A better approach would be to analyze each IP using different methods, including TCP and UDP-based traceroute
+on different ports, and expand to the last few hops instead of just one. Maybe even try to figure out the location of the registered ASNs and use a weights system in combination with public whois info in order to “vote” for the right location based on different inputs. Probably even mark low certainty IPs to be retested with a double amount of probes. (end of rant)
+But that’s something for a commercial provider to figure out, which it seems they did.
+For continent detection, I decided to use just 5 probes per continent; the results were extremely accurate. Although for IPs just on the "border" of continents it might be ineffective, a higher amount of probes would generate better results. For this use case, it was good enough.
+My home IP in central Europe was too easy to detect:
+Phase 1: Detecting continent...
+North America: 137.18 ms
+Europe: 32.39 ms
+Asia: 174.54 ms
+South America: 215.08 ms
+Oceania: 244.15 ms
+Africa: 156.83 ms
+In phase 2, all we need to do is run a single measurement with the winning continent as the location and a higher limit. Initially, I started with 250 probes with great accuracy.
+Eventually, I decided to drop down to 50 as the default. Based on my tests, the results continued to look really good, and it would allow the tool to be run even without authentication, as the Globalping API allows 250 tests per hour per IP and 50 probes per measurement.
+Although I recommend registering for a free account at https://dash.globalping.io/ and authenticating with a token to get up to 500 tests per hour and run more tests.
+Note: If you need more tests than that, you can either host a probe to generate passive credits to be used as tests, or donate via GitHub Sponsors. We will automatically detect it and credit your account.
+Phase 2: Detecting country...
+Measuring from 50 probes...
+[████████████████████████████████████████] 100.0% 50/50 - Best: PL (7.29 ms)
+Top 3 Locations:
+─────────────────────────────────────────────────
+1.. Poland, EU 7.29 ms
+2.. Germany, EU 13.42 ms
+3.. Lithuania, EU 17.65 ms
+═══════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════
+Location: Poland, EU
+Minimum Latency: 7.29 ms
+Confidence: Medium
+Great, now we have a basic IP-to-country resolver that only takes a few seconds to provide a response, and I didn’t even have to understand or write any complicated math. Although I’m sure someone smarter could use a formula to geolocate IPs with even fewer probes and higher accuracy.
+For phase 3, we want to resolve the US to a specific state or territory, just like ipinfo did, and luckily they even provided a few sample IPs and locations to benchmark against during testing.
+Again, this was as simple as creating a new measurement with the USA as the location. I used 50 probes as the default limit and tested the NordVPN IP advertised as Bahamas but resolved to Miami by ipinfo.
+Phase 3: Detecting US state...
+Measuring from 50 probes...
+[████████████████████████████████████████] 100.0% 50/50 - Best: FL (0.45 ms)
+Top 3 Locations:
+─────────────────────────────────────────────────
+1. Florida, USA 0.45 ms
+2. South Carolina, USA 12.23 ms
+3. Georgia, USA 15.01 ms
+═══════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════
+Location: Florida, United States
+Minimum Latency: 0.45 ms
+Confidence: Very High
+═══════════════════════════════════════════════════
+The tool agrees, Florida is the correct location. But how accurate can this system be? Can we expand it to show the city too?
+Let's make a new phase, which again, will simply set the resulting country or state as the location and extract the city of the probe with the lowest latency. Here, since there are too many possible cities and towns per state and country, I expect the accuracy to be low and only point to the closest major hub. But in theory, this should be more than enough for use cases like routing or performance debugging.
+And here we go, the same result ipinfo got
+Phase 4: Detecting city...
+Measuring from 36 probes...
+[████████████████████████████████████████] 100.0% 36/36 - Best: Miami (0.00 ms)
+Top 3 Locations:
+─────────────────────────────────────────────────
+1. Miami, Florida, USA 0.00 ms
+2. West Palm Beach, Florida, USA 4.36 ms
+3. Tampa, Florida, USA 5.85 ms
+═══════════════════════════════════════════════════
+SUMMARY
+═══════════════════════════════════════════════════
+Location: Miami, Florida, United States
+Minimum Latency: 0.00 ms
+Confidence: Very High
+═══════════════════════════════════════════════════
+The current results are good but could be better. The main problem is with how the magic field works: when setting, for example, 'Europe' as the location, it tries to spread the tests across all European probes but does not guarantee that every single country is going to be included.
+This results in inconsistencies where a probe in the same country as the target IP was not selected, and so the tool assumes the IP is located in a different neighbouring country.
+To fix this and make the results more consistent, you would need to change the selection logic and manually set every country per continent and US state. By passing the full list of countries/states to the Globalping API, you ensure that at least one probe in that location is going to be selected. Additionally, you fully control the number of probes per location, which is very important to control the accuracy.
+For example, North America technically contains 43 countries and territories. This means you can't just set a limit of one probe per country, it is not enough to properly understand the latency to the target IP from the disproportionately larger USA. A better limit would be around 200 probes for the USA, 20 for Canada, and 10 for Mexico.
+But the goal of this tool was to use a minimum amount of probes to allow unauthenticated users to test it out. The current approach works great, it is simple to implement and it is very easy to control the accuracy by simply setting a higher limit of probes.
+Overall, latency-based geolocation detection seems to be a great way to verify the location of any IP as long as you have enough vantage points. It will most likely fall apart in regions with minimal or no coverage.
+The tool itself is open source and you can run it like this:
+geolocate $IP
+You can also use the –limit parameter to use more probes per phase. But be careful as it applies the set value to all phases and this will very quickly eat through your limit. Check the full docs in GitHub.
+Pull requests with improvements are welcome!
+Feel free to email me if you need some free credits to play around with d@globalping.io
+And of course consider hosting a probe, it’s as simple as running a container https://github.com/jsdelivr/globalping-probe
+
+Comments:
+--------------------
+Thread 1:
+This is a little project exploring the feasibility of using a service such as Globalping for geo location needs.
+I had fun making it but please note that the current implementation is just a demo and far from a proper production tool.
+If you really want to use it then for best possible results you need at least 500 probes per phase.
+It could be optimized fairly easily but not without going over the anon user limit which I tried to avoid
+  Reply 1: I wonder if you could optimize for reducing the total probe count (at the expense of possibly longer total time, though it may be faster in some cases) by using some sort of "gradient descent".
+Start by doing the multi-continent probe, say 3x each. Drop the longest time probes, add probes near the shortest time, and probe once. Repeat this pattern of probe, assess, drop and add closer to the target.
+You accumulate all data in your orchestrator, so in theory you don't need to deliberately issue multiple probes each round (except for the first) to get statistical power. I would expect this to "chase" the real location continuously instead of 5 discrete phases.
+I just watched the Veritasium video on potentials and vector fields - the latency is a scalar potential field of sorts, and you could use it to derive a latency gradient.
+  Reply 2: Yes, most likely there are multiple algorithms that could be used to get better results with fewer probes, but I'm not smart enough to do the math and implement them.
+  Reply 3: The simplest is drop the longest latency probe, and add a new one in the proximity of the fastest.
+  Reply 4: isn't 3 theoretically enough?
+  Reply 5: Time of flight from three points gets you two options for position with GPS, but GPS signals propagate directly in free space. At least mostly, reflections happen.
+Internet signals generally travel by cable, and the selected route may or may not be the shortest distance.
+It's quite possible for traffic between neighboring countries to transit through another continent, sometimes two. And asymetric routing is also common.
+Since this is using traceroute anyway, if you characterize the source nodes, you could probably use a lot fewer nodes and get similar results with something like:
+a) probe from a few nodes on different continents (aiming to catch anycast nodes)
+b) assuming the end of the trace is similar from all probes, choose probe nodes that are on similar networks, and some other nodes that are geolocated nearby those nodes.
+c) declare the target is closest to the node with the lowest measured latency (after offsetting from node charachterized first hop latency)
+You'll usually get the lowest ping times if you can ping from  nearby customer of the same ISP as the target. Narrowing to that faster is possible if you know about your nodes.
+
+Thread 2:
+Congrats on doing it without AI! Just reading your crappy one-word commit messages make me happy.
+  Reply 1: Some code may be AI generated, because the code uses "══════" to separate terminal output. In my experience, Claude really likes to use this character to separate terminal output.
+  Reply 2: >Claude really likes
+Plenty of developers really like it too though, because that's where Claude learned to use it.
+  Reply 3: Maybe, but at least OP typed in the commit message by himself. That places you in the top percentile these days
+
+Thread 3:
+How feasible would it be for the host under measurement to introduce additional artificial latency to ping responses, varying based on source IP, in order to spoof its measured location?
+  Reply 1: Totally feasible.
+You could do even cooler tricks, like
+https://github.com/blechschmidt/fakeroute
+Pointless? Almost certainly.
+  Reply 2: Traceroutes are already notoriously hard to interpret correctly[1] and yes, they can be trivially spoofed. Remember the stunt[2] pulled by tpb to move to North Korea? If you are an AS you can also prepend fake AS to your BGP announcements and make the spoofed traceroute even more legitimate.
+I wonder if this thing will start a cat and mouse game with VPNs.
+[1]:
+https://old.reddit.com/r/networking/comments/1hkm4g/lets_tal...
+[2]:
+https://news.ycombinator.com/item?id=5319419
+  Reply 3: Not-impossible, but it would be a whole lot simpler to just not respond to pings in the first place.
+  Reply 4: But also, as mentioned in
+https://news.ycombinator.com/item?id=46836803
+ , someone can still probe the second-last hop and get pretty close.
+  Reply 5: Courtesy of Xfinity and Charter overprovisioning most neighborhood’s circuits, we already have that today for a significant subset of U.S. Internet users due to the resulting Bufferbloat (up to 2500ms on a 1000/30 connection!)
+
+Thread 4:
+Bit surprised this works. Latency variability is huge and sometimes quite disconnected from geo location. I recall talking to someone in NL and realised I've got better latency to NL content from the UK than he did. Presumably better peering etc.
+  Reply 1: I work for IPinfo. We are launching a collaborative project with IXPs and major internet organizations to share raw measurement for routing and peering data for this purpose.
+Latency variability is a huge issue. We run both traceroute and ping data, and we observe that there are entire countries that peer with IXP thousands of miles away in a different continent.
+We bought a server from the oldest telecom company in the country and recently activated it. Currently, there is a 20 ms latency when traffic is directed towards the second oldest telecom. The packets have to travel outside the country before coming back in. This is a common phenomenon that occurs frequently. So, we usually have multiple servers in major cities since various ASNs have different peering policies.
+For us we can map those behaviors and have algorithms and other data sources, make measurement-based geolocation perform well.
+We are hoping to support IXPs, internet governance agencies, and major telcoms in identifying these issues and resolving them.
+  Reply 2: What is your path towards 'resolving' these issues?
+I've done some mapping while comparing turn servers my org hosted on cloud vms vs a commercial offering, and it's pretty easy to find
+very
+ different routing from point A to point B, but sometimes it's pretty clearly that not every transit network has access to every submarine cable, so traffic from say Brazil to South Africa might go from Brazil directly to Africa, or it might go to Florida, then Europe, then Africa. It'd be nice to take a more direct route, but maybe the Brazil -> Africa hop doesn't transit all the way, so BGP prefers the scenic route as it has a shorter AS path.
+I didn't have any leverage to motivate routing changes though, so other than saying hmm, that's interesting, there wasn't much to do about it.
+  Reply 3: Could just be local loop latency, in VDSL or DOCSIS you can get 5-15ms of latency just in your first 1KM. London (e.g Telehouse) > Amsterdam is only about 7ms.
+  Reply 4: Wouldn't you just be closer to the closest PoP and requesting mostly cached content? With how connected amsterdam is they couldn't be around there. Also depending on when it was up until like 7-8 years ago even in major city centers there was no fiber in most places in NL. Now it's mostly covered.
+  Reply 5: Was a while back so bit fuzzy on what precisely we were measuring, but no wasn't something cached/CDN'd. Maybe a VPS or something not sure.
+I was on a better connection (gigabit FTTC) and in a better peered location (central London).
+>amsterdam
+Don't know where precisely in NL they were or what connection type. I'd certainly expect a like for like amsterdam wired connection to win so this was probably something more pedestrian & rural
+
+Thread 5:
+Thank you, Dimitry. Everyone at IPinfo really appreciates the shoutout!
+---
+Our research scientist, Calvin, will be giving a talk at NANOG96 on Monday that delves into active measurement-based IP geolocation.
+https://nanog.org/events/nanog-96/content/5678/
