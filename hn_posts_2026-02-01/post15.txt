@@ -1,0 +1,74 @@
+Post ID: 46844350
+Title: The Book of PF, 4th edition
+Author: 0x54MUR41
+Score: 130
+Total Comments: 28
+Created At (UTC): 2026-02-01T07:50:51+00:00
+Domain: nostarch.com
+Link: https://nostarch.com/book-of-pf-4th-edition
+
+Article Content:
+--------------------
+Download Chapter 3: Into the Real World
+The OpenBSD packet filter, PF, is central to the OpenBSD and FreeBSD network toolbox. With more services placing high demands on bandwidth and an increasingly hostile Internet environment, no sysadmin can afford to be without PF expertise.
+The fourth edition of The Book of PF covers the most up-to-date developments in PF, including new content on IPv6, dual stack configurations, the “queues and priorities” traffic-shaping system, NAT and redirection, wireless networking, spam fighting, failover provisioning, logging, and more.
+You’ll also learn how to:
+- Create rulesets for all kinds of network traffic, IPv4 and IPv6 both, whether crossing a simple LAN, hiding behind NAT, traversing DMZs, or spanning bridges or wider networks
+- Set up wireless networks with access points, and lock them down using authpf and special access restrictions
+- Maximize flexibility and service availability via CARP, relayd, and redirection
+- Build adaptive firewalls to proactively defend against attackers and spammers
+- Harness OpenBSD’s latest traffic-shaping system to keep your network responsive, or use ALTQ and Dummynet configurations on FreeBSD to full effect
+- Stay in control of your traffic with monitoring and visualization tools (including NetFlow)
+The Book of PF is the essential guide to building a secure network with PF. With a little effort and this book, you’ll be well prepared to unlock PF’s full potential.
+Covers OpenBSD 7.x, FreeBSD 14.x, and NetBSD 10.x
+
+Comments:
+--------------------
+Thread 1:
+What's everyone's experience with modern PF in production? Also, not to start a holy war, but what people think about modern PF vs nftables? I've only ever used nftables (and only in fairly simple scenarios) but I've always been curious about the PF side of the world.
+  Reply 1: I manage a pf.conf with about 400 rules across a dozen VLANs, I find it intuitive and even enjoyable to work on. It feels kinda like editing source code - there are some host, network, and port declarations at the top, a section for NAT and egress, then a section for each VLAN that contains the pass in/pass out rules.
+I tail the pflog0 interface in a tmux session so I can keep an eye on pass/block, and also keep a handy function in my .profile to make it easy to edit the ruleset and reload:
+    function pfedit {
+            vi /etc/pf.conf && \
+            pfctl -f /etc/pf.conf && \
+            { c=`pfctl -s rules | wc -l | tr -d ' '`; printf 'loaded %s rules\n' "$c"; }
+    }
+
+
+This opens the file for editing, reloads the ruleset (which also validates it), then returns the rule count if successful.
+  Reply 2: I haven't used Linux as a gateway in years, so I can only compare pf to iptables. The two biggest differences are the way the rules are applied and the logging.
+pf rules work a little backwards compared to iptables. A packet traverses the entire ruleset and the last rule to match wins. You can short-circuit this with a "quick" directive. It takes a bit of getting used to coming from iptables.
+The logging on pf doesn't integrate with syslog automatically like iptables does. You're expected to set up a logging system for your particular use case. There are several ways to do it, and for production you'd be doing it regardless, but for honelab setups it's an extra thing you need to worry about.
+I prefer pf, but I don't recommend it to people new to firewalls.
+  Reply 3: Their BDFL thinks BC breaks are great “we’ll be in a better place” I remember him saying, and has blessed breaking pf multiple times by changing the rule syntax, whereas prior versions of this book are suddenly obsolete along with countless tutorials, forum posts, etc.
+This is one thing M$ gets right, in business environments you don’t do that. I wouldn’t use pf for anything outside a home lab.
+  Reply 4: It's slower than nftables.
+  Reply 5: Not to ask anyone for free work but any write-up on this, I'd love to read.
+
+Thread 2:
+It's a great book, I used to have some edition of it and it helped me a lot professionally with setting up firewalls, load balancing, traffic shaping and more.
+I also had a book on Designing FreeBSD rootkits that was very educational.
+Unfortunately I've given away all my books for more minimalistic living where I am instead dependent on digital information. Not sure how to feel about it.
+  Reply 1: I almost did the same and still think about doing it! I also have an older edition of this book somewhere in a small stack of OpenBSD books I purchased when I was first learning the system. These days I never reference them. But they do make for a neat OpenBSD area on my bookshelf.
+  Reply 2: There are e-readers and DRM-free electronic libraries.
+
+Thread 3:
+Lot of admiration for no starch - your books are great !
+  Reply 1: Per Dr. Marshall Kirk McKusick (as announced in one of the recent BSD conferences), No Starch Press will be publishing the third edition of the Design and Implementation of the FreeBSD Operating System book sometime later this year.
+  Reply 2: I was just wondering about this the other day. I own both previous versions.
+  Reply 3: Chapter 1, config files don’t go in /etc. Well they do, but also /var. And also here and also there. It’s like linux you get a free treasure hunt built in when you need to update something. Some services get local_ attached even though all the services are local. Somehow NetBSD is able to avoid all of this. But do you want working drivers or not? End of chapter 1.
+Actually FreeBSD is great and for a modern OS better than linux in all ways but ecosystem and even there it’s fine. But also the design while it makes sense in some way kind of sucks, it’s messy.
+  Reply 4: Yeah.  My favorite are books that guide you through implementing complex systems projects from scratch, like Nora Sandler's "Writing a C compiler", or Sy Brand's "Building a Debugger".  I wish they produced A LOT more of them.
+  Reply 5: Those are some new and very very shallow books.
+There better one's from 90" and 80".
+
+Thread 4:
+PF = Packet Filter
+  Reply 1: Was thinking I had missed an entire edition of Pathfinder for a moment upon reading the title
+  Reply 2: Your comment made me one day younger.
+
+Thread 5:
+I'd love something similarly scoped centered around nftables. Does anyone have a suggestion? I see No Starch has a Linux Firewall book, but it's from 2008 and is thus iptables-based.
+  Reply 1: Nftables has a really good doc site
+https://wiki.nftables.org/wiki-nftables/index.php/Main_Page
+. I wouldn't rely on any book

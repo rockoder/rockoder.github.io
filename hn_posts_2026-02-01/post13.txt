@@ -1,0 +1,116 @@
+Post ID: 46839215
+Title: Nintendo DS code editor and scriptable game engine
+Author: Antibabelic
+Score: 159
+Total Comments: 37
+Created At (UTC): 2026-01-31T18:27:36+00:00
+Domain: crl.io
+Link: https://crl.io/ds-game-engine/
+
+Article Content:
+--------------------
+2026
+TL;DR
+I built a scriptable 3D game engine for the Nintendo DS so you can write and run games directly on the console itself. Written in C using libnds, it compiles to a ~100KB .nds ROM that runs at 60 FPS. Features a touch-based code editor on the bottom screen and real-time 3D rendering on the top screen. Ships with a working 3D pong game as the default script.
+I felt nostalgic for when I made my first games on an old TI-82 graphing calculator. So I tried bringing that whole experience to my Nintendo DS. A complete programming environment you can hold in your hands.
+What you see is a scriptable game engine with a custom programming language featuring variables, loops, and conditionals. You write code using the bottom touchscreen, click play, and the game will execute in real-time on the top screen with full 3D rendering.
+At a high level, the engine breaks down into three parts:
+Uses the DS's 3D hardware to render colored cubes at 60 FPS. Each model has position (X, Y, Z), rotation angle, and color. The camera is fully controllable with position and yaw/pitch angles.
+// DS 3D rendering code (C + libnds) glMatrixMode(GL_MODELVIEW); glLoadIdentity(); gluLookAt(camX, camY, camZ, // camera position camX + lookX, camY + lookY, camZ + lookZ, // look target 0, 1, 0); // up vector
+Each model is drawn with a transform (position + Y-axis rotation), then the cube geometry: one color, six quads (24 vertices).
+// Per-model draw calls (from main.c) for (i = 0; i < MAX_MODELS; i++) { if (!modelActive[i]) continue; glPushMatrix(); glTranslatef(modelX[i], modelY[i], modelZ[i]); glRotatef(modelAngle[i], 0, 1, 0); drawCube(CUBE_COLORS[modelColorIndex[i]]); drawWireframeCube(); glPopMatrix(1); } // Cube geometry: RGB15 color -> glColor3b, then 6 faces as GL_QUADS glColor3b(r * 255/31, g * 255/31, b * 255/31); glBegin(GL_QUADS); /* +Z face */ glVertex3f(-1.0f, 1.0f, 1.0f); glVertex3f( 1.0f, 1.0f, 1.0f); glVertex3f( 1.0f, -1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, 1.0f); /* -Z, +Y, -Y, +X, -X ... (24 vertices total) */ glEnd();
+A touch-based code editor with a custom UI drawn pixel-by-pixel to a 256x192 bitmap. Features include:
+// Software rendering to bottom screen u16 *subBuffer = (u16*)BG_BMP_RAM_SUB(0); // 256x192 framebuffer subBuffer[y * 256 + x] = RGB15(31, 31, 31); // white pixel
+Executes one line of script per frame. Scripts can use 26 variables (A-Z) plus 9 read-only registers for input (D-pad, buttons) and system state (elapsed time, camera direction).
+// Script execution (simplified) if (tokenEquals(script[scriptIP], "add")) { int r = scriptReg[scriptIP]; // which register (A-Z) registers[r] += getNumberParamValue(scriptIP, 0); scriptIP++; // next line }
+Scripts are built from tokens (commands) with numeric parameters. Each line executes instantly, with no parsing overhead, just a series of if-checks against token names.
+Variables & Math
+SET A 5
+— set register A to 5ADD A 1
+— add 1 to ASUBTRACT A 2
+— subtract 2 from AMULTIPLY B -1
+— multiply B by -1Control Flow
+LOOP
+/ END_LOOP
+— infinite loopIF_GT A 10
+— if A > 10IF_LT A 0
+— if A < 0IF_TRUE kA
+— if A button pressedEND_IF
+— close conditional3D Objects
+MODEL 0
+— create model at index 0POSITION 0 X Y Z
+— set positionANGLE 0 45
+— set rotation angleNEXT_COLOR 0
+— cycle colorCamera & Rendering
+CAM_POS X Y Z
+— set camera positionCAM_ANGLE yaw pitch
+— set look directionBACKGROUND 2
+— set bg color (0-3)BEEP
+— play 0.1s soundSLEEP 0.016
+— pause (60 FPS = 0.016s/frame)LEFT, UP, RGT, DN
+: D-pad (1.0 when held, 0.0 when released)
+KA, KB
+: A and B buttonsTIME
+: elapsed seconds since script startedLOOKX, LOOKZ
+: camera forward direction (normalized X and Z)
+The engine ships with a playable pong game. Here's a simplified excerpt:
+MODEL 0 ; create ball MODEL 1 ; create paddle CAM_POS 0 8 18 ; position camera SET A 0 ; ball X position SET B 1 ; ball velocity SET C 0 ; paddle Z position LOOP ADD A B ; move ball IF_GT A 10 ; hit right wall? MULTIPLY B -1 ; reverse velocity END_IF IF_TRUE Up ; up button pressed? ADD C -0.5 ; move paddle up END_IF POSITION 0 A 0 0 ; update ball position POSITION 1 -13 0 C ; update paddle position SLEEP 0.016 ; ~60 FPS END_LOOP
+The full script includes collision detection, game-over logic, and beep sounds on miss, all done with simple register math and conditionals.
+make
+in the project directory
+program.nds
+(~100 KB ROM file)
+You need a flashcart (e.g. R4, DSTT, Acekard) with a microSD card:
+program.nds
+to the microSD card
+Note: I got my R4 cart + SD card from a friend years ago, so I don't have detailed setup instructions for the cart itself. Most modern flashcarts just need you to copy their firmware to the SD root, then add ROMs in a folder.
+You can test the DS game engine build directly below. The emulator loads ds-game-engine.nds
+. Loads a more basic pong game than the one in the video.
+Nintendo DS emulator (Desmond). Ensure JavaScript is enabled and the page has finished loading. Reload browser page if it doesn't work.
+Compiled ROM (ds-game-engine.nds)
+Feel free to ask or discuss in this Reddit thread
+
+Comments:
+--------------------
+Thread 1:
+Yesssss this is right up my alley with my current projects. I'm working through K&R 2nd Ed and making little demo apps with libnds using framebuffer manipulation for graphics along the way. My goal is to eventually end up with a useful 15bit sprite-ing application, and an endless scrolling handwriting journal thingy with bookmarks. Thank You for posting this! I'm loading this onto my DSi XL right now.
+
+Thread 2:
+The Nintendo DS (lite or XL) is probably the greatest portable gaming system to ever exist.
+  Reply 1: Most definitely.
+Less popular opinion : the ps vita was also one of the greatest despite Sony's horrid support and faith in the product.
+  Reply 2: Over the Steam Deck even?
+  Reply 3: Honestly I'd say that's the New 3DS XL.
+  Reply 4: Agreed over the dsi, though I love it. The only exception is if you only play physical media, then the DS lite's ability to play the entire GBA library is pretty cool.
+For me it's the fact that I can emulate basically all retro consoles on the n3ds, including imo the best existent way to play VirtualBoy games in actual stereoscopic 3d. That on top of the fact that it's the only way to play 3ds games in the native experience, with 3d, which is impossible on any emulator. Combined with the social features and build quality of the device, and it's unbeatable. Get a USB 3ds charger and it's the perfect travel console. I bring it on every trip and leave it on streetpass mode. Especially for Japan trips, I still to this day pick up new street pass pings, which is so incredibly delightful to find when I get back to the hotel room.
+Though I prefer the non xl version, as it's a truly portable console rather than the XL which is huge and heavy in my bag.
+  Reply 5: > the only way to play 3ds games in the native experience, with 3d, which is impossible on any emulator
+You can get that with a headset; there's emulators for the Quest, or you can use Citra in SBS mode with a headset like the Vision Pro or Xreal glasses. But yeah it's more finnicky for sure.
+
+Thread 3:
+The scripting language looks like it would be more cumbersome to use than C.
+  Reply 1: I did a double-take at
+    > Executes one line of script per frame (~60 lines/sec).
+
+
+Makes the "runs at 60FPS" aspect of the engine feel a lot less relevant. At this speed, anything more complex than Pong would be a struggle. Even a CHIP-8 interpreter is usually expected handle a dozen or so comparably expressive instructions per frame.
+  Reply 2: I agree. It seems like interpreting one instruction per frame is the developer's way to guarantee real-time performance. I don't want to discourage the developer from experimenting with this design. What I think they should do is determine the most instructions they can interpret each frame.
+I like the idea of on-device programming like this. While I haven't used it, I know there is a DSiWare application Petit Computer that lets you implement more complex (sprite-based) games in a Basic dialect:
+https://en.wikipedia.org/wiki/Petit_Computer
+. As DSiWare, it has an official video trailer:
+https://www.youtube.com/watch?v=4AYlEo3rJHs
+.
+  Reply 3: Which is why I love this. Extreme constraints. Takes a lot of creativity to make something interesting, without feeling overwhelmed with possibility. I'm considering making tiny arthouse game projects with this.
+  Reply 4: Don’t worry, you can’t have that many lines anyway…
+> Up to 128 script lines per program
+  Reply 5: ،sh12
+
+Thread 4:
+Are you kidding me? This is awesome! I imagine I can try it on my modded 2DS using the DSi emulator
+  Reply 1: >  modded 2DS using the DSi emulator
+The DSi and GBA modes on 3DS aren't emulation, there's an actual Arm7 and GBA/NDS IP blocks in the 3DS. For the parts that do require software intervention (DSi RTC, input remapping, etc.) it's more-or-less hardware virtualization.
+Anyway, good job OP.
+
+Thread 5:
+"This video is unavailable. Error code: 152 - 4"
+Also, the emulator doesn't start?
