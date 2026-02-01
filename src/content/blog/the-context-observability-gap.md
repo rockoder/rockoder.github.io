@@ -4,7 +4,7 @@ date: 2026-02-02
 author: "Ganesh Pagade"
 tags: ["ai", "agents", "architecture", "context-engineering"]
 description: "Why the superior performance of AI coding agents comes from explicit, observable context engineering rather than hidden model 'magic'."
-draft: true
+draft: false
 ---
 
 We are currently in the "magic" phase of AI coding agents. We want to believe that we can just point an agent at a repository, give it a vague prompt, and watch it "think" its way to a solution. We want the agent to be a black box that handles the messy reality of context for us.
