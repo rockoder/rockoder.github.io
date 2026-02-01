@@ -1,0 +1,212 @@
+Title: Swift is a more convenient Rust (2023)
+Author: behnamoh
+Score: 273 points
+Link: https://nmn.sh/blog/2023-10-02-swift-is-the-more-convenient-rust
+
+Article Content:
+--------------------
+(originally published on my old blog)
+I’ve been learning Rust lately.
+Rust is one of the most loved languages out there, is fast, and has an amazing community. Rust invented the concept of ownership as a solution memory management issues without resorting to something slower like Garbage Collection or Reference Counting. But, when you don’t need to be quite as low level, it gives you utilities such as Rc
+, Arc
+and Cow
+to do reference counting and “clone-on-right” in your code. And, when you need to go lower-level still, you can use the unsafe
+system and access raw C pointers.
+Rust also has a bunch of awesome features from functional languages like tagged enums, match expressions, first class functions and a powerful type system with generics.
+Rust has an LLVM-based compiler which lets it compile to native code and WASM.
+I’ve also been doing a bit of Swift programming for a couple of years now. And the more I learn Rust, the more I see a reflection of Swift. (I know that Swift stole a lot of ideas from Rust, I’m talking about my own perspective here).
+Swift, too, has awesome features from functional languages like tagged enums, match expressions and first-class functions. It too has a very powerful type system with generics.
+Swift too gives you complete type-safety without a garbage collector. By default, everything is a value type with “copy-on-write” semantics. But when you need extra speed you can opt into an ownership system and “move” values to avoid copying. And if you need to go even lower level, you can use the unsafe system and access raw C pointers.
+Swift has an LLVM-based compiler which lets it compile to native code and WASM.
+#Deja Vu?
+You’re probably feeling like you just read the same paragraphs twice. This is no accident. Swift is extremely similar to Rust and has most of the same feature-set. But there is a very big difference is perspective. If you consider the default memory model, this will start to make a lot of sense.
+#Rust is bottom-up, Swift is top-down.
+Rust is a low-level systems language at heart, but it gives you the tools to go higher level. Swift starts at a high level and gives you the ability to go low-level.
+The most obvious example of this is the memory management model. Swift use value-types by default with copy-on-write
+semantics. This is the equivalent of using Cow<>
+for all your values in Rust. But defaults matter. Rust makes it easy to use “moved” and “borrowed” values but requires extra ceremony to use Cow<>
+values as you need to “unwrap” them .as_mutable()
+to actually use the value within. Swift makes these Copy-on-Write values easy to use and instead requires extra ceremony to use borrowing and moving instead. Rust is faster by default, Swift is simpler and easier by default.
+#Swift takes Rust’s ideas and hides them in C-like syntax.
+Swift’s syntax is a masterclass in taking awesome functional language concepts and hiding them in C-like syntax to trick the developers into accepting them.
+Consider match
+statements. This is what a match statement looks like in Rust:
+Here’s how that same code would be written in Swift:
+Swift doesn’t have a match
+statement or expression. It has a switch
+statement that developers are already familiar with. Except this switch
+statement is actually not a switch
+statement at all. It’s an expression. It doesn’t “fallthrough”. It does pattern matching. It’s just a match
+expression with a different name and syntax.
+In fact, Swift treats enums
+as more than just types and lets you put methods directly on it:
+#Optional Types
+Rust doesn’t have null
+, but it does have None
+. Swift has a nil
+, but it’s really just a None
+in hiding. Instead of an Option<T>
+, Swift let’s you use T?
+, but the compiler still forces you to check that the value is not nil
+before you can use it.
+You get the same safety with more convenience since you can do this in Swift with an optional type:
+Also, you’re not forced to wrap every value with a Some(val)
+before returning it. The Swift compiler takes care of that for you. A T
+will transparently be converted into a T?
+when needed.
+#Error Handling
+Rust doesn’t have try-catch
+. Instead it has a Result
+type which contains the success and error types.
+Swift doesn’t have a try-catch
+either, but it does have do-catch
+and you have to use try
+before calling a function that could throw. Again, this is just deception for those developers coming from C-like languages. Swift’s error handling works exactly like Rust’s behind the scenes, but it is hidden in a clever, familiar syntax.
+This is very similar to how Rust let’s you use ?
+at the end of statements to automatically forward errors, but you don’t have to wrap your success values in Ok()
+.
+#Rust’s compiler catches problems. Swift’s compiler solves some of them
+There are many common problems that Rust’s compiler will catch at compile time and even suggest solutions for you. The example that portrays this well is self-referencing enums.
+Consider an enum that represents a tree. Since, it is a recursive type, Rust will force you to use something like Box<>
+for referencing a type within itself.
+(You could also us Box<Vec<TreeNode<T>>>
+instead)
+This makes the problem explicit and forces you to deal with it directly. Swift is a little more, automatic.
+Note: that you still have to annotate this enum
+with the indirect
+keyword to indicate that it is recursive. But once you’ve done that, Swift’s compiler takes care of the rest. You don’t have to think about Box<>
+or Rc<>
+. The values just work normally.
+#Swift is less “pure”
+Swift was designed to replace Objective-C and needed to be able to interface with existing code. So, it has made a lot of pragmatic choices that makes it a much less “pure” and “minimalist” language. Swift is a pretty big language compared to Rust and has many more features built-in. However, Swift is designed with “progressive disclosure” in mind which means that just as soon as you think you’ve learned the language a little more of the iceberg pops out of the water.
+Here are just some of the language features:
+- Classes / Inhertence
+- async-await
+- async-sequences
+- actors
+- getters and setters
+- lazy properties
+- property wrappers
+- Result Builders (for building tree-like structures. e.g. HTML / SwiftUI)
+#Convenience has its costs
+Swift is a far easier language to get started and productive with. The syntax is more familiar and a lot more is done for you automatically. But this really just makes Swift a higher-level language and it comes with the same tradeoffs.
+By default, a Rust program is much faster than a Swift program. This is because Rust is fast by default, and lets you be slow, while Swift is easy by default and lets you be fast.
+Based on this, I would say both languages have their uses. Rust is better for systems and embedded programming. It’s better for writing compilers and browser engines (Servo) and it’s better for writing entire operating systems.
+Swift is better for writing UI and servers and some parts of compilers and operating systems. Over time I expect to see the overlap get bigger.
+#The “cross-platform” problem
+There is a perception that Swift is only a good language for Apple platforms. While this was once true, this is no longer the case and Swift is becoming increasingly a good cross-platform language. Hell, Swift even compiles to wasm, and the forks made by the swift-wasm team were merged back into Swift core earlier this year.
+Swift on Windows is being used by The Browser Company to share code and bring the Arc browser to windows. Swift on Linux has long been supported by Apple themselves in order to push “Swift on Server”. Apple is directly sponsoring the Swift on Server conference.
+This year Embedded Swift was also announced which is already being used on small devices like the Panic Playdate.
+Swift website has been highlighting many of these projects:
+The browser company says that Interoperability is Swift’s super power.
+And the Swift project has been trying make working with Swift a great experience outside of XCode with projects like an open source LSP and funding the the VSCode extension.
+#Swift is not a perfect language.
+Compile times are (like Rust) quite bad. There is some amount of feature creep and the language is larger than it should be. Not all syntax feels familiar. The package ecosystem isn’t nearly as rich as Rust.
+But the “Swift is only for Apple platforms” is an old and tired cliche at this point. Swift is already a cross-platform, ABI-stable language with no GC, automatic Reference Counting and the option to opt into ownership for even more performance. Swift packages increasingly work on Linux. Foundation was ported to Swift, open sourced and made open source. It’s still early days for Swift as a good, more convenient, Rust alternative for cross-platform development, but it is here now. It’s no longer a future to wait for.
+
+Comments:
+--------------------
+Thread 1:
+Broadly agree but, as is most things, the devil is in the details!
+- Xcode. A really rough ide that has a hard time at scale, choking on package refreshes, many targets, and more. It has a special entitlement so you can't even binary patch it if you want to fix it!
+- Build systems. Cargo is _much_ easier to work with than SPM.
+- Macros support, codegen is still largely done outside of the macro system, which should indicate its use.
+- Linter / format support. Yeah, it exists, last I checked it's just a good bit worse.
+- Performance. There are MANY performance cliffs in Swift; most can be fixed by a sufficiently determined compiler developer, but at this point we've kinda departed talking about the language as-is.
+- Type inference time. Swift's bidirectional type inference causes a ton of choking on complex expressions, which is a real problem with its number one use case, SwiftUI.
+- An exacerbating factor on the above, imports are all implicitly module-scoped, meaning that changing a single file means recomputing the types for all files in the module. And because SPM and Xcode have such a rough time with multiple targets, that usually means that a single change can lead to recompiling all Swift files.
+- Weirdness around classes and structs? I understand that they had to do it for objc compatibility, but I would've found it much cleaner if they'd just from the start had something replacing class, like a fully-sugared `final class Box<T>` that replaces all uses of class.
+I agree that for the most part it _could_ be an easier rust, but between including bidirectional type inference without a cut operator and poor tooling I struggle to find where it's actually easier in cases that you can't just use typescript and dodge all the non-typecheck compilation headaches entirely.
+  Reply 1: I've made a tiny SwiftUI app. It was
+really
+ difficult to figure out the memory leaks. In fact, I have leaks that I still haven't been able to find. For some reason the heap is fine, but the app continues to allocate virtual memory.
+I've thrown Claude and Gemini at the app to try to analyze the code, had them use vmmap and Instruments, asked them run all of the code in a loop to reproduce the leakage — and still it leaks, slowly, tens of megabytes per day.
+I'm sure it's something simple starting me in the face. But the fact remains that Swift's sort-of-automatic-but-not-quite memory model still makes it much harder to reason about memory than Rust or even Go.
+  Reply 2: I agree, but I think that it's difficult to spot memory leaks in SwiftUI because it's such a high-level abstraction framework. When working with the Cocoa and Cocoa Touch libraries, it's so much easier to find.
+And of course, Apple's UI frameworks != Swift the language itself.
+  Reply 3: The memory management is almost broken. They decided not crashing was better than mashing memory.
+  Reply 4: hunting dangling references in a reference counted system is like that....  that's all I can guess is going on here.  Good hunting!  I wonder if there's a resource debugger?  So far when I have really had to look, xcode was suffiicent... but there's likely better out there for finding this kind of thing.
+  Reply 5: Personally I avoid using SwiftUI except in bite size chunks like collection view cells. It’s great for that kind of use case but doesn’t scale up well.
+I wasn’t of the mind that AppKit/UIKit really needed replacing in the first place, though…
+
+Thread 2:
+> Consider an enum that represents a tree. Since, it is a recursive type, Rust will force you to use something like Box<> for referencing a type within itself.
+>
+> enum TreeNode<T> {
+>    Leaf(T),
+>    Branch(Vec<Box<TreeNode<T>>>),
+> }
+>
+> (You could also us Box<Vec<TreeNode<T>>> instead)
+This is wrong, you don't need a `Box` here. The Rust compiler forces you to have a layer of indirection, but `Vec` already does that.
+  Reply 1: In one sense the places where the Rust is wrong don't trouble me because I already know Rust well, but in the end they do trouble me because it seems reasonable to assume the Swift is equally wrong but I don't know where and how.
+For example "In fact, Swift treats enums as more than just types and lets you put methods directly on it" seems to assume that "just types" don't have methods, which I guess is what you might assume coming from say, C++ but Rust isn't C++ and so of course all of its types, including not only user-defined enums, structures and indeed unions can have methods - but also the built-in primitive types all have methods too.
+    'F'.to_digit(16).unwrap() // is the 32-bit unsigned integer constant 15
+
+
+Or maybe an even closer to the metal example: Rust's pointer provenance APIs get to provide a method on
+raw pointers
+ which takes a closure to do stuff like hide boolean flag bits at the bottom of an aligned pointer. The fact that you're ultimately going to lower to an XOR on a CPU address register doesn't mean you shouldn't get method syntax, it's the 21st century.
+  Reply 2: > In fact, Swift treats enums as more than just types and lets you put methods directly on it
+This section was fairly disappointing, that Rust requires you to put "} impl {" between the `enum` and its methods is... not really an interesting point.
+I think the title of the article is... basically correct, and the high-level point that they're both languages with modern type systems, sum types, pattern matching, and so on is good, but too many of the examples were weak.
+  Reply 3: Adding on, its also a bit much to say that Swift has a good level of sugar and reference an enum of all things. Swift's union type story is so poor that, instead of properly modeling state, people to this day still use masses of optional types in their views rather than an enum because actually using swift enums and protocols is so painful.
+  Reply 4: I don’t which Swift developers you are talking to, but let the record know I don’t and use enum quite a lot. And I don’t find it particularly painful though a bit verbose at times.
+  Reply 5: I think Swift enums are really well designed, but SwiftData doesn't really support them unfortunately and Observable has problems with reactivity and enums (works on iOS not macOS I've found).
+So lots of optionals might well be the better path here.
+
+Thread 3:
+Swift is a neat language, but it’s a hard sell for server-side software. The ecosystem is tiny, and there’s nothing you gain from using it instead of Go or Rust for infra / distsys.
+Also, it works okay at best with VS Code, and you couldn’t pay me to use Xcode.
+Kotlin tried doing similar things to gain adoption on the server side. But server-side programming is a crowded space, and people just don’t like writing distsys code in another JVM language. Swift’s story is a little better on that front.
+If you want a quick-and-dirty language, Python and TypeScript do the job. For perf-sensitive, highly concurrent environments, Go is hard to compete against. A lot of ops tooling and infra code is written in Go. For systems programming and embedded code, Rust is a better choice.
+So while it’s fun to think about what language X gives you in terms of syntax, in practice it’s rarely enough to pick a language like Swift for your next non-toy backend distsys work.
+Also, Apple. Given their stance against free and open source software, I wouldn't be too thrilled to pick a language that works better in their walled garden.
+  Reply 1: This makes me think you haven't really tried it ever? Sure writing a hello world is something but, one of the best features of Swift on the server side is that it seamlessly interopts with anything C (and nowadays C++, though that is after my time).
+I wrote an entire, well performing backend in Swift
+because
+ I could just directly plug in to already existing libraries without having ot provide a whole bunch of "FFI" glue.
+All the other languages you suggest is something that Swift excels at while staying performant (also none of those have an IDE like Xcode so idk why you even bring it up). Though for actual systems programming I don't think Rust can be beaten by Swift, simply because of its more explicit (and therefore confronting) nature.
+  Reply 2: I have been using Swift Vapor for personal projects for awhile and it's great. I kind of regret it now on some projects since I use a lot of Go too and I miss the speed of compiling/testing when I'm using agentic coding (where my goal is to put the agent into virtuous loops leading to a success state) - it just takes longer in Swift.
+  Reply 3: In agentic workflows, Go’s fast compiler and simple syntax make things so much easier.
+I no longer write Python or JavaScript, even for trivial scripts. Why suffer sluggish performance or tooling nightmares when choosing a typed language no longer costs much?
+As for Swift, it’s a harder sell. The docs aren’t there. The libraries aren’t that great. Apple-ism scares away a ton of folks, and the alternatives create less friction.
+
+Thread 4:
+> There is a perception that Swift is only a good language for Apple platforms. While this was once true, this is no longer the case and Swift is becoming increasingly a good cross-platform language.
+How good is the developer experience on a non-Apple platform really? Linux is my primary platform and my perception is, that allmost all of the swift eco system is for Apple. Libraries, tools, documentation, IDEs, tutorials, etc. all assume, that you use an Apple.
+Can someone tell me who does not use an Apple-device and uses swift?
+  Reply 1: My experience is that it is very frustrating. Apple's documentation makes no mention of what works on Linux and its limitations, so you just have to guess or work it out with trial and error.
+I tried to write a websocket client:
+https://willhbr.net/2023/08/23/the-five-stages-of-swift-on-l...
+
+Then tried again 2 years later:
+https://willhbr.net/2025/10/13/the-6-2nd-stage-of-swift-on-l...
+  Reply 2: Sounds like a language not to waste my time on.
+I should spend my time writing actual code and ship stuff, not debugging or finding holes in someone else's product.
+  Reply 3: It’s not. The Apple devs will tell you it’s a great time on Linux, just like the MS people will tell you the same for C#.
+Rust wasn’t designed for any specific platform and you can tell. The ecosystem on Linux especially is fantastic.
+  Reply 4: > Rust wasn’t designed for any specific platform
+I suspect that Mozilla being the primary developer and sponsor for many years actually meant that compatibility with all major platforms was prioritised; Mozilla obviously care about stuff working on Windows, and run lots of builds on Windows + I imagine a number of Firefox developers (if not drive) at least own a Windows machine for testing Windows-specific stuff!
+I call out Windows because I think generally software people go for Mac > Linux > Windows (although Mac > Linux may be slowly changing due to liquid glass).
+  Reply 5: Is liquid glass really that bad? I left Mac years ago due to other annoyances. It was my daily driver for a decade and change. But I couldn't get used to the iOSification and the dependence on apple cloud services for most new features. When I started with macOS jaguar it was just a really good commercial UNIX. It got even better with Tiger and leopard.
+But the later years I spent every release looking at new fancy features I couldn't use because I don't use apple exclusively (and I don't use iOS at all, too closed for me). So almost no features that appealed to me while usually breaking some parts of the workflow I did use.
+While I did hate the 'flat' redesign after Mavericks that on its own was not really a deal-breaker though. Just an annoyance.
+I'm kinda surprised liquid glass is so bad people actually leave for it. Or is it more like the last drop?
+
+Thread 5:
+> Swift doesn’t have a match statement or expression. It has a switch statement that developers are already familiar with. Except this switch statement is actually not a switch statement at all. It’s an expression. It doesn’t “fallthrough”. It does pattern matching. It’s just a match expression with a different name and syntax.
+Are there people who see a "match" statement, smash both hands on the table, and shout, "WHAT THE ___ is a ------- MATCH STATEMENT?!!! THIS IS SO $%^&@*#%& CONFUSING!! I DON'T KNOW THAT WORD!! I ONLY KNOW SWITCH!!"
+  Reply 1: TL;DR — it seems to me that it is less anger from devs at being confused over a Case construct and more an attempt to preemptively soothe any ruffled feathers for devs wanting a traditional Switch.
+I think your comment was probably rhetorical, but does address/raise a fairly common issue in designing programming languages. My position on this is that it is less like "WHAT THE ___ is a ------- MATCH STATEMENT?!!! THIS IS SO $%^&@*#%& CONFUSING!! I DON'T KNOW THAT WORD!! I ONLY KNOW SWITCH!!" and instead more like the following (from the language designers POV):
+Okay, we want a Case construct in the language, but programmers coming from or preferring imperative syntax and semantics may not like the Case concept. But, they often like Switch, or at least are familiar with it appearing in code, sooooooo: first, we will alter the syntax of the tradition Switch to allow a more comfortable transition to using this functional inspired construct; then second, we wholesale replace the semantics of that Switch with the semantics of a Case. This is underpinned by the assumption the the syntax change is small enough that devs won’t recoil from the new construct, then the larger divergence of semantics will hopefully not produce issues because it is just a small semantic change coated in an most familiar syntax.
+Interestingly, the author of TFA seems to be operating under the assumption that the Case construct is an unqualified positive change and sneaking the corresponding semantics into that unfortunate imperative code is a wholly positive goal for the language design.
+Without taking a position on the above positivity, I think the maneuvers language designers take while designing syntax and semantics (as exhibited in Swift’s Switch syntax for a Case Expression) is motivated by divergent, and often times strange, priorities and prior assumptions. So, from the 10,000’ view, does enshrining priorities and assumptions, and others like it, as a hard coded facet of the language the right path for languages generally? Should a language seek to be an overall more general framework for programming, leaving a vast majority of the syntax and higher-level semantics to be chosen and instantiated by devs where fit-for-purpose and pros/cons direct its inclusion? Or is the goal for opinionated languages, with or without accompanying sugar to help smooth over differences from other languages, the better path? Is there a ‘happy’ medium where:
+1) design goals and forward thinking or experimental syntax/semantics get put in the language as an ‘it’s for your own good’ method for advancing the field as a whole and advancing/optimizing a single dev’s programs in particular;
+2) the default position of a language should be as generalized as possible, but with abilities and options for users to specify what advanced, uncommon, or divergent syntax/semantics are utilized in a given program?
+  Reply 2: We're talking about fallthrough happening by default or not by default. You could call it a "map" construct or a "choose" statement for all I care.
+Whether or not you have to write the "case" keyword 10 times is an aesthetic choice.
+I don't think this has anything to do with program optimization. On all non-theoretical ISA's I'm aware of, you don't need a JUMP instruction to go to the next instruction. We're debating names.
+I'm a Ziguana so my answer to the programming philosophy questions would be that we need a language where the complexity emerges in the code, not in the language itself, and we generally want a shared language that can be read and used by anyone, anywhere. If everyone has their own subset of the language (like C++) then it's not really just one language in practice. If every project contains its own domain specific language, it may be harder for others to read because they have to learn custom languages. That's not to say you should never roll your own domain specific language, or that you should never write a program that generates textual source code, but the vast, vast majority of use cases shouldn't require that.
+And, yes, be opinionated. I'm fine with some syntactic sugar that makes common or difficult things have shortcuts to make them easier, but again, if I learned a language, I should generally be able to go read someone's code in that language.
+What do you consider "advancing the field as a whole"?
