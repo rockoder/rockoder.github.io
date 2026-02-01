@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-05 - [Enhancing Developer Experience with Copy Utilities]
+**Learning:** For technical blogs, friction in copying code snippets is a significant UX hurdle. Injecting a "Copy" button directly into `<pre>` elements provides a clear utility. Ensuring the button is visible on hover/focus and provides immediate visual feedback (e.g., icon change to a checkmark) makes the interaction feel responsive and satisfying.
+**Action:** Prefer injecting copy utilities via client-side scripts to avoid polluting content source files, and use ARIA labels and focus-visible states for accessibility.

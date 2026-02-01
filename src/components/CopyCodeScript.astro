@@ -1,0 +1,25 @@
+<script>
+  function addCopyButtons() {
+    document.querySelectorAll('pre').forEach((pre) => {
+      if (pre.querySelector('.copy-code-button')) return;
+      pre.classList.add('group');
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-button absolute top-2 right-2 flex items-center justify-center p-1.5 rounded-md bg-[var(--background-tertiary)] border border-[var(--border)] text-[var(--foreground-muted)] cursor-pointer opacity-0 transition-all z-10 group-hover:opacity-100 focus-visible:opacity-100 hover:bg-[var(--border)] hover:text-[var(--foreground)]';
+      btn.type = 'button'; btn.ariaLabel = 'Copy code'; btn.title = 'Copy code';
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+      pre.appendChild(btn);
+      btn.onclick = async () => {
+        const text = (pre.querySelector('code') || pre).innerText;
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('text-[var(--accent)]', 'border-[var(--accent)]');
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        setTimeout(() => {
+          btn.classList.remove('text-[var(--accent)]', 'border-[var(--accent)]');
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+        }, 2000);
+      };
+    });
+  }
+  addCopyButtons();
+  document.addEventListener('astro:after-swap', addCopyButtons);
+</script>
