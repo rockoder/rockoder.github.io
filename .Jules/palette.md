@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-03-20 - [Fixing Nested Semantic Regions]
+**Learning:** In layout-heavy frameworks like Astro, it's easy to accidentally nest `<main>` tags when both the layout and the page component define one. This violates HTML semantics and can confuse screen readers. Replacing internal `<main>` tags with `<section aria-labelledby="...">` maintains a clear document structure.
+**Action:** Audit rendered HTML for duplicate landmark roles and ensure a single primary `<main>` element per page.

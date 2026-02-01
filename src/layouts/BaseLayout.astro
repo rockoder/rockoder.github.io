@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchWrapper from '../components/SearchWrapper.astro';
+import SkipLink from '../components/SkipLink.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -28,8 +29,9 @@ const { title, description, image, type, publishedTime } = Astro.props;
     />
   </head>
   <body class="min-h-screen flex flex-col">
+    <SkipLink />
     <Header />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer />
