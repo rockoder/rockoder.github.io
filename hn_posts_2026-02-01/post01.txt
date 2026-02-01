@@ -1,0 +1,100 @@
+Post ID: 46838597
+Title: Mobile carriers can get your GPS location
+Author: cbeuw
+Score: 758
+Total Comments: 446
+Created At (UTC): 2026-01-31T17:21:34+00:00
+Domain: an.dywa.ng
+Link: https://an.dywa.ng/carrier-gnss.html
+
+Article Content:
+--------------------
+Mobile carriers can get your GPS location
+In iOS 26.3, Apple introduced a new privacy feature which limits “precise location” data made available to cellular networks via cell towers. The feature is only available to devices with Apple’s in-house modem introduced in 2025. The announcement1 says
+Cellular networks can determine your location based on which cell towers your device connects to.
+This is well-known. I have served on a jury where the prosecution obtained location data from cell towers. Since cell towers are sparse (especially before 5G), the accuracy is in the range of tens to hundreds of metres2.
+But this is not the whole truth, because cellular standards have built-in protocols that make your device silently send GNSS (i.e. GPS, GLONASS, Galileo, BeiDou) location to the carrier. This would have the same precision as what you see in your Map apps, in single-digit metres.
+In 2G and 3G this is called Radio Resources LCS Protocol (RRLP)
+So the network simply asks “tell me your GPS coordinates if you know them” and the phone will respond3.
+In 4G and 5G this is called LTE Positioning Protocol (LPP)
+RRLP, RRC, and LPP are natively control-plane positioning protocols. This means that they are transported in the inner workings of cellular networks and are practically invisible to end users4.
+It’s worth noting that GNSS location is never meant to leave your device. GNSS coordinates are calculated entirely passively, your device doesn’t need to send a single bit of information. Using GNSS is like finding out where you are by reading a road sign: you don’t have to tell anyone else you read a road sign, anyone can read a road sign, and the people who put up road signs don’t know who read which road sign when.
+These capabilities are not secrets but somehow they have mostly slid under the radar of the public consciousness. They have been used in the wild for a long time, such as by the DEA in the US in 200656:
+[T]he DEA agents procured a court order (but not a search warrant) to obtain GPS coordinates from the courier’s phone via a ping, or signal requesting those coordinates, sent by the phone company to the phone.
+And by Shin Bet in Israel, which tracks everyone everywhere all the time7:
+The GSS Tool was based on centralized cellular tracking operated by Israel’s General Security Services (GSS). The technology was based on a framework that tracks all the cellular phones running in Israel through the cellular companies’ data centers. According to news sources, it routinely collects information from cellular companies and identifies the location of all phones through cellular antenna triangulation and GPS data7.
+Notably, the Israeli government started using the data for contact tracing in March 202078, only a few weeks after the first Israeli COVID-19 case. An individual would be sent an SMS message informing them of close contact with a COVID patient and required to quarantine. This is good evidence that the location data Israeli carriers are collecting are far more precise than what cell towers alone can achieve.
+A major caveat is that I don’t know if RRLP and LPP are the exact techniques, and the only techniques, used by DEA, Shin Bet, and possibly others to collect GNSS data; there could be other protocols or backdoors we’re not privy to.
+Another unknown is whether these protocols can be exploited remotely by a foreign carrier. Saudi Arabia has abused SS7 to spy on people in the US9, but as far as I know this only locates a device to the coverage area of a Mobile Switching Center, which is less precise than cell tower data. Nonetheless, given the abysmal culture, competency, and integrity in the telecom industry, I would not be shocked if it’s possible for a state actor to obtain the precise GNSS coordinates of anyone on earth using a phone number/IMEI.
+Apple made a good step in iOS 26.3 to limit at least one vector of mass surveillance, enabled by having full control of the modem silicon and firmware. They must now allow users to disable GNSS location responses to mobile carriers, and notify the user when such attempts are made to their device.
+-
+https://transition.fcc.gov/pshs/911/Apps Wrkshp 2015/911_Help_SMS_WhitePaper0515.pdf ↩
+-
+https://laforge.gnumonks.org/blog/20101217-learning_about_gps/ ↩
+-
+Comment on United States v. Skinner, 690 F.3d 772 (6th Cir. 2012) https://harvardlawreview.org/print/vol-126/sixth-circuit-holds-that-pinging-a-targets-cell-phone-to-obtain-gps-data-is-not-a-search-subject-to-warrant-requirement-ae-united-states-v-skinner-690-f-3d-772-6th-cir-2012-rehae/ ↩
+-
+https://www.cato.org/blog/skinning-fourth-amendment-sixth-circuits-awful-gps-tracking-decision ↩
+-
+https://www.ericsson.com/en/blog/2020/12/5g-positioning--what-you-need-to-know ↩
+-
+Eran Toch and Oshrat Ayalon. 2023. How Mass surveillance Crowds Out Installations of COVID-19 Contact Tracing Applications. https://doi.org/10.1145/3579491 ↩ ↩2 ↩3
+-
+https://www.nytimes.com/2020/03/16/world/middleeast/israel-coronavirus-cellphone-tracking.html ↩
+-
+https://www.theguardian.com/world/2020/mar/29/revealed-saudis-suspected-of-phone-spying-campaign-in-us ↩
+
+Comments:
+--------------------
+Thread 1:
+My friend was going through a pretty massive depression after his mom passed. He'd been with my wife and I at our house for a number of hours talking through it, and apparently not texting his sisters back. They called in a welfare check.
+We live in a reasonably dense suburb. Police showed up at our front door and asked to speak with him. They just wanted to make sure he was doing OK. He asked them "how did you find me?" and their response was just "we pinged your phone".
+Watching my security camera, they did not stop at any of my neighbors houses first. It was very direct to my front door. This leads me to believe whatever sort of coordinates they had were pretty spot on. His car was parked well down the block and not in front of our house so that was no give away.
+This was five years ago and always struck me as a "Huh"
+  Reply 1: Oh! So IIRC it used to be that the modem could only get a rough estimate of your location and typically Apple/Google's location infra(which combined wifi/blue and lately satellite position based shadow mapping) to determine a precise location. And law enforcement got precise info  from _that_ infra(E911 requirements for every device).
+Clearly they don't need that now because 5g cell towers have gotten precise enough? Also, if that's true then 5g being that precise might still not apply to urban dense areas, where more postprocessing is required to get better location accuracy...
+
+Thread 2:
+I’m not super sure about the specifics but having taken a 5G class, the professor made it quite clear that due to the latency and bandwidth requirements of 5G, precise tracking is required to allow towers to correctly do beam forming.
+If anyone wants to look at the future of 5G (well ORAN) here it is:
+https://gitlab.eurecom.fr/oai/openairinterface5g
+When talking about the 5G system, cell towers can request a users estimated velocity which when combined with the towers own location combined with the physical radio (that is communicating with the phone (UE)) you can get a pretty good position estimation.
+What is new is that network providers are trying to sell this tower/5G data to other companies.
+I could be wrong but from my understanding 5G has always required precise tracking of every device connected.
+  Reply 1: This would not be a problem if you phone did not have IMEI and IMSI, and if the telco only provided an anonymous Internet channel. The problem is that you must have a phone number, often linked to your ID and pay with a bank card, linked to your ID, instead of cryptocurrency. Towers and beamforming are not a problem at all.
+  Reply 2: My knowledge on this is the tower should be able to optimise beams without location information. Channel information can be relayed back to the tower for beam optimisation. The tower needs to know the signal path characteristics but not explicitly the location.
+Not disputing that location data is used for beam optimisation just that I dont believe it is required.
+  Reply 3: Exactly, the channel information is all that’s required but you can quite easily get the location information from that, which makes it easier to add additional features from a system point of view.
+If I recall correctly, the tower will report channel information to the higher up controller system which will then decide which next tower should be notified of a phone that’s entering its range.
+So while explicit positioning isn’t required when dealing with one tower, the system overall does need to determine a users position and velocity to handle tower to tower transfers.
+In other words my opinion is that the difference between a towers channel information and a users position is almost one and the same. It’s a handful of math equations away.
+
+Thread 3:
+"and notify the user when such attempts are made to their device."
+We aren't going to remove the security state. We should make all attempts to, but it won't happen. What needs to happen is accountability. I should be able to turn off sharing personal information and if someone tries I should be notified and have recourse. This should also be retroactive. If I have turned off sharing and someone finds a technical loophole and uses it, there should be consequences. The only way to stop the rampant abuse is to treat data like fire. If you have it and it gets out of control you get burned, badly.
+  Reply 1: I turned off all cell carrier tracking 5 years ago. 100% of it.
+By canceling my cell phone subscription.
+I know I know, I must be amish, I have heard it all. But I run two tech companies, travel, have a family, and do most of the things most around here probably do other than doom scrolling.
+So much more time in my own head to think.
+  Reply 2: I have a hybrid approach with GrapheneOS. 99% of the time I only use WiFi on my phone via a Tor router. I have an anonymous KeepGo ESIM with global data that does not expire and use it when I have to when Im away from home.
+  Reply 3: How do you work on the go? I use personal hotspot quite often. Not only when on the go, but if there is unstable WiFi. It’s saved me on multiple occasions - both for live-site incidents and for random meetings.
+  Reply 4: It really depends on who you work as and what your working conditions are. For example, if I had some non-management position at a company that insists on working from the office, I would make sure that I'm NOT available outside my designated work place.
+  Reply 5: Pardon my skepticism but I find it hard to believe you can actually participate in western society without
+choosing
+ to have a government mandated tracking device?
+Maybe you live somewhere this is possible but it's definitely not in the developed world
+
+Thread 4:
+This shows the importance of having open-source software and firmware - commercial companies will betray you every day - remember HDCP, unskippable DVD sections, TPM, updates you cannot disable, "security enclaves", content protection areas on SSDs and all the similar stuff where interests if the owner are not considered.
+
+Thread 5:
+This community should be talking about meshcore more imho.
+It's a peer to peer network based on Lora. It really only allows text messaging but with up to 20km hops between peers coverage is surprisingly huge. Incredibly useful if you go hiking with friends (if you get split up you can still stay in touch).
+See
+https://eastmesh.au/
+ and scroll down to the map for the Victoria and now more widely Australia network that's sprung up.
+  Reply 1: Reticulum gets around a lot of these problems, as the (better) encryption is app-level (or even more fine-grained.) Its also not tied to lora, so you can interop easily with other transports. I made a websocket transport for it, and there is already TCP and UDP, and a couple non-lora radio transports. I also made a (works on web) js and Arduino client lib, and it has a few native client libs, so it can sort of be used on anything, even over traditional networks, or web clients. Meshcore and meshtastic are way more popular, but reticulum seems so much better, to me, for most things. It can still have overload problems, like any radio network, but no client is required to forward, so you can build a different kind of network ("only forward messages that are for my peeps" and marked correctly.) It also has "it costs compute PoW to send to me" which can greatly cut down on spam.
+  Reply 2: I only recently discovered Reticulum, only to then learn that the developer has retired from working on it. Do you know if there's still any community members carrying the torch?
+  Reply 3: The discord is still very active, and there are still commits from original developer, so I am not sure. Its a simple enough protocol, though, and it's been reimplemented a few times. I made my own no-class python version, js, C, etc. Someone made a rust version.
+  Reply 4: Great for small networks. Once bad actors find it, it will be attacked. See gnutella as the case study on unsupervised peer to peer networks
+  Reply 5: I just read gnutella page on Wikipedia, no mention of bad actors

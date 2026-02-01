@@ -1,3 +1,7 @@
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
+
+## 2026-02-01 - [Reframing Ergonomics as Technical Debt]
+**Learning:** The "convenience" vs. "purity" debate in programming languages is often a surface-level distraction from the deeper architectural conflict between local developer ergonomics and global system scalability. Bi-directional type inference and implicit module scoping are effectively technical debts of specification—deferred complexity that must eventually be repaid by the compiler or the developer during large-scale builds.
+**Implication:** Future essays should prioritize identifying where "low-friction" tools create "high-latency" systems, moving the discussion from aesthetic preferences to operational constraints.

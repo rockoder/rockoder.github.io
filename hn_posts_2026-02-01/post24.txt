@@ -1,0 +1,203 @@
+Post ID: 46840178
+Title: Show HN: Minimal – Open-Source Community driven Hardened Container Images
+Author: ritvikarya98
+Score: 103
+Total Comments: 28
+Created At (UTC): 2026-01-31T19:58:00+00:00
+Domain: github.com
+Link: https://github.com/rtvkiz/minimal
+
+Article Content:
+--------------------
+A collection of production-ready container images with minimal CVEs, rebuilt daily using Chainguard's apko and Wolfi packages. By including only required packages, these images maintain a reduced attack surface and typically have zero or near-zero known vulnerabilities.
+| Image | Pull Command | Shell | Use Case |
+|---|---|---|---|
+| Python | docker pull ghcr.io/rtvkiz/minimal-python:latest |
+No | Python apps, microservices |
+| Node.js | docker pull ghcr.io/rtvkiz/minimal-node:latest |
+Yes | Node.js apps, JavaScript |
+| Bun | docker pull ghcr.io/rtvkiz/minimal-bun:latest |
+No | Fast JavaScript/TypeScript runtime |
+| Go | docker pull ghcr.io/rtvkiz/minimal-go:latest |
+No | Go development, CGO builds |
+| Nginx | docker pull ghcr.io/rtvkiz/minimal-nginx:latest |
+No | Reverse proxy, static files |
+| HTTPD | docker pull ghcr.io/rtvkiz/minimal-httpd:latest |
+Maybe* | Apache web server |
+| Jenkins | docker pull ghcr.io/rtvkiz/minimal-jenkins:latest |
+Yes | CI/CD automation |
+| Redis-slim | docker pull ghcr.io/rtvkiz/minimal-redis-slim:latest |
+No | In-memory data store |
+| PostgreSQL-slim | docker pull ghcr.io/rtvkiz/minimal-postgres-slim:latest |
+No | Relational database |
+*HTTPD, Jenkins,Node.js may include shell(sh,busybox) via transitive Wolfi dependencies. CI treats shell presence as informational.
+Container vulnerabilities are a top attack vector. Most base images ship with dozens of known CVEs that take weeks or months to patch:
+Traditional images: Your containers:
+┌──────────────────┐ ┌──────────────────┐
+│ debian:latest │ │ minimal-python │
+│ 127 CVEs │ │ 0-5 CVEs │
+│ Patched: ~30 days│ │ Patched: <48 hrs │
+└──────────────────┘ └──────────────────┘
+Impact:
+- Pass security audits and compliance requirements (SOC2, FedRAMP, PCI-DSS)
+- Reduce attack surface with minimal, distroless images
+- Get CVE patches within 24-48 hours of disclosure (vs weeks for Debian/Ubuntu)
+- Cryptographically signed images with full SBOM for supply chain security
+# Python - run your app
+docker run --rm -v $(pwd):/app ghcr.io/rtvkiz/minimal-python:latest /app/main.py
+# Node.js - run your app
+docker run --rm -v $(pwd):/app -w /app ghcr.io/rtvkiz/minimal-node:latest index.js
+# Bun - fast JavaScript runtime
+docker run --rm ghcr.io/rtvkiz/minimal-bun:latest --version
+# Go - build your app
+docker run --rm -v $(pwd):/app -w /app ghcr.io/rtvkiz/minimal-go:latest build -o /tmp/app .
+# Nginx - reverse proxy
+docker run -d -p 8080:80 ghcr.io/rtvkiz/minimal-nginx:latest
+# HTTPD - serve static content
+docker run -d -p 8080:80 ghcr.io/rtvkiz/minimal-httpd:latest
+# Jenkins - CI/CD controller
+docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home ghcr.io/rtvkiz/minimal-jenkins:latest
+# Redis - in-memory data store
+docker run -d -p 6379:6379 ghcr.io/rtvkiz/minimal-redis-slim:latest
+# PostgreSQL - relational database
+docker run -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data ghcr.io/rtvkiz/minimal-postgres-slim:latest
+| Image | Version | User | Entrypoint | Workdir |
+|---|---|---|---|---|
+| Python | 3.13.x | nonroot (65532) | /usr/bin/python3 |
+/app |
+| Node.js | 22.x LTS | nonroot (65532) | /usr/bin/dumb-init -- /usr/bin/node |
+/app |
+| Bun | latest | nonroot (65532) | /usr/bin/bun |
+/app |
+| Go | 1.25.x | nonroot (65532) | /usr/bin/go |
+/app |
+| Nginx | mainline | nginx (65532) | /usr/sbin/nginx -g "daemon off;" |
+/ |
+| HTTPD | 2.4.x | www-data (65532) | /usr/sbin/httpd -DFOREGROUND |
+/var/www/localhost/htdocs |
+| Jenkins | 2.541.x LTS | jenkins (1000) | tini -- java -jar jenkins.war |
+/var/jenkins_home |
+| Redis | 8.4.x | redis (65532) | /usr/bin/redis-server |
+/ |
+| PostgreSQL | 18.x | postgres (70) | /usr/bin/postgres |
+/ |
+┌─────────────────────────────────────────────────────────────────────┐
+│ BUILD PIPELINE │
+├─────────────────────────────────────────────────────────────────────┤
+│ │
+│ Package Source Image Assembly Verification │
+│ ────────────── ────────────── ────────────── │
+│ │
+│ ┌─────────────┐ ┌────────────┐ ┌────────────┐ │
+│ │ Wolfi │─────────▶│ apko │─────────▶│ Trivy │ │
+│ │ (pre-built) │ install │ (OCI image)│ scan │ (CVE gate) │ │
+│ │ Python, Go, │ │ │ │ │ │
+│ │ Node, etc. │ │ │ │ │ │
+│ └─────────────┘ └─────┬──────┘ └─────┬──────┘ │
+│ │ │ │
+│ ┌─────────────┐ │ ▼ │
+│ │ melange │────────────────┘ ┌────────────────┐ │
+│ │ (Jenkins, │ build from │ cosign + SBOM │ │
+│ │ Redis) │ source │ (sign & publish│ │
+│ └─────────────┘ └────────────────┘ │
+│ │
+└─────────────────────────────────────────────────────────────────────┘
+| Trigger | When | Purpose |
+|---|---|---|
+| Scheduled | Daily at 2:00 AM UTC | Pick up latest CVE patches from Wolfi |
+| Push | On merge to main |
+Deploy configuration changes |
+| Manual | Workflow dispatch | Emergency rebuilds |
+All builds must pass a CVE gate (no CRITICAL/HIGH severity vulnerabilities) before publishing.
+# Prerequisites
+go install chainguard.dev/apko@latest
+go install chainguard.dev/melange@latest # needed for Jenkins, Redis
+brew install trivy # or: apt install trivy
+# Build all images
+make build
+# Build specific image
+make python
+make node
+make bun
+make go
+make nginx
+make httpd
+make jenkins
+make redis-slim
+make postgres-slim
+# Scan for CVEs
+make scan
+# Run tests
+make test
+minimal/
+├── python/apko/python.yaml # Python image (Wolfi pkg)
+├── node/apko/node.yaml # Node.js image (Wolfi pkg)
+├── bun/apko/bun.yaml # Bun image (Wolfi pkg)
+├── go/apko/go.yaml # Go image (Wolfi pkg)
+├── nginx/apko/nginx.yaml # Nginx image (Wolfi pkg)
+├── httpd/apko/httpd.yaml # HTTPD image (Wolfi pkg)
+├── jenkins/
+│ ├── apko/jenkins.yaml # Jenkins image
+│ └── melange.yaml # jlink JRE build
+├── redis-slim/
+│ ├── apko/redis.yaml # Redis image
+│ └── melange.yaml # Redis source build
+├── postgres-slim/apko/postgres.yaml # PostgreSQL image (Wolfi pkg)
+├── .github/workflows/
+│ ├── build.yml # Daily CI pipeline
+│ ├── update-jenkins.yml # Jenkins version updates
+│ ├── update-redis.yml # Redis version updates
+│ └── update-wolfi-packages.yml # Wolfi package updates
+├── Makefile
+└── LICENSE
+- CVE gate - Builds fail if any CRITICAL/HIGH vulnerabilities detected
+- Signed images - All images signed with cosign keyless signing
+- SBOM generation - Full software bill of materials in SPDX format
+- Non-root users - All images run as non-root by default
+- Minimal attack surface - Only essential packages included
+- Shell-less images - Most images have no shell
+- Reproducible builds - Declarative apko configurations
+All images are signed with cosign keyless signing via Sigstore. To verify:
+cosign verify \
+--certificate-oidc-issuer https://token.actions.githubusercontent.com \
+--certificate-identity-regexp https://github.com/rtvkiz/minimal/ \
+ghcr.io/rtvkiz/minimal-python:latest
+Replace minimal-python
+with any image name. A successful output confirms the image was built by this repository's CI pipeline and hasn't been tampered with.
+This project is licensed under the MIT License - see the LICENSE file for details.
+Container images include packages from Wolfi and other sources, each with their own licenses (Apache-2.0, MIT, GPL, LGPL, BSD, etc.). Full license information is included in each image's SBOM:
+# View package licenses in an image
+cosign download sbom ghcr.io/rtvkiz/minimal-python:latest | jq '.packages[].licenseConcluded'
+
+Comments:
+--------------------
+Thread 1:
+I am pushing myself to learn nix and get rid of base images altogether.
+The syntax is hard without a functional background but I strongly believe this is the next logical step to harden containers and have reproducible builds.
+
+Thread 2:
+As those are built on Wolfi by Chainguard I would not use them in production. They restricted already their own images for only paid customers and also recently limited OSS entirely on Wolfi. So there is no guarantee how long the packages may be available for non paying customers.
+
+Thread 3:
+Dumb question but how would these work in practice? I use kamal to deploy containerized applications. Would I on a regular basis update the versions of the underlying images to match the latest hardened container and then redeploy? I assume this is automatable?
+  Reply 1: Hi thanks for looking - I would preferably more info on your setup, but this is similar to using any container image. Currently all the tags are latest and if you have that setup you would pick that up from this repo and pretty sure this can be automated.
+
+Thread 4:
+This is great. I have been talking to quite some vendors in the space. I have looked in docker hardened images too. They have made it free too.
+I think the problem in general is hardened image market is keeping up with CVEs and making sure the catalog is vast so that it covers all the images and nuances.
+Responding and patchibg CVEs with an SLA is the KPI of the vendors. As much as I would like cheer for you, doing it as an opensource initiate with a guaranteed SLA is going to be painful for you as maintainer without profit as a motive.
+  Reply 1: Thanks for looking into this! I agree with you and hence I'm also relying on Wolfi packages, which will ensure they are updated as soon as upstream is available so I'm piggy backing on that. Github Actions run daily/weekly based on the cadence and once the pipeline is setup do not require a significant effort imo. And I want it to be community driven so we can add images as and when people want it and build it accordingly. Chainguard tools surely help with this! I aim to show that companies can try and build internal pipelines like this for all images in their repository
+  Reply 2: Isn't this mostly the same thing that Chainguard already provides themselves? E.g. the "Free" images on their page [0] have a big overlap with the toolchains from your repo.
+[0]:
+https://images.chainguard.dev
+  Reply 3: Some images do overlap yes, but they are some of the most popular ones used and I wanted to demonstrate how they can be build as well. Half of them are only available through paid versions. I will be adding new images on regular basis, based on usage and impact.
+  Reply 4: Ah, nice! I also just tried to look up how the official Chainguard images are built, and while the are open source they are less straightforward to follow.
+I was looking into how to create more secure container image and this looks like a great resource! :)
+  Reply 5: > Some images do overlap yes, but they are some of the most popular ones used and I wanted to demonstrate how they can be build as well. Half of them are only available through paid versions. I will be adding new images on regular basis, based on usage and impact.
+This looks really good. Good luck for your project!
+Also a quick question but when you mention Minimal being well.. Minimal? How much more minimal would it be compared to say alpine?
+Also maybe I should stop saying so many times minimal in this comment haha!
+
+Thread 5:
+I have been curious on secure base images for the AI ecosystem, where we need to ship with cuda 11.8/12.8/13.1 for stability reasons, and in our case, a bit of the torch ecosystem and Nvidia rapids ecosystem. That ends up being... A lot. Extra fun: going all the way to FIPS..
+  Reply 1: we gave up on minimal images for this exact reason. the cuda/torch dependencies are just too massive to strip down effectively. in our case we rely on gVisor for isolation instead. with ~10k pods we treat the container as untrusted and enforce security at the runtime level via runsc.

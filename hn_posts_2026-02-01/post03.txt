@@ -1,0 +1,67 @@
+Post ID: 46844870
+Title: Netbird – Open Source Zero Trust Networking
+Author: l1am0
+Score: 390
+Total Comments: 132
+Created At (UTC): 2026-02-01T09:44:01+00:00
+Domain: netbird.io
+Link: https://netbird.io/
+
+Article Content:
+--------------------
+NetBird - Open Source Zero Trust Networking
+
+Comments:
+--------------------
+Thread 1:
+I've been working for a while on
+https://github.com/connet-dev/connet
+. It gives a different twist at the same problem - instead of an overlay network at L4 (wireguard, etc) or publicly accessible endpoint at L7 (like ngrok) it "projects" a remote endpoint locally (e.g. as if you are running the service on your computer). Of course "locally" can always be a VPS that has caddy in front to give you ngrok-like experience.
+The reason connet exists is that nothing (at the time I started, including netbird, tailscale/headscale, frp, rathole, etc) gave the same easy to understand, FOSS, self-hosted, direct peer-to-peer way of remote access to your resources. I believe it does accomplish this and it is self-hosted. And while a cloud deployment at
+https://connet.dev
+ exists, it is nothing more then repackaging the FOSS project with user/token management.
+
+Thread 2:
+I use Headscale with Tailscale clients, and the Apple TV is very nice to have. Netbird seems to be working on one but it’s not out yet?
+
+Thread 3:
+I can only recommend giving headscale a try. It's free, works extremely well, and can be used with the official Tailscale clients. Was super easy to set up.
+https://headscale.net/stable/
+  Reply 1: Could you give a brief description of your use case? I'm looking at all the tailscale buzzwords on their site, but am  not really understanding what I would use this for in my home setup
+  Reply 2: For me:
+- easy access my other, older machines from my phone or work laptop to:
+ - self-host a Coolify server (a "vercel-lite" control panel)
+ - remote connect to my older laptop to run tests/longer coding tasks for work (e.g. large browser test suites, sandboxed claude running in bg to answer longer code questions, or build fire and forget spikes/experiments)
+ - control my home cinema remotely (remote+ app bc it's easy and Remote Desktop).
+- use w. Mullvad VPN as an exit note (Tailscale has a really easy UI for it nowadays)
+- use it like ngrok to expose my dev servers to the internet (e.g. when sharing a quick demo/pairing with a coworker)
+- cheap NAS - I the old mac is connected to an external HD (the HD itself is archived to Hetzner)
+  Reply 3: Any luck using with with a VPN like Mullvad as an exit node?
+  Reply 4: Apparently they've deprecated Postgres support and now only recommend sqlite as the storage backend. I have nothing against sqlite but to me this looks like Tailscale actively signaling what they think the expected use of headscale is.
+  Reply 5: https://headscale.net/stable/about/faq/#scaling-how-many-cli...
+> Scaling / How many clients does Headscale support?
+> It depends. As often stated, Headscale is not enterprise software and our focus is homelabbers and self-hosters. Of course, we do not prevent people from using it in a commercial/professional setting and often get questions about scaling.
+> Please note that when Headscale is developed, performance is not part of the consideration as the main audience is considered to be users with a modest amount of devices. We focus on correctness and feature parity with Tailscale SaaS over time. [...]
+> Headscale calculates a map of all nodes that need to talk to each other, creating this "world map" requires a lot of CPU time. When an event that requires changes to this map happens, the whole "world" is recalculated, and a new "world map" is created for every node in the network. [...]
+> Headscale will start to struggle when [there are] e.g. many nodes with frequent changes will cause the resource usage to remain constantly high. In the worst case scenario, the queue of nodes waiting for their map will grow to a point where Headscale never will be able to catch up, and nodes will never learn about the current state of the world.
+I find that quite interesting and it is one of the reasons I've not really considered trying out Headscale myself.
+
+Thread 4:
+A bit lower level than most things discussed here but on the topic of overlay networks, I’ve used nebula for years and can recommend it
+https://github.com/slackhq/nebula
+  Reply 1: I've used it for some time, it feels very much like it is in maintenance mode.
+You manage a PKI and have to distribute the keys yourself, no auth/login etc.
+it's much better than wireguard, not requiring O(N) config changes to add a node, and allowing peoxy nodes etc.
+iirc key revocation and so on are not easy.
+  Reply 2: Nebula just had a major release that added IPv6 support for overlay networks. Hardly maintenance mode.
+The main company working on it now seems to be adding all the fancy easy-to-use features as a layer on top of Nebula that they are selling. I personally appreciate getting to use the simple core of Nebula as open source. It seems very Unix-y to me: a simple tool that does one thing and does it well.
+  Reply 3: Nebula does not require O(n) config changes for adding a node.
+O(n) is only required for:
+- active revocation of a certificate (requires adding the CA fingerprint to the config file)
+- adding/removing a lighthouses (hub for publishing IPs for p2p) or relay (for going over p2p)
+- CA rotation
+  Reply 4: +1 on Nebula. I don’t know why it doesn’t get mentioned more as an overlay network option.
+  Reply 5: it his much complex to setup then wireguard based?
+
+Thread 5:
+I recommend it the NetBird team is transparent and easy to reach. I switched from Tailscale a while ago (2y), went fully self-hosted, and upgrades across versions have been smooth, which tells me they care about the self-hosted, not just their cloud offering.

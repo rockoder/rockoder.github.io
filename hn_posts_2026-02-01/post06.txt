@@ -1,0 +1,112 @@
+Post ID: 46840612
+Title: In praise of –dry-run
+Author: ingve
+Score: 221
+Total Comments: 124
+Created At (UTC): 2026-01-31T20:42:13+00:00
+Domain: henrikwarne.com
+Link: https://henrikwarne.com/2026/01/31/in-praise-of-dry-run/
+
+Article Content:
+--------------------
+For the last few months, I have been developing a new reporting application. Early on, I decided to add a –dry-run option to the run command. This turned out to be quite useful – I have used it many times a day while developing and testing the application.
+Background
+The application will generate a set of reports every weekday. It has a loop that checks periodically if it is time to generate new reports. If so, it will read data from a database, apply some logic to create the reports, zip the reports, upload them to an sftp server, check for error responses on the sftp server, parse the error responses, and send out notification mails. The files (the generated reports, and the downloaded feedback files) are moved to different directories depending on the step in the process. A simple and straightforward application.
+Early in the development process, when testing the incomplete application, I remembered that Subversion (the version control system after CVS, before Git) had a –dry-run option. Other linux commands have this option too. If a command is run with the argument –dry-run, the output will print what will happen when the command is run, but no changes will be made. This lets the user see what will happen if the command is run without the –dry-run argument.
+I remembered how helpful that was, so I decided to add it to my command as well. When I run the command with –dry-run, it prints out the steps that will be taken in each phase: which reports that will be generated (and which will not be), which files will be zipped and moved, which files will be uploaded to the sftp server, and which files will be downloaded from it (it logs on and lists the files).
+Looking back at the project, I realized that I ended up using the –dry-run option pretty much every day.
+Benefits
+I am surprised how useful I found it to be. I often used it as a check before getting started. Since I know –dry-run will not change anything, it is safe to run without thinking. I can immediately see that everything is accessible, that the configuration is correct, and that the state is as expected. It is a quick and easy sanity check.
+I also used it quite a bit when testing the complete system. For example, if I changed a date in the report state file (the date for the last successful report of a given type), I could immediately see from the output whether it would now be generated or not. Without –dry-run, the actual report would also be generated, which takes some time. So I can test the behavior, and receive very quick feedback.
+Downside
+The downside is that the dryRun-flag pollutes the code a bit. In all the major phases, I need to check if the flag is set, and only print the action that will be taken, but not actually doing it. However, this doesn’t go very deep. For example, none of the code that actually generates the report needs to check it. I only need to check if that code should be invoked in the first place.
+Conclusion
+The type of application I have been writing is ideal for –dry-run. It is invoked by a command, and it may create some changes, for example generating new reports. More reactive applications (that wait for messages before acting) don’t seem to be a good fit.
+I added –dry-run on a whim early on in the project. I was surprised at how useful I found it to be. Adding it early was also good, since I got the benefit of it while developing more functionality.
+The –dry-run flag is not for every situation, but when it fits, it can be quite useful.
+Faster debugging is a big help! It’s worth some extra code.
+Reddit discussion: https://www.reddit.com/r/programming/comments/1qse1g5/in_praise_of_dryrun/
+Hacker News discussion: https://news.ycombinator.com/item?id=46840612
+I often write code so that it does not perform file system actions but instead writes the equivalent action to stdout. When I am satisfied with the actions, I pipe them to bash/sh/zsh. Effectively, I use dry-run all the time and pipe to run the side effects.
+Lobsters discussion: https://lobste.rs/s/jnttzy/praise_dry_run
+
+Comments:
+--------------------
+Thread 1:
+If you're interacting with stateful systems (which you usually are with this kind of command), --dry-run can still have a race condition.
+The tool tells you what it would do in the current situation, you take a look and confirm that that's alright. Then you run it again without --dry-run, in a potentially different situation.
+That's why I prefer Terraform's approach of having a "plan" mode. It doesn't just tell you what it would do but does so in the form of a plan it can later execute programmatically. Then, if any of the assumptions made during planning have changed, it can abort and roll back.
+As a nice bonus, this pattern gives a good answer to the problem of having "if dry_run:" sprinkled everywhere: You have to separate the planning and execution in code anyway, so you can make the "just apply immediately" mode simply execute(plan()).
+  Reply 1: And just like that, you find yourself implementing a compiler (specs to plan) and a virtual machine (plan to actions)!
+  Reply 2: > And just like that, you find yourself implementing a compiler (specs to plan) and a virtual machine (plan to actions)!
+Not just
+any
+ compiler, but a non-typesafe, ad-hoc, informally specified grammar with a bunch of unspecified or under-specified behaviour.
+Not sure if we can call this a win :-)
+  Reply 3: I think you're already doing that? The only thing that's added is serializing the plan to a file and then deserializing it to make the changes.
+  Reply 4: I like that idea! For an application like Terraform, Ansible or the like, it seems ideal.
+For something like in the article, I’m pretty sure a plan mode is overkill though.
+Planning mode must involve making a domain specific language or data structure of some sort, which the execution mode will interpret and execute. I’m sure it would add a lot of complexity to a reporting tool where data is only collected once per day.
+  Reply 5: It's not strictly related to the original theme, but I want to mention this.
+Ansible implementation is okay, but not perfect (plus, this is difficult to implement properly). For cases like file changes, it works, but if you install a package and rely on it later, the --check command will fail. So I am finding myself adding conditions like "is this a --check run?"
+Ansible is treated as an idempotent tool, which it's not. If I delete a package from the list, then it will pollute the system until I create a set of "tearing-down" jobs.
+Probably, Nix is a better alternative.
+
+Thread 2:
+One thing that I didn't see mentioned is making your own dry run for tools that don't have it built in.
+It doesn't always work but sometimes I use `diff` to help with that. For example, if you have a complicated `sed` replacement that you plan to run on a file, you can use diff like this `diff -u <(echo "hello") <(echo "hello" | sed "s/hello/hi/g")` to help show what has changed.
+I've written about the value of dry run too at:
+https://nickjanetakis.com/blog/cli-tools-that-support-previe...
+
+Thread 3:
+I like this pattern a lot, but it's important that the code in the dry path is representative. I've been bitten a few too many times by dry code that just runs `print("would have updated ID: 123")`, but not actually running most of the code in the hot path. Then when I run it for real, some of the prep for the write operation has a bug / error, so my dry run didn't actually reveal much to me.
+Put another way: your dry code should do everything up until the point that database writes / API calls / etc actually happen. Don't bail too early
+  Reply 1: Doesn’t this conflate dry-running with integration testing? ASAIK the purpose of a dry-run is to understand what will happen, not to test what will happen. For the latter we have testing.
+  Reply 2: > ASAIK the purpose of a dry-run is to understand what will happen
+Right - so the dry-run has to actually do as much of 'what will happen' as possible, except the actual things.
+You want to put the check as far down, close to the 'action' as possible. You don't want any additional business logic gated by the dry run check.
+  Reply 3: > ASAIK the purpose of a dry-run is to understand what will happen, not to test what will happen. For the latter we have testing.
+Not really. Testing is a way to increase confidence that code does what it is specified to do, because it is cheaper than full-blown formal analysis :)
+The problem raised by OP here is granularity. Operation like `update(record, field, value)` is itself a tree of smaller sub-operations that may do some permissions checking, locking, network calls, even checking for presence of record if it has upsert semantics, all of which could fail. A dry run with a plan that is too coarse can succeed while the actual operation fails over things left unchecked.
+  Reply 4: Yes, but it depends on the context.
+For little scripts, I'm not writing unit tests- running it
+is
+ the test. But I want to be able to iterate without side effects, so it's important that the dry mode be as representative as possible for what'll happen when something is run for real.
+  Reply 5: You understand how subjective that is right? Someone might expect that the database doesn't do the last commit step while other people is perfectly happy that the database engine checks that it has enough writing permissions and is running as a user that can start the process without problems.
+
+Thread 4:
+I like the opposite too, -commit or -execute as it is assumed running it with defaults is immutable as the dry run, simplifying validation complexity and making the go live explicit.
+  Reply 1: I've biased towards this heavily in the last 8 or so years now.
+I've yet to have anyone mistakenly modify anything when they need to pass --commit, when I've repeatedly had people repeatedly accidentally modify stuff because they forgot --dry-run.
+  Reply 2: I wouldn’t want most things to work this way:
+    $ rm file.bin
+    $ rm —-commit file.bin
+    $ cat foo.txt > bar.txt
+    $ cat foo.txt | tee —-write-for-real bar.txt
+    $ cp balm.mp3 pow.mp3
+    $ cp —-i-mean-it balm.mp3 pow.mp3
+
+
+There is a time and a place for it but it should not be the majority of use cases.
+  Reply 3: Totally agree it shouldn't be for basic tools; but if I'm ever developing a script that performs any kind of logic before reaching out to a DB or vendor API and modifies 100k user records, creating a flag to just verify the sanity of the logic is a necessity.
+  Reply 4: if [ -n "$DRY_RUN" ] ; then
+        alias rm='echo rm'
+        alias cp='echo cp'
+    fi
+
+
+Of course, output redirects will still overwrite the files, since the shell does it and IIRC this behaviour can't be changed.
+  Reply 5: set -o noclobber
+
+Thread 5:
+From the article: "I added –dry-run on a whim early on in the project. I was surprised at how useful I found it to be."
+Not to be overly critical (I think it's great OP found value in adding and using --dry-run), but I am willing to bet that this was a suggestion/addition from a coding agent (and most likely Claude code/Opus). Having used it myself to build various CLI tools in different languages, it almost always creates that option when iterating on CLIs. To the point where it's almost a tell. I wonder if we're entering a moment of convergence where all the tools will have similar patterns/options because they are similarly written by agents.
+  Reply 1: > Early in the development process, when testing the incomplete application, I remembered that Subversion (the version control system after CVS, before Git) had a –dry-run option.
+> I remembered how helpful that was, so I decided to add it to my command as well.
+He mentions the reason he added it, and it's a compelling enough story to be true.
+  Reply 2: Of course and I am not trying to point fingers. But I do think it's interesting because it's also possible that it is confabulation. Not lying, but genuinely constructing coherent explanations for decisions whose true origins are different than we recall. I think working with coding agents has already made this immensely more common.
+  Reply 3: I had the equivalent of --dry-run in my kdecvs-build script from 2003 (where it was called --pretend) so it's not
+that
+ spontaneous an idea that it must have been dreamed up by an AI.
+Any time you have a script that needs to run for a long time or might involve destructive actions, having a way to run the script in a "tell me what you would do without actually doing it" mode is a fairly obvious user story to throw in.
+  Reply 4: Again, it's completely possible that OP and you are the wonderful exceptions (untouched and uninspired by coding agents) that have been using these patterns for as long as you can remember. My comment revolved around the psychological phenomenon, not whether dry-run is a clever/novel idea. It's about how we might tell ourselves stories about the origin of our ideas when working with those tools.
