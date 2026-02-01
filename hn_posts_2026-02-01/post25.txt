@@ -1,0 +1,190 @@
+Title: Data Processing Benchmark Featuring Rust, Go, Swift, Zig, Julia etc.
+Author: behnamoh
+Score: 98 points
+Link: https://github.com/zupat/related_post_gen
+
+Article Content:
+--------------------
+Given a list of posts, compute the top 5 related posts for each post based on the number of shared tags.
+Steps
+- Read the posts JSON file.
+- Iterate over the posts and populate a map containing:
+tag -> List<int>
+, with the int representing the post index of each post with that tag. - Iterate over the posts and for each post:
+- Create a map:
+PostIndex -> int
+to track the number of shared tags - For each tag, Iterate over the posts that have that tag
+- For each post, increment the shared tag count in the map.
+- Create a map:
+- Sort the related posts by the number of shared tags.
+- Write the top 5 related posts for each post to a new JSON file.
+./run.sh go | rust | python | all
+# windows (powershell)
+./run.ps1 go | rust | python | all
+# OR
+pwsh ./run.ps1 go | rust | python | all
+# Docker (check the dockerfiles/base.Dockerfile for available variables)
+./gen_dockerfile.sh -b go | rust | python | all
+# THEN
+./docker_run.sh go | rust | python | all
+# OR use the image directly
+docker run -e TEST_NAME=go -it --rm go_databench
+Rules
+- FFI (including assembly inlining)
+- Unsafe code blocks
+- Custom benchmarking
+- Disabling runtime checks (bounds etc)
+- Specific hardware targeting
+- SIMD for single threaded solutions
+- Hardcoding number of posts
+- Lazy evaluation (Unless results are computed at runtime and timed)
+- Computation Caching
+- Support up to 100,000 posts
+- Support UTF8 strings
+- Parse json at runtime
+- Support up to 100 tags
+- Represent tags as strings
+- Be production ready
+- Use less than 8GB of memory
+Updated Results from github workflow (raw data)
+| Language | Time (5k posts) | 20k posts | 60k posts | Total |
+|---|---|---|---|---|
+| Julia HO1 | 6.80 ms | 23.00 ms | 99.33 ms | 129.13 ms |
+| D HO1 | 11.21 ms | 42.84 ms | 122.06 ms | 176.11 ms |
+| D (v2) | 13.97 ms | 1.30 s | ||
+| Rust | 149.96 ms | 1.30 s | 1.46 s | |
+| c3 | 13.00 ms | 164.67 ms | 1.33 s | 1.51 s |
+| C++ | 16.10 ms | 202.67 ms | 1.72 s | 1.94 s |
+| Zig | 17.00 ms | 233.67 ms | 1.99 s | 2.24 s |
+| Odin | 18.74 ms | 248.22 ms | 2.12 s | 2.39 s |
+| Neat | 22.52 ms | 301.30 ms | 2.54 s | 2.87 s |
+| Java (JIT) | 24.60 ms | 299.00 ms | 2.62 s | 2.94 s |
+| C# (JIT) | 22.53 ms | 314.86 ms | 2.76 s | 3.10 s |
+| C# (AOT) | 21.48 ms | 318.20 ms | 2.79 s | 3.12 s |
+| Haskell | 26.65 ms | 347.84 ms | 2.81 s | 3.19 s |
+| Nim | 22.34 ms | 337.00 ms | 2.95 s | 3.31 s |
+| F# (JIT) | 25.02 ms | 354.38 ms | 3.02 s | 3.40 s |
+| Julia | 23.66 ms | 350.96 ms | 3.10 s | 3.47 s |
+| Vlang | 26.39 ms | 372.67 ms | 3.24 s | 3.64 s |
+| Go | 25.79 ms | 390.86 ms | 3.48 s | 3.89 s |
+| D | 29.92 ms | 413.98 ms | 3.60 s | 4.05 s |
+| Swift | 36.61 ms | 482.22 ms | 4.19 s | 4.71 s |
+| F# (AOT) | 37.92 ms | 570.90 ms | 5.07 s | 5.68 s |
+| Java (GraalVM) | 33.30 ms | 504.00 ms | 5.47 s | 6.01 s |
+| Crystal | 45.64 ms | 690.35 ms | 6.03 s | 6.77 s |
+| Numba | 66.15 ms | 827.15 ms | 6.94 s | 7.83 s |
+| Pypy | 72.62 ms | 858.90 ms | 7.38 s | 8.31 s |
+| LuaJIT | 73.52 ms | 930.36 ms | 7.84 s | 8.84 s |
+| JS (Bun) | 80.80 ms | 975.00 ms | 8.49 s | 9.55 s |
+| Dart AOT | 69.80 ms | 1.07 s | 9.43 s | 10.57 s |
+| Dart VM | 61.50 ms | 989.67 ms | 9.94 s | 10.99 s |
+| JS (Deno) | 96.40 ms | 1.17 s | 10.61 s | 11.88 s |
+| JS (Node) | 99.00 ms | 1.12 s | 11.03 s | 12.25 s |
+| Clojure | 111.90 ms | 1.31 s | 10.97 s | 12.39 s |
+| Common Lisp (SBCL) | 154.00 ms | 1.34 s | 11.20 s | 12.69 s |
+| Ocaml | 99.40 ms | 1.46 s | 13.05 s | 14.61 s |
+| Typed Racket | 136.36 ms | 1.96 s | 16.31 s | 18.41 s |
+| Racket | 135.03 ms | 2.04 s | 16.69 s | 18.87 s |
+| Scala Native | 287.70 ms | 3.51 s | 30.07 s | 33.87 s |
+| LuaJIT (JIT OFF) | 630.13 ms | 8.72 s | 83.86 s | 93.21 s |
+| Erlang | 758.95 ms | 12.50 s | 107.46 s | 120.72 s |
+| Lua | 976.54 ms | 15.09 s | 136.84 s | 152.90 s |
+| Python | 1.51 s | 24.84 s | 215.18 s | 241.53 s |
+| Lobster (JIT) | 1.63 s | 25.43 s | 227.06 s | 254.13 s |
+| Ruby | 1.78 s | 28.77 s | 254.93 s | 285.48 s |
+| Language | Time (5k posts) | 20k posts | 60k posts | Total |
+|---|---|---|---|---|
+| D Concurrent (v2) | 7.21 ms | 388.83 ms | ||
+| C# Concurrent (JIT) | 6.56 ms | 55.32 ms | 450.54 ms | 512.42 ms |
+| C++ Concurrent | 58.00 ms | 477.00 ms | 540.00 ms | |
+| C# Concurrent (AOT) | 5.27 ms | 60.57 ms | 487.37 ms | 553.22 ms |
+| D Concurrent | 8.84 ms | 76.34 ms | 560.38 ms | 645.56 ms |
+| Rust Concurrent | 5.43 ms | 69.22 ms | 602.36 ms | 677.00 ms |
+| Go Concurrent | 5.53 ms | 76.80 ms | 640.02 ms | 722.35 ms |
+| Nim Concurrent | 6.17 ms | 90.26 ms | 657.74 ms | 754.17 ms |
+| F# Concurrent (AOT) | 8.40 ms | 114.00 ms | 1.00 s | 1.13 s |
+| F# Concurrent | 8.80 ms | 122.33 ms | 1.08 s | 1.21 s |
+| Swift Concurrent | 13.24 ms | 148.23 ms | 1.20 s | 1.37 s |
+| Julia Concurrent | 11.02 ms | 159.49 ms | 1.40 s | 1.57 s |
+| Java Concurrent (JIT) | 73.40 ms | 221.67 ms | 1.41 s | 1.70 s |
+| Numba Concurrent | 25.82 ms | 223.30 ms | 1.62 s | 1.87 s |
+| Zig Concurrent | 17.50 ms | 222.24 ms | 1.86 s | 2.10 s |
+| Java (GraalVM) Concurrent | 20.00 ms | 294.67 ms | 1.81 s | 2.12 s |
+Old Results with details (on my machine)
+| Language | Processing Time | Total (+ I/O) | Details |
+|---|---|---|---|
+| Rust | - | 4.5s | Initial |
+| Rust v2 | - | 2.60s | Replace std HashMap with fxHashMap by phazer99 |
+| Rust v3 | - | 1.28s | Preallocate and reuse map and unstable sort by vdrmn and Darksonn |
+| Rust v4 | - | 0.13s | Use Post index as key instead of Pointer and Binary Heap by RB5009 |
+| Rust v5 | 38ms | 52ms | Rm hashing from loop and use vec[count] instead of map[index]count by RB5009 |
+| Rust v6 | 23ms | 36ms | Optimized Binary Heap Ops by scottlamb |
+| Rust Rayon | 9ms | 22ms | Parallelize by masmullin2000 |
+| Rust Rayon | 8ms | 22ms | Remove comparison out of hot loop |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Go | - | 1.5s | Initial |
+| Go v2 | - | 80ms | Add rust optimizations |
+| Go v3 | 56ms | 70ms | Use goccy/go-json |
+| Go v3 | 34ms | 55ms | Use generic binaryheap by DrBlury |
+| Go v4 | 26ms | 50ms | Replace binary heap with custom priority queue |
+| Go v5 | 20ms | 43ms | Remove comparison out of hot loop |
+| Go Con | 10ms | 33ms | Go concurrency by tirprox and DrBlury |
+| Go Con v2 | 5ms | 29ms | Use arena, use waitgroup, rm binheap by DrBlury |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Python | - | 7.81s | Initial |
+| Python v2 | 1.35s | 1.53s | Add rust optimizations by dave-andersen |
+| Numpy | 0.57s | 0.85s | Numpy implementation by Copper280z |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Crystal | 50ms | 96ms | Inital w/ previous optimizations |
+| Crystal v2 | 33ms | 72ms | Replace binary heap with custom priority queue |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Odin | 110ms | 397ms | Ported from golang code |
+| Odin v2 | 104ms | 404ms | Remove comparison out of hot loop |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Dart VM | 125ms | 530ms | Ported from golang code |
+| Dart bin | 274ms | 360ms | Compiled executable |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Vlang | 339ms | 560ms | Ported from golang code |
+| ⠀ | ⠀ | ⠀ | ⠀ |
+| Zig | 80ms | 110ms | Provided by akhildevelops |
+
+Comments:
+--------------------
+Thread 1:
+For comparison here's one from Dec '25
+https://niklas-heer.github.io/speed-comparison
+Certainly does "look" very interesting.
+
+Thread 2:
+I was surprised to see that Java was slower than C++, but the Java code is run with `-XX:+UseSerialGC`, which is the slowest GC, meant to be used only on very small systems, and to optimise for memory footprint more than performance. Also, there's no heap size, which means it's hard to know what exactly is being measured. Java allows trading off CPU for RAM and vice-versa. It would be meaningful if an appropriate GC were used (Parallel, for this batch job) and with different heap sizes. If the rules say the program should take less than 8GB of RAM, then it's best to configure the heap to 8GB (or a little lower). Also, System.gc() shouldn't be invoked.
+Don't know if that would make a difference, but that's how I'd run it, because in Java, the heap/GC configuration is an important part of the program and how it's actually executed.
+Of course, the most recent JDK version should be used (I guess the most recent compiler version for all languages).
+  Reply 1: It’s so hard to actually benchmark languages because it so much depends on the dataset, I am pretty sure with simdjson and some tricks I could write C++ (or Rust) that could top the leaderboard (see some of the techniques from the billion row challenge!).
+tbh for silly benchmarks like this it will ultimately be hard to beat a language that compiles to machine code, due to jit warmup etc.
+It’s hard to due benchmarks right, for example are you testing IO performance? are OS caches flushed between language runs? What kind of disk is used etc? Performance does not exist in a vacuum of just the language or algorithm.
+  Reply 2: > due to jit warmup
+I think this harness actually uses JMH, which measures after warmup.
+  Reply 3: Why are you surprised? Java always suffers from abstraction penalty for running on a VM. You should be surprised (and skeptical) if Java ever beats C++ on any benchmark.
+  Reply 4: The only "abstraction penalty" of "running on a VM" (by which I think you mean using a JIT compiler), is the warmup time of waiting for the JIT.
+  Reply 5: in my opinion, this assertion suffers from the "sufficiently smart compiler" fallacy somewhat.
+https://wiki.c2.com/?SufficientlySmartCompiler
+
+Thread 3:
+I was very surprised to see the results for common lisp. As I scrolled down I just figured that the language was not included until I saw it down there. I would have guessed SBCL to be much faster. I checked it out locally and got: Rust 9ms, D: 16ms, and CL: 80ms.
+Looking at the implementation, only adding type annotations, there was a ~10% improvement. Then the tag-map using vectors as values which is more appropriate than lists (imo) gave a 40% improvement over the initial version. By additionally cutting a few allocations, the total time is halved. I'm guessing other languages will have similar easy improvements.
+
+Thread 4:
+D gets no respect. It's a solid language with a lot of great features and conveniences compared to C++ but it barely gets a passing mention (if that) when language discussions pop up. I'd argue a lot of the problems people have with C++ are addressed with D but they have no idea.
+  Reply 1: Ecosystem isn't that great, and much of it relies on the GC. If you're going to move out of C++, you might as well go all in on a GC language (Java, C#, Go) or use Rust. D's value proposition isn't enough to compete with those languages.
+  Reply 2: D has a GC and it’s optional. Which should be the best of both worlds in theory.
+Also D is older than Go and Rust and only a few months younger than C#. So the question then becomes “why weren’t people using D when your recommended alternatives weren’t an option?” Or “why use the alternatives (when they were new) when D already exists?”
+  Reply 3: Could say the same for Nim.
+But popularity/awareness/ecosystem matter.
+  Reply 4: That's the great thing about LLMs.
+Especially with Nim it's so easy to make quality libraries with a Codex/ClaudeCode and a couple hours as a hobby.
+Especially when they run fast. I just made Metal bindings and got 120 FPS demos with SDF bitmaps running yesterday while eating Saturday brunch.
+  Reply 5: If the difference in performance between the target language and C++ is huge, it's probably not the language that's great, but some quirk of implementation.
+
+Thread 5:
+The fact that Julia “highly optimized” is 30x faster than the normal Julia implementation, yet still fails to reach for some pretty obvious optimizations, and uses a joke package called “SuperDataStructures” tells me that maybe this benchmark shouldn’t be taken all that seriously.
+Benchmarks like this can still be fun and informative

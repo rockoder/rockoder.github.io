@@ -1,0 +1,78 @@
+Title: Demystifying ARM SME to Optimize General Matrix Multiplications
+Author: matt_d
+Score: 71 points
+Link: https://arxiv.org/abs/2512.21473
+
+Article Content:
+--------------------
+Computer Science > Distributed, Parallel, and Cluster Computing
+[Submitted on 25 Dec 2025]
+Title:Demystifying ARM SME to Optimize General Matrix Multiplications
+View PDF HTML (experimental)Abstract:General Matrix Multiplication (GEMM) is a critical kernel in high-performance computing and deep learning. While modern architectures like ARM's Scalable Matrix Extension (SME) introduce dedicated hardware for matrix operations, existing linear algebra libraries fail to fully exploit its potential, particularly for large matrices. This paper presents MpGEMM, an open-source library that leverages key architectural features of SME to optimize GEMM across multiple precisions. Through a systematic characterization of SME, we derive optimization guidelines that inform our design. MpGEMM employs cache-aware partitioning, efficient data packing with on-the-fly transposition, and specialized micro-kernels that utilize multi-vector loads and all available tile registers. Evaluated on an Apple M4 Pro with real-world workloads from DeepSeek and LLaMA, MpGEMM achieves an average speedup of 1.23x over the vendor-optimized Apple Accelerate library and significantly outperforms other open-source alternatives.
+References & Citations
+export BibTeX citation
+Loading...
+Bibliographic and Citation Tools
+Bibliographic Explorer (What is the Explorer?)
+Connected Papers (What is Connected Papers?)
+Litmaps (What is Litmaps?)
+scite Smart Citations (What are Smart Citations?)
+Code, Data and Media Associated with this Article
+alphaXiv (What is alphaXiv?)
+CatalyzeX Code Finder for Papers (What is CatalyzeX?)
+DagsHub (What is DagsHub?)
+Gotit.pub (What is GotitPub?)
+Hugging Face (What is Huggingface?)
+Papers with Code (What is Papers with Code?)
+ScienceCast (What is ScienceCast?)
+Demos
+Recommenders and Search Tools
+Influence Flower (What are Influence Flowers?)
+CORE Recommender (What is CORE?)
+arXivLabs: experimental projects with community collaborators
+arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+Have an idea for a project that will add value for arXiv's community? Learn more about arXivLabs.
+
+Comments:
+--------------------
+Thread 1:
+ARM SME as implemented on the Apple M4 is quite interesting. Super useful for matrix math (as this paper illustrates well), but my attempts at using the SSVE extension for vector math were an utter failure for performance, despite the increased vector width (512 bits vs. 128 bits for NEON). Potentially the switch into/out of streaming mode is too expensive, but my microbenchmarks indicated the SSVE instructions themselves just didn't have great throughput.
+  Reply 1: SSVE instructions are executed by the SME engine, which trades latency for throughput. SSVE is really intended to support use of SME, rather than as a replacement for Advanced SIMD on the CPU core itself.
+The Apple Silicon CPU Optimization Guide has a lot of great information on SME and SSVE, along with more general information on optimizing for Apple's CPUs
+A few quotes from Apple's guide that are particularly relevant to SSVE, from "SSVE Vector Execution Unit Optimization":
+> Broadly, this unit is designed to support long vector and matrix operations performed on
+ZA storage _in the SME Processing Grid_.
+> Recommendation: Use SSVE in a supporting role to enable high throughput SME grid computation.
+> [Magnitude: High | Applicability: High] SSVE offers wide 64B vectors. While the ISA includes instructions that can operate on multi-vectors, the throughput is often only one 64B vector per cycle. Use SSVE to enable SME, which offers higher parallelism.
+> Because of non-speculative execution, communication latencies, and in some cases long memory and computation latencies, SME engine instructions trail execution in the core by dozens to thousands of cycles. Any core compute instructions that consume data produced by the SME engine may have to wait an indeterminate (but long) amount of time for the data to arrive.
+  Reply 2: I was struck by the "Magnitude: High | Applicability: High" bit. Who writes like this? More importantly, who reads like this? The V4 doc (which I have yet to read, but I did a text search) has 64 occurences of this sort of phrasing; not actually all that many, given that there's 293 pages, but enough to be interesting. I wonder if this extra stuff is there to make LLMs pay particular attention.
+  Reply 3: Intel's software optimization guides have similar annotations on many of their guidelines, and have done since long before LLMs were a thing. As a reader it's useful to know how impactful a given recommendation is and how generally applicable it is without having to read the more detailed explanations.
+  Reply 4: Ahh, interesting, thanks. (I read the reference manuals but typically ignore the rest... I don't need to write this stuff, just read it!) I've seen people recommend creating docs to be LLM-friendly and I was wondering if this was an instance of that.
+  Reply 5: That makes a ton of sense and aligns with my observations. Thanks for the resource :)
+If SSVE is slow, I was hoping that SME instructions could be used in a vector-like fashion (e.g.
+add
+ two matrices with high throughput, or a Hadamard/element-wise product) but it seems most matrix accelerator ISAs don't have that.
+
+Thread 2:
+I don’t get why they didn’t compare against BLIS. I know you can only do so many benchmarks, and people will often complain no matter what, but BLIS is the obvious comparison. Maybe BLIS doesn’t have kernels for their platform, but they’d be well served by just mentioning that fact to get that question out of the reader’s head.
+BLIS even has mixed precision interfaces. But might not cover more exotic stuff like low-precision ints? So this paper could have had a chance to “put some points on the board” against a real top-tier competitor.
+  Reply 1: Section VII.3 has:
+> Libraries such as BLIS [19] lack SME
+support and are therefore excluded from comparison.
+  Reply 2: Ah, reading comprehension failure on my part
+  Reply 3: BLIS doesn't appear to support SME:
+https://github.com/search?q=repo%3Aflame%2Fblis+mopa&type=co...
+Maybe you want a comparison anyways, but it won't be competitive. On Apple CPUs, SME is ~8x faster than a single regular CPU core with a good BLAS library.
+
+Thread 3:
+Is there a version of this that supports sparse LU solves?
+  Reply 1: I’m trying to make sense of this question.
+GEMMs are dense O(N^3) work operations that have roughly the same access pattern and data reuse properties across all matrices.  Of course, I’m simplifying things a lot here; tall-skinny and short-fat patterns are much harder to get performance out of but the spirit of the approach is the same as big square matrices.
+Sparse LU solves have a different character.  There is nowhere near O(N^3) work.  You typically expect something closer to O(N^2) but getting performance out of these operations is notoriously difficult because it depends a lot on the sparsity pattern of the linear system.  Making matters worse is that you may commonly have a sparse A that factorises to dense L and/or U matrices.
+
+Thread 4:
+This will save us from the nvidia monster!
+And then we can have our DRAM back!!!
+  Reply 1: > MpGEMM achieves an average speedup of 1.23x over the vendor-optimized Apple Accelerate library and significantly outperforms other open-source alternatives.
+Don't hold your breath.

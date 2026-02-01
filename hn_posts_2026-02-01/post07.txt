@@ -1,0 +1,81 @@
+Title: US has investigated claims WhatsApp chats aren't private
+Author: 1vuio0pswjnm7
+Score: 185 points
+Link: https://www.bloomberg.com/news/articles/2026-01-29/us-has-investigated-claims-that-whatsapp-chats-aren-t-private
+
+Article Content:
+--------------------
+Failed to fetch article: 403
+
+Comments:
+--------------------
+Thread 1:
+WhatsApp's end-to-end encryption has been independently investigated:
+https://kclpure.kcl.ac.uk/ws/files/324396471/whatsapp.pdf
+Full version here:
+https://eprint.iacr.org/2025/794.pdf
+We didn't review the entire source code, only the cryptographic core. That said, the main issue we found was that the WhatsApp servers ultimately decide who is and isn't in a particular chat. Dan Goodin wrote about it here:
+https://arstechnica.com/security/2025/05/whatsapp-provides-n...
+  Reply 1: > We didn't review the entire source code
+And, you don't see the issue with that? Facebook was bypassing security measures for mobile by sending data to itself on localhost using websockets and webrtc.
+https://cybersecuritynews.com/track-android-users-covertly/
+An audit of 'they can't read it cryptographically' but the app can read it, and the app sends data in all directions. Push notifications can be used to read messages.
+  Reply 2: > Push notifications can be used to read messages.
+Are you trying to imply that WhatsApp is bypassing e2e messaging through Push notifications?
+Unless something has changed, this table highlights that both Signal and WhatsApp are using a "Push-to-Sync" technique to notify about new messages.
+https://crysp.petsymposium.org/popets/2024/popets-2024-0151....
+  Reply 3: Push-to-Sync. We observed 8 apps employ a push-to-sync strat-
+egy to prevent privacy leakage to Google via FCM. In this mitigation
+strategy, apps send an empty (or almost empty) push notification
+to FCM. Some apps, such as Signal, send a push notification with
+no data (aside from the fields that Google sets; see Figure 4). Other
+apps may send an identifier (including, in some cases, a phone num-
+ber). This push notification tells the app to query the app server
+for data, the data is retrieved securely by the app, and then a push
+notification is populated on the client side with the unencrypted
+data. In these cases, the only metadata that FCM receives is that the
+user received some message or messages, and when that push noti-
+fication was issued. Achieving this requires sending an additional
+network request to the app server to fetch the data and keeping
+track of identifiers used to correlate the push notification received
+on the user device with the message on the app server.
+  Reply 4: Is that not still incredibly vulnerable to timing attacks?
+  Reply 5: Maybe I’m mis-interpreting what you mean, but without a notification when a message is sent, what would you correlate a message-received notification with?
+
+Thread 2:
+No closed-source E2EE client can be truly secure because the ends of e2e are opaque.
+Detecting backdoors is only truly feasible with open source software and even then it can difficult.
+A backdoor can be a subtle remote code execution "vulnerability" that can only be exploited by the server. If used carefully and it exfiltrates data in expected client-server communications it can be all but impossible to detect. This approach also makes it more likely that almost no insider will even be aware of it, it could be a small patch applied during the build process or to the binary itself (for example, a bound check branch). This is also another reason why reproducible builds are a good idea for open source software.
+  Reply 1: >Detecting backdoors is only truly feasible with open source software and even then it can difficult.
+This is absurd. Detecting backdoors is only truly feasible on binaries, there's no way you can understand compiler behavior well enough to be able to spot hidden backdoors in source code.
+  Reply 2: With all due respect to Stallman, you can actually study binaries.
+The claim Stallman would make (after punishing you for using Open Source instead of Free Software for an hour) is that Closed Software (Proprietary Software) is unjust. but in the context of security, the claim would be limited to Free Software being capable of being secure too.
+You may be able to argue that Open Source reduces risk in threat models where the manufacturer is the attacker, but in any other threat model, security is an advantage of closed source. It's automatic obfuscation.
+There's a lot of advantages to Free Software, you don't need to make up some.
+  Reply 3: This. Closed source doesn't stop people from finding exploits in the same way that open source doesn't magically make people find them. The Windows kernel is proprietary and closed source, but people constantly find exploits in it anyways. What matters is that there is a large audience that cares about auditing. OTOH if Microsoft really wanted to sneak in a super hard to detect spyware exploit, they probably could - but so could the Linux kernel devs. Some exploits have been openly sitting in the Linux kernel for more than a decade despite everyone being able to audit it in theory. Who's to say they weren't planted by some three letter agency who coerced a developer. Relying on either approach is pointless anyways. IT security is not a single means to all ends. It's a constant struggle between safety and usability at every single level from raw silicon all the way to user-land.
+  Reply 4: It's weird to me that it's 2026 and this is still a controversial argument. Deep, tricky memory corruption exploit development is done on closed-source targets, routinely, and the kind of backdoor/bugdoor people conjure in threads about E2EE are much simpler than those bugs.
+It was a pretty much settled argument 10 years ago, even before the era of LLVM lifters, but post-LLM the standard of care practice is often full recompilation and execution.
+  Reply 5: > in any other threat model, security is an advantage of closed source
+I think there's a lot of historical evidence that doesn't support this position. For instance, Internet Explorer was generally agreed by all to be a much weaker product from a security perspective than its open source competitors (Gecko, WebKit, etc).
+Nobody was defending IE from a security perspective because it was closed source.
+
+Thread 3:
+Ex-WhatsApp engineer here. WhatsApp team makes so much effort to make this end to end encrypted messages possible. From the time I worked I know for sure it is not possible to read the encrypted messages.
+From business standpoint they don’t have to read these messages, since WhatsApp business API provide the necessary funding for the org as a whole.
+  Reply 1: Facebook has never been satisfied with direct funding. The value is in selling attention and influencing users’ behavior.
+  Reply 2: This is why most tech founders who go big never retire, even as billionaires. The power they gain, only the wisest would refuse.
+  Reply 3: Nice! Hey, question: I noticed Signal at one point had same address on Google Play Store as WA. Can you tell us if Signal devs shared office space with WA during integration of the Signal protocol? Related to that, did they hold WA devs' hand during the process, meaning at least at the time it was sort of greenlighted by Moxie or something. If this is stuff under NDA I fully understand but anything you can share I'd love to hear.
+  Reply 4: So how was Andreas Schjelderup caught sharing minor content?
+  Reply 5: According to Kristeligt Dagblad in Denmark, he was using Snapchat:
+
+https://www.kristeligt-dagblad.dk/tidligere-superligaspiller...
+
+Thread 4:
+Matthew Green's take from 3 days ago:
+> There’s a lawsuit against WhatsApp making the rounds today, claiming that Meta has access to plaintext. I see nothing in there that’s compelling; the whole thing sounds like a fishing expedition.
+https://bsky.app/profile/matthewdgreen.bsky.social/post/3mdg...
+
+Thread 5:
+None of the statements I’ve seen from Meta, people formerly involved in WhatsApp that chimed in here (thanks!), or the quotes from the investigation are incompatible with the whistleblowers’ allegations.
+At this point, I won’t trust anything short of this on the front page of an SEC filing, signed by zuck and the relevant management chain:
+“The following statement is material to earnings:  Facebook has never (since E2EE was rolled out) and will never access messages sent through whatsapp via any means including the encryption protocol, application backdoor moderation access or backup mechanisms.  Similarly, it does not provide third parties with access to the methods, and does not have the technical capability to do so under any circumstances.”

@@ -1,3 +1,11 @@
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
+
+## 2026-02-01 - [The Erosion of Semantic Boundaries in Embodied AI]
+**Learning:** The transition from LLMs to Large Vision Language Models (LVLMs) in autonomous systems has introduced a "Semantic Layer Violation." Because these models reason over environmental context, they fail to distinguish between observed data and instructional context. This effectively leaks the system's instruction pointer to the physical world, making "environmental prompt injection" a foundational security risk for robotics.
+**Implication:** Future analysis of AI security must move beyond text-based jailbreaks to address the lack of a "semantic sandbox" in embodied intelligence.
+
+## 2026-02-01 - [Simulated Verification and the signal failure of Citations]
+**Learning:** GenAI discourse on platforms like Wikipedia highlights a shift from truth-seeking to "Authority Mimicry." LLMs optimize for the aesthetics of authority (structure, citations) rather than substantive truth. This creates a "Verification Gap" where the cost of simulating verification is near zero, while the cost of actual verification remains high, leading to a systemic failure of the "Trust but Verify" model.
+**Implication:** We must prepare for a retreat from "Cited" knowledge toward "Vouched" knowledge, where trusted identity and cryptographic proof replace traditional peer-reviewed signals.
