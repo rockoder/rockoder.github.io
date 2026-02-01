@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SkipLink from '../components/SkipLink.astro';
 import ReadingProgress from '../components/ReadingProgress.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import TagCloud from '../components/TagCloud.astro';
@@ -43,10 +44,11 @@ const formattedDate = date.toLocaleDateString('en-US', {
     />
   </head>
   <body class="min-h-screen flex flex-col">
+    <SkipLink />
     <ReadingProgress />
     <Header />
 
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <!-- Article Header -->
         <header class="mb-10">
