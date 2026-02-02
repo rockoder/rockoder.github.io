@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-02 - [Micro-UX for Sharing and Discovery]
+**Learning:** Users often want to share specific content but find copying URLs from the address bar cumbersome on mobile or within specialized browsers. A "Copy Link" utility in the share section with immediate, unambiguous "Copied!" feedback (e.g., via a temporary tooltip) provides a frictionless experience that encourages content distribution.
+**Action:** Include "Copy Link" utilities alongside social share buttons. Ensure they use `navigator.clipboard` with appropriate error handling and provide high-contrast, non-disruptive visual feedback.
