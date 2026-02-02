@@ -26,7 +26,8 @@ function getExcerpt(body: string) {
   <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
     <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
       <!-- Main Content: Posts -->
-      <main>
+      <section aria-labelledby="latest-posts-heading">
+        <h2 id="latest-posts-heading" class="sr-only">Latest Posts</h2>
         <div class="space-y-10">
           {latestPosts.map((post) => {
             const formattedDate = post.data.date.toLocaleDateString('en-US', {
@@ -69,7 +70,7 @@ function getExcerpt(body: string) {
             </a>
           </div>
         )}
-      </main>
+      </section>
 
       <!-- Sidebar -->
       <aside class="hidden lg:block">
