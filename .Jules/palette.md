@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-01 - [Strategic Constraints and Accessibility Polishing]
+**Learning:** UX improvements must be balanced against codebase maintainability; large feature rollouts can obscure small, high-impact wins. Programmatic accessibility, such as fixing nested `<main>` tags (which confuses screen readers' document landmark navigation) and adding `aria-label` to icon-heavy search inputs, provides significant usability gains with minimal code changes.
+**Action:** Prioritize semantic correctness and high-impact micro-interactions (like "Copy Link" buttons) when working within strict PR size constraints. Always verify document landmark hierarchy to avoid nested `<main>` elements.
