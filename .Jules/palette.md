@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-12 - [Improving Navigation and Sharing with Micro-Interactions]
+**Learning:** For content-heavy blogs, "Back to Top" buttons provide an essential navigation shortcut, while "Copy Link" buttons with immediate "Copied!" feedback significantly reduce friction for social sharing compared to generic share intents. Passive scroll listeners with `{ passive: true }` and `navigator.clipboard` are best practices for these features.
+**Action:** Always include a "Back to Top" affordance on long-form content. Use temporary inline feedback (e.g., "Copied!") for clipboard actions to provide unambiguous success confirmation.
