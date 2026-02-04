@@ -1,0 +1,48 @@
+---
+/**
+ * Back to Top button component.
+ * Appears after scrolling down and smoothly scrolls back to top.
+ */
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-8 right-8 p-3 rounded-full bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground-muted)] cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 invisible translate-y-4 flex items-center justify-center z-40 shadow-2xl hover:text-[var(--accent)] hover:border-[var(--accent)] hover:bg-[var(--background-tertiary)] hover:-translate-y-0.5 active:translate-y-0"
+  aria-label="Back to top"
+  title="Back to top"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m18 15-6-6-6 6"></path>
+  </svg>
+</button>
+
+<script>
+  function initBackToTop() {
+    const backToTop = document.getElementById('back-to-top');
+
+    if (backToTop) {
+      const toggleBackToTop = () => {
+        if (window.scrollY > 300) {
+          backToTop.classList.add('!opacity-100', '!visible', '!translate-y-0');
+        } else {
+          backToTop.classList.remove('!opacity-100', '!visible', '!translate-y-0');
+        }
+      };
+
+      window.addEventListener('scroll', toggleBackToTop, { passive: true });
+
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // Initial check
+      toggleBackToTop();
+    }
+  }
+
+  initBackToTop();
+  document.addEventListener('astro:page-load', initBackToTop);
+</script>

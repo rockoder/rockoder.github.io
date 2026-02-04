@@ -1,0 +1,74 @@
+---
+/**
+ * Client-side script to add copy buttons to all code blocks.
+ * Injected into BaseLayout to work across all pages.
+ */
+---
+
+<script>
+  function addCopyButtons() {
+    const codeBlocks = document.querySelectorAll('pre');
+
+    codeBlocks.forEach((codeBlock) => {
+      if (codeBlock.querySelector('.copy-code-button')) return;
+
+      const button = document.createElement('button');
+      // Using Tailwind classes for styling
+      button.className = 'copy-code-button absolute top-2 right-2 p-1.5 rounded-md bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground-muted)] cursor-pointer transition-all duration-200 opacity-0 flex items-center justify-center z-10 hover:text-[var(--foreground)] hover:border-[var(--border-hover)] hover:bg-[var(--background-tertiary)] hover:-translate-y-px active:translate-y-0';
+      button.type = 'button';
+      button.ariaLabel = 'Copy code to clipboard';
+      button.title = 'Copy code';
+      button.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      `;
+
+      codeBlock.classList.add('relative', 'group');
+      codeBlock.appendChild(button);
+
+      button.addEventListener('click', async () => {
+        const code = codeBlock.querySelector('code');
+        const text = code ? code.innerText : codeBlock.innerText;
+
+        try {
+          await navigator.clipboard.writeText(text);
+
+          const originalHTML = button.innerHTML;
+          button.classList.add('!text-[var(--accent)]', '!border-[var(--accent)]', '!opacity-100');
+          button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+
+          setTimeout(() => {
+            button.classList.remove('!text-[var(--accent)]', '!border-[var(--accent)]', '!opacity-100');
+            button.innerHTML = originalHTML;
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+      });
+    });
+  }
+
+  addCopyButtons();
+  document.addEventListener('astro:page-load', addCopyButtons);
+</script>
+
+<style is:global>
+  /* Show button on hover or focus */
+  pre:hover .copy-code-button,
+  .copy-code-button:focus-visible {
+    opacity: 1;
+  }
+
+  /* Always show on mobile */
+  @media (max-width: 768px) {
+    .copy-code-button {
+      opacity: 1;
+    }
+  }
+</style>
