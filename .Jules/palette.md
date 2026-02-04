@@ -17,3 +17,7 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-01 - [Cross-Layout Component Integration and Utility Consistency]
+**Learning:** In projects where multiple layouts exist (e.g., `BaseLayout`, `PostLayout`, `CaseStudyLayout`) and do not share a common root, global UX enhancements must be explicitly registered in each layout to ensure a consistent experience. Additionally, using Tailwind's `!` (important) modifier is often necessary when dynamically adding/removing classes via JavaScript to override base styles or previously applied utility classes.
+**Action:** Always audit all layout files when adding global UI components. Use Tailwind utility classes instead of custom CSS blocks whenever possible to maintain design system integrity.

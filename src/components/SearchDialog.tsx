@@ -60,20 +60,20 @@ export default function SearchDialog({ items }: SearchDialogProps) {
     <div className="fixed inset-0 z-50">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm"
         onClick={() => setOpen(false)}
       />
 
       {/* Dialog */}
       <div className="fixed left-1/2 top-1/4 w-full max-w-lg -translate-x-1/2 -translate-y-1/4 p-4">
         <Command
-          className="rounded-xl border border-[#27272a] bg-[#0a0a0a] shadow-2xl overflow-hidden"
+          className="rounded-xl border border-[var(--border)] bg-[var(--background)] shadow-2xl overflow-hidden"
           loop
         >
-          <div className="flex items-center border-b border-[#27272a] px-4">
+          <div className="flex items-center border-b border-[var(--border)] px-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-[#71717a] mr-3"
+              className="h-5 w-5 text-[var(--foreground-subtle)] mr-3"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -89,29 +89,29 @@ export default function SearchDialog({ items }: SearchDialogProps) {
               value={search}
               onValueChange={setSearch}
               placeholder="Search..."
-              className="flex-1 bg-transparent py-4 text-[#fafafa] placeholder-[#71717a] outline-none"
+              className="flex-1 bg-transparent py-4 text-[var(--foreground)] placeholder-[var(--foreground-subtle)] outline-none"
             />
-            <kbd className="hidden sm:inline-flex items-center gap-1 rounded bg-[#141414] px-2 py-1 text-xs text-[#71717a]">
+            <kbd className="hidden sm:inline-flex items-center gap-1 rounded bg-[var(--background-secondary)] px-2 py-1 text-xs text-[var(--foreground-subtle)]">
               ESC
             </kbd>
           </div>
 
           <Command.List className="max-h-80 overflow-y-auto p-2">
-            <Command.Empty className="py-6 text-center text-sm text-[#71717a]">
+            <Command.Empty className="py-6 text-center text-sm text-[var(--foreground-subtle)]">
               No results found.
             </Command.Empty>
 
             {pages.length > 0 && (
               <Command.Group
                 heading="Pages"
-                className="text-xs font-medium text-[#71717a] px-2 py-1.5"
+                className="text-xs font-medium text-[var(--foreground-subtle)] px-2 py-1.5"
               >
                 {pages.map((item) => (
                   <Command.Item
                     key={item.href}
                     value={item.title}
                     onSelect={() => handleSelect(item.href)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a1a1aa] cursor-pointer data-[selected=true]:bg-[#141414] data-[selected=true]:text-[#fafafa]"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--foreground-muted)] cursor-pointer data-[selected=true]:bg-[var(--background-secondary)] data-[selected=true]:text-[var(--foreground)]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -136,14 +136,14 @@ export default function SearchDialog({ items }: SearchDialogProps) {
             {blogs.length > 0 && (
               <Command.Group
                 heading="Blog Posts"
-                className="text-xs font-medium text-[#71717a] px-2 py-1.5 mt-2"
+                className="text-xs font-medium text-[var(--foreground-subtle)] px-2 py-1.5 mt-2"
               >
                 {blogs.slice(0, 10).map((item) => (
                   <Command.Item
                     key={item.href}
                     value={item.title}
                     onSelect={() => handleSelect(item.href)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a1a1aa] cursor-pointer data-[selected=true]:bg-[#141414] data-[selected=true]:text-[#fafafa]"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--foreground-muted)] cursor-pointer data-[selected=true]:bg-[var(--background-secondary)] data-[selected=true]:text-[var(--foreground)]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@ export default function SearchDialog({ items }: SearchDialogProps) {
                   </Command.Item>
                 ))}
                 {blogs.length > 10 && (
-                  <div className="px-3 py-2 text-xs text-[#71717a]">
+                  <div className="px-3 py-2 text-xs text-[var(--foreground-subtle)]">
                     + {blogs.length - 10} more posts
                   </div>
                 )}
@@ -173,14 +173,14 @@ export default function SearchDialog({ items }: SearchDialogProps) {
             {notes.length > 0 && (
               <Command.Group
                 heading="Notes"
-                className="text-xs font-medium text-[#71717a] px-2 py-1.5 mt-2"
+                className="text-xs font-medium text-[var(--foreground-subtle)] px-2 py-1.5 mt-2"
               >
                 {notes.slice(0, 5).map((item) => (
                   <Command.Item
                     key={item.href}
                     value={item.title}
                     onSelect={() => handleSelect(item.href)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#a1a1aa] cursor-pointer data-[selected=true]:bg-[#141414] data-[selected=true]:text-[#fafafa]"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--foreground-muted)] cursor-pointer data-[selected=true]:bg-[var(--background-secondary)] data-[selected=true]:text-[var(--foreground)]"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +197,7 @@ export default function SearchDialog({ items }: SearchDialogProps) {
                   <Command.Item
                     value="view-all-notes"
                     onSelect={() => handleSelect('/notes/')}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#10b981] cursor-pointer data-[selected=true]:bg-[#141414]"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--accent)] cursor-pointer data-[selected=true]:bg-[var(--background-secondary)]"
                   >
                     View all {notes.length} notes
                   </Command.Item>
@@ -206,11 +206,11 @@ export default function SearchDialog({ items }: SearchDialogProps) {
             )}
           </Command.List>
 
-          <div className="border-t border-[#27272a] px-4 py-2 text-xs text-[#71717a]">
+          <div className="border-t border-[var(--border)] px-4 py-2 text-xs text-[var(--foreground-subtle)]">
             <span className="flex items-center gap-2">
-              <kbd className="rounded bg-[#141414] px-1.5 py-0.5">↑↓</kbd>
+              <kbd className="rounded bg-[var(--background-secondary)] px-1.5 py-0.5">↑↓</kbd>
               <span>to navigate</span>
-              <kbd className="rounded bg-[#141414] px-1.5 py-0.5 ml-2">↵</kbd>
+              <kbd className="rounded bg-[var(--background-secondary)] px-1.5 py-0.5 ml-2">↵</kbd>
               <span>to select</span>
             </span>
           </div>
