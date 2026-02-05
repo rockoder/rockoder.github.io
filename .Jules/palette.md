@@ -17,3 +17,11 @@
 ## 2026-01-30 - [Improving Content Consumption with Scroll Enhancements]
 **Learning:** For content-heavy blogs, a reading progress bar provides immediate visual feedback of remaining content, reducing cognitive load. Additionally, smooth scrolling enhances navigation between sections but MUST respect user preferences for reduced motion to ensure accessibility.
 **Action:** Implement reading progress indicators as subtle, non-intrusive elements (e.g., at the viewport top). Always wrap `scroll-behavior: smooth` in a `(prefers-reduced-motion: no-preference)` media query.
+
+## 2026-02-01 - [Standardizing Interactive Components with Design Tokens]
+**Learning:** Hardcoded hex values in complex interactive components (like search dialogs) lead to visual regressions and inconsistencies when design tokens or system preferences (light/dark mode) change. Migrating these components to use established CSS variables ensures they remain thematically synchronized with the rest of the application automatically.
+**Action:** Audit third-party or complex UI components for hardcoded colors and replace them with standard design tokens from `global.css`.
+
+## 2026-02-01 - [Bridging Mobile Accessibility Gaps for Modal Utilities]
+**Learning:** Utility features like command palettes that rely on keyboard shortcuts or desktop-only UI triggers are completely inaccessible to mobile users. Providing an explicit, well-placed trigger within the mobile navigation menu—while ensuring it closes the menu upon activation to reduce layout clutter—significantly improves the mobile user experience.
+**Action:** Ensure all core site utilities (Search, Theme Toggle, etc.) have visible and accessible triggers in both desktop and mobile navigation layouts.

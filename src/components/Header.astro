@@ -76,6 +76,17 @@ function isActive(href: string): boolean {
   <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--border)]">
     <nav class="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
       <div class="flex flex-col gap-4">
+        <!-- Mobile Search Trigger -->
+        <button
+          id="mobile-search-trigger"
+          class="flex items-center gap-3 text-base font-medium text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Search
+        </button>
+
         {navLinks.map((link) => (
           <a
             href={link.href}
@@ -105,11 +116,19 @@ function isActive(href: string): boolean {
     mobileMenu?.classList.toggle('hidden');
   });
 
-  // Search trigger
+  // Search triggers
   const searchTrigger = document.getElementById('search-trigger');
-  searchTrigger?.addEventListener('click', () => {
+  const mobileSearchTrigger = document.getElementById('mobile-search-trigger');
+
+  const openSearch = () => {
     document.dispatchEvent(new CustomEvent('open-search'));
-  });
+    // Close mobile menu if open
+    mobileMenu?.classList.add('hidden');
+    mobileMenuButton?.setAttribute('aria-expanded', 'false');
+  };
+
+  searchTrigger?.addEventListener('click', openSearch);
+  mobileSearchTrigger?.addEventListener('click', openSearch);
 
   // Keyboard shortcut for search
   document.addEventListener('keydown', (e) => {
