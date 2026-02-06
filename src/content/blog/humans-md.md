@@ -4,7 +4,7 @@ date: 2026-02-07
 author: "Ganesh Pagade"
 tags: ["philosophy", "systems-thinking", "decision-making", "identity"]
 description: "An AGENTS.md file, but for humans."
-draft: true
+draft: false
 ---
 
 Many software repositories today include an AGENTS.md. It is a small, deliberate file that explains how an agent should behave inside a codebase. It captures constraints, priorities, and non-negotiables. Agents are fast, capable, and useful, but they are also unreliable. Without something written down, they drift.
