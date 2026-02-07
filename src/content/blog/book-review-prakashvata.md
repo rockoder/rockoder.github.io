@@ -6,7 +6,7 @@ tags: ["books", "review", "marathi"]
 draft: false
 ---
 
-<img style="float:left;margin-right:20px;" src="{{ site.url }}/images/posts/2013-09-28-book-review-prakashvata/Prakashvata.jpg">
+<img style="float:left;margin-right:20px;" src="/images/posts/2013-09-28-book-review-prakashvata/Prakashvata.jpg">
 
 Rating: 9/10  
 
