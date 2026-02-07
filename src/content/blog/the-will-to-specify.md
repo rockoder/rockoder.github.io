@@ -1,11 +1,14 @@
 ---
 title: "The Will to Specify"
 date: 2026-02-09
+image: "/images/posts/2026-02-09-the-will-to-specify/specify.png"
 author: "Ganesh Pagade"
 tags: ["Engineering", "AI", "Philosophy"]
 description: "Why the primary value of an engineer is shifting from the ability to produce code to the discipline of defining system behavior."
 draft: false
 ---
+
+![The Will to Specify](/images/posts/2026-02-09-the-will-to-specify/specify.png)
 
 In the traditional model of software development, the act of "building" and the act of "thinking" were inextricably linked. The friction of writing code—managing memory, navigating syntax, and debugging logic—forced a level of deliberate decision-making. To build something, you had to understand it, or at least understand the specific path you were taking through the problem space.
 

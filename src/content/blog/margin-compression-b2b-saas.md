@@ -1,11 +1,14 @@
 ---
 title: "The Margin Compression of B2B SaaS"
 date: 2026-02-08
+image: "/images/posts/2026-02-07-margin-compression-b2b-saas/saas.png"
 author: "Ganesh Pagade"
 tags: ["Business", "AI", "SaaS"]
 description: "Why the real threat to enterprise software isn't the scrappy AI startup, but the horizontal collapse of margins by existing giants."
 draft: false
 ---
+
+![The Margin Compression of B2B SaaS](/images/posts/2026-02-07-margin-compression-b2b-saas/saas.png)
 
 The prevailing narrative of AI in B2B SaaS is one of disruption from below. We imagine a world where "vibe-coded" startups, powered by large language models, can replicate the functionality of a massive enterprise platform in a few weeks, making the incumbents obsolete. This is a compelling story because it rhymes with previous waves of disruption. But in practice, the pressure on enterprise software is increasingly coming from the side.
 

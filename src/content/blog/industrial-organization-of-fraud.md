@@ -1,11 +1,14 @@
 ---
 title: "The Industrial Organization of Fraud"
 date: 2026-02-07
+image: "/images/posts/2026-02-07-industrial-organization-of-fraud/fraud.png"
 author: "Ganesh Pagade"
 tags: ["Systems", "Security", "Economics"]
 description: "Why institutions struggle to detect fraud when they treat it as a moral anomaly rather than a business process."
 draft: false
 ---
+
+![The Industrial Organization of Fraud](/images/posts/2026-02-07-industrial-organization-of-fraud/fraud.png)
 
 Fraud is often discussed as a series of isolated moral failures, a collection of individuals making poor choices in a moment of temptation. We tend to view the fraudster as a character in a drama, someone whose motives can be analyzed and whose actions can be condemned. But in any system of sufficient scale, fraud stops being a character flaw and begins to look like a business process.
 
