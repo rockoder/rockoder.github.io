@@ -7,6 +7,8 @@ description: "An AGENTS.md file, but for humans."
 draft: false
 ---
 
+![](/images/posts/1.png)
+
 Many software repositories today include an AGENTS.md. It is a small, deliberate file that explains how an agent should behave inside a codebase. It captures constraints, priorities, and non-negotiables. Agents are fast, capable, and useful, but they are also unreliable. Without something written down, they drift.
 
 A HUMANS.md applies the same idea to a person.
