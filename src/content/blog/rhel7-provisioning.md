@@ -29,7 +29,7 @@ dracut-initqueue[679]: Warning: /dev/root does not exist
 
 And I got the dracut prompt.
 
-![]({{ site.url }}/images/posts/2014-08-02-rhel7-provisioning/dev_root_error.png)
+![](/images/posts/2014-08-02-rhel7-provisioning/dev_root_error.png)
 
 After some investigation, I found that the issue was with the eth0 that I had provided as kickstart network device. RHEL7 renames the device in different format. For ex in above screenshot you would find the name as eno16780032. Providing this name instead of eth0 solved the error. 
 
@@ -48,7 +48,7 @@ Refer [Troubleshooting Kickstart files in RHEL 7](https://access.redhat.com/arti
 When it looked like that I got the kickstart file syntax correct, the installation started giving me following error:
 error populating transaction after 10 retries: failure: Packages/libstdc++-4.8.2-16.e17.x86_64.rpm from anaconda: [Errno 256] No more mirrors to try.
 
-![]({{ site.url }}/images/posts/2014-08-02-rhel7-provisioning/error_populating_transaction.png)
+![](/images/posts/2014-08-02-rhel7-provisioning/error_populating_transaction.png)
 
 Not much help from the error message. This one was tricky to resolve.
 

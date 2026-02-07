@@ -14,4 +14,4 @@ I wanted to write a summary of the book for my reference. I ended up creating a 
 
 Note that some loop completions and abstractions for simplification are my derivations and not necessarily directly mentioned in the book.
 
-![]({{ site.url }}/images/posts/2018-02-11-so-good-they-cant-ignore-you/so-good-they-cant-ignore-you-flow-chart.png)
+![](/images/posts/2018-02-11-so-good-they-cant-ignore-you/so-good-they-cant-ignore-you-flow-chart.png)

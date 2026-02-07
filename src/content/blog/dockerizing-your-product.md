@@ -12,7 +12,7 @@ Here are few steps that could help you through the process and get you a startin
 
 # Understand the Product Installation
 
-![]({{ site.url }}/images/posts/2017-02-12-dockerizing-your-product/product+installation.png)
+![](/images/posts/2017-02-12-dockerizing-your-product/product+installation.png)
 
 In this section, we'll talk about the research you need to do and data that you need to collect which will be useful later while creating the Dockerfile and other scripts.
 
