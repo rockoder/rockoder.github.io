@@ -123,5 +123,6 @@ export const legacyRedirects = {
   "/2025/01/02/detachment-in-the-game/": "/blog/detachment-in-the-game/",
   "/2025/04/29/tweet-1917303530227978257/": "/notes/tweet-1917303530227978257/",
   "/2025/05/14/tweet-1922624030089113978/": "/notes/tweet-1922624030089113978/",
-  "/2026/01/17/website-migration/": "/blog/website-migration/"
+  "/2026/01/17/website-migration/": "/blog/website-migration/",
+  "/atom.xml": "/rss.xml"
 };
