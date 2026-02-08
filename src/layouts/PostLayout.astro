@@ -48,6 +48,17 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
     <main class="flex-1">
       <article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <!-- Back link -->
+        <div class="mb-8">
+          <a
+            id="back-link"
+            href="/blog/"
+            class="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
+          >
+            &larr; Back to all posts
+          </a>
+        </div>
+
         <!-- Article Header -->
         <header class="mb-10">
           <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4">
@@ -128,19 +139,34 @@ const formattedDate = date.toLocaleDateString('en-US', {
                 </svg>
               </a>
             </div>
-
-            <!-- Back to blog -->
-            <a
-              href="/blog/"
-              class="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
-            >
-              &larr; Back to all posts
-            </a>
           </div>
         </footer>
       </article>
     </main>
 
     <Footer />
+
+    <script is:inline>
+      (function() {
+        function updateBackLink() {
+          const backLink = document.getElementById('back-link');
+          if (backLink && document.referrer) {
+            try {
+              const referrer = new URL(document.referrer);
+              const current = new URL(window.location.href);
+              if (referrer.origin === current.origin) {
+                if (referrer.pathname === '/' || referrer.pathname === '') {
+                  backLink.setAttribute('href', '/');
+                  backLink.innerHTML = '&larr; Back to Home';
+                }
+              }
+            } catch (e) {
+              // Ignore URL parsing errors
+            }
+          }
+        }
+        updateBackLink();
+      })();
+    </script>
   </body>
 </html>
