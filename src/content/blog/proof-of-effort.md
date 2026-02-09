@@ -7,6 +7,8 @@ description: "How the collapse of production costs is making 'human friction' a 
 draft: false
 ---
 
+![Proof of Effort](/images/posts/2026-02-09-proof-of-effort/proof-of-effort.png)
+
 For decades, the goal of digital technology was to remove friction. We optimized for the "one-click" experience, the automated summary, and the frictionless generation of content. We operated on the assumption that lower costs of production would lead to a more abundant and valuable information ecosystem.
 
 We are now discovering the limit of that assumption. When the cost of production for digital artifacts—text, code, images—approaches zero, the artifacts themselves lose their ability to serve as signals of value.
