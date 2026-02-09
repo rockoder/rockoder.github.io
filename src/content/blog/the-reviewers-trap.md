@@ -7,6 +7,8 @@ description: 'Why the shift from code generation to code verification is creatin
 draft: false
 ---
 
+![The Reviewers Trap](/images/posts/2026-02-09-the-reviewers-trap/the-reviewers-trap.png)
+
 The current narrative around generative AI in software engineering is dominated by the metric of "velocity." We measure how many lines are written, how many pull requests are opened, and how quickly a "junior" agent can move a ticket from backlog to review. In this framework, productivity is a function of output volume.
 
 But this model ignores a fundamental asymmetry in engineering: it is significantly easier to generate a solution than it is to verify its correctness.

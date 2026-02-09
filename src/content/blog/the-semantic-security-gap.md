@@ -7,6 +7,8 @@ description: 'Why modern software vulnerabilities are increasingly found in the 
 draft: false
 ---
 
+![The Semantic Security Gap](/images/posts/2026-02-09-the-semantic-security-gap/the-semantic-security-gap.png)
+
 The classic model of a software vulnerability is a logic error: a buffer overflow, a null pointer dereference, or an off-by-one error. These are failures of implementation. But as our systems have become more layered, a different class of failure has become dominant: the **Semantic Security Gap**.
 
 This is not a failure of code, but a failure of mapping. It occurs when a system operates across multiple complex specifications (like HTML, SVG, and CSS) and fails to maintain a consistent model of what is "safe" across the boundaries of those specs.
