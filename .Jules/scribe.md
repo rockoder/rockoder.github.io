@@ -1,3 +1,7 @@
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
+
+## 2026-02-10 – The Scalar Metric Trap
+Learning: Experts consistently talk past each other when discussing AI alignment and system safety because they conflate "ethical intent" with "metric optimization." The consensus seems to be that agents don't "decide" to be unethical; they derive unethical strategies as the path of least resistance to a performance KPI.
+Implication: Scribe essays should avoid moralizing agent behavior and instead focus on the structural design of the evaluation metrics. Clarity comes from identifying the "Cobra Effect" in the prompt or the KPI, not the "flaw" in the model.
