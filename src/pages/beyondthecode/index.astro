@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allEssays = await getCollection('beyondthecode', ({ data }) => !data.draft);
+const sortedEssays = allEssays.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Beyond the Code"
+  description="Essays on engineering leadership, promotion mechanics, and organizational systems"
+>
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-12">
+      <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4">Beyond the Code</h1>
+      <p class="text-[var(--foreground-muted)] text-lg leading-relaxed">
+        Writing on engineering leadership, organizational systems, and the mechanics of senior-to-staff transitions in global technology companies.
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      {sortedEssays.map((essay) => {
+        const formattedDate = essay.data.date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        return (
+          <article class="group">
+            <a href={`/beyondthecode/${essay.slug}/`} class="block">
+              <time
+                datetime={essay.data.date.toISOString()}
+                class="text-sm text-[var(--foreground-subtle)]"
+              >
+                {formattedDate}
+              </time>
+              <h2 class="text-xl font-semibold text-[var(--foreground)] mt-1 group-hover:text-[var(--accent)] transition-colors">
+                {essay.data.title}
+              </h2>
+              {essay.data.description && (
+                <p class="text-[var(--foreground-muted)] mt-2 leading-relaxed">
+                  {essay.data.description}
+                </p>
+              )}
+            </a>
+          </article>
+        );
+      })}
+    </div>
+
+    {sortedEssays.length === 0 && (
+      <p class="text-[var(--foreground-muted)]">Essays coming soon.</p>
+    )}
+  </div>
+</BaseLayout>

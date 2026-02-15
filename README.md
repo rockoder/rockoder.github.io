@@ -1,76 +1,126 @@
-# rockoder.com Blog
+# rockoder.com
 
-This is the source code for rockoder.com, a personal blog built with Astro 5.x, Tailwind CSS v4, and TypeScript.
+Personal website and technical publication built with Astro 5.x, Tailwind CSS v4, and TypeScript.
 
-## 🚀 Project Overview
+## Project Overview
 
 - **Framework**: Astro 5.17.1
 - **Styling**: Tailwind CSS v4
 - **Language**: TypeScript
 - **Deployment**: GitHub Actions to GitHub Pages
-- **Content**: 43 blog posts and 79 notes
-- **Features**:
-  - Homepage, blog archive with tag filters, and all static pages
-  - Command palette, reading progress bar, TOC with active highlighting
-  - Tag cloud sidebar on homepage and individual posts
-  - GitHub Actions deployment workflow
+- **Domain**: www.rockoder.com
 
-## 🧞 Commands
+## Content Sections
 
-All commands are run from the root of the project, from a terminal:
+| Section | Path | Description |
+|---------|------|-------------|
+| Blog | `/blog/` | Technical articles, tutorials, book reviews |
+| Beyond the Code | `/beyondthecode/` | Essays on engineering leadership, promotion mechanics, organizational systems |
+| Notes | `/notes/` | Short-form content and observations |
+| Writing | `/writing/` | External publications (Baeldung, Stackify) |
+| Case Studies | `/case-studies/` | Professional experience deep-dives |
+| Reading List | `/reading-list/` | Books read by year |
+| Videos | `/videos/` | Conference talks and presentations |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Features
 
-## 📁 Project Structure
+- Command palette (Cmd+K)
+- Reading progress bar
+- Table of contents with active highlighting
+- Tag filtering and search
+- Dark/light mode support
+- RSS feed
 
-```text
-/
-├── .github/workflows/deploy.yml    # GitHub Actions deployment workflow
-├── src/                            # Main source code
-│   ├── components/                 # Reusable components
-│   ├── content/                    # Blog posts and notes
-│   ├── data/                       # Data files
-│   ├── layouts/                    # Page layouts
-│   ├── pages/                      # Page routes
-│   └── styles/                     # Global styles
-├── _posts/                         # Legacy Jekyll posts (if any)
-├── public/                         # Static assets
-├── package.json                    # Dependencies and scripts
-└── README.md                       # This file
-```
+## Quick Start
 
-## 🧑‍💻 Development
-
-To start the development server:
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-```
+# Opens at http://localhost:4321
 
-To build for production:
-```bash
+# Build for production
 npm run build
-```
 
-To preview the production build:
-```bash
+# Preview production build
 npm run preview
 ```
 
-## 🚀 Deployment
+## Commands
 
-The site is automatically deployed to GitHub Pages using the workflow defined in `.github/workflows/deploy.yml`.
+| Command | Action |
+|---------|--------|
+| `npm install` | Install dependencies |
+| `npm run dev` | Start dev server at `localhost:4321` |
+| `npm run build` | Build production site to `./dist/` |
+| `npm run preview` | Preview production build locally |
+| `npm run astro check` | Run TypeScript diagnostics |
 
-## 📝 Content Management
+## Project Structure
 
-Blog posts are stored in `_posts/` directory with markdown files. Notes are managed through Astro's content collections.
+```
+src/
+├── components/          # Reusable Astro components
+├── content/             # Content collections (Astro Content API)
+│   ├── blog/            # Blog posts (markdown)
+│   ├── beyondthecode/   # Editorial essays (markdown)
+│   ├── case-studies/    # Case study content
+│   └── notes/           # Short-form notes
+├── data/                # Static data (books.ts, writing.ts, videos.ts)
+├── layouts/             # Page layout templates
+│   ├── BaseLayout.astro
+│   ├── PostLayout.astro
+│   ├── BeyondTheCodeLayout.astro
+│   └── CaseStudyLayout.astro
+├── pages/               # File-based routing
+└── styles/              # Global CSS and design tokens
+```
 
-## 👀 Want to learn more?
+## Content Collections
 
-Feel free to check [Astro documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Content is managed via Astro's Content Collections API. Schemas are defined in `src/content/config.ts`.
+
+### Adding a Blog Post
+
+Create `src/content/blog/your-post-slug.md`:
+
+```markdown
+---
+title: "Post Title"
+date: 2025-02-16
+author: "Ganesh Pagade"
+tags: ["tag1", "tag2"]
+description: "Optional description"
+draft: false
+---
+
+Content here...
+```
+
+### Adding a Beyond the Code Essay
+
+Create `src/content/beyondthecode/your-essay-slug.md`:
+
+```markdown
+---
+title: "Essay Title"
+date: 2025-02-16
+description: "Brief description of the essay"
+draft: false
+---
+
+Content here...
+```
+
+## Styling
+
+- Uses Tailwind CSS v4 with CSS variables for theming
+- Design tokens defined in `src/styles/global.css`
+- Dark mode supported via `prefers-color-scheme`
+- Colors: `var(--background)`, `var(--foreground)`, `var(--accent)`, etc.
+
+## Deployment
+
+Automatic deployment to GitHub Pages via `.github/workflows/deploy.yml` on push to `master`.

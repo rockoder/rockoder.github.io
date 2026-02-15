@@ -8,6 +8,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/blog/', label: 'Blog' },
+  { href: '/beyondthecode/', label: 'Beyond the Code' },
   { href: '/notes/', label: 'Notes' },
   { href: '/writing/', label: 'Writing' },
   { href: '/reading-list/', label: 'Reading' },
@@ -34,13 +35,16 @@ function isActive(href: string): boolean {
         <a
           href={link.href}
           class:list={[
-            'text-sm font-medium transition-colors',
+            'relative text-sm font-medium transition-colors py-1',
             isActive(link.href)
-              ? 'text-[var(--accent)]'
+              ? 'text-[var(--foreground)]'
               : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]',
           ]}
         >
           {link.label}
+          {isActive(link.href) && (
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent)] rounded-full" />
+          )}
         </a>
       ))}
 
@@ -76,15 +80,15 @@ function isActive(href: string): boolean {
   <!-- Mobile Navigation -->
   <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--border)]">
     <nav class="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-1">
         {navLinks.map((link) => (
           <a
             href={link.href}
             class:list={[
-              'text-base font-medium transition-colors',
+              'text-base font-medium transition-colors py-2 px-3 rounded-lg',
               isActive(link.href)
-                ? 'text-[var(--accent)]'
-                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)]',
+                ? 'text-[var(--foreground)] bg-[var(--background-secondary)] border-l-2 border-[var(--accent)]'
+                : 'text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--background-secondary)]',
             ]}
           >
             {link.label}

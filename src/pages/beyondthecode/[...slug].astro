@@ -1,0 +1,28 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BeyondTheCodeLayout from '../../layouts/BeyondTheCodeLayout.astro';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('beyondthecode');
+  return essays.map((essay) => ({
+    params: { slug: essay.slug },
+    props: { essay },
+  }));
+}
+
+interface Props {
+  essay: CollectionEntry<'beyondthecode'>;
+}
+
+const { essay } = Astro.props;
+const { Content, headings } = await essay.render();
+---
+
+<BeyondTheCodeLayout
+  title={essay.data.title}
+  date={essay.data.date}
+  description={essay.data.description}
+  headings={headings}
+>
+  <Content />
+</BeyondTheCodeLayout>

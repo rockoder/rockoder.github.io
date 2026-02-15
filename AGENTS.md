@@ -1,45 +1,108 @@
-# Blog Status Assessment - Jan 2026
+# rockoder.com Technical Guide
 
-This document provides a technical assessment of the rockoder.com blog to assist with future upgrades and maintenance.
+Technical reference for AI assistants and contributors working on rockoder.com.
 
-## Tech Stack (Modernized)
-- **Framework**: [Astro](https://astro.build/) 5.17.1
+## Tech Stack
+
+- **Framework**: Astro 5.17.1
 - **Language**: TypeScript
-- **Build System**: GitHub Actions
 - **Styling**: Tailwind CSS v4
 - **Hosting**: GitHub Pages
 - **Domain**: www.rockoder.com
+- **Build**: GitHub Actions (`.github/workflows/deploy.yml`)
 
-## Key Changes in 2026 Upgrade
-1.  **Framework Migration**: Moved from Jekyll 3.4.1 to Astro 5.17.1.
-2.  **Build System**: Switched to GitHub Actions for automated builds and deployments.
-3.  **Theme Modernization**:
-    *   Migrated from SCSS to Tailwind CSS v4
-    *   Implemented modern system font stack
-    *   Added automatic Dark Mode support
-    *   Migrated assets to Astro's standard structure
-    *   Switched sidebar and contact socials to high-quality SVG icons
-4.  **Content Migration**: 43 blog posts and 79 notes migrated from Jekyll
-5.  **Features Added**:
-    *   Command palette
-    *   Reading progress bar
-    *   Table of contents with active highlighting
-    *   Tag cloud sidebar on homepage and individual posts
-6.  **Configuration**: Modernized Astro configuration
+## Content Architecture
 
-## Current Configuration
-- **URL**: `https://www.rockoder.com`
-- **Framework**: Astro 5.17.1
-- **Styling**: Tailwind CSS v4
-- **Build Process**: npm scripts with Astro CLI
+### Content Collections
 
-## Maintenance Notes
-- The site is built via the `.github/workflows/deploy.yml` workflow.
-- Styles are managed through Tailwind CSS.
-- To update tracking, change `google_analytics` ID in `_config.yml` (still needed for legacy compatibility).
+All content uses Astro's Content Collections API. Schemas defined in `src/content/config.ts`.
 
-## Resolved Issues
-- **Framework Migration**: Successfully migrated from Jekyll to Astro 5.x
-- **Content Migration**: All 43 blog posts and 79 notes migrated
-- **Legacy Tech Stack**: Upgraded from Jekyll to Astro
-- **Legacy Theme**: Modernized styling with Tailwind CSS v4
+| Collection | Path | Schema Fields |
+|------------|------|---------------|
+| `blog` | `src/content/blog/` | title, date, author, tags, description, draft |
+| `beyondthecode` | `src/content/beyondthecode/` | title, date, description, draft |
+| `notes` | `src/content/notes/` | title, date, tweet_url, tweet_id, screenshot |
+| `case-studies` | `src/content/case-studies/` | title, company, role, period, technologies, summary, impact, draft |
+
+### Static Data
+
+Non-collection content in `src/data/`:
+- `books.ts` - Reading list entries
+- `writing.ts` - External publications
+- `videos.ts` - Conference talks
+
+## Layouts
+
+| Layout | Used By | Features |
+|--------|---------|----------|
+| `BaseLayout.astro` | Most pages | Header, footer, SEO |
+| `PostLayout.astro` | Blog posts | Reading progress, TOC, tags, share buttons |
+| `BeyondTheCodeLayout.astro` | Editorial essays | Reading progress, TOC, share buttons (no tags) |
+| `CaseStudyLayout.astro` | Case studies | Company/role header, technologies |
+
+## Navigation
+
+Navigation links defined in `src/components/Header.astro`:
+
+```typescript
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/beyondthecode/', label: 'Beyond the Code' },
+  { href: '/notes/', label: 'Notes' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/reading-list/', label: 'Reading' },
+  { href: '/videos/', label: 'Videos' },
+  { href: '/about/', label: 'About' },
+];
+```
+
+## Styling Conventions
+
+- Use CSS variables: `var(--background)`, `var(--foreground)`, `var(--accent)`, etc.
+- Responsive breakpoints: `sm:`, `md:`, `lg:`
+- Dark mode via `prefers-color-scheme` media query
+- Transitions on interactive elements
+
+## Development Commands
+
+```bash
+npm install          # Install dependencies
+npm run dev          # Dev server at localhost:4321
+npm run build        # Production build to ./dist/
+npm run preview      # Preview production build
+```
+
+## Adding Content
+
+### New Blog Post
+
+```bash
+# Create src/content/blog/your-slug.md
+---
+title: "Title"
+date: 2025-02-16
+tags: ["tag"]
+draft: false
+---
+```
+
+### New Beyond the Code Essay
+
+```bash
+# Create src/content/beyondthecode/your-slug.md
+---
+title: "Title"
+date: 2025-02-16
+description: "Brief description"
+draft: false
+---
+```
+
+## Key Files
+
+- `src/content/config.ts` - Content collection schemas
+- `src/components/Header.astro` - Site navigation
+- `src/styles/global.css` - Design tokens and global styles
+- `astro.config.mjs` - Astro configuration
+- `tailwind.config.mjs` - Tailwind configuration
