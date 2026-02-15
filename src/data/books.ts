@@ -8,6 +8,7 @@ export interface Book {
 export const books: Book[] = [
   { year: "2025", title: "Project Hail Mary", link: "https://a.co/d/25Y5rHA" },
   { year: "2025", title: "Fish!: A Remarkable Way To Boost Morale And Improve Results", link: "https://a.co/d/cbiB2dj" },
+  { year: "2025", title: "गोष्ट पैशापाण्याची", link: "https://amzn.in/d/071fbKbI" },
   { year: "2024", title: "Amp It Up", link: "https://www.amazon.com/Amp-Unlocking-Hypergrowth-Expectations-Intensity/dp/1119836115" },
   { year: "2024", title: "Foundation", link: "https://www.amazon.com/gp/product/B000FC1PWA" },
   { year: "2024", title: "The Coaching Habit", link: "https://www.amazon.com/Coaching-Habit-Less-Change-Forever/dp/0978440749" },
