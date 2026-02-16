@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Favicons</title>
+  <style>
+    body { font-family: system-ui; padding: 40px; background: #1a1a1a; color: #fff; }
+    h1 { margin-bottom: 20px; }
+    .favicon-grid { display: flex; gap: 40px; flex-wrap: wrap; }
+    .favicon-item { text-align: center; }
+    .favicon-item canvas { border: 1px solid #333; }
+    .favicon-item p { margin-top: 10px; color: #888; }
+    button { margin-top: 20px; padding: 10px 20px; background: #10b981; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #059669; }
+    .instructions { margin-top: 40px; padding: 20px; background: #222; border-radius: 8px; }
+    .instructions code { background: #333; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Favicon Generator - Terminal Window Logo</h1>
+
+  <div class="favicon-grid">
+    <div class="favicon-item">
+      <canvas id="canvas-16" width="16" height="16"></canvas>
+      <p>16x16 (favicon)</p>
+      <button onclick="download('canvas-16', 'favicon-16x16.png')">Download</button>
+    </div>
+    <div class="favicon-item">
+      <canvas id="canvas-32" width="32" height="32"></canvas>
+      <p>32x32 (favicon)</p>
+      <button onclick="download('canvas-32', 'favicon-32x32.png')">Download</button>
+    </div>
+    <div class="favicon-item">
+      <canvas id="canvas-180" width="180" height="180"></canvas>
+      <p>180x180 (apple-touch-icon)</p>
+      <button onclick="download('canvas-180', 'apple-touch-icon.png')">Download</button>
+    </div>
+    <div class="favicon-item">
+      <canvas id="canvas-192" width="192" height="192"></canvas>
+      <p>192x192 (android)</p>
+      <button onclick="download('canvas-192', 'android-chrome-192x192.png')">Download</button>
+    </div>
+    <div class="favicon-item">
+      <canvas id="canvas-512" width="512" height="512"></canvas>
+      <p>512x512 (android)</p>
+      <button onclick="download('canvas-512', 'android-chrome-512x512.png')">Download</button>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h3>Instructions</h3>
+    <ol>
+      <li>Click each "Download" button to save the PNG files</li>
+      <li>Move the downloaded files to <code>public/images/</code></li>
+      <li>For <code>favicon.ico</code>, use an online converter like <a href="https://favicon.io/favicon-converter/" target="_blank" style="color:#10b981">favicon.io</a> or <a href="https://realfavicongenerator.net/" target="_blank" style="color:#10b981">realfavicongenerator.net</a></li>
+    </ol>
+  </div>
+
+  <script>
+    const svgString = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="4" width="28" height="24" rx="4" stroke="#27272a" stroke-width="1.5" fill="#141414"/>
+      <circle cx="6" cy="8" r="1.5" fill="#ef4444"/>
+      <circle cx="11" cy="8" r="1.5" fill="#eab308"/>
+      <circle cx="16" cy="8" r="1.5" fill="#10b981"/>
+      <path d="M6 16L10 20L6 24" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="14" y="19" width="10" height="2" rx="1" fill="#fafafa"/>
+    </svg>`;
+
+    function drawLogo(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+
+      img.onload = function() {
+        ctx.clearRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    }
+
+    function download(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Draw all sizes
+    drawLogo('canvas-16', 16);
+    drawLogo('canvas-32', 32);
+    drawLogo('canvas-180', 180);
+    drawLogo('canvas-192', 192);
+    drawLogo('canvas-512', 512);
+  </script>
+</body>
+</html>
