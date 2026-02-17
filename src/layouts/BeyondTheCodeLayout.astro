@@ -66,19 +66,18 @@ const formattedDate = date.toLocaleDateString('en-US', {
           </div>
         </header>
 
-        {heroImage && (
-          <div class="mb-10">
-            <img
-              src={heroImage}
-              alt=""
-              class="w-full h-auto rounded-lg"
-              loading="eager"
-            />
-          </div>
-        )}
-
         <div class="lg:grid lg:grid-cols-[1fr_180px] lg:gap-12">
           <div class="prose" id="article-content">
+            {heroImage && (
+              <div class="mb-8 not-prose">
+                <img
+                  src={heroImage}
+                  alt=""
+                  class="w-full h-auto rounded-lg"
+                  loading="eager"
+                />
+              </div>
+            )}
             <slot />
           </div>
 
