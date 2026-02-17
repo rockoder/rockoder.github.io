@@ -1,0 +1,99 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c0a09"/>
+      <stop offset="100%" style="stop-color:#1c1917"/>
+    </linearGradient>
+    <linearGradient id="screenGlow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#1e3a5f;stop-opacity:0.05"/>
+    </linearGradient>
+    <filter id="blur1">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+    <filter id="blur2">
+      <feGaussianBlur stdDeviation="2.5"/>
+    </filter>
+    <filter id="blur3">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <clipPath id="screenClip">
+      <rect x="200" y="100" width="800" height="430" rx="4"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg2)"/>
+
+  <!-- Monitor frame -->
+  <rect x="180" y="80" width="840" height="470" rx="8" fill="#292524" stroke="#44403c" stroke-width="2"/>
+
+  <!-- Screen -->
+  <rect x="200" y="100" width="800" height="430" rx="4" fill="#0f0f0f"/>
+  <rect x="200" y="100" width="800" height="430" rx="4" fill="url(#screenGlow)"/>
+
+  <!-- Code lines - progressively more blurred toward center -->
+  <g clip-path="url(#screenClip)">
+    <!-- Clear code at edges -->
+    <text x="220" y="140" fill="#6b7280" font-family="monospace" font-size="13">// feature_velocity.ts</text>
+    <text x="220" y="165" fill="#93c5fd" font-family="monospace" font-size="13">export async function</text>
+    <text x="410" y="165" fill="#fde68a" font-family="monospace" font-size="13">processMetrics</text>
+    <text x="545" y="165" fill="#e5e7eb" font-family="monospace" font-size="13">(data: SprintData) {</text>
+
+    <!-- Slightly blurred -->
+    <g filter="url(#blur1)">
+      <text x="240" y="195" fill="#93c5fd" font-family="monospace" font-size="13">const</text>
+      <text x="295" y="195" fill="#fde68a" font-family="monospace" font-size="13">velocity</text>
+      <text x="375" y="195" fill="#e5e7eb" font-family="monospace" font-size="13">= calculateVelocity(data.points);</text>
+      <text x="240" y="220" fill="#93c5fd" font-family="monospace" font-size="13">const</text>
+      <text x="295" y="220" fill="#fde68a" font-family="monospace" font-size="13">throughput</text>
+      <text x="395" y="220" fill="#e5e7eb" font-family="monospace" font-size="13">= data.features.length;</text>
+    </g>
+
+    <!-- More blurred - the incomprehensible middle -->
+    <g filter="url(#blur2)">
+      <text x="240" y="255" fill="#93c5fd" font-family="monospace" font-size="13">if</text>
+      <text x="260" y="255" fill="#e5e7eb" font-family="monospace" font-size="13">(velocity.normalized > threshold.upper) {</text>
+      <text x="260" y="280" fill="#fde68a" font-family="monospace" font-size="13">await aggregateComprehension</text>
+      <text x="505" y="280" fill="#e5e7eb" font-family="monospace" font-size="13">(context);</text>
+      <text x="260" y="305" fill="#93c5fd" font-family="monospace" font-size="13">return</text>
+      <text x="315" y="305" fill="#e5e7eb" font-family="monospace" font-size="13">transformMetricState(velocity, ctx);</text>
+    </g>
+
+    <!-- Most blurred - completely opaque -->
+    <g filter="url(#blur3)">
+      <text x="260" y="340" fill="#e5e7eb" font-family="monospace" font-size="13">} else if (data.cognitiveLoad?.exceeds(capacity)) {</text>
+      <text x="280" y="365" fill="#fde68a" font-family="monospace" font-size="13">reconcileAbsorptionDelta</text>
+      <text x="505" y="365" fill="#e5e7eb" font-family="monospace" font-size="13">(state.pending);</text>
+      <text x="280" y="390" fill="#93c5fd" font-family="monospace" font-size="13">const</text>
+      <text x="335" y="390" fill="#fde68a" font-family="monospace" font-size="13">debt</text>
+      <text x="375" y="390" fill="#e5e7eb" font-family="monospace" font-size="13">= accumulateComprehensionGap(...);</text>
+      <text x="280" y="415" fill="#e5e7eb" font-family="monospace" font-size="13">propagateToReviewers(debt.magnitude);</text>
+    </g>
+
+    <!-- Back to slightly clearer -->
+    <g filter="url(#blur1)">
+      <text x="240" y="450" fill="#e5e7eb" font-family="monospace" font-size="13">}</text>
+      <text x="240" y="475" fill="#93c5fd" font-family="monospace" font-size="13">return</text>
+      <text x="295" y="475" fill="#fde68a" font-family="monospace" font-size="13">metrics</text>
+      <text x="360" y="475" fill="#e5e7eb" font-family="monospace" font-size="13">;</text>
+    </g>
+
+    <text x="220" y="505" fill="#e5e7eb" font-family="monospace" font-size="13">}</text>
+  </g>
+
+  <!-- Cursor blinking - positioned in the blur zone, hesitant -->
+  <rect x="375" y="328" width="2" height="18" fill="#3b82f6" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0;0.7" dur="1.2s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Reflection of face/figure - very subtle, in screen -->
+  <ellipse cx="600" cy="350" rx="120" ry="150" fill="#1e293b" opacity="0.08"/>
+
+  <!-- Hands silhouette at bottom - hesitant posture -->
+  <path d="M400,580 Q450,560 480,570 Q510,550 540,565 Q570,545 600,560 Q630,545 660,565 Q690,550 720,570 Q750,560 800,580 L800,630 L400,630 Z"
+        fill="#1c1917" stroke="#292524" stroke-width="1"/>
+
+  <!-- Keyboard suggestion -->
+  <rect x="350" y="570" width="500" height="60" rx="4" fill="#292524" stroke="#44403c" opacity="0.6"/>
+</svg>

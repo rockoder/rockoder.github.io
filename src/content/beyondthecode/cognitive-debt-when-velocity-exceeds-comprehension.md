@@ -3,6 +3,7 @@ title: "Cognitive Debt: When Velocity Exceeds Comprehension"
 date: 2026-02-17
 description: "A systems analysis of how AI-assisted development creates a gap between output speed and understanding, and why organizations cannot see it happening."
 author: "Ganesh Pagade"
+heroImage: "/images/beyondthecode/cognitive-debt-hero.svg"
 draft: false
 ---
 
