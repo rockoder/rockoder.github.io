@@ -8,8 +8,6 @@ draft: false
 
 The engineer finished seven features in three weeks. The quarterly review praised her velocity. The promotion packet cited her throughput metrics. Six months later, when the system required modification, no one on the team could explain why certain components existed or how they interacted.
 
-This pattern recurs with increasing frequency across engineering organizations adopting AI-assisted development tools. The observable phenomenon is familiar: features ship faster, metrics improve, headcount discussions shift toward efficiency gains. The less observable phenomenon is what happens to organizational knowledge during this acceleration.
-
 ## The Comprehension Lag
 
 When an engineer writes code manually, two parallel processes occur. The first is production: characters appear in files, tests get written, systems change. The second is absorption: mental models form, edge cases become intuitive, architectural relationships solidify into understanding. These processes are coupled. The act of typing forces engagement. The friction of implementation creates space for reasoning.
