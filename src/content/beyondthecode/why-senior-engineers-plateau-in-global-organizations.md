@@ -9,17 +9,6 @@ draft: false
 
 This is not a meritocracy problem. It is a visibility architecture problem.
 
-<div class="tldr">
-<div class="tldr-title">Key Takeaways</div>
-
-- Technical excellence is table stakes—it gets you in the game without guaranteeing wins
-- In global orgs, your expertise stays confined to your timezone (the **locality trap**)
-- The work and the record of the work are now separate artifacts requiring separate skills
-- Relationships decay with distance; your local reputation doesn't transfer across boundaries
-- Your work doesn't speak for itself—because the channels through which it speaks are different in distributed organizations
-
-</div>
-
 ## The Locality Trap
 
 Senior engineers build expertise by going deep. You become the person who knows the payment system, the one who debugs the impossible race condition, the engineer everyone consults when the architecture review gets hard. This depth creates local indispensability but global invisibility.

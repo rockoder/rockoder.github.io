@@ -13,17 +13,6 @@ Six months later, an architectural change required modifying those features. No 
 
 **Code has become cheaper to produce than to perceive.**
 
-<div class="tldr">
-<div class="tldr-title">Key Takeaways</div>
-
-- **Cognitive debt** is the gap between code output velocity and human comprehension velocity
-- Unlike technical debt, it remains invisible to metrics until incidents expose it
-- Reviewers face an impossible choice: bottleneck velocity or approve code they don't fully understand
-- Organizations are trading their pipeline of future Staff Engineers for this quarter's features
-- The system optimizes correctly for what it measures—but what it measures no longer captures what matters
-
-</div>
-
 ## The Comprehension Lag
 
 When an engineer writes code manually, two parallel processes occur. The first is production: characters appear in files, tests get written, systems change. The second is absorption: mental models form, edge cases become intuitive, architectural relationships solidify into understanding. These processes are coupled. The act of typing forces engagement. The friction of implementation creates space for reasoning.
