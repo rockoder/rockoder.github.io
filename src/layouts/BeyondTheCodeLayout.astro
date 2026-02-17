@@ -52,17 +52,6 @@ const formattedDate = date.toLocaleDateString('en-US', {
           </a>
         </div>
 
-        {heroImage && (
-          <div class="mb-8 -mx-4 sm:-mx-6 lg:-mx-8">
-            <img
-              src={heroImage}
-              alt=""
-              class="w-full h-auto rounded-lg"
-              loading="eager"
-            />
-          </div>
-        )}
-
         <header class="mb-10">
           <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4 leading-tight">
             {title}
@@ -76,6 +65,17 @@ const formattedDate = date.toLocaleDateString('en-US', {
             <span>{readingTime} min read</span>
           </div>
         </header>
+
+        {heroImage && (
+          <div class="mb-10">
+            <img
+              src={heroImage}
+              alt=""
+              class="w-full h-auto rounded-lg"
+              loading="eager"
+            />
+          </div>
+        )}
 
         <div class="lg:grid lg:grid-cols-[1fr_180px] lg:gap-12">
           <div class="prose" id="article-content">
