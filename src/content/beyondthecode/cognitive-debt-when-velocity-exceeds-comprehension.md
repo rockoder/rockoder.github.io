@@ -6,11 +6,11 @@ author: "Ganesh Pagade"
 draft: false
 ---
 
-The metrics on your QBR dashboard show a team firing on all cylinders. Your "Top Performer" shipped seven features in a single sprint. DORA metrics look immaculate. The promotion packet practically writes itself.
+The engineer shipped seven features in a single sprint. DORA metrics looked immaculate. The promotion packet practically wrote itself.
 
-Six months later, an architectural change requires modifying those features. No one on the team can explain why certain components exist or how they interact. The engineer who built them stares at her own code like a stranger's.
+Six months later, an architectural change required modifying those features. No one on the team could explain why certain components existed or how they interacted. The engineer who built them stared at her own code like a stranger's.
 
-In AI-augmented workflows, code has become cheaper to produce than to perceive. When output velocity exceeds absorption velocity, teams are not just shipping software—they are shipping black boxes into their own infrastructure. The debt remains invisible until the first major incident or architectural shift, at which point the organization discovers it no longer possesses the tacit knowledge required to fix what it "built."
+Code has become cheaper to produce than to perceive.
 
 ## The Comprehension Lag
 
