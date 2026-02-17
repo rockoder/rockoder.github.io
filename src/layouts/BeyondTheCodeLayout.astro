@@ -10,10 +10,11 @@ interface Props {
   title: string;
   description?: string;
   date: Date;
+  heroImage?: string;
   headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { title, description, date, headings = [] } = Astro.props;
+const { title, description, date, heroImage, headings = [] } = Astro.props;
 
 const content = await Astro.slots.render('default');
 const wordCount = content.split(/\s+/).length;
@@ -50,6 +51,17 @@ const formattedDate = date.toLocaleDateString('en-US', {
             &larr; Beyond the Code
           </a>
         </div>
+
+        {heroImage && (
+          <div class="mb-8 -mx-4 sm:-mx-6 lg:-mx-8">
+            <img
+              src={heroImage}
+              alt=""
+              class="w-full h-auto rounded-lg"
+              loading="eager"
+            />
+          </div>
+        )}
 
         <header class="mb-10">
           <h1 class="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4 leading-tight">
