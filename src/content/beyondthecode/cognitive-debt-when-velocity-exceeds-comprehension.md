@@ -6,7 +6,11 @@ author: "Ganesh Pagade"
 draft: false
 ---
 
-The engineer finished seven features in three weeks. The quarterly review praised her velocity. The promotion packet cited her throughput metrics. Six months later, when the system required modification, no one on the team could explain why certain components existed or how they interacted.
+The metrics on your QBR dashboard show a team firing on all cylinders. Your "Top Performer" shipped seven features in a single sprint. DORA metrics look immaculate. The promotion packet practically writes itself.
+
+Six months later, an architectural change requires modifying those features. No one on the team can explain why certain components exist or how they interact. The engineer who built them stares at her own code like a stranger's.
+
+In AI-augmented workflows, code has become cheaper to produce than to perceive. When output velocity exceeds absorption velocity, teams are not just shipping software—they are shipping black boxes into their own infrastructure. The debt remains invisible until the first major incident or architectural shift, at which point the organization discovers it no longer possesses the tacit knowledge required to fix what it "built."
 
 ## The Comprehension Lag
 
@@ -14,7 +18,7 @@ When an engineer writes code manually, two parallel processes occur. The first i
 
 AI-assisted development decouples these processes. A prompt generates hundreds of lines in seconds. The engineer reviews, adjusts, iterates. Output accelerates. But absorption cannot accelerate proportionally. The cognitive work of truly understanding what was built, why it was built that way, and how it relates to everything else remains bounded by human processing speed.
 
-The gap between output velocity and comprehension velocity is cognitive debt.
+This gap between output velocity and comprehension velocity is cognitive debt.
 
 Unlike technical debt, which surfaces through system failures or maintenance costs, cognitive debt remains invisible to velocity metrics. The code works. The tests pass. The features ship. The deficit exists only in the minds of the engineers who built the system, manifesting as uncertainty about their own work.
 
