@@ -7,11 +7,22 @@ heroImage: "/images/beyondthecode/cognitive-debt-hero.svg"
 draft: false
 ---
 
-The engineer shipped seven features in a single sprint. DORA metrics looked immaculate. The promotion packet practically wrote itself.
+<p class="drop-cap">The engineer shipped seven features in a single sprint. DORA metrics looked immaculate. The promotion packet practically wrote itself.</p>
 
 Six months later, an architectural change required modifying those features. No one on the team could explain why certain components existed or how they interacted. The engineer who built them stared at her own code like a stranger's.
 
 **Code has become cheaper to produce than to perceive.**
+
+<div class="tldr">
+<div class="tldr-title">Key Takeaways</div>
+
+- **Cognitive debt** is the gap between code output velocity and human comprehension velocity
+- Unlike technical debt, it remains invisible to metrics until incidents expose it
+- Reviewers face an impossible choice: bottleneck velocity or approve code they don't fully understand
+- Organizations are trading their pipeline of future Staff Engineers for this quarter's features
+- The system optimizes correctly for what it measures—but what it measures no longer captures what matters
+
+</div>
 
 ## The Comprehension Lag
 

@@ -15,6 +15,13 @@ But as any senior engineer knows, magic doesn't scale. In production, "magic" is
 
 Most modern coding agent harnesses (Cursor, Claude Code, etc.) operate on a philosophy of "hidden helpfulness." They inject system prompts, tool definitions, and "relevant" context behind your back. This creates a **Context Observability Gap**: you see the output, but you don't see the inputs that shaped it.
 
+<div class="callout warning">
+<div class="callout-title">⚠️ Warning</div>
+
+If you can't see the context, you can't debug it. When your agent fails at 2 AM, you'll be guessing whether it's a model hallucination, a bad tool definition, or polluted context.
+
+</div>
+
 When the agent fails—and it will—you have no way to audit why. Was it a model hallucination, or was it a poorly defined tool? Was the context window polluted by irrelevant files, or was the system prompt too restrictive? If you can't see the context, you can't engineer it.
 
 ### Why This Exists: The Abstraction Incentive
@@ -54,7 +61,12 @@ The second-order effect of this shift is the emergence of **Context Engineering*
 
 We will stop measuring developers by how well they can prompt an LLM and start measuring them by how well they can design the *environment* in which an agent operates. A senior developer isn't the one who writes the best code anymore; it's the one who builds the best `AGENTS.md` so that *any* model can produce high-quality, architecturally sound code.
 
-Stop looking for the smartest model. Start building the clearest context.
+<div class="callout tip">
+<div class="callout-title">💡 Tip</div>
+
+Stop looking for the smartest model. Start building the clearest context. An explicit `AGENTS.md` that you designed will outperform any "magic" RAG implementation.
+
+</div>
 
 ---
 *Inspired by the discussion on HN: [What I learned building an opinionated and minimal coding agent](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)*

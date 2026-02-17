@@ -5,9 +5,20 @@ description: "A systems analysis of why technical excellence alone fails to crea
 draft: false
 ---
 
-You shipped the hardest project on your team. You mentored three juniors into confident contributors. You rewrote a system that had been failing for two years. And yet your promotion packet sits in limbo while someone with half your technical depth moves up.
+<p class="drop-cap">You shipped the hardest project on your team. You mentored three juniors into confident contributors. You rewrote a system that had been failing for two years. And yet your promotion packet sits in limbo while someone with half your technical depth moves up.</p>
 
 This is not a meritocracy problem. It is a visibility architecture problem.
+
+<div class="tldr">
+<div class="tldr-title">Key Takeaways</div>
+
+- Technical excellence is table stakes—it gets you in the game without guaranteeing wins
+- In global orgs, your expertise stays confined to your timezone (the **locality trap**)
+- The work and the record of the work are now separate artifacts requiring separate skills
+- Relationships decay with distance; your local reputation doesn't transfer across boundaries
+- Your work doesn't speak for itself—because the channels through which it speaks are different in distributed organizations
+
+</div>
 
 ## The Locality Trap
 
