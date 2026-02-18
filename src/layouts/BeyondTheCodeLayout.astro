@@ -36,6 +36,31 @@ const formattedDate = date.toLocaleDateString('en-US', {
       type="article"
       publishedTime={date.toISOString()}
     />
+    <!-- Structured Data: Article -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": title,
+      "description": description || "",
+      "datePublished": date.toISOString(),
+      "dateModified": date.toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": "Ganesh Pagade",
+        "url": "https://www.rockoder.com/about/"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Ganesh Pagade",
+        "url": "https://www.rockoder.com"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": Astro.url.href
+      },
+      ...(heroImage && { "image": new URL(heroImage, Astro.site).href }),
+      "articleSection": "Beyond the Code"
+    })} />
   </head>
   <body class="min-h-screen flex flex-col">
     <ReadingProgress />
