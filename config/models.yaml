@@ -22,10 +22,13 @@ models:
       model: "gpt-4o-mini"
 
   # Outline critique - checking structure, depth, contrarian angle
-  # Free tier: Gemini Flash 2.0
+  # Using OpenAI since Gemini quota is exhausted
   outline_critique:
-    provider: "gemini"
-    model: "gemini-2.0-flash"
+    provider: "openai"
+    model: "gpt-4o-mini"
+    fallback:
+      provider: "gemini"
+      model: "gemini-2.0-flash"
 
   # Draft writing - quality matters most here
   # Claude Sonnet for best output quality
@@ -38,10 +41,13 @@ models:
       model: "gpt-4o"
 
   # Draft critique - voice consistency, shareability, claims
-  # Free tier: Gemini Flash 2.0
+  # Using OpenAI since Gemini quota is exhausted
   draft_critique:
-    provider: "gemini"
-    model: "gemini-2.0-flash"
+    provider: "openai"
+    model: "gpt-4o-mini"
+    fallback:
+      provider: "gemini"
+      model: "gemini-2.0-flash"
 
   # Final revision - apply critique feedback
   # Same as draft writing for consistency
