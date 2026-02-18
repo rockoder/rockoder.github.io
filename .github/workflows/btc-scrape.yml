@@ -1,0 +1,77 @@
+# Daily scraping workflow for Beyond the Code content pipeline
+name: BTC Daily Scrape
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  scrape:
+    name: Scrape Content Sources
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests beautifulsoup4 feedparser pyyaml
+
+      - name: Run HN Scraper
+        run: python scripts/hn_scraper_btc.py
+        continue-on-error: true
+
+      - name: Run Reddit Scraper
+        run: python scripts/reddit_scraper.py
+        continue-on-error: true
+
+      - name: Run Newsletter Monitor
+        run: python scripts/newsletter_monitor.py
+        continue-on-error: true
+
+      - name: Run Topic Extractor
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          pip install google-generativeai anthropic groq openai
+          python scripts/topic_extractor.py
+        continue-on-error: true
+
+      - name: Commit scraped data
+        env:
+          COMMIT_DATE: ${{ github.run_id }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Add all data files
+          git add data/
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            # Use a fixed commit message format (no untrusted input)
+            git commit -m "Daily scrape data update"
+            git push
+          fi

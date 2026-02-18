@@ -1,0 +1,78 @@
+# Twice-weekly content generation workflow for Beyond the Code
+name: BTC Generate Content
+
+on:
+  schedule:
+    # Run Monday and Thursday at 08:00 UTC
+    - cron: '0 8 * * 1,4'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  generate:
+    name: Generate Blog Post
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for branching
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests beautifulsoup4 feedparser pyyaml
+          pip install google-generativeai anthropic groq openai
+
+      - name: Setup gh CLI
+        run: |
+          gh auth status || echo "gh CLI should be authenticated via GITHUB_TOKEN"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check topic bank
+        id: check_topics
+        run: |
+          if [ -f "data/topic_bank.json" ]; then
+            UNUSED_COUNT=$(python -c "import json; data=json.load(open('data/topic_bank.json')); print(len([t for t in data.get('topics', []) if not t.get('used')]))")
+            echo "unused_topics=$UNUSED_COUNT" >> "$GITHUB_OUTPUT"
+            echo "Found $UNUSED_COUNT unused topics"
+          else
+            echo "unused_topics=0" >> "$GITHUB_OUTPUT"
+            echo "No topic bank found"
+          fi
+
+      - name: Run content generator
+        if: steps.check_topics.outputs.unused_topics != '0'
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Configure git for PR creation
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          # Run the generator
+          python scripts/content_generator.py
+
+      - name: Skip notification
+        if: steps.check_topics.outputs.unused_topics == '0'
+        run: |
+          echo "::warning::No unused topics available. Run the scraper first."

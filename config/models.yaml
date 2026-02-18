@@ -1,0 +1,72 @@
+# LLM Model Configuration for Beyond the Code Pipeline
+# Edit this file to switch providers or models without code changes
+
+models:
+  # Topic extraction from scraped content (runs daily, high volume)
+  # Using free tier: Gemini Flash 2.0 (1500 req/day free)
+  topic_extraction:
+    provider: "gemini"
+    model: "gemini-2.0-flash"
+    fallback:
+      provider: "groq"
+      model: "llama-3.1-70b-versatile"
+
+  # Outline generation - needs creativity, structure awareness
+  # Claude Haiku is cheap ($0.25/1M input) but capable
+  # Falls back to GPT-4o-mini if Anthropic unavailable
+  outline_generation:
+    provider: "anthropic"
+    model: "claude-3-haiku-20240307"
+    fallback:
+      provider: "openai"
+      model: "gpt-4o-mini"
+
+  # Outline critique - checking structure, depth, contrarian angle
+  # Free tier: Gemini Flash 2.0
+  outline_critique:
+    provider: "gemini"
+    model: "gemini-2.0-flash"
+
+  # Draft writing - quality matters most here
+  # Claude Sonnet for best output quality
+  # Falls back to GPT-4o if Anthropic unavailable
+  draft_writing:
+    provider: "anthropic"
+    model: "claude-sonnet-4-20250514"
+    fallback:
+      provider: "openai"
+      model: "gpt-4o"
+
+  # Draft critique - voice consistency, shareability, claims
+  # Free tier: Gemini Flash 2.0
+  draft_critique:
+    provider: "gemini"
+    model: "gemini-2.0-flash"
+
+  # Final revision - apply critique feedback
+  # Same as draft writing for consistency
+  # Falls back to GPT-4o if Anthropic unavailable
+  final_revision:
+    provider: "anthropic"
+    model: "claude-sonnet-4-20250514"
+    fallback:
+      provider: "openai"
+      model: "gpt-4o"
+
+# Provider-specific settings
+providers:
+  anthropic:
+    max_tokens: 4096
+    temperature: 0.7
+
+  gemini:
+    max_tokens: 4096
+    temperature: 0.7
+
+  groq:
+    max_tokens: 4096
+    temperature: 0.7
+
+  openai:
+    max_tokens: 4096
+    temperature: 0.7
