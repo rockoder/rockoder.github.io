@@ -74,18 +74,18 @@ Extract 3-5 compelling topics from this content. For each topic:
 
 Respond in JSON format:
 ```json
-{
+{{
   "topics": [
-    {
+    {{
       "theme": "...",
       "contrarian_angle": "...",
       "engagement_signals": "...",
       "timeliness_fit": "...",
       "sources": ["hn:123", "reddit:abc"],
       "score": 85
-    }
+    }}
   ]
-}
+}}
 ```
 """
 
