@@ -2,14 +2,14 @@
 # Edit this file to switch providers or models without code changes
 
 models:
-  # Topic extraction from scraped content (runs daily, high volume)
-  # Using free tier: Gemini Flash 2.0 (1500 req/day free)
+  # Topic extraction from scraped content (runs daily)
+  # Using OpenAI since Gemini free tier has limits
   topic_extraction:
-    provider: "gemini"
-    model: "gemini-2.0-flash"
+    provider: "openai"
+    model: "gpt-4o-mini"
     fallback:
-      provider: "groq"
-      model: "llama-3.1-70b-versatile"
+      provider: "gemini"
+      model: "gemini-2.0-flash"
 
   # Outline generation - needs creativity, structure awareness
   # Claude Haiku is cheap ($0.25/1M input) but capable
