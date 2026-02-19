@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-19 – The Reach Tax and the Devaluation of Quality
+
+**Learning:** When the marginal cost of production drops to zero, the market does not democratize; it financializes. The "moat" moves from the ability to *make* something to the ability to *buy* an audience for it. Reach exhibits threshold effects—below a certain level of existing capital or attention, quality is irrelevant because it is statistically invisible.
+
+**Implication:** Future writing should distinguish between "creation-limited" eras (where skill was the filter) and "distribution-limited" eras (where capital or existing reach is the filter). Analyzing a product's "quality" in a distribution-limited market is a category error.
+
+---
+
+## 2026-02-19 – Institutional Gravity vs. Technical Interop
+
+**Learning:** Programming languages are not merely compilers; they are institutional artifacts. The friction in adoption often stems not from syntax but from a collision between different "ecosystem gravities." Interop fails at the semantic boundaries of how different communities think about memory, build artifacts, and ownership.
+
+**Implication:** When evaluating language adoption, the primary risk is often the "pioneer tax"—the cost of building the missing institutional infrastructure that the language's primary patron never required.
