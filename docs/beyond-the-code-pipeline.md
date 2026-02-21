@@ -218,6 +218,24 @@ Options:
 - `--check-env`: Only check environment variables, don't run anything
 - `--fail-fast`: Stop on first error (default: continue on error)
 
+### Debug Intermediate Output
+
+Every content generation run saves intermediate results for debugging and prompt improvement:
+
+```
+data/debug/2026-02-22_143022/
+├── 01_topic.json           # Selected topic
+├── 02_outline.md           # Generated outline
+├── 03_outline_critique.json # Outline critique scores
+├── 04_draft.md             # Initial draft
+├── 05_draft_critique.json  # Draft critique scores
+├── 06_draft_revised.md     # Final draft (after revisions)
+├── 07_headlines.json       # Headline options
+└── 08_series_info.json     # Series detection result
+```
+
+This output is saved regardless of `--dry-run` mode and is gitignored.
+
 ### Run Individual Components
 
 ```bash
@@ -468,7 +486,8 @@ rockoder.github.io/
 │   ├── hn_nontech_*.json   # Daily HN scrape results
 │   ├── reddit_*.json       # Daily Reddit scrape results
 │   ├── newsletters_*.json  # Daily newsletter results
-│   └── drafts/             # Local drafts from --dry-run mode (gitignored)
+│   ├── drafts/             # Local drafts from --dry-run mode (gitignored)
+│   └── debug/              # Intermediate results for debugging (gitignored)
 ├── scripts/
 │   ├── run_pipeline.py     # Unified local runner (recommended)
 │   ├── llm_client.py       # Unified LLM interface
