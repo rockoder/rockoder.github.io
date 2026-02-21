@@ -85,8 +85,12 @@ Add these secrets:
 | `GOOGLE_API_KEY` | Yes | Gemini API key (free tier) | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
 | `OPENAI_API_KEY` | Yes* | OpenAI API key (fallback for Anthropic) | [platform.openai.com](https://platform.openai.com/api-keys) |
 | `GROQ_API_KEY` | No | Groq API key (free fallback) | [console.groq.com](https://console.groq.com/) |
+| `REDDIT_CLIENT_ID` | Yes | Reddit OAuth app client ID | [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) - Create "script" app |
+| `REDDIT_CLIENT_SECRET` | Yes | Reddit OAuth app secret | Same as above - shown after creating app |
 
 *Either `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` is required. OpenAI serves as fallback when Anthropic is unavailable.
+
+**Reddit App Setup**: Go to reddit.com/prefs/apps → "create another app" → Select "script" type → Set redirect URI to `http://localhost:8080` → Note the client ID (under app name) and secret.
 
 ### 2. Install Local Dependencies (for manual runs)
 
@@ -102,6 +106,8 @@ export ANTHROPIC_API_KEY="sk-ant-..."
 export GOOGLE_API_KEY="AIza..."
 export OPENAI_API_KEY="sk-..."      # fallback for Anthropic
 export GROQ_API_KEY="gsk_..."       # optional
+export REDDIT_CLIENT_ID="..."       # Reddit OAuth
+export REDDIT_CLIENT_SECRET="..."   # Reddit OAuth
 ```
 
 Or create a `.env` file (already gitignored):
@@ -112,6 +118,8 @@ ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_API_KEY=AIza...
 OPENAI_API_KEY=sk-...
 GROQ_API_KEY=gsk_...
+REDDIT_CLIENT_ID=...
+REDDIT_CLIENT_SECRET=...
 ```
 
 ### 4. Commit the Pipeline Files

@@ -6,6 +6,8 @@
 - [ ] Add `OPENAI_API_KEY` to GitHub Secrets (fallback for Anthropic)
 - [ ] Add `GOOGLE_API_KEY` to GitHub Secrets
 - [ ] (Optional) Add `GROQ_API_KEY` to GitHub Secrets
+- [ ] Add `REDDIT_CLIENT_ID` to GitHub Secrets (create app at reddit.com/prefs/apps)
+- [ ] Add `REDDIT_CLIENT_SECRET` to GitHub Secrets
 - [ ] Commit and push pipeline files
 - [ ] Run first scrape manually: `gh workflow run btc-scrape.yml`
 
@@ -44,10 +46,12 @@ gh run view <run-id> --log
 # Install deps
 pip install -r scripts/requirements.txt
 
-# Set API keys (need Anthropic OR OpenAI, plus Google)
+# Set API keys (need Anthropic OR OpenAI, plus Google, plus Reddit OAuth)
 export ANTHROPIC_API_KEY="sk-ant-..."
 export OPENAI_API_KEY="sk-..."
 export GOOGLE_API_KEY="AIza..."
+export REDDIT_CLIENT_ID="..."
+export REDDIT_CLIENT_SECRET="..."
 
 # Run full pipeline locally
 python scripts/hn_scraper_btc.py
@@ -78,3 +82,4 @@ python scripts/content_generator.py
 **No topics?** → Run scrapers + extractor
 **LLM failed?** → Check API keys, quota
 **PR failed?** → Run `gh auth status`, re-login if needed
+**Reddit 403?** → Missing `REDDIT_CLIENT_ID`/`REDDIT_CLIENT_SECRET` secrets (Reddit blocks datacenter IPs without OAuth)
