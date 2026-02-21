@@ -39,6 +39,9 @@ jobs:
         continue-on-error: true
 
       - name: Run Reddit Scraper
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: python scripts/reddit_scraper.py
         continue-on-error: true
 

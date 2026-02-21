@@ -21,17 +21,52 @@ SUBREDDITS = [
     "managers",             # Management perspective
 ]
 
-HEADERS = {
-    "User-Agent": "BeyondTheCode/1.0 (Content research bot for blog)"
-}
+# User-Agent must identify the app (Reddit requirement)
+USER_AGENT = "BeyondTheCode/1.0 (by /u/beyond_the_code_bot)"
 
-# Reddit JSON API endpoint
-REDDIT_URL = "https://www.reddit.com/r/{subreddit}/top.json"
+# OAuth credentials from environment
+REDDIT_CLIENT_ID = os.environ.get("REDDIT_CLIENT_ID")
+REDDIT_CLIENT_SECRET = os.environ.get("REDDIT_CLIENT_SECRET")
+
+# OAuth endpoint
+OAUTH_URL = "https://oauth.reddit.com/r/{subreddit}/top"
+TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
+
+# Global access token
+_access_token = None
+
+
+def get_access_token() -> str | None:
+    """Get OAuth access token using client credentials flow."""
+    global _access_token
+    if _access_token:
+        return _access_token
+
+    if not REDDIT_CLIENT_ID or not REDDIT_CLIENT_SECRET:
+        print("Warning: Reddit OAuth credentials not set, scraping will likely fail")
+        return None
+
+    auth = requests.auth.HTTPBasicAuth(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET)
+    headers = {"User-Agent": USER_AGENT}
+    data = {"grant_type": "client_credentials"}
+
+    try:
+        resp = requests.post(TOKEN_URL, auth=auth, headers=headers, data=data, timeout=15)
+        if resp.status_code == 200:
+            _access_token = resp.json().get("access_token")
+            print("Successfully authenticated with Reddit OAuth")
+            return _access_token
+        else:
+            print(f"OAuth authentication failed: {resp.status_code}")
+            return None
+    except Exception as e:
+        print(f"OAuth error: {e}")
+        return None
 
 
 def get_subreddit_posts(subreddit: str, time_filter: str = "day", limit: int = 25) -> list[dict]:
     """
-    Fetch top posts from a subreddit.
+    Fetch top posts from a subreddit using OAuth API.
 
     Args:
         subreddit: Subreddit name (without r/)
@@ -41,18 +76,27 @@ def get_subreddit_posts(subreddit: str, time_filter: str = "day", limit: int = 2
     Returns:
         List of post data dicts
     """
-    url = REDDIT_URL.format(subreddit=subreddit)
+    token = get_access_token()
+    if not token:
+        print(f"  Skipping r/{subreddit}: No OAuth token available")
+        return []
+
+    url = OAUTH_URL.format(subreddit=subreddit)
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "User-Agent": USER_AGENT,
+    }
     params = {
         "t": time_filter,
         "limit": min(limit, 100)
     }
 
     try:
-        resp = requests.get(url, headers=HEADERS, params=params, timeout=15)
+        resp = requests.get(url, headers=headers, params=params, timeout=15)
         if resp.status_code == 429:
             print(f"  Rate limited on r/{subreddit}, waiting...")
             time.sleep(60)
-            resp = requests.get(url, headers=HEADERS, params=params, timeout=15)
+            resp = requests.get(url, headers=headers, params=params, timeout=15)
 
         if resp.status_code != 200:
             print(f"  Failed to fetch r/{subreddit}: {resp.status_code}")
@@ -92,7 +136,7 @@ def get_subreddit_posts(subreddit: str, time_filter: str = "day", limit: int = 2
 
 def get_post_comments(subreddit: str, post_id: str, limit: int = 10) -> list[dict]:
     """
-    Fetch top comments for a post.
+    Fetch top comments for a post using OAuth API.
 
     Args:
         subreddit: Subreddit name
@@ -102,11 +146,19 @@ def get_post_comments(subreddit: str, post_id: str, limit: int = 10) -> list[dic
     Returns:
         List of comment dicts with text, author, score
     """
-    url = f"https://www.reddit.com/r/{subreddit}/comments/{post_id}.json"
+    token = get_access_token()
+    if not token:
+        return []
+
+    url = f"https://oauth.reddit.com/r/{subreddit}/comments/{post_id}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "User-Agent": USER_AGENT,
+    }
     params = {"limit": limit, "sort": "top"}
 
     try:
-        resp = requests.get(url, headers=HEADERS, params=params, timeout=15)
+        resp = requests.get(url, headers=headers, params=params, timeout=15)
         if resp.status_code != 200:
             return []
 
