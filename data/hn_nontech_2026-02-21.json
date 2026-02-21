@@ -1,7 +1,7 @@
 {
   "scraped_date": "2026-02-21",
   "source": "hacker_news",
-  "total_scraped": 125,
+  "total_scraped": 122,
   "nontech_count": 20,
   "posts": [
     {
@@ -10,17 +10,17 @@
       "link": "https://news.ycombinator.com/item?id=47049824",
       "domain": "news.ycombinator.com",
       "author": "chaseadam17",
-      "score": 1136,
+      "score": 1137,
       "comment_count": 113,
       "created_ts": 1771347978,
       "is_internal": true,
       "post_text": "13 years ago, we launched Watsi.org with a Show HN [1].<p>For nearly a year, this community drove so much traffic that we couldn’t list patients fast enough. Then pg saw us on HN, wrote us our first big check, and accepted us as the first YC nonprofit (W13). The next few years were a whirlwind.<p>I was a young, naive founder with just enough experience to know I wanted Watsi to be more efficient, transparent, and innovative than most nonprofits. We spent 24&#x2F;7 talking to users and coding. We did things that don’t scale. We tried our best to be walking, talking pg essays.<p>Over the years we learned that product&#x2F;market fit is different for nonprofits. Not many people wake up and think, &quot;I&#x27;d love to donate to a nonprofit today&quot; with the same oomph that they think, &quot;I&#x27;d love a coffee&quot; or &quot;I&#x27;d like to make more money.&quot;<p>No matter how much effort we put into fundraising, donations grew linearly, while requests for care grew exponentially. I felt caught in the middle. After investing everything I had, I eventually burned out and transitioned to the board.<p>I made a classic founder mistake and intertwined my self-worth with Watsi&#x27;s success. I believed that if I could somehow help every patient, I was a good person, but if I let down some patients, which became inevitable, I was a bad person.<p>This was exacerbated by seeing our for-profit YC batch mates raise massive rounds. I felt like a failure for not scaling Watsi faster, but eventually we accepted reality and set Watsi on more of a slow, steady, and sustainable trajectory.<p>Now that I have perspective, I&#x27;m incredibly proud of what the org has accomplished and grateful to everyone who has done a tour of duty to support us. Watsi donors have donated over $20M to fund 33,241 surgeries, and we have a good shot of helping patients for a long time to come.<p>In a world of fast growth and fast crashes, here&#x27;s a huge thank you to the HN users who have stuck by Watsi, or any other important cause, even when it&#x27;s not on the front page. I believe it embodies the best of humanity. Thanks HN!<p>[1] <a href=\"http:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=4424081\">http:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=4424081</a>",
       "is_ask_hn": false,
       "matched_keywords": [
-        "mistake",
+        "learned",
         "success",
-        "failure",
-        "learned"
+        "mistake",
+        "failure"
       ],
       "comments": [
         {
@@ -114,8 +114,8 @@
       "link": "https://www.coinerella.com/made-in-eu-it-was-harder-than-i-thought/",
       "domain": "www.coinerella.com",
       "author": "willy__",
-      "score": 689,
-      "comment_count": 356,
+      "score": 717,
+      "comment_count": 368,
       "created_ts": 1771578125,
       "is_internal": false,
       "post_text": "",
@@ -160,29 +160,29 @@
           "author": "znnajdla",
           "replies": [
             {
-              "text": "You say no VMs and are using Apple hardware. Are you running this all directly on macOS?",
-              "author": "jrmg",
+              "text": "> \nManaged databases are a scam.\nI, too, once believed this. Then I had the displeasure of watching a $10,000 server fail during Christmas travel (about 20 years ago now). A single RAID drive failed. Then, during the rebuild, a second drive failed. Then the RAID controller \nitself\n failed catastrophically, losing all the RAID volume metadata. When we restored from backup, we discovered that the sysadmin who had just quit a few weeks before had lied to us about the backup system, and we had no backups.\nThis is the sort of black swan event that happens every 5-10 years. It's an unusually bad event, even by black swan standards, but stuff like this happens.\nThe fundamental problem of self-hosted databases is that you test the happy path every day, but you only test true disaster recovery every 5-10 years. And in practice, this means that disaster recovery will usually fail.\nWith a managed database service, most of what you're paying goes to making sure that disaster recovery works. And in my experience, it does. I've seen RDS database servers fail catastrophically, and completely rebuild in under 15 minutes with virtually no data loss, with almost no human intervention at all.\nIf you care about your customers' data, I think that a reputable managed database is the right move until roughly the point that you can pay for a full time database administrator. At that point, sure, roll your own. But do regular disaster recovery tests, lest you discover that a recently departed DBA has been lying to you.",
+              "author": "ekidd",
               "depth": 1
             },
             {
-              "text": "Yes, except for one HAProxy server. The setup I described isn't fully in production yet, but my testing confirms it works. We've been running for years on one single baremetal server on Hetzner/OVH though. And macOS makes sense for one of our main workloads (headless browser agents). Much better than browser-in-linux-docker for many reasons.",
+              "text": "Yeah but even with managed database services you don't know if your provider has invested into proper testing of their recovery so you have to test it anyway. Major services like DigitalOcean have been known to shit the bed with your backups. If you don't test your backup recovery, you don't know if you're screwed even if you're paying for \"managed\" services.\nI test my backup recovery several times a month by actually baking into our CI/CD workflow under certain conditions. The entire production database gets restored from backup every week.",
               "author": "znnajdla",
+              "depth": 2
+            },
+            {
+              "text": "What about a hybrid approach?\nYou could use a managed db service as a live replica dedicated as a backup only. The queries would go to your local database on beefy hardware, while the replica would just have to be powerful enough to keep up with the WAL stream.",
+              "author": "throwaway063_1",
+              "depth": 2
+            },
+            {
+              "text": "Yes, but a complete hardware mirror is only 2x the original cap. investment.\nIf bandwidth allows, you could even have local mirror in your office.",
+              "author": "yobbo",
               "depth": 2
             },
             {
               "text": "Thanks for the post. How do you currently deal with HD failures/redundancy? That’s my main concern leaving a managed database provider.",
               "author": "zonkd1234",
               "depth": 1
-            },
-            {
-              "text": "I've designed our app so that there are only two stateful services that matter: Database and Disk. Everything else is cattle, you can shut down or spin up new instances and the load balancer redirects requests with no impact. Making Postgres redundant is a matter of careful configuration with PGBouncer + HAProxy + Patroni. However for a long time we had a much simpler setup: just restore a new database from backup on a new machine if the main one failed (one-time simple script run manually - not automatic, means a little bit of downtime if there's a failure, but it worked). Or you could use CockroachDB. Making disk redundant: just use MinIO for S3-like disk (that's also where DB backups are stored). You can lose up to 2 out 4 of your servers and you lose nothing.\nWith this setup if 1 or 2 Mac Studios fail (or need to be restarted for updates) everything just keeps running smoothly with no customer impact. It also helps that the app itself is on the Elixir BEAM (Phoenix) so everything \"just works\" across all machines.",
-              "author": "znnajdla",
-              "depth": 2
-            },
-            {
-              "text": "cheers. Had never heard of MinIO either, very cool.",
-              "author": "zonkd1234",
-              "depth": 3
             }
           ]
         },
@@ -201,11 +201,6 @@
               "depth": 2
             },
             {
-              "text": "Passkey signup could be almost as easy. Type email address, click register, invoke WebAuthn flow (which is no more complex than social registration), done. Maybe you need email address validation for some reason, in which case it’s a wee bit more complex.  Ideally there would never even be an option to make a password unless passkeys are unavailable.",
-              "author": "amluto",
-              "depth": 2
-            },
-            {
               "text": "> I also avoid it because I'm concerned about being over-reliant on google (what if they close my account?)\nMost if the \"sign-in with google\" accounts I have seen treat it as a shortcut to creating and logging in with an account with the primary email address of the Google account. So you can hit \"reset password\" and get a conventional password log-in to an account you previously made with the Google auth. If you get locked out of google, it's NBD.\nOf course, this is probably not universally the case.",
               "author": "advisedwang",
               "depth": 2
@@ -214,6 +209,11 @@
               "text": "Does Google even let you create an account without Gmail anymore?",
               "author": "piperswe",
               "depth": 3
+            },
+            {
+              "text": "Yes. There is a \"Use your existing email address\" button in the create account dialog.",
+              "author": "advisedwang",
+              "depth": 4
             }
           ]
         },
@@ -258,13 +258,13 @@
               "depth": 1
             },
             {
-              "text": "They used to have competitive prices for a while, with their dedibox line.\nI think they are not as well known. It’s a bit of a side project of the parent company, Iliad. They could benefit from heavy investments and some more aggressive marketing, but perhaps it’s not worth the risk and a slow but steady growth is what they prefer.",
-              "author": "speedgoose",
+              "text": "Price would be a bit more bearable if their reserved instance discounts were more generous",
+              "author": "tcldr",
               "depth": 2
             },
             {
-              "text": "Price would be a bit more bearable if their reserved instance discounts were more generous",
-              "author": "tcldr",
+              "text": "They used to have competitive prices for a while, with their dedibox line.\nI think they are not as well known. It’s a bit of a side project of the parent company, Iliad. They could benefit from heavy investments and some more aggressive marketing, but perhaps it’s not worth the risk and a slow but steady growth is what they prefer.",
+              "author": "speedgoose",
               "depth": 2
             },
             {
@@ -287,8 +287,8 @@
       "link": "https://github.com/IronsideXXVI/Hacker-News",
       "domain": "github.com",
       "author": "IronsideXXVI",
-      "score": 173,
-      "comment_count": 136,
+      "score": 242,
+      "comment_count": 161,
       "created_ts": 1771596125,
       "is_internal": false,
       "post_text": "Hey HN! I built a native macOS desktop client for Hacker News and I&#x27;m open-sourcing it under the MIT license.<p>GitHub: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News</a><p>Download (signed &amp; notarized DMG, macOS 14.0+): <a href=\"https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News&#x2F;releases\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News&#x2F;releases</a><p>Screenshots: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News#screenshots\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News#screenshots</a><p>I spend a lot of time reading HN — I wanted something that felt like a proper Mac app: a sidebar for browsing stories, an integrated reader for articles, and comment threading — all in one window. Essentially, I wanted HN to feel like a first-class citizen on macOS, not a website I visit.<p>What it does:<p>- Split-view layout — stories in a sidebar on the left, articles and comments on the right, using the standard macOS NavigationSplitView pattern.<p>- Built-in ad blocking — a precompiled WKContentRuleList blocks 14 major ad networks (DoubleClick, Google Syndication, Criteo, Taboola, Outbrain, Amazon ads, etc.) right in the WebKit layer. No extensions needed. Toggleable in settings.<p>- Pop-up blocking — kills window.open() calls. Also toggleable.<p>- HN account login — full authentication flow (login, account creation, password reset). Session is stored in the macOS Keychain, and cookies are injected into the WebView so you can upvote, comment, and submit stories while staying logged in.<p>- Bookmarks — save stories locally for offline access. Persisted with Codable serialization, searchable and filterable independently.<p>- Search and filtering — powered by the Algolia HN API. Filter by content type (All, Ask, Show, Jobs, Comments), date range (Today, Past Week, Past Month, All Time), and sort by hot or recent.<p>- Scroll progress indicator — a small orange bar at the top tracks your reading progress via JavaScript-to-native messaging.<p>- Auto-updates via Sparkle with EdDSA-signed updates served from GitHub Pages.<p>- Dark mode — respects system appearance with CSS and meta tag injection.<p>Tech details for the curious:<p>The whole app is ~2,050 lines of Swift across 16 files. It uses the modern @Observable macro (not the old ObservableObject&#x2F;Published pattern), structured concurrency with async&#x2F;await and withThrowingTaskGroup for concurrent batch fetching, and SwiftUI throughout — no UIKit&#x2F;AppKit bridges except for the WKWebView wrapper via NSViewRepresentable.<p>Two APIs power the data: the official HN Firebase API for individual item&#x2F;user fetches, and the Algolia Search API for feeds, filtering, and search. The Algolia API is surprisingly powerful for this — it lets you do date-range filtering, pagination, and full-text search that the Firebase API doesn&#x27;t support.<p>CI&#x2F;CD:<p>The release pipeline is a single GitHub Actions workflow (467 lines) that handles the full macOS distribution story: build and archive, code sign with Developer ID, notarize with Apple (with a 5-retry staple loop for ticket propagation delays), create a custom DMG with AppleScript-driven icon positioning, sign and notarize the DMG, generate an EdDSA Sparkle signature, create a GitHub Release, and deploy an updated appcast.xml to GitHub Pages.<p>Getting macOS code signing and notarization working in CI was honestly the hardest part of this project. If anyone is distributing a macOS app outside the App Store via GitHub Actions, I&#x27;m happy to answer questions — the workflow is fully open source.<p>The entire project is MIT licensed. PRs and issues welcome: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;IronsideXXVI&#x2F;Hacker-News</a><p>I&#x27;d love feedback — especially on features you&#x27;d want to see. Some ideas I&#x27;m considering: keyboard-driven navigation (j&#x2F;k to move between stories), a reader mode that strips articles down to text, and notification support for replies to your comments.",
@@ -307,34 +307,39 @@
               "depth": 1
             },
             {
-              "text": "You're reading the articles from here? (I kid)",
-              "author": "killingtime74",
+              "text": "Hack on iOS has a significantly more intuitive thumb friendly interface.  Even just clicking a comment to collapse.  Little things.",
+              "author": "basch",
               "depth": 2
             },
             {
-              "text": ">\nThe whole goal is to provide links to external sources\nFor many the whole goal is the comments on those links.",
-              "author": "coldtea",
+              "text": "Some people love giving up as much customization and control over their software as possible. iOS over Android. MacOS over Linux. Chrome over Firefox. App stores over installing programs yourself. Apps over websites.\nThere are various arguments for it (better compatibility/cohesiveness, minimalism, less debugging) but it overall seems like the opposite of the \"hacker\" mindset which makes how much market share MacOS has in the space very strange.",
+              "author": "snigsnog",
               "depth": 2
             },
             {
-              "text": "As someone who used to use native RSS readers a ton back in the day, the limited web browser usually isn't a problem for just reading a few articles.\nI like native apps for things, even link aggregators, because my I want to use my OS's native window management and app management instead of just shoving everything into a browser tab, of which I already have too many. Because then it's just CMD+Tab to Chrome, and then figure out which of the 20+ tabs I'm trying to get to instead of CMD+Tab directly to that specific app.\nAnyway, just a bit of old man yelling at cloud but I've always disliked the proliferation of \"web app all the things.\" Might as well not even use a desktop OS at this point and just have a full screen browser window and call it a day.",
-              "author": "thewebguyd",
-              "depth": 2
+              "text": "That’s not really fair in the case of a third-party app like this one.  Swapping out the website’s default UI for an app \nis\n customization.",
+              "author": "comex",
+              "depth": 3
             },
             {
-              "text": "I'm trying to understand your position here.  An app with it's own way to manage multiple browser windows is better, because you have too many tabs open in your browser.  If you have multiple links open, the tab management is now a problem in your desktop app instead of the browser.  If you don't, then you don't have to manage tabs anyway.  What does this solve that a separate browser window doesn't, except not having any way to add extensions like ad blockers or tampermonkey scripts etc?",
-              "author": "luma",
+              "text": "Meh. I use a native app to access HN (NetNewsWire), and \nthis\n apps launches the browser for things I want to read and/or for comments.\nIMHO your comment is unfair. Native apps really \nare\n, when done right, much better. Sadly they are rarely done right.",
+              "author": "frizlab",
               "depth": 3
             }
           ]
         },
         {
-          "top": "Could you add comment navigation features? I want to read all top level comments first and be able to down-arrow through them, and right-arrow to expand one level.",
-          "author": "block_dagger",
+          "top": "Nice work shipping this. The 2k lines of Swift for a fully functional native app is impressive - shows how much SwiftUI has matured. The CI/CD pipeline for macOS code signing is genuinely hard, so thanks for open-sourcing that part. For anyone building side projects: this is the kind of portfolio piece that actually demonstrates real engineering skills. Much more valuable than yet another todo app when you're applying for jobs.",
+          "author": "iriisatremotely",
+          "replies": []
+        },
+        {
+          "top": "This is fantastic. The app is simple, useful and feels de-cluttered.\nTwo of my feature requests:\n1. Allow cmd+f search on the whole app - I wanted to search your post on the app but I couldn't\n2. A browser button to open the current page on an external browser.\nSide note: I am trying to minimize my HN time via getting push notifications for relevant HN posts, and that's how I discovered your post. Would it be cool if one could write custom agents on top of an app? Maybe?",
+          "author": "vb7132",
           "replies": [
             {
-              "text": "Definitely, looking into a better way to display comments for an upcoming release.",
-              "author": "IronsideXXVI",
+              "text": "A link to my experiment: \nhttps://www.bvaibhav.info/knos-digest",
+              "author": "vb7132",
               "depth": 1
             }
           ]
@@ -354,8 +359,8 @@
               "depth": 1
             },
             {
-              "text": "I'm interested in what part of the design is limiting your app to macOS 14?",
-              "author": "msephton",
+              "text": "Many Intel Macs are stuck at MacOS 12, Monterey",
+              "author": "morphle",
               "depth": 2
             },
             {
@@ -371,23 +376,147 @@
           ]
         },
         {
-          "top": "Tangential piggy back: If you prefer CLI, here's a free and open source HN browser in terminal:\nhttps://github.com/Aperocky/hnterminal\nInstall: `pipx install hnterminal`",
-          "author": "Aperocky",
+          "top": "Very nice. Commenting from it right now.\nFirst feature request from me would be to adjust text size. I've start bumping up the default text size on all sites by one or two notches in the past year. Getting old, y'know. But also, as someone pointed out on a design blogpost a decade ago, why not make things easier to read. I didnt need it then, but I appreciate it now.\nReally happy that I can run this on MacOS14 cause I've been locked out of some neat things people have built recently. Thanks for targetting older OSes. I'm not upgrading to the crap they've been putting out lately.\nI'll be able to read details more later (getting ready for the job). Hope I didn't miss anything and comment about something that was already addressed. Congrats on shipping!",
+          "author": "alsetmusic",
           "replies": [
             {
-              "text": "I enjoy this one as it helps keep me mostly on task while goofing off.",
-              "author": "kridsdale1",
+              "text": "Just pushed an update allowing users to adjust text size",
+              "author": "IronsideXXVI",
+              "depth": 1
+            },
+            {
+              "text": "> I've start bumping up the default text size on all sites by one or two notches in the past year\nI've been doing this too; at some point I should probably just change the scaling of my desktop as a whole. But I like my high resolution, multiple windows layout too much to do it yet!",
+              "author": "presbyterian",
+              "depth": 1
+            },
+            {
+              "text": "There's always a compromise for me when adjusting scaling. UI doesn't scale correctly, bars get too big when I only want the text specifically to be increased, etc. I've settled on adjusting the text manually because at least that's user-adjustable.",
+              "author": "mitchell209",
+              "depth": 2
+            },
+            {
+              "text": "Just pushed an update allowing users to adjust text size",
+              "author": "IronsideXXVI",
+              "depth": 2
+            },
+            {
+              "text": "Hey thank you! I will make sure to tackle text size in the next release.",
+              "author": "IronsideXXVI",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47094179",
+      "title": "'A Big Fuck You to Big Tech': New Jersey Residents Defeat AI Data Center",
+      "link": "https://www.commondreams.org/news/new-brunswick-ai-data-center",
+      "domain": "www.commondreams.org",
+      "author": "abdelhousni",
+      "score": 53,
+      "comment_count": 18,
+      "created_ts": 1771622685,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "big tech"
+      ],
+      "comments": [
+        {
+          "top": "Been amazing to see how far tech companies have fallen in public esteem (good). I remember when my friends and I would get together to watch the new MacBook announcements, eager to see what was coming. Feels as distant now as sk8erboi culture.",
+          "author": "olivierestsage",
+          "replies": [
+            {
+              "text": "Doesn’t help that they’ve gotten so big. They’ve become “the man” the establishment that has a direct line to everyone’s brains.\nAnd have in so many cases abused their power.\nAll that not counting the stagnation and enshittification.\nI also used to get together with friends to watch Apple Keynotes. They were so much fun.\nBut now they’re just extremely sanitized pre produced videos (basically ads) that lack any sort of soul.\nYes yes I know they were always mainly ads. But there was something to be said for people presenting on stage.",
+              "author": "atonse",
+              "depth": 1
+            },
+            {
+              "text": "Back in the day, these companies stayed in their lane, so to speak.\nWhen you bought a computer, that’s all it was. It had much more of a toy or appliance like appeal rather than this deeply integrated life augmenter. The idea that a company like Apple or even a bigger (at the time) company like Microsoft would own a movie/TV studio and broadcast major league sports was an insane idea.\nI will say regarding keynotes, it wasn’t limited to the genuine nature of the companies. The 90s and 2000s were just on different levels of the pace of technology development. I am sure that even Microsoft had an exciting keynote or two and they were the evil empire in those days.",
+              "author": "dangus",
+              "depth": 2
+            },
+            {
+              "text": "I mean what do these data centers provide for the locals? They are big ugly boxes were nobody actually works. All the money goes to faceless mega corporations.\nAt least with a nuclear power plant you can have the patriotic pride of doing something for the nation.",
+              "author": "PearlRiver",
               "depth": 1
             }
           ]
         },
         {
-          "top": "Having built crossplatform native app supporting MacOS app, I have never gotten notarization to work as I'm not using xcode a lot.\nI'm curious, how much does it cost? Is it per build or a subscription? How do you make it work financially for an open-source project?",
-          "author": "vanyle",
+          "top": "I think the one benefit people are overlooking is that there is an opportunity to increase power generation.\nRather than saying \"no\", how about making the new datacenters fund nuclear, solar, and grid battery?",
+          "author": "exabrial",
           "replies": [
             {
-              "text": "You just need an Apple Developer account ($99/year), which you likely already have if you're distributing apps. Notarization itself has no per-build cost — you can notarize as many builds as you want. The process is essentially: codesign your app, zip it up, submit it to Apple's notary service via xcrun notarytool, and staple the ticket. It can be automated in CI too — this project uses a GitHub Actions workflow for it. The $99/year is really the only cost, and that's for the developer account itself, not notarization specifically.",
-              "author": "IronsideXXVI",
+              "text": "New datacenters aren't harmless (noise or NoX pollution is real), and they'll consume more than they generate.\nYours better off mandating solar panels on parking lots (especially in the US!), etc.",
+              "author": "subscribed",
+              "depth": 1
+            },
+            {
+              "text": "I mean there are a number of places where datacenters have been built and claim to be putting 100% of the money forward to power their data centers with plants and infrastructure, however with everyone around those areas still claiming to be paying more for power afterwards.",
+              "author": "AngryData",
+              "depth": 1
+            },
+            {
+              "text": "> how about making the new datacenters fund nuclear, solar, and grid battery?\ngood luck with that\nany promises will be ignored, avoided or dumped onto regular people the very moment the approval is granted",
+              "author": "blibble",
+              "depth": 1
+            },
+            {
+              "text": "What about a making it prerequisite? Demonstrate you have built the nuclear/solar/whatever capacity to cover your own energy before you're allowed to build a datacenter?",
+              "author": "icwtyjj",
+              "depth": 2
+            },
+            {
+              "text": "Solar doesn't work well with 24/7 demand requirements, provisioning enough storage to fully even out intermittency drastically raises costs (most battery storage systems are for only 2-4 hours).\nNuclear has extremely onerous regulatory requirements.",
+              "author": "Manuel_D",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47095420",
+      "title": "Judge scolds Zuckerberg's team for wearing Meta glasses to social media trial",
+      "link": "https://www.cbsnews.com/news/meta-trial-mark-zuckerberg-ai-glasses/",
+      "domain": "www.cbsnews.com",
+      "author": "ColinWright",
+      "score": 49,
+      "comment_count": 5,
+      "created_ts": 1771629531,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "Hope they reselected the jury. Meta has the ability to do facial recognition on the jurors if they were snuck cameras into court.",
+          "author": "trillic",
+          "replies": []
+        },
+        {
+          "top": "Mission success, they got free advertising",
+          "author": "nothercastle",
+          "replies": [
+            {
+              "text": "Tax dollars",
+              "author": "downboots",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's like he wants to be despised.",
+          "author": "starkeeper",
+          "replies": [
+            {
+              "text": "close, they are trying to be bad boy, rebels\nbut continue to give off the poodle with a bad haircut vibe",
+              "author": "metalman",
               "depth": 1
             }
           ]
@@ -400,8 +529,8 @@
       "link": "https://news.ycombinator.com/item?id=47068900",
       "domain": "news.ycombinator.com",
       "author": "boredemployee",
-      "score": 30,
-      "comment_count": 37,
+      "score": 31,
+      "comment_count": 39,
       "created_ts": 1771465674,
       "is_internal": true,
       "post_text": "I&#x27;m really tired of the BS, AI, corporate environment and what not.<p>Looking for alternatives.<p>In case you&#x27;re in the same boat:<p>What do you plan to work with?",
@@ -410,17 +539,6 @@
         "corporate"
       ],
       "comments": [
-        {
-          "top": "I think what people are actually tired of isn't \"tech\" — it's the gap between what they thought the job would be and what it's become.\nWhen most of us got into this field, the implicit promise was: learn hard things, solve interesting problems, build stuff that works. And for a while, that's what it was. The disillusionment isn't really about AI or crypto or whatever the current hype cycle is. It's that the job has slowly drifted from \"engineer solving problems\" to \"employee managing process.\" You spend your morning in standups, your afternoon fighting with CI pipelines someone else configured, and your evening wondering what you actually built.\nThe people in this thread who say \"just get perspective, you could be loading trucks\" aren't wrong exactly, but they're answering a different question. Nobody here is saying the pay is bad or the chairs are uncomfortable. They're saying the work feels hollow. Those are different problems, and \"be grateful\" has never been a lasting fix for the second one.\nWhat I've noticed — both in myself and in people around me — is that the ones who stay engaged tend to have found a way to shrink their world back down. Fewer layers between them and the user. Fewer abstractions between them and the machine. Whether that means a tiny company, freelancing, or just a side project you actually care about, the pattern is the same: make the feedback loop short and real again.",
-          "author": "atlgator",
-          "replies": [
-            {
-              "text": "The problem you are getting at is alienation:\nhttps://en.wikipedia.org/wiki/Marx%27s_theory_of_alienation\nOver time, tech work has become totally disconnected from real world users and customers, and everything has become intermediated by JIRAs and tickets, sprints, product managers, and process, so that the developers are interchangeable cogs, with no real domain knowledge or user relationships.\nAs much as people say AI is killing jobs, even before that, interesting jobs were mostly being killed anyway by agile, sprints, and product managers anyway, to the extent that replacing those kind of jobs with AI is no great loss.\nLoading trucks, and manual labor, can potentially be quite satisfying, especially if it's your truck, or your business, or your product being loaded.",
-              "author": "tacostakohashi",
-              "depth": 1
-            }
-          ]
-        },
         {
           "top": "I now see groups of people just meandering between buzzwords and sort of calling it a career. Honestly I know people who were 'crypto developers' 3 years ago who are now 'senior AI implementation architects' and similar..and they have a 'bootcamp' etc....I am a software engineer who qualified in cs but after working around engineering and manufacturing a lot I'm also qualified in CAD...thinking to get into more physical engineering and become a chartered engineer finally and just get away from the bandwagon boosterism. Or become a nurse or teacher.\ni'm enjoying making games on the side and I'd like to monetize one soon, but I look at 'tech' careers and I just rapidly lose the will to live now. 30 minutes on linkedin is enough to make most people feel nauseous and need to lie down.",
           "author": "SolubleSnake",
@@ -453,17 +571,17 @@
           ]
         },
         {
+          "top": "I hit this twice. What helped was separating burnout from career mismatch: first fix sleep/on-call/calendar load for 6-8 weeks, then decide. If you still feel flat, move closer to a domain with visible outcomes (healthcare, logistics, education, local government) and keep tech as the tool, not the identity.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
           "top": "No because I used to work at McDonald's and loading trailers from warehouses before working in tech.\nThat gave me perspective that lasts even to this day.\nI'm not saying this is true of OP but I've met a few people who constantly complained about working in tech and one thing I noticed is a lot of them never worked a really shitty/physical job.\nIt blew my mind in university meeting people who's first ever job was a software internship. I remember thinking wow they must have a totally different idea of what a good/bad job is.\nI can't think of a better value job that working in tech in terms of amount of effort and schooling required.",
           "author": "ex-aws-dude",
           "replies": [
             {
               "text": "I miss my fast food job (and especially my retail job), to a certain extent. I also worked in a warehouse and a factory for a bit, and there are certain things I miss about those as well. I don't miss the low pay though. And my health is no longer good enough (in part because I've been too sedentary in office jobs the past 20 years) that I can no longer stand for hours at a time (not even that, I can no longer stand in place for more than a few minutes at a time).\nI could completely forget about my job when I got home, didn't have to somewhat keep a framework of some giant corporate spaghetti code soup in my head to a certain extent for months or years on end, and interacted with people way, way more than I do now, and made deeper friendships with my coworkers.\nAlso there was no risk of me working on something for six months and it get cancelled or shelved before it gets used by anyone. At least in fast food and retail jobs you're helping multiple people (sometimes hundreds of people) every day. In my corporate career I've often ended up working on software that only has a handful of high paying clients, or only used internally and not client facing.\nIf I could justify the insane pay cut and could manage it physically I'd probably do something like be a barista nowadays. Or be a teacher, maybe.",
               "author": "cableshaft",
-              "depth": 1
-            },
-            {
-              "text": "Yep, the whole industry is not in good place right now but tech is still a sure-fire way of netting $1Mil+ after a 5-10 year career, with the most freedom and in the most flexible way.\nSeveral people I know who went to a good university and landed big tech/quant jobs early became millionaires (liquid 1,000,000) after 5 to 7 years. Some got lucky and reached this milestone way earlier.\nMedicine takes 12+ years of education before bearing any fruit and finance has very little freedom.",
-              "author": "karakoram",
               "depth": 1
             },
             {
@@ -480,6 +598,27 @@
               "text": "I think the reality is as a human your brain adjusts to whatever situation you’re in and that just becomes a baseline from which annoyance and complaints will rise up just the same.\nBut no one wants to admit that because it’s nice to fantasize about the greener grass, that there is some perfect ideal job out there.",
               "author": "ex-aws-dude",
               "depth": 2
+            },
+            {
+              "text": "Yep, the whole industry is not in good place right now but tech is still a sure-fire way of netting $1Mil+ after a 5-10 year career, with the most freedom and in the most flexible way.\nSeveral people I know who went to a good university and landed big tech/quant jobs early became millionaires (liquid 1,000,000) after 5 to 7 years. Some got lucky and reached this milestone way earlier.\nMedicine takes 12+ years of education before bearing any fruit and finance has very little freedom.",
+              "author": "karakoram",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I think what people are actually tired of isn't \"tech\" — it's the gap between what they thought the job would be and what it's become.\nWhen most of us got into this field, the implicit promise was: learn hard things, solve interesting problems, build stuff that works. And for a while, that's what it was. The disillusionment isn't really about AI or crypto or whatever the current hype cycle is. It's that the job has slowly drifted from \"engineer solving problems\" to \"employee managing process.\" You spend your morning in standups, your afternoon fighting with CI pipelines someone else configured, and your evening wondering what you actually built.\nThe people in this thread who say \"just get perspective, you could be loading trucks\" aren't wrong exactly, but they're answering a different question. Nobody here is saying the pay is bad or the chairs are uncomfortable. They're saying the work feels hollow. Those are different problems, and \"be grateful\" has never been a lasting fix for the second one.\nWhat I've noticed — both in myself and in people around me — is that the ones who stay engaged tend to have found a way to shrink their world back down. Fewer layers between them and the user. Fewer abstractions between them and the machine. Whether that means a tiny company, freelancing, or just a side project you actually care about, the pattern is the same: make the feedback loop short and real again.",
+          "author": "atlgator",
+          "replies": [
+            {
+              "text": "The problem you are getting at is alienation:\nhttps://en.wikipedia.org/wiki/Marx%27s_theory_of_alienation\nOver time, tech work has become totally disconnected from real world users and customers, and everything has become intermediated by JIRAs and tickets, sprints, product managers, and process, so that the developers are interchangeable cogs, with no real domain knowledge or user relationships.\nAs much as people say AI is killing jobs, even before that, interesting jobs were mostly being killed anyway by agile, sprints, and product managers anyway, to the extent that replacing those kind of jobs with AI is no great loss.\nLoading trucks, and manual labor, can potentially be quite satisfying, especially if it's your truck, or your business, or your product being loaded.",
+              "author": "tacostakohashi",
+              "depth": 1
+            },
+            {
+              "text": "I think the main problem is tech workers finally became a commodity. It was a brief time when hiring was hard and it was possible to get some sense of power because you could freely walk away or because you were a craftsmen.\nOver the years, power slowly returned back to management and the industry figured out how to slice the creative role into small cogs: QAs, FEs, BEs, SREß, OPSs, POs, PMs. It's ten people now instead of three crafsmen. They can now follow a very strict process to produce average software with a lot of overhead. Customers don't care because one half is forced to use it and the other don't have a taste of what good software is. Partially, because they use abysmal MS products. Apple briefly showed to an average Joe what is possible when people care, but they're slowly losing it.\nNow it's node/js everywhere and fierce competition being a ticket taker. People with no passion who are here just for the money and who don't care about the code. People who are here to play promotion politic games. Coding is a regular job now which pays decent and has low barrier to entry. You can fake it very far now with AI assistance.",
+              "author": "haute_cuisine",
+              "depth": 2
             }
           ]
         },
@@ -487,17 +626,47 @@
           "top": "Yes I am very tired of it as well. I thought the crypto craze was as bad as it would get but boy was I wrong.\nI’m going to live a simpler life where I work on making video games as a creative endeavor. I’ll try to find a part time job to earn some money, but mainly just adjust my expectations to be happier with what I have as opposed to what I could have.\nI’ve wedged myself into the correct shape to fit into what companies classified as a productive tech worker for 10+ years mainly out of fear of being poor, so now I must repay that debt to myself by doing things just for the sake of enjoyment or fulfillment and not to build a skill that makes me better at making more money.",
           "author": "jsnsll",
           "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47085255",
+      "title": "Ask HN: Is it worth learning Vim in 2026?",
+      "link": "https://news.ycombinator.com/item?id=47085255",
+      "domain": "news.ycombinator.com",
+      "author": "zekejohn",
+      "score": 29,
+      "comment_count": 26,
+      "created_ts": 1771576049,
+      "is_internal": true,
+      "post_text": "With everyone using Claude Code, Cursor, Codex, and the other 100 AI coding agents that i missed, I’m wondering how much editor mastery still matters like w&#x2F; Vim<p>Being honest the real reason i wanna learn Vim is to boost my ego &amp; assert my dominance, so i can tell people &quot;i use vim btw&quot;, but also part of me thinks investing time could still pay off for speed, ergonomics, and working over SSH overall...<p>but a bigger part also suspects the marginal gains i would gain would disappear when more of the work is delegated to AI anyway, like why would i learn Vim if i&#x27;m just going to be prompting Opus all day?<p>For anyone who&#x27;s been using Vim for while AND uses AI to code (i&#x27;m assuming everyone codes with AI to some degree) my question is: Does learning Vim still meaningfully improve your day to day productivity EVEN with AI, or is it mostly personal preference at this point?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I like vi/vim and still use it because on certain systems and containers that is all you have sometimes.",
+          "author": "BorisMelnik",
+          "replies": []
         },
         {
-          "top": "Actually, regardless of the sector, as people get older, they get tired and bored of working.",
-          "author": "beratbozkurt0",
-          "replies": [
-            {
-              "text": "Actually, not always.  I didn't want to retire, I liked working and I was good at it, but I had to retire for medical reasons.  My environment was a bit different than most, though, working with scientists developing tools for analysis, visualization and simulation.",
-              "author": "rzzzwilson",
-              "depth": 1
-            }
-          ]
+          "top": "Pretty much every engineer needs to use Vim/vi when logged into any server, so from that point of view, this shouldn’t even be a question. I don’t think knowing how to use a modal editor in 2026 is a flex anymore, it’s just standard. But if you’re planning to commit to modal editing as a lifestyle, you should be using Helix, not Neovim.",
+          "author": "bgar",
+          "replies": []
+        },
+        {
+          "top": "It seems like tools like Vim are less about specific productivity gains in isolation and more about developing a particular mental model of interacting with text and systems. Even as AI takes over more of the generation work, the ability to navigate, inspect, and make precise edits efficiently still seems valuable. In that sense it feels less like an either/or question and more like whether someone finds that model aligns with how they prefer to work.",
+          "author": "pearlos",
+          "replies": []
+        },
+        {
+          "top": "VIM is a basic tool. You need it, also to talk to coding agents in many circumstances.\nI use AI to get vim commands!",
+          "author": "aborsy",
+          "replies": []
+        },
+        {
+          "top": "Do you already do any work over SSH? What do you do if you need to edit any files in that context?\nLearning the essentials of vim was the sort of skill that for me took about 10 min per day over a couple months and has come in handy almost every day since then. Can you get by without it? I guess, if you do absolutely everything via a GUI. Or delegate all CLI work to LLMs without ever questioning or second guessing their output.\nAnd yes, I use vim for almost every git commit or interactive rebase. Access to the full power of CLI git is something I value very much and has saved me countless hours.  Not to mention using it for editing any config file that’s not part of a repo.\nEvery time you’re able to keep your fingers on the keyboard instead of reaching for a mouse saves you both time and precious context switching energy.",
+          "author": "apothegm",
+          "replies": []
         }
       ]
     },
@@ -508,13 +677,18 @@
       "domain": "news.ycombinator.com",
       "author": "causal",
       "score": 27,
-      "comment_count": 35,
+      "comment_count": 36,
       "created_ts": 1771348189,
       "is_internal": true,
       "post_text": "I see it more and more in email, Slack, text, etc: People too scared to share their own thoughts so they AI-wash it and send an exhausting page of &quot;It&#x27;s not X, it&#x27;s Y!&quot; slop instead.<p>I&#x27;m not the CEO, I can&#x27;t order people to stop. The CEO does it too.<p>I try talking to people directly, but people get defensive and there&#x27;s always the chance they didn&#x27;t use AI. I need indirect means of socializing change.<p>Looking for anything I can use to socialize against AI-washing: Articles, memes, policies that other companies have successfully used- whatever.",
       "is_ask_hn": true,
       "matched_keywords": [],
       "comments": [
+        {
+          "top": "What worked for us: make brevity the default. We added a team norm: max 5 lines unless someone asks for detail, plus first line must be the ask/decision. AI fluff dropped fast because long vague messages stopped getting replies.",
+          "author": "lyaocean",
+          "replies": []
+        },
         {
           "top": "Put a culture of stopping work at 40 hours. Allow the work to be the work and stop deadlines.\nOtherwise, people will take every time savings possible. If I'm using AI for anything, it's because it's important enough to someone else for me to do but not important enough to sacrifice my own time.\nI don't think it's about people being scared, at least from what I've seen. It's about people being exhausted.",
           "author": "ebiester",
@@ -553,11 +727,6 @@
           ]
         },
         {
-          "top": "If people are scared to share their thoughts, then \nthat\n seems like the problem.\nAlso, how much of this communication is actually necessary? If someone doesn't care about an issue enough to write their own email, then why are they sending an email about it in the first place?",
-          "author": "impendia",
-          "replies": []
-        },
-        {
           "top": "A noble but essentially Sisyphean goal, you might as well try to get people to stop playing with their phones.",
           "author": "jjgreen",
           "replies": [
@@ -574,55 +743,62 @@
           ]
         },
         {
-          "top": "I tried to write my first blog posts using AI. I created dozens of restrictions and rules so that it would produce human-like text, which I then edited. The text contained only my thoughts, but the AI formatted them. However, no matter how much I tried to prohibit constructions such as \"It's not X, it's Y!\", it still added them. I had to revise 10 drafts before I had the final version. When I stopped using AI for my texts, my productivity increased, and I can now complete an essay in 1-2 drafts, which is 5 times faster than when using AI.\nThis is strikingly different from development. In development, AI increases my productivity fivefold, but in texts, it slows me down.\nI thought, maybe the problem is simply that I don't know how to write texts, but I do know how to develop?\nBut the thing is, AI development uses standard code, with recognized patterns, techniques, and architecture. It does what (almost) the best programmer in their field would do. And its code can be checked with linters and tests. It's verifiable work.\nBut AI is not yet capable of writing text the way a living person does. Because text cannot be verified.",
-          "author": "theorchid",
-          "replies": [
-            {
-              "text": "Verifiability is part of it, but I think the \"semantic ablation\" article on the front page really captures my problem with AI-washed writing: \nhttps://www.theregister.com/2026/02/16/semantic_ablation_ai_...\nI think any use of AI \"unrolls\" the prompt into a longer but thinner form. This is true of code too I think, but it's still useful because so much of coding is boilerplate and methods that have been written a thousand times before. Great, give me the standard implementation, who cares.\nBut if you're doing hard algorithmic work and really trying to do novel \"computer science\", I suspect semantic ablation would take an unacceptable toll.",
-              "author": "causal",
-              "depth": 1
-            }
-          ]
+          "top": "If people are scared to share their thoughts, then \nthat\n seems like the problem.\nAlso, how much of this communication is actually necessary? If someone doesn't care about an issue enough to write their own email, then why are they sending an email about it in the first place?",
+          "author": "impendia",
+          "replies": []
         }
       ]
     },
     {
-      "id": "47085255",
-      "title": "Ask HN: Is it worth learning Vim in 2026?",
-      "link": "https://news.ycombinator.com/item?id=47085255",
+      "id": "47092914",
+      "title": "Reddit Ads support is leaking PII and actively crossing user sessions",
+      "link": "https://news.ycombinator.com/item?id=47092914",
       "domain": "news.ycombinator.com",
-      "author": "zekejohn",
-      "score": 24,
-      "comment_count": 18,
-      "created_ts": 1771576049,
+      "author": "arashvakil",
+      "score": 17,
+      "comment_count": 1,
+      "created_ts": 1771616740,
       "is_internal": true,
-      "post_text": "With everyone using Claude Code, Cursor, Codex, and the other 100 AI coding agents that i missed, I’m wondering how much editor mastery still matters like w&#x2F; Vim<p>Being honest the real reason i wanna learn Vim is to boost my ego &amp; assert my dominance, so i can tell people &quot;i use vim btw&quot;, but also part of me thinks investing time could still pay off for speed, ergonomics, and working over SSH overall...<p>but a bigger part also suspects the marginal gains i would gain would disappear when more of the work is delegated to AI anyway, like why would i learn Vim if i&#x27;m just going to be prompting Opus all day?<p>For anyone who&#x27;s been using Vim for while AND uses AI to code (i&#x27;m assuming everyone codes with AI to some degree) my question is: Does learning Vim still meaningfully improve your day to day productivity EVEN with AI, or is it mostly personal preference at this point?",
+      "post_text": "I have been dealing with a Reddit Ads account issue over the last week, and it has quickly escalated into a severe privacy and security red flag. It appears their customer support tools (or the agents themselves) are actively bleeding PII and crossing user sessions entirely.<p>Over the last week, I have experienced three separate incidents in their live chat:<p>Incident 1: Account Cross-Contamination (Feb 14)\nWhile chatting with an agent (Sonam B), they managed to associate my personal email to a completely unrelated, bizarrely named ad account (&quot;No Panties Games Ad Account&quot;). When I pointed out they were pasting data related to someone else&#x27;s account alongside my email, they tried to brush it off as an &quot;error&quot; and told me to &quot;kindly ignore.&quot;<p>Incident 2: Direct PII Leak (Feb 20)\nToday, while following up on the issue with a different agent (Naheeda M), they inexplicably dropped the email address (info@<i>REDACTED</i>.com) and the full legal business entity name of an entirely different advertiser into our chat.<p>Incident 3: Total Session Confusion and Misattribution (Feb 20)\nJust minutes later in that same chat, things got much worse. While I was clearly logged into my own account, the agent told me: &quot;The ad account you&#x27;re currently signed into is u&#x2F;Teor<i>REDACTED</i>, and ads are getting published with this username. Is that correct?&quot;<p>This is no longer just a clipboard issue. This strongly suggests a severe backend mapping failure in their support dashboard (Zendesk&#x2F;Salesforce or an internal admin tool) that is completely misattributing active sessions, user accounts, and ad publishing data.<p>If their support agents are seeing me as logged into someone else&#x27;s account and claiming ads are publishing under that username, it raises massive questions:\n1. Are agents making changes to other people&#x27;s ad campaigns thinking it&#x27;s my account?\n2. Is ad spend being billed to the wrong accounts?\n3. Who is currently seeing my billing details, legal name, and campaigns?<p>Given how broken their Tier 1 tools appear to be right now, I wanted to raise the flag here immediately. Has anyone else running Reddit Ads noticed their support agents leaking data or confusing accounts recently?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "https://www.cisa.gov/reporting-cyber-incident\n at the federal level, if you have a state regulator where PII is in scope, report to them too. Document everything for your complaint as evidence. A GitHub Gist collecting your documentation, archived by the Wayback Machine is an effectively public timestamp mechanism if relevant.",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47094857",
+      "title": "Ask HN: Are you a SWE that lost job purely due to AI? Share your story",
+      "link": "https://news.ycombinator.com/item?id=47094857",
+      "domain": "news.ycombinator.com",
+      "author": "matijash",
+      "score": 16,
+      "comment_count": 3,
+      "created_ts": 1771626355,
+      "is_internal": true,
+      "post_text": "",
       "is_ask_hn": true,
       "matched_keywords": [],
       "comments": [
         {
-          "top": "Do you already do any work over SSH? What do you do if you need to edit any files in that context?\nLearning the essentials of vim was the sort of skill that for me took about 10 min per day over a couple months and has come in handy almost every day since then. Can you get by without it? I guess, if you do absolutely everything via a GUI. Or delegate all CLI work to LLMs without ever questioning or second guessing their output.\nAnd yes, I use vim for almost every git commit or interactive rebase. Access to the full power of CLI git is something I value very much and has saved me countless hours.  Not to mention using it for editing any config file that’s not part of a repo.\nEvery time you’re able to keep your fingers on the keyboard instead of reaching for a mouse saves you both time and precious context switching energy.",
-          "author": "apothegm",
+          "top": "Haven’t seen a clean “AI replaced me” case yet; mostly I’ve seen hiring freezes plus one engineer expected to do 1.5x with copilots. A clearer signal is this: was the role removed and budget moved to tooling, or just cut with no replacement?",
+          "author": "lyaocean",
           "replies": []
         },
         {
-          "top": "It's a handy skill to have if you interact with Linux machines.\nYou'll need to edit files sometimes, and Vim (or Vi) is usually present. I don't think I've seen an install without it.\nThe basics (opening files, writing, and closing) can be learnt in an hour. It's enough to make simple changes to .conf files.",
-          "author": "grugdev42",
+          "top": "prior ask HN thread from early feb 2026:  \nhttps://news.ycombinator.com/item?id=46867190",
+          "author": "shoo",
           "replies": []
         },
         {
-          "top": "Yes. For one simple reason: As vi is part of the POSIX standard[1], it is gauranteed to be installed on all unix(-like) machines you may touch now or in the future.\n[1] \nhttps://pubs.opengroup.org/onlinepubs/9699919799/",
-          "author": "mmh0000",
-          "replies": []
-        },
-        {
-          "top": "Not everything in life is about being more productive.\nI think it’s worth learning vim, or emacs shortcuts, as an intellectual exercise.\nI still save time by editing little code thanks to vim, or vim mode in my ide. And it doesn’t take that long to know the basics. Is it worth it in terms of seconds saved over a career? Perhaps not anymore.",
-          "author": "speedgoose",
-          "replies": []
-        },
-        {
-          "top": "I'm fully onboard the Neovim train. Lua is a much better language than vimscript and there's a lot more interest in Neovim so there's more interesting packages that people create. Regular Vim is probably fine if you aren't gonna put as much effort into customizing it and if you just stick to the tried and true.\nI use nvim all the time for code exploration & figuring out what i need to tell the AI. Invest in tools and packages that let you navigate your codebase quickly",
-          "author": "ativzzz",
+          "top": "AI? No. Geopolitical reasons? Yes.",
+          "author": "GoToRO",
           "replies": []
         }
       ]
@@ -640,8 +816,8 @@
       "post_text": "I’ve been working at YC-backed startups since graduating from university. I’m now at a company building a deeply distributed systems product, and I’m surrounded by incredibly talented engineers who seem exceptionally strong at what they do. They often have knowledge and intuition about things I barely understand.<p>Lately, I’ve been feeling inadequate — like I’m contributing more to the less exciting parts of the product rather than the “cool” or core engineering challenges.<p>On top of that, I’m an immigrant and my wife and I are expecting. Balancing that with a fully remote job has been difficult, and at times I feel like I’ve lost some of my competence or sharpness. I’m taking steps to address this — I’ll be speaking with a psychologist soon — but I genuinely wonder: how does someone overcome these feelings while working within a high-functioning engineering team?",
       "is_ask_hn": true,
       "matched_keywords": [
-        "team",
         "remote",
+        "team",
         "imposter"
       ],
       "comments": [
@@ -673,147 +849,13 @@
       ]
     },
     {
-      "id": "47039805",
-      "title": "Ask HN: Companies that advertise being a \"best place to work\", is it a red flag?",
-      "link": "https://news.ycombinator.com/item?id=47039805",
-      "domain": "news.ycombinator.com",
-      "author": "jrs235",
-      "score": 12,
-      "comment_count": 16,
-      "created_ts": 1771273194,
-      "is_internal": true,
-      "post_text": "When companies push, advertise, and promote that they are or were voted a &quot;best place to work&quot;, is that a red flag when considering to work there? I feel like it&#x27;s more about convincing current workers than anything. Thoughts?",
-      "is_ask_hn": true,
-      "matched_keywords": [],
-      "comments": [
-        {
-          "top": "So when I was at Bank of America they did advertise about being a “best place to work”, but it was well earned. Their benefits were great, they were super inclusive, and management really focused on taking care of people.\nI left the bank for a small company that also claimed to be a best place to work. I didnt like the project I was on and they were quick to fire people to keep metrics like this up.\nI currently work for a small company that does not advertise about this and just might be the best employer I have ever had. It’s all about the people you work with and the quality of your leaders.",
-          "author": "austin-cheney",
-          "replies": []
-        },
-        {
-          "top": "You should look at the organization / methodology of the survey, but generally it's a positive to get ranked IMO. I used to get surveys these yearly at a past job from the Boston Globe / Best Places to Work and it was basically a third-party email to all employees with a survey you'd fill out.\nThe most anyone could realistically ask you to do was please fill out the survey positively to try and support the company if you believe it's a best place to work and remind more people to complete the surveys. I don't think companies are really out here trying to game the more reputable surveys, and it would be pretty easily for single employees to defect/report if they were. They also required some level of basic written comments from employees.\nProbably a mild green flag for quality of life / general happiness from current employees for the past year.",
-          "author": "natdempk",
-          "replies": []
-        },
-        {
-          "top": "I have no proof of this, but it feels like it’s pay-to-play. I assume it’s a way to attract talent and make customers feel good. Current employees shouldn’t need an external poll to tell them if people are happy or not.\nWhere I work is almost always on these lists. In my experience it is highly dependent on department. I didn’t realize this until transferring to an office that had very few IT workers. Everyone in IT seemed miserable, while everyone outside of IT seemed extremely happy. I once made a rather sarcastic and cynical joke in the elevator to someone in a customer support role and it went over like a led ballon… but that was the language of everyone I worked with in IT. It was wild to me how two departments sitting 50 feet from each other could have such drastically different cultures. On town halls, everyone in the chat is brimming with company pride, meanwhile the side chats from people in the IT org are full of cynicism and sarcasm, with everyone trying to understand if these people are real or just bots… but I think they’re real.",
-          "author": "al_borland",
-          "replies": []
-        },
-        {
-          "top": "I never trust surveys of companies even if it is a reputable 3rd party.  There are too many ways to game such systems.  If I wanted real answers I would find out who works in the group(s) I might end up in and reach out to them via email if I can and then set up a call.  I would be honest and say I do not trust surveys of \"best places to work\" and would happily sign an NDA to not share their brutally honest answers.  Even that I would take with a grain of salt as they may think it is a test or trap.\nConvincing current employees may work on those that are isolated but if one works in a toxic environment they will likely know it.  There was a time I would have semi-trusted sites like \nf'd company\n of long ago but those get infiltrated, sued and ultimately compromised by corporations that do not like people airing their dirty laundry and also gamified by their competitors.\nIf a new position turns out to be a crap-show I would just leave and not add it to my CV.  If an individual manager is the issue, those come and go.  I have found it very easy to make them explore new opportunities.",
-          "author": "Bender",
-          "replies": []
-        },
-        {
-          "top": "\"Best place to work\" awards are marketing, not data. No company that's actually great needs to advertise it their employees do that for them. When you see these plastered everywhere, it usually means they're compensating for something (turnover, bad Glassdoor reviews, competitive market). At the end of the day, trust employee retention rates over PR campaigns.",
-          "author": "varshith17",
-          "replies": []
-        }
-      ]
-    },
-    {
-      "id": "47094857",
-      "title": "Ask HN: Are you a SWE that lost job purely due to AI? Share your story",
-      "link": "https://news.ycombinator.com/item?id=47094857",
-      "domain": "news.ycombinator.com",
-      "author": "matijash",
-      "score": 11,
-      "comment_count": 1,
-      "created_ts": 1771626355,
-      "is_internal": true,
-      "post_text": "",
-      "is_ask_hn": true,
-      "matched_keywords": [],
-      "comments": [
-        {
-          "top": "prior ask HN thread from early feb 2026:  \nhttps://news.ycombinator.com/item?id=46867190",
-          "author": "shoo",
-          "replies": []
-        }
-      ]
-    },
-    {
-      "id": "47092914",
-      "title": "Reddit Ads support is leaking PII and actively crossing user sessions",
-      "link": "https://news.ycombinator.com/item?id=47092914",
-      "domain": "news.ycombinator.com",
-      "author": "arashvakil",
-      "score": 10,
-      "comment_count": 1,
-      "created_ts": 1771616740,
-      "is_internal": true,
-      "post_text": "I have been dealing with a Reddit Ads account issue over the last week, and it has quickly escalated into a severe privacy and security red flag. It appears their customer support tools (or the agents themselves) are actively bleeding PII and crossing user sessions entirely.<p>Over the last week, I have experienced three separate incidents in their live chat:<p>Incident 1: Account Cross-Contamination (Feb 14)\nWhile chatting with an agent (Sonam B), they managed to associate my personal email to a completely unrelated, bizarrely named ad account (&quot;No Panties Games Ad Account&quot;). When I pointed out they were pasting data related to someone else&#x27;s account alongside my email, they tried to brush it off as an &quot;error&quot; and told me to &quot;kindly ignore.&quot;<p>Incident 2: Direct PII Leak (Feb 20)\nToday, while following up on the issue with a different agent (Naheeda M), they inexplicably dropped the email address (info@<i>REDACTED</i>.com) and the full legal business entity name of an entirely different advertiser into our chat.<p>Incident 3: Total Session Confusion and Misattribution (Feb 20)\nJust minutes later in that same chat, things got much worse. While I was clearly logged into my own account, the agent told me: &quot;The ad account you&#x27;re currently signed into is u&#x2F;Teor<i>REDACTED</i>, and ads are getting published with this username. Is that correct?&quot;<p>This is no longer just a clipboard issue. This strongly suggests a severe backend mapping failure in their support dashboard (Zendesk&#x2F;Salesforce or an internal admin tool) that is completely misattributing active sessions, user accounts, and ad publishing data.<p>If their support agents are seeing me as logged into someone else&#x27;s account and claiming ads are publishing under that username, it raises massive questions:\n1. Are agents making changes to other people&#x27;s ad campaigns thinking it&#x27;s my account?\n2. Is ad spend being billed to the wrong accounts?\n3. Who is currently seeing my billing details, legal name, and campaigns?<p>Given how broken their Tier 1 tools appear to be right now, I wanted to raise the flag here immediately. Has anyone else running Reddit Ads noticed their support agents leaking data or confusing accounts recently?",
-      "is_ask_hn": false,
-      "matched_keywords": [
-        "failure"
-      ],
-      "comments": [
-        {
-          "top": "https://www.cisa.gov/reporting-cyber-incident\n at the federal level, if you have a state regulator where PII is in scope, report to them too. Document everything for your complaint as evidence. A GitHub Gist collecting your documentation, archived by the Wayback Machine is an effectively public timestamp mechanism if relevant.",
-          "author": "toomuchtodo",
-          "replies": []
-        }
-      ]
-    },
-    {
-      "id": "47077312",
-      "title": "Ask HN: Are hackathons still worth doing?",
-      "link": "https://news.ycombinator.com/item?id=47077312",
-      "domain": "news.ycombinator.com",
-      "author": "kwar13",
-      "score": 9,
-      "comment_count": 6,
-      "created_ts": 1771526214,
-      "is_internal": true,
-      "post_text": "I used to love attending hackathons and also participating as mentor&#x2F;judge at times. With the explosion of vibe coded submissions, 1- the number of submissions has exploded, 2- it&#x27;s much harder to judge quality of project as it&#x27;s mostly become judging the quality of tool they used.<p>I&#x27;m not really throwing shade at using ai. There are parts where the vibe coding really shines, such as front-end dev which tends to do a great job at, but anything more complex I&#x27;m still not convinced.",
-      "is_ask_hn": true,
-      "matched_keywords": [
-        "mentor"
-      ],
-      "comments": [
-        {
-          "top": "Exactly this. At a recent hackathon, I spent the bulk of my time actually engineering, building custom model architecture in Lua, wrangling a dataset, and waiting on training loops. The winning project? A slick UI wrapped around a basic LLM API call.\nIt’s incredibly frustrating. The incentive structure at these events has completely shifted away from actual technical complexity toward whoever can build the prettiest ChatGPT wrapper in 6 hours..",
-          "author": "foxandmouse",
-          "replies": [
-            {
-              "text": "I never found that engineering helped much at the hackathons I went to. It was always a slick UI that didn't really do anything, and a good presentation.",
-              "author": "idontwantthis",
-              "depth": 1
-            }
-          ]
-        },
-        {
-          "top": "They are now vibeathons. \nSame thing but now it's how much do you write by hand, it's  how much   can  you delegate to the LLM while you're writing by hand.\nThat act of juggling has become an important part.\nPeople will just look for harder problems to solve. It will remain but differently",
-          "author": "kbrannigan",
-          "replies": []
-        },
-        {
-          "top": "Last hackathon I participated in was merely \"best presentation\". Code, app did not matter, it was idea and presentation what mattered.\nThankfully, properly working app won that one, nonetheless they suck now.",
-          "author": "red_Seashell_32",
-          "replies": []
-        },
-        {
-          "top": "Before AI people already used preexisting projects for hackathons.",
-          "author": "atleastoptimal",
-          "replies": []
-        },
-        {
-          "top": "Betteridge's Law.  Unless it's more of an essay competition for text to feed the AI beast.",
-          "author": "jleyank",
-          "replies": []
-        }
-      ]
-    },
-    {
       "id": "47076058",
       "title": "Ask HN: (Your) Request for Startups?",
       "link": "https://news.ycombinator.com/item?id=47076058",
       "domain": "news.ycombinator.com",
       "author": "dontoni",
-      "score": 9,
-      "comment_count": 7,
+      "score": 11,
+      "comment_count": 9,
       "created_ts": 1771520638,
       "is_internal": true,
       "post_text": "Like what YC partners do at https:&#x2F;&#x2F;www.ycombinator.com&#x2F;rfs but for the community. What&#x27;s your personal request for startups, or solutions you&#x27;d like to see and you&#x27;d pay for?",
@@ -824,6 +866,16 @@
           "top": "Healthy food as a service, but you have to cook it.\nOne for last mile. Maybe something like Blue Apron, but healthier. The stuff you can make without butter. Cleaned fish, ready to cook. Cut costs by cutting down on the expensive packaging, target market four servings and above.\nAnother startup for the distribution layer here, from the farms. This is basically your AWS. The farm to restaurant flow already exists, it just needs to be retrofitted.\nThe reason is it's a lot of work to create recipes that work every day, take photos, build up some fancy chef profile. Heck just prepping food saves enough work to charge 30% more.\nThere's probably room for a Heroku style layer as well. The user facing one takes orders, this layer handles distribution.\nThe margins today are already inefficient. These companies should be able to grow quickly.",
           "author": "muzani",
           "replies": [
+            {
+              "text": "I feel like there's no market for this. Or at the very least, it's an incredibly niche market. Hear me out :)\nFirstly, this is a pretty expensive approach to cooking, so you're already in a narrow space (people with money). There are a lot of products in this space already, from restaurants to (high quality) frozen meals etc.\n(Aside - meals for 4 implies kids, and people with kids tend to have financial boundaries.)\nSecond you want health food. So again, more niche inside your niche. My instinct (since I've done no actual market research) is that people who are into health food aren't great candidates for subscriptions. They're into provenance, minimizing waste, and so on.\nThirdly, you're asking people to cook the meal. (Which I applaud, cooking meals is a good thing.) But cooking is easy. Once you've learned 10 dishes it's easy to learn another one. And you tweak to suit your taste. At which point your \"service\" is little more than grocery delivery.\nPrepping food actually takes minimal time (in the real world). To a novice getting an onion peeled or chopped might be a time saver, but in reality it takes seconds to do it manually. Honestly the time spent ordering etc would dwarf savings here.\nLastly, there's little incentive for people to remain on this service long-term. Maybe it's useful in the learning phase. But it's a quick cut as skills develop. So short term, high turnover customer base.\nObviously it could be done. In a rich neighborhood you might even get enough customers to keep a delivery guy busy. But outside of SF I don't see it catching on.\nBut don't worry about what I think, I've been wrong many times. All I suggest is lots of market research first (perhaps outside California. )",
+              "author": "bruce511",
+              "depth": 1
+            },
+            {
+              "text": "It's the other way around. It won't work in expensive places like SF or NYC, because the people who move there are happy to pat paprika on a chicken and toss them into an air fryer. Or live on rice and beans.\nHere there's some cultural pressure on people to cook for their families. Especially Asian moms. Someone feeding their kids McDonald's and frozen meals is going to be judged, but what's a parent who works 996 supposed to do? Though back when I was in uni, we'd take turns preparing dinner; I can see it working for students as well.\nCooking is also always cheaper than buying it off the shelf. We buy the frozen spinach despite it being 3x the cost of fresh spinach because we don't want to wash the sand out of spinach and then wash the sand out of the sink.\nMy problem is we have a bunch of stuff in the fridge. Prep is less about time, more about energy. I'm hungry, I don't want to peel carrots. We buy large batches of fish over the weekend and clean them up and prepare them, but they're in the sink 4 days a week and 2 of those days we just end up eating outside.\nI think everyone wants healthy food as a core meal. We're talking something other than pasta with butter - the health ministry suggests dishes of 1/4 carbs, 1/4 protein and 1/2 veggies. But what choices do you have here? Nobody wants to retrofit their usual dishes to have less carbs and more veggies, lol. Cutting down on protein also cuts cost. Tim Ferris says eat the same thing every other day but most people don't do this, especially not kids. There are plenty of healthy options. Grilled veggies do taste great and so are things like minestrone. Burgers can pass the health food bar too.",
+              "author": "muzani",
+              "depth": 2
+            },
             {
               "text": "hm",
               "author": "dontoni",
@@ -855,6 +907,108 @@
         {
           "top": "A universal part search. Google used to be able to do this with simple quotes, however it is steadily becoming terrible at this.",
           "author": "1970-01-01",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47077312",
+      "title": "Ask HN: Are hackathons still worth doing?",
+      "link": "https://news.ycombinator.com/item?id=47077312",
+      "domain": "news.ycombinator.com",
+      "author": "kwar13",
+      "score": 10,
+      "comment_count": 8,
+      "created_ts": 1771526214,
+      "is_internal": true,
+      "post_text": "I used to love attending hackathons and also participating as mentor&#x2F;judge at times. With the explosion of vibe coded submissions, 1- the number of submissions has exploded, 2- it&#x27;s much harder to judge quality of project as it&#x27;s mostly become judging the quality of tool they used.<p>I&#x27;m not really throwing shade at using ai. There are parts where the vibe coding really shines, such as front-end dev which tends to do a great job at, but anything more complex I&#x27;m still not convinced.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mentor"
+      ],
+      "comments": [
+        {
+          "top": "Still worth it if you optimize for learning and people, not podiums. I only do events with explicit judging weights, then include a short architecture note so judges can see beyond the demo polish. The best outcome is usually meeting one solid future teammate, not winning.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "Exactly this. At a recent hackathon, I spent the bulk of my time actually engineering, building custom model architecture in Lua, wrangling a dataset, and waiting on training loops. The winning project? A slick UI wrapped around a basic LLM API call.\nIt’s incredibly frustrating. The incentive structure at these events has completely shifted away from actual technical complexity toward whoever can build the prettiest ChatGPT wrapper in 6 hours..",
+          "author": "foxandmouse",
+          "replies": [
+            {
+              "text": "I never found that engineering helped much at the hackathons I went to. It was always a slick UI that didn't really do anything, and a good presentation.",
+              "author": "idontwantthis",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "They are now vibeathons. \nSame thing but now it's how much do you write by hand, it's  how much   can  you delegate to the LLM while you're writing by hand.\nThat act of juggling has become an important part.\nPeople will just look for harder problems to solve. It will remain but differently",
+          "author": "kbrannigan",
+          "replies": []
+        },
+        {
+          "top": "Last hackathon I participated in was merely \"best presentation\". Code, app did not matter, it was idea and presentation what mattered.\nThankfully, properly working app won that one, nonetheless they suck now.",
+          "author": "red_Seashell_32",
+          "replies": [
+            {
+              "text": "In my experience they've always been this way. Real engineers lose to idiots that can knock out a nice Wordpress website. Now the way real engineers lose to idiots that can vibe out a nice UI.\nSame same, but different.",
+              "author": "OccamsMirror",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Before AI people already used preexisting projects for hackathons.",
+          "author": "atleastoptimal",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47096593",
+      "title": "Ask HN: What happens to all the hardware when data centers upgrade?",
+      "link": "https://news.ycombinator.com/item?id=47096593",
+      "domain": "news.ycombinator.com",
+      "author": "givemeethekeys",
+      "score": 9,
+      "comment_count": 7,
+      "created_ts": 1771638300,
+      "is_internal": true,
+      "post_text": "It seems like there will be a lot of hardware that gets discarded every couple of years as new, more powerful systems are made available.<p>AWS put out a video and article on how it recycles a large amount of its hardware, since it is built for maintainability and repairability.<p>How true is that? Does it apply to other datacenter operators as well?<p>What will happen to all the parallel compute cards that will get upgraded soon? They can&#x27;t be reused as GPU&#x27;s for gamers, can they?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "huge ITAD/ITAM companies. G / AWS mega datacenters have their own processes but ITAD companies will then upgrade, recycle, or straight up sell devices or full machines. they of course, have government standards when wiping hard drives / dram etc.",
+          "author": "BorisMelnik",
+          "replies": []
+        },
+        {
+          "top": "Generally large companies will have an existing vendor that they use to dispose their IT equipment through. They will shred parts like storage devices and anything that can reasonably be resold will be sold through various auction houses.\nSticks of ram will certainly be resold, custom aws motherboards - not so much.\nI have seen custom (unpublished) intel cpu parts on ebay before which are almost certainly aws's custom ones.\nAlmost nothing will get used by consumers - enterprise server gear is designed for heat/air speed/noise/energy cost requirements which are incompatible with consumer requirements. It's recycled only in the sense that a smaller business might be interested in it because at the end of its economic life its now cheap to buy (but not cheap to run).\nhttps://cloudninjas.com/\nhttps://savemyserver.com/\nhttps://unixsurplus.com/",
+          "author": "everfrustrated",
+          "replies": [
+            {
+              "text": "I broadly agree with you in regards to \nserver-class\n equipment \nas a whole\n.\nSimply put, your average gamer isn’t going to snag a 16-unit rackmount blade server to game with. Not only is it supidly inappropriate for home use, but it is also wildly out-of-spec with what gaming requires.\nHowever, normal rackmount servers - especially 3U+ units that have a decent number of PCIe slots - can be extracted from rackmount cases and put into eATX cases that can better serve them on a desktop. It’s what I have done before, to great effect. With the right heatsinks and case fans, it can end up being a moderately quiet system. Loud for a consumer system, sure, but nothing like the “Boeing Dreamliner at full takeoff power” that an actual server setup would generate for sound.",
+              "author": "rekabis",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Most of it goes through ITAD channels: storage gets wiped or shredded, reusable gear gets resold, and the rest is recycled by weight. Accelerator cards usually get a second life with smaller clouds/labs, but older SXM generations fall off fast. The useful metric I wish providers published is split by class: reused vs recycled vs trashed.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "It depends on what it is. A lot of these places don't own any of the hardware they just lease it. When the lease is up is when they cycle it out. Then it goes to resellers and often ends up on eBay or bulk sold to lower tier data centers. Depending on what it is maybe even shipped to other countries.",
+          "author": "elmerfud",
+          "replies": []
+        },
+        {
+          "top": "What will happen to all the parallel compute cards that will get upgraded soon? They can't be reused as GPU's for gamers, can they?\nYou're right; V100/A100/H100 \"GPUs\" do not have the hardware to display graphics and they generally require custom SXM motherboards. Most of them will sit on eBay for a while and then be scrapped when no one buys them.",
+          "author": "wmf",
           "replies": []
         }
       ]
@@ -907,54 +1061,167 @@
       ]
     },
     {
-      "id": "47055119",
-      "title": "Ask HN: Claude web blocked its assets visit via csp?",
-      "link": "https://news.ycombinator.com/item?id=47055119",
+      "id": "47100289",
+      "title": "Ask HN: What (other) jobs do you think of doing?",
+      "link": "https://news.ycombinator.com/item?id=47100289",
       "domain": "news.ycombinator.com",
-      "author": "xgstation",
-      "score": 6,
-      "comment_count": 2,
-      "created_ts": 1771371918,
+      "author": "penguin_booze",
+      "score": 7,
+      "comment_count": 15,
+      "created_ts": 1771677773,
       "is_internal": true,
-      "post_text": "returned CSP header as following while all assets access to `https:&#x2F;&#x2F;assets-proxy.anthropic.com` is blocked<p><pre><code>    script-src &#x27;strict-dynamic&#x27; https: &#x27;nonce-0f2f&#x2F;yV7CL8nKlXr&#x2F;lFMPA==&#x27; https:&#x2F;&#x2F;via.intercom.io https:&#x2F;&#x2F;api.intercom.io https:&#x2F;&#x2F;api.au.intercom.io https:&#x2F;&#x2F;api.eu.intercom.io https:&#x2F;&#x2F;api-iam.intercom.io https:&#x2F;&#x2F;api-iam.eu.intercom.io https:&#x2F;&#x2F;api-iam.au.intercom.io https:&#x2F;&#x2F;api-ping.intercom.io https:&#x2F;&#x2F;nexus-websocket-a.intercom.io wss:&#x2F;&#x2F;nexus-websocket-a.intercom.io https:&#x2F;&#x2F;nexus-websocket-b.intercom.io wss:&#x2F;&#x2F;nexus-websocket-b.intercom.io https:&#x2F;&#x2F;nexus-europe-websocket.intercom.io wss:&#x2F;&#x2F;nexus-europe-websocket.intercom.io https:&#x2F;&#x2F;nexus-australia-websocket.intercom.io wss:&#x2F;&#x2F;nexus-australia-websocket.intercom.io https:&#x2F;&#x2F;uploads.intercomcdn.com https:&#x2F;&#x2F;uploads.intercomcdn.eu https:&#x2F;&#x2F;uploads.au.intercomcdn.com https:&#x2F;&#x2F;uploads.eu.intercomcdn.com https:&#x2F;&#x2F;uploads.intercomusercontent.com https:&#x2F;&#x2F;maps.googleapis.com https:&#x2F;&#x2F;maps.gstatic.com &#x27;wasm-unsafe-eval&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; frame-ancestors &#x27;self&#x27;; block-all-mixed-content; img-src &#x27;self&#x27; data: blob: *.anthropic.com *.claude.ai *.claude.com *.ant.dev *.gstatic.com * https:&#x2F;&#x2F;js.intercomcdn.com https:&#x2F;&#x2F;static.intercomassets.com https:&#x2F;&#x2F;downloads.intercomcdn.com https:&#x2F;&#x2F;downloads.intercomcdn.eu https:&#x2F;&#x2F;downloads.au.intercomcdn.com https:&#x2F;&#x2F;uploads.intercomusercontent.com https:&#x2F;&#x2F;gifs.intercomcdn.com https:&#x2F;&#x2F;video-messages.intercomcdn.com https:&#x2F;&#x2F;messenger-apps.intercom.io https:&#x2F;&#x2F;messenger-apps.eu.intercom.io https:&#x2F;&#x2F;messenger-apps.au.intercom.io https:&#x2F;&#x2F;*.intercom-attachments-1.com https:&#x2F;&#x2F;*.intercom-attachments.eu https:&#x2F;&#x2F;*.au.intercom-attachments.com https:&#x2F;&#x2F;*.intercom-attachments-2.com https:&#x2F;&#x2F;*.intercom-attachments-3.com https:&#x2F;&#x2F;*.intercom-attachments-4.com https:&#x2F;&#x2F;*.intercom-attachments-5.com https:&#x2F;&#x2F;*.intercom-attachments-6.com https:&#x2F;&#x2F;*.intercom-attachments-7.com https:&#x2F;&#x2F;*.intercom-attachments-8.com https:&#x2F;&#x2F;*.intercom-attachments-9.com https:&#x2F;&#x2F;static.intercomassets.eu https:&#x2F;&#x2F;static.au.intercomassets.com; frame-src a-cdn.claude.ai a.claude.ai a.claude-ai.staging.ant.dev b.stripecdn.com embedded-dashboards.metronome.com forms.hsforms.com googletagmanager.com js.stripe.com m.stripe.network newassets.hcaptcha.com pay.google.com r.stripe.com www.google.com accounts.google.com www.youtube-nocookie.com https:&#x2F;&#x2F;intercom-sheets.com https:&#x2F;&#x2F;www.intercom-reporting.com https:&#x2F;&#x2F;www.youtube.com https:&#x2F;&#x2F;player.vimeo.com https:&#x2F;&#x2F;fast.wistia.net https:&#x2F;&#x2F;www.claudeusercontent.com https:&#x2F;&#x2F;www.claudemcpclient.com *.claudemcpcontent.com https:&#x2F;&#x2F;claude.ai; font-src &#x27;self&#x27; assets.claude.ai https:&#x2F;&#x2F;js.intercomcdn.com https:&#x2F;&#x2F;fonts.intercomcdn.com; form-action &#x27;self&#x27; https:&#x2F;&#x2F;forms.hsforms.com https:&#x2F;&#x2F;intercom.help https:&#x2F;&#x2F;api-iam.intercom.io https:&#x2F;&#x2F;api-iam.eu.intercom.io https:&#x2F;&#x2F;api-iam.au.intercom.io; media-src &#x27;self&#x27; cdn.sanity.io https:&#x2F;&#x2F;assets.claude.ai https:&#x2F;&#x2F;js.intercomcdn.com https:&#x2F;&#x2F;downloads.intercomcdn.com https:&#x2F;&#x2F;downloads.intercomcdn.eu https:&#x2F;&#x2F;downloads.au.intercomcdn.com; upgrade-insecure-requests</code></pre>",
+      "post_text": "With AI infesting and eating into all kind of crafts--and I being one of those faceless &quot;craftsmen&quot;--I&#x27;m rather forced to consider alternative jobs. Setting the monetary rewards aside, I was thinking of jobs that could give me a sense of agency, purpose, and satisfaction (however limited). The few I think of are:<p>- Parcels delivery driver<p>- Train driver<p>- Electrician or plumber<p>- Mechanic (with auto-mobiles hardly repairable these days, maybe this doesn&#x27;t qualify)<p>Surely, I can&#x27;t be alone in thinking along those lines. What else have you thought of?",
       "is_ask_hn": true,
-      "matched_keywords": [],
+      "matched_keywords": [
+        "purpose"
+      ],
       "comments": [
         {
-          "top": "DNS for that host is borked. Obligatory \"it's always DNS\"",
-          "author": "yogipatel",
+          "top": "won't matter since we're about to reset anyway",
+          "author": "journal",
           "replies": []
         },
         {
-          "top": "yeah same here",
-          "author": "qrian",
+          "top": "I started my own business when I left tech. It's a bar.\nI do my own mechanic work, but I have old trucks. I would never sign up to work on modern vehicles and the entitled customers trying to get one over on you.\nI drove a route (not delivery) many years ago and I liked that. I tend to like jobs where you start with a pile of work, and finish with none left, rather than perpetually working towards something that's never done, like maybe a software project.",
+          "author": "qup",
+          "replies": []
+        },
+        {
+          "top": "Delivery drivers and train conductors are both headed for automation. I think trains are mostly already there. They mostly have a human for emergencies, as far as I know.\nThis is something I’ve been thinking about, but nothing speaks to me enough to jump ship. Anything I think of also means taking a huge pay cut, so it seems to make sense to stay on the current track until the wheels fall off to maximize my savings to soften the transition. It’s also possible that I may never need to switch careers before retirement, so it could be a moot point.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "anything handcrafted. machines can build a table, but people will always value handcrafted tables. same with planting/gardening, breweries, etc.\nI am sick of tech, been doing it my whole life. built a company and now I just want to put my hands in the dirt or on a tool.",
+          "author": "BorisMelnik",
+          "replies": []
+        },
+        {
+          "top": "I think people would do best to retool away from “coder” towards some specilaization where coding is part of the job. Don’t be a coder, be an X that codes.\nIf we think of coding becoming like writing, then you can see how it might be a ubiquitous skill - but still some differentiation. Some small number of highly skilled people do it full time. Some people do is as a big part of their job (journalists, etc). Still others it’s not core to the job, but it helps (a lot of white collar work).",
+          "author": "softwaredoug",
           "replies": []
         }
       ]
     },
     {
-      "id": "47096447",
-      "title": "Facebook Is Doing A-Okay",
-      "link": "https://news.ycombinator.com/item?id=47096447",
+      "id": "47076978",
+      "title": "Ask HN: Can a license make large corporations give back?",
+      "link": "https://news.ycombinator.com/item?id=47076978",
       "domain": "news.ycombinator.com",
-      "author": "givemeethekeys",
-      "score": 5,
-      "comment_count": 2,
-      "created_ts": 1771637116,
+      "author": "arboles",
+      "score": 7,
+      "comment_count": 8,
+      "created_ts": 1771524794,
       "is_internal": true,
-      "post_text": "Note: I don&#x27;t own any equity in Meta, or work there, or have a soft corner for them or their competition in any business category.<p>There&#x27;s a way to view just your friends&#x27; and groups&#x27; updates without seeing all the AI doom scrolling stuff.<p>They are the largest peer to peer marketplace.<p>They are the most popular platform for organizing groups.<p>Apparently Facebook dating is popular (maybe someone can comment on that).<p>If anything, despite all the dark patterns on the Wall, they are only growing and finding new ways to grow more.",
+      "post_text": "I&#x27;ve no expectations for this post to be well-received because it looks down on open-source for being too &quot;pure&quot;. Though unless we evolve beyond no-strings-attached open-source, the ecosystem will remain as broken as it is. Why don&#x27;t our overworked, underpaid open-source developers license their software with something to the effect of &quot;If you make more than $1,000,000, pay me.&quot;? JSON designer (&quot;the&quot; JSON) Douglas Crockford had IBM ask for permission to use JSLint, because Douglas had added the note&#x2F;clause&#x2F;term &quot;The Software shall be used for Good, not Evil.&quot;[1]<p>We don&#x27;t know if GPL works in court. It roughly seems like whatever you write in a license is an effective deterrent though. So your repository could take an existing permissive license like MIT, and add a clause like I mentioned. Set a procedure for your terms for others to use your open-source project commercially. An example of this is the Big Time Public License.[2]<p>[1] https:&#x2F;&#x2F;wonko.com&#x2F;post&#x2F;jsmin-isnt-welcome-on-google-code&#x2F;<p>[2] https:&#x2F;&#x2F;bigtimelicense.com&#x2F;versions&#x2F;2.0.2#big-business",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You can require payment from big companies, but then it’s source-available, not OSI open source. The practical path is dual licensing (AGPL/commercial style). The real bottleneck is enforcement budget and legal stamina when someone violates it.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "To give credit, this a question I'm asking after reading this blog post, but a solution for the stifling unfairness of commercialization in open-source is something I've been thinking about for a good while. The essay \"The Cathedral and the Bizarre\" on \nhttps://marktarver.com\n is also worth reading, despite that I find some of the arguments to be in bad faith.\nhttps://pointless.one/my-next-project-wont-be-floss/",
+          "author": "arboles",
+          "replies": []
+        },
+        {
+          "top": "> We don't know if GPL works in court.\nIf lacking precedent is your main concern, there are no software licenses that are likely to fill your criterion.",
+          "author": "bigyabai",
+          "replies": [
+            {
+              "text": "I'm trying to imagine something other than GPL. The fact that the GPL license is respected in the vast majority of cases, without a precedent being necessary is very exciting.",
+              "author": "arboles",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Why don't our overworked, underpaid open-source developers license their software with something to the effect of \"If you make more than $1,000,000, pay me.\nBecause that isn't open source, and is arguably not enforceable anyway.\nHow do you define \"make $1M\"? There are mega corporations with billions in revenue that somehow have a negative tax bill each year, so clearly taxable income isn't a reliable indicator.\nConversely a non profit organisation may have several million in donations/income but spend all of it on their charitable causes.\nSo clearly net revenue isn't a reliable indicator either.\nIf you don't want to release software under a licence without monetary terms, then don't. No one is forcing you to do that.",
+          "author": "stephenr",
+          "replies": [
+            {
+              "text": "Do you think it's not enforceable because of that definition? Revenue of $1M alone (not net revenue) should be a rough proxy of organization size. If a company makes that kind of money it should be able organize its expenses to pay a reasonable price for the software they rely on. There could be an exception for non-profits, if it would make more  sense. If companies were rational they would already be paying the reasonable amount for \"normal\" open-source software, since unmaintained software in their supply chain also can also become a problem for them.\nBTPL (I just think BTPL is neat) has these concrete terms:\n>You may use the software for the benefit of your [small business] if it meets all these criteria:\n* had fewer than 20 total individuals working as employees and independent contractors at all times during the last tax year\n* earned less than $1,000,000 total revenue in the last tax year\n* received less than $1,000,000 total debt, equity, and other investment in the last five tax years, counting investment in predecessor companies that reorganized into, merged with, or spun out your company",
+              "author": "arboles",
+              "depth": 1
+            },
+            {
+              "text": "> Do you think it's not enforceable because of that definition?\nI think companies with millions or billions in revenue pay lawyers a lot to find loopholes in things like this.\n> BTPL\nI have no clue what that is, and I can't even find a reference to it anyway. All I found is a public library somewhere and something about a Pakistani power company or something.\n> * had fewer than 20 total individuals working as employees and independent contractors at all times during the last tax year\nThat's simple to get around, and big companies already do it. Hire an external development agency. They might be sitting in your office but they're neither employees nor independent contractors.\nUltimately though, the point I made earlier is still the most relevant response. If you don't like OSS licences, don't use one. Use whatever you're comfortable with. But don't imagine for a moment that you're better able to identify the needs of every one else who writes software and does use an OSS licence.",
+              "author": "stephenr",
+              "depth": 2
+            },
+            {
+              "text": "I concur.\n>> Why don't our overworked, underpaid open-source developers license their software\nOf course they absolutely can license their software any way they like. That is their prerogative. Personally I write software for a living and it's all licensed with a commercial license.\nBy definition then I am not an Open Source Programmer. (I work on the odd Open Source project, but that's not the same thing.)\nSo any programmer can license things anyway they like. If their license is Open Source compatible then they're free to call themselves an Open Source programmer.\nYour suggestion is equivalent to asking why an amateur golfer can receive prize money in a professional tournament. They very much can though, but then they're no longer an amateur.",
+              "author": "bruce511",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47098852",
+      "title": "Peer validation platform for engineering skills (inspired by X community notes)",
+      "link": "https://news.ycombinator.com/item?id=47098852",
+      "domain": "news.ycombinator.com",
+      "author": "ms_sv",
+      "score": 4,
+      "comment_count": 9,
+      "created_ts": 1771664347,
+      "is_internal": true,
+      "post_text": "Hello Everyone.<p>Resumes and CVs have a fundamental problem: anyone can write anything. As someone who&#x27;s been job searching, I&#x27;ve wondered if there&#x27;s a better way to separate genuine experience from creative writing, I am an engineer at the end of the day not a creative author.<p>I&#x27;ve been thinking about applying something similar to X&#x27;s Community Notes model to skill verification. The idea: engineers could &quot;fact check&quot; claims on each other&#x27;s CVs - not as formal references, but as a crowd-sourced verification layer, where you get a check-mark on your skill like X check mark. If someone claims they&#x27;re an expert in Kubernetes, other engineers who&#x27;ve worked with them (or reviewed their OSS contributions) could validate or challenge that. Also companies have repetitive interviews, why can&#x27;t I simply do one interview and be &quot;interviewed&quot; fully for all other companies?<p>I put together a rough prototype to illustrate the concept: https:&#x2F;&#x2F;skillverdict.com&#x2F;<p>Some questions I&#x27;m trying to work through(ask more please):<p>How useful will this be for engineers?\nWould this create its own set of problems? (gaming the system, bias, grudges)\nCould it scale beyond personal networks?\nWould companies even trust community-sourced verification?<p>Curious what you guys think about the mechanism itself, not the prototype. Would something like this reduce friction in hiring, or just add another layer of noise?",
       "is_ask_hn": false,
       "matched_keywords": [
-        "equity"
+        "interview",
+        "hiring"
       ],
       "comments": [
         {
-          "top": "You say it's growing, but Google Trends tells a different story.\nhttps://trends.google.com/explore?q=facebook%2C%2Fm%2F02y1vz...\nOne could argue that Facebook users just go to Facebook, so they don't need Google, so it cuts out the middle man... especially in an age of apps. However, the drop is pretty massive. It is also a steady down trend, where it doesn't look like a change in how data is reported.\nThat said, they are still the #3 most visited site, and I'm having trouble adding anything to that chart that doesn't just look like a flat line in comparison to Facebook's peak. Looking at just the last 5 years lets us better see ChatGPT overtaking it and YouTube sitting on top of it.\nhttps://trends.google.com/explore?q=facebook%2C%2Fg%2F11khcf...\nI do hear of a lot of people using Facebook Marketplace, though I've never used it myself. The couple people I know who still frequent Facebook are rather difficult to talk to, as all they do is browse Facebook and hold up their phone to show things that made them laugh. It's pretty off-putting.",
-          "author": "al_borland",
+          "top": "As a hiring manager know what you want and be careful what you communicate to determine your desired audience.\nSecondly, skill verification is a form of leaky abstraction and may not be what hiring managers want. It’s most often not about finding the most skilled candidate but rather the most compatible candidate. This can commonly mean finding the least sucky person from a pool of sucky people.\nHiring managers can game that by setting requirements criteria for a job. If you want extremely skilled people then get down to the metal and find candidates that like to work without tools or abstractions. If you super versatile candidates find people with experience in a bazillion different tools. If you just want a body to fill a seat that is quick to hire/fire select for the latest trendy framework.\nThe best way to determine the right candidate is to ignore the nonsense on their resume and just talk to people. Dig in and see what they really want and then challenge it with questions only they can answer. Most people are bodies just wanting to be hired without bringing anything special to the table so that’s what most employers target for. The real challenge here is finding people that are highly skilled in a market where exceptional skills outside the bell curve are not commonly rewarded, because these people will not self identify as awesome when looking for work in compatibility driven system. The people that most typically do identify as awesome tend to not be as awesome as they believe.",
+          "author": "austin-cheney",
           "replies": [
             {
-              "text": "pop quiz - which “social” media platform today has the highest number of active monthly users?\nsidebar: never seen anyone using google trends to try and discuss a topic like this - that is a first - wild!",
-              "author": "bdangubic",
+              "text": "This is a real insight \"finding the most skilled candidate but rather the most compatible candidate\", thank you very much, this is the kind of feedback I am looking for from engineers. I never looked at it from this perspective.\nI talked to hiring managers and most of them say skills is good but what we want is a personality because skills can be taught and personality cannot be. Personality I have experienced that, very skilled teammate exceptional, but personality was not a fit, so the management was not happy.\n\"The best way to determine the right candidate is to ignore the nonsense on their resume and just talk to people.\", that is true and this I have tried with when I was playing the role of hiring manager trying to find a team member to work with me in the company I worked for. I imagine the peer-to-peer verification framework like this talk to people and ask them personalized questions, this is how exceptional talent will be flushed out I think.\nGiven that, if you were to imagine a tool that helps surface those 'quietly exceptional' people—the ones who are highly skilled but won't self-identify—what would that tool look like? Does it even need to be a tool to begin with?",
+              "author": "ms_sv",
+              "depth": 1
+            },
+            {
+              "text": "> I talked to hiring managers and most of them say skills is good but what we want is a personality because skills can be taught and personality cannot be.\nThat is correct, but its an extreme over simplification.  What they mean by personality is among these:\n* excellent soft skills - can listen and emotionally bond with others\n* excellent written communication - the ability to put into writing high precision content with minimal revision that is well structured.  It should not take advanced effort to turn meeting notes into a formal written recommendation.\n* discipline / conscientiousness - this is awareness of the space outside yourself.  It is the ability to balance 6 things at once with endurance throughout the day.\nYes, technical skills can be taught.  Hiring managers really prefer to retain their people and not have to rehire, so teaching people is a long game of minimal continuous effort from the leader via proper assignments and continuous practice on the part of the individual contributor.  If the individual contributor also does this work as a hobby outside the office that is even better, but it would be a massive ethical violation to impose this or it intermingle it with assigned tasks.\nI am a hiring manager, by the way.\nFrom a tooling perspective I am not sure.  My organization uses a tool called GreenHouse.  It contains a candidate's resume and credentials and allows HR to build out forms for interview feedback.  The insight part is always a challenge.  I am fully remote so I am actively watching everything a candidate does with their eyeballs as much or more than listen to the content of their answers, because I want to know what they are thinking and what they are looking at since AI prompts during interviews is now a thing.\nWhen I do look at a resume what I am only looking at:\n* Years of total experience\n* Job hopping versus loyalty/duration\n* Credentials like education attainment, certifications, and so forth",
+              "author": "austin-cheney",
+              "depth": 2
+            },
+            {
+              "text": "Yes absolutely, I am looking for framework that will be included in the platform to be able to asses someone and determine those accurately skills to have them in the CV it is not easy and it is a challenge, overall those skills can make a teammate be valued among others.\nThe AI interviews part is becoming very common as well, this is the issue I wanna solve since it is very easy to fake it while remote.\nI have another question, have you ever faced with getting a perfect candidate during interviews this person passes fully it is great, everything matches but then after 1 or 2 months the just completely flip and are not the candidate(now employee) what you tought and everyone else tought they are?",
+              "author": "ms_sv",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The model gets interesting if reviewer credibility is scored by calibration over time, not follower count. Without that, it will drift toward reciprocal endorsements and people gaming each other’s profiles.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "> engineers who've worked with them (or reviewed their OSS contributions) could validate or challenge that [skill]\nI like your idea of verifiable skills but I don’t think the proposal is solid. We need a trusted third-party as a validator so everyone is happy. Otherwise, we bring bias and corruption into this.\nThe problem is currently solved by professional certification — yes it could be gamed but it provides an official confirmation from a reputable source rather than someone’s word that you’re good.\nPlease keep iterating! We need better tools!",
+          "author": "unforbiddenYet",
+          "replies": [
+            {
+              "text": "Thank you for the feedback, I appriciate it. The idea is to avoid the corruption and bias by hand picking a starter deck of super trusted few professionals who would be able to verify others.\nFor example to prove someone is an senior engineer from google I can ask for a pay slip and references and yes certifications, so we would become that rusted partner. Still working on the proposal and iterations, I wanna talk to much engineers, hiring manages as possible since this is going to be for everyone, to navigate this wild job market.\nWe definitely need better tools, at the moment it is wild that it takes 1000 of applications to just get an answer from any company, this not right at all",
+              "author": "ms_sv",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The idea is great, but everything else is not. A few points:\n- You say \"engineering\" verification, I checked and it's all computer science, monkey coding, full stack whatever,  not only is that NOT engineering, it wasn't before generative AI, and it's definitely not now. This is programming. Programming is writing, and with AI it's more of storytelling rather than engineering.\n- How would this platform measure real engineering skills? Critical thinking, problem solving, etc.? What about Electrical Engineering? Civil Engineering? Robotics design? Etc.\n- I didn't open an account, but on the first page it asks for LinkedIn.. really? I don't trust most of what I read there. GitHub? Not only does it bring us back to software-related topics, but what if I don't use GitHub?\nI think the best way to verify someone's skills in the engineering world is a portfolio that shows their projects and what was accomplished during them. A resume will never be enough, and interviews should be limited to personal interactions and assessing how the potential candidate communicates. Where needed, maybe an assignment to complete and return after a few days -one that mimics the potential project or role they will be working on- because asking questions during an interview is not enough to measure their skills at all.",
+          "author": "tamimio",
+          "replies": [
+            {
+              "text": "Thank you for the feedback. It is meant to be all kinds of engineering, the vision is to have all type of engineers from software engineers(which you are correct it is focused full on that).\n> How would this platform measure real engineering skills? Critical thinking, problem solving, etc.? What about Electrical Engineering? Civil Engineering? Robotics design? Etc\n- This will be all up to the hand picked person to measure your skills, for example the verifier will be assessing everything required to determine if someone is really good or not, that includes critical thinking, problem solving so on. Let's say this verifier they work/ed for Google, they will bring Google's interview framework to this candidate software engineer in our case to asses their skills, the expected result would be \"I passed the assessment, I could be good as an engineer at Google\" which helps with credibility. \nThe platform itself will store the final decision on your profile (you can hide or show anything up to the user).\n> I didn't open an account, but on the first page it asks for LinkedIn.. really? I don't trust most of what I read there. GitHub? Not only does it bring us back to software-related topics, but what if I don't use GitHub?\n- Linkedin, github or gitlab are all optional fields, I have pushed a fix on that to communicate it better, thank you. I am thinking of making it a free link field to be portfolio rather than profile from github, gitlab or whatever else. Personally I understand this, not a fan of github at all, I just put it there since it is the most used.\nThis is how I imagine it and actually tested this concept and it worked and you are 100% right it brings a lot of results. What I did was fist meet and greet talk, then assign take at home project, after the project was done, then we discussed the decisions made and approaches and how the problem was solved, and talked about past projects from the portfolio. This reduced the chance significantly of a bad hire, and the candidates liked the concept a lot.\nWhat don't you like the most from the current hiring processes? For example in software engineering for me is solving meaningless problems during interviews like reverse a binary tree that have nothing to do with the actual role.",
+              "author": "ms_sv",
               "depth": 1
             }
           ]
@@ -993,84 +1260,12 @@
       ]
     },
     {
-      "id": "47049872",
-      "title": "Grand Time: Time-Based Models in Decentralized Trust",
-      "link": "https://news.ycombinator.com/item?id=47049872",
-      "domain": "news.ycombinator.com",
-      "author": "AGsist",
-      "score": 4,
-      "comment_count": 0,
-      "created_ts": 1771348163,
-      "is_internal": true,
-      "post_text": "Grand Time 1.0: frozen research spec with time as non-monetary latent accounting primitive, governance-free.<p>Invariants via formulas: 333-day stability, mint coverage gates, Time Capital activation (no price impact), multi-asset liquidity&#x2F;emergency segregation.<p>No tokens&#x2F;investments&#x2F;production — research artifacts only.<p>Seeking 2–3 senior contributors for verification, simulations, invariant checks (unpaid).<p>Details: https:&#x2F;&#x2F;github.com&#x2F;ArturGrandi&#x2F;gt1-implementation-reference&#x2F;issues&#x2F;1\nPaper: https:&#x2F;&#x2F;doi.org&#x2F;10.5281&#x2F;zenodo.18190386\nEF ESP submission for GT 2.0 track.<p>Open to discussion.",
-      "is_ask_hn": false,
-      "matched_keywords": [
-        "senior"
-      ],
-      "comments": []
-    },
-    {
-      "id": "47050367",
-      "title": "Picknar – Lightweight YouTube Thumbnail Extractor (No Login, No API Key)",
-      "link": "https://news.ycombinator.com/item?id=47050367",
-      "domain": "news.ycombinator.com",
-      "author": "Picknar",
-      "score": 4,
-      "comment_count": 1,
-      "created_ts": 1771350002,
-      "is_internal": true,
-      "post_text": "I built Picknar as a lightweight tool to extract YouTube thumbnail images in max resolution without requiring login, extensions, or third-party API keys.<p>The main focus was performance and simplicity:<p>No account required<p>Direct thumbnail extraction<p>Supports Shorts<p>Minimal frontend dependencies<p>Optimized for fast response time<p>The idea came after noticing that most similar tools were either overloaded with ads, slow, or required unnecessary steps.<p>I’d appreciate feedback on:<p>UX improvements<p>Technical architecture decisions<p>Monetization approach (currently ad-supported)<p>Long-term defensibility in a competitive niche<p>Happy to answer questions about implementation or tradeoffs.",
-      "is_ask_hn": false,
-      "matched_keywords": [
-        "feedback"
-      ],
-      "comments": [
-        {
-          "top": "Nice, I like the focus on no login and speed. I have noticed people often just need the thumbnail quickly and leave, so removing extra steps makes a big difference. Keeping it lightweight is a strong advantage in this type of utility.",
-          "author": "allinonetools_",
-          "replies": []
-        }
-      ]
-    },
-    {
-      "id": "47076978",
-      "title": "Ask HN: Can a license make large corporations give back?",
-      "link": "https://news.ycombinator.com/item?id=47076978",
-      "domain": "news.ycombinator.com",
-      "author": "arboles",
-      "score": 3,
-      "comment_count": 3,
-      "created_ts": 1771524794,
-      "is_internal": true,
-      "post_text": "I&#x27;ve no expectations for this post to be well-received because it looks down on open-source for being too &quot;pure&quot;. Though unless we evolve beyond no-strings-attached open-source, the ecosystem will remain as broken as it is. Why don&#x27;t our overworked, underpaid open-source developers license their software with something to the effect of &quot;If you make more than $1,000,000, pay me.&quot;? JSON designer (&quot;the&quot; JSON) Douglas Crockford had IBM ask for permission to use JSLint, because Douglas had added the note&#x2F;clause&#x2F;term &quot;The Software shall be used for Good, not Evil.&quot;[1]<p>We don&#x27;t know if GPL works in court. It roughly seems like whatever you write in a license is an effective deterrent though. So your repository could take an existing permissive license like MIT, and add a clause like I mentioned. Set a procedure for your terms for others to use your open-source project commercially. An example of this is the Big Time Public License.[2]<p>[1] https:&#x2F;&#x2F;wonko.com&#x2F;post&#x2F;jsmin-isnt-welcome-on-google-code&#x2F;<p>[2] https:&#x2F;&#x2F;bigtimelicense.com&#x2F;versions&#x2F;2.0.2#big-business",
-      "is_ask_hn": true,
-      "matched_keywords": [],
-      "comments": [
-        {
-          "top": "> Why don't our overworked, underpaid open-source developers license their software with something to the effect of \"If you make more than $1,000,000, pay me.\nBecause that isn't open source, and is arguably not enforceable anyway.\nHow do you define \"make $1M\"? There are mega corporations with billions in revenue that somehow have a negative tax bill each year, so clearly taxable income isn't a reliable indicator.\nConversely a non profit organisation may have several million in donations/income but spend all of it on their charitable causes.\nSo clearly net revenue isn't a reliable indicator either.\nIf you don't want to release software under a licence without monetary terms, then don't. No one is forcing you to do that.",
-          "author": "stephenr",
-          "replies": []
-        },
-        {
-          "top": "> We don't know if GPL works in court.\nIf lacking precedent is your main concern, there are no software licenses that are likely to fill your criterion.",
-          "author": "bigyabai",
-          "replies": [
-            {
-              "text": "I'm trying to imagine something other than GPL. The fact that the GPL license is respected in the vast majority of cases, without a precedent being necessary is very exciting.",
-              "author": "arboles",
-              "depth": 1
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "47096142",
       "title": "How Real-Time Voice Agents Work: Media Infrastructure and Latency",
       "link": "https://news.ycombinator.com/item?id=47096142",
       "domain": "news.ycombinator.com",
       "author": "gokuljs",
-      "score": 2,
+      "score": 3,
       "comment_count": 0,
       "created_ts": 1771634459,
       "is_internal": true,
