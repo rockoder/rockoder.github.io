@@ -101,6 +101,15 @@ pip install -r scripts/requirements.txt
 
 ### 3. Set Local Environment Variables (for manual runs)
 
+Copy the example file and fill in your keys:
+
+```bash
+cp .env.example .env
+# Edit .env with your favorite editor
+```
+
+Or export variables directly:
+
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 export GOOGLE_API_KEY="AIza..."
@@ -110,17 +119,7 @@ export REDDIT_CLIENT_ID="..."       # Reddit OAuth
 export REDDIT_CLIENT_SECRET="..."   # Reddit OAuth
 ```
 
-Or create a `.env` file (already gitignored):
-
-```bash
-# .env
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_API_KEY=AIza...
-OPENAI_API_KEY=sk-...
-GROQ_API_KEY=gsk_...
-REDDIT_CLIENT_ID=...
-REDDIT_CLIENT_SECRET=...
-```
+The `.env` file is already gitignored and will be automatically loaded by `run_pipeline.py`.
 
 ### 4. Commit the Pipeline Files
 
@@ -169,22 +168,55 @@ Once set up, the pipeline runs automatically:
 
 ---
 
-## Manual Usage
+## Local Development
 
-### Run Everything Locally
+### Quick Start (Recommended)
+
+The easiest way to run the pipeline locally is using the unified runner script:
 
 ```bash
-# Step 1: Scrape all sources
-python scripts/hn_scraper_btc.py
-python scripts/reddit_scraper.py
-python scripts/newsletter_monitor.py
+# 1. Install dependencies
+pip install -r scripts/requirements.txt
 
-# Step 2: Extract topics
-python scripts/topic_extractor.py
+# 2. Set up environment variables
+cp .env.example .env
+# Edit .env and add your API keys
 
-# Step 3: Generate a post (creates PR)
-python scripts/content_generator.py
+# 3. Run full pipeline in dry-run mode (no PR, no git changes)
+python scripts/run_pipeline.py --all --dry-run
 ```
+
+Dry-run mode saves drafts to `data/drafts/` instead of creating PRs, and doesn't modify the topic bank.
+
+### Using run_pipeline.py
+
+The unified runner script (`scripts/run_pipeline.py`) provides a single interface:
+
+```bash
+# Check environment variables
+python scripts/run_pipeline.py --check-env
+
+# Run full pipeline (dry-run - safe for testing)
+python scripts/run_pipeline.py --all --dry-run
+
+# Run only scrapers
+python scripts/run_pipeline.py --scrape
+
+# Run only topic extraction (requires scraped data)
+python scripts/run_pipeline.py --extract
+
+# Run only content generation (requires topics in bank)
+python scripts/run_pipeline.py --generate --dry-run
+
+# Run full pipeline and create actual PR
+python scripts/run_pipeline.py --all
+```
+
+Options:
+- `--dry-run`: Save draft locally instead of creating PR
+- `--skip-topic-update`: Don't mark topic as used (for repeated testing)
+- `--check-env`: Only check environment variables, don't run anything
+- `--fail-fast`: Stop on first error (default: continue on error)
 
 ### Run Individual Components
 
@@ -206,8 +238,22 @@ python scripts/topic_extractor.py
 # Output: Updates data/topic_bank.json
 
 # Just generate content (needs topics in bank)
+python scripts/content_generator.py --dry-run
+# Output: Saves draft to data/drafts/
+
+# Generate content and create PR
 python scripts/content_generator.py
 # Output: Creates PR with draft
+```
+
+### content_generator.py Options
+
+```bash
+python scripts/content_generator.py --help
+
+Options:
+  --dry-run           Save draft locally instead of creating PR
+  --skip-topic-update Don't mark topic as used (for testing)
 ```
 
 ### Trigger Workflows Manually
@@ -411,6 +457,7 @@ with open('data/topic_bank.json', 'w') as f:
 
 ```
 rockoder.github.io/
+├── .env.example            # Template for local environment variables
 ├── .github/workflows/
 │   ├── btc-scrape.yml      # Daily scraping workflow
 │   └── btc-generate.yml    # Twice-weekly generation workflow
@@ -420,8 +467,10 @@ rockoder.github.io/
 │   ├── topic_bank.json     # Persistent topic storage
 │   ├── hn_nontech_*.json   # Daily HN scrape results
 │   ├── reddit_*.json       # Daily Reddit scrape results
-│   └── newsletters_*.json  # Daily newsletter results
+│   ├── newsletters_*.json  # Daily newsletter results
+│   └── drafts/             # Local drafts from --dry-run mode (gitignored)
 ├── scripts/
+│   ├── run_pipeline.py     # Unified local runner (recommended)
 │   ├── llm_client.py       # Unified LLM interface
 │   ├── hn_scraper_btc.py   # HN non-tech scraper
 │   ├── reddit_scraper.py   # Reddit career subreddits

@@ -4,6 +4,7 @@ Content generator orchestrator for Beyond the Code pipeline.
 Handles topic selection, outline generation, critique loop, and PR creation.
 """
 
+import argparse
 import json
 import os
 import re
@@ -209,18 +210,95 @@ def slugify(text: str) -> str:
     return text.strip('-')[:60]
 
 
+def setup_debug_dir(data_dir: Path) -> Path:
+    """Create a timestamped debug directory for this run."""
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H%M%S")
+    debug_dir = data_dir / "debug" / timestamp
+    debug_dir.mkdir(parents=True, exist_ok=True)
+    return debug_dir
+
+
+def save_debug(debug_dir: Path, step: str, filename: str, content, is_json: bool = False):
+    """Save intermediate result for debugging."""
+    filepath = debug_dir / f"{step}_{filename}"
+    with open(filepath, "w") as f:
+        if is_json:
+            json.dump(content, f, indent=2, ensure_ascii=False)
+        else:
+            f.write(str(content))
+    print(f"  [debug] Saved: {filepath.name}")
+
+
+def save_local_draft(
+    draft: str,
+    headlines: list[str],
+    topic: dict,
+    series_info: dict,
+    critique: dict,
+    output_dir: Path
+) -> str:
+    """Save draft locally for review (dry-run mode)."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    slug = slugify(headlines[0] if headlines else topic["theme"])
+
+    # Extract markdown content from draft
+    if "```markdown" in draft:
+        content = draft.split("```markdown")[1].split("```")[0]
+    elif "```" in draft:
+        content = draft.split("```")[1].split("```")[0]
+    else:
+        content = draft
+
+    # Create output directory
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Save the draft
+    draft_path = output_dir / f"{today}-{slug}.md"
+    with open(draft_path, "w") as f:
+        f.write(content.strip())
+
+    # Save metadata
+    metadata = {
+        "topic": topic["theme"],
+        "contrarian_angle": topic.get("contrarian_angle", "N/A"),
+        "headlines": headlines,
+        "scores": {
+            "overall": critique.get("overall_score", "N/A"),
+            "voice_consistency": critique.get("scores", {}).get("voice_consistency", "N/A"),
+            "senior_resonance": critique.get("scores", {}).get("senior_resonance", "N/A"),
+            "contrarian_strength": critique.get("scores", {}).get("contrarian_strength", "N/A"),
+        },
+        "pull_quotes": critique.get("pull_quote_candidates", []),
+        "series_info": series_info,
+        "sources": topic.get("sources", []),
+    }
+
+    metadata_path = output_dir / f"{today}-{slug}-metadata.json"
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+
+    return str(draft_path)
+
+
 def create_pr(
     draft: str,
     headlines: list[str],
     topic: dict,
     series_info: dict,
-    critique: dict
+    critique: dict,
+    dry_run: bool = False
 ) -> str:
-    """Create a GitHub PR with the draft."""
+    """Create a GitHub PR with the draft (or save locally if dry_run)."""
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # Create slug from first headline
     slug = slugify(headlines[0] if headlines else topic["theme"])
+
+    # Handle dry-run mode
+    if dry_run:
+        output_dir = script_dir.parent / "data" / "drafts"
+        return save_local_draft(draft, headlines, topic, series_info, critique, output_dir)
+
     branch_name = f"beyondthecode/{today}-{slug}"
 
     # File path
@@ -306,16 +384,36 @@ def create_pr(
 
 def main():
     """Main orchestrator function."""
+    parser = argparse.ArgumentParser(
+        description="Generate Beyond the Code blog post content"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Save draft locally instead of creating a PR (for testing)"
+    )
+    parser.add_argument(
+        "--skip-topic-update",
+        action="store_true",
+        help="Don't mark the topic as used (useful for testing)"
+    )
+    args = parser.parse_args()
+
     today = datetime.now(timezone.utc)
     date_str = today.strftime("%Y-%m-%d")
     month = today.month
     timeliness = TIMELINESS_HOOKS.get(month, "")
 
-    print("=== Beyond the Code Content Generator ===\n")
+    mode_label = "[DRY-RUN] " if args.dry_run else ""
+    print(f"=== {mode_label}Beyond the Code Content Generator ===\n")
 
     # Setup paths
     data_dir = script_dir.parent / "data"
     client = LLMClient()
+
+    # Setup debug directory for intermediate results
+    debug_dir = setup_debug_dir(data_dir)
+    print(f"Debug output: {debug_dir}\n")
 
     # Step 1: Select topic
     print("Step 1: Selecting topic...")
@@ -328,44 +426,52 @@ def main():
 
     print(f"  Selected: {topic['theme']}")
     print(f"  Score: {topic.get('score', 'N/A')}")
+    save_debug(debug_dir, "01", "topic.json", topic, is_json=True)
 
     # Step 2: Generate outline
     print("\nStep 2: Generating outline...")
     outline = generate_outline(client, topic, timeliness)
     print("  Outline generated")
+    save_debug(debug_dir, "02", "outline.md", outline)
 
     # Step 3: Critique outline
     print("\nStep 3: Critiquing outline...")
     outline_critique = critique_artifact(client, "outline", outline)
     print(f"  Score: {outline_critique.get('overall_score', 'N/A')}/100")
     print(f"  Verdict: {outline_critique.get('verdict', 'N/A')}")
+    save_debug(debug_dir, "03", "outline_critique.json", outline_critique, is_json=True)
 
     if outline_critique.get("verdict") == "REJECT":
         print("  Outline rejected. Trying next topic...")
-        # Mark topic as problematic and try again
-        topic["used"] = True
-        topic["rejection_reason"] = "Outline rejected by critique"
-        save_topic_bank(data_dir, bank)
+        # Mark topic as problematic and try again (unless skip-topic-update)
+        if not args.skip_topic_update:
+            topic["used"] = True
+            topic["rejection_reason"] = "Outline rejected by critique"
+            save_topic_bank(data_dir, bank)
         sys.exit(1)
 
     # Step 4: Generate draft
     print("\nStep 4: Generating draft...")
     draft = generate_draft(client, outline, date_str)
     print(f"  Draft generated ({len(draft.split())} words)")
+    save_debug(debug_dir, "04", "draft.md", draft)
 
     # Step 5: Critique draft
     print("\nStep 5: Critiquing draft...")
     draft_critique = critique_artifact(client, "draft", draft)
     print(f"  Score: {draft_critique.get('overall_score', 'N/A')}/100")
     print(f"  Verdict: {draft_critique.get('verdict', 'N/A')}")
+    save_debug(debug_dir, "05", "draft_critique.json", draft_critique, is_json=True)
 
     # Step 6: Apply revisions if needed
     if draft_critique.get("verdict") in ["REVISE_MINOR", "REVISE_MAJOR"]:
         print("\nStep 6: Applying revisions...")
         draft = apply_revisions(client, draft, draft_critique)
         print("  Revisions applied")
+        save_debug(debug_dir, "06", "draft_revised.md", draft)
     else:
         print("\nStep 6: No revisions needed")
+        save_debug(debug_dir, "06", "draft_no_revision.md", draft)
 
     # Step 7: Generate headlines
     print("\nStep 7: Generating headline options...")
@@ -373,6 +479,7 @@ def main():
     print(f"  Generated {len(headlines)} headline options")
     for i, h in enumerate(headlines, 1):
         print(f"    {i}. {h}")
+    save_debug(debug_dir, "07", "headlines.json", headlines, is_json=True)
 
     # Step 8: Detect series potential
     print("\nStep 8: Checking series potential...")
@@ -381,32 +488,47 @@ def main():
         print(f"  {series_info['suggestion']}")
     else:
         print("  Single post - no series needed")
+    save_debug(debug_dir, "08", "series_info.json", series_info, is_json=True)
 
-    # Step 9: Create PR
-    print("\nStep 9: Creating PR...")
+    # Step 9: Create PR or save locally
+    if args.dry_run:
+        print("\nStep 9: Saving draft locally (dry-run mode)...")
+    else:
+        print("\nStep 9: Creating PR...")
+
     try:
-        pr_url = create_pr(draft, headlines, topic, series_info, draft_critique)
-        print(f"  PR created: {pr_url}")
+        result_path = create_pr(draft, headlines, topic, series_info, draft_critique, dry_run=args.dry_run)
+        if args.dry_run:
+            print(f"  Draft saved: {result_path}")
+        else:
+            print(f"  PR created: {result_path}")
     except subprocess.CalledProcessError as e:
         print(f"  Failed to create PR: {e}")
         print(f"  Stderr: {e.stderr}")
         sys.exit(1)
 
-    # Step 10: Update topic bank
-    print("\nStep 10: Updating topic bank...")
-    topic["used"] = True
-    topic["used_date"] = date_str
-    topic["pr_url"] = pr_url
-    save_topic_bank(data_dir, bank)
-    print("  Topic marked as used")
+    # Step 10: Update topic bank (unless dry-run or skip-topic-update)
+    if args.dry_run or args.skip_topic_update:
+        print("\nStep 10: Skipping topic bank update (dry-run/skip mode)")
+    else:
+        print("\nStep 10: Updating topic bank...")
+        topic["used"] = True
+        topic["used_date"] = date_str
+        topic["pr_url"] = result_path
+        save_topic_bank(data_dir, bank)
+        print("  Topic marked as used")
 
-    print("\n=== Generation Complete ===")
-    print(f"PR URL: {pr_url}")
-    print("\nNext steps:")
-    print("1. Review the PR")
-    print("2. Pick a headline and update the title")
-    print("3. Edit the draft as needed")
-    print("4. Mark as ready for review and merge")
+    print(f"\n=== {mode_label}Generation Complete ===")
+    if args.dry_run:
+        print(f"Draft location: {result_path}")
+        print("\nTo create a real PR, run without --dry-run flag")
+    else:
+        print(f"PR URL: {result_path}")
+        print("\nNext steps:")
+        print("1. Review the PR")
+        print("2. Pick a headline and update the title")
+        print("3. Edit the draft as needed")
+        print("4. Mark as ready for review and merge")
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 
 ## First-Time Setup Checklist
 
+### For GitHub Actions (automated pipeline)
 - [ ] Add `ANTHROPIC_API_KEY` to GitHub Secrets (or use OpenAI as primary)
 - [ ] Add `OPENAI_API_KEY` to GitHub Secrets (fallback for Anthropic)
 - [ ] Add `GOOGLE_API_KEY` to GitHub Secrets
@@ -10,6 +11,13 @@
 - [ ] Add `REDDIT_CLIENT_SECRET` to GitHub Secrets
 - [ ] Commit and push pipeline files
 - [ ] Run first scrape manually: `gh workflow run btc-scrape.yml`
+
+### For Local Development
+- [ ] `pip install -r scripts/requirements.txt`
+- [ ] `cp .env.example .env`
+- [ ] Fill in API keys in `.env`
+- [ ] Test: `python scripts/run_pipeline.py --check-env`
+- [ ] Run: `python scripts/run_pipeline.py --all --dry-run`
 
 ## Weekly Workflow
 
@@ -46,27 +54,41 @@ gh run view <run-id> --log
 # Install deps
 pip install -r scripts/requirements.txt
 
-# Set API keys (need Anthropic OR OpenAI, plus Google, plus Reddit OAuth)
-export ANTHROPIC_API_KEY="sk-ant-..."
-export OPENAI_API_KEY="sk-..."
-export GOOGLE_API_KEY="AIza..."
-export REDDIT_CLIENT_ID="..."
-export REDDIT_CLIENT_SECRET="..."
+# Set up environment (copy template and fill in your keys)
+cp .env.example .env
+# Edit .env with your API keys
 
-# Run full pipeline locally
-python scripts/hn_scraper_btc.py
-python scripts/reddit_scraper.py
-python scripts/newsletter_monitor.py
-python scripts/topic_extractor.py
-python scripts/content_generator.py
+# Run full pipeline in dry-run mode (safe - no PR, no git changes)
+python scripts/run_pipeline.py --all --dry-run
+
+# Or run stages individually:
+python scripts/run_pipeline.py --scrape           # Just scrape sources
+python scripts/run_pipeline.py --extract          # Just extract topics
+python scripts/run_pipeline.py --generate --dry-run  # Just generate draft
+```
+
+### Advanced Local Testing
+
+```bash
+# Check your environment variables
+python scripts/run_pipeline.py --check-env
+
+# Run content generator directly with options
+python scripts/content_generator.py --dry-run --skip-topic-update
+
+# Create actual PR (when ready)
+python scripts/run_pipeline.py --all
 ```
 
 ## Key Files
 
 | What | Where |
 |------|-------|
+| Local runner | `scripts/run_pipeline.py` |
+| Env template | `.env.example` |
 | LLM config | `config/models.yaml` |
 | Topic bank | `data/topic_bank.json` |
+| Local drafts | `data/drafts/` (from --dry-run) |
 | Prompts | `scripts/prompts/*.txt` |
 | Full docs | `docs/beyond-the-code-pipeline.md` |
 

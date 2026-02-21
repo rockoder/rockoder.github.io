@@ -12,6 +12,7 @@ import sys
 import time
 import re
 from datetime import datetime, timezone
+from typing import Optional
 from urllib.parse import urlparse
 
 # Ensure UTF-8 output
@@ -49,7 +50,7 @@ NONTECH_PATTERN = re.compile(
 )
 
 
-def get_item_metadata(item_id: str) -> dict | None:
+def get_item_metadata(item_id: str) -> Optional[dict]:
     """Fetch item metadata from HN API."""
     try:
         r = requests.get(HN_API_ITEM.format(item_id), timeout=10)

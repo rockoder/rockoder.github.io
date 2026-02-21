@@ -54,7 +54,7 @@ class AnthropicProvider(LLMProvider):
 
 
 class GeminiProvider(LLMProvider):
-    """Google Gemini API provider."""
+    """Google Gemini API provider using the new google-genai SDK."""
 
     def __init__(self, model: str, max_tokens: int = 4096, temperature: float = 0.7):
         self.model = model
@@ -66,24 +66,24 @@ class GeminiProvider(LLMProvider):
     def client(self):
         if self._client is None:
             try:
-                import google.generativeai as genai
+                from google import genai
                 api_key = os.environ.get("GOOGLE_API_KEY")
                 if not api_key:
                     raise ValueError("GOOGLE_API_KEY environment variable not set")
-                genai.configure(api_key=api_key)
-                self._client = genai.GenerativeModel(self.model)
+                self._client = genai.Client(api_key=api_key)
             except ImportError:
-                raise ImportError("google-generativeai package not installed. Run: pip install google-generativeai")
+                raise ImportError("google-genai package not installed. Run: pip install google-genai")
         return self._client
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
-        full_prompt = prompt
+        contents = prompt
         if system_prompt:
-            full_prompt = f"{system_prompt}\n\n{prompt}"
+            contents = f"{system_prompt}\n\n{prompt}"
 
-        response = self.client.generate_content(
-            full_prompt,
-            generation_config={
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=contents,
+            config={
                 "max_output_tokens": self.max_tokens,
                 "temperature": self.temperature,
             }
@@ -231,27 +231,35 @@ class LLMClient:
             raise ValueError(f"No configuration found for task: {task}")
 
         # Try primary provider
+        primary_provider = model_config["provider"]
+        primary_model = model_config["model"]
+        print(f"  [LLM] {task} → {primary_provider}/{primary_model}", end="", flush=True)
         try:
-            provider = self._get_provider(
-                model_config["provider"],
-                model_config["model"]
-            )
-            return provider.generate(prompt, system_prompt)
+            provider = self._get_provider(primary_provider, primary_model)
+            result = provider.generate(prompt, system_prompt)
+            print(" ✓")
+            return result
         except Exception as primary_error:
+            print(" ✗")
             # Try fallback if configured
             fallback = model_config.get("fallback")
             if fallback:
-                print(f"Primary provider failed for {task}, trying fallback: {primary_error}")
+                fallback_provider = fallback["provider"]
+                fallback_model = fallback["model"]
+                print(f"  [LLM] Fallback: {primary_provider}/{primary_model} failed → trying {fallback_provider}/{fallback_model}")
+                print(f"        Error: {primary_error}")
+                print(f"  [LLM] {task} → {fallback_provider}/{fallback_model}", end="", flush=True)
                 try:
-                    provider = self._get_provider(
-                        fallback["provider"],
-                        fallback["model"]
-                    )
-                    return provider.generate(prompt, system_prompt)
+                    provider = self._get_provider(fallback_provider, fallback_model)
+                    result = provider.generate(prompt, system_prompt)
+                    print(" ✓")
+                    return result
                 except Exception as fallback_error:
+                    print(" ✗")
                     raise Exception(
-                        f"Both primary and fallback failed for {task}. "
-                        f"Primary: {primary_error}, Fallback: {fallback_error}"
+                        f"Both providers failed for {task}.\n"
+                        f"  Primary ({primary_provider}/{primary_model}): {primary_error}\n"
+                        f"  Fallback ({fallback_provider}/{fallback_model}): {fallback_error}"
                     )
             raise
 

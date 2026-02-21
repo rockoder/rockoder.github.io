@@ -17,6 +17,16 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 # Newsletter RSS feeds to monitor
 RSS_FEEDS = {
+    "simon_willison": {
+        "name": "Simon Willison's Weblog",
+        "url": "https://simonwillison.net/atom/everything/",
+        "focus": ["ai", "engineering", "career", "big tech"]
+    },
+    "marcus_on_ai": {
+        "name": "Marcus on AI",
+        "url": "https://garymarcus.substack.com/feed",
+        "focus": ["ai", "engineering", "career", "big tech"]
+    },
     "pragmatic_engineer": {
         "name": "The Pragmatic Engineer",
         "url": "https://newsletter.pragmaticengineer.com/feed",
@@ -51,11 +61,11 @@ RSS_FEEDS = {
 
 # Keywords for filtering relevant content
 RELEVANT_KEYWORDS = [
-    "career", "promotion", "leadership", "management", "culture",
+    "ai", "career", "promotion", "leadership", "management", "culture",
     "burnout", "remote", "hiring", "interview", "performance",
     "staff engineer", "principal", "senior", "mentor", "growth",
     "communication", "team", "conflict", "feedback", "meetings",
-    "politics", "influence", "visibility", "impact", "strategy"
+    "politics", "influence", "visibility", "impact", "strategy" 
 ]
 
 KEYWORD_PATTERN = re.compile(

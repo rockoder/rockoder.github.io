@@ -10,6 +10,7 @@ import os
 import sys
 import time
 from datetime import datetime, timezone
+from typing import Optional
 
 # Ensure UTF-8 output
 sys.stdout.reconfigure(encoding="utf-8")
@@ -36,7 +37,7 @@ TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
 _access_token = None
 
 
-def get_access_token() -> str | None:
+def get_access_token() -> Optional[str]:
     """Get OAuth access token using client credentials flow."""
     global _access_token
     if _access_token:

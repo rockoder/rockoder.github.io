@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install requests beautifulsoup4 feedparser pyyaml
+          pip install -r scripts/requirements.txt
 
       - name: Run HN Scraper
         run: python scripts/hn_scraper_btc.py
@@ -55,9 +55,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          pip install google-generativeai anthropic groq openai
-          python scripts/topic_extractor.py
+        run: python scripts/topic_extractor.py
         continue-on-error: true
 
       - name: Commit scraped data
