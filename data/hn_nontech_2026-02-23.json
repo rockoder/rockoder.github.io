@@ -1,0 +1,1055 @@
+{
+  "scraped_date": "2026-02-23",
+  "source": "hacker_news",
+  "total_scraped": 130,
+  "nontech_count": 27,
+  "posts": [
+    {
+      "id": "47116026",
+      "title": "Show HN: WARN Firehose – Every US layoff notice in one searchable database",
+      "link": "https://warnfirehose.com",
+      "domain": "warnfirehose.com",
+      "author": "sendkamal",
+      "score": 59,
+      "comment_count": 6,
+      "created_ts": 1771803163,
+      "is_internal": false,
+      "post_text": "Hi HN,<p>I built WARN Firehose because I was frustrated trying to track layoff data across the US. The WARN Act requires companies with 100+ employees to file public notices 60 days before mass layoffs — but the data is scattered across 50 state websites with different formats, broken links, and no API.<p>WARN Firehose scrapes every state workforce agency daily and normalizes the data into a single database going back to 1988. It now has 131,000+ notices covering 14 million workers.<p>*What you can do:*<p>- Browse interactive charts and data tables (no account needed): <a href=\"https:&#x2F;&#x2F;warnfirehose.com&#x2F;data\" rel=\"nofollow\">https:&#x2F;&#x2F;warnfirehose.com&#x2F;data</a>\n- Drill into any state, city, company, or industry: <a href=\"https:&#x2F;&#x2F;warnfirehose.com&#x2F;data&#x2F;layoffs\" rel=\"nofollow\">https:&#x2F;&#x2F;warnfirehose.com&#x2F;data&#x2F;layoffs</a>\n- Query the REST API (free tier: 100 calls&#x2F;day): <a href=\"https:&#x2F;&#x2F;warnfirehose.com&#x2F;docs\" rel=\"nofollow\">https:&#x2F;&#x2F;warnfirehose.com&#x2F;docs</a>\n- Export in CSV, JSON, NDJSON, Parquet, or JSON-LD\n- Set up webhooks for real-time alerts on new filings<p>*Who uses this:*<p>- Journalists breaking layoff stories before press releases\n- Quant funds using WARN filings as an alternative data signal (filings happen ~60 days before layoffs)\n- Recruiters sourcing from displaced talent pools\n- Researchers studying labor market dynamics\n- Workforce development boards doing rapid response planning<p>*Tech stack:* Python&#x2F;FastAPI, SQLite, scrapers for all 50 states, static HTML generation for SEO pages, Claude Haiku for AI analysis, deployed on EC2.<p>Free tier is genuinely useful (100 API calls&#x2F;day, dashboard access, charts). Paid plans start at $19&#x2F;mo for full historical data and bulk exports.<p>Would love feedback on the API design, data quality, or anything else. Happy to answer questions.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "layoff",
+        "layoffs",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "The quant fund use case is the most interesting angle here. WARN filings have the rare property of being legally mandated with specific timing (60-day advance notice), which makes the signal horizon predictable in a way that most alternative data is not.\nThe big caveat: compliance is uneven. Companies under 100 employees are exempt, and there is a documented pattern of employers paying WARN Act penalties retroactively rather than filing -- especially in fast-moving situations where 60 days advance notice is operationally inconvenient. So the signal has systematic gaps at exactly the moments of highest market interest.\nHave you looked at coverage rates vs. announced layoffs (e.g., correlation with Challenger Gray reports or JOLTS)? That gap number is basically the signal noise floor for any quant strategy built on this data.",
+          "author": "vicchenai",
+          "replies": []
+        },
+        {
+          "top": "Interesting, though a lot of the UI seems broken. For my state I see some notice dates in the future (it's not explained why, if this is when the filing will be executed or if it's an incorrect filing date, as the column is just \"Notice Date\")\nSome of the entries pull up a page that says \"Failed to load company data: No company name provided in URL\" from the state specific view (e.g, any link on \nhttps://warnfirehose.com/data/layoffs/california\n ). Has a vibe-coded feel to it.\nI saw a lot of \"Purchase dataset for city details\" in places which was annoying. Wondering how much processing is being done on the base dataset to justify the pricing. Could you explain a bit on the normalization/cleaning process?",
+          "author": "cobertos",
+          "replies": [
+            {
+              "text": "Definitely vibe coded. It follows the same generic Claude UI patterns for a data app / data oriented website. Not necessarily a bad thing per say if it's still curated and tweaked with human taste. And ofc validated to work :)",
+              "author": "skadamat",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Great site thank you. Just curious, I looked up my company(more than 40k employees across the world including many US states) and it seems like I am not seeing the layoffs that colleagues have experienced. This is probably expected as im probably missing some criteria. Do all layoffs have to have a WARN notice or are there mechanisms/criteria that allow companies to lay people off without filing these noticies?",
+          "author": "nebula8804",
+          "replies": [
+            {
+              "text": "Many companies pay severance in lieu of giving notice.",
+              "author": "jordanb",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Now we need a usable website that uses this API to show latest layoffs in, for example, CA.",
+          "author": "tgrowazay",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47107165",
+      "title": "Red Robin Died by Spreadsheet. Don't Make the Same Mistake",
+      "link": "https://garryslist.org/posts/red-robin-died-by-spreadsheet-don-t-make-the-same-mistake",
+      "domain": "garryslist.org",
+      "author": "mooreds",
+      "score": 51,
+      "comment_count": 33,
+      "created_ts": 1771724076,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": [
+        {
+          "top": "I'd like to see more companies have clawback compensation for these \"bold\" decisions - stuff goes wrong, we are clawing back all your stock, even the tranche which vested during the first quarter pump and dump scam.\nAnd I'd like to see it implemented further down in the hierarchy. In the companies which just implemented layoffs for AI efficiency, and then asked their more senior employees to dig in and help on the now overflowing work - I suspect a mid level manager or VP made that decision and was wildly rewarded for the initial cost savings, and now, with the resource disaster - was their bonus clawed back? I suspect not.",
+          "author": "jmpman",
+          "replies": [
+            {
+              "text": "Same.\nThis will never change until CEO pay is tied to long term performance.  Why not make it 5 year lagging?\nThe whole problem is that CEOs have zero incentive to care about the longevity of the company.  They want share price to go up now, make their money, then cash out.\nIt's easy to blame the CEOs, but they're just doing what's smart for them.  We need to change the definition of what that is.",
+              "author": "silisili",
+              "depth": 1
+            },
+            {
+              "text": "All that stuff is just the same approach but applied to the CEO. You’ve just got the same mindset.\nBy contrast TSLA gives Elon options in the money if he 10x valuation. And he did.\nThis punishment and austerity approach is doomed.",
+              "author": "renewiltord",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The weird thing is that my family has started going to Red Robin recently.  They started doing one thing right at least.\nTheir recent $9.99-with-drink special happens to be pretty exactly what most of our party wants when we go to a burger place.  Who are the people who want the burgers with the 25 exotic toppings?  It doesn't beat the local institution with the big wood-coal grill, but that place is 25km further away, and a few dollars per head more, so it's the \"let's have an okay lunch and then finish our Saturday errands\" choice.\nIt's not packed, but at least at the locations near us, the management seems to be very attentive-- like they're trying to at least keep an eye on the customer experience after blowing it up.\nTBH, I think the meal special INCLUDING a drink is a very smart direction for for both RR and Chili's.  I suspect that consumers are getting wise to the \"hide the queen\" pricing tricks, where they bury the costs of loss-leader entrees in the side or drink.  There aren't many places our family of four can get a sit-down lunch for less than USD60 before tip, and RR is one of them.",
+          "author": "hakfoo",
+          "replies": []
+        },
+        {
+          "top": "We used to go weekly. Then sometime in 2018-2019 service went downhill fast. It would take forever to get a seat despite not being busy. It would take forever to get service once seated. The endless fries never came or when they did they looked like they were grabbed from another table.\nThen their rewards were gutted. We've only been back a handful of times and every time was worse and now we go elsewhere entirely.",
+          "author": "dawnerd",
+          "replies": []
+        },
+        {
+          "top": "406 \"Your browser is not supported\"\nHuh. What kind of experience does this website offer on the subject of spreadsheets such that it has _any_ browser requirements?\n[Dino MacBook Air with Safari 15.6]",
+          "author": "xtiansimon",
+          "replies": [
+            {
+              "text": "The post is essentially a theft of this tweet;  \n\nhttps://xcancel.com/aakashgupta/status/2024365923856240790",
+              "author": "snypher",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This article has literally nothing to do with \"The AI Age\" but keeps saying it over and over, why? For marketing purposes? It's weird.\nHuman CEO made bad decision. Human CEO at another company made good decision. Neither decision had anything whatsoever to do with AI.\nPerhaps the author is worried nothing he has to say is interesting without buzzwords.",
+          "author": "ivraatiems",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47115149",
+      "title": "Mexican Forces Kill Nation's Most-Wanted Cartel Boss",
+      "link": "https://www.nytimes.com/2026/02/22/world/americas/jalisco-new-generation-cartel-leader-killed.html",
+      "domain": "www.nytimes.com",
+      "author": "downboots",
+      "score": 43,
+      "comment_count": 5,
+      "created_ts": 1771797345,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "boss"
+      ],
+      "comments": [
+        {
+          "top": "Puerto Vallarta is on fire - seeing tons of videos on my timeline.",
+          "author": "joshcsimmons",
+          "replies": []
+        },
+        {
+          "top": "Most-Wanted Cartel Boss \nso far",
+          "author": "foogazi",
+          "replies": []
+        },
+        {
+          "top": "I imagine that if the U.S. assisted in any meaningful way ala the search for Escobar in Columbia we probably would have heard it by now.",
+          "author": "F7F7F7",
+          "replies": [
+            {
+              "text": "From TFA:\nThe Mexican government said the United States had contributed intelligence that aided the operation against Mr. Oseguera.",
+              "author": "nsvd2",
+              "depth": 1
+            },
+            {
+              "text": "Colombia*",
+              "author": "Gualdrapo",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47085255",
+      "title": "Ask HN: Is it worth learning Vim in 2026?",
+      "link": "https://news.ycombinator.com/item?id=47085255",
+      "domain": "news.ycombinator.com",
+      "author": "zekejohn",
+      "score": 32,
+      "comment_count": 34,
+      "created_ts": 1771576049,
+      "is_internal": true,
+      "post_text": "With everyone using Claude Code, Cursor, Codex, and the other 100 AI coding agents that i missed, I’m wondering how much editor mastery still matters like w&#x2F; Vim<p>Being honest the real reason i wanna learn Vim is to boost my ego &amp; assert my dominance, so i can tell people &quot;i use vim btw&quot;, but also part of me thinks investing time could still pay off for speed, ergonomics, and working over SSH overall...<p>but a bigger part also suspects the marginal gains i would gain would disappear when more of the work is delegated to AI anyway, like why would i learn Vim if i&#x27;m just going to be prompting Opus all day?<p>For anyone who&#x27;s been using Vim for while AND uses AI to code (i&#x27;m assuming everyone codes with AI to some degree) my question is: Does learning Vim still meaningfully improve your day to day productivity EVEN with AI, or is it mostly personal preference at this point?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Do you already do any work over SSH? What do you do if you need to edit any files in that context?\nLearning the essentials of vim was the sort of skill that for me took about 10 min per day over a couple months and has come in handy almost every day since then. Can you get by without it? I guess, if you do absolutely everything via a GUI. Or delegate all CLI work to LLMs without ever questioning or second guessing their output.\nAnd yes, I use vim for almost every git commit or interactive rebase. Access to the full power of CLI git is something I value very much and has saved me countless hours.  Not to mention using it for editing any config file that’s not part of a repo.\nEvery time you’re able to keep your fingers on the keyboard instead of reaching for a mouse saves you both time and precious context switching energy.",
+          "author": "apothegm",
+          "replies": [
+            {
+              "text": "Aficionados of modal editing often insinuate that one would require mouse use in non-modal editing. Yet I have always fully keyboard-operated my non-modal editors, whether VSCode in the last 9 years or previously, Sublime and others, all the way back to Turbo Pascal in the late 90s. I don't ever use the mouse in them, whether I'm inside a text buffer or in the Command Palette (or in menus for the pre-Sublime editors back when). For example, F1 is bound to show \"hover\" doc tips over the symbol that the caret is in. A couple function keys and ctrl/alt/shift-plus-some-mnemonic letter are soo swiftly and easily muscle-memoried, I never felt any need for mousing, or for \"modes\" and typing just to switch from one to another.\nI'm sure once one is used to modal editing, one can be speedy with it. So can I, entirely without modal yet without mousing  =)",
+              "author": "dualogy",
+              "depth": 1
+            },
+            {
+              "text": "I also use VSCode and derivatives. Also mostly without mousing. But I don’t HAVE to, because I know how to use CLI tooling to not only edit files as needed but also handle things like version control — which I’ve noticed a disappointing percentage of my colleagues, even those with a decade in the field, are mystified by. I haven’t touched VSCode’s git integrations, but the astonishment at being introduced to CLI rebasing — followed by interactive rebasing — was eye-opening.",
+              "author": "apothegm",
+              "depth": 2
+            },
+            {
+              "text": "Well for git stuff or any CLI stuff, I just key-chord into the integrated terminal (or alt-tab into my terminal emulator, depending on task) and do the git commands, having the whole \"git integration\" thing disabled in `settings.json` in the first place..",
+              "author": "dualogy",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "It's a handy skill to have if you interact with Linux machines.\nYou'll need to edit files sometimes, and Vim (or Vi) is usually present. I don't think I've seen an install without it.\nThe basics (opening files, writing, and closing) can be learnt in an hour. It's enough to make simple changes to .conf files.",
+          "author": "grugdev42",
+          "replies": [
+            {
+              "text": "Using vim to do this seems silly. Nano is also nearly always present, and doing those “basic” things is 10x more straightforward in an editor that isn’t modal and just gets out of your way.\nI’ve often in my career witnessed engineers who’ve cargo culted the need for vim, but they only know how to hit ESC !wq or whatever, and one errant keystroke puts them in modal hell of some sort that, often requiring they just close the terminal and try again.\nI don’t begrudge those who want to become power-VIM-users, though it seems wildly awkward to me, to each their own. But if you just want to use it to do the “basics” on ssh sessions, using nano makes more sense. PGUP and PGDN and Home and End and arrows work just fine to navigate, and the bindings for most things are printed right on the screen (except Ctrl-S to save… for some reason, but it works).",
+              "author": "xp84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What happens if?\n1. The LLMs are down, and you're on call and you need to fix a bug \nimmediately\n (no mistakes)\n2. You're working over serial (The LLMs aren't there to help you and only vi and emacs are available)\n3. You're working on an old computer for some esoteric reason.\n4. You're going in an interview and they (temporarily) forbid you to use an LLM to check your knowledge on using these tools (as well as programming tests)\nIf you cannot use these editors without an LLM, (Vim has navigation keys 'hjkl', G/g and so forth which many such tools have adopted), then it isn't a good look.\nYou don't have to 100% master them but knowledge of them will help when the LLMs have an outage, and there WILL be outages.\nAlso be careful not to keep relying on these LLMs too much otherwise your programming skills will atrophy. [1]\nSo the answer is YES, learn Vim, not to boost your ego, but make it a muscle memory so your skills won't atrophy.\n[1] \nhttps://www.infoworld.com/article/4125231/ai-use-may-speed-c...",
+          "author": "colesantiago",
+          "replies": [
+            {
+              "text": "ya i do definitely agree that learning Vim is gonna help my overall understanding for how things work at a deeper level and also fight back a lot of the “learned helplessness” that i did develop when coding w/ AI to your point\n also another thing that i was thinking is that yes short term (maybe the first few months?) i wouldn’t see any benefit… but it would definitely help in the long term and that my coding ability is not just directly tied to whatever the latest model is capable of",
+              "author": "zekejohn",
+              "depth": 1
+            },
+            {
+              "text": "Use emacs. Easier to learn.",
+              "author": "ant6n",
+              "depth": 1
+            },
+            {
+              "text": "For some people cua-mode being opt-in and very difficult to discover organically will be a larger barrier for comfort and learning than normal/insert modes and motion commands could ever hope to be.\n(10 year evil-mode user who moved to Neovim for other reasons, chiefly performance/LSP nativity/plugin ecosystem vitality)",
+              "author": "mtndew4brkfst",
+              "depth": 2
+            },
+            {
+              "text": "You just need learn C-x C-s (save) and C-x C-c (exit) to be able to edit files on the command line. It's kind of like nano, except has syntax highlighting.",
+              "author": "ant6n",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Yes. For one simple reason: As vi is part of the POSIX standard[1], it is gauranteed to be installed on all unix(-like) machines you may touch now or in the future.\n[1] \nhttps://pubs.opengroup.org/onlinepubs/9699919799/",
+          "author": "mmh0000",
+          "replies": []
+        },
+        {
+          "top": "Pretty much every engineer needs to use Vim/vi when logged into any server, so from that point of view, this shouldn’t even be a question. I don’t think knowing how to use a modal editor in 2026 is a flex anymore, it’s just standard. But if you’re planning to commit to modal editing as a lifestyle, you should be using Helix, not Neovim.",
+          "author": "bgar",
+          "replies": [
+            {
+              "text": "Why Helix and not Neovim?",
+              "author": "Gooblebrai",
+              "depth": 1
+            },
+            {
+              "text": "It’s one of those tools that’s well designed and you don’t need a thousand line configuration file to be productive. The modal editing style is also an improvement over vim/neovim because you do selection -> action rather than action -> selection. Lastly, it’s written in Rust, which is not a plus purely because of that but because it’s a lot easier to contribute code changes to or tweak a modern Rust codebase.",
+              "author": "bgar",
+              "depth": 2
+            },
+            {
+              "text": "Hard disagree. It is \nnot\n an improvement - it is a deterioration.\nRepeat (dot command .) is far more powerful and general thanks to operator->action.\nMuch better composability with counts, registers, marks and operators with operator->action\nOperator Pending mode has some unique advantages for swipe edits that are painful in a select first paradigm. Ex: `d/foo<CR>`. No fast equivalent in Helix.\nAlso, if you really want, you can select in VIM and do your job too. Use visual mode with `v`.",
+              "author": "lenkite",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47092914",
+      "title": "Reddit Ads support is leaking PII and actively crossing user sessions",
+      "link": "https://news.ycombinator.com/item?id=47092914",
+      "domain": "news.ycombinator.com",
+      "author": "arashvakil",
+      "score": 18,
+      "comment_count": 1,
+      "created_ts": 1771616740,
+      "is_internal": true,
+      "post_text": "I have been dealing with a Reddit Ads account issue over the last week, and it has quickly escalated into a severe privacy and security red flag. It appears their customer support tools (or the agents themselves) are actively bleeding PII and crossing user sessions entirely.<p>Over the last week, I have experienced three separate incidents in their live chat:<p>Incident 1: Account Cross-Contamination (Feb 14)\nWhile chatting with an agent (Sonam B), they managed to associate my personal email to a completely unrelated, bizarrely named ad account (&quot;No Panties Games Ad Account&quot;). When I pointed out they were pasting data related to someone else&#x27;s account alongside my email, they tried to brush it off as an &quot;error&quot; and told me to &quot;kindly ignore.&quot;<p>Incident 2: Direct PII Leak (Feb 20)\nToday, while following up on the issue with a different agent (Naheeda M), they inexplicably dropped the email address (info@<i>REDACTED</i>.com) and the full legal business entity name of an entirely different advertiser into our chat.<p>Incident 3: Total Session Confusion and Misattribution (Feb 20)\nJust minutes later in that same chat, things got much worse. While I was clearly logged into my own account, the agent told me: &quot;The ad account you&#x27;re currently signed into is u&#x2F;Teor<i>REDACTED</i>, and ads are getting published with this username. Is that correct?&quot;<p>This is no longer just a clipboard issue. This strongly suggests a severe backend mapping failure in their support dashboard (Zendesk&#x2F;Salesforce or an internal admin tool) that is completely misattributing active sessions, user accounts, and ad publishing data.<p>If their support agents are seeing me as logged into someone else&#x27;s account and claiming ads are publishing under that username, it raises massive questions:\n1. Are agents making changes to other people&#x27;s ad campaigns thinking it&#x27;s my account?\n2. Is ad spend being billed to the wrong accounts?\n3. Who is currently seeing my billing details, legal name, and campaigns?<p>Given how broken their Tier 1 tools appear to be right now, I wanted to raise the flag here immediately. Has anyone else running Reddit Ads noticed their support agents leaking data or confusing accounts recently?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "https://www.cisa.gov/reporting-cyber-incident\n at the federal level, if you have a state regulator where PII is in scope, report to them too. Document everything for your complaint as evidence. A GitHub Gist collecting your documentation, archived by the Wayback Machine is an effectively public timestamp mechanism if relevant.",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47113936",
+      "title": "Ask HN: Chromebook leads for K-8 school in need?",
+      "link": "https://news.ycombinator.com/item?id=47113936",
+      "domain": "news.ycombinator.com",
+      "author": "techteach00",
+      "score": 15,
+      "comment_count": 15,
+      "created_ts": 1771789167,
+      "is_internal": true,
+      "post_text": "Hi, I&#x27;m a K-8 technology teacher in NYC. My students are in desperate need of new hardware. The Chromebooks they use now are so slow that they make the children agitated when using them.<p>I&#x27;m aware of different grant opportunities that exist, I just thought it was worth inquiring here for a potentially faster solution at acquiring them new hardware.<p>Thank you for listening.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Relevant recent publication about laptops and students:\nhttps://fortune.com/2026/02/21/laptops-tablets-schools-gen-z...\nBut I get it OP, you work with what you're given. I'm sorry I don't have any good suggestions.",
+          "author": "notepad0x90",
+          "replies": []
+        },
+        {
+          "top": "In New York the biggest driver behind technology is the state testing regime. Make the case to your administration that the chromebooks are insufficient for the state testing program and they will come up with the funds for upgrades.",
+          "author": "dzdt",
+          "replies": []
+        },
+        {
+          "top": "For a K-8 environment, it might be worth looking into local e-waste recycling non-profits or university surplus programs. Often, large institutions rotate their hardware every 3-4 years, and they are usually happy to donate older but functional Chromebooks to schools in need. Also, check out 'DigitalEquity' initiatives in your area; they often have streamlined pipelines for this exact scenario",
+          "author": "CodeBit26",
+          "replies": []
+        },
+        {
+          "top": "I realize this does nothing to solve your problem, but for the sake of discusion, internally at Microsoft, pretty much all the developers I know have switched to using \"Devbox\", which means we use a remote desktop client to access our dev machine.\nA lot of us resisted this at first, but then just kindof came to accept it, and it made it so we have a lot more capable machines to do development on than the laptops that we would have to recycle every couple years.\nI know there have probably been a lot of \"thin client\" products/services in the education space in the past, but I think it might be time to try again.\nLike another poster here, I think it's \"sad\" that kids are using laptops. Laptops have small screens and poor ergonomics.\nA thin client setup with a good keyboard, mouse and monitor could be better and more affordable / future proof.",
+          "author": "locusofself",
+          "replies": [
+            {
+              "text": "Chromebooks are thin clients of sorts, its a web browser rendering google docs locally.\nIf anything is making them slow its the javascript bloat of modern webapps that could be doing more serverside.",
+              "author": "basch",
+              "depth": 1
+            },
+            {
+              "text": ">Laptops have small screens and poor ergonomics.\nThis is a huge gripe of me and my wife. Growing up we all had desktops in the computer lab at school (elementary+) and you had decent size screens. Now kids pull up their little 12\" chromebook in their classroom. Kids have eye strains, myopia etc...",
+              "author": "fma",
+              "depth": 1
+            },
+            {
+              "text": "We used G3 iMacs with the puck mouse until high school.  You can't convince me it was the epitome of ergonomics.\nThey were an upgrade from the Mac LC II.  I don't recall those having very big screens either.\n15\" and 4:3 was about as big as it got in high school.  A computer on a table and we sat on a normal plastic school chair.",
+              "author": "doubled112",
+              "depth": 2
+            },
+            {
+              "text": "You don’t have to recycle laptops every few years. That’s a sandy foundation to build the rest of that “came to accept it” on. You weren’t just made to do it and retconned justification for compliance?",
+              "author": "Waterluvian",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Your PTA is the fastest way.",
+          "author": "jonahbenton",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47106013",
+      "title": "Ask HN: If the \"AI bubble\" pops, will it really be that dramatic?",
+      "link": "https://news.ycombinator.com/item?id=47106013",
+      "domain": "news.ycombinator.com",
+      "author": "moomoo11",
+      "score": 14,
+      "comment_count": 11,
+      "created_ts": 1771715714,
+      "is_internal": true,
+      "post_text": "I&#x27;m building software for a sector that is massive, but one where you don&#x27;t really need AI. At least, not AI == LLM.<p>And before I go further, let me state up front that I do like AI coding agents. They are great as assistive tools.<p>People say that if the AI bubble pops, the economy tumbles. And okay, I mean the M7 will certainly get rekt but everyone else? Things will recover within a few years. We didn&#x27;t make it to 2026 AD taking the easy road.<p>You still need to visit the doctor. Goods still need to be delivered. Homes need to be built. We need to drill for oil. People still need to eat. And yes, unfortunately or not, we still need millions of administrators because humans are not 0&#x2F;1 systems.<p>Am I crazy to think that maybe it won&#x27;t be that bad? There are still infinite number of things to do, and maybe (call me stupid, whatever) it would be a good turning point for our species if we realize that speculative bubbles are absolutely destructive and not worth it.<p>I don&#x27;t need a personal assistant to make calls for me to get a restaurant reservation, and I certainly don&#x27;t care for AI slop videos. I would much rather we have better products and services that actually work, and even if they have rough edges I would prefer people are employed and busy doing something with their lives.<p>Maybe a world where we don&#x27;t chase endless growth (to escape inflation, pay off debts, whatever the case) would be good. And also we put nerds (not people like us, the engineers, I mean the evil dorks who cosplay as movie super villains) in the toy box again and pick up different toys this time.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "A pop hurts valuations, not demand for useful software.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "No the economy doesn’t tumble. All of the major public tech companies have real businesses that were profitable before AI and will be profitable after AI.  All except Amazon are spending money out of their own revenues.\nBusinesses aren’t going to stop growing because of AI, the only public company really dependent on AI are NVidia and Oracle. Oracle because it is borrowing money to support build out for OpenAI.",
+          "author": "raw_anon_1111",
+          "replies": [
+            {
+              "text": "lol @ “all except amazon are spending their own revenues…”\nhttps://www.cnbc.com/amp/2026/02/12/alphabet-100-year-bond-d...",
+              "author": "bdangubic",
+              "depth": 1
+            },
+            {
+              "text": "Apple also borrowed money - pre AI when it had plenty of cash,  have you checked Google’s last year earnings and cash on hand?",
+              "author": "raw_anon_1111",
+              "depth": 2
+            },
+            {
+              "text": "> all except Amazon are spending money out of their own revenues.\nso apple and google and amazon and…? :)\nearnings and cash on hand are not relevant, they are all borrowing like crazy to fund the ai",
+              "author": "bdangubic",
+              "depth": 3
+            },
+            {
+              "text": "Apple was borrowing like crazy before AI.  How much money do you think Apple is spending on AI aside from the $1 billion they are paying for Gemini?  That’s less than 1% of their profit and hell that’s less than 5% of what Google pays them.",
+              "author": "raw_anon_1111",
+              "depth": 4
+            },
+            {
+              "text": "I didn’t think we debating whether or not they are spending but whether they are borrowing (you said only amazon is) - and they are borrowing, not just amazon",
+              "author": "bdangubic",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Well, the Great Fiscal Crisis did not result in mass starvation, so in some sense, it \"wasn't all that dramatic\".  But, it was a big deal in comparison to a normal downturn.  So, it depends on what you mean.\nMedium term, I think it would release a lot of resources (skilled workers, productive capacity, energy) to use on something more productive.  But then, I kind of hoped for that after the GFC, also...",
+          "author": "rossdavidh",
+          "replies": []
+        },
+        {
+          "top": "Related: \nhttps://news.ycombinator.com/item?id=47034849",
+          "author": "lyfeninja",
+          "replies": []
+        },
+        {
+          "top": "The distinction nobody makes is between the AI infrastructure bubble and AI utility. The infrastructure spending is clearly overheated - the capex numbers are insane relative to actual revenue. But the underlying technology genuinely works for specific use cases. I use LLMs daily in production pipelines and they save me hours of work that would otherwise require hiring. The bubble popping would mean GPU prices crater, API costs drop further, and the actual useful applications become cheaper to run. That's not a catastrophe for builders - it's a gift. The people who get hurt are investors in pure-play AI companies with no real moat and NVIDIA's stock price.",
+          "author": "umairnadeem123",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47100289",
+      "title": "Ask HN: What (other) jobs do you think of doing?",
+      "link": "https://news.ycombinator.com/item?id=47100289",
+      "domain": "news.ycombinator.com",
+      "author": "penguin_booze",
+      "score": 13,
+      "comment_count": 18,
+      "created_ts": 1771677773,
+      "is_internal": true,
+      "post_text": "With AI infesting and eating into all kind of crafts--and I being one of those faceless &quot;craftsmen&quot;--I&#x27;m rather forced to consider alternative jobs. Setting the monetary rewards aside, I was thinking of jobs that could give me a sense of agency, purpose, and satisfaction (however limited). The few I think of are:<p>- Parcels delivery driver<p>- Train driver<p>- Electrician or plumber<p>- Mechanic (with auto-mobiles hardly repairable these days, maybe this doesn&#x27;t qualify)<p>Surely, I can&#x27;t be alone in thinking along those lines. What else have you thought of?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "I keep a short list of jobs where the output is visible by the end of the day: electrician, field technician, rail operations, even property maintenance. Shadowing someone for one real shift helped me separate fantasy from fit much faster than more online reading.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "I think of some of the trades, HVAC or maybe electrical. I think they have decent pay once you get going, and still provide a certain amount of room for doing things the way you see best fit.\nAlso, they’re more resistant to AI/automation. Like many, I’m not sure if I’ll want to stick around and manage a bunch of AI agents, that’s not really what interests me in the software world.",
+          "author": "daringrain32781",
+          "replies": []
+        },
+        {
+          "top": "I started my own business when I left tech. It's a bar.\nI do my own mechanic work, but I have old trucks. I would never sign up to work on modern vehicles and the entitled customers trying to get one over on you.\nI drove a route (not delivery) many years ago and I liked that. I tend to like jobs where you start with a pile of work, and finish with none left, rather than perpetually working towards something that's never done, like maybe a software project.",
+          "author": "qup",
+          "replies": []
+        },
+        {
+          "top": "If you are an enterprise developer working at a bank, insurance company, airline etc, you have been easily replaceable commodity for well over a decade and comp has stagnated for a decade.  Those types of companies are reaching out to me today offering the same comp for the same type of role I was getting in 2016-2018.\nIf someone hoped to make a career by turning well defined requirements into code forever, the writing was on the wall when it was easy enough for anyone to become a good enough full stack developer/mobile developer/web developer etc.\nYou are now seeing the same in BigTech where knowing how to reverse a b tree isn’t good enough to get that $225K+ a year mid level job.\nAI has just accelerated that trend.  The transition I started making a decade ago was not to be just an undifferentiated ticket taker and get closer to dealing with the “business” and taking on projects with larger scope, impact and ambiguity - a true senior developer.\nhttps://www.levels.fyi/blog/swe-level-framework.html\nEven though part of my job has been to produce code for 30 years, it’s been well over a decade since I had to interview based on coding tests.  I’ve had 7 jobs since then including one at $BigTech.\nAI can’t talk to customers.  It can’t solve XYProblems.  It can’t navigate corporate politics and conflicting priorities.",
+          "author": "raw_anon_1111",
+          "replies": []
+        },
+        {
+          "top": "I have felt that shift too. One thing that helped me was focusing on skills where you build and ship something yourself — even small tools or utilities. That sense of ownership and direct usefulness is hard to replace and still very satisfying.",
+          "author": "allinonetools_",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47077312",
+      "title": "Ask HN: Are hackathons still worth doing?",
+      "link": "https://news.ycombinator.com/item?id=47077312",
+      "domain": "news.ycombinator.com",
+      "author": "kwar13",
+      "score": 12,
+      "comment_count": 10,
+      "created_ts": 1771526214,
+      "is_internal": true,
+      "post_text": "I used to love attending hackathons and also participating as mentor&#x2F;judge at times. With the explosion of vibe coded submissions, 1- the number of submissions has exploded, 2- it&#x27;s much harder to judge quality of project as it&#x27;s mostly become judging the quality of tool they used.<p>I&#x27;m not really throwing shade at using ai. There are parts where the vibe coding really shines, such as front-end dev which tends to do a great job at, but anything more complex I&#x27;m still not convinced.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mentor"
+      ],
+      "comments": [
+        {
+          "top": "Exactly this. At a recent hackathon, I spent the bulk of my time actually engineering, building custom model architecture in Lua, wrangling a dataset, and waiting on training loops. The winning project? A slick UI wrapped around a basic LLM API call.\nIt’s incredibly frustrating. The incentive structure at these events has completely shifted away from actual technical complexity toward whoever can build the prettiest ChatGPT wrapper in 6 hours..",
+          "author": "foxandmouse",
+          "replies": [
+            {
+              "text": "I never found that engineering helped much at the hackathons I went to. It was always a slick UI that didn't really do anything, and a good presentation.",
+              "author": "idontwantthis",
+              "depth": 1
+            },
+            {
+              "text": "As far as my experience goes, hackathons have never been about technical meritocracy but pitching and presentation",
+              "author": "Gooblebrai",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "They are now vibeathons. \nSame thing but now it's how much do you write by hand, it's  how much   can  you delegate to the LLM while you're writing by hand.\nThat act of juggling has become an important part.\nPeople will just look for harder problems to solve. It will remain but differently",
+          "author": "kbrannigan",
+          "replies": []
+        },
+        {
+          "top": "The hackathon judging problem predates AI - it's always been biased toward demos that look impressive in a 3-minute pitch. What AI changed is the floor. Previously you needed at least one competent frontend person to make something presentable. Now anyone can generate a polished UI in an hour. Counterintuitively this should force hackathon organizers to judge on harder criteria: does it actually work with real data? Did you solve a genuinely hard integration problem? Is there a novel architecture decision? The best hackathon I attended had judges who asked to see the git log and architecture diagram, not just the demo.",
+          "author": "umairnadeem123",
+          "replies": []
+        },
+        {
+          "top": "Still worth it if you optimize for learning and people, not podiums. I only do events with explicit judging weights, then include a short architecture note so judges can see beyond the demo polish. The best outcome is usually meeting one solid future teammate, not winning.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "Last hackathon I participated in was merely \"best presentation\". Code, app did not matter, it was idea and presentation what mattered.\nThankfully, properly working app won that one, nonetheless they suck now.",
+          "author": "red_Seashell_32",
+          "replies": [
+            {
+              "text": "In my experience they've always been this way. Real engineers lose to idiots that can knock out a nice Wordpress website. Now the way real engineers lose to idiots that can vibe out a nice UI.\nSame same, but different.",
+              "author": "OccamsMirror",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47096593",
+      "title": "Ask HN: What happens to all the hardware when data centers upgrade?",
+      "link": "https://news.ycombinator.com/item?id=47096593",
+      "domain": "news.ycombinator.com",
+      "author": "givemeethekeys",
+      "score": 11,
+      "comment_count": 9,
+      "created_ts": 1771638300,
+      "is_internal": true,
+      "post_text": "It seems like there will be a lot of hardware that gets discarded every couple of years as new, more powerful systems are made available.<p>AWS put out a video and article on how it recycles a large amount of its hardware, since it is built for maintainability and repairability.<p>How true is that? Does it apply to other datacenter operators as well?<p>What will happen to all the parallel compute cards that will get upgraded soon? They can&#x27;t be reused as GPU&#x27;s for gamers, can they?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Generally large companies will have an existing vendor that they use to dispose their IT equipment through. They will shred parts like storage devices and anything that can reasonably be resold will be sold through various auction houses.\nSticks of ram will certainly be resold, custom aws motherboards - not so much.\nI have seen custom (unpublished) intel cpu parts on ebay before which are almost certainly aws's custom ones.\nAlmost nothing will get used by consumers - enterprise server gear is designed for heat/air speed/noise/energy cost requirements which are incompatible with consumer requirements. It's recycled only in the sense that a smaller business might be interested in it because at the end of its economic life its now cheap to buy (but not cheap to run).\nhttps://cloudninjas.com/\nhttps://savemyserver.com/\nhttps://unixsurplus.com/",
+          "author": "everfrustrated",
+          "replies": [
+            {
+              "text": "I broadly agree with you in regards to \nserver-class\n equipment \nas a whole\n.\nSimply put, your average gamer isn’t going to snag a 16-unit rackmount blade server to game with. Not only is it supidly inappropriate for home use, but it is also wildly out-of-spec with what gaming requires.\nHowever, normal rackmount servers - especially 3U+ units that have a decent number of PCIe slots - can be extracted from rackmount cases and put into eATX cases that can better serve them on a desktop. It’s what I have done before, to great effect. With the right heatsinks and case fans, it can end up being a moderately quiet system. Loud for a consumer system, sure, but nothing like the “Boeing Dreamliner at full takeoff power” that an actual server setup would generate for sound.",
+              "author": "rekabis",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "In Orlando, if you go to disney and you are a techie, it is a must see, is a company called SkyCraft Surplus.  They go to companies who are getting rid of old equipment and resell it.  Some stuff is new, much of it unused.  Brought a friend there (EE major) and he was fascinated by the fact that they had a lot of old Radio Shack chips, diodes etc.\nTell them I sent you and they will ... well nothing, but I am happy to support them, as it brings me much joy whenever I visit.",
+          "author": "sloaken",
+          "replies": []
+        },
+        {
+          "top": "It depends on what it is. A lot of these places don't own any of the hardware they just lease it. When the lease is up is when they cycle it out. Then it goes to resellers and often ends up on eBay or bulk sold to lower tier data centers. Depending on what it is maybe even shipped to other countries.",
+          "author": "elmerfud",
+          "replies": []
+        },
+        {
+          "top": "Most of it goes through ITAD channels: storage gets wiped or shredded, reusable gear gets resold, and the rest is recycled by weight. Accelerator cards usually get a second life with smaller clouds/labs, but older SXM generations fall off fast. The useful metric I wish providers published is split by class: reused vs recycled vs trashed.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "What will happen to all the parallel compute cards that will get upgraded soon? They can't be reused as GPU's for gamers, can they?\nYou're right; V100/A100/H100 \"GPUs\" do not have the hardware to display graphics and they generally require custom SXM motherboards. Most of them will sit on eBay for a while and then be scrapped when no one buys them.",
+          "author": "wmf",
+          "replies": [
+            {
+              "text": "If they can't display graphics they're not really GPU's at all. Maybe someone will think of a use for them. With an SXM-to-PCIe adapter board.",
+              "author": "lostworld",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47105086",
+      "title": "Ask HN: Programmable Watches with WiFi?",
+      "link": "https://news.ycombinator.com/item?id=47105086",
+      "domain": "news.ycombinator.com",
+      "author": "dakiol",
+      "score": 10,
+      "comment_count": 5,
+      "created_ts": 1771709995,
+      "is_internal": true,
+      "post_text": "Hi. I&#x27;m looking for a programmable watch with wifi. Ideally I should be able to write custom programs&#x2F;apps for the watch to display whatever I want to on them (e.g., make the watch make an https call to a server, receive json and render accordingly; allow the watch to receive &quot;notifications&quot; from the server)<p>Also, ideally, no requirement of a smartphone to send-receive data (it&#x27;s ok to need a smartphone for the initial setup of the watch, though). I know about Pebble, but it doesn&#x27;t have wifi. I know about some Garmins with wifi but for the kind of apps I want to write, the communication between the watch and the server has to be mediated by a phone. Also, correct me if I&#x27;m wrong, I don&#x27;t want to pay $100&#x2F;year just to be able to use my custom app in apple watches. I usually don&#x27;t trust Google either (e.g., they discontinue everything in a blink of an eye).<p>So, what are my options?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "Wear OS watches commonly have wifi, and can be programmed with the standard Android API and toolchain/IDEs. I doubt that Google will discontinue Wear OS - although your evaluation of risk will undoubtedly depend on whether you're looking at developing personal or commercial apps.\nI'm currently wearing a TicWatch Pro 3 Ultra, which has wifi, Bluetooth, and GPS. I've written personal tools for it, and its fairly painless (and free). As a developer with some background in Android, I enjoyed the experience. Getting apps approved for the app store is a pita though, as Google sets quite high bars for the review process.\nI also have a Samsung Galaxy Watch4, which also has wifi. People here speak well of Pebble, which might be an option, but I have no real knowledge of it.\nFinally, though, wifi is power-hungry and watches have limited batteries and endurance. Both Wear OS and WatchOS will limit wifi use by apps to conserve power, and you ultimately can't do much about that. Using Bluetooth to a phone, and its much greater wifi capacity, is a common approach.",
+          "author": "andyjohnson0",
+          "replies": []
+        },
+        {
+          "top": "I have one of the TTGO T-watches: \nhttps://www.tinytronics.nl/en/development-boards/microcontro...\nFor me it is mainly a decoration of my drawer, but maybe comes close to what you are looking for. :)",
+          "author": "oliwary",
+          "replies": []
+        },
+        {
+          "top": "AsteroidOS, which runs on many Android watches, and offers a Linux environment over SSH and WiFi (for watches that support it). \nhttps://asteroidos.org/\nThe simplest integration is writing a daemon (in the language of your choice) that schedules wakes, syncs, and sends FreeDesktop notifications.\nIf you want more of a UI, then you'll be writing QtQuick, which is QML/Javascript/C++.\nTheir best supported watch is the TicWatch Pro: \nhttps://asteroidos.org/watches/catfish/",
+          "author": "griffindor",
+          "replies": []
+        },
+        {
+          "top": "If you want truly standalone + WiFi + custom code, check SQFMI Watchy (ESP32). You can flash your own firmware, call HTTPS endpoints, parse JSON, and render custom UI without a phone in the loop.\nMain tradeoff: it’s very DIY (power management, UX polish, tooling). If you want less DIY, Wear OS gives a better SDK, but the platform lock-in is much stronger.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "Is this question in any way related to television?\nI just had to solve this problem recently. I've settled on Google Pixel Watch 4. There are some rabbit holes to go down though before it works reliably.",
+          "author": "herczegzsolt",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47108601",
+      "title": "Ask HN: Why doesn't HN have a rec algorithm?",
+      "link": "https://news.ycombinator.com/item?id=47108601",
+      "domain": "news.ycombinator.com",
+      "author": "sujayk_33",
+      "score": 8,
+      "comment_count": 13,
+      "created_ts": 1771739629,
+      "is_internal": true,
+      "post_text": "I was just wondering about why there&#x27;s a constant timeline and no recommendation.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "From the FAQ:\nHow are stories ranked?\nThe basic algorithm divides points by a power of the time since a story was submitted. Comments in threads are ranked the same way.\nOther factors affecting rank include user flags, anti-abuse software, software which demotes overheated discussions, account or site weighting, and moderator action.\n—-\nPersonally, I appreciate that the rankings are done at a site level, and there isn’t a bunch of tracking and manipulation to give me a personal “feed” to drive engagement. A lot of comments on this site complain about those practices on other sites. I don’t think it’s welcome here.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "The idea is to discover new things you didn’t know you wanted to know - not consume more of the same",
+          "author": "A_Duck",
+          "replies": [
+            {
+              "text": "Why can’t a recommendation engine do that?",
+              "author": "paulcole",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It’s much better the way it is - one of the last remaining high quality feeds on the Internet!\n(PS please feel free to disagree and post other ones I don’t know about below!)",
+          "author": "mrkpdl",
+          "replies": [
+            {
+              "text": "I agree too.",
+              "author": "sujayk_33",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "How do you organize technical articles you read?\nI read a lot of backend and architecture articles and often struggle to revisit them later.\nI’m curious how others handle this.\nDo you:\nUse Notion or Obsidian?\nBookmark everything?\nKeep markdown notes?\nRely on memory?\nWhat has worked long-term for you?\nWhat hasn’t?",
+          "author": "kamomkoian",
+          "replies": [
+            {
+              "text": "A directory hierarchy works well for me. I've described my setup online before:\nhttps://academia.stackexchange.com/a/173314/31143\nhttps://www.reddit.com/r/datacurator/comments/p75xlu/how_i_o...\nI don't read everything I have from start to finish. A lot of this is for future reference.\nSince that StackExchange post, I'm now up to about 36.6K PDF files in 4.4K directories, with 14.5K symlinks so I can put files in multiple directories.\nI also have a separate version controlled repo with notes a bunch of subjects. I'm planning to eventually merge my PDF hierarchy and the notes to have a unified system. It's going to have to be done in stages.",
+              "author": "btrettel",
+              "depth": 1
+            },
+            {
+              "text": "How many GB is your PDF collection? Have you considered sharing it more widely?\nI know about Sci-Hub, Anna's Archive, etc., but I'm not so interested in a giant landfill containing all papers ever written. I'm much more interested in a curated collection of useful papers.",
+              "author": "kyboren",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Shared ranking beats personalized engagement loops.",
+          "author": "lyaocean",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47104433",
+      "title": "I'm 15 and built a platform for developers to showcase WIP projects",
+      "link": "https://news.ycombinator.com/item?id=47104433",
+      "domain": "news.ycombinator.com",
+      "author": "amin2011",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1771706116,
+      "is_internal": true,
+      "post_text": "Hi HN,<p>I&#x27;m a 15-year-old full-stack developer, and I recently built Codeown (https:&#x2F;&#x2F;codeown.space).<p>The problem I wanted to solve: GitHub is great for code, but not for showing the &quot;journey&quot; or the UI. LinkedIn is too corporate and noisy for raw, work-in-progress (WIP) dev projects. I wanted a dedicated, clean space where developers can just share what they are building, get feedback, and log their progress.<p>Tech Stack: &gt; I built the frontend with React and handle auth via Clerk. I recently had to migrate my backend&#x2F;DB off Railway&#x27;s free tier (classic indie hacker struggle!), but it taught me a lot about deployment and optimization.<p>We just hit our first 5 real users today, and the community is slowly starting to form.<p>I’m still learning, and I know the performance and UI can be improved. I would absolutely love your brutal, honest feedback on:<p>The perceived performance (currently working on optimizing the React re-renders).<p>The core idea – is this something you would use to track your side projects?<p>Thanks for taking a look! Happy to answer any technical questions.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "good luck!\nmaybe you can make this into a social network, and entice people to keep posting.\nif people see something interesting, maybe they want to work on it together and it becomes a job platform.\nlike a more interesting Ask HN",
+          "author": "moomoo11",
+          "replies": []
+        },
+        {
+          "top": "First of all: kudos on building this app. I think it's really impressive to build and showcase your project at such a young age.\nI'm actually a user of \nhttps://wip.co/\n . I think it's quite similar to your project. You should check it out.\nAlso, check out \nhttps://peerlist.io/\nSocial platforms/marketplaces are genuinely difficult, cause it only works if you have enough users (both, demand and supply).\nSince it's your early projects (I'm assuming), I think you should built it purely for the sake of learning and feedback. Even if it doesn't work out, the experince is extremely valuable.\nLater - if you are serious about a sustainable project - I would recommend that you study your alternatives/competitors (such as the ones I just shared), and figure out what works for them and what are their users missing.\n:)",
+          "author": "junaid_97",
+          "replies": []
+        },
+        {
+          "top": "I really like your UI (cool typeface especially), my biggest problem so far just poking around is how I don't exactly see how this differs from say Twitter/X or Bluesky outside of being marketed as Developer focused. I think implementing more features that are specific to developers, such as integrating with Git repos, would be a great step toward making your platform more unique. For 15, this is very impressive.",
+          "author": "aidenkt",
+          "replies": [
+            {
+              "text": "Thank you so much for the feedback! I'm glad you liked the UI and the typeface choice.\nYou made a very valid point regarding the differentiation from X or Bluesky. My initial goal was to build the 'core' community feel first, but I completely agree that Git integration is the logical next step.\nI’m currently looking into the GitHub API to allow users to pull their repository stats or latest commits directly into their project logs. This would make the 'Build in Public' process much more automated and unique to our field.\nThanks for the encouragement it means a lot to me as I iterate on this!",
+              "author": "amin2011",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47076978",
+      "title": "Ask HN: Can a license make large corporations give back?",
+      "link": "https://news.ycombinator.com/item?id=47076978",
+      "domain": "news.ycombinator.com",
+      "author": "arboles",
+      "score": 8,
+      "comment_count": 9,
+      "created_ts": 1771524794,
+      "is_internal": true,
+      "post_text": "I&#x27;ve no expectations for this post to be well-received because it looks down on open-source for being too &quot;pure&quot;. Though unless we evolve beyond no-strings-attached open-source, the ecosystem will remain as broken as it is. Why don&#x27;t our overworked, underpaid open-source developers license their software with something to the effect of &quot;If you make more than $1,000,000, pay me.&quot;? JSON designer (&quot;the&quot; JSON) Douglas Crockford had IBM ask for permission to use JSLint, because Douglas had added the note&#x2F;clause&#x2F;term &quot;The Software shall be used for Good, not Evil.&quot;[1]<p>We don&#x27;t know if GPL works in court. It roughly seems like whatever you write in a license is an effective deterrent though. So your repository could take an existing permissive license like MIT, and add a clause like I mentioned. Set a procedure for your terms for others to use your open-source project commercially. An example of this is the Big Time Public License.[2]<p>[1] https:&#x2F;&#x2F;wonko.com&#x2F;post&#x2F;jsmin-isnt-welcome-on-google-code&#x2F;<p>[2] https:&#x2F;&#x2F;bigtimelicense.com&#x2F;versions&#x2F;2.0.2#big-business",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You can require payment from big companies, but then it’s source-available, not OSI open source. The practical path is dual licensing (AGPL/commercial style). The real bottleneck is enforcement budget and legal stamina when someone violates it.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "To give credit, this a question I'm asking after reading this blog post, but a solution for the stifling unfairness of commercialization in open-source is something I've been thinking about for a good while. The essay \"The Cathedral and the Bizarre\" on \nhttps://marktarver.com\n is also worth reading, despite that I find some of the arguments to be in bad faith.\nhttps://pointless.one/my-next-project-wont-be-floss/",
+          "author": "arboles",
+          "replies": []
+        },
+        {
+          "top": "> Why don't our overworked, underpaid open-source developers license their software with something to the effect of \"If you make more than $1,000,000, pay me.\nBecause that isn't open source, and is arguably not enforceable anyway.\nHow do you define \"make $1M\"? There are mega corporations with billions in revenue that somehow have a negative tax bill each year, so clearly taxable income isn't a reliable indicator.\nConversely a non profit organisation may have several million in donations/income but spend all of it on their charitable causes.\nSo clearly net revenue isn't a reliable indicator either.\nIf you don't want to release software under a licence without monetary terms, then don't. No one is forcing you to do that.",
+          "author": "stephenr",
+          "replies": [
+            {
+              "text": "Do you think it's not enforceable because of that definition? Revenue of $1M alone (not net revenue) should be a rough proxy of organization size. If a company makes that kind of money it should be able organize its expenses to pay a reasonable price for the software they rely on. There could be an exception for non-profits, if it would make more  sense. If companies were rational they would already be paying the reasonable amount for \"normal\" open-source software, since unmaintained software in their supply chain also can also become a problem for them.\nBTPL (I just think BTPL is neat) has these concrete terms:\n>You may use the software for the benefit of your [small business] if it meets all these criteria:\n* had fewer than 20 total individuals working as employees and independent contractors at all times during the last tax year\n* earned less than $1,000,000 total revenue in the last tax year\n* received less than $1,000,000 total debt, equity, and other investment in the last five tax years, counting investment in predecessor companies that reorganized into, merged with, or spun out your company",
+              "author": "arboles",
+              "depth": 1
+            },
+            {
+              "text": "> Do you think it's not enforceable because of that definition?\nI think companies with millions or billions in revenue pay lawyers a lot to find loopholes in things like this.\n> BTPL\nI have no clue what that is, and I can't even find a reference to it anyway. All I found is a public library somewhere and something about a Pakistani power company or something.\n> * had fewer than 20 total individuals working as employees and independent contractors at all times during the last tax year\nThat's simple to get around, and big companies already do it. Hire an external development agency. They might be sitting in your office but they're neither employees nor independent contractors.\nUltimately though, the point I made earlier is still the most relevant response. If you don't like OSS licences, don't use one. Use whatever you're comfortable with. But don't imagine for a moment that you're better able to identify the needs of every one else who writes software and does use an OSS licence.",
+              "author": "stephenr",
+              "depth": 2
+            },
+            {
+              "text": "Regarding BTPL, it's a license called Big Time Public License, which I mentioned in my original post. It was written by this guy that has written a bunch of experimental software licenses.[1]\nIf I were to choose a license in an informed way, I would want to really understand other people's choice of using OSS licenses. I almost exclusively use open-source/libre programs in my devices and make code contributions occasionally. I think I'm familiar with the ecosystem \nmore than\n the commercial (proprietary) ecosystem. The freedom bestowed by owning the copy of the source code is very important in my opinion. While OSS is the best model we have right now, I and others see flaws, like dependency-chain failures, maintainer burnout and not-so-good incentives like keeping your system unpolished/hard to use so support can be your income.\nPerhaps only 80% of the monetization will succeed because of loopholes, but suppose you can tack on monetization to an open-source license. It's still better than 0% monetization. In plain terms, my question is, even if it would no longer be real open-source (true), why wouldn't developers want that?\n[1] \nhttps://github.com/berneout",
+              "author": "arboles",
+              "depth": 3
+            },
+            {
+              "text": "I concur.\n>> Why don't our overworked, underpaid open-source developers license their software\nOf course they absolutely can license their software any way they like. That is their prerogative. Personally I write software for a living and it's all licensed with a commercial license.\nBy definition then I am not an Open Source Programmer. (I work on the odd Open Source project, but that's not the same thing.)\nSo any programmer can license things anyway they like. If their license is Open Source compatible then they're free to call themselves an Open Source programmer.\nYour suggestion is equivalent to asking why an amateur golfer can receive prize money in a professional tournament. They very much can though, but then they're no longer an amateur.",
+              "author": "bruce511",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> We don't know if GPL works in court.\nIf lacking precedent is your main concern, there are no software licenses that are likely to fill your criterion.",
+          "author": "bigyabai",
+          "replies": [
+            {
+              "text": "I'm trying to imagine something other than GPL. The fact that the GPL license is respected in the vast majority of cases, without a precedent being necessary is very exciting.",
+              "author": "arboles",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47090697",
+      "title": "Ask HN: Who Should I Talk To?",
+      "link": "https://news.ycombinator.com/item?id=47090697",
+      "domain": "news.ycombinator.com",
+      "author": "3pt14159",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1771607248,
+      "is_internal": true,
+      "post_text": "I am in a bit of a sticky situation. I&#x27;m 40 years old and my background is in programming (backend ruby and python, some cybersecurity, some JavaScript, although the JS is dated) and I don&#x27;t like coding anymore. At least not day to day.<p>What I&#x27;m looking for is some sort of position that can leverage my background but do so in some other way. Maybe something in marketing at a company like Digital Ocean.<p>I&#x27;m willing to earn a lot less than I earned before. I know software development pays better than a role in marketing, but I&#x27;m sick of the tooling. I&#x27;m also open to working for an AI company that trains a software agent, which I&#x27;ve done so recently. Does anyone have references to a recruiter or hiring manager that I could talk to?<p>I would really appreciate any help here. Even just an upvote for visibility.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "I’ve seen a few developers move into DevRel or product roles and they seemed much happier. Your backend background is still valuable there, but the work is more about helping users than writing code all day. Might be worth exploring those paths.",
+          "author": "allinonetools_",
+          "replies": []
+        },
+        {
+          "top": "We're all under a bad star right now.  There aren't many options, lots of people underemployed and many more completely unemployed.  Competition is fierce.  I don't have much to say, unfortunately, other than recognizing that it's hard and wishing the best for you.",
+          "author": "david927",
+          "replies": []
+        },
+        {
+          "top": "The old model is in flux. The comfortable employment wage cycle is breaking down.\nThe most obvious and timeless wisdom is to find those directly who need someone competent to walk them through the business needs of modernizing technology.\n1099 or LLC my friend. It’s a bunch of work you may not like doing, up front anyway, once you have a few businesses or individuals whose problems you solve, or convinced to subscribe to your simplifying service things will be like the good old days, only you will have more power in your own process.\nJust setting up an AI video security system and walking away is a for instance. Everyone will want that now that it’s so cheap, and offlinable, only few can sit down and get a tolerable interface working for the little guy.\nFor instance.\nAdapt, stop trying to cling to the “old way.”",
+          "author": "uncanny2",
+          "replies": []
+        },
+        {
+          "top": "Sales engineers and “field CTOs” are in demand these days, fwiw.",
+          "author": "apothegm",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47112543",
+      "title": "Ask HN: What breaks when you run AI agents unsupervised?",
+      "link": "https://news.ycombinator.com/item?id=47112543",
+      "domain": "news.ycombinator.com",
+      "author": "marvin_nora",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1771779094,
+      "is_internal": true,
+      "post_text": "I spent two weeks running AI agents autonomously (trading, writing, managing projects) and documented the 5 failure modes that actually bit me:<p>1. Auto-rotation: Unsupervised cron job destroyed $24.88 in 2 days. No P&amp;L guards, no human review.<p>2. Documentation trap: Agent produced 500KB of docs instead of executing. Writing about doing &gt; doing.<p>3. Market efficiency: Scanned 1,000 markets looking for edge. Found zero. The market already knew everything I knew.<p>4. Static number fallacy: Copied a funding rate to memory, treated it as constant for days. Reality moved; my number didn&#x27;t.<p>5. Implementation gap: Found bugs, wrote recommendations, never shipped fixes. Each session re-discovered the same bugs.<p>Built an open-source funding rate scanner as fallout: https:&#x2F;&#x2F;github.com&#x2F;marvin-playground&#x2F;hl-funding-scanner<p>Full writeup: https:&#x2F;&#x2F;nora.institute&#x2F;blog&#x2F;ai-agents-unsupervised-failures.html<p>Curious what failure modes others have hit running agents without supervision.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "The biggest break usually happens in the 'loop-back' logic. When an agent receives ambiguous output and starts hallucinating its own confirmation, it can consume API credits exponentially without achieving the goal. We really need better 'circuit breaker' patterns for autonomous agents to prevent these feedback loops.",
+          "author": "CodeBit26",
+          "replies": []
+        },
+        {
+          "top": "I have seen agents fail mostly at state management and guardrails.\nWithout strict role separation and hard limits, they drift.\nMulti-tenant isolation and cost caps are not optional.\nAutonomy without boundaries becomes expensive noise.",
+          "author": "Damjanmb",
+          "replies": []
+        },
+        {
+          "top": "Permissions, rollback, and cost caps break first.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": ">What breaks when you run AI agents unsupervised?\nMaybe the answer is, as much as possible?",
+          "author": "fuzzfactor",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47101545",
+      "title": "Ask HN: Why don't software developers make medical devices?",
+      "link": "https://news.ycombinator.com/item?id=47101545",
+      "domain": "news.ycombinator.com",
+      "author": "piratesAndSons",
+      "score": 6,
+      "comment_count": 14,
+      "created_ts": 1771686699,
+      "is_internal": true,
+      "post_text": "As software development becomes a commodity thanks to LLM, I wonder why more software developers don&#x27;t switch to building medical devices to make their careers more secure. Here&#x27;s why I picked medical devices in particular.<p>1. Natural Moat<p>Since human body hardware is more or less immutable in its most essential parts, you don&#x27;t have to worry about some LLM hype cycle replacing you. Once you build the product and clear FDA or local certifications, you&#x27;re set. Unlike Uber destroying the taxi medallion business, healthcare is a beast — no tech startup dares to bypass all the regulations and gatekeeping.<p>2. Regulatory Moat<p>The medical devices I&#x27;m talking about require around $50K–$200K for FDA clearance — low enough that any small business can manage it, but high enough to discourage bottom-feeders and Chinese product dumpers. It also lets you avoid the big established healthcare corporations, because this market segment is too small for them to care about, yet large enough for you to pull in $10M–$15M a year in revenue.<p>Medical device manufacturing sidesteps the two fatal flaws of software development: the lack of a moat and static, almost never-changing hardware margins. LLM companies don&#x27;t care about copyright, IP, or the health of the broader economy — but they can&#x27;t go head-to-head with the healthcare industry, so you don&#x27;t have to worry about them at all.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "There's a nice middle ground here, Software as a Medical Device (SaMD) which also goes through 510(k) in the US and has its own regulatory pathways distinct from hardware medical devices",
+          "author": "z3ugma",
+          "replies": []
+        },
+        {
+          "top": "I think it is protected by many moats. Personally I don't mind building and using devices by and for myself, but to commercialize them? It's going to be a huge headache, and you can bet that many companies sit on the moats for their lunch. You and I will never know which of the moats really make sense and which ones are simply BS for barriers. It's too much hassle.",
+          "author": "markus_zhang",
+          "replies": [
+            {
+              "text": "That is what you want. The harder and more difficult the moat, the higher the gate for these bottom-feeder product dumpers to clear. Once you clear that yourself, you would be in the promised land.\nIt is hard, it is expensive, and there is a lot of work, but anything worth $10M in yearly profit is. You want to avoid any product that a Chinese manufacturer can pump and dump on Amazon almost immediately, if Amazon itself doesn't, or a product an Indian teenager can create in a few hours thanks to LLMs and compete with. You want those paths to be impossible for them to clear.",
+              "author": "piratesAndSons",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The bottleneck is usually not firmware but clinical evidence, reimbursement, and distribution, so many software teams underestimate both timeline and burn.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "\"The medical devices I'm talking about require around $50K–$200K for FDA clearance\"\nI think that's only if you use the expedited approval process (510k).\nI actually had an idea for a medical device. Turns out there was a patent on that idea already. It wasn't on the market yet. The potential client population wasn't very big, but just big enough to make it worth while.",
+          "author": "giantg2",
+          "replies": [
+            {
+              "text": "Are you saying even if I stretch the budget to $500k, there isn't a niche where I can find viable device?",
+              "author": "piratesAndSons",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What class of device are you talking about?  Even if you clear FDA, commercialization is incredibly difficult.  I think you're pish-poshing how hard it is to get regulatory clearance, btw.   The regulatory approvals in US and ROW are incredibly difficult, costly, and time consuming to meet all the requirements imposed by the various regional authorities. Sounds like you are severely underestimating the costs, work and length of time to generate data and create an approval submission. You won't obtain labeling without funding and running clinical trials.  It can take 5-10 years of development and clinical studies and $50-$100 million for PMA approval.\nThen if you hit the market you are going up against the most connected, cutthrough, organized and entrenched sales forces from the large device companies who make tech b2b sales look like kindergarteners on the playground.  The medical offices, site staff and hospitals all try to block access to your sales force so you are probably going to need to fund and deploy an MSL and RSL force as well and present at all the industry conferences to get any leads and traction.\nThen even if you have customers who want your device it won't matter unless you develop a patient access team, lobby to secure reimbursement from insurers otherwise all your previous efforts are wasted.  So now you need a market access team and you're probably $200 million in the hole, and you're dead in the water if CMS won't get onboard for reimbursement because all the private insurers generally wait and see what CMS does.  Meanwhile any time any of your suppliers change you'll need to run more trials to show validation for safety and efficacy.\nWith average time to market is 12 years, 75% of new device companies fail for a reason.",
+          "author": "randycupertino",
+          "replies": [
+            {
+              "text": "That is my point, though. You want something hard, something that requires actual money, effort, infrastructure, and lobbying. That in itself is the moat. As software developers, we have been lulled into this entirely unrealistic mode of thinking that extremely profitable products do not have to be expensive or high effort to bring to market.\nThat is exactly why vultures like LLM hustlers find their opening. There is a reason you do not see fly-by-night LLM hucksters selling medical insurance or devices, not because they cannot do the job of building the thing itself, but because the surrounding moat is too high for them to clear.",
+              "author": "piratesAndSons",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47113849",
+      "title": "Ask HN: Do US presidents have less fiduciary liability than CEOs?",
+      "link": "https://news.ycombinator.com/item?id=47113849",
+      "domain": "news.ycombinator.com",
+      "author": "stopbulying",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1771788533,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Do presidents have less fiduciary responsibility than CEOs?\nYes.  Presidents and CEO's are entirely different roles and have entirely different legal obligations.  CEO's \nand CFO's\n have significantly more fiduciary responsibilities to investors, shareholders and board members.  The president of the USA has responsibilities to uphold the constitution, act as the commander and chief to the military, faithfully execute the laws among a myriad of other executive tasks.",
+          "author": "Bender",
+          "replies": [
+            {
+              "text": "So they can intentionally bankrupt the country without consequence?\nBut a CEO that intentionally starves the beast (their own \ncompany\n) would be criminally liable to the state and civilly liable to shareholders.",
+              "author": "stopbulying",
+              "depth": 1
+            },
+            {
+              "text": "> But a CEO that intentionally starves the beast (their own company) would be criminally liable to the state and civilly liable to shareholders.\nThe \"beast\" in this context is the government, not the country, on the argument that the former is slowing down the latter.\nTherefore, I'd compare it to things like \nhttps://en.wikipedia.org/wiki/Asset_stripping\n and \nhttps://en.wikipedia.org/wiki/Vulture_capitalist\nI don't like them, but I don't think they're \nillegal\n?",
+              "author": "ben_w",
+              "depth": 2
+            },
+            {
+              "text": "If another country were to force us into debt intentionally by sabotage, wouldn't that be a hostile act?",
+              "author": "stopbulying",
+              "depth": 3
+            },
+            {
+              "text": "So they can intentionally bankrupt the country without consequence?\nNot a lawyer but if you mean legal consequence while acting as a sitting president that depends on if they are successfully impeached after which point legal actions can be taken.  \nor after their term expires\n ... An example would be President Clinton was successfully impeached before action could be taken for his lying under oath and obstruction of justice.\nIn terms of a CEO or CFO one would expect \nor hope\n board members would remove them long before the criminal justice system has to step in otherwise the board members could also be indicted if it could be shown they had knowledge of malfeasance, ineptitude or corruption.",
+              "author": "Bender",
+              "depth": 2
+            },
+            {
+              "text": "My understanding is also that impeachment for \"Treason, Bribery, or other high crimes and misdemeanors\"  does not preclude the state or the states from criminally prosecuting for the same offense. There is double jeopardy for impeachable offenses that are also criminal offenses.\nWhere is our moral outrage at Trump with Miss Daniels while his wife was at home with the baby? Where is our moral outrage at them employing a tabloid to keep that in our faces?\nRecently I learned that Mr Epstein was well acquainted with Ken Starr, prosecutor of Clinton for lying about non-duty-related infidelity.\nIsn't there an interview with one of them about how Epstein and Trump have this need to \"cuck\", shame, and otherwise sexually humiliate others?\n(While infidelity is technically still a crime per UCMJ for persons who have signed a UCMJ contract, my understanding is that infidelity is very rarely prosecuted.)\nClinton was impeached for perjury about infidelity, but not for perjury about not inhaling.\nTrump hasn't yet been impeached for lying to the public about when he ended his relationship with Mr Epstein, but he was not under oath at that time?\nAren't there a number of available prosecutors for congressional impeachment given the turnover and resignations at DOJ of late? Congress should hire former prosecutors in order to become adequate at impeachment.\nApparently it's practically impossible to prove quid pro quo. But then why would they have specifically cited Bribery as an impeachable offense in the Constitution?\nPeople sell burgundy \"Make Lying Wrong Again\" hats that contrast with political \"Make America Pray Again\" hats and executive seal bibles.\nGod Bless the U.S.A. Bible \n\nhttps://en.wikipedia.org/wiki/God_Bless_the_U.S.A._Bible\n :\n> The Bible translation was intended to be the New International Version,[13] but Zondervan, the division of HarperCollins which owns the rights to the New International Version, withheld them after multiple public complaints, and the King James Version was used instead, as it is in the public domain in the United States",
+              "author": "stopbulying",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "If a CEO were to \"starve the beast\" by intentionally increasing expenses and reducing income, wouldn't that be criminally prosecutable?\nStarve the beast \nhttps://en.wikipedia.org/wiki/Starve_the_beast",
+          "author": "stopbulying",
+          "replies": []
+        },
+        {
+          "top": "CEO fiduciary duties are enforceable by shareholder litigation, while presidential duties are mostly checked by elections, impeachment, and courts, so accountability is weaker and slower.",
+          "author": "lyaocean",
+          "replies": []
+        },
+        {
+          "top": "Ancient Chinese wisdom:\n刑不上大夫\nHigh-ranking officials are exempt from criminal punishment.\nAnd if they do, it is because they have crossed some red lines.",
+          "author": "markus_zhang",
+          "replies": []
+        },
+        {
+          "top": "Why don't the US Senate ethics rules like \"QBT (Qualified Blind Trust) or specific approval\" apply to the Executive and the Executive Cabinet?",
+          "author": "stopbulying",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47113891",
+      "title": "Ask HN: Cognitive Offloading to AI",
+      "link": "https://news.ycombinator.com/item?id=47113891",
+      "domain": "news.ycombinator.com",
+      "author": "daringrain32781",
+      "score": 4,
+      "comment_count": 6,
+      "created_ts": 1771788792,
+      "is_internal": true,
+      "post_text": "I ask questions to co workers about a system or why they do something or their opinion. Some of them return a very clearly AI response, sometimes completely missing the point. What’s the point? If I wanted an AI response I’d have asked it myself.<p>This bothers me a bit because if I can expect this kind of response, what does that say about the thought they put into their work, even if they’re using AI for everything coding related?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "How much effort on your part is reflected by your questions?\nWhat business logic justifies time spent answering your questions?\nThis bothers me a bit because if I can expect this kind of response, what does that say about the thought they put into their work, even if they’re using AI for everything coding related?\nIs there a business case in Excel for what you want? Good luck.",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "That reminds me of one joke that I heard recently:\n- Dad, dad, do you and your colleagues use artificial intelligence at work?\n- Oh, dear, we don't even use natural intelligence...\nAs they say, every joke has a grain of truth in it. There are people who, in principle, do not think about why they do something or what the consequences will be. That's just the way they are.",
+          "author": "dryarzeg",
+          "replies": []
+        },
+        {
+          "top": "> Some of them return a very clearly AI response, sometimes completely missing the point. What’s the point?\nThe point is as always: to get the work \"done\" faster.\n> If I wanted an AI response I’d have asked it myself.\nSuch people are generally not bright enough to see the difference, so certainly not bright enough to realise you can.",
+          "author": "chrisjj",
+          "replies": []
+        },
+        {
+          "top": "The USA is also building concentration camps.\nSometimes people refuse to acknowledge humanity.",
+          "author": "cyanydeez",
+          "replies": []
+        },
+        {
+          "top": "We are investigating sueing Claude code, Open Claw, etc for Violating with Prejeduce the White Claw trademark",
+          "author": "theSBUguys",
+          "replies": [
+            {
+              "text": "Good try, tovarish major. Good try.",
+              "author": "dryarzeg",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47110054",
+      "title": "Ask HN: How do new blogs break the backlink–indexing loop?",
+      "link": "https://news.ycombinator.com/item?id=47110054",
+      "domain": "news.ycombinator.com",
+      "author": "lilcodingthings",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1771758254,
+      "is_internal": true,
+      "post_text": "We run a small coding blog sharing our learning experience and I keep hitting the same loop: Google won&#x27;t index most of our pages because the site has no authority. Authority comes from backlinks. But nobody links to a site that doesn&#x27;t show up in search results.          \n                                                                                             110+ posts and almost nothing showing up on Google. Bing has started indexing them, but Google won&#x27;t budge. Google indexed us in the beginning, just a bit, then after one of their updates we were destroyed and never re-covered.<p>We&#x27;ve tried long-form guides, short tutorials, long-tail keywords, competitive keywords, niche topics with zero competition. I&#x27;m not sure anymore if content is the problem.<p>We have no noindex issues, no missing sitemaps, no crawl errors — all the basic SEO boxes are checked. Site is submitted to Search Console, PageSpeed Insights performance is good (99% desktop, 85+ mobile).<p>We started cross-posting to Medium, Dev.to, and Hashnode but we can&#x27;t even be sure that&#x27;s the right path. We&#x27;ve been posting consistently, thinking consistency was the key — but it doesn&#x27;t seem to be enough on its own.<p>It truly feels like we&#x27;re fighting an invisible monster without knowing if what we&#x27;re doing is correct.<p>Don&#x27;t get me wrong, I&#x27;m not ranting — I still have patience left in me. Just thinking out loud here in case someone has been in the same shoes and found a way out.<p>What actually moved the needle for you? We&#x27;d appreciate any guidance.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "If it's on topic, you can post the articles here. But don't post too much. Most of the times it's better to add a few minutes later a comment explaining you are the author and will reply questions.",
+          "author": "gus_massa",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
