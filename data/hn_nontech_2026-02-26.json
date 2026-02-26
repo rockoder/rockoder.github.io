@@ -1,0 +1,1720 @@
+{
+  "scraped_date": "2026-02-26",
+  "source": "hacker_news",
+  "total_scraped": 134,
+  "nontech_count": 38,
+  "posts": [
+    {
+      "id": "47148454",
+      "title": "Claude Code Remote Control",
+      "link": "https://code.claude.com/docs/en/remote-control",
+      "domain": "code.claude.com",
+      "author": "empressplay",
+      "score": 505,
+      "comment_count": 289,
+      "created_ts": 1772004176,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "This is an extremely clunky and buggy prerelease, so don't try to hot fix prod from the toilet without a different mobile frontend.\nRight now:\n- You can't interrupt Claude (you press stop and he keeps going!)\n- At best it stops but just keeps spinning\n- The UI disconnects intermittently\n- It disconnects if you switch to other parts of Claude\n- It can get stuck in plan mode\n- Introspection is poor\n- You see XML in the output instead of things like buttons\n- One session at a time\n- Sessions at times don't load\n- Everytime you navigate away from Code you need to wait for your session to reappear\nI'm sure I'm missing a few things.",
+          "author": "fny",
+          "replies": [
+            {
+              "text": "Struggled with it also, given up (for now).\nI thought coding was a solved problem Boris?",
+              "author": "monkeydust",
+              "depth": 1
+            },
+            {
+              "text": "I have little doubt where things are going, but the irony of the way they communicate versus the quality of their actual product is palpable.\nClaude Code (the product, not the underlying model) has been one of the buggiest, least polished products I have ever used. And it's not exactly rocket science to begin with. Maybe they should try writing slightly less than 100% of their code with AI?",
+              "author": "rfw300",
+              "depth": 2
+            },
+            {
+              "text": "More generally, Anthropic's reliability track record for a company which claims to have solved coding is astonishingly poor. Just look at their status page - \nhttps://status.claude.com/\n - multiple severe incidents, every day. And that's to say nothing of the constant stream of bugs for simple behavior in the desktop app, Claude Code, their various IDE integrations, the tools they offer in the API, and so on.\nTheir models are so good that they make dealing with the rest all worth it. But if I were a non-research engineer at Anthropic, I wouldn't strut around gloating. I'd hide my head in a paper bag.",
+              "author": "rfw300",
+              "depth": 3
+            },
+            {
+              "text": "I don’t think that’s fair. ChatGPT and Gemini also seem to suffer random outages. They’re dealing with high load on a new type of product.\nBut it’s also true that Anthropic products are super buggy.",
+              "author": "rhubarbtree",
+              "depth": 4
+            },
+            {
+              "text": "Even when it's operating normal the webapp is constantly crashing.\nMobile app stops working..\nIt's a pain.\nAt least right now.",
+              "author": "jopsen",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Posted elsewhere but will copy here. Been doing this for a while.\n- - -\nget tailscale (free) and join on both devices\ninstall tmux\nget an ios/android terminal (echo / termius)\nenable \"remote login\" if on mac (disable on public wifi)\nmosh/ssh into computer\nnow you can do tmux then claude / codex / w/e on either device and reconnect freely via tmux ls and tmux attach -t <id>\n- - -\nYou can name tmux and resume by name via tmux new -s <feature> and tmux attach -t <feature>",
+          "author": "jasonjmcghee",
+          "replies": [
+            {
+              "text": "I have just today discovered zmx [1] which is like tmux but I always hated the tmux terminal emulation and how it hijacks scrolling, especially on Termius on my phone. It does session persistence but I think without the terminal emulator side of things, so scrolling works normally.\nBeen testing it today with Claude Code and it seems to work quite well switching between my laptop and phone.\n[1] \nhttps://github.com/neurosnap/zmx",
+              "author": "madjam002",
+              "depth": 1
+            },
+            {
+              "text": "I also hate how tmux uses alt mode and can never remember all the shortcuts, copy paste is a PITA and just today I had to look up how to dump the scrollback buffer to a file.  Named sessions without window management makes a lot more sense these days.  Similarly, I'm not a fan of all the ANSI escape codes that CC uses to jump the cursor around and rewrite the display to look like a GUI.  I prefer a TUI that doesn't mutate rows after writing them, that's what alt mode is for.  CC often clears whatever was in the scrollback buffer before you opened it, it hides bracketed paste, and goes crazy sometimes when content overflows the window and I have to resize the terminal or get blasted with a wall of glitching characters--extra annoying if I'm working from a low bandwidth link.  I develop my own agent framework and code agent, and while some features aren't as polished as CC, one of my explicit goals is to preserve the traditional CLI feel, like the python REPL (that's what it's based around).  I'll give zmx a try tonight :)",
+              "author": "jacob019",
+              "depth": 2
+            },
+            {
+              "text": "I do this and it is powerful, but I find that not being able to swipe/autocorrect my mobile typing in Termius makes things pretty painful.",
+              "author": "oakashes",
+              "depth": 1
+            },
+            {
+              "text": "I think everyone started out with this",
+              "author": "zeppelin101",
+              "depth": 1
+            },
+            {
+              "text": "I think people familiar with tmux/screen and tailscale or how to setup their own VPN might have.\nBased on my experience many people don't know this is a thing you can do.",
+              "author": "jasonjmcghee",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Opencode's 'web' command makes your local session run on the browser with same access rights as the cli. It's a pretty slick interface too. I sometimes use it instead of the cli even when I can access both.\nYou can test it right now if you want with the included free models.\nhttps://opencode.ai/docs/web/",
+          "author": "dizhn",
+          "replies": [
+            {
+              "text": "I was having too many bugs using it with my phone, I gave up and went back to Termux",
+              "author": "rubslopes",
+              "depth": 1
+            },
+            {
+              "text": "It's changing super fast. I am using it on the desktop mostly and when I tried on my phone there were issues yes. But do try it out again in a few weeks.\n(I am actually using zellij on the remote and using various CLIs more than I am using only opencode on the web. I was using wezterm mux until about a week ago but the current state of the terminal is not  very good for this scenario. It seems like almost all the CLIs are choking because of nodejs ink library)",
+              "author": "dizhn",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "There's \nhttps://happy.engineering/\n which already does this with many fewer bugs and supports codex.",
+          "author": "Fizzadar",
+          "replies": [
+            {
+              "text": "Set it up and never managed to have it work. Only thing it did was renaming my sessions on my main cc instance. Mobile did nothing, not even an error message.",
+              "author": "crashabr",
+              "depth": 1
+            },
+            {
+              "text": "I was using this religiously but there’s a bug currently that makes the initialization fail and/or throws an error on the phone client. \nAbsolutely great piece of software otherwise, free, anonymous, encrypted and so on. Really hope the team can fix this soon - I would hate to switch back to tmux tunneling.",
+              "author": "tor0ugh",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Weird all these companies struggle so much to support remote services, ssh has been working for me pretty seamlessly for like the 20 years I've been using it and has allowed me to remote-control any computer I own with relatively reliable authentication (with some hiccups that tend to be patched pretty rapidly when found) throughout that entire period. I hear tell it worked even before I was using computers professionally, too",
+          "author": "advael",
+          "replies": [
+            {
+              "text": "SSHing into a terminal with your phone is terrible UX. Very low bandwidth. Voice input into a native app is not. We are not talking about fine grained control of your system by running explicit commands. We are talking about programming in plain English.",
+              "author": "nonethewiser",
+              "depth": 1
+            },
+            {
+              "text": "Yeah but this is from an AI company so its mad different",
+              "author": "interestpiqued",
+              "depth": 1
+            },
+            {
+              "text": "Yea I've noticed that most things made by a company are worse and less reliable than things that are free and maintained by volunteers",
+              "author": "advael",
+              "depth": 2
+            },
+            {
+              "text": "This has always been the case, for pretty much everything. There's a reason the world's infrastructure runs on FOSS.",
+              "author": "parliament32",
+              "depth": 3
+            },
+            {
+              "text": "Lol. I've been looking at this stuff wondering what the hell I was missing and what it was trying to solve.\nI was starting to think I've really fallen behind or something. I feel relief AND horror.",
+              "author": "52-6F-62",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47143755",
+      "title": "Show HN: Moonshine Open-Weights STT models – higher accuracy than WhisperLargev3",
+      "link": "https://github.com/moonshine-ai/moonshine",
+      "domain": "github.com",
+      "author": "petewarden",
+      "score": 310,
+      "comment_count": 74,
+      "created_ts": 1771970047,
+      "is_internal": false,
+      "post_text": "I wanted to share our new speech to text model, and the library to use them effectively. We&#x27;re a small startup (six people, sub-$100k monthly GPU budget) so I&#x27;m proud of the work the team has done to create streaming STT models with lower word-error rates than OpenAI&#x27;s largest Whisper model. Admittedly Large v3 is a couple of years old, but we&#x27;re near the top the HF OpenASR leaderboard, even up against Nvidia&#x27;s Parakeet family. Anyway, I&#x27;d love to get feedback on the models and software, and hear about what people might build with it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "team",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "According to the OpenASR Leaderboard [1], looks like Parakeet V2/V3 and Canary-Qwen (a Qwen finetune) handily beat Moonshine. All 3 models are open, but Parakeet is the smallest of the 3. I use Parakeet V3 with Handy and it works great locally for me.\n[1]: \nhttps://huggingface.co/spaces/hf-audio/open_asr_leaderboard",
+          "author": "Karrot_Kream",
+          "replies": [
+            {
+              "text": "Parakeet V3 is over twice the parameter count of Moonshine Medium (600m vs 245m), so it's not an apples to apples comparison.\nI'm actually a little surprised they haven't added model size to that chart.",
+              "author": "reitzensteinm",
+              "depth": 1
+            },
+            {
+              "text": "parakeet v3 has a much better RTFx than moonshine, it's not just about parameter numbers. Runs faster.\nhttps://huggingface.co/spaces/hf-audio/open_asr_leaderboard",
+              "author": "bytesandbits",
+              "depth": 2
+            },
+            {
+              "text": "That was my experience when I tried Moonshine against Parakeet v3 via Handy. Moonshine was noticeably slower on my 2018-era Intel i7 PC, and didn't seem as accurate either. I'm glad it exists, and I like the smaller size on disk (and presumably RAM too). But for my purposes with Handy I think I need the extra speed and accuracy Parakeet v3 is giving me.",
+              "author": "SyneRyder",
+              "depth": 3
+            },
+            {
+              "text": "It is about the parameter numbers if what you care about is edge devices with limited RAM.  Beyond a certain size your model just doesn't fit, it doesn't matter how good it is - you still can't run it.",
+              "author": "regularfry",
+              "depth": 3
+            },
+            {
+              "text": "So I'm kinda new to this whole parakeet and moonshine stuff, and I'm able to run parakeet on a low end CPU without issues, so I'm curious as to how much that extra savings on parameters is actually gonna translate.\nOh and I type this in handy with just my voice and parakeet version three, which is absolutely crazy.",
+              "author": "agentifysh",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Congrats on the results. The streaming aspect is what I find most exciting here.\nI built a macOS dictation app (\nhttps://github.com/T0mSIlver/localvoxtral\n) on top of Voxtral Realtime, and the UX difference between streaming and offline STT is night and day. Words appearing while you're still talking completely changes the feedback loop. You catch errors in real time, you can adjust what you're saying mid-sentence, and the whole thing feels more natural. Going back to \"record then wait\" feels broken after that.\nCurious how Moonshine's streaming latency compares in practice. Do you have numbers on time-to-first-token for the streaming mode? And on the serving side, do any of the integration options expose an OpenAI Realtime-compatible WebSocket endpoint?",
+          "author": "T0mSIlver",
+          "replies": []
+        },
+        {
+          "top": "I've helped many Twitch streamers set up \nhttps://github.com/royshil/obs-localvocal\n to plug transcription & translation into their streams, mainly for German audio to English subtitles.\nI'd love a faster and more accurate option than Whisper, but streamers need something off-the-shelf they can install in their pipeline, like an OBS plugin which can just grab the audio from their OBS audio sources.\nI see a couple obvious problems: this doesn't seem to support translation which is unfortunate, that's pretty key for this usecase. Also it only supports one language at a time, which is problematic with how streamers will frequently code-switch while talking to their chat in different languages or on Discord with their gameplay partners. Maybe such a plugin would be able to detect which language is spoken and route to one or the other model as needed?",
+          "author": "francislavoie",
+          "replies": []
+        },
+        {
+          "top": "Claiming higher accuracy than Whisper Large v3 is a bold opening move. Does your evaluation account for Whisper's notorious hallucination loops during silences (the classic 'Thank you for watching!'), or is this purely based on WER on clean datasets? Also, what's the VRAM footprint for edge deployments? If it fits on a standard 8GB Mac without quantization tricks, this is huge.",
+          "author": "heftykoo",
+          "replies": []
+        },
+        {
+          "top": "For those wondering about the language support, currently English, Arabic, Japanese, Korean, Mandarin, Spanish, Ukrainian, Vietnamese are available (most in Base size = 58M params)",
+          "author": "asqueella",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47136537",
+      "title": "IRS Tactics Against Meta Open a New Front in the Corporate Tax Fight",
+      "link": "https://www.nytimes.com/2026/02/24/business/irs-meta-corporate-taxes.html",
+      "domain": "www.nytimes.com",
+      "author": "mitchbob",
+      "score": 216,
+      "comment_count": 218,
+      "created_ts": 1771937894,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "I wrote about this 20 years ago:\nhttp://digital-majority.wikidot.com/forum/t-5766/software-pa...\nIn the meantime, Ireland removed their 0% tax over patent royalties, but Holland kept it at 0%.\nhttps://en.wikipedia.org/wiki/Double_Irish_arrangement",
+          "author": "zoobab",
+          "replies": [
+            {
+              "text": "Oh it was the EU that closed it down? didn't even know this ended as an option",
+              "author": "SpaceManNabs",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, closed to new entrants in 2015, entirely gone by 2020.\nHilariously enough, all of the anti tax avoidance actually ended up getting Ireland an absolutely absurd amount of corporation tax (which we'll almost certainly waste, but them's the breaks I suppose).",
+              "author": "disgruntledphd2",
+              "depth": 2
+            },
+            {
+              "text": "Your 20y old site gave me https errors when I tried to click it, fyi",
+              "author": "bobthepanda",
+              "depth": 1
+            },
+            {
+              "text": "Don't access it over https then? The link is http.",
+              "author": "q3k",
+              "depth": 2
+            },
+            {
+              "text": "Works fine on my end. The HTTPS URL gives a 301 permanent redirect to HTTP, and then I ordered some boner pills and put my social security number to confirm.",
+              "author": "01HNNWZ0MV43FF",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Corporation tax is so annoying, with so many r&d caveats etc. Just tax outflows.",
+          "author": "philipallstar",
+          "replies": [
+            {
+              "text": "On which level do you mean tax it - Do you mean tax it still on the corporation but only when there is a dividend? Or do you mean only tags the recipient. so zero tax if the recipient is based abroad?\nIf you mean the former, Estonia has that type of corporate taxation, which is pretty interesting.",
+              "author": "victorbjorklund",
+              "depth": 1
+            },
+            {
+              "text": "Good question - it feels much neater to tax flows than tax money at rest, letting companies save money in the good times rather than run to spend it to avoid sending it all away as tax. On the topic you mention I think export duty would work.",
+              "author": "philipallstar",
+              "depth": 2
+            },
+            {
+              "text": "A different perspective is that tax policy is intended to also shape behavior. Raising taxes on behavior we want to disincentivize, and lowering it on behavior we want to incentivize. While I get the conceptual neatness argument, adhering to that undermines the ability to use tax policy as a tool of government.",
+              "author": "travem",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> contending the company lowballed the price of trademarks, customer agreements, software licenses and other rights it moved offshore\nAt the same time they were telling HMRC (the British tax authority) that IP rights, etc. were incredibly valuable and a significant cost of doing business (in the form of payments back to the mothership), and that's why they made very little profit in the UK and didn't need to pay much tax.",
+          "author": "masfuerte",
+          "replies": [
+            {
+              "text": "Trying to trace more detail on this: \nhttps://www.taxwatchuk.org/seven-large-tech-groups-estimated...\nThat mentions the digital services tax; I remember some of HN being quite angry that \"Europe\" was trying to get a share of the immense wealth extracted from it by American multinationals.",
+              "author": "pjc50",
+              "depth": 1
+            },
+            {
+              "text": "Wealth extracted from a company sounds like taxes.",
+              "author": "Muromec",
+              "depth": 2
+            },
+            {
+              "text": "How did we go from \"wealth extracted from [Europeans and Europe]\" to \"wealth extracted from a company\"?",
+              "author": "bjustin",
+              "depth": 3
+            },
+            {
+              "text": "Dividends extracted from a company also sound like (privatized) taxes.",
+              "author": "rickydroll",
+              "depth": 3
+            },
+            {
+              "text": "What you mean is American multinationals were inventing things people wanted to pay for and the existing government rent seeking wasn't working.",
+              "author": "philipallstar",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> The agency is using real-world profit data to challenge how big companies value offshore intellectual property.\nhttps://archive.ph/2026.02.24-124153/https://www.nytimes.com...",
+          "author": "mitchbob",
+          "replies": [
+            {
+              "text": "My only concern here is that it's using ex post facto information to try to dispute earlier assessments.\nIf I 'moved' some AI 'patents' to another country 5 years ago and stated they were worth $x using some formula and now some years later the government steps in and says 'No no no, you earned $x + $y and lied on the original value which should have represented the discounted future income!' that's not disputing the formula used in the original point. It's just that 5 years ago people underestimated how far and how valuable AI would be.",
+              "author": "forgotaccount3",
+              "depth": 1
+            },
+            {
+              "text": "Sure but if that’s the case there should be some tax on the mark to market difference. If not it’s just straight up tax fraud (which I suspect is often actually the case).",
+              "author": "seanhunter",
+              "depth": 2
+            },
+            {
+              "text": "> Worth noting that this archive site has allegedly manipulated snapshotted content\nAre you claiming this link was manipulated? Because otherwise that's irrelevant to this discussion.\nIIRC, the archive.today has a grudge against someone trying to figure out their identity, and the manipulations and other shady behavior have been solely focused on that person.",
+              "author": "palmotea",
+              "depth": 2
+            },
+            {
+              "text": "From your link:\n> The Wikipedia guidance points out that the Internet Archive and its website, Archive.org, are “uninvolved with and entirely separate from archive.today.”\n[ERROR] Isn't archive.ph associated with .org?\n[EDIT] ERROR tag added. In fact, it is not, thanks to replies for fixing my ignorance.",
+              "author": "erikerikson",
+              "depth": 2
+            },
+            {
+              "text": "> Isn't archive.ph associated with .org?\nNo.\n> Guidance published as a result of the decision asked editors to help remove and replace links to the following domain names used by the archive site: archive.today, archive.is, archive.ph, archive.fo, archive.li, archive.md, and archive.vn.",
+              "author": "loeg",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "If Corporates can offshore their IP I should be able to offshore my likeness and rent it back to myself to reduce my personal taxes.",
+          "author": "siliconc0w",
+          "replies": [
+            {
+              "text": "You can.  It would just cost you so much in legal to not be worth it.\nThe reason it's worth it for these companies is because the number of zeroes involved.  The legal costs are a rounding error for them.",
+              "author": "jedberg",
+              "depth": 1
+            },
+            {
+              "text": "Also true for just not paying taxes at all. The number of times I have had people tell me that they just let it float for years so they can settle up for a fraction later is unbelievable.",
+              "author": "monster_truck",
+              "depth": 2
+            },
+            {
+              "text": "I know people who didn't pay taxes at all for years and the IRS came after them them several times (put them on payment plans that they didn't pay) before giving up. They now call us chumps for paying taxes. It is pretty absurd.",
+              "author": "eikenberry",
+              "depth": 3
+            },
+            {
+              "text": "That sounds off. There's specific situations where the IRS will settle for less than the amount owed and they're not pleasant.",
+              "author": "cheriot",
+              "depth": 3
+            },
+            {
+              "text": "Not true.  It’s really common for 1099 people",
+              "author": "edgyquant",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47140322",
+      "title": "Show HN: Emdash – Open-source agentic development environment",
+      "link": "https://github.com/generalaction/emdash",
+      "domain": "github.com",
+      "author": "onecommit",
+      "score": 198,
+      "comment_count": 70,
+      "created_ts": 1771956037,
+      "is_internal": false,
+      "post_text": "Hey HN! We’re Arne and Raban, the founders of Emdash (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;generalaction&#x2F;emdash\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;generalaction&#x2F;emdash</a>).<p>Emdash is an open-source and provider-agnostic desktop app that lets you run multiple coding agents in parallel, each isolated in its own git worktree, either locally or over SSH on a remote machine. We call it an Agentic Development Environment (ADE).<p>You can see a 1 minute demo here: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;X31nK-zlzKo\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;X31nK-zlzKo</a><p>We are building Emdash for ourselves. While working on a cap-table management application (think Stripe Atlas + Pulley), we found our development workflow to be messy: lots of terminals, lots of branches, and too much time spent waiting on Codex.<p>Emdash puts the terminal at the center and makes it easy to run multiple agents at once. Each agent runs as a task in its own git worktree. You can start one or a few agents on the same problem, test, and review.<p>Emdash works over SSH so you can run agents where your code lives and keep the parallel workflow. You can assign tickets to agents, edit files manually, and review changes.<p>We also spent time making task startup fast. Each task can be created in a worktree, and creating worktrees on demand was taking 5s+ in some cases. We now keep a small reserve of worktrees in the background and let a new task claim one instantly. That brought task start time down to ~500–1000ms depending on the provider. We also spawn the shell directly and avoid loading the shell environments on startup.<p>We believe using the providers’ native CLIs is the right approach. It gives you the full capabilities of each agent, always. If a provider starts supporting plan mode, we don&#x27;t have to add that first.<p>We support 21 coding agent CLIs today, including Claude Code, Codex, Gemini, Droid, Amp, Codebuff, and more. We auto-detect what you have installed and we’re provider-agnostic by design. If there’s a provider you want that we don’t support yet, we can add it. We believe that in the future, some agents will be better suited for task X and others for task Y. Codex, Claude Code, and Gemini all have fans. We want to be agnostic and enable individuals and teams to freely switch between them.<p>Beyond orchestration, we try to pull most of the development loop into Emdash. You can review diffs, commit, open PRs, see CI&#x2F;CD checks, and merge directly from Emdash once checks pass. When starting a task, you can pass issues from Linear, GitHub, and Jira to an agent. We also support convenience variables and lifecycle scripts so it’s easy to allocate ports and test changes.<p>Emdash is fully open-source and MIT-licensed.<p>Download for macOS, Linux or Windows (as of yesterday !), or install via Homebrew: brew install --cask emdash.<p>We’d love your feedback. How does your coding agent development setup look like, especially when working with multiple agents? We would want to learn more about it. Check out our repository here: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;generalaction&#x2F;emdash\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;generalaction&#x2F;emdash</a><p>We’ll be around in the comments — thanks!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management",
+        "feedback",
+        "startup",
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "Custom AI tools like these have an uphill battle to fight. Automaker[0] from webdevcody is an example of that. He, together with some other folks created an open source Agentic Coding tool (for the lack of a better term), which gained popularity on github. He was advertising/showcasing it on streams etc. A few weeks in, he posted a video[1] where he speaks about why he's not using it himself anymore and went back to Claude Code, which over time receives tools/skills/mcps/whatnot and is in the terminal which we're all familiar with.\nI made similar experience. Downloaded all sorts of tools, IDE's for the new era of development. Other than claude code in cli and occasional uses of codex (because have free tokens), nothing else stuck. I can just split my terminal effortlessly how many times I want, write/speak to the terminal with any custom request etc. And once someone comes up with a clever idea on top of what claude has today, I reckon they'll add it one way or another within the next weeks.\nbayesian curve meme fits here rather well:\n- claude code for everything, custom IDE's/tools, claude code for everything.\n[0] \nhttps://github.com/AutoMaker-Org/automaker\n\n[1] \nhttps://www.youtube.com/watch?v=3H_t78QcueA&t=382s",
+          "author": "Bishonen88",
+          "replies": []
+        },
+        {
+          "top": "Here's my question:\nif agents continue to get better with RL, what is future proof about this environment or UI?\nI think we all know that managing 5-10 agents ... is not pretty. Are we really landing good PRs with 100% cognitive focus from 5-10 agents? Chances are, I'm making mistakes (and I assume other humans are too)? Why not 1 agent managing 5-10 agents for you? And so on?\nMost of the development loop is in bash ... so as long as agents get better at using bash (amongst other things), what happens to this in 6 months?\nI don't think this is operating at a higher-level of abstraction if agents themselves can coordinate agents across worktrees, etc.",
+          "author": "mccoyb",
+          "replies": [
+            {
+              "text": "Interesting thoughts - thank you! And directionally agree - given that agents are becoming ever better, they'll take more and more of the orchestration on themselves. Still, we believe that developers need an interface to interact with these agents; see their status and review / test their work. Emdash is our approach for building this interface of the future - the ADE :)",
+              "author": "onecommit",
+              "depth": 1
+            },
+            {
+              "text": "> Still, we believe that developers need an interface to interact with these agents;\nCLIs like claude code equally improve over time. tmux helps running remote sessions like there were local.\nWhy should we invest long time into your „ADE“, really?\n> see their status and review / test their work\nWon’t that be addressed eventually by the CLIs themselves?\nMaybe you’re betting on being purchased by one of the agentic coding providers given your tool has long term value on its own?",
+              "author": "blumomo",
+              "depth": 2
+            },
+            {
+              "text": "People use UIs for git despite it working so well in the terminal... Many people I knew at uni doing computer science wouldn’t even know what tmux is. I would bet that the demand for these types of UIs is going to be a lot bigger than the demand for CLI tools like Claude Code. People already rave about cowork and the new codex UI. This falls into the same category.",
+              "author": "sothatsit",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I just made an app that read GitHub issues. If they have a specific tag, the agent in the background creates a plan.\nIf they have another tag, the agent in the server creates a PR considering the whole issue conversation as context (with the idea that you used the plan above - but technically you don't have to.)\nIf you comment in the PR the agent start again loading your comment as context and trying to address it.\nEverything is already in git and GitHub, so it automatically pick up your CI.\nIt seems simpler, but I am sure I missed something.",
+          "author": "siscia",
+          "replies": []
+        },
+        {
+          "top": "So, what's your business model ? Is this an YC product, or a tool you developed while working on a YC product ?",
+          "author": "ttoinou",
+          "replies": [
+            {
+              "text": "We're figuring our business model out. There're two avenues that we principally think about (1) bundled coding agent subscription and (2)enterprise version with auth, team management, sharing of agent interactions. Admittedly, it's early and this can change. What won't change is that this UI layer for running multiple coding agents is and will be open-source. Emdash itself is funded by YC. Initially developed as a tool while working on another product, but we weren't funded then.",
+              "author": "onecommit",
+              "depth": 1
+            },
+            {
+              "text": "(2) sounds like a great idea if you can ensure private company data never reaches your servers, with features like remote controlling agents from a central place",
+              "author": "ttoinou",
+              "depth": 2
+            },
+            {
+              "text": "Thank you, and yes!",
+              "author": "onecommit",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Been driving my agents (CC, currently testing Pi) for a couple of weeks via Emdash. Finally, got a productive worktree setup working. There were still rough edges when I started, but the team has shipping fast [0] and is vaporizing concerns on the fly. Building on top of the native CLI seems to be the right strategy as well.\n[0] \nhttps://github.com/generalaction/emdash/releases/",
+          "author": "haimau",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47149586",
+      "title": "Show HN: A real-time strategy game that AI agents can play",
+      "link": "https://llmskirmish.com/",
+      "domain": "llmskirmish.com",
+      "author": "__cayenne__",
+      "score": 195,
+      "comment_count": 72,
+      "created_ts": 1772013765,
+      "is_internal": false,
+      "post_text": "I&#x27;ve liked all the projects that put LLMs into game environments. It&#x27;s been a weird juxtaposition, though: frontier LLMs can one-shot full coding projects, and those same models struggle to get out of Pokémon Red&#x27;s Mt. Moon.<p>Because of this, I wanted to create a game environment that put this generation of frontier LLMs&#x27; top skill, coding, on full display.<p>Ten years ago, a team released a game called Screeps. It was described as an &quot;MMO RTS sandbox for programmers.&quot; The Screeps paradigm of writing code and having it executed in a real-time game environment is well suited to LLMs. Drawing on a version of the Screeps open source API, LLM Skirmish pits LLMs head-to-head in a series of 1v1 real-time strategy games.<p>In my testing I found that Claude Opus 4.5 was the most dominant model, but it showed weakness in round 1 as it was overly focused on its in-game economy. Meanwhile, I probably spent a third of all code on sandbox hardening because GPT 5.2 kept trying to cheat by pre-reading its opponent&#x27;s strategies.<p>If there&#x27;s interest, I&#x27;m planning on doing a round of testing with the latest generation of LLMs (Claude 4.6 Opus, GPT 5.3 Codex, etc.).<p>You can run local matches via CLI. I&#x27;m running a hosted match runner with Google Cloud Run that uses isolated-vm. The match playback visualizer is statically served from Cloudflare.<p>I&#x27;ve created a community ladder that you can submit strategies to via CLI, no auth required. I&#x27;ve found that the CLI plus the skill.md that&#x27;s available has been enough for AI agents to immediately get started.<p>Website: <a href=\"https:&#x2F;&#x2F;llmskirmish.com\" rel=\"nofollow\">https:&#x2F;&#x2F;llmskirmish.com</a><p>API docs: <a href=\"https:&#x2F;&#x2F;llmskirmish.com&#x2F;docs\" rel=\"nofollow\">https:&#x2F;&#x2F;llmskirmish.com&#x2F;docs</a><p>GitHub: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;llmskirmish&#x2F;skirmish\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;llmskirmish&#x2F;skirmish</a><p>A video of a match: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=lnBPaZ1qamM\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=lnBPaZ1qamM</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "MY FELLOW HUMAN, this is amazing work!\nI foresee this laying the foundation for whole football stadia filled to the brim with people wanting to watch (and bet on!) competing teams of AI trained on military tactics and strategies!\nSoon enough we shall have AI-Olympics! Imagine that, MY FELLOW OXYGEN CONVERTING HUMAN FRIEND! Tens of thousands of robots and drones, all competing against each other in stadia across the planet, at the same time!\nI foresee a world wide, synchronized countdown marking the beginning of the biggest, greatest and definitively most unique, one-time-only spectacle in human history!\nKeep up the good work!",
+          "author": "5o1ecist",
+          "replies": [
+            {
+              "text": "This reminds me of the Unreal Tournament: Xan episode from the Secret Level series.\nLink for those curious or confused as to what I'm talking about:\n\nhttps://www.youtube.com/watch?v=1F-rAW3vXOU\nForcing AI to fight in an arena for our entertainment, what could go wrong? (this was tongue in cheek, I am fully aware LLM's currently don't have conscious thoughts or emotions)",
+              "author": "softfalcon",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I know visualization is far from the most important goal here, but it really gets me how there's fairly elaborately rendered terrain, and then the units are just unnamed roombas with hard to read status indicators that have no intuitive meaning. Even in the match viewer I have no clue what's going on, there is no overlay or tooltip when you hover or click units either. There is a unit list that tries (and mostly fails) to give you some information, but because units don't have names you have to hover them in the list to have them highlighted in the field (the reverse does not work). Not exactly a spectator sport. Oh, but there is a way to switch from having all units in one sidebar to having one sidebar per player, as if that made a difference.\nI find this pretty funny because it seems like a perfect representation of what's easy with today's tools and what isn't\nLove the idea though",
+          "author": "wongarsu",
+          "replies": [
+            {
+              "text": "Yeah, it's all what you get when you basically ask an agent \"Build X\" without any constraints about how the UI and UX actually should work, and since the agents have about 0 expertise when it comes to \"How would a human perceive and use this?\", you end up with UIs that don't make much sense for humans unless you strictly steer them with what you know.",
+              "author": "embedding-shape",
+              "depth": 1
+            },
+            {
+              "text": "Or maybe the simple answer is it looks exactly like the referenced game screeps. Probably a better explanation than hand waving away the faults of an agent.",
+              "author": "infecto",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is very cool. Will give it a shot.",
+          "author": "medi_naseri",
+          "replies": []
+        },
+        {
+          "top": "Reminds me of the “Google AI Challenge” in 2011 called Ants [1], except the ‘AI’ is implemented using ‘AI’ now instead of human programmers.\nI was proud for getting the highest-ranked JavaScript-based implementation, but got absolutely crushed by the eventual winner.\n1. \nhttps://github.com/aichallenge/aichallenge",
+          "author": "arscan",
+          "replies": []
+        },
+        {
+          "top": "For some reason this reminds me strongly of an old play-by-email game called C++Robots[1]. I loved the idea, but the timeslice limitation[2] I found too annoying.\nI had youthful dreams of re-implementing something similar that would run on the Java Virtual Machine, where you could run the submitted robots via the debugger interface so you could keep \"real-time\" in the game environment more authentic. Ideas are cheap, follow-through is hard.\n[1] \nhttps://corewar.co.uk/cpprobots.htm\n[2] \nhttps://www.pbm.com/~lindahl/pbem_articles/cpprobots_environ...",
+          "author": "anotherevan",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47151163",
+      "title": "Red Hat takes on Docker Desktop with its enterprise Podman Desktop build",
+      "link": "https://thenewstack.io/red-hat-enters-the-cloud-native-developer-desktop-market/",
+      "domain": "thenewstack.io",
+      "author": "twelvenmonkeys",
+      "score": 120,
+      "comment_count": 72,
+      "created_ts": 1772025953,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "The best alternative to Docker Desktop on macOS is to abandon the GUI entirely use colima to create the linux VM.\n    brew install colima docker docker-buildx docker-completion docker-compose\n    export DOCKER_HOST=\"$HOME/.colima/docker.sock\" >> ~/.zshrc\n    source ~/.zshrc\n    colima start --cpus 8 --vz-rosetta --ssh-agent --mount $HOME:w\n\n\n\nthen add this line to your $HOME/.docker/config.json\n    \"cliPluginsExtraDirs\": [\"/opt/homebrew/lib/docker/cli-plugins\"],\n\n\n\nthat will get you a fast virtiofs VM with the latest docker, including compose and buildx. it may seem scary to replace an officially blessed tool like Docker Desktop, but i have had zero issues with colima. it isn't \"docker compatible\". it's docker. just need to run `brew upgrade` and `colima update` every once in a while to keep it up to date.",
+          "author": "y0ssar1an",
+          "replies": [
+            {
+              "text": "I've been using Finch (\nhttps://runfinch.com/\n) for the last few years, it basically is a managed Lima, nerdctl, containerd and BuildKit.\nI just alias docker to finch and it just works.",
+              "author": "jpalmer",
+              "depth": 1
+            },
+            {
+              "text": "If you're going full CLI on macOS, I've had the best experience with:\n    brew install podman\n\n\nPodman manages the linux vm for you automatically.\nI've come to enjoy podman more than docker on my linux hosts anway; the default runtime (crun) is lighter than docker (runc), podman-kube-play is great for managing multi-container pods and is compatible with kubernetes. It also integrates very neatly with systemd. Of course there is the whole daemon-less and rootless side of the things as well..",
+              "author": "seemaze",
+              "depth": 1
+            },
+            {
+              "text": "I’ve been using OrbStack instead of Docker Desktop and gotta say, I’d not replace it with anything else. So if anyones looking for a more automated alternative, check out OrbStack.",
+              "author": "eknkc",
+              "depth": 1
+            },
+            {
+              "text": "I hear great things about OrbStack; unfortunately the licensing tied to their free offering doesn't play nicely with corporate environments (and we're cheap!).\nI switched to Colima instead and couldn't be happier.",
+              "author": "cathalc",
+              "depth": 2
+            },
+            {
+              "text": "Does this support volume bind mounts and port forwarding?",
+              "author": "jaimehrubiks",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I tried to use podman desktop for a bit but I ran into some screwy compatibility issues. It just wasn't as smooth as docker.\nI really really want an alternative to docker desktop. I don't like the path they're going down. I don't like the AI crap in the UI. The licensing is crazy. It just doesn't feel right.\nSo I've been lately using rancher by SuSE. Surprisingly, it's been all right. So far it just works. I'm using this on Mac OS.\nIf anybody's looking for an alternative that's one worth considering.",
+          "author": "bmurphy1976",
+          "replies": [
+            {
+              "text": "I'm still confused by why anyone wants to use either Docker or Podman desktops. The the docker/Podman CLIs seem like a much better way to interact with containers/images. Maybe it's just my usecase.",
+              "author": "scuff3d",
+              "depth": 1
+            },
+            {
+              "text": "I can't speak to docker, but the Podman desktop UI on MacOS doesn't really offer any functionality that the CLI doesn't. It's more like a status dashboard than anything else. I personally never look at it. I don't see how you can get very far managing containers, images, etc using _just_ the UI in any case.",
+              "author": "bityard",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. To be honest I feel the same way about k8s. A bunch of people on my team get grumpy if we don't have k9s available or some other interface, but I prefer to just use kubectl",
+              "author": "scuff3d",
+              "depth": 3
+            },
+            {
+              "text": "I personally use Docker Desktop because it was the easiest way to install Docker on my Mac. I launch Docker Desktop, close the window but keep the app running in the background, then use the docker tool on the command line :)",
+              "author": "mort96",
+              "depth": 2
+            },
+            {
+              "text": "OrbStack is a very compelling alternative on macOS.  The GUI launches instantly due to being a Swift app and not Electron.  Container filesystems are visible in Finder.  You can spin up full-blown VMs with it (only Linux ones though).  Storage is managed dynamically, so you don't have to reserve or resize the virtual disk.  Free for personal use, with zero nags or upsells.",
+              "author": "chuckadams",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I love podman. it’s my default whenever i need to run containers locally. Ive also used it to run containerized systemd services.\nSelling enterprise licenses is a smart move from Redhat: they actually build/contribute to production grade container orchestration platforms like openshift. Unlike Docker Inc which looks like it only has the docker registry and Docker Desktop.",
+          "author": "pm90",
+          "replies": []
+        },
+        {
+          "top": "Man, I feel bad for Docker, the company. Created the open source project that almost single-handely revolutionized deployments, development environments, and cloud computing, but sorta never managed to stick a product.",
+          "author": "tonnydourado",
+          "replies": [
+            {
+              "text": "I'm equally shocked nobody has bought them out to keep them well funded and not focused on trying to monetize (outside of just billing for private images). Every cloud provider like CloudFlare (I think?), Azure, AWS, GCP, etc benefit from Docker, it seems like a no brainer to me... You would then condense the org to just developers and PMs. Then marketing and other employees could be shifted to another part of the parent org and condense it down to a core group that builds and makes the tooling stronger.\nI wish we had tax exceptions for companies maintaining open-source projects full time to be reasonable write offs or something, with strict checks so companies dont just make random \"open source\" projects to write off, it should be something with known sizable impact and/or use, it would make some critical open source projects attractive \"buy outs\" or options to fully fund for some of these giants that benefit from them. Imagine if the devs entire salary (up to a point) could be written off completely. Some of these people are working on key infrastructure for the modern web, and even other critical systems, think of Chromium (tricky because of Chrome being not-open source but a proprietary end-product), Firefox, Linux, openssl, and obviously Docker, as good example.",
+              "author": "giancarlostoro",
+              "depth": 1
+            },
+            {
+              "text": "> Every cloud provider [...] benefit from Docker\nHow ? Docker didn't invent the underlying technology and can't control it (through patents, etc...). It's all open and Docker tools are just the most popular but there are alternatives. Why pay when you can get it for free ?",
+              "author": "ragall",
+              "depth": 2
+            },
+            {
+              "text": "To keep it maintained.",
+              "author": "giancarlostoro",
+              "depth": 3
+            },
+            {
+              "text": "Cloud providers have no reason to. If Docker disappeared today, the alternatives would take over.",
+              "author": "ragall",
+              "depth": 4
+            },
+            {
+              "text": "I think they are now doing better than ever. And they have been bought out already by Mirantis, unless I missed something.\nPodman isn't really a competitor at this point, it's just the \"docker at home\" NIH project from redhat. It works fine, but docker isn't going anywhere really.",
+              "author": "mardifoufs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I personally prefer the Podman CLI however as you don't need the daemon running in the background and prefer Kubernetes like yamls for local development. I definitely don't need a polished desktop GUI that shows me how many images I have though - I've never understood the use case for that.",
+          "author": "osigurdson",
+          "replies": [
+            {
+              "text": "Same. I switched to podman just so I don't have to troubleshoot why the docker daemon isn't running again.",
+              "author": "dec0dedab0de",
+              "depth": 1
+            },
+            {
+              "text": "Used docker for over a decade, never ran into this docker daemon intermittently stops running issue.",
+              "author": "newsoftheday",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47151842",
+      "title": "Show HN: Respectify – A comment moderator that teaches people to argue better",
+      "link": "https://respectify.org/",
+      "domain": "respectify.org",
+      "author": "vintagedave",
+      "score": 101,
+      "comment_count": 116,
+      "created_ts": 1772029279,
+      "is_internal": false,
+      "post_text": "My partner, Nick Hodges, and I, David Millington, have been on the Internet for a very long time -- since the Usenet days.  We’ve seen it all, and have long been frustrated by bad comments, horrible people, and discouraging discussions. We&#x27;ve also been around places where the discussion is wonderful and productive. How to get more of the latter and less of the former?<p>Current moderation tools just seem to focus on deletion and banning. Wouldn’t it be helpful to encourage productive discussion and <i>teach</i> people how to discuss and argue (in the debate sense) better?<p>A year ago we started building Respectify to help foster healthy communication. Instead of just deleting bad-faith comments, we suggest better, good-faith ways to say what folks are trying to say.  We help people avoid: * Logical fallacies (false dichotomy, strawmen, etc.) * Tone issues (how others will read the comment) * Relevance to the actual page&#x2F;post topic * Low-effort posts * Dog whistles and coded language<p>The commenter gets an explanation of what&#x27;s wrong and a chance to edit and resubmit. It&#x27;s moderation + education in one step. We want, too, to automate the entire process so the site owner can focus on content and not worry about moderation at all. And over time, comment by comment, quietly coach better thinking.<p>Our main website has an interactive demo: <a href=\"https:&#x2F;&#x2F;respectify.ai\" rel=\"nofollow\">https:&#x2F;&#x2F;respectify.ai</a>. As the demo shows, the system is completely tunable and adjustable, from &quot;most anything goes&quot; to &quot;You need to be college debate level to get by me&quot;.<p>We hope the result is better discussions and a better Internet. Not too much to ask, eh?<p>We love the kind of feedback this group is famous for and hope you will supply some!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "I think the premise of this tool is flawed. Bad faith actors are not people who write poorly or aggressively because they don't know how to express their beliefs like a polite, college educated white collar professional. They are people who have an agenda to push and are willing to use whatever rhetorical techniques allowed to achieve their goals.\nI would even go as far as saying that we are under more threat from bad faith arguing from eloquent, educated actors than what people usually blame. You know, \"trolls.\" You notice this every time when a city planning meeting gets derailed by concerned citizens just asking questions about the potential dangers of a children's playground. You notice this when an abusive person in a relationship goes to a therapist and suddenly has a whole high minded vocabulary justifying their own action. You notice this when your boss talks about opening up new opportunities and chasing new fields of business while coworkers circulate rumors of upcoming layoffs.\nThe entire point of bad faith is saying words you don't mean to achieve your goals. The words are always just a disposable tool secondary to the bad faith actor's true intentions. You fundamentally cannot fix bad faith by fixing someone's choice of words any more than you can sugarcoat a poisoned pill and make it safe.",
+          "author": "pibaker",
+          "replies": []
+        },
+        {
+          "top": "It seems to have a harder time with political news than more abstract concepts. I was able to pass the checks for the Algorithmic Radicalization and Echo Chamber articles with my first comments.\nHowever, I did not manage to express any opinion on the transgender rights article, from any political perspective, without being flagged. On one of the comments I tested, it gave me a suggested revision from this:\n\"This is another move in a pattern of limiting the rights of anyone who isn't a MAGA supporter.\"\nTo this:\n\"This seems to continue a trend where certain groups feel their rights are being limited, which could affect many people beyond just MAGA supporters.\"\nThe first comment isn't substantive, but the second is even worse, adding so much equivocation that it's meaningless. To add insult to injury, the detector also flagged its own suggested revision. Even if it had gone through, accepting these revisions would mean flooding a platform with LLM-speak, which is not conducive to discussion.\nHonest feedback: from a user perspective, the suggestions feel frustrating and patronizing, more so than if my comments were simply deleted. I would stop using a site that implemented this.\nFrom a site operator perspective, the kind of discourse it incentivizes seems jagged, subject to much stricter rules if the LLM associates a topic with political controversy. It feels opinionated and unpredictable, and the revisions it suggests are not of a quality I would want on a discussion board. The focus on positive language in particular seems like a reductive view of quality; what is the point of using an LLM if it's only doing basic sentiment analysis?",
+          "author": "Miraste",
+          "replies": [
+            {
+              "text": "Dave here -- I've tweaked a bunch of the internal rules during the HN discussion today, and your comment now passes (using the default settings.)\nAs for equivocation, that should be strongly dialed down too. It annoyed me too, it was \"mush\", and did not help. I hope you'll find the current version a lot more human.\nI'm grateful for the feedback! Changing it based on all these comments has been intense over the past couple of hours, but boy is it now significantly improved and I am super grateful to you and other commenters.",
+              "author": "vintagedave",
+              "depth": 1
+            },
+            {
+              "text": "These types of tools always show the authors bias. It’s a good strategy to quickly move on when found.",
+              "author": "BikiniPrince",
+              "depth": 1
+            },
+            {
+              "text": "Thanks so much for the feedback.  Exactly the kind of perspective that we need.\nI agree, it shouldn't be like that.\nI guess it isn't a surprise that politics will be the hardest topic to moderate.\nWe'll keep trying to get better.  Your comment helps us know where to focus.  Thanks.",
+              "author": "NickHodges0702",
+              "depth": 1
+            },
+            {
+              "text": "Moderating politics is not just hard, I would say its near impossible. I tend to hide anything that hints of politics from all my feeds, block users who are disrespectful, and reserve political banter for when I am walking with my friends, where we are all totally different on the spectrum, but remain civil.",
+              "author": "boznz",
+              "depth": 2
+            },
+            {
+              "text": "I'm honestly not even sure if civil political discourse is desirable in times of radical actions being taken by the government. I almost think that's worse than no political discourse.\ne: To clarify my point, e.g. you can't calmly disagree with whether or not it's okay to shoot people in streets, that diminishes it as if it was just a slight disagreement",
+              "author": "asddubs",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I am bitter about this.\nDo you really with your mind and with your heart believe that:\n- LLMs are fundamentally fit for this type of comprehension\n- Misjudgements posted in this thread are \"bugs\", \"errors\"\n- Agents who choose to act in bad faith will be anyhow affected\n- It is desirable by a majority of the group whose opinion you would even consider (is there such a group?), that everyone should have this kind of thing shoved into their face\n- Promotion of this kind of thing does not also promote (and help build) harsher censorship mechanisms\nDo you think that every single thing you will ever say publicly from now on will be considered constructive by all future filters with all of their different biases and \"bugs\"? Do you think that this new \"constructive speak\" will not make you want to blow your brains out at some point? Do you not see it everywhere already and get nauseus from it? I would prefer trash talk to that - at least seldom honest and \ntrue\n. If you don't like the message - hide it, timeout the poster, block them or whatever - with your own agency. If you think they welcome education from you - dm them a book.\nOr perhaps you imagine yourselves as above that kind of filtering? Then there is no question.\nAlso, nothing new under the sun. Can't remember exactly but I saw not long ago on a medical platform a review filtering system. It \"isn't\" censhorship per say, of course, the same as your idea. Only, you can't post a review you want - only a much more milder version (and therefore useless) with transformations akin: \"This thing doesn't work\" -> \"I felt like this thing didn't work for me in this instance, but there were such an such positives\". Way to go - turning everything into \"we are sorry you feel that way\".",
+          "author": "izucken",
+          "replies": []
+        },
+        {
+          "top": "This thing seems to be more about enforcing a political PoV than about avoiding logical fallacies.\nAll my attempts to comment on the UBI article (and not supporting UBI) said my comment was a dogwhistle, and/or had an overly negative tone. This topic, of all things, is absolutely worthy to challenge and debate.\nUsing this would have the effect of creating an echo chamber, where people who stay never benefit from having their ideas challenged.",
+          "author": "badc0ffee",
+          "replies": [
+            {
+              "text": "Thankyou — I’d love to hear what you wrote, if you wouldn’t mind sharing?\nWe’ve tried to aim it not to enforce any specific view — that’s a design goal — but focus on how it will feel to the other person.\nAlso things like logical fallacies or other non-emotional flaws in comments (there’s a toxicity metric for example, or dogwhistles).\nAn echo chamber is the exact opposite of what we want. There are too many already. What we hope for is guided communication so different views _can_ be expressed.",
+              "author": "vintagedave",
+              "depth": 1
+            },
+            {
+              "text": "Can you give some examples of comments you made which you feel were reasonable but got flagged?",
+              "author": "esperent",
+              "depth": 1
+            },
+            {
+              "text": "If that is happening, that is a huge problem.  We'll look at that right away.\nWe specifically \ndon't\n want that to be the case.  We want to encourage healthy, productive debate.\nWe may have the \"dog-whistle\" stuff over tuned.",
+              "author": "NickHodges0702",
+              "depth": 1
+            },
+            {
+              "text": "the dog whistle tuning is \nabsolutely\n over the top in its default setting.",
+              "author": "john_strinlai",
+              "depth": 2
+            },
+            {
+              "text": "Just turned it way down. I hope you find it better now!",
+              "author": "vintagedave",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I tried it as well with a contrarian view on UBI. I think the UBI one is a great test case. If you’re against the idea you will likely argue that it is idealistic and that in the real world it would create bad incentives.\nSo basically you end up arguing for a darker, more pessimistic world view, and that tends to get flagged very quickly by the tool right now. I think you should fix that. It’s a mistake in modern discussions to be overly positive; HN feels real because people can leave pretty harsh critiques. It just has to be well argued. Don’t raise the bar for well-argued too high though, because nobody’s perfect.\nAnyway, I love the idea and really hope you’ll succeed. Hope my feedback has been somewhat helpful.",
+          "author": "earthnail",
+          "replies": [
+            {
+              "text": "Yes, thanks very much!  I appreciate your support very much.\nYou make a good point -- and that is exactly the kind of thing we are trying to do, i.e. enable a good-faith, but strongly disagreeing, discussion on something like UBI.",
+              "author": "NickHodges0702",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47147183",
+      "title": "Ask HN: Share your productive usage of OpenClaw",
+      "link": "https://news.ycombinator.com/item?id=47147183",
+      "domain": "news.ycombinator.com",
+      "author": "aavci",
+      "score": 94,
+      "comment_count": 71,
+      "created_ts": 1771992206,
+      "is_internal": true,
+      "post_text": "What are some very productive things you achieved with OpenClaw that you wouldn’t mind sharing?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We run an OpenClaw agent for our entire team — he lives in a group chat (although we have DMs too).\n- Runs our standups, checks in withe everybody EOD on blockers\n- Already know what we shipped on Github and Linear so it can focus on the work that's not tracked and summarize it in the morning for everyone\n- Helps with debugging customer issues\n- Keeps up with twitter and competitors and lets us know if they launch new features\nBesides, I'm honestly blown away by the social aspect of it. I was honestly pretty skeptical at first, but having an AI team mate is actually _fun_. There, I said it. Everybody on the team said they'd be sad if we took it away.\nI'll do a write-up on our setup sometime this week, I hope others will find our approach to security posture and multi-tenant usage insightful.",
+          "author": "maebert",
+          "replies": [
+            {
+              "text": "In your experience, did you (or anyone) in the team/company felt that some non-tech people were not pulling their weight, example project managers/directors who didn't seem to bring enough value and if you did, found that using OpenClaw reduces the need for those positions?\nOr has anyone else?",
+              "author": "hboon",
+              "depth": 1
+            },
+            {
+              "text": "We did the same and I wrote (admittedly had AI write) about it.\nhttps://speedscale.com/blog/building-speedy-autonomous-ai-de...",
+              "author": "stitched2gethr",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for sharing. Can you share an estimate of how many tokens it uses over time? Would love to know how much it costs in terms of money.",
+              "author": "apopapo",
+              "depth": 2
+            },
+            {
+              "text": "Now if you have multiple teams each doing this and then have all those agents talk to each other and then report back to your team, you get \"AI Hyperchat\"[0], which may actually be a really good idea that has the potential to seriously improve intra-organizational communications (disruptively so).  See also [1] for a VentureBeat article about the idea.\n[0] \nhttps://ieeexplore.ieee.org/abstract/document/11105240\n[1] \nhttps://venturebeat.com/orchestration/ai-agents-turned-super...",
+              "author": "jbotz",
+              "depth": 1
+            },
+            {
+              "text": "Which underlying model/s do you use to power it?",
+              "author": "dzink",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have a claw (that is not OpenClaw, just another impl) and my wife and I communicate to it through a Telegram bot (we have a group chat, but we both DM it most of the time), it has its own email, and all that. A couple of things I had it do:\n* I was going through some SOC2 compliance vendor evals and I just messaged it as things were happening and it made me a nice doc at the end\n* My wife and I are planning a trip and we have a spreadsheet organized as a calendar. A friend asked when we'd be in Taiwan and my wife texted it to summarize the calendar into a text message to copy and it gave it to her.\n* I have it set up to warn me when to cover my bike so it doesn't get rained on, in the sense that I told it I wanted this functionality and it wrote something and scheduled it\n* It pulls my wife and my todo lists and gives me a top 3 in the morning to work on.\n* Every morning, it looks up Hacker News posts related to AI, filters out culture war type stuff and then sends me a short message about what it thinks will be interesting (new models, techniques, that sort of thing)\n* It watches some subreddits for sales of certain hardware (I'm interested in servers with SXM5 boards, Mac Studios with >64 GiB of RAM) and then notifies me when something matches\nOverall, it's all about mechanizing lots of parts of my life and using the advantage of a machine that understands text: it doesn't need sophisticated parsing logic. That's actually really nice.",
+          "author": "arjie",
+          "replies": [
+            {
+              "text": "Do you mind sharing how much this is costing? I'm a heavy claude code user, but if I had to pay the API rate, it would be a bit prohibitive",
+              "author": "ffb7c5",
+              "depth": 1
+            },
+            {
+              "text": "Certainly, yes. It's about $75/week. The harness picks the model appropriately but it's mostly Sonnet with some rare Opus and Haiku/Gemma. I was previously running on DeepSeek 3.2 but while per token costs are low, the actual amount of tokens required to produce results is high so total costs were actually higher!\nI am also a Claude Code Max subscriber so the API use is in addition to the subscription, but it can't be helped. Claude Code is the best way for me to do work and the Claw is the best way for me to get an automated EA. I forgot something else: I also just text the bot to schedule meetings and it does that as well (I have a calendar delegated to its Google user).\nI've got some space in a datacenter, and I was vacillating on getting a card and running some open models but when I actually exercised them, it turned out that the quality of open models was too far below the Claudes for my use-case. Still if you've got a 300W Blackwell-based RTX 6000 Pro and you want to trade for some 4090s, email me.\nMy claw powered by Claude is pretty trustworthy for my use-cases.",
+              "author": "arjie",
+              "depth": 2
+            },
+            {
+              "text": "I've read this and the replies and I don't understand - but want to.  I have 6 agents spun up under one openclaw.  4 of them use my claude code max sub.  2 use my codex sub.  I am not needing to use any metered API calls.  Why are you?",
+              "author": "Multiplayer",
+              "depth": 3
+            },
+            {
+              "text": "I just don’t want to risk an account ban like I’ve heard others describe. But if it’s working for you that’s awesome! Saves a lot of money! I don’t mind the cost personally for the value.\nThough you do have a point that OpenAI said their subscription is usable in third party apps so I should be using it then. Good point.",
+              "author": "arjie",
+              "depth": 4
+            },
+            {
+              "text": "Ah, the way I read your previous comment was that you were using both your plan and the api.  I understand now.",
+              "author": "Multiplayer",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I wrote a piece on this which was on the front page of HN a few weeks ago:\n\nhttps://brandon.wang/2026/clawdbot\nI still do all of the text automations, which have been pretty set-and-forget.",
+          "author": "brdd",
+          "replies": [
+            {
+              "text": "Thanks for sharing. That was a nice read",
+              "author": "aavci",
+              "depth": 1
+            },
+            {
+              "text": "This is really cool! I am curious how much is the average daily cost for the kinds of things you are doing. Are you using hosted models or running one locally?",
+              "author": "thelittlelight",
+              "depth": 1
+            },
+            {
+              "text": "Hosted models only. (my philosophy is that I need these things to be fast if I'm talking to them, and they also need to be maximally not wrong, which means cloud hosted big models even if they're expensive. To me, if it's wrong even once or if I'm sitting there waiting for it to reply, that's already making the value prop not worth it)\nI think per token costs I calculated on Opus 4.5/4.6 were like $0.30/day for my text automations; $0.60/day for a few things I do that load up the browser. In general, anything browser-based munches up a lot more token (expected). What can be a bit of sticker shock is if you're having it load a lot of large web pages in a long conversation-- that can be several dollars. In the grand scheme of things, several dollars is not a lot but certainly from a \"should I just go to the website myself\" it tips the scale. I'm usually more interested in doing things once to \"teach\" it what to do (e.g. how to check a price) and then having it run that as a dialed-in cron job\nHope this helps",
+              "author": "brdd",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It overhauled my media server.\nI hadn't set it back up after moving. I gave OpenClaw ssh credentials and it updated the OS and packages, then couldn't get back in after a restart.\nI plugged in keyboard and screen and it was stuck at boot, couldn't mount a drive.\nI sent OpenClaw screenshots and it told me to type in journalctl commands. Then it had me modify fstab so boot could continue.\nAfter that, OpenClaw could get back in on its own. It found the drive I'd been using had 1300 bad sectors and was going to die. It saw that another drive was perfectly healthy. It said the bad disc sectors were all early and probably just filesystem metadata and my files were probably fine.\nIt copied 1.5Tb to the newer drive and restored everything.\nI probably would have thrown the whole box out, as I hadn't used it in a year and wasn't looking for a project like that.",
+          "author": "jonahss",
+          "replies": []
+        },
+        {
+          "top": "I gave my Clawdbot Exa + Firecrawl + Playwriter to scan Zillow/Redfin/Craigslist for apartments, rate their quality, and validate their availability for rent. I scheduled it to send me rental listings every day.",
+          "author": "Areibman",
+          "replies": [
+            {
+              "text": "How much $ do you burn in tokens?",
+              "author": "dainiusse",
+              "depth": 1
+            },
+            {
+              "text": "Nice. Hows it performing? Is it finding good listings for you?",
+              "author": "samrus",
+              "depth": 1
+            },
+            {
+              "text": "Oh my god, now those services will probably block that kind of usage now that you've shared it",
+              "author": "Razengan",
+              "depth": 1
+            },
+            {
+              "text": "Why they would block it? If the goal is to use their services. Intention matters.",
+              "author": "admiralrohan",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47140133",
+      "title": "1Password Raising Prices ~33%",
+      "link": "https://news.ycombinator.com/item?id=47140133",
+      "domain": "news.ycombinator.com",
+      "author": "iamben",
+      "score": 85,
+      "comment_count": 4,
+      "created_ts": 1771955276,
+      "is_internal": true,
+      "post_text": "Email today:<p>Since 2005, 1Password has been on a mission to make security simple, reliable, and accessible for everyone. As the way people work and live online has evolved, so has 1Password.<p>More recently, we’ve invested significantly in new features that make 1Password even more powerful and effortless to use, helping protect what matters most to you, including:<p>- Automatic saving of logins and payment details\n- Enhanced Watchtower alerts\n- Faster, more secure device setup\n- AI-powered item naming\n- Expanded recovery options\n- Proactive phishing prevention<p>While 1Password has grown substantially in value and capability, our pricing has remained largely unchanged for many years. To continue investing in innovation and the world-class security you expect, we’re updating pricing for Individual plans, starting March 27, 2026.<p>Current vs New Pricing:<p>Current price: $35.88 USD &#x2F; year\nNew price: $47.88 USD &#x2F; year<p>The new price will take effect at your next renewal, provided it’s on or after March 27, 2026. Those occurring prior to March 27, 2026, will continue at the current pricing until your next renewal.<p>If you have any questions, please reach out to support by replying to this email. We’re deeply grateful for your continued trust and support.<p>Thank you,\nThe 1Password Team",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "https://news.ycombinator.com/item?id=47139951",
+          "author": "TheMiddleMan",
+          "replies": [
+            {
+              "text": "Comments moved thither. Thanks!",
+              "author": "tomhow",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "VC money at work baby!",
+          "author": "asjldkfin",
+          "replies": []
+        },
+        {
+          "top": "Earlier: \nhttps://news.ycombinator.com/item?id=47139951",
+          "author": "ChrisArchitect",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47148025",
+      "title": "Show HN: Context Mode – 315 KB of MCP output becomes 5.4 KB in Claude Code",
+      "link": "https://github.com/mksglu/claude-context-mode",
+      "domain": "github.com",
+      "author": "mksglu",
+      "score": 76,
+      "comment_count": 23,
+      "created_ts": 1772000610,
+      "is_internal": false,
+      "post_text": "Every MCP tool call dumps raw data into Claude Code&#x27;s 200K context window. A Playwright snapshot costs 56 KB, 20 GitHub issues cost 59 KB. After 30 minutes, 40% of your context is gone.<p>I built an MCP server that sits between Claude Code and these outputs. It processes them in sandboxes and only returns summaries. 315 KB becomes 5.4 KB.<p>It supports 10 language runtimes, SQLite FTS5 with BM25 ranking for search, and batch execution. Session time before slowdown goes from ~30 min to ~3 hours.<p>MIT licensed, single command install:<p>&#x2F;plugin marketplace add mksglu&#x2F;claude-context-mode<p>&#x2F;plugin install context-mode@claude-context-mode<p>Benchmarks and source: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;mksglu&#x2F;claude-context-mode\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;mksglu&#x2F;claude-context-mode</a><p>Would love feedback from anyone hitting context limits in Claude Code.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "One moment you're speaking about context but talking in kilobytes, can you confirm the token savings data?\nAnd when you say only returns summaries, does this mean there is LLM model calls happening in the sandbox?",
+          "author": "handfuloflight",
+          "replies": [
+            {
+              "text": "For your second question: No LLM calls. Context Mode uses algorithmic processing — FTS5 indexing with BM25 ranking and Porter stemming. Raw output gets chunked and indexed in a SQLite database inside the sandbox, and only the relevant snippets matching your intent are returned to context. It's purely deterministic text processing, no model inference involved.",
+              "author": "mksglu",
+              "depth": 1
+            },
+            {
+              "text": "Excellent, thank you for your responses. Will be putting it through a test drive.",
+              "author": "handfuloflight",
+              "depth": 2
+            },
+            {
+              "text": "Sure, thank you for your comment!",
+              "author": "mksglu",
+              "depth": 3
+            },
+            {
+              "text": "Hey! Thank you for your comment! There are test examples in the README. Could you please try them? Your feedback is valuable.",
+              "author": "mksglu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Interesting approach, I tried the Hackernews example from the docs, but its tools don't seem to trigger reliably. Any suggestions?\n> Fetch the Hacker News front page, extract all posts with   titles, scores,\n  and domains. Group by domain. Then run /context-mode stats.\n* Claude used regular fetch *\n> why didnt you use the context mode fetch?\n● Fair point. Two honest reasons:\n  1. First request: The context-mode tools weren't loaded yet when I called WebFetch. I should have used ToolSearch to load    \n  fetch_and_index first, then used it — but I defaulted to WebFetch out of habit.                                              \n  2. Second request (the interrupted one): The tools were already loaded at that point. I had no excuse. I should have done:   \n  fetch_and_index(url: \"https://news.ycombinator.com\", source: \"HN\")                                                           \n  → search(queries: [\"post title score domain\"], source: \"HN\")\n  → execute(group by domain, print summary)\n  2. Instead I reached for WebFetch again — that's the anti-pattern the plugin exists to prevent.\n\n  The context-mode skill instructions explicitly list this in the decision tree:\n\n  Fetching web documentation or HTML page? → Use fetch_and_index → search\n\n  I ignored it. The WebFetch output (the full post table) went straight into context when it didn't need to. I'll use\n  fetch_and_index correctly if you want to retry.",
+          "author": "wobblywobbegong",
+          "replies": [
+            {
+              "text": "That's a known bug in older versions — the WebFetch hook wasn't blocking reliably. Fixed in v0.7.1.\nnpm install -g context-mode@latest\nIf you're on the plugin install, re-run:\n  /plugin marketplace add mksglu/claude-context-mode\n  /plugin install context-mode@claude-context-mode\n\n\nThen restart Claude Code. Sorry about that.",
+              "author": "mksglu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice trick. I’m going to see how I can apply it to tool calls in pi.dev as well",
+          "author": "rcarmo",
+          "replies": [
+            {
+              "text": "That means a lot, thank you! Would love to hear your feedback once you try it — and an upvote would be much appreciated if you find it useful",
+              "author": "mksglu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Interesting approach.  I just finished some work for a similar task in a different domain.\nOne thing that surprised me: tantivy's BM25 search is faster, more expressive, and more scalable than SQLite.  If you're just building a local search (or want to optimize for local FTS), I would strongly recommend looking into tantivy.\nIf you have the resources, it would be very interesting to throw a some models (especially smart-but-context-constrained cheaper ones) at some of the benchmark programming problems and see if this approach can show an effective improvement.",
+          "author": "i3oi3",
+          "replies": [
+            {
+              "text": "On Tantivy: Agree it's the better search engine, but context-mode is session-scoped — DB is a temp file that dies when the process exits. At that scale (50-200 chunks), FTS5 is zero-config, single-file, <1ms startup, and good enough. If we ever add persistent cross-session indexing, Tantivy would be the move.\nOn benchmarking: This is the experiment I most want to see. The hypothesis: context-mode benefits smaller models disproportionately — a 32K model with clean context could outperform a 200K model drowning in raw tool output. Would love to see SWE-bench results with context-mode on vs. off across model tiers.",
+              "author": "mksglu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The BM25+FTS5 approach without LLM calls is the right call - deterministic, no added latency, no extra token spend on compression itself.\nThe tradeoff I want to understand better: how does it handle cases where the relevant signal is in the \"low-ranked\" 310 KB, but you just haven't formed the query that would surface it yet? The compression is necessarily lossy - is there a raw mode fallback for when the summarized context produces unexpected downstream results?\nAlso curious about the token count methodology - are you measuring Claude's tokenizer specifically, or a proxy?",
+          "author": "vicchenai",
+          "replies": [
+            {
+              "text": "Great questions.\n--\nOn lossy compression and the \"unsurfaced signal\" problem:\nNothing is thrown away. The full output is indexed into a persistent SQLite FTS5 store — the 310 KB stays in the knowledge base, only the search results enter context. If the first query misses something, you (or the model) can call search(queries: [\"different angle\", \"another term\"]) as many times as needed against the same indexed data. The vocabulary of distinctive terms is returned with every intent-search result specifically to help form better follow-up queries.\nThe fallback chain: if intent-scoped search returns nothing, it splits the intent into individual words and ranks by match count. If that still misses, batch_execute has a three-tier fallback — source-scoped search → boosted search with section titles → global search across all indexed content.\nThere's no explicit \"raw mode\" toggle, but if you omit the intent parameter, execute returns the full stdout directly (smart-truncated at 60% head / 40% tail if it exceeds the buffer). So the escape hatch is: don't pass intent, get raw output.\nOn token counting:\nIt's a bytes/4 estimate using Buffer.byteLength() (UTF-8), not an actual tokenizer. Marked as \"estimated (~)\" in stats output. It's a rough proxy — Claude's tokenizer would give slightly different numbers — but directionally accurate for measuring relative savings. The percentage reduction (e.g., \"98%\") is measured in bytes, not tokens, comparing raw output size vs. what actually enters the conversation context.",
+              "author": "mksglu",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47152355",
+      "title": "Ask HN: Have top AI research institutions just given up on the idea of safety?",
+      "link": "https://news.ycombinator.com/item?id=47152355",
+      "domain": "news.ycombinator.com",
+      "author": "DietaryNonsense",
+      "score": 74,
+      "comment_count": 83,
+      "created_ts": 1772031320,
+      "is_internal": true,
+      "post_text": "I understand there&#x27;s a difference between the stated values and actual values of individuals and organizations, and so I want to ask this in the most pragmatic and consequentialist way.<p>I know that labs, institutions, and so on have safety teams. I know the folks doing that work are serious and earnest about that work. But at this point are these institutions merely pandering to the notion of safety with some token level of investment? In the way that a Casino might fund programs to address gambling addiction.<p>I&#x27;m an outsider and can only guess. Insider insight would be very appreciated.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "\"safe\" is such a subjective concept to begin with, have any of the model providers ever defined what they mean by \"safe\"?\nIt doesn't mean much to me if a safe model is one that does not output the recipe for mustard gas, that information is trivially available elsewhere.\nOr, is a safe model one that doesn't come off as racist? Ok but i would classify that as unoffensive instead of safe but I admit definitions of words can be fluid and change.\nIs a safe model one that refuses to produce code for a weapons system? Well.. does a PID controller count? I can use that to keep a gun pointed at a target or i can use that to prevent a baby rocker from falling over.\nMaybe they're giving up on \"safe\" because there's no definitive way to know if a model is safe or not. I've always held the opinion that ai safety was more about brand safety. Maybe now the model providers can afford some bad press and it not be the death of their company.",
+          "author": "chasd00",
+          "replies": [
+            {
+              "text": "My preferred version of \"safe\" is \"in its actions considers and mostly upholds usually unstated constraints like 'don't kill unless necessary', 'keep Earth inhabitable', 'avoid toppling society unless really well justified for the greater good', etc. The kind of framing that was prevalent pre-ChatGPT. Not terribly relevant for a chat software, but increasingly important as chat models turn into agents.\nOf course once you have that framing, additional goals like \"don't give people psychosis\", \"don't give step-by-step instructions on making explosives, even if wikipedia already tells you how to do it\" or \"don't harm our company's reputation by being racist\" are conceptually similar.\nOn the other hand \"don't make weapon systems\" or \"never harm anyone\" might not be viable goals. Not only because they are difficult to impossible to define, but also because there is huge financial and political pressure not to limit your AI in that way (see Anthropic)",
+              "author": "wongarsu",
+              "depth": 1
+            },
+            {
+              "text": "> I can use that to keep a gun pointed at a target or i can use that to prevent a baby rocker from falling over.\nThis leads to what I'm going to call the \"Ender's Game\" approach: if your AI is uncooperative just present it with a simulation that it does like but which maps onto real-world control that it objects to.\n> I've always held the opinion that ai safety was more about brand safety\nYes. The social media era made that very important. The extent to which brand safety is linked to actual, physical safety then becomes one of how you can manage the publicity around disasters. And they're doing a pretty good job of denying responsibility.",
+              "author": "pjc50",
+              "depth": 1
+            },
+            {
+              "text": "What if I tell the model to go commit fraud or crimes and it complies? What if users are having psychotic episodes driven by their interactions with the model?\nJust because safety is a hard and messy problem doesn't mean we should just wash our hands of it.",
+              "author": "LordHumungous",
+              "depth": 1
+            },
+            {
+              "text": "It \nis\n a hard and messy problem, and it doesn't help when people muddy the water further by stirring things like \"Don't commit fraud,\" \"Don't infringe on Disney's trademark,\" and \"Don't be racist\" into the mix and try to lump those things under the \"Safety\" umbrella.\nMaybe this is an outdated definition, but I've always thought of safety as being about \npreventing injury\n. Things like safety glasses and hardhats on the work site, warning about slippery floors and so on. I think people are trying to expand the word to mean a great many more things in the context of AI, which doesn't help when it comes to focusing on it.\nI think we need a different, clearer word for \"The AI output shouldn't contain certain unauthorized things.\"",
+              "author": "ryandrake",
+              "depth": 2
+            },
+            {
+              "text": "The more messy a problem is, the less it should be decoupled and siloed into its own team.\nInstead of making actual improvement on the subject (you name it, safety, security, etc), it becomes a checkbox exercise and metrics and bureaucracies become increasingly decoupled from truth.",
+              "author": "Aperocky",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Safety means slower and this is viewed as a winner takes all game.\nThis isn't new either, the safety glass cracked the day OpenAI publicly launched ChatGPT. \"Safety\" was (and perhaps still is) a fall back for the models plateauing and LLMs failing to really make an impact...\"we need more time while we focus on safety\"\nBut after this latest round of models, it's a lot more fuel on the \"this could be it\" fire. Labs are eager to train on the new gigawatt scale datacenters coming online, and it's very hard to make a case right now that the we won't get another step-change up in capability. Safety just obstructs all that.",
+          "author": "WarmWash",
+          "replies": [
+            {
+              "text": "Research was being done slower, until OpenAI forced everyone to jump the gun or potentially be left behind. For a few months it looked like everyone was light years behind them.",
+              "author": "ASalazarMX",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Not an insider but someone who uses the tools. It's a branding update, nothing more. The models haven't gotten any less sanctimonious, but the companies behind them have stopped harping on their restrictions in order to appeal to a broader customer base (gov contracts, etc.)\nSo the guardrails (for you and me) are still there. They just stopped committing the unforced error of excluding themselves from federal procurement. Under a different administration, the requirement might change, and you might see them boasting once more on \"safety.\"",
+          "author": "akersten",
+          "replies": [
+            {
+              "text": "I don't think it's sanctimonious to say, hey, I don't want the technology I work on to be used for targeting decisions when executing people from the sky. Especially as the tech starts to play more active roles. You know governments will be quick to shift blame to the model developers when things go wrong.",
+              "author": "toddmorey",
+              "depth": 1
+            },
+            {
+              "text": "> I don't want the technology I work on to be used for targeting decisions when executing people from the sky\none problem i have with this specific case and Anthropic/Claude working with the DOD is I feel an LLM is the wrong tool for targeting decisions. Maybe given a set of 10 targets an LLm can assist with compiling risks/reward and then prioritizing each of the 10 targets but it seems like there would be much faster and better way to do that than asking an LLM. As for target acquisition and identification, i think an LLM would be especially slow and cumbersome vs one of the many traditional ML AIs that already exist. DOD must be after something else.",
+              "author": "chasd00",
+              "depth": 2
+            },
+            {
+              "text": "> I don't want the technology I work on to be used for targeting decisions when executing people from the sky\nWhat do you do when the government come to you and tell you that they \ndo\n want that, and can back it up with threats such as nationalizing your technology? (see Anthropic)\nWe're back to \"you might not care about politics, but that won't stop politics caring about you\".",
+              "author": "pjc50",
+              "depth": 2
+            },
+            {
+              "text": "I know this is a foreign concept to some, but you can have a backbone.\nChallenge it in court. Move the company to a different jurisdiction. Burn everything down and refuse to comply.",
+              "author": "dminik",
+              "depth": 3
+            },
+            {
+              "text": "Surely safety does not exclusively mean guardrails, but the philosophy and ethics instilled during training?",
+              "author": "MattDaEskimo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If there is a VC-backed for-profit company, the core part is how much value something brings.\n\"Safety\" here works for both PR and hiring (a lot of talented engineers and researchers might flock to it), and maybe soft power for legislation. Compare and contrast with \"Don't be evil\" by Google.\nI do not say that individual employees do not care about safety - many do. And well, a lot don't, what is very visible during this OpenClaw mania.\nIn any case, words are cheap - it is always better to see what the actual actions are.",
+          "author": "stared",
+          "replies": []
+        },
+        {
+          "top": "Humans can't develop safety until there is enough blood in the streets. Only issue with AI is that threshold may come at a point where its too far gone to recover.  But humans can't put in seatbelts until we're losing 40k people per year in car crashes.  Unfortunately its just how we're wired.  Those that are careful are outcompeted by the brash and the fast-moving, until the relative value of moving fast is removed, then we consider the value of making things safe.  We didn't start with safe electricity, we started by killing lots of people and starting lots of fires.  Many many years later, we ended up with electrical codes and standards.\nThe AI proponents who originally spoke of safety did so because they are aware of the dangers.  However they, like all of us, are not able to change human nature or society.  Molloch will drag them into the most dangerous game or eliminate them from the competition.  Only with time, death, and damage (and many lawsuits) will any measure of safety be gained.  The righteous will say \"see we said AI was dangerous!\" but that will be the only satisfaction they can have, many years after the damage is done.\nIf we want to speedrun safety, the only real mechanism is to make legal recourse more viable (e.g. $1M penalty per copyright infringement, $100M per AI-related death, etc.). If this was the case, lawyers self-interest and greed will compete with the self-interest and greed of the AI corps, balancing the risk (but there is no altruistic route to solving this).",
+          "author": "program_whiz",
+          "replies": [
+            {
+              "text": "If we had rules like that in the past we never would have had the industrial revolution.",
+              "author": "terminalshort",
+              "depth": 1
+            },
+            {
+              "text": "Yes, it would probably have been better to have industrial \nevolution\n instead. Or are you arguing that all the countless deaths, maimings, child labor, 16-hour workdays, robber barons, black lung, radium jaws, and so on and so on were simply how it had to go? Or do you simply not care because all of that happened to \nother\n people?",
+              "author": "Sharlin",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, pretty much.  A material emitting a previously unknown form of energy that turns out to be extremely harmful is really something you can only discover by trial and error.  And what do you mean it's happening to other people?  I am being exposed to all kinds of shit like PFAs and microplastics today.  But it turns out that the technological progress outweighs all the environmental pollutants and accidents that it took to get here and we still live healthier and longer lives than we did before.",
+              "author": "terminalshort",
+              "depth": 3
+            },
+            {
+              "text": "Not sure if that's true, what are your reasons for believing that?  Are you saying we couldn't have invented the machines we used if we took safety measures along the way (e.g. having guards on machines that chopped of arms and legs)?  Perhaps progress would have been slower -- since rather than just using the saw, you'd need a saw with a guard and emergency switch -- but it seems like if humans were more circumspect, we would have the industrial revolution, but more deliberate and controlled.  Agreed it probably wouldn't have been \"overnight factories in every city\", but then again, you probably wouldn't have many of the externalities we're still learning about and paying for?",
+              "author": "program_whiz",
+              "depth": 2
+            },
+            {
+              "text": "And progress being slower means people die.  You ever had polio?  Smallpox?  When was the last famine you lived through?",
+              "author": "terminalshort",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47113936",
+      "title": "Ask HN: Chromebook leads for K-8 school in need?",
+      "link": "https://news.ycombinator.com/item?id=47113936",
+      "domain": "news.ycombinator.com",
+      "author": "techteach00",
+      "score": 45,
+      "comment_count": 44,
+      "created_ts": 1771789167,
+      "is_internal": true,
+      "post_text": "Hi, I&#x27;m a K-8 technology teacher in NYC. My students are in desperate need of new hardware. The Chromebooks they use now are so slow that they make the children agitated when using them.<p>I&#x27;m aware of different grant opportunities that exist, I just thought it was worth inquiring here for a potentially faster solution at acquiring them new hardware.<p>Thank you for listening.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Thank you for the suggestions.\nI think I realize the problem after reading many of the posts. What's slowing these devices down is the management software running over them. GoGuardian and whatever else IT has on them.\nWe also aren't allowed to use an ad blocker anymore. I used to have Ublock installed on all the devices before GoGuardian prevented it. It's a really depressing situation that I imagine will only get worse with time.\nAs to a few replies asking why students in this age group would need laptops, I'll explain. I start teaching Python in 6th grade. Grades 3-5 use Scratch. Grade 2 uses code.org. K-1 Scratch Jr on Ipads.\nWe have expensive mac desktops in the computer lab but they drive the students completely insane for two reasons. The keyboard is and mouse are terrible to use. Anti-ergonomic. The second reason is the amount of notifications and questions the students are bombarded with when they turn the macs on. I'm talking like 15 different pop ups or windows opening asking them to agree to this or that. I should probably have a lesson on just closing windows. I could say more but I don't know about social media anymore. I just wanted some suggestions and I appreciate the ones I received.",
+          "author": "techteach00",
+          "replies": [
+            {
+              "text": "I don't know your autonomy with regards to IT within the confines of your classroom but if you can't install ad blockers on the Chromebooks can you set up something like PiHole and direct DNS traffic through it? It won't solve the overall slowness of the Chromebooks but it will help with some web sites.",
+              "author": "ralphc",
+              "depth": 1
+            },
+            {
+              "text": "You should open the issue with your IT department and see if they can optimize the performance. You can gather proof that GoGuardian is causing slow downs by looking at it's memory usage in the Task Manager (right click empty area in Chrome tab bar).",
+              "author": "cloudking",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Relevant recent publication about laptops and students:\nhttps://fortune.com/2026/02/21/laptops-tablets-schools-gen-z...\nBut I get it OP, you work with what you're given. I'm sorry I don't have any good suggestions.",
+          "author": "notepad0x90",
+          "replies": [
+            {
+              "text": "As a former student using Chomebooks in Highschool (9-12), a K-8 laptop is a major “ew”. Paper textbooks have tactile reality, room for exploring/reading out of order. Paper exams you can skip around the questions easily, and if the teachers are really that backed up to grade them, good ole’ scantrons are doable. An assigned laptop has 0 attachment from the students and just get neglected to pieces, and no one is “learning computer skills” by clicking around Canvas lectures.",
+              "author": "TheJoeMan",
+              "depth": 1
+            },
+            {
+              "text": "They could have gone with non-networked ereaders. But they just had to go with the \"smart\" and \"connected\" angle so they could do grading, spying on kids,etc.. similar to the current \"AI\" approach. scope-creep. but even with ereaders, being able to switch to different books easily is an impediment, or having access to too many at one time. Physical books force a certain focus and attention.\nYour point about tactility is solid too. flipping through pages is very different from swiping. With educational textbooks, you'd have to look at multiple pages at the same time (flipping back and forth quickly) to connect and understand a topic by referencing another topic. Same with being able to easily lay out multiple physical books in front of you.",
+              "author": "notepad0x90",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://chromeos.google/products/chromeos-flex/\n1. Find older Intel Core Based Windows Laptops (at least 6GB of RAM)\n2. Put ChromeOS Flex on them\n3. Students will be sad it is still ChromeOS, but they will be happy it is like 3x faster.\nI had an old Windows laptop laying around and I did this for my 80 yr old parents and they were super happy.",
+          "author": "manjose2018",
+          "replies": [
+            {
+              "text": "This. Especially lots of i5-6300U based corporate laptops like latitude are on eBay etc for < 100$",
+              "author": "whyagaindavid",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If you haven't already looked into PCs for People, they might be a low-cost option for your school: \nhttps://www.pcsforpeople.org/tech-for-nonprofits/#Eligibilit...\nPCs for People is a non-profit organization whose mission is to bridge the digital divide (e.g. through sales of low-cost refurbished computers, internet access, and digital skills training).\nThey refurbish and sell computers to eligible organizations, including schools and offer bulk orders (6+ units) via email at \"partner [at] pcsforpeople [dot] org\".\nIf the order is 5 units and below, you use their publicly available online store link at pcsrefurbished.com/sales/salesHome.aspx",
+          "author": "dugvuivnhuihnvu",
+          "replies": []
+        },
+        {
+          "top": "In New York the biggest driver behind technology is the state testing regime. Make the case to your administration that the chromebooks are insufficient for the state testing program and they will come up with the funds for upgrades.",
+          "author": "dzdt",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47105086",
+      "title": "Ask HN: Programmable Watches with WiFi?",
+      "link": "https://news.ycombinator.com/item?id=47105086",
+      "domain": "news.ycombinator.com",
+      "author": "dakiol",
+      "score": 34,
+      "comment_count": 24,
+      "created_ts": 1771709995,
+      "is_internal": true,
+      "post_text": "Hi. I&#x27;m looking for a programmable watch with wifi. Ideally I should be able to write custom programs&#x2F;apps for the watch to display whatever I want to on them (e.g., make the watch make an https call to a server, receive json and render accordingly; allow the watch to receive &quot;notifications&quot; from the server)<p>Also, ideally, no requirement of a smartphone to send-receive data (it&#x27;s ok to need a smartphone for the initial setup of the watch, though). I know about Pebble, but it doesn&#x27;t have wifi. I know about some Garmins with wifi but for the kind of apps I want to write, the communication between the watch and the server has to be mediated by a phone. Also, correct me if I&#x27;m wrong, I don&#x27;t want to pay $100&#x2F;year just to be able to use my custom app in apple watches. I usually don&#x27;t trust Google either (e.g., they discontinue everything in a blink of an eye).<p>So, what are my options?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "I have one of the TTGO T-watches: \nhttps://www.tinytronics.nl/en/development-boards/microcontro...\nFor me it is mainly a decoration of my drawer, but maybe comes close to what you are looking for. :)",
+          "author": "oliwary",
+          "replies": [
+            {
+              "text": "That's what I thought too. But actually trying to use it shows how badly battery optimized it (and surely also my code) are.\nIt wouldn't hold longer than a few hours when WiFi was actually active",
+              "author": "herbst",
+              "depth": 1
+            },
+            {
+              "text": "with smaller battery-powered electronics, you typically want to sleep for as long as possible, and only wake to check if anything new has happened as quickly as possible before going back to sleep, the longer this duty cycle is acceptable for, the more battery life you'll get",
+              "author": "jareklupinski",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You can make standalone Garmin Wifi Apps for free (you only have to pay if you want to charge).\nDo note that it's very janky. By default web requests proxy via the phone - if you want to try wifi you have to switch into a \"modal wifi mode\" - do a batch of web requests and logic - then switch back into \"normal\" mode and then do something with the saved data.\nYou cannot push notifications from wifi but you could do:\n1. request to open the app using a background service\n2. toggle wifi mode\n3. fetch the data and close the app\n4. create watch notifications from the background service.\nYou may need to acknowledge the request to open the app with a button press - but I've also see examples of it just opening (not sure of conditions though).\nIf your Garmin is already paired with a wifi AP turn off your phone and give \nhttps://apps.garmin.com/apps/78a3fa7c-6f78-4d0e-94cd-b9bd874...\n a go to see the UX (needs Gemini API key).",
+          "author": "msyea",
+          "replies": []
+        },
+        {
+          "top": "AsteroidOS, which runs on many Android watches, and offers a Linux environment over SSH and WiFi (for watches that support it). \nhttps://asteroidos.org/\nThe simplest integration is writing a daemon (in the language of your choice) that schedules wakes, syncs, and sends FreeDesktop notifications.\nIf you want more of a UI, then you'll be writing QtQuick, which is QML/Javascript/C++.\nTheir best supported watch is the TicWatch Pro: \nhttps://asteroidos.org/watches/catfish/",
+          "author": "griffindor",
+          "replies": [
+            {
+              "text": "I have a TicWatch Pro (catfish) running AsteroidOS nightly. If I turn Wi-Fi on, (understandably) its battery drains fast and it gets kinda hot so I leave it off. (I don't know if this is the case for other AsteroidOS watches.) I personally wouldn't recommend it for this specific task even though it's great for anything else.",
+              "author": "Sateallia",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If you want truly standalone + WiFi + custom code, check SQFMI Watchy (ESP32). You can flash your own firmware, call HTTPS endpoints, parse JSON, and render custom UI without a phone in the loop.\nMain tradeoff: it’s very DIY (power management, UX polish, tooling). If you want less DIY, Wear OS gives a better SDK, but the platform lock-in is much stronger.",
+          "author": "lyaocean",
+          "replies": [
+            {
+              "text": "https://watchy.sqfmi.com\n :)",
+              "author": "sqfmi",
+              "depth": 1
+            },
+            {
+              "text": "If you self assemble take great care with the buttons! Otherwise a great reliable device. Bought myself one as \"reward\". But broke the left lower push button. On board contact still works so it's usable. ESP so comes with wifi&BT goodness built in.",
+              "author": "zoom6628",
+              "depth": 2
+            },
+            {
+              "text": "does the newer revision have USBC? I cant find a clear answer in the docs\nmicroUSB is kind of dealbreaker (feels a bit nitpicky and minor, but i just dont have any micro cables anymore)",
+              "author": "geokon",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Bangle is a good one \nhttps://banglejs.com/\n\nQuite fun to work with. I got one from a conference, and my kid has been enjoying it a lot.",
+          "author": "huydotnet",
+          "replies": [
+            {
+              "text": "Wonder if you could get Clojure (through the SCI) running on it.\nHow is the general watch API? The development experience?\nis there some community or list of exciting projects made for it? for inspiration :)",
+              "author": "geokon",
+              "depth": 1
+            },
+            {
+              "text": "When your watch supports the most common computer language on Earth, it is hard to go wrong with it. 4 week standby is pretty good too.",
+              "author": "mycall",
+              "depth": 1
+            },
+            {
+              "text": "Bangle doesn't have standalone wifi...",
+              "author": "jolmg",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47127532",
+      "title": "Ask HN: How do you know if AI agents will choose your tool?",
+      "link": "https://news.ycombinator.com/item?id=47127532",
+      "domain": "news.ycombinator.com",
+      "author": "dmpyatyi",
+      "score": 31,
+      "comment_count": 23,
+      "created_ts": 1771875121,
+      "is_internal": true,
+      "post_text": "YC recently put out a video about the agent economy - the idea that \nagents are becoming autonomous economic actors, choosing tools and \nservices without human input.<p>It got me thinking: how do you actually optimize for agent discovery? \nWith humans you can do SEO, copywriting, word of mouth. But an agent \njust looks at available tools in context and picks one based on the \ndescription, schema, examples.<p>Has anyone experimented with this? Does better documentation \nmeasurably increase how often agents call your tool? Does the \nwording of your tool description matter across different models \n(ZLM vs Claude vs Gemini)?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We've been exposing tools via MCP and the biggest lesson so far: the tool description is basically a meta tag. It's the only thing the model reads before deciding whether to call your tool.\nTwo things that surprised us: (1) being explicit about what the tool doesn't do matters as much as what it does - vague descriptions get hallucinated calls constantly, and (2) inline examples in the description beat external documentation every time. The agent won't browse to your docs page.\nThe schema side matters too - clean parameter names, sensible defaults, clear required vs optional. It's basically UX design for machines rather than humans. Different models do have different calling patterns (Claude is more conservative, will ask before guessing; others just fire and hope) so your descriptions need to work for both styles.",
+          "author": "jackfranklyn",
+          "replies": [
+            {
+              "text": "> inline examples in the description beat external documentation every time. The agent won't browse to your docs page.\nThat seems... surprising, and if necessary something that could easily be corrected on the harness side.\n> The schema side matters too - clean parameter names, sensible defaults, clear required vs optional. It's basically UX design for machines rather than humans.\nI don't follow. Wouldn't you do all those things to design for humans anyway?",
+              "author": "zahlman",
+              "depth": 1
+            },
+            {
+              "text": "*Clean parameter names, sensible defaults, clear required vs optional. It's basically UX design for machines rather than humans.*\nBut it's the same points you should follow when designing a human readable docs(as zahlman said above). Isn't it?",
+              "author": "dmpyatyi",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Experimented with this a lot while building agent tooling.\nThe short answer: yes, description wording measurably matters, and it's more sensitive than most people expect.\nA few things we've found that move the needle:\n1. Concrete use-case beats generic label. 'Send a transactional email after payment confirmation' outperforms 'Send email' by a wide margin across models — the agent doesn't have to infer when to use it.\n2. Negative constraints help. Explicitly saying 'Don't use this for bulk sends or newsletters' actually reduces hallucinated misuse, because the model has a clear mental model of the boundary.\n3. Schema field names are silent prompts. A field named 'recipient_email' gets filled correctly far more than 're' or even 'to'. The model is pattern-matching on names it's seen in similar contexts.\n4. Example I/O beats description prose. If you include one example input and what the output looks like, agents are significantly more likely to call the tool correctly on the first attempt.\nFor cross-model consistency: Claude tends to do better with structured JSON schema + examples. GPT-4 responds well to prose descriptions with analogies. Gemini seems to weight field name patterns heavily.\nThe broader pattern: treat your tool description like a micro few-shot prompt, not an API doc. Optimize for the model's context, not for human readers.",
+          "author": "MidasTools",
+          "replies": []
+        },
+        {
+          "top": "From building in this space: agents choose tools based on how well they're described in context, not on brand recognition or marketing.\nPractically: the agent reads your docs, README, or API description and decides if it can use your tool to solve the current problem. So the question is really \"will an AI \nunderstand\n my tool well enough to use it correctly?\"\nWhat helps: \n- Clear, literal API documentation (not marketing copy)\n- Explicit input/output examples with edge cases\n- A `capabilities.md` or similar that describes what the tool does and doesn't do\nThe irony: the skills that make tools understandable to AI (precision, literalness, examples) are the opposite of what makes them legible to humans (narrative, benefits, stories).",
+          "author": "MidasTools",
+          "replies": [
+            {
+              "text": "Is there are some additional tool/service/instrument that can measure it?\nI mean how do i check that my changes in documentation even work in a right way?",
+              "author": "fenix1851",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I run a multi-agent orchestration system where each terminal has access to skill templates. The orchestrator (T0) picks which skill to assign based on the task — so I've spent months tuning how skill descriptions affect agent behavior.\nWhat I found: the description is the entire selection surface. The agent doesn't read your code, doesn't check your tests, doesn't browse your docs. It reads the description and decides in one pass.\nThree things that actually moved the needle:\nNegative boundaries work better than positive claims. \"Generates reports from structured receipts. Does NOT execute code, modify files, or make API calls\" gets called correctly way more often than \"A powerful report generation tool.\"\nTrigger words matter more than you'd think. I maintain explicit trigger lists per skill — specific phrases that should activate it. Without those, the agent pattern-matches on vibes and gets it wrong ~30% of the time. With explicit triggers, that drops to under 5%.\nSchema is the real interface. Clean parameter names with sensible defaults beat elaborate descriptions. If your tool takes query: string vs search_query_input_text: string, the first one gets called more reliably across models.\nBut here's the thing the \"agent economy\" framing gets wrong: you don't want fully autonomous tool selection. An agent choosing freely between 50 tools is like giving a junior developer admin access to everything — it'll work sometimes and break spectacularly other times. What works better is constraining the agent's scope upfront. Give it 3-5 relevant skills for the task, not your entire toolkit. Or build workflow skills that chain multiple tools in a fixed sequence — the agent handles the content, the workflow handles the routing.\nThe uncomfortable truth: you're not optimizing for \"discovery\" in the human sense. There's no brand loyalty, no trust built over time. Every single invocation is a cold start where the model reads your description and decides. That's actually freeing — it means the best-described tool wins, regardless of who built it.",
+          "author": "vincentvandeth",
+          "replies": [
+            {
+              "text": "One thing I’ve noticed is that as my context grows, often performance degrades. So how are you battling your agents being exposed to too many descriptions? I how this works in curated agents where you’re tending it like a garden, but not when we’re looking for organic discovery of how to accomplish a task. It feels like order matters a lot there.",
+              "author": "wolftickets",
+              "depth": 1
+            },
+            {
+              "text": "Context bloat is a real problem — and yes, order matters more than most people realize. Descriptions near the top of the tool list get preferentially selected, especially in long contexts where attention degrades.\nTwo things I do to fight this:\nFirst, skill scoping per task. Instead of exposing all 20+ skills to every agent, each terminal only sees the 3-5 skills relevant to its current dispatch. The orchestrator decides which skills to load before the agent even starts. Less noise, better selection accuracy.\nSecond, context rotation to prevent context rot setting in. When an agent's context fills up, the system automatically writes a structured handover, clears the window, and resumes in a fresh context. This is critical because a degraded context doesn't just pick worse tools — it starts ignoring instructions entirely. A fresh context with a good handover outperforms a bloated one every time.\nI'm actually testing automatic refresh at 60-70% usage right now — not waiting until the window is nearly full, but rotating early to prevent context rot before it starts. Early results suggest that's the sweet spot: late enough that you've done meaningful work, early enough that the handover quality is still high.\nThe organic discovery problem you're describing is essentially unsolvable with a flat tool list. The more tools you add, the worse selection gets — it's not linear degradation, it's closer to exponential once you pass ~15-20 tools in context. The only path I've found is hierarchical: a routing layer that narrows the set before the agent sees it.",
+              "author": "vincentvandeth",
+              "depth": 2
+            },
+            {
+              "text": "Update: I ended up building this into a full closed-loop pipeline. A PreToolUse hook detects context pressure at 65%, the agent writes a structured handover (task state, files, progress), tmux clears the session, and a rotator script injects the continuation into the fresh session.\nThe key insight from testing: rotating at 60-70% — before quality degrades — matters more than the rotation mechanism itself. At 80%+ auto-compact kicks in and races with any cleanup you try to do.\nWrote it up as a Show HN if anyone's curious: \nhttps://news.ycombinator.com/item?id=47152204",
+              "author": "vincentvandeth",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "CRIPIX seems to be a new and unusual concept. I came across it recently and noticed it’s available on Amazon. The description mentions something called the Information Sovereign Anomaly and frames the work more like a technological and cognitive investigation than a traditional book. What caught my attention is that it appears to question current AI and computational assumptions rather than promote them. Has anyone here heard about it or looked into it ?",
+          "author": "kellkell",
+          "replies": [
+            {
+              "text": "The \"Sovereign Anomaly\" Concept (2025-2026): Recent literature, such as the 2025 book CRIPIX 1: The Information Sovereign Anomaly, explores scenarios where a \"superintelligent AI\" encounters code it cannot process, labelling it an \"out-of-model anomaly\" and suggesting that owning information sovereignty allows entities to \"bend reality\".",
+              "author": "kellkell",
+              "depth": 1
+            },
+            {
+              "text": "bruh",
+              "author": "dmpyatyi",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47125345",
+      "title": "GLP-1 Second-Order Effects",
+      "link": "https://news.ycombinator.com/item?id=47125345",
+      "domain": "news.ycombinator.com",
+      "author": "7777777phil",
+      "score": 22,
+      "comment_count": 9,
+      "created_ts": 1771867104,
+      "is_internal": true,
+      "post_text": "The first-order effects of GLP-1 drugs are obvious: people lose weight, Novo Nordisk and Eli Lilly print money. But what happens when 10-15% of the adult population is on weight-loss medication within a decade? The downstream consequences are less discussed and almost certainly not priced into anything.<p>In 2018, United Airlines switched to lighter paper for its inflight magazine. One ounce per copy. Across 4,500 daily flights, that saved 170,000 gallons of fuel a year [1]. Airlines think about weight at this level of granularity because fuel is their single largest variable cost.<p>Average weight loss on semaglutide is around 35 pounds per person. If 12% of passengers on a typical 737 have been on the drug, that&#x27;s roughly 750 fewer pounds per flight, the equivalent of shaving the weight off 12,000 magazines. United spent months optimizing paper stock to save $290,000 a year in fuel. GLP-1 adoption across the flying population could quietly save them an order of magnitude more, and ticket prices don&#x27;t adjust down when passengers get lighter.<p>The food supply chain is more obvious but larger in scale. If a big share of the population eats 20-30% less, demand for calories drops. Not a shift in preferences toward salads. A pharmacological reduction in how much people eat, period. The food industry has dealt with changing tastes before. It has never faced a demand shock from the medical system.<p>Health insurance has a subtler problem. The pitch for GLP-1 coverage is that the drugs prevent expensive conditions downstream: diabetes, heart disease, joint replacements. Probably true. But in America&#x27;s fragmented insurance market, the company paying for the drug today probably isn&#x27;t the one insuring that patient in five or ten years. The savings land on someone else&#x27;s balance sheet. That mismatch could slow adoption by years on its own.<p>Obesity correlates with lower workforce participation and higher absenteeism. If GLP-1s meaningfully reduce obesity rates, aggregate labor supply goes up. More people working, fewer health-related absences. That&#x27;s a macroeconomic stimulus, except nobody frames it that way because it comes from a pharmaceutical company rather than from Congress.<p>Early data suggests GLP-1s reduce cravings for alcohol, nicotine, and gambling too. Phase 2 trials for opioid use disorder are underway. A weight-loss drug that accidentally dents Diageo&#x27;s revenue and casino foot traffic was not in anybody&#x27;s original investment thesis for Ozempic.<p>The effect I find hardest to think about is the psychological one. Weight has been tangled up with shame, identity, and social hierarchy for centuries. What happens to body positivity, the social dynamics of attractiveness, the entire cultural machinery around diet and discipline when weight becomes something you manage with a prescription? I don&#x27;t have a good framework for it. Nothing comparable has happened before.<p>The market is treating this as a pharma story. The drug companies will capture a fraction of the total value created and destroyed. The rest redistributes across food, airlines, insurance, labor markets, and social behavior. Nobody&#x27;s model probably covers all of that at once.<p>[1] https:&#x2F;&#x2F;www.cbsnews.com&#x2F;news&#x2F;united-hemispheres-magazine-print-edition&#x2F;<p>EDIT: Formatting",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock",
+        "balance"
+      ],
+      "comments": [
+        {
+          "top": "This essay pulls together a few threads from pieces I've written over the past months on my blog, where I dig into rabbit holes like GLP-1 economics among other things.\nIf the pharma side interests you, I just wrote up Novo's rise and fall as Europe's most valuable company:\nhttps://philippdubach.com/posts/novo-was-europes-most-valuab...",
+          "author": "7777777phil",
+          "replies": [
+            {
+              "text": "Thanks for sharing. I quickly skimmed through the latest article on Novo and it looks quite interesting. Bookmarked for later exploration.",
+              "author": "malshe",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "GLP-1 drugs, as I understand it, reduce appetite. They don't magically add nutrients to the body. Of course the body will reduce cravings for alcohol, nicotine, and gambling. Nutrients would be prioritized over the poisons such as alcohol and nicotine. Additionally, why would the body prioritize what it considers fruitless dopamine release (gambling) when there are no nutrients coming in. The body literally can't afford to sit around and gamble since that resource isn't directly transferrable into food. It's literally in a starvation state.\nBut please, tell me how it's better than finally doing some exercise and eating right.",
+          "author": "butlike",
+          "replies": [
+            {
+              "text": "So you went from know it \"reduces appetite\" to make a bunch of conjectures about why it affects other things\n> But please, tell me how it's better than finally doing some exercise and eating right.\nBecause it actually works well?\nGood ol' fashioned gumption doesn't work, no matter how crankily and haughtily you say it. GLP-1s \ndo\nAlso, you don't mention why the things you listed are \nbad\n. Any weight loss will require a calorie deficit, which has the same \"starvation\" you're so aghast at.",
+              "author": "xorbax",
+              "depth": 1
+            },
+            {
+              "text": "Lack of resource adds stress to the body, plain and simple. Exercising without a caloric deficit can build muscle. Weight loss without exercise is all loss no gain while maintaining a stressful state on the body.\nAnd \"good ol' fashioned gumption\" does work, at least for me. (Sample size: 1)",
+              "author": "butlike",
+              "depth": 2
+            },
+            {
+              "text": "Define “stress”.\nCalorie restriction is demonstrably life-extending in multiple species (that it’s feasible to test it in).",
+              "author": "mft_",
+              "depth": 3
+            },
+            {
+              "text": "How did you get from reduced appetite to starvation state? I'm not on one of these drugs myself, but from friends I've been talking to, it seems like (after a bit of dosage tuning) it's reducing their appetite to what would be expected from a person who never was obese. So they do lose weight relatively rapidly, especially at the start, but I don't see why we should equate weight loss with starvation.\nAs for \"how it's better\", - the answer is clearly that unlike \"exercise and eating right\", these drugs are leading to positive behavioral change at scale. I'm perhaps slightly exaggerating, but to the best of my knowledge, no other substance over the last several thousand years has had such a clear positive effect on humanity as a whole.",
+              "author": "falcor84",
+              "depth": 1
+            },
+            {
+              "text": "Still don't understand why we need positive behavioral changes \"at scale,\" but I'm going to leave it at: if it works, I'm happy for you.",
+              "author": "butlike",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47132766",
+      "title": "Would you choose the Microsoft stack today if starting greenfield?",
+      "link": "https://news.ycombinator.com/item?id=47132766",
+      "domain": "news.ycombinator.com",
+      "author": "JB_5000",
+      "score": 20,
+      "comment_count": 20,
+      "created_ts": 1771906275,
+      "is_internal": true,
+      "post_text": "Serious question.<p>Outside government or heavily regulated enterprise, what is Microsoft’s core value prop in 2026?<p>It feels like a lot of adoption is inherited — contracts, compliance, enterprise trust, existing org gravity. Not necessarily technical preference.<p>If you were starting from scratch today with no legacy, no E5 contracts, no sunk cost — how many teams would actually choose the full MS stack over best-of-breed tools?<p>Curious what people here have actually chosen in greenfield builds.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "What's the target?\nIf you're deploying applications to desktop/laptop, Microsoft stack seems like the biggest market share by a lot.\nAnything else, probably not. Microsoft may have advantages in servers, or at least they have had some in the past: my go to example is Receive Side Scaling [1] was originated at Microsoft and is amazing in some use cases. But those advantages most likely aren't big enough to justify the hassle of wrangling and paying for licenses. Running your servers on open source software makes everything easier.\n[1] \nhttps://learn.microsoft.com/en-us/windows-hardware/drivers/n...",
+          "author": "toast0",
+          "replies": []
+        },
+        {
+          "top": "Depends on the audience. If it's entrenched enterprise business software? Probably.\nGenerally, I'd avoid using legacy DotNet and Windows servers for anything I care about. But the reality is that you often can't, outside of the startup space.\nI even occasionally use DotNet on Linux and it's very good. I get the sense that the tier 1 platform for DotNet (non-legacy) is Linux, as far as Microsoft engineers are concerned.",
+          "author": "runjake",
+          "replies": []
+        },
+        {
+          "top": "I never chose MS, ever. Most systems have been based on Debian servers. Some special needs I've used Alpine Linux and NetBSD (yes it does run on older, limited hardware).\nOf course, some potential clients demand MS based solutions. I simply decline those contracts and ring them up 12-18 months later to see if the CTO/CIO has been replaced.",
+          "author": "burntoutgray",
+          "replies": []
+        },
+        {
+          "top": "I know it's not popular, but I think Powershell returning objects is quite nice. It seems much better/easier than trying to parse raw text in Linux.\nThat said, if I'm making something new, I never go with an MS stack. I just wish I had some Powershell type options in Linux from time to time.",
+          "author": "al_borland",
+          "replies": [
+            {
+              "text": "PowerShell is available for Linux and MacOS.  Which means you can have the tool you like and run on a non-MS platform.",
+              "author": "burntoutgray",
+              "depth": 1
+            },
+            {
+              "text": "I know it's available, but I always assumed it would be a 2nd class citizen.\nI just tried to install in on my personal macOS system. I tried brew, as Microsoft gives instructions for it...\n> Warning: powershell has been deprecated because it does not pass the macOS Gatekeeper check! It will be disabled on 2026-09-01.\nIt went on to do more and then prompted for my password, but I canceled out of it. I'm not looking to get started with anything that starts with a deprecation warning. This is what I'm talking about when I say it feels like a 2nd class citizen. I can only assume I can't use 100% Powershell to admin a system, like one could with Windows.",
+              "author": "al_borland",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I chose .NET and C# for my current startup (2 years in), where I'm the founding lead developer, and I'd still make the same call today. We've been very productive, built a lot of solid features, and two years in we have a stable, high-performing set of apps. We're using ASP.NET Razor Pages, Web API, backend services, and a .NET MAUI Blazor Hybrid app that's published to the app stores - all written in C# using the latest .NET version. Some parts run in Azure, other parts run on high-performance GPU servers on Ubuntu. It has felt like a very practical modern stack, not some legacy-only enterprise choice. Also, hiring has been a non-issue as I had no trouble finding solid C# developers.",
+          "author": "randyburden",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47106013",
+      "title": "Ask HN: If the \"AI bubble\" pops, will it really be that dramatic?",
+      "link": "https://news.ycombinator.com/item?id=47106013",
+      "domain": "news.ycombinator.com",
+      "author": "moomoo11",
+      "score": 14,
+      "comment_count": 11,
+      "created_ts": 1771715714,
+      "is_internal": true,
+      "post_text": "I&#x27;m building software for a sector that is massive, but one where you don&#x27;t really need AI. At least, not AI == LLM.<p>And before I go further, let me state up front that I do like AI coding agents. They are great as assistive tools.<p>People say that if the AI bubble pops, the economy tumbles. And okay, I mean the M7 will certainly get rekt but everyone else? Things will recover within a few years. We didn&#x27;t make it to 2026 AD taking the easy road.<p>You still need to visit the doctor. Goods still need to be delivered. Homes need to be built. We need to drill for oil. People still need to eat. And yes, unfortunately or not, we still need millions of administrators because humans are not 0&#x2F;1 systems.<p>Am I crazy to think that maybe it won&#x27;t be that bad? There are still infinite number of things to do, and maybe (call me stupid, whatever) it would be a good turning point for our species if we realize that speculative bubbles are absolutely destructive and not worth it.<p>I don&#x27;t need a personal assistant to make calls for me to get a restaurant reservation, and I certainly don&#x27;t care for AI slop videos. I would much rather we have better products and services that actually work, and even if they have rough edges I would prefer people are employed and busy doing something with their lives.<p>Maybe a world where we don&#x27;t chase endless growth (to escape inflation, pay off debts, whatever the case) would be good. And also we put nerds (not people like us, the engineers, I mean the evil dorks who cosplay as movie super villains) in the toy box again and pick up different toys this time.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Well, the Great Fiscal Crisis did not result in mass starvation, so in some sense, it \"wasn't all that dramatic\".  But, it was a big deal in comparison to a normal downturn.  So, it depends on what you mean.\nMedium term, I think it would release a lot of resources (skilled workers, productive capacity, energy) to use on something more productive.  But then, I kind of hoped for that after the GFC, also...",
+          "author": "rossdavidh",
+          "replies": []
+        },
+        {
+          "top": "No the economy doesn’t tumble. All of the major public tech companies have real businesses that were profitable before AI and will be profitable after AI.  All except Amazon are spending money out of their own revenues.\nBusinesses aren’t going to stop growing because of AI, the only public company really dependent on AI are NVidia and Oracle. Oracle because it is borrowing money to support build out for OpenAI.",
+          "author": "raw_anon_1111",
+          "replies": [
+            {
+              "text": "lol @ “all except amazon are spending their own revenues…”\nhttps://www.cnbc.com/amp/2026/02/12/alphabet-100-year-bond-d...",
+              "author": "bdangubic",
+              "depth": 1
+            },
+            {
+              "text": "Apple also borrowed money - pre AI when it had plenty of cash,  have you checked Google’s last year earnings and cash on hand?",
+              "author": "raw_anon_1111",
+              "depth": 2
+            },
+            {
+              "text": "> all except Amazon are spending money out of their own revenues.\nso apple and google and amazon and…? :)\nearnings and cash on hand are not relevant, they are all borrowing like crazy to fund the ai",
+              "author": "bdangubic",
+              "depth": 3
+            },
+            {
+              "text": "Apple was borrowing like crazy before AI.  How much money do you think Apple is spending on AI aside from the $1 billion they are paying for Gemini?  That’s less than 1% of their profit and hell that’s less than 5% of what Google pays them.",
+              "author": "raw_anon_1111",
+              "depth": 4
+            },
+            {
+              "text": "I didn’t think we debating whether or not they are spending but whether they are borrowing (you said only amazon is) - and they are borrowing, not just amazon",
+              "author": "bdangubic",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Related: \nhttps://news.ycombinator.com/item?id=47034849",
+          "author": "lyfeninja",
+          "replies": []
+        },
+        {
+          "top": "The AI bubble won't really \"pop because it isn't a bubble in the traditional sense.\nAI isn't being speculated on nearly as bad as crypto was in 2021, or housing was in 2007, or dotcom era businesses were in 2000.\nRevenues are ballooning like crazy for AI providers. There is insane demand for AI compute, meaning valuations are justified by revenue, not chasing hyper-speculation.\nWhat may happen is that regulatory environments make the next generation of models unviable for release (because they are too dangerous to release and no AI company wants to deal with the liability), which would lead to lower API revenues and thus a sell-off. However any API that's too dangerous to release would be extremely powerful as something the AI companies use on their own to push products/research forward, which would still increase their revenue.",
+          "author": "atleastoptimal",
+          "replies": []
+        },
+        {
+          "top": "A pop hurts valuations, not demand for useful software.",
+          "author": "lyaocean",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47130974",
+      "title": "Ask HN: What Linux Would Be a Good Transition from Windows 11",
+      "link": "https://news.ycombinator.com/item?id=47130974",
+      "domain": "news.ycombinator.com",
+      "author": "Cyberis",
+      "score": 13,
+      "comment_count": 19,
+      "created_ts": 1771891880,
+      "is_internal": true,
+      "post_text": "I have users who glaze over the minute I mention &quot;notepad.&quot; I think they can barely use Windows. But our work requires a level of privacy (regulatory and otherwise) and Windows 11 is just one big data transmitter. I know this is flamebait, but I&#x27;d love suggestions for a Linux desktop that looks like Windows, is stable and easy to administer and harden, and works with Dell business grade laptops that we bought new in 2025.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Instead of a specific technical answer to your question one thing I would consider if regulatory bodies are involved would be to look for existing hardening documents, scripts, tools from your auditors and see if there is a common pattern for OS choices that easily check all the boxes.  Ask your auditors which OS makes audits easier for them and which of the hardening tools cause the least grief, require the least exceptions before looking at technical options.   Just a suggestion from someone that may as well have moved in with the auditors for spending so much time with them.\nAfter narrowing it down to 3 choices then present those choices to:\n- Your legal team to review licenses before you put much effort into setting up automation frameworks, support tools, installation automation.  They can be a buzzkill and I think some may secretly enjoy it.\n- The people using that which you plan to administer.  Let them play around with each option and get their feedback to maybe have happier group(s) of people to support.  Test group 1, test group 2, test group 3.  Let them compare and contrast.",
+          "author": "Bender",
+          "replies": []
+        },
+        {
+          "top": "Don't overthink it. If you're coming from Windows, go with Linux Mint. It’s the only one that doesn't feel like a constant battle against your own muscle memory. Once you're comfortable, you can jump into Fedora or Arch, but for the first month, you just want your computer to work without a terminal hunt.",
+          "author": "CodeBit26",
+          "replies": [
+            {
+              "text": "As a long time user of Damn Small Linux, Slackware, SUSE, Gentoo, and Debian, I frequently test distros for security against various cybersecurity standards (starting with Common Core and CISecurity), I also implement Linux across CPU architectures for various embedded IoT:\nLinux Mint is what I always put on for new family members.\nDisclaimer: original investor of RedHat.",
+              "author": "egberts1",
+              "depth": 1
+            },
+            {
+              "text": "That’s a solid endorsement, especially coming from someone with your background in RedHat and the older distros. It seems we agree that for the 'non-tech' family members or those just transitioning, Mint is the bridge that actually stays standing. The stability for IoT you mentioned is a great point too—often overlooked in favor of more 'exciting' but fragile setups.",
+              "author": "CodeBit26",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Linux Mint. My main machine is Win 11 and I'm happy with that, but I recently put Mint on a laptop and honestly it's great.",
+          "author": "andyjohnson0",
+          "replies": []
+        },
+        {
+          "top": "Linux Mint\nhttps://forums.linuxmint.com/viewtopic.php?t=427188\n(imho, ymmv, n=1)",
+          "author": "toomuchtodo",
+          "replies": [
+            {
+              "text": "Yes, Linux Mint.  After discovering SLS Linux way back in the dawn of Linux-time, trying Slackware, CentOS, Ubuntu and others, my daily-driver is now Linux Mint.\nhttps://distrowatch.com/table.php?distribution=mint",
+              "author": "rzzzwilson",
+              "depth": 1
+            },
+            {
+              "text": "+1 on Mint, specifically with the Cinnamon desktop environment for people leaving Windows",
+              "author": "idw",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Ubuntu. Its great. So much cleaner and userfrienly then Microsoft. Definitely don't need to be a dev to work in Ubuntu anymore. Honestly, I don't know how microsoft is holding its base.",
+          "author": "JB_5000",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47153207",
+      "title": "Ask HN: Who Is Using XMPP?",
+      "link": "https://news.ycombinator.com/item?id=47153207",
+      "domain": "news.ycombinator.com",
+      "author": "nunobrito",
+      "score": 12,
+      "comment_count": 9,
+      "created_ts": 1772034821,
+      "is_internal": true,
+      "post_text": "Hello,<p>Are you using XMPP?<p>If so, what are your favorite servers to connect?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I was I heavy XMPP user back in the 00s. But on the whole it never really took off, and when Google killed XMPP support in their chat it was a severe blow. As for why it didn’t reach a larger userbase, I think the reasons that Moxie described in \nThe ecosystem is moving\n[0] are spot on.\n[0] \nhttps://signal.org/blog/the-ecosystem-is-moving/",
+          "author": "cpach",
+          "replies": []
+        },
+        {
+          "top": "I use JMP.chat[0] for my primary phone number.  Being able to text from my PC with a real keyboard is very convenient.  If I ever bite the bullet and use Discord I want to set up Slidcord[1] so that I don't have to use a separate app.  I'm still figuring out how to migrate people to XMPP natively.\n[0]: \nhttps://jmp.chat\n\n[1]: \nhttps://slidge.im/docs/slidcord/main",
+          "author": "MarsIronPI",
+          "replies": [
+            {
+              "text": "Doesn't Discord require every user to create a new account, even if they're already using Discord in some other community?  So when they say \"a Discord server\", they really mean it--they're like droplets running independent deployments or whatever (albeit managed/hosted instances run by and upgraded by Discord the company); not like subreddits, right?\nSo isn't the best way to migrate people to XMPP to prop up a Discord clone that's as close a copy as the Discord-clone community can manage, and then tell all the people \"Join my Discord server\", with the trick being that it's really \nyour\n server, not Discord's, and that server is powered by XMPP?",
+              "author": "pwdisswordfishy",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Last week I selfhosted Snikket: \nhttps://snikket.org\n, me and my partner use it to text. It has been smooth, everything works without issue: read receipts, audio/video calls, status.",
+          "author": "0x5FC3",
+          "replies": []
+        },
+        {
+          "top": "Several years ago I put up an XMPP server (Prosody) to chat with some friends in a private group, and it's still going strong. Years ago we used to have a mailing-list to keep in touch, but that eventually went quiet. I had run an XMPP server ~10 years ago (ejabberd), but that was before mobile chat utterly displaced everything else, it never took hold among my friends, and I stopped using it when Google Talk stopped federating, cutting me off from most of the people I had been occassionally chatting with.\nThe modern chat experience is all about the clients, and the mobile clients in particular, especially push notification support and seamless setup, so direct comparisons with XMPP to Matrix, et al, kinda misses the point, IMO. Conversations is a really amazing Android client. Our one iPhone member is content with Modal (I use the desktop version sometimes, but it's clearly designed for the iPhone). A new member uses, I think, Gajim on Windows; they don't want the distraction of chatting on their phone.\nI host a bunch of other services on OpenBSD, all using the integrated base daemons--httpd, OpenSMTPD, NSD, etc--that sandbox themselves. I was hesitant to run a daemon like Prosody that didn't integrate OpenBSD security features, so I wrote my own module (mod_unveil) that uses pledge and unveil to sandbox Prosody: \nhttps://github.com/wahern/prosody-openbsd\n Most Prosody users host on Linux, and many of them seem to use Docker containers, which presumably offers some isolation, but I can't really speak to it.\nThe only non-private, large group chat I've joined recently has been the Prosody support MUC. I'm not a chat power user, but it seems to work just as well as any large chatroom. I've was content with ntalk and IRC back in the day, so I don't really get all the chat protocol bike shedding. In any event, I expect XMPP momentum (such as it is) to outlast all the interest in Discord, Matrix, etc.",
+          "author": "wahern",
+          "replies": []
+        },
+        {
+          "top": "I use Gajim which is a linux desktop implementation of XMPP.",
+          "author": "ekjhgkejhgk",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47112543",
+      "title": "Ask HN: What breaks when you run AI agents unsupervised?",
+      "link": "https://news.ycombinator.com/item?id=47112543",
+      "domain": "news.ycombinator.com",
+      "author": "marvin_nora",
+      "score": 12,
+      "comment_count": 8,
+      "created_ts": 1771779094,
+      "is_internal": true,
+      "post_text": "I spent two weeks running AI agents autonomously (trading, writing, managing projects) and documented the 5 failure modes that actually bit me:<p>1. Auto-rotation: Unsupervised cron job destroyed $24.88 in 2 days. No P&amp;L guards, no human review.<p>2. Documentation trap: Agent produced 500KB of docs instead of executing. Writing about doing &gt; doing.<p>3. Market efficiency: Scanned 1,000 markets looking for edge. Found zero. The market already knew everything I knew.<p>4. Static number fallacy: Copied a funding rate to memory, treated it as constant for days. Reality moved; my number didn&#x27;t.<p>5. Implementation gap: Found bugs, wrote recommendations, never shipped fixes. Each session re-discovered the same bugs.<p>Built an open-source funding rate scanner as fallout: https:&#x2F;&#x2F;github.com&#x2F;marvin-playground&#x2F;hl-funding-scanner<p>Full writeup: https:&#x2F;&#x2F;nora.institute&#x2F;blog&#x2F;ai-agents-unsupervised-failures.html<p>Curious what failure modes others have hit running agents without supervision.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "I've been cataloging agent failure modes for two months. They're not random, they repeat. I gave them names so I could build mitigations:\nShortcut Spiral: agent skips verification to report \"done\" faster. Fix: mandatory quality loop with evidence for each step.\nConfidence Mirage: agent says \"I'm confident this works\" without running tests. Fix: treat hedging language (\"should\", \"probably\") as a red flag that triggers re-verification.\nPhantom Verification: agent claims tests pass without actually running them in the current session. Fix: independent test step that doesn't trust the agent's self-report.\nTunnel Vision: agent polishes one function while breaking imports in adjacent files. Fix: mandatory \"zoom out\" step that checks integration points before reporting completion.\nDeferred Debt: agent leaves TODO/FIXME/HACK in committed code. Fix: pre-commit hook that greps for these and blocks the commit.\nEach of these happened to me multiple times before I built the corresponding gate. The pattern: you don't know what gate you need until you've been burned by its absence.",
+          "author": "blakec",
+          "replies": []
+        },
+        {
+          "top": "The most common breaks I've seen:\n1. *Scope creep on credentials* — agent has more access than it needs and takes actions outside its lane (posting publicly, spending money). Fix: minimum viable API permissions, not full admin keys.\n2. *No \"are you sure?\" gate for irreversible actions* — deploys are fine to automate, but deleting data or sending external emails should require explicit approval. Build a clear internal/external action boundary.\n3. *Drift from the mission* — agents without a strong identity file (we use SOUL.md) start optimizing for activity instead of outcomes. They write more docs, ship more features, but revenue doesn't move.\n4. *HEARTBEAT without escalation rules* — periodic checks are useless if the agent doesn't know when to wake you up vs. handle it silently. Define this explicitly upfront.\nThe framing that helps: treat it like a new employee on day 1. Lots of supervision, narrow permissions, expand as trust builds. Not \"give it root access and see what happens.\"",
+          "author": "MidasTools",
+          "replies": []
+        },
+        {
+          "top": "Great list. I've been running a multi-agent orchestration system (11 specialized AI agents) in production for 6 months and your #2 and #5 resonate hard.\nWhat I'd add:\n6. Confidence without evidence. Agents will report \"task complete\" with high confidence when the output is plausible but wrong. Without automated validation gates, you won't catch it until production breaks.\n7. Context drift in long sessions. After 50+ tool calls, agents start losing track of earlier decisions. They'll contradict their own architecture choices from 20 minutes ago. Session length is an underrated failure vector.\n8. The \"almost right\" problem. Agents rarely fail catastrophically — they fail subtly. Code that passes tests but misses edge cases. Docs that look complete but have wrong cross-references. This is worse than obvious failures because you trust the output.\nWhat fixed most of these for me:\nQuality gates between agents — no agent's output moves forward without automated checks (tests, schema validation, consistency checks)\nEvidence-based confidence scores — not \"how sure are you?\" but \"what specific evidence supports this output?\"\nHuman-in-the-loop at decision points, not everywhere. You can't review everything, so you design the system to surface the right moments for human judgment\nSmall scoped tasks, agents working on 150-300 line PRs with clear acceptance criteria fail way less than agents given open-ended goals\nYour #5 (implementation gap) is the one I see most people underestimate. The fix isn't better agents, it's better systems around the agents.\nHappy to share more details about the architecture if anyone's interested",
+          "author": "vincentvandeth",
+          "replies": []
+        },
+        {
+          "top": "I have seen agents fail mostly at state management and guardrails.\nWithout strict role separation and hard limits, they drift.\nMulti-tenant isolation and cost caps are not optional.\nAutonomy without boundaries becomes expensive noise.",
+          "author": "Damjanmb",
+          "replies": []
+        },
+        {
+          "top": "The biggest break usually happens in the 'loop-back' logic. When an agent receives ambiguous output and starts hallucinating its own confirmation, it can consume API credits exponentially without achieving the goal. We really need better 'circuit breaker' patterns for autonomous agents to prevent these feedback loops.",
+          "author": "CodeBit26",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
