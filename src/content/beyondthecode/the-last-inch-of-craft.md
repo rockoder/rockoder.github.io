@@ -3,7 +3,7 @@ title: "The Last Inch of Craft"
 date: 2026-02-25
 description: "Systemic integrity is often found not in the grand architecture, but in the small, seemingly inefficient gestures that signal a respect for the work."
 author: "Ganesh Pagade"
-heroImage: "/images/beyondthecode/last-inch-of-craft-hero.svg"
+heroImage: "/images/beyondthecode/last-inch-of-craft-hero.png"
 draft: false
 ---
 
