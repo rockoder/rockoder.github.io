@@ -17,62 +17,148 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 # Newsletter RSS feeds to monitor
 RSS_FEEDS = {
-    "simon_willison": {
-        "name": "Simon Willison's Weblog",
-        "url": "https://simonwillison.net/atom/everything/",
-        "focus": ["ai", "engineering", "career", "big tech"]
-    },
-    "marcus_on_ai": {
-        "name": "Marcus on AI",
-        "url": "https://garymarcus.substack.com/feed",
-        "focus": ["ai", "engineering", "career", "big tech"]
-    },
-    "pragmatic_engineer": {
-        "name": "The Pragmatic Engineer",
-        "url": "https://newsletter.pragmaticengineer.com/feed",
-        "focus": ["engineering", "management", "career", "big tech"]
-    },
-    "lenny": {
-        "name": "Lenny's Newsletter",
-        "url": "https://www.lennysnewsletter.com/feed",
-        "focus": ["product", "growth", "leadership"]
-    },
-    "software_lead_weekly": {
-        "name": "Software Lead Weekly",
-        "url": "https://softwareleadweekly.com/feed/",
-        "focus": ["leadership", "management", "engineering"]
-    },
-    "leaddev": {
-        "name": "LeadDev",
-        "url": "https://leaddev.com/rss.xml",
-        "focus": ["engineering leadership", "management", "career"]
-    },
-    "staffeng": {
-        "name": "StaffEng",
-        "url": "https://staffeng.com/feed.xml",
-        "focus": ["staff engineer", "principal", "career"]
-    },
-    "engineering_managers": {
-        "name": "Engineering Managers Newsletter",
-        "url": "https://www.theengineeringmanager.com/feed/",
-        "focus": ["management", "leadership", "teams"]
-    }
+  "simon_willison": {
+    "name": "Simon Willison's Weblog",
+    "url": "https://simonwillison.net/atom/everything/",
+    "focus": ["ai leverage", "engineering strategy", "platform thinking"]
+  },
+  "sean_goedecke": {
+    "name": "Sean Goedecke",
+    "url": "https://www.seangoedecke.com/rss.xml",
+    "focus": ["large tech orgs", "career growth", "engineering culture"]
+  },
+  "rachel_by_the_bay": {
+    "name": "Rachel by the Bay",
+    "url": "https://rachelbythebay.com/w/atom.xml",
+    "focus": ["big company dynamics", "manager-ic tension", "org politics"]
+  },
+  "mitchell_hashimoto": {
+    "name": "Mitchell Hashimoto",
+    "url": "https://mitchellh.com/feed.xml",
+    "focus": ["org design", "founder to leader", "team building"]
+  },
+  "matklad": {
+    "name": "matklad",
+    "url": "https://matklad.github.io/feed.xml",
+    "focus": ["strategic ic", "engineering systems", "deep thinking"]
+  },
+  "hillel_wayne": {
+    "name": "Hillel Wayne",
+    "url": "https://buttondown.com/hillelwayne/rss",
+    "focus": ["formal reasoning", "engineering rigor", "systems mindset"]
+  },
+  "paul_graham": {
+    "name": "Paul Graham Essays",
+    "url": "http://www.aaronsw.com/2002/feeds/pgessays.rss",
+    "focus": ["power", "career positioning", "ambition", "startup dynamics"]
+  },
+  "experimental_history": {
+    "name": "Experimental History",
+    "url": "https://www.experimental-history.com/feed",
+    "focus": ["mental models", "decision making", "long-term thinking"]
+  },
+  "anil_dash": {
+    "name": "Anil Dash",
+    "url": "https://anildash.com/feed.xml",
+    "focus": ["tech leadership", "culture", "power structures"]
+  },
+  "pragmatic_engineer": {
+    "name": "The Pragmatic Engineer",
+    "url": "https://newsletter.pragmaticengineer.com/feed",
+    "focus": ["engineering leadership", "career growth", "org strategy"]
+  },
+  "leaddev": {
+    "name": "LeadDev",
+    "url": "https://leaddev.com/rss.xml",
+    "focus": ["engineering management", "org maturity", "leadership"]
+  },
+  "staffeng": {
+    "name": "StaffEng",
+    "url": "https://staffeng.com/feed.xml",
+    "focus": ["staff engineer", "principal thinking", "promotion"]
+  },
+  "engineering_managers": {
+    "name": "The Engineering Manager",
+    "url": "https://www.theengineeringmanager.com/feed/",
+    "focus": ["management systems", "coaching", "performance reviews"]
+  },
+  "software_lead_weekly": {
+    "name": "Software Lead Weekly",
+    "url": "https://softwareleadweekly.com/feed/",
+    "focus": ["curated leadership", "engineering systems", "team dynamics"]
+  },
+  "steve_blank": {
+    "name": "Steve Blank",
+    "url": "https://steveblank.com/feed/",
+    "focus": ["innovation", "org evolution", "growth stage leadership"]
+  }
 }
 
 # Keywords for filtering relevant content
 RELEVANT_KEYWORDS = [
-    "ai", "career", "promotion", "leadership", "management", "culture",
-    "burnout", "remote", "hiring", "interview", "performance",
-    "staff engineer", "principal", "senior", "mentor", "growth",
-    "communication", "team", "conflict", "feedback", "meetings",
-    "politics", "influence", "visibility", "impact", "strategy" 
+    # Promotion & Calibration
+    "promotion", "calibration", "performance review", "review cycle",
+    "staff engineer", "principal engineer", "senior engineer",
+    "leveling", "career ladder", "succession planning",
+
+    # Organizational Mechanics
+    "org design", "re-org", "operating model", "governance",
+    "ownership", "accountability", "incentives", "alignment",
+    "stakeholder", "prioritization", "roadmap", "execution",
+    "delivery", "cross-functional", "cross-team",
+
+    # Influence & Power
+    "influence", "visibility", "impact", "politics",
+    "managing up", "executive", "vp", "director",
+    "decision-making", "trade-offs", "leverage",
+
+    # Engineering Maturity
+    "technical debt", "architecture", "scalability",
+    "slo", "sli", "incident", "postmortem",
+    "platform", "multi-geo", "distributed teams",
+
+    # Leadership & Management
+    "leadership", "engineering manager", "tech lead",
+    "feedback", "conflict", "difficult conversations",
+    "retention", "hiring bar", "talent density",
+
+    # AI Impact on Software Engineers
+    "ai impact on engineers", "ai and developer jobs",
+    "ai adoption in engineering teams",
+    "ai productivity expectations",
+    "ai and hiring", "ai and promotion",
+    "ai and compensation",
+    "ai replacing developers",
+    "ai-augmented development",
+    "copilot productivity",
+    "llm-assisted development",
+    "automation of coding",
+    "developer velocity",
+    "smaller engineering teams",
+    "scope compression",
+    "output expectations",
+    "ai-driven metrics",
+    "changing skill requirements",
+    "strategic vs tactical engineers",
+
+    # AI_CAREER_IMPACT_SIGNALS
+    "headcount reduction",
+    "productivity gains",
+    "10x engineer",
+    "fewer engineers",
+    "automation replacing",
+    "efficiency gains",
+    "cost reduction",
+    "output per engineer",
+    "span of control",
+    "organizational flattening",
+    "platform consolidation"
 ]
 
 KEYWORD_PATTERN = re.compile(
     r'\b(' + '|'.join(re.escape(kw) for kw in RELEVANT_KEYWORDS) + r')\b',
     re.IGNORECASE
 )
-
 
 def parse_feed(feed_id: str, feed_config: dict, max_age_days: int = 7) -> list[dict]:
     """
