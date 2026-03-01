@@ -8,7 +8,7 @@ draft: false
 
 My first book of the year, [The Lean Startup](http://amzn.to/Vc7fQL) by Eric Ries. I am so glad that I read this book before investing significant amount of time in developing my product. It has saved me from doing some serious mistakes and introduced me to basic concepts which every entrepreneur should be aware of.  
 
-Top Amazon review is not so favorable for this book and I had cancelled it from my reading list todo. However [Eric's talk on Evangelizing for the Lean Startup](http://ecorner.stanford.edu/authorMaterialInfo.html?mid=2329) was such an eye opener for me that I instantly decided to read this book. Check out the video if you don't believe me.  
+Top Amazon review is not so favorable for this book and I had cancelled it from my reading list todo. However [Eric's talk on Evangelizing for the Lean Startup](https://www.youtube.com/watch?v=zGXAVw3vF9A) was such an eye opener for me that I instantly decided to read this book. Check out the video if you don't believe me.  
 
 I'll call the book as the beginner's guide to startup. It introduces many terminologies which are common in startup world and some very fundamental tactics that are essential for startup's initial operations. The book gives you a vocabulary to understand discussion on startup and entrepreneurship.  
 
