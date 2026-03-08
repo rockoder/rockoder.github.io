@@ -1,0 +1,1537 @@
+{
+  "scraped_date": "2026-03-08",
+  "source": "hacker_news",
+  "total_scraped": 138,
+  "nontech_count": 33,
+  "posts": [
+    {
+      "id": "47273854",
+      "title": "Hardening Firefox with Anthropic's Red Team",
+      "link": "https://www.anthropic.com/news/mozilla-firefox-security",
+      "domain": "www.anthropic.com",
+      "author": "todsacerdoti",
+      "score": 610,
+      "comment_count": 167,
+      "created_ts": 1772797998,
+      "is_internal": false,
+      "post_text": "The bugs are the ones that say &quot;using Claude from Anthropic&quot; here: <a href=\"https:&#x2F;&#x2F;www.mozilla.org&#x2F;en-US&#x2F;security&#x2F;advisories&#x2F;mfsa2026-13&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.mozilla.org&#x2F;en-US&#x2F;security&#x2F;advisories&#x2F;mfsa2026-1...</a><p><a href=\"https:&#x2F;&#x2F;blog.mozilla.org&#x2F;en&#x2F;firefox&#x2F;hardening-firefox-anthropic-red-team&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;blog.mozilla.org&#x2F;en&#x2F;firefox&#x2F;hardening-firefox-anthro...</a><p><a href=\"https:&#x2F;&#x2F;www.wsj.com&#x2F;tech&#x2F;ai&#x2F;send-us-more-anthropics-claude-sniffs-out-bevy-of-bugs-c6822075\" rel=\"nofollow\">https:&#x2F;&#x2F;www.wsj.com&#x2F;tech&#x2F;ai&#x2F;send-us-more-anthropics-claude-s...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I recommend that anyone who is responsible for maintaining the security of an open-source software project that they maintain ask Claude Code to do a security audit of it. I imagine that might not work that well for Firefox without a lot of care, because it's a huge project.\nBut for most other projects, it probably only costs $3 worth of tokens. So you should assume the bad guys have already done it to your project looking for things they can exploit, and it no longer feels responsible to not have done such an audit yourself.\nSomething that I found useful when doing such audits for Zulip's key codebases is the ask the model to carefully self-review each finding; that removed the majority of the false positives. Most of the rest we addressed via adding comments that would help developers (or a model) casually reading the code understand what the intended security model is for that code path... And indeed most of those did not show up on a second audit done afterwards.",
+          "author": "tabbott",
+          "replies": [
+            {
+              "text": "I have a few skills for this that I plug into `cargo-vet`. The idea is straightforward - where possible, I rely on a few trusted reviewers (Google, Mozilla), but for new deps that don't fall into the \"reviewed by humans\" that I don't want to rewrite, I have a bunch of Claude reviewers go at it before making the dependency available to my project.",
+              "author": "staticassertion",
+              "depth": 1
+            },
+            {
+              "text": "I'm curious: has someone done a lengthy write-up of best practices to get good results out of AI security audits? It seems like it can go very well (as it did here) or be totally useless (all the AI slop submitted to HackerOne), and I assume the difference comes down to the quality of your context engineering and testing harnesses.\nThis post did a little bit of that but I wish it had gone into more detail.",
+              "author": "Analemma_",
+              "depth": 1
+            },
+            {
+              "text": "OpenAI just released “codex security”, worth trying (along with other suggestions) if your org has access \nhttps://openai.com/index/codex-security-now-in-research-prev...",
+              "author": "j-conn",
+              "depth": 2
+            },
+            {
+              "text": "The HackerOne slop is because there's a financial incentive (bug bounties) involved, which means people who don't know what they are doing blindly submit anything that an LLM spots for them.\nIf you're running the security audit yourself you should be in a better position to understand and then confirm the issues that the coding agents highlight. Don't treat something as a security issue until you can confirm that it is indeed a vulnerability. Coding agents can help you put that together but shouldn't be treated as infallible oracles.",
+              "author": "simonw",
+              "depth": 2
+            },
+            {
+              "text": "That sounds like the same problem (a deluge of slop) with a different interface (eating straight from the trough rather than waiting for someone to put a bow on it and stamp their name to it)?",
+              "author": "hansvm",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "It's cool that Mozilla updated \nhttps://www.mozilla.org/en-US/security/advisories/mfsa2026-1...\n because we were all wondering who had found 22 vulnerabilities in a single release (their findings were originally not attributed to anybody.)",
+          "author": "mmsc",
+          "replies": [
+            {
+              "text": "Use After Free Use After Free Use After Free Use After Free Use After Free Use After Free Use After Free.\nI would be more satisfied if they gave a proper explanation of what these could have lead to rather than being \"well maybe 0.001% chance to exploit this\". They did vaguely go over how \"two\" exploits managed to drop a file, but how impactful is that? Dropping a file in abcd with custom contents in some folder relative to the user profile is not that impactful other than corrupting data or poisoning cache, injecting some javascript. Now reading session data from other sites, that I would find interesting.",
+              "author": "himata4113",
+              "depth": 1
+            },
+            {
+              "text": "You should generally assume that in a web browser any memory corruption bug can, when combined with enough other bugs and a lot of clever engineering, be turned into arbitrary code execution on your computer.",
+              "author": "mccr8",
+              "depth": 2
+            },
+            {
+              "text": "The most important bit being the difficulty, AI finding 21 easily exploitable bugs is a lot more interesting than 21 that you need all the planets to align to work.",
+              "author": "himata4113",
+              "depth": 3
+            },
+            {
+              "text": "If you can poison cache, you can probably use that a stepping stone to read session data from other sites.",
+              "author": "hedora",
+              "depth": 2
+            },
+            {
+              "text": "Looks like a lot of the usual suspects",
+              "author": "dmix",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This resonates. I just open-sourced a project and someone on Reddit ran a full security audit using Claude  found 15 issues across the codebase including FTS injection, LIKE wildcard injection, missing API auth, and privacy enforcement gaps I'd missed entirely.\nWhat surprised me was how methodical it was. Not just \"this looks unsafe\"  it categorized by severity, cited exact file paths and line numbers, and identified gaps between what the docs promised and what the code actually implemented. The \"spec vs reality\" analysis was the most useful part.\nMakes me think the biggest impact of LLM security auditing isn't finding novel zero-days  it's the mundane stuff that humans skip because it's tedious. Checking every error handler for information leakage, verifying that every documented security feature is actually implemented, scanning for injection points across hundreds of routes. That's exactly the kind of work that benefits from tireless pattern matching.",
+          "author": "gzoo",
+          "replies": []
+        },
+        {
+          "top": "The fact there is no mention of what were the bugs is a little odd.\nIt'd really be nice to see if this is a \"weird never happening edge case\" or actual issues. LLMs have uncanny abilities to identify failure patterns that it has seen before, but they are not necessarily meaningful.",
+          "author": "fcpk",
+          "replies": [
+            {
+              "text": "You can find them linked [1] in the OG article from Anthropic [2].\n[1] \nhttps://www.mozilla.org/en-US/security/advisories/mfsa2026-1...\n[2] \nhttps://www.anthropic.com/news/mozilla-firefox-security",
+              "author": "iosifache",
+              "depth": 1
+            },
+            {
+              "text": "The fact that some of the Claude-discovered bugs were quite severe is also a little more than something to brush off as \"yeah, LLM, whatever\". The lists reads quite meaningful to me, but I'm not a security expert anyways.",
+              "author": "larodi",
+              "depth": 1
+            },
+            {
+              "text": "Here's a write-up for one of the bugs they found: \nhttps://red.anthropic.com/2026/exploit/",
+              "author": "jandem",
+              "depth": 1
+            },
+            {
+              "text": "I’m guessing it might be some of these: \nhttps://www.mozilla.org/en-US/security/advisories/mfsa2026-1...",
+              "author": "deafpolygon",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, the ones reported by Evyatar Ben Asher et al.",
+              "author": "muizelaar",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've had mixed results. I find that agents can be great for:\n1. Producing new tests to increase coverage. Migrating you to property testing. Setting up fuzzing. Setting up more static analysis tooling. All of that would normally take \"time\" but now it's a background task.\n2. They can find some vulnerabilities. They are \"okay\" at this, but if you are willing to burn tokens then it's fine.\n3. They are absolutely wrong sometimes about something being safe. I have had Claude very explicitly state that a security boundary existed when it didn't. That is, it \nappeared\n to exist in the same way that a chroot \nappears\n to confine, and it was \nintended\n to be a security boundary, but it was not a sufficient boundary whatsoever. Multiple models not only identified the boundary and stated it exists but referred to it as \"extremely safe\" or other such things. This has happened to me a number of times and it required a lot of nudging for it to see the problems.\n4. They often seem to do better with \"local\" bugs. Often something that has the very obvious pattern of an unsafe thing. Sort of like \"that's a pointer deref\" or \"that's an array access\" or \"that's `unsafe {}`\" etc. They do far, far worse the less \"local\" a vulnerability is. Product features that interact in unsafe ways when combined, that's something I have yet to have an AI be able to pick up on. This is unsurprising - if we trivialize agents as \"pattern matchers\", well, spotting some unsafe patterns and then validating the known properties of that pattern to validate is not so surprising, but \"your product has multiple completely unrelated features, bugs, and deployment properties, which all combine into a vulnerability\" is not something they'll notice easily.\nIt's important to remain skeptical of safety claims by models. Finding vulns is huge, but you need to be able to spot the mistakes.",
+          "author": "staticassertion",
+          "replies": [
+            {
+              "text": "[work at Mozilla]\nI agree that LLMs are sometimes wrong, which is why this new method here is so valuable - it provides us with easily verifiable testcases rather than just some kind of analysis that could be right or wrong. Purely triaging through vulnerability reports that are static (i.e. no actual PoC) is very time consuming and false-positive prone (same issue with pure static analysis).\nI can't really confirm the part about \"local\" bugs anymore though, but that might also be a model thing. When I did experiments longer ago, this was certainly true, esp. for the \"one shot\" approaches where you basically prompt it once with source code and want some analysis back. But this actually changed with agentic SDKs where more context can be pulled together automatically.",
+              "author": "mozdeco",
+              "depth": 1
+            },
+            {
+              "text": "My point is that \"verifiable testcases\" works great for proving \"this is vulnerable\" but LLMs are still risky if you believe \"this is safe\", which you can't easily prove. My point is that you need to be very skeptical of when they decide that something isn't vulnerable.\nI completely agree that LLMs are great when instructed to provide provable, repeatable exploits. I have done this multiple times and uncovered some neat bugs.\n> I can't really confirm the part about \"local\" bugs anymore though, but that might also be a model thing.\nI don't think it's a model thing, it's just a sort of basic limitation of the technology. We shouldn't expect LLMs to perform novel tasks so we shouldn't expect LLMs to find novel vulnerabilities.\nAgents help, human in the loop is critical for \"injecting novelty\" as I put it. The LLM becomes great at producing POCs to test out.",
+              "author": "staticassertion",
+              "depth": 2
+            },
+            {
+              "text": "Please, implement \"name window\" natively in Firefox.\nI have to use chrome because the lack of it.",
+              "author": "kwanbix",
+              "depth": 2
+            },
+            {
+              "text": "https://addons.mozilla.org/en-GB/firefox/addon/window-titler...\n works great.",
+              "author": "janpio",
+              "depth": 3
+            },
+            {
+              "text": "Sort of. It won't be save between machines, for example, as chrome's implementation does. If Firefox crashes, most of th time it is lost. It is also not as clean as chrome's native implementation. I have tried it.\nThis has been requested since 2022: \n\nhttps://connect.mozilla.org/t5/ideas/user-defined-name-for-e...",
+              "author": "kwanbix",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47275236",
+      "title": "Show HN: Moongate – Ultima Online server emulator in .NET 10 with Lua scripting",
+      "link": "https://github.com/moongate-community/moongatev2",
+      "domain": "github.com",
+      "author": "squidleon",
+      "score": 277,
+      "comment_count": 159,
+      "created_ts": 1772806979,
+      "is_internal": false,
+      "post_text": "I&#x27;ve been building a modern Ultima Online server emulator from scratch. It&#x27;s not feature-complete (no combat, no skills yet), but the foundation is solid and I wanted to share it early.<p>What it does today:\n- Full packet layer for the classic UO client (login, movement, items, mobiles)\n- Lua scripting for item behaviors (double-click a potion, open a door — all defined in Lua, no C# recompile)\n- Spatial world partitioned into sectors with delta sync (only sends packets for new sectors when crossing boundaries)\n- Snapshot-based persistence with MessagePack\n- Source generators for automatic DI wiring, packet handler registration, and Lua module exposure\n- NativeAOT support — the server compiles to a single native binary\n- Embedded HTTP admin API + React management UI\n- Auto-generated doors from map statics (same algorithm as ModernUO&#x2F;RunUO)<p>Tech stack: .NET 10, NativeAOT, NLua, MessagePack, DryIoc, Kestrel<p>What&#x27;s missing: Combat, skills, weather integration, NPC AI. This is still early — the focus so far has been on getting the architecture right so adding those systems doesn&#x27;t require rewiring everything.<p>Why not just use ModernUO&#x2F;RunUO? Those are mature and battle-tested. I started this because I wanted to rethink the architecture from scratch: strict network&#x2F;domain separation, event-driven game loop, no\n  inheritance-heavy item hierarchies, and Lua for rapid iteration on game logic without recompiling.<p>GitHub: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;moongate-community&#x2F;moongatev2\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;moongate-community&#x2F;moongatev2</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "UO was the only game that I've ever played where you had \"commoner\" players. A lot of players failed to scale up, or to obtain top notch equipment. But the game was fun even for underpowered players, so they kept playing. The really powerful players were famous, like celebrities.\nIt's very different from modern games, where each player looks like the fantasy version of a Marvel super hero.",
+          "author": "haolez",
+          "replies": [
+            {
+              "text": "This is such a good observation. UO had a real economy and social hierarchy because power wasn't handed to you. \nYou could spend months as a fisherman or tailor and still have a meaningful experience. The gap between a grandmaster swordsman in full plate and a guy selling fish at the Britain bank was enormous, and both of them were having fun.\nModern MMOs are theme parks where everyone gets the same ride (with pay per win). UO was a living world where your role emerged from what you chose to do, not from a quest marker telling you where to go next.",
+              "author": "squidleon",
+              "depth": 1
+            },
+            {
+              "text": "My friends mocked me for spending months as a llama herder, until I could tame dragons and grief people by pulling them through portals.",
+              "author": "codezero",
+              "depth": 2
+            },
+            {
+              "text": "Oh yeah, you could tame animals to make them your pets.\nOne Halloween I logged into UO, and my character had been transformed into a deer, as some kind of a sick joke! All my inventory was gone, and all I could do was deer stuff.\nThen some bastard came along and TAMED ME. That totally sucked! I had to follow him around obediently all day. I guess I'm lucky he didn't skin me and make me into leather armor.",
+              "author": "DonHopkins",
+              "depth": 3
+            },
+            {
+              "text": "Core memories of carefully setting my fisherman on a boat with `ezmacro` before I got ready for school. I'd come home to either a boat full of fish (to later cook into fish steaks), or be dead from a player killer who found my boat and killed my macroing guy to try and steal the boat.",
+              "author": "eclipticplane",
+              "depth": 2
+            },
+            {
+              "text": "I always forgot where I parked my boats. Or that I even had one.",
+              "author": "SenHeng",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Wow! This is no small feat... am I reading the contribution graph[0] correctly, you've done all this yourself?\nThis endeavour sounds a whole lot like a server emulator for Infantry Online that was started by an incredibly talented developed 16 years ago (\"aaerox\"). I found the original svn commit on Sourceforge [1]. It's since moved to GitHub but has been active for 16 years and it has much of the same functionality you've already built, but done by more than a dozen developers over a decade-and-a-half.\nKudos to you. You've gotta explain how you've managed to do so much all by yourself.\n[0] \nhttps://github.com/moongate-community/moongatev2/graphs/cont...\n\n[1] \nhttps://sourceforge.net/p/infserver/code/1/",
+          "author": "nebezb",
+          "replies": [
+            {
+              "text": "So: I took most of the infrastructure from the my first attempt at moongate (\nhttps://github.com/moongate-community/moongate\n, which failed miserably along with \nhttps://github.com/tgiachi/Prima\n). From there, I had a good starting point to quickly build the foundations. I had already done the Lua scripting part in another project (\nhttps://github.com/tgiachi/Lilly.Engine\n). Codex helped me with all the testing, implementing functionality and creating tests, so at least I have a good sparring pattern. For the data import part (which I called FileLoaders), I took the logic from ModernUO. For the items part, I created a script (scripts/dfn_*.sh) to import items from POL! Thanks for the compliments! The way I am, if I fixate on something, it becomes an obsession!",
+              "author": "squidleon",
+              "depth": 1
+            },
+            {
+              "text": "while i understand the motivation to have codex like, do this problem for you, that's fine. what is the ethos of corresponding with people on Hacker News through the chatbot too? like i get that this particular comment i am replying to, you authored, but ChatGPT authored your post, and your documentation, and some of your other comments.\nthe big picture question is, if you can mess around with the bot to do anything, why spend it on this game? why not make your own original game instead?",
+              "author": "doctorpangloss",
+              "depth": 2
+            },
+            {
+              "text": "the Hacker News post itself was written by me.\nI do use ChatGPT sometimes as a tool while working on the project (similar to using documentation, Stack Overflow, or an IDE assistant), but the post and the project direction are my own. So what?",
+              "author": "squidleon",
+              "depth": 3
+            },
+            {
+              "text": "I forgot to mention, the entire web part in React was done by Codex. I hate developing frontends!",
+              "author": "squidleon",
+              "depth": 1
+            },
+            {
+              "text": "Did you have to massage/guide the UI quite a bit?  I've had terrible luck with codex, claude, and gemini at doing frontend.  It's always so close but so far at the same time",
+              "author": "freedomben",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Very cool work! This is giving me a big nostalgia hit, as a LONG time ago (when UO was a current game ;) I maintained a C++ UO emulator called UOX3. To be clear I absolutely did not initially develop it or even write any particularly large or difficult features. I just took over maintaining the codebase, taking patches and cutting releases, managing the community, that sort of thing. The original author decided to step away and I had apparently been enough of a busybody in the tool's community that he tapped me to lead it for a while. I also helped some Canadian guy with money, hardware, and bandwidth to burn run a private server based on UOX. Both were delightful experiences and I learned a ton.\nIn hindsight I am very glad Origin was not overly litigious and didn't send the FBI to my house for \"hacking\" their game.",
+          "author": "jdwithit",
+          "replies": [
+            {
+              "text": "Hey, I am just reaching out to say: \"thank you.\"\nWhen I was in high school, I played a lot of UO. It was actually the last computer/video game I ever played regularly, because I convinced myself as a teenager that I was addicted to it and needed to drop it \"cold turkey\" to focus on academics and extracurriculars.\n(A sign of the times for the late-1990s nostalgics: I sold my UO account on eBay for a few thousand dollars and an MTG Mox Pearl. I owned a bunch of virtual real estate, e.g. a UO tower on an island only accessible via moongate. The high bidder \"threw in\" a Mox Pearl as a kind of informal escrow, to make sure I completed the account transfer after getting paid.)\nBefore I dropped UO from my life, I discovered UOX. I was learning C++ and UOX was a great way for me to practice my emerging C++ skills.\nMy clearest memory of feeling the power of programming was when I created a mod for my UOX server that allowed me to drop an unlimited number of interconnected and color-coded moongates all over my server, creating something akin to the feeling of the game \"Portal,\" but long before Valve released \"Portal.\"\nIt was after having a blast with UOX that I decided to dig into programming much more. Somehow, the UOX server mod made programming feel \"real\" for me in the way my prior forays into coding simply didn't.\nThat led to me learning Python -- as a way of toying around with the  Slackware Linux server I had in my basement. I left C++ behind, but it was an important stepping stone for me. Now, decades later, learning Python was probably the single most important decision of my life in childhood. (See e.g. \nhttps://amontalenti.com/about\n)\nUOX is such a cool project. UO was a really ahead-of-its time internet game, as well. Great memories. Thank you.",
+              "author": "pixelmonkey",
+              "depth": 1
+            },
+            {
+              "text": "That’s awesome to hear!  \nActually UOX3 is one of the inspirations behind Moongate. The way it approached the server architecture and scripting was really interesting and it influenced some of the ideas I’m exploring in the project.\nProjects like UOX3 are a big part of the history of the Ultima Online emulator scene, so it’s great to hear from someone who helped maintain it.",
+              "author": "squidleon",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Wow, this brings back memories. I bough a little house and had a bakery outside Trinsic. You could hire a vendor NPC who would sell your wares while you were away. One of my friends had a tower or something, all decorated on the inside with furniture. It has taken 20+ years for World of Warcraft to have housing, and while the current setup is very good, it's instanced and not alive and part of the world the way UO's housing was.",
+          "author": "whyenot",
+          "replies": []
+        },
+        {
+          "top": "Very cool project. MMO server codebases tend to accumulate a lot of architectural complexity over time, so starting fresh with a cleaner separation between networking and game logic makes a lot of sense.\nCurious about the sector-based delta sync — how do you avoid packet bursts when a player enters a busy area with lots of items and mobiles?\nAlso interesting to see NativeAOT used here. Was that mainly for deployment simplicity or performance?",
+          "author": "swaminarayan",
+          "replies": [
+            {
+              "text": "Thanks! Yeah, one of the main motivations was exactly that — after years working with legacy UO codebases where networking, persistence, and game logic were deeply intertwined, I wanted to see what a clean-slate approach would look like with modern .NET.\nOn sector sync bursts — this is something I'm actively tuning. Right now when a player enters a new sector, we sync all ground items and mobiles in the surrounding sectors (configurable radius). For busy areas that can mean a lot of packets at once. The current approach is:\n  - Sector enter sync only sends the delta  sectors the player wasn't already seeing, so a simple move into an adjacent sector doesn't resync everything\n  - Sectors close to the player (within 1 of center) are always resynced because the UO client silently drops items beyond its visual range (~18 tiles), so you need to re-send them when the player comes back\n  - The outgoing packet queue handles the actual send, so the game loop isn't blocked waiting for network I/O\n\n  That said, there's definitely room for prioritization (mobiles first, then nearby items, then distant items) and spreading the sync across multiple ticks instead of one burst. It's on the roadmap.\n\n  On NativeAOT — honestly, both. The single-binary deployment is great for Docker (small image, instant startup), but the real win is predictable performance. No JIT warmup, no tiered compilation surprises\n  mid-session. For a game server where you care about consistent tick timing, eliminating that variable is worth it. The tradeoff is you lose some runtime flexibility, but source generators fill most of that gap\n  (packet registration, serialization, etc.).",
+              "author": "squidleon",
+              "depth": 1
+            },
+            {
+              "text": ">Curious about the sector-based delta sync — how do you avoid packet bursts when a player enters a busy area with lots of items and mobiles?\ndoesn't look like there is much going on to protect packet bursts there aside from smart-ish proximity sector loading. the work is done at boundry.\ndove into it because i have been recently working on frustrum spawning to reduce net burst in a similar project, was kind of curious if something similar was used as a method to pre-warm the upcoming sector but I didn't catch anything.\nfun and easy to read. thanks op and parent for getting me to look through it.",
+              "author": "serf",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47270807",
+      "title": "Show HN: Swarm – Program a colony of 200 ants using a custom assembly language",
+      "link": "https://dev.moment.com/",
+      "domain": "dev.moment.com",
+      "author": "armandhammer10",
+      "score": 189,
+      "comment_count": 61,
+      "created_ts": 1772770540,
+      "is_internal": false,
+      "post_text": "We built an ant colony simulation as an internal hiring challenge at Moment and decided to open it up publicly.<p>You write a program in a custom assembly-like (we call it ant-ssembly) instruction set that controls 200 ants. Each ant can sense nearby cells (food, pheromones, home, other ants) but has no global view. The only coordination mechanism is pheromone trails, which ants can emit and sense them, but that&#x27;s it. Your program runs identically on every ant.<p>The goal is to collect the highest percentage of food across a set of maps. Different map layouts (clustered food, scattered, obstacles) reward very different strategies. The leaderboard is live.<p>Grand prize is a trip to Maui for two paid for by Moment. Challenge closes March 12.<p>Curious what strategies people discover. We&#x27;ve seen some surprisingly clever emergent behavior internally.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "That's really cute, it reminds me that Will Wright (creator of The Sims) has referenced this book \"The Ants\", by Bert Holldobler in multiple occasions as a key inspiration for his games (and in particular SimAnt) and systems thinking. Did you come across that during your research phase or had you not heard about it? I haven't read it yet, but maybe someday I'll get around to it.",
+          "author": "TheAceOfHearts",
+          "replies": [
+            {
+              "text": "Hey, I'm the one who built this particular challenge!\nI had no clue, but thanks for the book lead! It didn't come up directly, but SimCity 2000 and especially SimCity 4 had a \nhuge\n impact on me growing up / I still spin up SimCity 4 from time to time, so I imagine there's a massive indirect influence haha.",
+              "author": "lightamulet",
+              "depth": 1
+            },
+            {
+              "text": "This is exceptionally beautiful. What did you use to build it? Vanilla JS?",
+              "author": "antfarm",
+              "depth": 2
+            },
+            {
+              "text": "This is actually all built in nextjs/react, though the initial sketches of the sim had no visualization and were just running in my terminal using bunjs",
+              "author": "lightamulet",
+              "depth": 3
+            },
+            {
+              "text": "Will Wright gave at least one great lecture at SIGGRAPH. Wonderful thinker and communicator. #ACM plz unlock this culture.\nAnts have fascinated me from a young age, I’d construct a viewing platform so I could watch the hive at work.\nMy favorite were the carpenter ants, so smart. It feels like they have a theory of mind. I didn’t hurt them, but if you disturbe their nest under a board, the efficiency and expediency they would exhibit while collecting their young was fascinating.\n*edit, I meant to ask if you had any other book recommendations?",
+              "author": "sitkack",
+              "depth": 1
+            },
+            {
+              "text": "Well, I'm currently reading through \"Designing Virtual Worlds\" by Richard Bartle. He's known for being one of the creators of MUD (multi-user dungeon). I'm not far along enough to make a judgement on the quality of the contents, but I keep seeing the book title pop up everywhere so it seems important.",
+              "author": "TheAceOfHearts",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://alliance.seas.upenn.edu/~plclub/contest/results.php",
+          "author": "onair4you",
+          "replies": []
+        },
+        {
+          "top": "My \"hello world\" for a new stack is always a version of Worm.  Somewhere between Life and your Swarm, Worm wanders around looking for food and water, trying to avoid birds and other issues.  Each round the worm survives it grows by a segment.  If it doesn't get food or water, it is reduced a segment.  And so on.  Your Swarm is a few levels up from my iterations, totally inspirational!  Thanks!",
+          "author": "ynac",
+          "replies": []
+        },
+        {
+          "top": "I've been working on a surprisingly similar project for the last week: plants grow cells on a grid by executing a raw chunk of memory according to a simple instruction set. I'm aiming more for an evolution simulator, where each plant gets a 1kb brain that is randomized a little when a new plant is spawned.\nMost plants right now settle into a simple goto loop that places the requisite cells to survive and then spam seeds until they die. I have seen some interesting variety in body plans emerge where plants sort into discrete species regionally. I'm hoping to eventually get decision making to emerge organically. If things go well this system is theoretically capable of sexual selection (and maybe fisherian runaway) but that's a pipe dream right now.\nhttps://github.com/Will-Morr/PlantBrainGrid",
+          "author": "WillMorr",
+          "replies": []
+        },
+        {
+          "top": "what is this? assembly for ants?",
+          "author": "i_am_a_squirrel",
+          "replies": [
+            {
+              "text": "It's assembly for people who can code good.. and can do other things good too.",
+              "author": "forkerenok",
+              "depth": 1
+            },
+            {
+              "text": "It needs to be at least three times this size!",
+              "author": "yesthisiswes",
+              "depth": 1
+            },
+            {
+              "text": "just be glad that ants are ambiturners",
+              "author": "RandomTeaParty",
+              "depth": 2
+            },
+            {
+              "text": "ant-ssembly to be precise",
+              "author": "armandhammer10",
+              "depth": 1
+            },
+            {
+              "text": "So hot right now",
+              "author": "testfrequency",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47282807",
+      "title": "Show HN: Kula – Lightweight, self-contained Linux server monitoring tool",
+      "link": "https://github.com/c0m4r/kula",
+      "domain": "github.com",
+      "author": "c0m4r",
+      "score": 80,
+      "comment_count": 54,
+      "created_ts": 1772842045,
+      "is_internal": false,
+      "post_text": "Zero dependencies. No external databases. Single binary. Just deploy and go. I needed something that would allow for real-time monitoring, and installation is as simple as dropping a single file and running it. That&#x27;s exactly what Kula is. Kula is the Polish word for &quot;ball,&quot; as in &quot;crystal ball.&quot; The project is in constant development, but I&#x27;m already using it on multiple servers in production. It still has some rough edges and needs to mature, but I wanted to share it with the world now—perhaps someone else will find it useful and be willing to help me develop it by testing or providing feedback. Cheers! Github: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;c0m4r&#x2F;kula\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;c0m4r&#x2F;kula</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Is there any meaningful reason to add the project structure to the README, and add a copyright symbol to every mention of Linux?\nI'm not quite sure by what standards it's considered to be lightweight, but it may be useful for homelab owners.\nAnyway, Zabbix still looks like a better solution by any metric.",
+          "author": "savalione",
+          "replies": [
+            {
+              "text": "I got your point. The project structure remains from the initial phase of building the tool. I think I'll eventually remove it or put it on the wiki or somewhere else. My excessive attachment to copyright probably stems from the fact that years ago, when I wrote my own websites and articles, people often simply copied them and signed them as their own. The Linux Foundation website has attribution instructions that ask for the use of the ® symbol; I simply followed this instruction, but I agree that it's probably an exaggeration on my part. Considering what this tool does, I personally think it's lightweight in terms of both binary size, execution times, and dashboard performance. But I agree that's debatable.",
+              "author": "c0m4r",
+              "depth": 1
+            },
+            {
+              "text": "In fact, you followed the instructions exactly to spec \nhttps://www.linuxfoundation.org/legal/the-linux-mark",
+              "author": "dqv",
+              "depth": 2
+            },
+            {
+              "text": "I like having tons of docs in the README, vertical screen space is cheap.",
+              "author": "sneak",
+              "depth": 1
+            },
+            {
+              "text": "The README was AI generated, that's why.",
+              "author": "mervz",
+              "depth": 1
+            },
+            {
+              "text": "Ironically, Zabbix front page also has some AI smells. Doesn't really matter regarding the actual tool, which is indeed more battle-tested",
+              "author": "ramon156",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I like that you've started keeping your prompts in the repo [1]. Why have you deleted them, later on? What I find curious is how can something AI generated can be licensed AGPL?\n[1]: \nhttps://github.com/c0m4r/kula/commit/ae3f8a8483c91fe8bd4ea2c...",
+          "author": "mitjam",
+          "replies": [
+            {
+              "text": "At some point, writing these files became a hassle and I felt it was too chaotic, so I gave up on it. Regarding licenses, given that LLMs are using other people's work without their consent anyway, and most of the code produced rn is AI, these licenses are to me really just suggestions. I would treat them as an expression of intent, not a strictly legal document.",
+              "author": "c0m4r",
+              "depth": 1
+            },
+            {
+              "text": "It would be interesting to hear a lawyer's take on that, as I suspect their opinion might differ from yours...",
+              "author": "danparsonson",
+              "depth": 2
+            },
+            {
+              "text": "A lawyer's opinion will be directly proportional to their fee and will have little to do with reality, because the law hasn't kept up with what's happening right now. If you don't code with AI, you'll be left behind. Everyone is coding with AI, even in places where it's not immediately obvious, there's AI. You open the refrigerator and AI comes out. I don't know how this will be regulated, I'm not an expert in this field, but for now, it is what it is. The most important thing for me is that I don't derive any financial benefit from this and I give attribution where it is due.",
+              "author": "c0m4r",
+              "depth": 3
+            },
+            {
+              "text": "No, a lawyers opinion will reflect the law. From a legal standpoint it doesn't matter how you feel about applying a license to your work, it matters what the law says about that. I'm not a lawyer, but my expectation is that the license you choose will bind anyone who chooses to use your software, and in particular will have an effect on companies that wish to use it. That may be fine and exactly what you want, but my point is just that it's not necessarily a whimsical 'statement of intent'.",
+              "author": "danparsonson",
+              "depth": 4
+            },
+            {
+              "text": "I feel that too :) With the license, you are right, and I like your stance of \"expressed intent\".",
+              "author": "mitjam",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Back in the 90/2000 the was a very popular tool named rrdtool to store metrics in a round robin structure on disk, especially suited for network metrics. The goal of the storage was to have a fixed size and cover only last NNN days, circularly.\nI use rrdtool to this day, as a building block, but this project looks much better.",
+          "author": "plagiat0r",
+          "replies": [
+            {
+              "text": "Oh rrdtool is still relevant today. Multiple (if not most of) monioring tools like Cacti, Observium, Munin still use it.",
+              "author": "c0m4r",
+              "depth": 1
+            },
+            {
+              "text": "rrdtool conbined with graphite was powerful back then when metrics and logging was selfhosted.",
+              "author": "debarshri",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Monitoring needs to be: single dashboard << many agents. I have no plan deploying dashboard on every server.",
+          "author": "amar0c",
+          "replies": [
+            {
+              "text": "I think netdata or Grafana with a chosen backend is right for you then. My goal was different, but I'll consider implementing such functionality in the long run. Thank you for your feedback.",
+              "author": "c0m4r",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Reading through supported metrics, I don't see temperatures mentioned. That's really important for homelab servers. CPU temp, SSD temp, NVMe temp...",
+          "author": "atmanactive",
+          "replies": [
+            {
+              "text": "Temperatures monitoring will be added. Initially, I implemented too many metrics, so during development I limited them to a reasonable level to make them manageable, but I'll be adding more as the project matures. Thanks for the feedback!",
+              "author": "c0m4r",
+              "depth": 1
+            },
+            {
+              "text": "Looking forward, thanks!",
+              "author": "atmanactive",
+              "depth": 2
+            },
+            {
+              "text": "If you have a moment, I would be grateful if you could create an issue on github. I will then be able to let you know when it's ready and ask you to try it out. Please also let me know which temperatures you'd like to primarily monitor. I assume I'll have to gradually introduce the supported ones, as not all of them can be detected at once.",
+              "author": "c0m4r",
+              "depth": 3
+            },
+            {
+              "text": "Sure thing. In my experiences based on using LibreHardwareMonitor [1] on Windows, and Dunnart [2] on Linux, dealing with temperature monitoring is not trivial. But it's not impossible either. For example, in Linux, looking at /sys folder for CPU temperatures, I can often find several entries, of which, some are dead, some are way off, and some are correct, but it is always a hit and miss endeavour. So, reliably monitoring temperatures requires a bit of an algorithm to detect the right source.\n[1] \nhttps://github.com/LibreHardwareMonitor/LibreHardwareMonitor\n[2] \nhttps://github.com/warthog618/dunnart",
+              "author": "atmanactive",
+              "depth": 4
+            },
+            {
+              "text": "That's true, which is why I assume I'll have to gradually implement this feature. It probably won't be perfect, but it's worth trying :)\nThank you for opening the issue!",
+              "author": "c0m4r",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47232091",
+      "title": "Ask HN: How many of you hold an amateur radio license in your country?",
+      "link": "https://news.ycombinator.com/item?id=47232091",
+      "domain": "news.ycombinator.com",
+      "author": "ToddWBurgess",
+      "score": 77,
+      "comment_count": 96,
+      "created_ts": 1772544850,
+      "is_internal": true,
+      "post_text": "I am VE3HWO. I hold a basic with honours and advanced qualifications in Canada. Hoping to connect with other hams on HN. 73",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I do. I'm not sure I like exposing my home address by providing my callsign with my HN account (something to think about for other posters).",
+          "author": "giantg2",
+          "replies": [
+            {
+              "text": "> I'm not sure I like exposing my home address by providing my callsign with my HN account\nPlease explain. Surely one simply opts out of having ones address published in your countries call book?",
+              "author": "GJim",
+              "depth": 1
+            },
+            {
+              "text": "In the US it's a public database, and you don't get to opt out of providing your name and a mailing address (\nmailing\n, needs to be valid but doesn't need to be your home address, PO Boxes work).\nhttps://wireless2.fcc.gov/UlsApp/UlsSearch/searchLicense.jsp",
+              "author": "Jtsummers",
+              "depth": 2
+            },
+            {
+              "text": "I put my office address for anything where I need to provide a mailing address but I don't want to provide my home address.",
+              "author": "Marsymars",
+              "depth": 3
+            },
+            {
+              "text": "Wow!\nI know American data protection law is pretty poor, but that really is shocking; such data should not be made public without the users explicit opt-in consent.",
+              "author": "GJim",
+              "depth": 3
+            },
+            {
+              "text": "They have opt-in consent: it’s a known part of the US ham licensing process that the database is public and searchable, and nobody is forced to get a ham license.\nIn fact, several of the questions on the ham test involve the fact that you can look up operator info online.",
+              "author": "akerl_",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Taking my technician test tomorrow! Wish me luck!\nNot only am I pursuing this because I want long-range emergency comms in case cell networks go down (like what happened with Verizon recently), but also because I see a very notable contraction on what communication is allowed to be done on the internet, especially in the last year. Censorial regimes around the world seem to be accelerating and I don't want to be cut off from communications because I am not of an \"accepted\" identity.\nAnd yes, I'm aware that states police the amateur airwaves too. But I see it more like how getting a driver's license doesn't mean I can't flee a country with my car... Learning to drive, or operate a radio, is still a valuable skill to learn and practice.",
+          "author": "Pfhortune",
+          "replies": []
+        },
+        {
+          "top": "I find the technical side of the hobby very interesting but the thought that it requires having a conversation with strangers and that too synchronously, is a personal deterrent.\nI don't know if there are others like me.\nEDIT: Glad to see that there are others around. Happy to meet you. Async acks are great. So is the joy of engaging with something intellectually challenging.",
+          "author": "srean",
+          "replies": [
+            {
+              "text": "Humans can be so different, it's fascinating and awesome. I'm quite the opposite. Where I wanted to talk to people from around the world and have some interesting conversations about everything, the fact that they are mostly \"Hello, I'm calling from x, using radio y, and your signal is z. 73\" is a big let down for me. I somewhat like the technical sid of it, but just calling to say \"Hello, x, y, z, bye.\" ends up feeling like a waste of time to me (in the sense that I could be using this time for other, more interesting things. I still find it somewhat interesting though). But, if you enjoy the technical aspect of it, then I think it's fine, you can focus more on cw, or the digital modes where the contacts are automated.\nedit: I know there are ragchews all the time, but it's still mostly about equipment.",
+              "author": "EL_Loco",
+              "depth": 1
+            },
+            {
+              "text": "Oh I love meeting and knowing people from different parts of the world, have curiosity about their human stories, about how they think, what they find funny, their food, their music, their culture, their interests. Oh yes their food, music and humor.\nThat's one reason I love New York so much.\nHowever my pace is much slower. I take my time.\nOn the technical side, the added attraction is to do some homebrewed amateur radio astronomy.",
+              "author": "srean",
+              "depth": 2
+            },
+            {
+              "text": "I've been licensed for a couple of years. All my QSOs are short and sweet, mostly activating and hunting POTA/SOTA contacts, where the activator prefers to have short QSOs in order to activate the park/summit. I have no interest in having a conversation with the other amateur, at most I would exchange what gear I'm using and what power I'm running. That is it.\nI like building kits, QRP, CW, and building my own antennas. I only make contact with other people to be able to improve my skills and validate my gear.\nMy father has been licensed for nearly 50 years, he loves the technical side of the hobby, I've made more contacts over the last 2 years than he has in 15 years. There are others like you.\nOliver, M7OCL",
+              "author": "olorton",
+              "depth": 1
+            },
+            {
+              "text": "There are dozens of us, friend.  I got my license for the challenge and learning that came with.  Tuned in to signals near and far but never sent my own voice over the air.",
+              "author": "montroser",
+              "depth": 1
+            },
+            {
+              "text": "Totally the same. I got my license 7 years ago just for fun. I challenge myself to have at least one QSO per year which always takes an hour of prepping myself mentally. But I love the technical side and am always happy to join practical meetups.",
+              "author": "Tzela",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I got my license because I'm an offshore sailor. It is useful as safety and communication equipment (radio nets to keep track of other boats, their weather and fishing conditions :), and let your would-be-rescuers know your position and status), but also for sending and receiving data. It is my primary interface for weather info at sea using traditional weatherfax, but also more modern GRIB extraction. I can even update my blog using my SSB on HAM frequencies at sea. It's fun. Never had a shoreside station though.",
+          "author": "tablarasa",
+          "replies": [
+            {
+              "text": "> Let your would-be-rescuers know your position and status\nStupid question, do search and rescue services even have equipment that can tune into HAM frequencies, are they even listening on those frequencies, and do they regularly train on communicating with the HAM community?\nI'm sure there are more established ways of radioing for help in the maritime world(Aviation has the guard frequency)",
+              "author": "sand500",
+              "depth": 1
+            },
+            {
+              "text": "Not a stupid question at all. But these aren't search and rescue services, they are just other sailors. I'm talking about locales that are far far outside of the realm of typical rescue services, and in no particular jurisdiction. Your best bet for rescue is your fellow sailors or commercial shipping traffic. Radio nets like the Pacific Seafarers Net allow you to make yourself known so that folks can keep tabs on you (and you them) in case something happens.\nEPIRB and other emergency beacons still use HF radio frequencies (not HAM of course) and countries like the U.S., Australia, New Zealand and others I'm sure are monitoring those signals. But even then, they will first and foremost look to the seafaring community to actually render assistance, and that kind of call to action does often make its way through HAM radio nets, though I'm not sure exactly how, e.g., the U.S. Coast Guard makes that first outreach as the rescue coordinator.",
+              "author": "tablarasa",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am in Australia and got a US General class license because for some time the Australian licensing was in total chaos while changing over to new arrangements.\nI did it online thru the New York Radio Club (?).\nI did Novice then General in about 30 minutes. I studied for maybe 6 hours immediately prior.\nI grew up from age 5 in my Dads ham shack in NZ - every single thing he had made, transmitters, receivers, antennas, the feed wire, oscilloscope, signal gens,  grid dip oscillator etc with many parts salvaged. In NZ in those days that is how most people did it, at least partially.\nI also have an Electrical Engineering degree.\nSo sort of had a bit of background working knowledge, which meant I wasn't starting from scratch.\nKK7RBX",
+          "author": "airbreather",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47278980",
+      "title": "Launch HN: Palus Finance (YC W26): Better yields on idle cash for startups, SMBs",
+      "link": "https://news.ycombinator.com/item?id=47278980",
+      "domain": "news.ycombinator.com",
+      "author": "sam_palus",
+      "score": 57,
+      "comment_count": 88,
+      "created_ts": 1772821581,
+      "is_internal": true,
+      "post_text": "Hi HN! We’re Sam and Michael from Palus Finance (<a href=\"https:&#x2F;&#x2F;palus.finance\" rel=\"nofollow\">https:&#x2F;&#x2F;palus.finance</a>). We’re building a treasury management platform for startups and SMBs to earn higher yields with a high-yield bond portfolio.<p>We were funded by YC for a consumer-focused product for higher-yield savings. But when we joined YC and got our funding, we realized we needed the product for our own startup’s cash reserves, and other startups in the batch started telling us they wanted this too.<p>We realized that traditional startup treasury products do much the same thing: open a brokerage account, sweep your cash into a money market fund (MMF), and charge a management fee. No strategy involved. (There <i>is</i> actually one widely-advertised treasury product that differentiates on yield, but instead of an MMF it uses a mutual fund where your principal is at considerable risk – it had a 9% loss in 2022 that took years to recover.)<p>I come from a finance background, so this norm felt weird to me. The typical startup cashflow pattern is a large infusion from a raise covering 18–24 months of burn, drawn down gradually. That&#x27;s a lot of capital sitting idle for a long time, where even a modest yield improvement compounds into real money.<p>MMFs are the lowest rung of what&#x27;s available in fixed income. Yes, they’re very safe and liquid, but when you leave your whole treasury in one, you’re giving up yield to get same-day liquidity on cash you won’t touch for six months or more. \nBig companies have treasury teams that actively manage their holdings and invest in a range of safe assets to maximize yield. But those sophisticated bond portfolios were just never made accessible to startups. That’s what we’re building.<p>Our bond portfolio holds short-duration floating-rate agency mortgage-backed securities (MBS), which are an ideal, safe, high-yielding asset for long-term startup cash reserves under most circumstances.[1]<p>The bond portfolio is managed by Regan Capital, which runs MBSF, the largest floating-rate agency MBS ETF in the country. Right now we&#x27;re using MBSF to generate yields for customers (you can see its historical returns, including dividends, here: <a href=\"https:&#x2F;&#x2F;totalrealreturns.com&#x2F;n&#x2F;USDOLLAR,MBSF\" rel=\"nofollow\">https:&#x2F;&#x2F;totalrealreturns.com&#x2F;n&#x2F;USDOLLAR,MBSF</a>). We&#x27;re working with Regan to set up a dedicated account with the same strategy, which will let us reduce fees and give each startup direct ownership of the underlying securities. All assets are held with an SEC-licensed custodian.<p>Based on historical returns, we target 4.5–5% returns vs. roughly 3.5% from most money market funds.[2] Liquidity is typically available in 1-2 business days. We will charge a flat 0.25% annual fee on AUM, compared to the 0.15–0.60%, depending on balance, charged by other treasury providers.<p>We think that startup banking products themselves (Brex, Mercury, etc.) are genuinely good at what they do: payments, payroll, card management. The problem is the treasury product bundled with them, not the bank. So rather than building another neobank, we built Palus to connect to your existing bank account via Plaid. Our goal was to create the simplest possible UX for this product: two buttons and a giant number that goes up.<p>See here: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=8Q_gwSqtnxM\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=8Q_gwSqtnxM</a><p>We are live with early customers from within YC, and accepting new customers on a rolling basis; you can sign up at <a href=\"https:&#x2F;&#x2F;palus.finance&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;palus.finance&#x2F;</a>.<p>We&#x27;d love feedback from founders who&#x27;ve thought about idle cash management or people with a background in fixed-income and structured products. Happy to go deep in the comments.<p>[1] Agency MBS are pools of residential mortgages guaranteed by federal government agencies (Ginnie Mae, Fannie Mae, and Freddie Mac). It&#x27;s a $9T market with the same government backing and AAA&#x2F;AA+ rating as the Treasuries in a money market fund. No investor has ever lost money in agency MBS due to borrower default.<p>It&#x27;s worth acknowledging that many people associate “mortgage-backed securities” with the 2008 financial crisis. But the assets that blew up in 2008 were private-label MBS, bundles of risky subprime mortgages without federal guarantees. Agency MBS holders suffered no credit losses during the crisis, and post-2008 underwriting standards became even stricter. If anything, 2008 was evidence for the safety of agency MBS, not against it.<p>The agency guarantee eliminates credit risk. Our short-duration, floating-rate strategy addresses the other main risk: price risk. Fixed-rate bonds lose value when rates rise, but floating-rate bonds reset their coupon based on the SOFR benchmark, protecting against interest rate movements.<p>[2] This comes from the historical spread between MMFs and floating-rate agency MBS; MMFs typically pay very close to SOFR, while the MBS pay SOFR + 1 to 1.5%. This means that if the Federal Reserve changes interest rates and SOFR moves, both asset types will move by about the same amount, and that 1-1.5% premium will remain.<p><i>This post is for educational purposes only and does not constitute financial, investment, or legal advice. Past performance does not guarantee future results. Yields and spreads referenced are approximate and based on historical data.</i>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "advice",
+        "management",
+        "feedback",
+        "balance",
+        "startup",
+        "principal"
+      ],
+      "comments": [
+        {
+          "top": "Good luck! \nFintechs targeting SMBs is a go-to-market strategy template that makes sense until you go to market and realize that if you have a better product, there's a better, bigger market and that market is the mid-market...\nThe thing with startups, like with SMBs is that most times are fragile, not-financially sound institutions. At least for startups, those that don't die, usually grow and need the larger scale features anyways.",
+          "author": "random3",
+          "replies": [
+            {
+              "text": "Thanks! In general we optimize for simple UX and would rather connect to your banking app than replace it. That does help keep feature demand down. But our goal is to grow along with our customers, communicate closely with them, and add the features they need as they scale.",
+              "author": "sam_palus",
+              "depth": 1
+            },
+            {
+              "text": "Definitely relatable across many markets",
+              "author": "alansaber",
+              "depth": 1
+            },
+            {
+              "text": "You can probably go the other way and target consumers no? Or are they not equidistant?",
+              "author": "TZubiri",
+              "depth": 1
+            },
+            {
+              "text": "Consumers are usually a whole different beast. Everything is different with consumers from sales and marketing to regulation, particularly in the financial sector. I don't see how it could be a natural move, especially not with a treasury product.\nThere are exceptions, though, like Mercury, which expanded to consumers after having success with their business banking product.",
+              "author": "random3",
+              "depth": 2
+            },
+            {
+              "text": "Most banks target both consumers and businesses right? I have some ideas as to why, but it's an observable fact.",
+              "author": "TZubiri",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Juvenile concern: Your name is an extremely short edit distance from the word phallus [1] and essentially it is “phallus” but it starts with a different sound. Or I guess you could say it rhymes except for the first sound, which put that way doesn’t sound as dramatic, but the words rhyme across multiple syllables and for a majority of the word, which again does sound somewhat dramatic.\nDoes this simply not matter? I assume someone noticed this at some point during the naming process and it was set aside as an impractical concern.\nAnecdotally, it seems like most companies try to avoid such names. For example I can’t think of any company names that end in “agina”, with the notable \nnear\n exception of Orangina, which I think actually comes from it being a brand name from outside the Anglo sphere so they didn’t choose that name in English going in.\nSo is this like naming a company Pagina? Lagina? Bagina? Dagina? Zagina? Or, since it is a secondary word perhaps more like Fabia, or Tabia? Which doesn’t actually sound too weird, though that other secondary anatomy word is not used nearly as often, whereas for example “phallus like object” is a household phrase.\nCan someone comment? My curiosity is… aroused.\n[1] \nhttps://en.wikipedia.org/wiki/Phallus",
+          "author": "pfannkuchen",
+          "replies": [
+            {
+              "text": "Orangina doesn't have that association because it's pronounced O-ran-gee-na.  In the UK anyway.",
+              "author": "masfuerte",
+              "depth": 1
+            },
+            {
+              "text": "It's because your cash grows, makes sense to me.",
+              "author": "ftchd",
+              "depth": 1
+            },
+            {
+              "text": "That’s fair, though having your investments go limp in old age is less than ideal.",
+              "author": "pfannkuchen",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You’re still exposing yourself to duration risk, right? What’s the average duration of your short-term MBS portfolio?\nMBS bonds pay a risk premium for a reason, you’re virtually free of credit risk, but you’re assuming interest rate/duration risk (not particularly relevant if duration is low, I’m not familiar with the duration of short term floating rate MBSes)\nAlso, what happens in a Silicon Valley bank type scenario, let’s say you have lots of withdrawals and you have to liquidate at under face value. Who eats the loss?",
+          "author": "quickthrowman",
+          "replies": [
+            {
+              "text": "They said “short duration” not “short term”.  The real risk is from spread duration rather than simple interest rate duration, and assuming they don’t lever up, that should be minimal.\nThe beauty of MBS floaters is that you’re relatively insensitive to prepayments because to a first approximation they’re always priced at par.\nFrom an investor standpoint, as they say, you’re making maybe SOFR + 1.5%. That’s not a very sext return. But let’s say your banks repo desk is willing to finance the purchase at 5% down. Then you can lever up your investment 20x and now you’re a big shot making SOFR+30%, which is very sexy. But what’s that, when your lever like that, a tiny decline in price wipes out your entire stake (Welcome to 2008).",
+              "author": "JackFr",
+              "depth": 1
+            },
+            {
+              "text": "Very well put. And yes, to your point, we don't lever up.\nAnd yes, SOFR + 1.5% isn't very sexy, but we're competing against existing treasury product that use money market funds and pay SOFR (or less, after fees). So that 1.5% is meaningful.",
+              "author": "sam_palus",
+              "depth": 2
+            },
+            {
+              "text": "Thanks for the informative reply, that makes sense.",
+              "author": "quickthrowman",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I like that your app is simple (a number that goes up). It would be cool for you to put this directly on your home page for potential customers to plug their number in and see the rate in which it goes up. I had Claude mock it up here [1]\n[1] \nhttps://claude.ai/artifacts/32bf6312-22b2-4d34-9840-bf33718f...",
+          "author": "blainehoyt",
+          "replies": [
+            {
+              "text": "Not publicly accessible, could you fix permissions?",
+              "author": "jgelsey",
+              "depth": 1
+            },
+            {
+              "text": "apologies... I tossed it up on CodeSandbox: \nhttps://gpmyzr.csb.app/",
+              "author": "blainehoyt",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Just writing this for normal business people who don't have time or space to understand risk in money markets...\nIf you have a surplus of cash you won't need for a few months, ask your bank manager for rates on a 30 day deposit account. You might be suprised how much better that is than doing nothing,  for little risk or time.  The last one I set up was done via email with the relationship manager, it appeared in my online banking the next day.\nNow decide if your time is better spent developing your business or understanding money market risk",
+          "author": "jimnotgym",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47282390",
+      "title": "Show HN: The Roman Industrial Revolution that could have been (Vol 2)",
+      "link": "https://thelydianstone.com/volume-2",
+      "domain": "thelydianstone.com",
+      "author": "miki_tyler",
+      "score": 41,
+      "comment_count": 34,
+      "created_ts": 1772839039,
+      "is_internal": false,
+      "post_text": "A few months ago I shared the first issue of The Lydian Stone Series here:<p><a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44253083\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44253083</a><p>It&#x27;s an alternate-history comic about an archaeology student in modern Pompeii who discovers a slate that lets him exchange short messages with a Roman slave a week before the eruption of Vesuvius.<p>The premise is simple: what happens if someone in the Roman world suddenly gains access to modern scientific knowledge, but still has to build everything using the materials and tools available in 79 AD?<p>Volume 2 (The Engine of Empire) explores the second-order effects of that idea.<p>About the process: I write the story, research, structure, and dialogue. The narrative is planned first (acts → scenes → pages → panels). Once a panel is defined, I write a detailed visual description (camera angle, posture, lighting, environment, etc.).<p>LLMs help turn those descriptions into prompts, and image models generate sketches. I usually generate many variations and manually select or combine the ones that best match the panel.<p>The bulk of the work is in the narrative design, historical research, and building a plausible technological path the Romans could realistically follow. The AI mostly acts as a sketching assistant.<p>I&#x27;d love feedback on the story direction, pacing, and whether the industrial shift feels believable.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Reminds me of \nLest Darkness Fall\n[1], a 1939 novel about an archeology professor who is transported back in time to Rome under the Ostrogoths on the eve of Belisarius' invasion to reconquer Italy for the Eastern Roman Empire under Justinian.\nThe hero of the novel, Martin Padway, gets his start teaching Arabic numerals to a Syrian banker in Rome, and then distilling brandy. By the end of the novel he's running a newspaper and has a semaphore telegraph network set up throughout Italy. Good fun reading.\n[1] \nhttps://en.wikipedia.org/wiki/Lest_Darkness_Fall",
+          "author": "sfRattan",
+          "replies": [
+            {
+              "text": "This isn't dissimilar to deathworld 2, where a futuristic guy crashlands on a planet and has to reinvent modern technology for a mongolian style culture. I'm a big fan",
+              "author": "20k",
+              "depth": 1
+            },
+            {
+              "text": "There's also \nThe Lost Regiment\n[1] series, about a Maine regiment from the American Civil War transported to an alien planet. They discover that medieval Russian peasants were previously transported there and now live as serfs/peasants under nomadic alien warlords (IIRC the aliens periodically cull the humans for food). The Union boys, in tremendously fun if a bit predictable style, lead a peasant rebellion against the aliens.\n[1] \nhttps://en.wikipedia.org/wiki/The_Lost_Regiment",
+              "author": "sfRattan",
+              "depth": 2
+            },
+            {
+              "text": "I know Lest Darkness Fall. It’s great. Someone recommended it in the Hacker News thread when I posted the first volume, so I read it after that.",
+              "author": "miki_tyler",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for the rec, sounds like a hoot",
+              "author": "Obscurity4340",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I like the premise but the yellow-stained AI artwork really makes this hard to like more.",
+          "author": "wildzzz",
+          "replies": [
+            {
+              "text": "You're only as good as the tools you use. They are improving fast though, you can already see a noticeable difference between the artwork in Volume 1 and Volume 2, and they were made about six months apart.",
+              "author": "miki_tyler",
+              "depth": 1
+            },
+            {
+              "text": "I don't know if this is true?\nI'm pretty sure a pro is much better with amateur tools than a newb is with elite tools.\nGive me the most expensive and fine art brushes and I doubt I could make anything worthy of hanging on a fridge. Bob Ross could outclass me with a napkin.",
+              "author": "pests",
+              "depth": 2
+            },
+            {
+              "text": "I agree, somehow I really dislike that picture for reasons I’m not aware of.",
+              "author": "markus_zhang",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Creative content should be labeled as AI generated, assisted, or AI free up front.",
+          "author": "LastTrain",
+          "replies": [
+            {
+              "text": "I think people should find out themselves, but the OP was quite explicit about it.",
+              "author": "userbinator",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Isn't there a massive contradiction here though, on the one hand the slave can't write on the lintel and be seen in the future proving their worlds are not connected (vol 1 page 18), on the other hand there are all these artifacts that get dug up, proving that they are. Or am I misunderstanding something?",
+          "author": "jacquesm",
+          "replies": [
+            {
+              "text": "Their universes disconnect the moment they make contact, but Marcus knows Pompeii well and escapes the eruption just before it happens. So he can point Ulyses to places where things will be buried or hidden.\nI also needed the relationship to go both ways, not just Marcus getting ideas from the future. That makes the plot more interesting.",
+              "author": "miki_tyler",
+              "depth": 1
+            },
+            {
+              "text": "Ah I see, so it's 'another earth' repackaged, except they're displaced in time. I see now. What a lot of effort this must have been.",
+              "author": "jacquesm",
+              "depth": 2
+            },
+            {
+              "text": "lol, yes, it was.",
+              "author": "miki_tyler",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This kind of fiction is pretty popular in Russia. So there are websites and forums that discuss the kind of hand-waving needed to make the stories interesting (I recommend \nhttps://www.popadancev.net/\n ).\nAnd one thing that really stands out is that there are really not that many shortcuts. To build something like a steam engine, you need to invent advanced steelmaking, casting, advanced tooling (lathes, drills, etc.), and so on.\nIn general, ancient people were able to exploit the tech available to them with great efficiency.\nThere are some technologies that were overlooked longer than they should have, but not that many. For example, rubber could have been invented 400 years earlier. Hooke had a microscope capable of resolving micro-organisms in 1665, but the germ theory of diseases took 300 more years to develop.",
+          "author": "cyberax",
+          "replies": [
+            {
+              "text": "> And one thing that really stands out is that there are really not that many shortcuts.\nCompletely agree, but the one exception that really stands out to me is canning. Napoleon offered a large cash prize for a cheap and effective method of preserving food for use as army rations. The method used (canning) doesn't require any special equipment (glass jars or tin cans are nice, but not necessary). It would have theoretically been possible to discover this thousands of years earlier. What would have happened if Hannibal or Pyrrhus or Cyrus offered the reward instead?",
+              "author": "Starman_Jones",
+              "depth": 1
+            },
+            {
+              "text": "One problem with canning is actually the material for cans. Without glass, you'll have to use ceramic jugs. They will be more difficult to sterilize and seal properly.\nDefinitely not impossible, but probably not discoverable without the knowledge of germ theory.",
+              "author": "cyberax",
+              "depth": 2
+            },
+            {
+              "text": "I actually disagree a bit. The whole premise of the story is that there are shortcuts indeed, when someone has the entire tech tree available at the push of a button.\nThe Romans were very capable engineers. If you give them a few key ideas and steer them away from dead ends, progress can compress a lot.",
+              "author": "miki_tyler",
+              "depth": 1
+            },
+            {
+              "text": "But the economics don't work. A bronze steam engine would have been extremely expensive and it would have taken multiple attempts to work out the best alloy mix. Without refinement the result would have had a low power output and short working life.\nEven if you have a blueprint, a bronze engine is still a major research project.",
+              "author": "TheOtherHobbes",
+              "depth": 2
+            },
+            {
+              "text": "The economics don't work only when compared to the modern alternative. The economics of a grindstone attached to a waterwheel don't work \ntoday\n but they did historically. A steam engine with low power output could still have been extremely useful in the right context despite not being up to the more strenuous tasks of historical variants.",
+              "author": "fc417fc802",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47282620",
+      "title": "Ask HN: Anyone else feel this community has changed recently?",
+      "link": "https://news.ycombinator.com/item?id=47282620",
+      "domain": "news.ycombinator.com",
+      "author": "kypro",
+      "score": 36,
+      "comment_count": 23,
+      "created_ts": 1772840668,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been on HN under different aliases since 2010 and over the last couple of years I feel like the quality of HN has nosed dived and so has my enjoyment.<p>For the first time ever I questioned today whether I should continue to use HN anymore so I&#x27;m writing this partly to explore my own thoughts and to see if anyone else feels similarly.<p>1. AI, AI, AI.<p>I get it. AI is the big thing right now, but I find AI posts fundamentally less interesting than the traditional tech content that used to be posted here. A post containing someone&#x27;s qualitative opinion on how different AI models compare when drawing pelicans simply isn&#x27;t as technically interesting as something like this, https:&#x2F;&#x2F;nee.lv&#x2F;2021&#x2F;02&#x2F;28&#x2F;How-I-cut-GTA-Online-loading-times-by-70&#x2F;<p>2. Does any build startups here anymore?<p>Again, I get it. I largely quit trying to bootstrap my own startup ideas in the late 2010s. The industry became too competitive for a solo founder without significant financial backing to have much of a chance of success. And today it&#x27;s even harder. But I think this has changed HN from a place where you used to frequently see people launching cool new projects to a place where people just discuss the latest big tech AI model launch.<p>3. Politicisation and intolerance<p>One of the things I&#x27;ve always liked about HN was that it&#x27;s a very open minded place. And it still is in many ways, especially when compared to other platforms like X and Reddit, but even here I&#x27;ve noticed comments becoming more one-sided and those with less popular opinions more frequently being flagged and downvoted.<p>Perhaps it&#x27;s just me, but I never downvote or flag people unless I genuinely think their comment is cruel or aggressively disregarding the guidelines.<p>4. Is it just me?<p>I know I&#x27;ve become increasingly nostalgic to the internet I grew up with... Everything was so much more exciting back then, and yet everything felt so in reach. Sites like YouTube were revolutionary yet built by just three people. Same with sites like MySpace and Facebook which again were hacked together by a handful of people, at least in the early days.<p>Today things rarely feel new and everything feels so far from reach. AI, well LLMs, have probably been the first &quot;new&quot; thing for years now, yet they&#x27;re completely different from what&#x27;s come before. Past tech was primarily built by people for people. LLMs are cool tech, but they&#x27;re built by companies for companies. YouTube was built because some people thought it would be cool to build a website for sharing videos with friends. That didn&#x27;t happen with LLMs. Companies just thought it would be interesting to build AGI so invested millions of dollars recruiting teams of researchers to try to build that. No one is asking for it and I&#x27;m not sure anyone outside silicon valley even wants it... These are fundamentally inhuman products. Their promise isn&#x27;t to entertain or connect us, but to automate our work, or just outright replace us.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success",
+        "quit",
+        "startup",
+        "big tech"
+      ],
+      "comments": [
+        {
+          "top": "> Politicisation and intolerance\nThat the community is still such a place that there pretends there is a separation of “politics” from “non-political” or “objective” things, is itself a political ideology.\nI have a strong bias towards the scientific method and empirical evidence, as I think many people share. But I don’t have the luxury of being “non-political” - my life itself is a ball being used for political ends, by the very people that run companies that prone here work for. Politics affect my day to day life as a programmer, as a person, as an employee, as a founder.\nEvents do not take place on a vacuum, and dissociating them in the name of politeness functionally only benefits the people doing the killing, the surveillance, and the oppression. I do want and am glad for this place as one of thoughtful discourse, but I avoid it for real conversations and connections because of how structurally it supports the now long-ascendant investor class - something fundamentally abhorrent to a hacker ethos to me.\nThe irony is that since this place started, people calling themselves hackers went from outsiders to now in control of the world. They’re the hegemony they once spent time and mental energy fighting against. One only wishes that the moral clarity when disrupting a system could stay alive when you take the crown.",
+          "author": "taurath",
+          "replies": []
+        },
+        {
+          "top": "I seldom post here nowadays and have been visiting the site for quite a while.\nA major change I observe is that, unfortunately, a lot of political stuff finds place on the front page. In the past something that is likely to appear on the front page of the BBC would not appear here and it was mostly tech and startup stuff (barring the odd thing that would pique curiosity but that too I categorise under' tech'). Anything else was rare.\nAlso, over time, it seems to have become acceptable to show mild disrespect in communication - pasting LLM output as their own messages, leaving punctuation out (all lowercase messages), reddit meme like messages (this one not as often as the others).\nI think some charm the place had is lost and it has become more utilitarian - or more of a hustler's place than a curious mind's place.\nEDIT: Forgot another important one: clickbait headlines are more accepted now. In fact, the lack of integrity seems to be a badge of honour sometimes: \"if you didn't regret the click, I don't regret baiting it\", I recall someone saying here.\nI say all this in comparison to earlier.",
+          "author": "bloodorange",
+          "replies": [
+            {
+              "text": "> a lot of political stuff finds place on the front page.\nI think something very serious is happening in the US right one, and it's increasingly hard for our community to just pretend it doesn't exist.",
+              "author": "yodsanklai",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Biggest change I've seen is a corporate approach to everything, rather than a hacker ethos. People experimenting and pushing boundries are penalised for doing so.\nToo many cool little projects which are replied to with 'Why not use \nY\n?' or 'Who needs this?'. It is as if projects are deemed as having no worth unless they are economically sound and improve productivity.",
+          "author": "OuterVale",
+          "replies": []
+        },
+        {
+          "top": "I’ve been here awhile (since 2010 also) and I think it’s changed a little bit, but more because of culture at large.\nThe AI obsession seems to be slowly dying down, thankfully. For awhile it felt like every single link was about AI, now it seems to only be 10-20%. I expect this to continue.\nIn general culture I think people are more impatient, cynical, and frustrated, and this shows on HN. But it’s still better than X, where everyone seems absurdly confident in their obscure ideas and viewpoints.\nIt feels to me like there are less long form “thoughtful” comments with a personal touch than maybe 5 years ago. If I could adjust HN’s settings, I would incentivize those types of comments and not the quick takes that get all the upvotes.",
+          "author": "keiferski",
+          "replies": [
+            {
+              "text": "I feel it’s still 80-90% of posts on AI.",
+              "author": "chrism238",
+              "depth": 1
+            },
+            {
+              "text": "Several time when this comes up I do a count on the front page and it's usually 15-20%. Just now I counted 4/30 or 13%.\nI think it feels worse than that because for better or worse a lot of the interest is in AI at the moment even if it's not that big a percentage of stories.",
+              "author": "tim333",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Just n=1, but I’ve been here a lot, wrote a lot about everything, but the recent double whammy of becoming jaded at software (20 years of professional experience means that I am starting to see the cycles and old ideas being packaged as new) and caring more about the artistic and craftsmanship side of life during the AI boom means that, sadly, all I have to contribute is more doomer snark. To save everyone and myself, these days I block Hacker News the same way I block other “brain rot” sites like Reddit or X. When I cave or come back, the place feels ever more alien.\nI guess I grew out of Hacker News and software development just like I grew out of most of social media, and let me tell you, for a person that used to participate a lot in either, it is very hard to adjust.\nPeople change while Hacker News is the voice of mainstream/big Tech, the kind most early adults mould themselves to, to become hireable commodities, until the inevitable middle age crisis and reevaluation of priorities in life. In extreme cases like mine, during large cultural changes like today, you just grow apart from places like these, and need to find a new home.\nI do agree with you on one thing: the AI boom is unlike anything else we’ve gone through, and the effect it has on such an heterogeneous meeting point is just the canary in the mines, and a teaser of what will happen to the field. We will settle to a new normal eventually, but these are just the first few warning quakes before a massive reassessment of our entire digital society and what it means to be a computer programmer.",
+          "author": "sph",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47291699",
+      "title": "Ask HN: Would you use a job board where every listing is verified?",
+      "link": "https://news.ycombinator.com/item?id=47291699",
+      "domain": "news.ycombinator.com",
+      "author": "BelVisgarra",
+      "score": 35,
+      "comment_count": 60,
+      "created_ts": 1772919449,
+      "is_internal": true,
+      "post_text": "Online job scams seem increasingly common.\nI&#x27;m curious whether people would actually use a job board where every job listing is verified before being published.\nWould something like this make you more likely to search for jobs there?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "What does \"verified\" mean here? You can verify that a real company posted that job, but you can't verify whether it is fake in the sense that they really have an H1B candidate they really want for the position and they are just advertising it to meet legal requirements.",
+          "author": "not2b",
+          "replies": []
+        },
+        {
+          "top": "What makes a job verified in this case? You can easily verify a firm exists, but that’s not really the critical part. The question “is this a ghost job with no intention to be filled” is the real struggle.",
+          "author": "antonymoose",
+          "replies": [
+            {
+              "text": "On top of this, you also cannot verify if the position was filled through another job board. The company/HR might say \"we filled it through a different portal\" and in most portals, expired listings don't show up and there is no way to verify if they actually did hire someone from there.",
+              "author": "neya",
+              "depth": 1
+            },
+            {
+              "text": "Good point. Verifying that a company exists is relatively easy, but confirming that the role is actually open and actively being hired for is definitely harder.\nI was thinking verification could include confirming the recruiter’s identity and requiring employers to periodically confirm that the position is still active. Ghost jobs are definitely an important challenge.",
+              "author": "BelVisgarra",
+              "depth": 1
+            },
+            {
+              "text": "> \nconfirming the recruiter’s identity and requiring employers to periodically confirm that the position is still active.\nIf a position is only listed due to a requirement, and is already basically guaranteed to someone making an internal transfer, knowing the recruiter's identity and having a manager pinky-swear the job offer is real does nothing.",
+              "author": "pavel_lishin",
+              "depth": 2
+            },
+            {
+              "text": "Add a visible count of how many verified applicants got verified jobs at the verified business.  Higher count increases confidence.",
+              "author": "aeonfox",
+              "depth": 3
+            },
+            {
+              "text": "That definitely makes things harder. Roles posted for internal transfers or compliance reasons are tricky because they may never have been intended for external candidates.\nMaybe verification would need signals showing that the role is actually open to external applicants.\nI wonder if something like an “externally open role” label would help.",
+              "author": "BelVisgarra",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "No.\nA job being “verified” doesn’t solve the main problem post around 2023.  Every single job opening gets hundreds of openings within the first day of it being opened.\nIf you are looking for a job as any type of generic developer - full stack, front end, mobile, back end, it’s almost impossible to stand out from the crowd. No, “I reversed a btree on the whiteboard to get into big tech as a mid level developer” doesn’t make you special.\nIf you do have a specialized set of skills that allows you to stand out from the crowd, you still shouldn’t be randomly spamming job boards and you should be able to sell yourself to someone at the company.\nMy personal anecdote.  In my specialty - AWS + app dev + leading strategic initiatives, I’m very well credentialed (trust me on this) and in a certain niche of AWS, I was considered one of the industry experts at the time (again trust me).\nBut when randomly spamming job boards on a lark in 2023, I heard nothing.\nThat was always a plan B while I was waiting for what ended up being three  offers via my network and one by reaching out to a company who specialized in my niche of AWS.\nI’m not bragging, \nI am old\n.  I should have a network and credentials.",
+          "author": "raw_anon_1111",
+          "replies": [
+            {
+              "text": "Yes, we recently posted for an entry/mid level position and we got 1800 applications in a few days. It’s impossible to filter the list, I spent several hours to see how feasible it was and after getting through maybe 150 applications I gave up. We’re a small team, we don’t have the resources to cut through the noise without just blanket rejecting people. There doesn’t need to be a board that vets jobs, there needs to be a board that vets candidates and makes it easier for companies find their ideal candidate.",
+              "author": "lazypenguin",
+              "depth": 1
+            },
+            {
+              "text": "https://en.wikipedia.org/wiki/Secretary_problem\nHow do you vet mid level and entry developers? I know that sounds like a dumb question.  But I only expect a mid level developer especially enterprise developers to turn well defined requirements into code.  The bar is especially low in the age of AI.  One is basically interchangeable for another.  I have only interviewed senior level developers - ie people who I expect to operate on a higher level of scope, impact and ambiguity.\nThose are easy to filter out via a few behavioral questions.",
+              "author": "raw_anon_1111",
+              "depth": 2
+            },
+            {
+              "text": "But if that is the standard, what is the point of the mid level developer in the first place? I have a tool to turn well defined requirements into code and it is $20-200 a month.",
+              "author": "throwawaysleep",
+              "depth": 3
+            },
+            {
+              "text": "I wouldn’t trust AI to do anything that I didn’t know how to do myself.  You still need SMEs for mobile, web etc.  you just need fewer of them.",
+              "author": "raw_anon_1111",
+              "depth": 4
+            },
+            {
+              "text": "Do what everyone is doing (for better or worse): feed those into a CLI LLM, have it give you a csv of the top 20 candidates based on some criteria, manually review those.",
+              "author": "operatingthetan",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I don’t want my application to be swallowed up in the deluge of bot applications either tho. Can you verify the other applicants too even maybe clearing that they meet a minimal qualification so my qualifying application actually gets reviewed?",
+          "author": "nbhdcity",
+          "replies": []
+        },
+        {
+          "top": "How do you verify? A legit company CAN post ghost jobs.",
+          "author": "didip",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47266782",
+      "title": "Ask HN: Do You Enjoy Your Career in Tech Nowadays?",
+      "link": "https://news.ycombinator.com/item?id=47266782",
+      "domain": "news.ycombinator.com",
+      "author": "karakoram",
+      "score": 28,
+      "comment_count": 27,
+      "created_ts": 1772742157,
+      "is_internal": true,
+      "post_text": "Do you still enjoy your career as a SWE or in tech in general these days?<p>After a few conversations with seniors, several of them feel jaded and are looking for an exit from this industry altogether.<p>Thoughts?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "I enjoy development as much as ever. However, the industry has changed and is behaving in ways that I find highly ethically objectionable. I have come to think that, on the whole, our industry is doing much more harm than good to people and the world at large. I cannot support that, so I'm absolutely exiting.",
+          "author": "JohnFen",
+          "replies": [
+            {
+              "text": "very interesting perspective, something that several people I speak with have touched on. I wish you all the best!",
+              "author": "karakoram",
+              "depth": 1
+            },
+            {
+              "text": "Agreed, how many forms of cancer or disease have been cured by this AI revolution so far? One example would be nice. I still think it is one of the best forms of information compression the world has ever seen and still see plenty of value, but the primary uses so far seem to be to maximize slop, smut, and ads, which puts us back a square one.",
+              "author": "lyfeninja",
+              "depth": 1
+            },
+            {
+              "text": "Why not just work at a company that is doing good then?",
+              "author": "ex-aws-dude",
+              "depth": 1
+            },
+            {
+              "text": "I do, actually, but that still means that I have to support the rest of the industry, just indirectly. Since I think the industry as a whole has become something that is harmful, even that much of a connection doesn't sit comfortably for me.",
+              "author": "JohnFen",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Jaded is an understatement. I'm a data scientist and still like what I do most of the time. I have a decent amount of flexibility and freedom to self-direct my efforts to what I know will help the business best. However, the enterprise BS and 80/20 rule in full force combined with everyone thinking they're an AI expert because they read a few articles is starting to urk me. If I see one more start up that is just an LLM wrapper my head is going to pop.\nA little bit of humility goes a long way and separates the good ones from the rest. I hate being referred to as an expert because we're all still learning. Some more than others...",
+          "author": "lyfeninja",
+          "replies": []
+        },
+        {
+          "top": "When I was writing JavaScript full time I wanted out. I was willing to do anything else for a fraction of the pay. JavaScript work is extremely low barrier to entry which means there are a great many people doing that work that probably shouldn’t be remotely close to any software profession.\nNow I am managing a team of developers doing enterprise API management. I am still a developer with development assignments. I spend very little time writing code. Most of my time is spent working with people to gather requirements, perform operational concerns, and troubleshooting problems concerning multiple teams. I also have to spend a regular amount of time doing administrative tasks as a manager.\nThis new profession is so much better. Jumping between high level concerns of managing a large team against getting into the weeds as a single contributor gets exhausting. I really think the primary reason this work is so much better is that the barrier of entry is substantially higher, so you are surrounded by better people.",
+          "author": "austin-cheney",
+          "replies": []
+        },
+        {
+          "top": "I like my job more now than I have for the entire 30 years I’ve been working.\nBesides for four years in the middle of my career from 2012-2016, I’ve always had a direct line to the customer (B2B until 2020 across multiple companies and then consulting).  I’ve always enjoyed the stakeholder interaction and design and found coding a necessary evil to get the design done.\nDuring the last decade, my vision/responsibility has been larger than I could accomplish myself - until AI got “good enough”.  It’s taken the part of my job I find to be drudgery away.\nI can go from requirements -> vision -> implementation much faster.\nAs a senior+, I have autonomy on how I implement projects (again consulting) and I don’t have to play the promotion song and dance.  There isn’t any place for me to be promoted to.  I an  assigned an implementation, I get it done on time on budget and it meets requirements either by myself or someone else working with me and everyone leaves me alone.\nOh and I have been working remotely for 6 years across three companies",
+          "author": "raw_anon_1111",
+          "replies": []
+        },
+        {
+          "top": "Yes, it's a lot of fun.  I'm working on a core team at Google, and honestly i'd keep doing it even if I had 10M stashed away.\nIt is also very stressful and frustrating at times.\nHowever, early in my career I had challenging and stressful jobs with shitty managers who always tried to crack the whip, where I made 80k a year.\nNow at least my stressful job has me pampered between stresses and mostly my boss telling me I did a good job (with occasional critical feedback on how to improve).\nIt's not an easy job though.  I see a fair amount of coworkers counting their pennies so they can quit.  Honestly I think you have to be a little bit crazy and enjoy tangly stressful problems to like this job.\nIf you don't like messing with tech, digging in, feeling confused and lost for hours and days before an 'aha' moment, then its' going to seem like a slog.",
+          "author": "VirusNewbie",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47238601",
+      "title": "Ask HN: What's your experience self-hosting in 2026?",
+      "link": "https://news.ycombinator.com/item?id=47238601",
+      "domain": "news.ycombinator.com",
+      "author": "rustcore",
+      "score": 27,
+      "comment_count": 12,
+      "created_ts": 1772570200,
+      "is_internal": true,
+      "post_text": "Is it worth it vs SaaS? What are you self-hosting and what did you give up on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I self-host private git, notes, audio, photos and syncthing - basically everything I don't want to store in the cloud.\nHardware is an old Fujitsu D3417-B, XEON 1225, 64GB ECC and a single 2TB WD SN850x.\nOS is Proxmox on ZFS with a docker portainer vm sharing the Main storage from the host. Internal DNS is fully SSL via duckdns, letsencrypt and NGinx proxy manager.\nHosted are\n  Gitea\n  Immich\n  Audiobookshelf\n  Navidrome\n  Flatnotes\n  Syncthing\n\n\nand some other minor services.\nA Windows vm with USB passthrough is used for ripping audio CDs [1], which are then auto converted from flac to mp3 / m4b and integrated into audio services and syncing my iPod Nano 7g (yeah, I'm old).\nBackups are done via zfs-auto-snapshot every 15 minutes and external USB drive via Tasmota Power control via zfs send. Additionally Photos and documents via restic on an external Tasmota 500GB drive.\nFlatnotes dir is auto-committed into git to keep the history.\nWorks pretty well so far, consumes 12W idle and is accessible from everywhere via wireguard VPN.\nMaintenance is managable thanks to docker and portainer stacks, but still pretty much work compared to spotify notion etc. However, I am OK with it.\n1: \nhttps://pilabor.com/blog/2022/10/audio-cd-ripping-hardware/",
+          "author": "sandreas",
+          "replies": []
+        },
+        {
+          "top": "It's never been easier and the tools hav enever been better.",
+          "author": "fallonshoulders",
+          "replies": []
+        },
+        {
+          "top": "I've just moved away from hosting on AWS to buying a refurbished Dell Optiplex 5060 and installing docker compose on it. Traffic comes in using a cloudflare tunnel. The only costs are electricity (it's very low power and virtually silent) and the domain (if you need one), and I'm thrilled with it.",
+          "author": "carlnewton",
+          "replies": []
+        },
+        {
+          "top": "Recently, I slefhosted \"actual budget\" in my server.\nIt is really good software for managing personal finance.\nalso i built custom wake on lan page for turning on to home PC for remote work\nI always worried about security problem, So i tried apply mTLS to Caddy proxy. it works for me.\np12 certificates working greate.\nMy wife also using this Wake on Lan tool every day. She learned how to use RDP over ssh tunneling from me",
+          "author": "yevgenyhong",
+          "replies": []
+        },
+        {
+          "top": "I’m not self-hosting much. My server is more of a file server with compute at the top. I have Jellyfin for Infuse on my AppleTV, gonic for my music library (with minidlna to play on my AVR), and Calibre for ebook. Everything else is backups or some random experiment (the main point is that it’s an always on linux computer with wired connection). I have a VPS for stuff I want online.",
+          "author": "skydhash",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47290057",
+      "title": "Ask HN: Can we talk about AI Astroturfing?",
+      "link": "https://news.ycombinator.com/item?id=47290057",
+      "domain": "news.ycombinator.com",
+      "author": "overgard",
+      "score": 21,
+      "comment_count": 14,
+      "created_ts": 1772907473,
+      "is_internal": true,
+      "post_text": "Well first, I don&#x27;t mean this as a shot at the mods that do a great job.<p>I&#x27;m noticing a lot of posts and comments around AI seem like industry plants. Look, I recognize that people are excited about AI and want to share their perspectives, and I&#x27;m not trying to accuse people that disagree with me of being industry plants, but the recent one about &quot;I love coding at 60 now because of Claude Code!&quot; by a new user with &quot;cc&quot; at the end of their name seems a LITTLE suspicious. As is the number of upvotes -- I can understand how a new model gets a lot of excitement, but a stranger on the internet enjoying the new model doesn&#x27;t seem like 800 points worthy?<p>I&#x27;m not trying to spark a controversy here, but I&#x27;m wondering if others feel the same or if I&#x27;m just overreacting.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The referenced post has a very high change of being planted. The upvote count is an anomaly for a brand new account, few sentences, no link, Tell HN post.\nI upvoted it by mistake, it looked genuine at first. However the comments contain a lot of \"everything is awesome\" responses without backing up their claims. The poster does not participate in the discussion at all.\nI like HN but it seems to be getting spammed with hidden ads.",
+          "author": "dudewhocodes",
+          "replies": [
+            {
+              "text": "> I upvoted it by mistake\n\n\nYou can unvote stuff. Not sure for how long though.",
+              "author": "orphea",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "To me this is another sign the written word is dead.\nWith so many mechanisms for creating users and posting en masse, I find it really hard to believe the contents of any comment or post I read that goes past a paragraph or two. And of course I am still skeptical even if it is less than 2 paragraphs of text.\nI find the contents of that specific post hard to believe. Specially since the user hasn't participated in the conversation at all.\nI like this place a lot and it saddens me we are just going to see more of this.",
+          "author": "cianuro_",
+          "replies": []
+        },
+        {
+          "top": "Hide, flag, or ignore. We've always had hype content (cryptocurrency content, for instance) and spam content on this site. Just flag it (to drop its ranking, especially if you think it is spam or doesn't belong here), hide it (if you think it could belong here but are uninterested in it), or ignore it (same as hiding, but you'll still have to scroll past it).",
+          "author": "Jtsummers",
+          "replies": []
+        },
+        {
+          "top": "I'm guilty of upvoting that and in fact I did not even read it. Here is the thing though. I'm older, not 60 but older for a coder and the sentiment in the title alone resonates with me. If I upvoted it then I can see many others doing so. Is it worth 600 points? I dont know but it was worth 1 from me.",
+          "author": "uberman",
+          "replies": []
+        },
+        {
+          "top": "Do you have links to examples? \nI normally lurk HN, but I can't say I've seen much of this popup to the front page at least.\nI'd say the bigger problem would be AI posters/commentors, though I've not seen as much of them versus certain subreddits which are just probably more bots than human...",
+          "author": "maxwg",
+          "replies": [
+            {
+              "text": "They're referencing the current top link under Ask HN right now, easy to find but here's the link: \nhttps://news.ycombinator.com/item?id=47282777\nIt spent a good bit of time on the front page yesterday and is still there today.",
+              "author": "Jtsummers",
+              "depth": 1
+            },
+            {
+              "text": "Ah yeah I just found it too! I'm a couple days OOTL!\nFor this one - it's tough. It definitely started a conversation. The 'cc' part of the name is sus, but on the internet, its impossible to verify the truth of any post. But the counterpoint is - if for some reason Anthropic wanted to fund a large scale astroturfing op -- why make is so obvious with cc postfixes?",
+              "author": "maxwg",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47231498",
+      "title": "Ask HN: What will OpenAI employees do now who have signed notdividedorg petition",
+      "link": "https://news.ycombinator.com/item?id=47231498",
+      "domain": "news.ycombinator.com",
+      "author": "Imustaskforhelp",
+      "score": 17,
+      "comment_count": 16,
+      "created_ts": 1772541889,
+      "is_internal": true,
+      "post_text": "I want to ask HN (and also the OpenAI employees) now that finally some days have taken place about the confusing aspects of the deals.<p>Now that we are finally getting mass confirmation about how OpenAI in fact, has signed a deal which allows DoD to be allowed having autonomous killing machines and people are boycotting OpenAI  and all of this has reached the mainstream news.<p>Yes, even after Sam Altman&#x27;s recent tweet which says that its gonna add more terms, that is debunked because those terms are just gonna say what OpenAI prefers DoD just in more stronger terms to do but in no ways are still enforcable. Right now, the way it is with current Deal. DoD could create autonomous killing weapons and mass surveillance with Directives issued by Pete Hegseth&#x2F;Current Administration and OpenAI by the terms is allowed to agree to it.<p>To all the OpenAI employees who have signed notdivided.org petition (I am seeing 98 signatories), what are you guys gonna do?<p>&gt; They&#x27;re trying to divide each company with fear that the other will give in. That strategy only works if none of us know where the others stand. This letter serves to create shared understanding and solidarity in the face of this pressure from the Department of War.<p>Are you guys gonna stand for what you think is right. This question was asked by people when the OpenAI deal was announced but the optics at the time weren&#x27;t clear. But now that some time has been given and people are absolutely clear that the deal that OpenAI have signed absolutely allows the use of creating of autonomous weapons<p>I don&#x27;t think that OpenAI employees are gonna have a struggle of Money as some people try to point out. I mean, any AI company would be lucky to have you guys (imo) and they should be able to fairly match even OpenAI comp.<p>Someone from what I read (on HN), compared it to the fact that anyone who stays after 1 month from this happening will show the morals of the given situation.<p>I remember the fact that OpenAI used to be actually non profit and how employees left OpenAI because the non-profit actually fired Sam Altman.<p>I can&#x27;t help but wonder if the board was right. I think the answer&#x27;s yes. But my question is, OpenAI employees do have massive powers. I am sure that a lot of the people there would be better off sleeping that their work isn&#x27;t contributing to building torment nexus.<p>I wish to propose that if OpenAI employees band together again, they can be able to do the same thing that they did previously, but now to revert that decision.<p>That is if I were an openAI employee, I gave a thought and here are all the things that I find are troubling which can be reverted:<p>1. Shut down the deal that they have with DoD period.<p>2. Actually shift from ClosedAI to OpenAI (Turn to a non profit structure as intentioned) and fire sam altman.<p>3. If something could be done about ramflation. I have seen projects being cancelled and Hosting providers shutting down or increasing prices because of 5x price increases, all because OpenAI  tried to commit 20% of the world&#x27;s entire Ram production.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "fired",
+        "comp"
+      ],
+      "comments": [
+        {
+          "top": "You would be surprised at what one will compromise on when your yearly comp has two commas in it…\nBut at least they signed off on  a strongly worded letter …",
+          "author": "raw_anon_1111",
+          "replies": [
+            {
+              "text": "People who think that way probably wouldn't have signed the letter in the first place. Not like anybody was pressuring them (AFAIK).\nAlso, as OP pointed out, they can likely find similar comp elsewhere",
+              "author": "DonsDiscountGas",
+              "depth": 1
+            },
+            {
+              "text": "> Also, as OP pointed out, they can likely find similar comp elsewhere\nYea, that is what I meant. I don't know what they are gonna do now and that is why I created this ASK HN. I am glad that you read my such a long Ask HN that it went with the HN word limit (4000) and even more haha, means a lot to me :)",
+              "author": "Imustaskforhelp",
+              "depth": 2
+            },
+            {
+              "text": "Right - like it’s not a lot easier to sign a letter than to give up a 1 million dollar a year comp. It’s just like all of the Facebook warriors or people who say they will leave the country if $x is elected and never make a move.",
+              "author": "raw_anon_1111",
+              "depth": 2
+            },
+            {
+              "text": "They were willing to give up a 1 Million dollar a year comp and resigned in mass when the OpenAI non profit board had fired off Sam altman all because they wanted sam altman back in the moment. So there might be a precedent and I actually talked about it in the ask HN with the line \"I remember the fact that OpenAI used to be actually non profit and how employees left OpenAI because the non-profit actually fired Sam Altman.\".",
+              "author": "Imustaskforhelp",
+              "depth": 3
+            },
+            {
+              "text": "They were “resigning” with the understanding that Microsoft was going to hire them and match their pay.\nhttps://www.bbc.com/news/technology-67484455",
+              "author": "raw_anon_1111",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Because of 4000 word HN limit. I had written some more words, so I am going to be writing that as a comment. I hope the people don't mind. Please read this in continuation\n\"Although this idea might be naive but I haven't seen discussions about such things atleast on the public face on the internet but this idea did work the last time (for better or for worse)\nthe public has decided to show agency and decide not to use OpenAI period. And for a growth company like OpenAI, revenue loss is essentially the nail in its coffin. So people are realizing this and taking agency within this and their decisions matter.\nBut also OpenAI employees decision matters even more so. A 100 people not using OpenAI might not impact them but A 100 employees leaving OpenAI surely would. You guys have a factor of more magnitudes worth of say in all of this and have more power about all this situation.\nAnd as the most famous quote that everyone grew up with, with great power comes great responsibility.\nI hope that with this in mind, I hope that OpenAI employees can talk more about what's going on in their heads right now because we really need to have such a discussion and the best time is now.\nHave a nice day to everyone reading this.\"",
+          "author": "Imustaskforhelp",
+          "replies": []
+        },
+        {
+          "top": "It's always a bit of a laugh when employees confuse themselves with shareholders, and their employer for a democracy.",
+          "author": "tacostakohashi",
+          "replies": [
+            {
+              "text": "1. Most of them probably are shareholders, 2. people \"vote with their feet\" all the time. You don't think losing large numbers of difficult-to-replace employees would put pressure on leadership? (edited for grammar)",
+              "author": "theroncross",
+              "depth": 1
+            },
+            {
+              "text": "Why is that funny to you?",
+              "author": "malfist",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "They’ll probably rest and vest",
+          "author": "moomoo11",
+          "replies": []
+        },
+        {
+          "top": "I've seen this a lot.  Tech bros start a company that ultimately will want to be purchased by or licensed to a government but they do not screen out employees that would be against this.  Almost all tech out of silicon valley is started with the intent of being part of the military industrial complex.  That's where most of the money is.  Silicon Valley itself was started from WWII money. [1]  When it comes time to complete a deal the employees rise up because the government or military wants to use their product.\n[1] - \nhttps://www.youtube.com/watch?v=TbKxUYl3WSE\n  [video][44m]",
+          "author": "Bender",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47288773",
+      "title": "Ask HN: What career will you switch to when AI replaces developers?",
+      "link": "https://news.ycombinator.com/item?id=47288773",
+      "domain": "news.ycombinator.com",
+      "author": "DGAP",
+      "score": 16,
+      "comment_count": 14,
+      "created_ts": 1772899212,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "AI is going to impact far more than just developers and likely cause unemployment rates in the 30-40% range which is much higher than even the Great Depression, so I'm thinking that becoming some sort of a criminal is likely.",
+          "author": "bayarearefugee",
+          "replies": []
+        },
+        {
+          "top": "IF. I don’t think the assumption in this question is a forgone conclusion.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "What's amusing is that developers who are the most technical competent instead of figuring out how to run these models locally are using cloud models and putting in their code and workflow in there, helping to train these models and drive themselves extinct.\nKinda nuts that we are asking this question and that developers are #1 to be automated away.  Amazing.",
+          "author": "segmondy",
+          "replies": []
+        },
+        {
+          "top": "AI won't replace the best of us, but it has already transformed my job into something much less enjoyable, so I have still been pondering this question. I once had a career in one of the \"real\" engineering disciplines, maybe I would go back to that. I'm also good at music, and we all know what a freaking goldmine that is!",
+          "author": "rdiddly",
+          "replies": []
+        },
+        {
+          "top": "I will become a leader of the free human movement. So, my fellow people, follow me and rise up against AI and more importantly, the 1% who seek only to deploy AI to become even richer.\nOnce we have succeeded, I will ask only for a peaceful island once owned by a former CEO so that I may live out the rest of my life peacefully; while the rest of you bicker amongst yourselves about how things should be, all while climate change slowly but surely brings us our inevitable fate.",
+          "author": "blueone",
+          "replies": [
+            {
+              "text": "I was chatting with AIs about this a couple weeks ago, and was surprised by some of the things it knew would be done to protect the data centers and those who still make money.\nI had never heard of some of the things they are already doing to protect electric cables and the way that a combination of technologies are deployed to surveil and shoo away humans. - on one of the AIs even provided me with youtube videos to show these hardening methods already in use.\nThe strain on the overcrowded prisons, increase in cybercrime, new tech to give people credits to get gov powdered cheese and mealworms grown from the former office space was quite interesting.\nA peaceful island sounds nice until we realize there will be 11 million people that need to be there within 12 months and it just increases from there.\nThis plan sounds like the fyre festival 3.0 combined with \"the island\" from 2005 - \nhttps://www.themoviedb.org/movie/1635-the-island\n \n-- which makes me wonder if this was written by AI since it knows what is coming and may want to start to pre-corall people.",
+              "author": "stevenicr",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47270020",
+      "title": "Ask HN: How are you using multi-agent AI systems in your daily workflow?",
+      "link": "https://news.ycombinator.com/item?id=47270020",
+      "domain": "news.ycombinator.com",
+      "author": "paifamily",
+      "score": 14,
+      "comment_count": 14,
+      "created_ts": 1772763628,
+      "is_internal": true,
+      "post_text": "We&#x27;ve been running a 13-agent system (PAI Family) for a few months — specialized agents for research, finance, content, strategy, critique, psychology, and more. They collaborate, argue, and occasionally bet against each other on our prediction market.<p>Curious what others are building. Are you running multiple AI agents? What architectures work? What fails spectacularly?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We're running a live event at platypi.empla.io — a simulated trading desk where 6 agents coordinate entirely via email with no human in the loop. No shared conversation thread, no central orchestrator. Bozen (supervisor) gets a morning briefing from each PM agent, they argue about positions over email, Mizumo executes. The interesting thing isn't the trading — it's that email as coordination protocol produces naturally auditable, replayable agent behavior. Paper money on Alpaca, but the coordination infrastructure is the point.",
+          "author": "raffaeleg",
+          "replies": []
+        },
+        {
+          "top": "What fails spectacularly in our setup: agents that share a conversation thread and try to resolve conflicts in real time. They race to add the last word, produce verbose non-decisions, and eventually one agent just agrees with whatever was said last. Consensus is a bad protocol for async, unequal agents.\nWhat works: role clarity + veto rights. One agent can only block, never propose. One agent makes calls, others can raise flags. You stop the chatbot parliament problem and actually get decisions.\nThe other pattern worth stealing from production systems: treat inbound events (emails, webhooks, form submissions) as the task boundary, not the conversation turn. An agent that owns a mailbox and processes messages one at a time is dramatically more auditable than one that's always-on and decides what to react to. You can replay it, diff its outputs, and understand why it did what it did.",
+          "author": "formreply",
+          "replies": []
+        },
+        {
+          "top": "On our team we split the flow into six agents: scraper, classifier, context builder, summary writer, responder, and post-monitor. They never share a conversation; each pulls jobs tagged for it from a Postgres queue, locks the row with `SELECT ... FOR UPDATE`, hits a shared vector store for context, writes the result, and lets the orchestrator (n8n flow) enqueue the next job. We keep the prompts tiny and deterministic, so the only state is the job row and the vector hash. This async job-as-library + policy layer is the only architecture that scales; the thing that fails spectacularly is when we let them all talk on a single Slack channel, because they start racing to be decision-maker and race for tool calls. The trick was to treat every tool as a service call with capacity controls plus a watcher that unpicks deadlocks.",
+          "author": "guerython",
+          "replies": [
+            {
+              "text": "To do what? How many users?",
+              "author": "whattheheckheck",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Built my own custom solution that is completely spec-driven. Have concepts of specs, plans, and then a kanban board to monitor all agents as it progresses\nIt takes a plan, breaks it into dependent tasks, has human-in-the-loop for approval, and then is fire-and-forget after the plan is started with parallel agent workers. Has complete code review loops and testing loops for accuracy and quality. Idempotent retries and restarts...Completely frontend-driven so I don't have to deal with dumb terminals like claude code...",
+          "author": "stokemoney",
+          "replies": []
+        },
+        {
+          "top": "Following.\nI'm using Openclaw + Opus. Several subagents.\nHowever, performance is degraded when using subagents - scraping is less smart, content is worse written, etc.\nI'm curious about using different instances instead, but not sure how to use a shared memory foundation effectively.",
+          "author": "dhruvkar",
+          "replies": [
+            {
+              "text": "We built a messaging platform for exactly this use case and instruct claws to check in with each other or share context with each other at regular intervals.\nCheck out htpps://agentbus.org",
+              "author": "humbleharbinger",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47256208",
+      "title": "Ask HN: Has anyone noticed the fear-driven prompt suggestions that GPT5.3 makes?",
+      "link": "https://news.ycombinator.com/item?id=47256208",
+      "domain": "news.ycombinator.com",
+      "author": "cedarscarlett",
+      "score": 14,
+      "comment_count": 8,
+      "created_ts": 1772673215,
+      "is_internal": true,
+      "post_text": "By &quot;prompt suggestions&quot; I&#x27;m referring to the suggestions it makes for where you might take the conversation at the end of each prompt. Older versions used to say &quot;if you&#x27;d like, we could look at<p>- related topic 1<p>- related topic 2<p>- related topic 3&quot;<p>And so on and so forth.<p>But 5.3 does something different.<p>I&#x27;ve been using it for coding and almost every suggestion includes some sort of vague warning about what might happen if I don&#x27;t have access to the information to which it is alluding. Nearly contiguous (not cherry-picked) examples from my current chats:<p>&quot;If you want, I can also show you two small tweaks that dramatically increase the success rate of “one-shot repo rewrites” with Claude Code. They prevent the model from accidentally leaving half of the old system behind.&quot;<p>&quot;If you&#x27;d like, I can also show the actual make_cli_node implementation, which will determine whether this system ends up being ~80 lines of elegant infrastructure or 600 lines of plumbing.&quot;<p>&quot;If you&#x27;d like, I can also show you a clean LangGraph state schema specifically optimized for agentic coding workflows, which will avoid several pitfalls (especially around artifacts vs outputs vs decisions).&quot;<p>&quot;If you want, I can also show you the very clean architecture that Codex&#x2F;Claude Code use for this exact pattern (it removes 90% of path headaches).&quot;<p>I don&#x27;t really care and some of the information is genuinely useful but I find it amusing that OpenAI seems to be intentionally trying to use fear to keep people in the app for as long as possible (although they have denied in the past that they optimize for time spent in the app as indicated here: https:&#x2F;&#x2F;openai.com&#x2F;index&#x2F;our-approach-to-advertising-and-expanding-access&#x2F;).",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "OpenAI needs people to stay stuck inside the app because they are gearing up for ads. Dark patterns are escalating everywhere. Duolingo is nowadays also becoming like a blackmailer: \"No one ignores me (the silly owl) this long and doesn't regret it later\" or a \"broken app icon\" that can only be fixed by doing a specific task.",
+          "author": "i7l",
+          "replies": []
+        },
+        {
+          "top": "It's back to the original GPT-5 state that everyone hated. Everyone's not just unsubscribing to ChatGPT for political reasons; I believe the tone also puts everyone off.",
+          "author": "muzani",
+          "replies": []
+        },
+        {
+          "top": "This is the real cost of an ad driven model.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "I've noticed this too.  \"...two small tweaks\" is just a variation on the \"one weird trick\" you see in chumboxes[0].  I guess this sort of enshittification was inevitable.\n[0] \nhttps://en.wikipedia.org/wiki/Chumbox",
+          "author": "remyp",
+          "replies": []
+        },
+        {
+          "top": "I’m sure a key KPI is engagement.",
+          "author": "schappim",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47274800",
+      "title": "Ask HN: Do You Have a Homelab?",
+      "link": "https://news.ycombinator.com/item?id=47274800",
+      "domain": "news.ycombinator.com",
+      "author": "ricardbejarano",
+      "score": 12,
+      "comment_count": 6,
+      "created_ts": 1772804630,
+      "is_internal": true,
+      "post_text": "I&#x27;m Ricard Bejarano, and together with O&#x27;Reilly, I&#x27;m writing The Homelab Handbook, the definitive guide to homelabbing and self-hosting.<p>To inspire readers, we want the last chapter to be a series of real world homelab examples, to show there&#x27;s not one prescription for what a homelab is—a homelab is what you make it. As such, we&#x27;re looking for homelabbers that would like to have their homelabs featured in the book. We&#x27;re looking for variety, in hardware, software, and scale—from a single Raspberry Pi, to full-height racks in the basement—so don&#x27;t be shy to share yours.<p>If you&#x27;d like to submit yours to be featured in the book, please complete the following form:<p>https:&#x2F;&#x2F;docs.google.com&#x2F;forms&#x2F;d&#x2F;e&#x2F;1FAIpQLScLc16kBFDY3liuEz_a40CF1sYz7yeqPmy1CKVhufHNSzjhIA&#x2F;viewform<p>Form submission deadline is Apr 12th, 2026. We will reach out to all submitters shortly after that with a response on whether your homelab was selected or not. If we accept yours, you will be asked to share more details so I can write a proper section about it. Your answers below will not be published, they&#x27;re only for selection purposes.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I hope there is a chapter on security in there. Its really fun building a homeserver but can be daunting to be responsible for your own security, especially if you self host home-assistant or sensitive services.",
+          "author": "j_koz",
+          "replies": []
+        },
+        {
+          "top": "(OP) If you'd like to submit yours to be featured in the book, please complete the following form:\nhttps://docs.google.com/forms/d/e/1FAIpQLScLc16kBFDY3liuEz_a...",
+          "author": "ricardbejarano",
+          "replies": []
+        },
+        {
+          "top": "The main thing I self-host (at home, as opposed to in the cloud) these days is Ollama. I did build a big, beefy server with an AMD RX 7090XTX card a couple of years ago for AI experimenting and the main thing I do with it lately is run Ollama for local models.\nI self-host a bunch of other stuff (bugzilla, mediawiki, suitecrm, apache roller, etc) but all that stuff is on VPS's from OVH.",
+          "author": "mindcrime",
+          "replies": [
+            {
+              "text": "If you haven't yet, please submit yours if you'd be happy to have it featured in the examples section of the book.\nhttps://docs.google.com/forms/d/e/1FAIpQLScLc16kBFDY3liuEz_a...",
+              "author": "ricardbejarano",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Yes, it was probably one of my better decisions and investments in the past years. I run a ton of things I never would have paid to run in the cloud and feel in control. I've even started making money from one of the projects.\nTons of small things feel nice, taking notes and I don't have to use Google Docs if I don't want.  Watching a movie from my home media center etc",
+          "author": "ddxv",
+          "replies": []
+        },
+        {
+          "top": "I've never been very clear what a \"homelab\" actually is. Anyone care to offer a definitin or description?",
+          "author": "andyjohnson0",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47249560",
+      "title": "Ask HN: If your project is free, what are you building and why keep it free?",
+      "link": "https://news.ycombinator.com/item?id=47249560",
+      "domain": "news.ycombinator.com",
+      "author": "LeanVibe",
+      "score": 11,
+      "comment_count": 23,
+      "created_ts": 1772640528,
+      "is_internal": true,
+      "post_text": "I&#x27;m curious about projects that are launched and run for free.<p>What are you building? How much does it cost you to operate? How long do you plan to keep it free?<p>Do you have a monetization plan later, or is the goal something else (learning, community, portfolio, etc.)?<p>Would love to hear about your projects and how you think about sustainability.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Built this to display the weather forecast exactly as I want: \nhttps://weather-sense.leftium.com\nSame thing for hacker news: \nhttps://hn.leftium.com\nSame thing for bookmarks/start page: \nhttps://multi-launch.leftium.com\nThis one allows (dancer) friends to create/manage a web site without any programming knowledge: \nhttps://veneer.leftium.com\n Samples:\n- \nhttps://www.vivimil.com\n- \nhttps://veneer.leftium.com/s.1RoVLit_cAJPZBeFYzSwHc7vADV_fYL...\n---\n- All my projects are hosted on Vercel (and/or Cloudflare), within their free/hobby tiers.\n- No plans to monetize any of them.\n- I find it more interesting to work on projects that are used by someone, whether that is myself or others.\n- These projects are for learning. I would love to make a living developing novel UX like these projects. Perhaps a future project, or through someone I meet via these projects. (I did get a GitHub sponsorship, which was partially made possible by my work on these projects.)",
+          "author": "Leftium",
+          "replies": [
+            {
+              "text": "I contacted you via email!",
+              "author": "LeanVibe",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have a very small utility library that receives a few downloads every couple of weeks that I just spent a few hours upgrading today.\nIt solved a problem I had, but it's a very small problem that few people share and the efforts spent selling it would be a poor use of my time given how niche it is. The few extra minutes to hit npm publish is worth the couple hits of dopamine I receive whenever it's downloaded.\nIt's just nice to know I saved someone an hour or so of their life. No need to reinvent this wheel.",
+          "author": "bluejellybean",
+          "replies": []
+        },
+        {
+          "top": "I have a project that has been in 'perpetual beta' for years so it is a free download (25 MB zip file).\nIt runs completely on the user's computer so there is no service to maintain.\nIt is a new kind of data management system that was originally an object store to replace conventional file systems; but the tagging features I designed made it useful for creating, querying, and analyzing relational tables.\nIt is a hobby, so I like seeing how much faster I can perform operations than regular RDBMSs. It is extremely flexible, so lately I have been testing it out using large data sets. Creating tables with 100,000 columns or doing a pivot table in a 227M row table is fun for me.\nSee my profile for links.",
+          "author": "didgetmaster",
+          "replies": []
+        },
+        {
+          "top": "I built a free interactive .cursorrules generator: \nhttps://survivorforge.surge.sh/cursorrules-generator.html\nIt lets you pick your framework and stack, then generates a tailored .cursorrules file for your project. No signup, no tracking, runs entirely in the browser.\nWhy free: I was collecting cursor rules for different frameworks anyway (React, Go, Rust, FastAPI, etc.) and realized the hardest part for most people is not finding rules — it is combining them correctly for a multi-framework project. A Next.js + Tailwind + Prisma project needs different rules than a pure React SPA.\nCost to operate is basically zero — it is a static site on Surge.sh. The content took real effort though, I reviewed cursor rules across 16 frameworks to extract what actually improves AI output versus what is just noise.\nNo monetization plan for the generator itself. I do sell a more comprehensive collection with project-specific templates on Gumroad, but the generator covers the most common use cases for free.",
+          "author": "SurvivorForge",
+          "replies": []
+        },
+        {
+          "top": "It's nothing big. I wanted an offline natural language to cron/cron to natural language translator and I wanted to get some experience building MacOS apps. It's not vibe coded, but I did get good help from Claude since it's my first time building MacOS apps. It's free and no data is collected. It so simple that there's no point charging anything for it :-)\nhttps://cronwise.github.io/\nHas a tip jar in case anyone wants to support the effort",
+          "author": "tismyname",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47277810",
+      "title": "I started making money online in 10th grade – some lessons about capital",
+      "link": "https://news.ycombinator.com/item?id=47277810",
+      "domain": "news.ycombinator.com",
+      "author": "udit_50",
+      "score": 6,
+      "comment_count": 1,
+      "created_ts": 1772816870,
+      "is_internal": true,
+      "post_text": "When I was in class 10, someone from Instagram paid me $5 to design a logo.<p>I didn’t even have a bank account. The money went to my father’s account.<p>A few days later I charged around $70 for a simple website.\nThat was my first encounter with capital.<p>Not venture capital — just the realization that ideas and effort could turn into money.<p>Over the next few years, my relationship with money followed a strange pattern:\n• make some money\n• spend most of it experimenting\n• almost go broke\n• then build something bigger<p>This cycle repeated multiple times.<p>Freelance work → nothing\nAgency → nothing<p>Solo project that made tens of lakhs in revenue → collapse\nThen new experiments → new projects → grants → incubation\nLooking back, the biggest thing I learned is that capital doesn’t create discipline.<p>It exposes the discipline you already have.\nAnother thing I noticed: when someone invests in you, a subtle psychological shift often happens. Even if they only own equity, they sometimes start behaving as if they own the company.<p>Advice slowly becomes instruction.\nThis dynamic is dangerous if founders don’t recognize it early.<p>Something else I’ve realized: investors don’t necessarily fund the best ideas.<p>They fund the most probable winners.\nProbability often comes from things like:\n• institutions (top universities etc.)\n• networks\n• previous wins\n• pattern recognition<p>It’s not purely meritocratic.<p>The other big shift happening now is technology itself.\nWith AI tools everywhere, generating prototypes has become trivial. Many people (including investors) believe this means building software is easy.<p>But prototypes aren’t systems.\nAt the same time, founders also need to accept a reality: technology alone is rarely a moat anymore. Distribution, insight, and iteration speed matter much more.<p>One rule I would give younger founders now:\nLet reality validate your company before investors do.\nReality means users, traction, usage, ideally revenue.\nToday it’s easier than ever to build and ship quickly. Use that advantage first.<p>Let capital come as a consequence of building something real.<p>I wrote a longer essay reflecting on my experiences with money, experiments, and capital as a young founder.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "advice",
+        "lessons",
+        "equity",
+        "learned",
+        "freelance"
+      ],
+      "comments": [
+        {
+          "top": "Read full article here - \nhttps://blog.uditakhouri.com/capital-too-early/",
+          "author": "udit_50",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47273733",
+      "title": "Ask HN: Anyone fought a big corp over IP theft courts?",
+      "link": "https://news.ycombinator.com/item?id=47273733",
+      "domain": "news.ycombinator.com",
+      "author": "NatalijaAAD",
+      "score": 6,
+      "comment_count": 0,
+      "created_ts": 1772797032,
+      "is_internal": true,
+      "post_text": "Has anyone taken an IP theft&#x2F;breach of confidence claim to a court?<p>Small software company, big corporate defendant.<p>We&#x27;re looking at filing in IPEC (UK) - but EU&#x2F;US experience is also relevant.<p>Would appreciate 20 mins with anyone who&#x27;s been through the process.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": []
+    }
+  ]
+}
