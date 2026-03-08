@@ -7,6 +7,7 @@ export interface Book {
 
 export const books: Book[] = [
   { year: "2025", title: "Project Hail Mary", link: "https://a.co/d/25Y5rHA" },
+  { year: "2025", title: "The Psychology of Money", link: "https://a.co/d/012h4O9q" },
   { year: "2025", title: "Fish!: A Remarkable Way To Boost Morale And Improve Results", link: "https://a.co/d/cbiB2dj" },
   { year: "2025", title: "गोष्ट पैशापाण्याची", link: "https://amzn.in/d/071fbKbI" },
   { year: "2024", title: "Amp It Up", link: "https://www.amazon.com/Amp-Unlocking-Hypergrowth-Expectations-Intensity/dp/1119836115" },
