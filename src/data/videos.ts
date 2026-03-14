@@ -10,6 +10,7 @@ export const videos: Video[] = [
     title: "A Class Divided",
     link: "https://www.pbs.org/wgbh/frontline/film/class-divided/",
     comment: "Had a profound effect on me. Better understood discrimination and its effects. If there is any need for schooling in its current form, it is for such kind of activities.",
+    thumbnail: "https://www.pbs.org/wgbh/frontline/media/uploads/1985/03/CLASS_DIVIDED_16x9_REFRAME.jpg",
   },
   {
     title: 'Swami Sarvapriyananda - "Secret of Concentration" at IIT Kanpur',
