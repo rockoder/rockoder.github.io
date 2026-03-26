@@ -1,0 +1,1163 @@
+{
+  "scraped_date": "2026-03-26",
+  "source": "hacker_news",
+  "total_scraped": 128,
+  "nontech_count": 29,
+  "posts": [
+    {
+      "id": "47506713",
+      "title": "Show HN: I took back Video.js after 16 years and we rewrote it to be 88% smaller",
+      "link": "https://videojs.org/blog/videojs-v10-beta-hello-world-again",
+      "domain": "videojs.org",
+      "author": "Heff",
+      "score": 619,
+      "comment_count": 135,
+      "created_ts": 1774375428,
+      "is_internal": false,
+      "post_text": "What do you do when private equity buys your old company and fires the maintainers of the popular open source project you started over a decade ago? You reboot it, and bring along some new friends to do it.<p>Video.js is used by billions of people every month, on sites like Amazon.com, Linkedin, and Dropbox, and yet it wasn’t in great shape. A skeleton crew of maintainers were doing their best with a dated architecture, but it needed more. So Sam from Plyr, Rahim from Vidstack, and Wes and Christain from Media Chrome jumped in to help me rebuild it better, faster, and smaller.<p>It’s in beta now. Please give it a try and tell us what breaks.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "equity"
+      ],
+      "comments": [
+        {
+          "top": "I've never used video.js, and the site/advertising seems to be fairly oriented towards people who have used it or are familiar with it.\nI had one question I couldn't answer reading the site: what makes this different from the native html video element?\nAFAICT just the transport controls?",
+          "author": "rendaw",
+          "replies": [
+            {
+              "text": "Fair point, we could answer that more directly on the site. Besides the comparison were there other things that make it seem oriented to people already familiar with it?\nGenerally, the video tag is great and has come a very long way from when Video.js was first created. If the way you think about video is basically an image with a play button, then the video tag works well. If at some point you need Video.js, it'll become obvious pretty quick. Notable differences include:\n* Consistent, stylable controls across browsers (browsers each change their native controls over time)\n* Advanced features like analytics, ABR, ads, DRM, 360 video (not all of those are in the new version yet)\n* Configurable features (with browsers UIs you mostly get what you get)\n* A common API to many streaming formats (mp4/mp3, HLS, DASH) and services (Youtube, Vimeo, Wistia)\nOf course many of those things are doable with the video tag itself, because (aside from the iframe players) video.js uses the video tag under the hood. But to add those features you're going to end up building something like video.js.",
+              "author": "Heff",
+              "depth": 1
+            },
+            {
+              "text": "Part of what makes AI useful to me is getting though the layers of \"what the hell is this, exactly\" that slow you down when you jump more than one level beyond your domain knowledge. I think every knowledge container (document, website, what have you) should have a \"what the hell is this\" link /rich tooltip /accordion section /whatever by default.\nOf course, AI explanations often also fail at this unless you give them \"ELI5\" or other relevant prompting (I'm looking at you Perplexity).",
+              "author": "QuantumGood",
+              "depth": 2
+            },
+            {
+              "text": "I love a github repo's readme.md that only uses jargon and contains no intro paragraph on what the thing is or how it is to be used.",
+              "author": "phist_mcgee",
+              "depth": 3
+            },
+            {
+              "text": "> Advanced features like [...] ads\nI understand the use-case for this, but I find it working against the spirit of free software, which is bringing control back to the user.",
+              "author": "bheadmaster",
+              "depth": 2
+            },
+            {
+              "text": "I’m not sure which user we’re talking about, but it’s up to the video.js user to decide if and when they use ads. Just like it’s up to YouTube. Video can get expensive, so some video wouldn’t exist without some form of monetization.",
+              "author": "Heff",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "In case anyone's wondering, this website's syntax highlighting color scheme is called \"gruvbox\", which I quite like but took an embarrassingly long time to track down\nhttps://github.com/morhetz/gruvbox",
+          "author": "rezmason",
+          "replies": [
+            {
+              "text": "I have been seeing this theme trending a lot lately, it’s so good\nRecently I am using a variation that looks like gruvbox a bit but has some tweaks to it \nhttps://marketplace.visualstudio.com/items?itemName=hrose.am...",
+              "author": "hmokiguess",
+              "depth": 1
+            },
+            {
+              "text": "Gruvbox is oooollld, at least from my recollection. Been around at least since I started using vim maybe 15 years ago.",
+              "author": "junon",
+              "depth": 2
+            },
+            {
+              "text": "A seldom appreciated benefit of gruvbox: like vim binds, it's available everywhere.\nIf it has a theming system, somebody ported gruvbox to it.",
+              "author": "cyanf",
+              "depth": 1
+            },
+            {
+              "text": "Any idea what the website's built with? I really like the design/UI tbh",
+              "author": "jxmesth",
+              "depth": 1
+            },
+            {
+              "text": "As the sibling comment mentions, it's Astro:\nhttps://github.com/videojs/v10/tree/main/site",
+              "author": "genezeta",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Probably not base case but a quick test to replace my audio player (currently using Plyr) turned up the following gaps for me, at least with the out-of-the-box code.\n1. No playback rates under 1\n2. No volume rocker on mobile\n3. Would appreciate having seek buttons on mobile too\n4. No (easily apparent) way to add an accent color, stuck with boring monochrome\n5. Docs lacked clear example/demo/playground so I wasn't sure what it would look like until implemented",
+          "author": "bl4kers",
+          "replies": [
+            {
+              "text": "All solid feedback, thanks! I'm making sure these get captured as issues. Otherwise we're closely tracking feature parity with Plyr (and other players) and our goal is to have full parity by GA, aiming for the middle of the year.",
+              "author": "Heff",
+              "depth": 1
+            },
+            {
+              "text": "If we’re doing feedback, then:\n- On Mac with Increase Contrast turned on in accessibility settings the control bar ends up being white-on-light-grey\n- When focusing the volume control with a keyboard, you can only mute or un-mute, not use up or down to adjust the volume. To do that you have to tab again into the volume slider field\n- Don’t seem to be able to enter picture-in-picture mode with the keyboard\n- Purely from a first class citizen point of view, it’d be nice to have all the accessibility options (transcripts, etc) shown in the homepage demo",
+              "author": "robin_reala",
+              "depth": 2
+            },
+            {
+              "text": "This is great. Keep it coming.",
+              "author": "Heff",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I'm not familiar with video hosting but have played with html5 video player but I have this question: on the servers side, do I have to host a specific endpoint that serves chunks of video? Lets say I take 720p video @ 800mb and I chunk it into 2mb pieces with ffmpeg. So I have a folder somewhere (webserver, cdn, blob storage) with the original 4K video, then generate downscaled versions for 1440p, 1080p, 720p, so I end up with 4 large files, and then for each of those, I chunk them into reasonable sizes that aligns with bitrates / key frames. And then some thumbnail generation. Any advise on what the \"best\" way would be to chunk/host video files so that videojs runs the best and smoothest? I feel that I should build a very lean/fast chunk & thumbnail server, just one or two endpoints. Or is it best to let the webserver do the lifting? Or off-the-shelf media servers (like in the self-hosting community)?",
+          "author": "BatteryMountain",
+          "replies": [
+            {
+              "text": "Just convert it to HLS, which is naturally chunked at 1-2 second intervals, and serve all the pieces from nginix. No dynamic content needed. I do this with videojs and it works great. Added bonus of HLS is that my LG TV supports it natively from <video> tags.",
+              "author": "pjc50",
+              "depth": 1
+            },
+            {
+              "text": "If you don't need to switch versions at runtime (ABR), you don't even need to chunk it manully. Your server has to support range requests and then the browser does the reasonable thing automatically.\nThe simplest option is to use some basic object storage service and it'll usually work well out of the box (I use DO Spaces with built-in CDN, that's basically it).",
+              "author": "panstromek",
+              "depth": 1
+            },
+            {
+              "text": "Yes, serving an MP4 file directly into a <video> tag is the simplest possible thing you can do that works. With one important caveat: you need to move the \"MOOV\" metadata to the front of the file. There are various utilities for doing that.",
+              "author": "pjc50",
+              "depth": 2
+            },
+            {
+              "text": "Yea, passing `-movflags +faststart` to ffmpeg when processing the file should be enough.",
+              "author": "panstromek",
+              "depth": 3
+            },
+            {
+              "text": "It's not quite as simple as that because the chunks should be self-contained; they need to start with an IDR keyframe, which fully resets the decoder. That allows the player to seek to the start of any chunk.\nThat means when you're encoding the downscaled variants, the encoder wants to know the size of the file segments so it can insert those IDR frames. Therefore it's common to do the encoding and segmentation in a single step (e.g. with ffmpeg's \"dash\" formatter).\nYou can have variable-duration or fixed-duration segments. Supposedly some decoders are happier with fixed-duration segments, but it can be fiddly to get the ffmpeg settings just right, especially if you want the audio and video to have exactly the same segment size (here's a useful little calculator for that: \nhttps://anton.lindstrom.io/gop-size-calculator/\n)\nFor hosting, a typical setup would be to start with a single high-quality video file, have an encoder/segmenter pipeline that generates a bunch of video and audio chunks and DASH (.mpd) and/or HLS (.m3u8) manifests, and put all the chunks and manifests on S3 or similar. As long as all the internal links are relative they can be placed anywhere. The video player will start with the top-level manifest URL and locate everything else it needs from there.",
+              "author": "iainmerrick",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just want to say, thanks for the comprehensive blog post and not treating the reader like children. You did a great job explaining the differences & changes. I wish more product/project releases were done this well.",
+          "author": "BatteryMountain",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47504060",
+      "title": "Mystery jump in oil trading ahead of Trump post draws scrutiny",
+      "link": "https://www.bbc.com/news/articles/cg547ljepvzo",
+      "domain": "www.bbc.com",
+      "author": "psim1",
+      "score": 546,
+      "comment_count": 384,
+      "created_ts": 1774365952,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;www.wsj.com&#x2F;livecoverage&#x2F;stock-market-today-dow-sp-500-nasdaq-03-24-2026&#x2F;card&#x2F;mystery-jump-in-oil-trading-ahead-of-trump-post-draws-scrutiny-56sgwdXtlOlonqIKDsL6\" rel=\"nofollow\">https:&#x2F;&#x2F;www.wsj.com&#x2F;livecoverage&#x2F;stock-market-today-dow-sp-5...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "It's not much of a mystery.  It's pretty apparent what is happening.",
+          "author": "thewileyone",
+          "replies": [
+            {
+              "text": "I would just like to know who this was at least.",
+              "author": "archon810",
+              "depth": 1
+            },
+            {
+              "text": "Pulling the rug so his family members and other associates can buy the market dip.",
+              "author": "bigfatkitten",
+              "depth": 1
+            },
+            {
+              "text": "There are even better ways to do it through options. You can make money both on the way down and on the way up.",
+              "author": "david-gpu",
+              "depth": 2
+            },
+            {
+              "text": "\"We know that they are lying, they know that they are lying, they even know that we know they are lying, we also know that they know we know they are lying too. They of course know that we certainly know they know we know they are lying too as well, but they are still lying. The lie has become not just a moral category, but the pillar industry of this country.\"",
+              "author": "ramesh31",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "1. By a show of hands, who was surprised that the cataclysmic warnings of the weekend subsided into talk of diplomacy on Monday?\n2. Let’s hypothesize the US gov’t or allies \ndid\n pre-release this info to traders as a policy tool, inviting them to sell oil profitably, shaping the later price action . In a practical sense they may have brought more speculators to the short side than otherwise would have been there; is that scenario really beyond the pale?\n3. News of war and sovereign relations on an international stage necessarily will test the boundaries of traditional law of confidentiality and fair practices.",
+          "author": "unyttigfjelltol",
+          "replies": [
+            {
+              "text": "If you run the numbers: \nhttps://news.ycombinator.com/item?id=47504505\nYou will see, that anything else other than a ground invasion, is guaranteed to give Iran a war victory.",
+              "author": "inaros",
+              "depth": 1
+            },
+            {
+              "text": "The loss of ability to intercept missiles does not mean that the war is lost for America. It just means that it now has to contend with more of its own losses during the war.\nAmerica always goes to war with the handicap that 1 American life is worth hundreds of enemy lives. This handicap is why one gets the impression (illusion) that countries like Iran are able to hold their own against the great mighty USA. But if America stops playing as cautiously as it does, it turns into a very different war machine.",
+              "author": "roncesvalles",
+              "depth": 2
+            },
+            {
+              "text": "But that handicap is due to domestic politics which is  a real world force that shapes the american war machine ability more than anything",
+              "author": "ithkuil",
+              "depth": 3
+            },
+            {
+              "text": "If oil hits $150 and there's real pain on the streets, Americans will assent to a much bloodier war.\nIn fact, I suspect this \"15 point peace plan\" is just theater to this effect. \"Look we tried everything, we're gonna have to go in and really knock them out.\"",
+              "author": "roncesvalles",
+              "depth": 4
+            },
+            {
+              "text": "That handicap is due to the fact that the USA today doesn't fight defensive wars. It's hard to justify fighting wars happening in the Old World to Americans.\nWoodrow Wilson only joined WW1 once the Lusitania was sunk, which caused American deaths. FDR only joined WW2 once Pearl Harbor was attacked. Reagan got away with Grenada because it was a quick and dirty operation. Same with GHWB and First Gulf War. The younger Bush could justify the Afghan invasion only because of WTC, yet even as more Intel dropped on the identity of the terrorists and the lack of progress in locating Bin Laden, domestic support fell.\n> But if America stops playing as cautiously as it does, it turns into a very different war machine.\nGood luck trying to convince average Americans to do that. On the other hand, the US and Israel have managed to convince the same for the Iranians. They literally rained bombs on the upper class neighborhoods of Teheran, the places where moderates and regime opposition actually lived.",
+              "author": "fakedang",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The same people will have call options on Friday:\n- Pakistan has a defense treaty with Saudi Arabia.\n- Saudi Arabia has been attacked.\n- Witkoff claims to negotiate with Iranians in Pakistan and Iran denies it. Witkoff has a horrible track record in that either the negotiations fail or are a precursor to attacks.\n- What better way to spend time in Pakistan than to recruit a proxy and promise US money to the cash-strapped government?",
+          "author": "asd198",
+          "replies": [
+            {
+              "text": "Witkoff is a foreign asset. It insane how he's allowed to undermine us interest again and again.",
+              "author": "tokai",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "(I changed the URL from \nhttps://www.wsj.com/livecoverage/stock-market-today-dow-sp-5...\n because there doesn't appear to be any readable workaround for the latter)",
+          "author": "dang",
+          "replies": [
+            {
+              "text": "It might in theory be great to have an AI bot do this for all links of known paywalled sites if a good quality free alternative is available and discoverable by the AI bot. The bot could use the web search tool of an LLM service for this purpose. If not available, it could keep rechecking every fibonacci hour for up to 21 hours.",
+              "author": "OutOfHere",
+              "depth": 1
+            },
+            {
+              "text": "That just gets us links from whichever SEO spam farm is best at prompt-injecting LLMs into believing they provide a \"good quality free alternative\".",
+              "author": "zahlman",
+              "depth": 2
+            },
+            {
+              "text": "It doesn't have to be that way. An allowlist of domains can be built over time. Also, the bot's suggestions can initially be vetted by a human. As for prompt injection, there are additional ways to mitigate the risk using domain exclusion, roles, and input validation, but I guess unimaginative AI haters will find any excuse to be haters.",
+              "author": "OutOfHere",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Isn’t this just about the easiest thing to investigate (at least to know the parties  n loved and the purported basis for the trade)?",
+          "author": "balderdash",
+          "replies": [
+            {
+              "text": "If they want to, yeah it's all traceable. They just don't want to.",
+              "author": "SturgeonsLaw",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47503810",
+      "title": "Epic Games to cut more than 1k jobs as Fortnite usage falls",
+      "link": "https://www.reuters.com/legal/litigation/epic-games-said-tuesday-that-it-will-lay-off-more-than-1000-employees-2026-03-24/",
+      "domain": "www.reuters.com",
+      "author": "doughnutstracks",
+      "score": 355,
+      "comment_count": 560,
+      "created_ts": 1774364970,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;www.epicgames.com&#x2F;site&#x2F;en-US&#x2F;news&#x2F;todays-layoffs\" rel=\"nofollow\">https:&#x2F;&#x2F;www.epicgames.com&#x2F;site&#x2F;en-US&#x2F;news&#x2F;todays-layoffs</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "layoffs"
+      ],
+      "comments": [
+        {
+          "top": "> \"We're spending significantly more than we're making, and  we have to make major cuts to keep the company funded,\" he  said.\nSorry, HOW?!?\nHow can a company like Epic games with one of the most successful gaming products of the last few decades be losing money with a product that is so mature? Almost every other games developer would love to be in their position on Fortnite but they've somehow turned that into a loss making proposition?!? I'm baffled.",
+          "author": "Quarrelsome",
+          "replies": [
+            {
+              "text": "They aren't losing money on Fortnite, they're losing money on vanity projects like the Epic Game Store where they spend tens of millions of dollars for exclusivity deals with developers, and give away free games to try to poach Steam users with an otherwise inferior product. Unfortunately it is their employees that are paying the price of leadership making it rain with their overflowing coffers they couldn't help but burn.",
+              "author": "applfanboysbgon",
+              "depth": 1
+            },
+            {
+              "text": "It's still funny to me that they would rather burn 9 figures in cash on these silly deals to try and 'trap' gamers on their platform instead of just... I don't know... making a better platform? The reason nobody competes with Steam is simply the sheer number of integration and platform features that make it easy to buy, play and share games with my friends. It's not that hard, stop trying to 'force' me to use your platform. Just make it a nice experience.",
+              "author": "Ethee",
+              "depth": 2
+            },
+            {
+              "text": "> The reason nobody competes with Steam is simply the sheer number of integration and platform features that make it easy to buy, play and share games with my friends.\nI don't agree. The reason I personally prefer Steam is that all my existing games are on Steam so if I keep buying on Steam I don't have to make and maintain accounts on other stores, if I keep buying my games on Steam I can keep using Steam as my only game launcher, and all my friends are on Steam so games with Steam multiplayer integration are easier to play if I too play it through Steam.\nThe Epic Games Store client and game integration could be significantly better from a technical perspective in every possible way, and I would not be interested in moving to it. Steam is good enough and switching has a \nmassive\n cost. I can't really imagine much that would make me use the Epic Games Store other than exclusivity or the promise of free games. Though I would be more likely to just not play a particular game if it's only available through the Epic Games Store.",
+              "author": "mort96",
+              "depth": 3
+            },
+            {
+              "text": "Another big thing is trust. With any of these digital markets I'm not truly buying games, I'm purchasing a revocable license. That requires a certain amount of trust that the platform isn't going to screw me over.\nSteam isn't perfect: they initially had to be forced to offer refunds, and their item economy enables barely disguised gambling. But by and large they have behaved very predictably and consumer-friendly. Sometimes by outright consumer-friendly policies like generous refunds or labeling games with AI assets. But usually by just not doing anything greedy. Or as the meme goes: \"Gabe does nothing. wins.\"",
+              "author": "wongarsu",
+              "depth": 4
+            },
+            {
+              "text": "I agree. No company is perfect, but if someone asked me to name the most consumer-friendly large tech company, I'd say Valve. And honestly, I can't think of a second one.",
+              "author": "rubslopes",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I am not Tim Sweeney's biggest fan. I know he and his company have many detractors. Please read this comment with that in mind, because while I don't love them, I also think that as layoff announcements go, this is good. No beating around the bush, explicitly NOT blaming AI, taking responsibility, taking care of those impacted. If you are gonna do it, this is as good as it can get.\nI think the reality is that Epic got big because of Fortnite but nothing lasts forever. They would have been better off building a war chest and pulling a Valve (though I'm sure they'd hate hearing it that way): going silent and making whatever they wanted for a while, and then trying to repeat the cycle, rebuilding the chest, and then going on. Video games are the exact opposite of Infinite Growth Forever. People get bored and move on.\nMeanwhile, Epic has many stable and valuable businesses - Unreal, the game store, etc. - which are perfectly capable of sustaining a sizable company. Just not one as sizable as Epic is. The best case for them is they figure that out, and manage to make a sustainable go of it doing that.",
+          "author": "ivraatiems",
+          "replies": [
+            {
+              "text": "> pulling a Valve\n> Video games are the exact opposite of Infinite Growth Forever. People get bored and move on.\nTo me, Epic Games were clearly trying to \"pull a Valve\" and capture the platform magic that allows Valve and other platforms like Roblox to be sustainably profitable. Obviously they have their own game store, but they also have a Fortnite Creative / UEFN (Unreal Editor for Fortnite) platform where people can create minigames inside Fortnite that work similarly to Roblox.\nThey even had the right idea for a while - refusing in-app transactions in their Fortnite Creative platform to encourage actually fun games rather than greedy games that prey on players. Unfortunately they had to walk back that system recently, which I now assume to be for the same financial reason as this new layoff.\nI think their idea didn't work for two reasons. First, they locked down the UEFN platform too hard, leaving not a lot of options for developers to modify core gameplay features like movement and player controller. Devs like me who wanted more control over the player character and game mechanics were really severely restricted - if it was intentional, it was a bad call, and if it was unintentional then it shows that UEFN was too half-baked technically when they launched it. Second, Fortnite already had the reputation of being \"just that Battle Royale game\", so people didn't innovate too far beyond the game's base gameplay, rather than Roblox which was more like a true game engine / platform where every genre was possible. This kind of doomed their plan to compete head-to-head with Roblox from the start.",
+              "author": "2001zhaozhao",
+              "depth": 1
+            },
+            {
+              "text": "> To me, Epic Games were clearly trying to \"pull a Valve\" and capture the platform magic that allows Valve and other platforms like Roblox to be sustainably profitable.\nValve have headcount of under 400 people. Obviously they have contractors working creating assets for CS / Data / etc, but company itself is swift and agile.\nEpic was around 1000 people at Fortnite release then grown to over 4000.",
+              "author": "big-and-small",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, UEFN when you dig past the surface is rough. I think it's a mix of both your reasons. UEFN seems to be a spinoff of their Fortnite Creator workshop while making use of their new Verse scripting. If this was originally only meant to mod Fortnite, I can see why it's so half baked as a Roblox competitor. You really are pulling teeth if you want to make anything other than \"Fortnite but X\".",
+              "author": "johnnyanmac",
+              "depth": 2
+            },
+            {
+              "text": "I broadly agree, though it does seem like Minecraft has some plot armor here.  I think people are still buying and playing Minecraft a lot.  I like Minecraft, I play it occasionally, but I guess it's a game that has much more staying power than average.\nI though my grievances with Epic are primarily because we never got Jazz Jackrabbit 3.",
+              "author": "tombert",
+              "depth": 1
+            },
+            {
+              "text": "Minecraft is kind of a perfect storm for longevity. It is a sandbox game, that has a lot of depth. But its also extremely easy to jump into casually (unlike idk Kenshi or Rimworld). Its also family friendly but not in a way that makes it off putting to adults so anyone 5-500 could play it. Its also not so expensive that people refrain from rebuying it on different platforms.",
+              "author": "ecshafer",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Epic's 2019 P&L was published as part of Epic v. Apple. According to that:\n* Fortnight revenue was $5.5B in 2018 and $3.8B in 2019\n* Employee counts in those years: 1063 and 1932\n* Average \"People\" cost per employee: $141K, $142K (CPI adjusted is $182K in 2026).\n* Average \"Production & Hosting\" cost per employee: $189K, $150K (CPI $248K, $194K)\n* Platform royalty expenses were 25% of total game revenue\n* Slightly under half their Operating Expenses were people\n* Fortnight was >90% of revenue\nI have a strong guess that \"People\" costs doesn't include all salaries, and that many employees are categorized under \"Production & Hosting\", although I expect that also includes other costs. I'll guess 75% is people, which makes total CPI adjusted average cost per employee somewhere around $320K-$370K, but I'll say $320K.\nThis means 5000 employees cost around $1.6B and cutting 1000 saved around $320M/year in addition to $500M of other costs.\nMost estimates of Fortnight revenue claim it's roughly flat or falling between 2020 and 2025 fluctuating between $3B and $6B.\nUnless Unreal Engine or EGS revenue took off, it's kind of weird to quadruple headcount while keeping revenue basically flat or falling. If fortnight only makes $2B next year, then they would be underwater on just royalties and salaries.\nhttps://s3.documentcloud.org/documents/20696836/epic-apple-t...",
+          "author": "singron",
+          "replies": [
+            {
+              "text": "A lot of things have changed in the labor market since 2019.",
+              "author": "tencentshill",
+              "depth": 1
+            },
+            {
+              "text": "Maybe a dumb question but why break down production/hosting as a cost per employee?",
+              "author": "junon",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Often when I see layoffs like this, I can't help but think \"Wow that company has so many employees and yet, in practice, does so little\". This perhaps a rather uncharitable sentiment, but I can't help but have it.\nYes, Unreal Engine keeps getting improved, more Fortnite content gets produced. But there is a general lack of innovation, one that I find personally painful when I look at Epic's recent-ish track record. Needing to fire this many employees is not just a result of market conditions, but also a straightforward consequence of not being able to leverage them for sufficiently lucrative outcomes.\nCompanies with this amount of capital are well positioned to take multiple strategic bets which aren't at all safe bets, but pose no real financial risk for the company in aggregate. Why do these bets end up being taken instead by indies with much more to lose? Well, partly because indies often _need_ to take riskier bets to carve a niche. But the other side of the coin is, what I can only surmise, a lack of imagination and adventurousness on the part of management. They could be funding many experiments and seek to have another hit like Fortnite, perhaps in a somewhat different market. Having to seek another hit while your finances are declining is less pleasant.\nWhen a company loses its edge in this way, as long as it hasn't _really_ captured a demographic or created some very sticky ecosystem, it's bound to get whittled down repeatedly. I doubt that Epic will suddenly get more creative and adventurous at this point, but perhaps necessity will have its part to play.\n(Aside from all of that, I agree with most commenters here that the layoff is being handled about as gracefully as one could reasonably hope.)",
+          "author": "Anvoker",
+          "replies": [
+            {
+              "text": "> \"Wow that company has so many employees and yet, in practice, does so little\"\nSome of it\n is real need for things like support, payments, and compliance in a bunch of languages and jurisdictions and across a bunch of platforms and combinations of platforms.\nA lot of it's just that large businesses tend to be shockingly inefficient, often taking literally many hundreds of person-hours to do things that a small company or small team might do in low-tens. Coordination costs are high, processes are often really bad in ways that nobody who could fix them is empowered to, serious principal-agent problems are the norm rather than the exception, et c.\nOne of the weirdest things to me about the AI craze is that I don't see how it fixes organizational problems, and most big orgs are \nalready\n burning more cash on waste due to those than they could possibly gain from fairly-optimistic LLM gains. Like, if they wanted to 5x development speed, they \nalready can\n without a single LLM involved, by managing better. They could have done that ten years ago. All the more wild that they're flipping out over LLMs. You can't even come close to efficiently organizing the resources you already have...",
+              "author": "genthree",
+              "depth": 1
+            },
+            {
+              "text": "> if they wanted to 5x development speed, they already can without a single LLM involved, by managing better.\nTrue, but leaders of large organizations always want to fix inefficiencies and presumably failing to. Kinda like saying \"if humans stopped fighting wars, most of them would have better quality of life\" -- people whose life quality is better at peacetime are \nalready\n trying to avoid wars, and there's not much more they can do.\nOTOH, AI is a practical step a CTO (or CEO or Board or whoever) can take to make the company more efficient (assuming the hype works out).",
+              "author": "_cs2017_",
+              "depth": 2
+            },
+            {
+              "text": "Semi related read: \nhttps://news.ycombinator.com/item?id=47484519\nTLDR the beauracracy is by design, in part to preserve what jobs are there, and in part to dilllute accountability when it comes up. You can see how these two factors can lead to a negative feedback loop of inefficiencies, where CYA is more important than actual productivity.",
+              "author": "johnnyanmac",
+              "depth": 2
+            },
+            {
+              "text": "Nanite is a good counterexample, very impressive and innovative technology. Even more impressive that they released the technical details instead of going the software patent route. I think trying to leverage the war chest to go after Steam's monopoly was exactly the type of adventurous plan you are talking about, the safe play would have been to make minimal investments and continue churning out games hoping for another big hit.",
+              "author": "TGower",
+              "depth": 1
+            },
+            {
+              "text": "You can't go the software patent route without releasing technical details.",
+              "author": "NoahZuniga",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I’ve wondered how much money was burned on Tim Sweeneys quixotic quest to re-create the Steam store. I know a lot of people who would religiously download the “free games” but never spent a cent.",
+          "author": "pram",
+          "replies": [
+            {
+              "text": "The Epic Games store/browser is awful. I have bought one (insanely discounted) game on it and get all the free games, because i like to collect videogames. But i almost never play them, because the application is super slow. Steam has absolutely the best application, then (with a huge enormous gap) comes Gog, Amazon, Xbox, EA, Ubisoft and Epic at the rock bottom. I don't use Blizzards program, so i can't judge on that one.",
+              "author": "b3lvedere",
+              "depth": 1
+            },
+            {
+              "text": "> then (with a huge enormous gap) comes Gog\nMy favourite thing about GOG is that it uniquely does not demand that you install their software, instead letting you download installers straight from the website.\nThey're not fake netinstallers either, which doubles as a guarantee that I keep all of my games even if GOG goes bankrupt/bans my account/wipes my library/etc.",
+              "author": "mzajc",
+              "depth": 2
+            },
+            {
+              "text": "I was going to say that too. The other day I got annoyed by GoG's app constantly harassing me about updates that I just uninstalled it.\nAll my games are still installed and still work.",
+              "author": "malfist",
+              "depth": 3
+            },
+            {
+              "text": "That's true. There is indeed absolutely no need to use Gog Galaxy.",
+              "author": "b3lvedere",
+              "depth": 3
+            },
+            {
+              "text": "Just a note, on Linux at least, if you use the Heroic Launcher, you can get your games from the Epic store without using their awful launcher.  You can just run the games through Heroic, which I find less irritating.",
+              "author": "tombert",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47501211",
+      "title": "Nanobrew: The fastest macOS package manager compatible with brew",
+      "link": "https://nanobrew.trilok.ai/",
+      "domain": "nanobrew.trilok.ai",
+      "author": "syrusakbary",
+      "score": 222,
+      "comment_count": 142,
+      "created_ts": 1774352421,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47457162",
+      "title": "Tell HN: H&R Block tax software installs a TLS backdoor",
+      "link": "https://news.ycombinator.com/item?id=47457162",
+      "domain": "news.ycombinator.com",
+      "author": "yifanlu",
+      "score": 152,
+      "comment_count": 13,
+      "created_ts": 1774025128,
+      "is_internal": true,
+      "post_text": "Just a PSA for folks here in the US because tax season is coming up and some of you may be using H&amp;R Block Business 2025. I discovered that the software installs a root CA named &quot;WK ATX ServerHost 2024&quot; (expiry 2049) into your local machine trusted root certificate store. They also helpfully include the private key to this certificate in a DLL file. This certificate does not identify itself as &quot;H&amp;R Block&quot; anywhere and does not get uninstalled when you uninstall the software.<p>I&#x27;ve been able to successfully use this root CA + mitmproxy to manipulate TLS traffic on a brand new virtual machine on the same network with a DNS spoofing attack. Demo: https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=5paxvYkz1QE<p>To test if your machine is vulnerable visit this page: https:&#x2F;&#x2F;hrbackdoor.yifanlu.com and if you do not get any warning or error message from your browser then you have the backdoor installed. If your browser does complain, you can choose to visit the page anyways for more details on the vulnerability.<p>Is it negligence or a &quot;real&quot; back door? It&#x27;s impossible to tell and since the private key is out there, anyone can use it so the point is moot. There is no legitimate reason why they need to install a wildcard root CA under a different name. When I contacted them about it their statement includes &quot;similar findings have been identified through internal security assessments&quot; meaning they know about this issue but have not fixed it. I would not trust H&amp;R Block software at this point.<p>If you didn&#x27;t get bit by this, congratulations. See this post as a reminder to audit your trusted root CA store.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "What exactly do you mean by “H&R Block Business 2025”, as such a version doesn’t exist. Is this a reference to the “H&R Block Premium & Business 2025” software?  And is it the installed version, I assume, or the online version?\nClarity really would help as Steve Gibson is flailing about wildly with this limited info and implying that all H&R Block 2025 tax software is affected",
+          "author": "minok1217",
+          "replies": []
+        },
+        {
+          "top": "When will these companies learn?\nhttps://michael.team/zoom/",
+          "author": "raw_anon_1111",
+          "replies": []
+        },
+        {
+          "top": "No evidence of this on my windows 11 system, but I'm running the personal HRB software, not business.\nAlso, a internet search for \"WK ATX ServerHost 2024\" shows that this certificate is likely related to some other tax software from Walters Kluwer.  See  \nhttps://www.wolterskluwer.com/en/solutions/atx\n, \nhttps://files.cchsfs.com/doc/atx/2024/Help/Content/Both-SSou...\n and \nhttps://support.atxinc.com/",
+          "author": "larrybud",
+          "replies": []
+        },
+        {
+          "top": "\"If you have an SSL error in your H&R Block Software, \n    here’s what you need to know.\"\n\n\n\nhttps://www.hrblock.com/tax-center/support/software/technica...",
+          "author": "WarOnPrivacy",
+          "replies": []
+        },
+        {
+          "top": "I have the non-business edition installed and still get a privacy error attempting to load your page, so this seems specific to the business edition. Thanks for the heads up.",
+          "author": "TheClassic",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47475859",
+      "title": "Ask HN: AI productivity gains – do you fire devs or build better products?",
+      "link": "https://news.ycombinator.com/item?id=47475859",
+      "domain": "news.ycombinator.com",
+      "author": "Bleiglanz",
+      "score": 107,
+      "comment_count": 201,
+      "created_ts": 1774172250,
+      "is_internal": true,
+      "post_text": "i was rolling my eyes at the hype, but <i>reading</i> about this is totally different from <i>experiencing</i> it. if you have any old repos out there - try it, you might actually be amazed.<p>i&#x27;m not sure i buy the long-term &quot;*90% productivity*&quot; claims for complex, legacy enterprise systems, but for the boilerplate, libraries, build-tools, and refactoring? the gain is gigantic. all the time-consuming, nerve-wrecking stuff is mostly taken care of.<p>you start off checking every diff like a hawk, expecting it to break things, but honestly, soon you see it&#x27;s not necessary most of the time. you just keep your IDE open and feed the &quot;analyze code&quot; output back into it. in java, telling it to &quot;<i>add checkstyle, run mvn verify and repair</i>&quot; works well enough that you can actually go grab a coffee instead of fighting linter warnings.<p>the theory is that what remains is just the <i>logic</i> and <i>ideas</i>. we&#x27;ll see how that holds up when the architecture gets genuinely tangled. but for now, letting it branch off, create boilerplate, and write a simple test while you just iterate on the spec works shockingly well. you only write source code when it&#x27;s too annoying to write down the spec in plain english.<p>it raises the real question: if your competitor Y just fired 90% of their developers to save a buck, would you blindly follow suit? or would you keep your team, use this massive leverage, and just *dwarf* Y with a vastly better product?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise",
+        "fired",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47507666",
+      "title": "Show HN: AI Roundtable – Let 200 models debate your question",
+      "link": "https://opper.ai/ai-roundtable/",
+      "domain": "opper.ai",
+      "author": "felix089",
+      "score": 97,
+      "comment_count": 79,
+      "created_ts": 1774379727,
+      "is_internal": false,
+      "post_text": "Hey HN! After the Car Wash Test post got quite a big discussion going (400+ comments, <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47128138\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47128138</a>), I spent the past few weeks building a tool so anyone can run these kinds of questions and get structured results. No signup and free to use.<p>You type a question, define answer options, pick up to 50 models at a time from a pool of 200+, and they all answer independently under identical conditions. No system prompt, structured output, same setup for every model.<p>You can also run a debate round where models see each other&#x27;s reasoning and get a chance to change their minds. A reviewer model then summarizes the full transcript. All models are routed via my startup Opper. Any feedback is welcome!<p>Hope you enjoy it, and would love to hear what you think!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Which AI lab has higher ethical standards:\nhttps://opper.ai/ai-roundtable/questions/8f5b4f55-617\nDo you think its alright that AI labs scraped the internet without respect for copyright and now sell closed models?\nhttps://opper.ai/ai-roundtable/questions/86864de8-251\nVery interesting to read the transcripts. And seeing how they manage to convince each other. Opus 4.6 seems to really get the others changing their minds",
+          "author": "totisjosema",
+          "replies": [
+            {
+              "text": "Good questions!",
+              "author": "jacquesm",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Enjoyable for sure. Had fun watching the debate amongst AIs on this age-old dilemma, and how AIs convinced their peers to change their minds.\nhttps://opper.ai/ai-roundtable/questions/i-am-standing-in-th...",
+          "author": "kapework",
+          "replies": []
+        },
+        {
+          "top": "Oh lord, imagine asking ”serious” questions\nhttps://opper.ai/ai-roundtable/questions/you-are-standing-in...",
+          "author": "gsandahl",
+          "replies": [
+            {
+              "text": "> However, a clever minority led by Gemini 3.1 Pro and Gemini 3 Pro argued that if the sign is legible from the other side, it must be intended to lead people \ninto\n the current room to find the exit, making the inscribed corridor the one leading deeper into the dungeon.\nThis is quite impressive, really.",
+              "author": "zipping1549",
+              "depth": 1
+            },
+            {
+              "text": "Gemini did better than I did.",
+              "author": "stephenlf",
+              "depth": 2
+            },
+            {
+              "text": "Agree, this is where llms can uncover new perspectives!",
+              "author": "gsandahl",
+              "depth": 2
+            },
+            {
+              "text": "A dungeon with glass doors and emergency exit signs? In that case, I can imagine at least two alternative scenarios:\n- \"↑TIX∃\" is not a mirror image of \"EXIT\", but some dwarven runes that mean something else entirely.\n- The sign might be a ruse meant to lure you into a trap.\nIf you look at the detailed answers, some of the models have similar answers (e.g. Nemotron Nano 12B: \"Suspicious of dungeon riddles, viewing the inscription as a potential trap or red herring.\"), but I'm not sure it's because they identified the word EXIT and thought it might be misleading, or because they didn't understand it...",
+              "author": "rob74",
+              "depth": 1
+            },
+            {
+              "text": "Great question! Clean separation between Gemini Pro and the other answers",
+              "author": "sdwr",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Fun little toy, tried to ask it some post-modern philosophy questions and they all mostly agreed with the statements of the philosopher, until the debate where Opus 4.6 managed to change their opinion to a resounding \"maybe\", pretty much every single time. It seems like the \"better\" frontier models often take a more grounded stance from the beginning, and even manage to influence the other models.\nHere is an example:\n\nhttps://opper.ai/ai-roundtable/questions/79e6cdd4-515\nAnother fun debate:\n\nhttps://opper.ai/ai-roundtable/questions/81ee56e9-60f",
+          "author": "civvv",
+          "replies": [
+            {
+              "text": "Yea Opus 4.6 is the one that changes opinions the most from what I've seen. Also the maybes or the are you 100% certain framings trigger most models to default to maybe / no. \nhttps://opper.ai/ai-roundtable/questions/can-you-be-100-cert...\n - Or as Shane puts it, Nobody's saying he IS a lizard. They're saying the universe doesn't hand out 100% certificates.",
+              "author": "felix089",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Okay since the launch we got about 5k questions asked to the roundtable, really cool stuff! We had much higher usage than expected and had to scale up to keep things running. Thanks for all the feedback, shipped a bunch of updates during the day. Now the history tab has a much better sorting logic, added upvotes, and more filters. You can create final summaries in a couple of voices, which is quite funny I think. There's a couple more things coming shortly, like open questions mode and potentially joining as a participant in the roundtable. Any other feedback just let me know. Thanks!",
+          "author": "felix089",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47512204",
+      "title": "Oil at $150 will trigger global recession, says boss of financial BlackRock",
+      "link": "https://www.bbc.com/news/articles/c9wqrdkx8ppo",
+      "domain": "www.bbc.com",
+      "author": "tartoran",
+      "score": 82,
+      "comment_count": 88,
+      "created_ts": 1774403476,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "boss"
+      ],
+      "comments": [
+        {
+          "top": "Is it going to be a GFC style crash where I want my assets in currency denominated investments (e.g. bonds) to buy assets at crazy low values or is it going to be mega-inflation where I want my assets in commodities and stocks?",
+          "author": "HWR_14",
+          "replies": [
+            {
+              "text": "I am not going to use this strategy but my guess is first the first then the second. Stocks seem to be already on very high levels. Commodities might fare less well as oil is major input. So high prices probably lead to less demand to lower prices or at least combating the cost increases from oil as input.",
+              "author": "Ekaros",
+              "depth": 1
+            },
+            {
+              "text": "If there was a definitive answer to this, don't you think that the markets would already have moved to account for it?",
+              "author": "roryirvine",
+              "depth": 1
+            },
+            {
+              "text": "It's entirely possible that there could be an answer for which type of recession to expect but it still might not be priced in. For instance if many people think the recession is going to happen in 2028 and I think it will happen next month, we would have very different investments.",
+              "author": "HWR_14",
+              "depth": 2
+            },
+            {
+              "text": "But they did! Look at the gold price.",
+              "author": "M95D",
+              "depth": 2
+            },
+            {
+              "text": "Not just the price, the physical volumes. China's central bank has been discounting their bonds beyond what the market can support in order to get more free cash to buy up as much metal as possible as soon as possible, to the point that people are making millions this month just in the arbitrage from buying up everything in the London and Chicago exchanges to give to China.",
+              "author": "OgsyedIE",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This is a live test that the world is not ready to wean from fossil fuels.",
+          "author": "tsoukase",
+          "replies": []
+        },
+        {
+          "top": "It'll force American to negotiate with Iran and China/India will be the mediators. It will be the beginning of the end of the Petrodollar and likely force America to leave the Middle East. It will empower Russia, China, and India while hurting US interests. I don't know why we started this war at all other than to serve Israel's interests even when it means harming our own.",
+          "author": "diogenescynic",
+          "replies": [
+            {
+              "text": "The ambassador to Israel is a Christian Zionist who believes in the rapture. The secretary of defense is a crazy person with a crusades tattoo. They would burn the USA down to the ground if it meant moving their insane superstitious agenda forward. Is it forwarding Israel's interests? Yeah. Are they doing it because they love Israel and the Jewish people? Not a chance. Isn't the Rapture cool?",
+              "author": "platevoltage",
+              "depth": 1
+            },
+            {
+              "text": "I suspect Hegseth and other officials will be replaced when Trump internalizes how unpopular this war is and needs a scapegoat to facilitate a pivot. He's already blaming other people in his administration for anything that's going wrong.\nEven if his officials are ideologically stable and consistent, he himself isn't.",
+              "author": "smt88",
+              "depth": 2
+            },
+            {
+              "text": "lol he's been blaming everyone else since he was elected for any issue.  He isn't the type of person to accept responsibility for anything.",
+              "author": "wookmaster",
+              "depth": 3
+            },
+            {
+              "text": "I don't think he cares? He's going to cash out after this and his donors will make sure he is paid handsomely for this. He can't run again and Israel just took 10% of Lebanon and is poised to be the great regional power. They're already talking about Turkey and Pakistan as the new threats... They will just keep moving the goalposts until it stops working. I have no clue where this ends, but Iran could end up buying a nuclear weapon from Pakistan if this keeps heating up.",
+              "author": "diogenescynic",
+              "depth": 3
+            },
+            {
+              "text": "That is kind of his style. And then we have \"anti-war\" voices like future president Tucker Carlson who refuses to say Trump's name when criticizing US foreign policy. It just gives him room to say \"it wasn't my fault, aren't I great?\"",
+              "author": "platevoltage",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "It’ll trigger a lot of political pressure which in turn will trigger more war\nExpensive oil has a lot of repercussions",
+          "author": "r0fl",
+          "replies": [
+            {
+              "text": "Many people believe the root cause of the Arab Spring set of insurrections and wars was food inflation.   And it's now a lot more expensive then what kicked off the Arab Spring.",
+              "author": "bryanlarsen",
+              "depth": 1
+            },
+            {
+              "text": "The difference with oil inflation is that it also directly boosts revenues in oil-producing Middle Eastern countries.\nConsequently, they can offset core staple inflation (and usually choose to) to decrease unrest.\nIt's core inflation \nwithout\n high oil prices that torpedoes their fiscal options.",
+              "author": "ethbr1",
+              "depth": 2
+            },
+            {
+              "text": "Perhaps it makes it less likely in the middle East, but it makes it much more likely in countries vulnerable to both oil & food price inflation.\nThe immigration crisis caused by Arab spring toppled many governments in Europe.\nIf a similar set of crises happened in the Americas it would make the US's illegal immigration situation much worse.",
+              "author": "bryanlarsen",
+              "depth": 3
+            },
+            {
+              "text": "> The immigration crisis caused by Arab spring toppled many governments in Europe.\nthat was entirely of their own making, though",
+              "author": "red-iron-pine",
+              "depth": 4
+            },
+            {
+              "text": "Either that, or it will force most countries to electrify their economies, which has made economic + ecological sense for decades.\nThe oil interests will do everything they can to fight it.  (Like buying off Trump, which probably had a lot to do with us starting the Iran war, and is certainly why we're cancelling many affordable energy build outs in the face of widespread shortages.)\nLess corrupt economies will pull ahead, and technological progress will bifurcate.  The US will probably be on the wrong side of this.  China will probably be on the right side.",
+              "author": "hedora",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Misleading headline: Fink said that \"\nyears of\n above $100, closer to $150 oil\" would trigger recession. Which, well, duh, but it's quite different from the implication that even a momentary peak would trigger that.\nI also do wonder if oil prices would actually stay high even if the Strait of Hormuz stayed closed for years. Many analysts think that as a planet we're already past peak oil demand, and the price spike has turbocharged the transition to EVs (where I live, every EV dealer is flat out and waiting times are months). High prices also spur more production from everybody else. The tricky bit is specialist fuels like jet fuel, where you can't just turn a tap to make more.",
+          "author": "decimalenough",
+          "replies": [
+            {
+              "text": "Was looking at EVs last weekend, slightly accelerating a purchase that was going to be made soon anyway and, yep, there is plenty of additional interest as a result of current fuel prices / availability.\nEVs were only going to grow in popularity anyway, but this feels like it's jumped the adoption curve up a peg or two immediately.\nWhat I'm interested in seeing is whether infrastructure can scale with the additional interest. And I don't think it will because the the current government is already planning to add an \"EV tax\" to make up for the fuel excise, and the opposition government (if/when it gets back in) is owned by the fossil fuel lobby, and so they'll be doing whatever they can to slow it down.",
+              "author": "BLKNSLVR",
+              "depth": 1
+            },
+            {
+              "text": "The beauty of EVs is that the infrastructure is for most part very decentralized. Anybody with a house can charge at home, using cheap off-peak power at night and/or solar panels during the day.\nObviously there's work to be done on charging in apartments and highways, but this is a more tractable problem than (say) trying to double hydrogen or even gasoline filling stations overnight.",
+              "author": "decimalenough",
+              "depth": 2
+            },
+            {
+              "text": "The infrastructure in question is DC fast chargers. Yes, you can charge at home if you have a house, with a parking space reachable with an EVSE, and your commute is short enough that you can fully recharge by the next commute, and nobody needs the car after hours when you'd otherwise be charging it, and you never take road trips or longer-than-usual drives.\nEveryone else is, to a greater or lesser extent, at the mercy of the DCFC infrastructure, and it is sorely lacking in many places - even ones you'd expect it to be pretty good.",
+              "author": "ternus",
+              "depth": 3
+            },
+            {
+              "text": "Your picture is not an accurate picture of what it's like for most people - you frame the exceptions as if it's the normal case.\nMost people who have a driveway or garage where they can install an EVSE (or an apartment complex where the parking has chargers) don't even need to charge every day. Depending on the commute it could even be just two or three times a week. It would usually only be when your only option is trickle charging out of a standard wall outlet that you are in the 'might not be able to charge in time for the next drive' territory, not with EVSE where you can get 7 kW single phase or 11 kW three-phase with most cars (some cars can do up to 22 kW with three phase but that's rare for them to support that on AC charging and it would be rare to have an EVSE that could do that power at home).",
+              "author": "stephen_g",
+              "depth": 4
+            },
+            {
+              "text": "I'm not making any representation of how common this is - just saying that unless all those conditions apply to you, you will eventually have cause to care about the quality, availability, and reliability of public DC charging infrastructure.\nAnecdotally, I have 5+ friends with EVs, and every single one of them charges theirs from a standard 15A wall outlet. (I have an EV, but I also have a real charger.) Sure, most of the time it's fine - but when it's not, then you have to really care about whether that nearby EVgo pedestal is working today.\nBut furthermore: most apartment dwellers, many renters, people in multifamily homes/complexes where their parking spaces are not near their personally-metered power, those who have to street park - many more people than you may think have difficulty charging at home. I wish it weren't the case, and I'd love to see better solutions here.",
+              "author": "ternus",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47507354",
+      "title": "Young Graduates Face the Grimmest Job Market in Years",
+      "link": "https://www.nytimes.com/2026/03/24/business/economy/college-graduates-job-market-hiring.html",
+      "domain": "www.nytimes.com",
+      "author": "koolba",
+      "score": 77,
+      "comment_count": 34,
+      "created_ts": 1774378033,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "job market"
+      ],
+      "comments": [
+        {
+          "top": "context: i teach at a local college in IT. some of my classes are part of the cybersec curriculum.\nas far as i have been able track (linkedin, email, etc.) roughly 3/4 of the previous graduating cybersec class has been unable to get a job in cybersec. probably 1/2 of those are struggling to find even basic sysadmin or password-resetter positions.\nthis is significantly different than when the program started (around 2015 or so), where roughly 4/5 of the graduating class had jobs (specifically in cybersec) lined up at the time of graduation.\ncybersec is a \nbit\n of an outlier, but i see a similar trend with the networking program and game design program as well (the only other 2 i have first-hand knowledge of)\nits rough out there! (i am recommending to my kids that they avoid post-secondary)",
+          "author": "john_strinlai",
+          "replies": [
+            {
+              "text": "Game design also seems like it'd be an outlier fwiw, since it's a niche that people desperately want to get into if they've participated in contemporary entertainment culture in the last 2 decades, and that schools are happy to take their money for, but realistically the competition's always seemed high. Networking is a pretty boring unglamorous pursuit though that's very behind the scenes as well as being difficult and niche.",
+              "author": "brailsafe",
+              "depth": 1
+            },
+            {
+              "text": "Game making is like film making in this regard: it's often a \"passion job.\"",
+              "author": "flopsamjetsam",
+              "depth": 2
+            },
+            {
+              "text": "None of the top cyber security talent I've worked with went to school for it, and I have been underwhelmed by what I see coming from college programs.  These kinds of credentials themselves are not a signal of quality to me.",
+              "author": "elevation",
+              "depth": 1
+            },
+            {
+              "text": ">\nThe kinds of credentials themselves are not a signal of quality to me.\ni hear this online a lot but never from the companies and hiring managers that hired our cybersec students for the last decade.\nkeep in mind, this is not a 6-month \"intro to cybersec\" or bootcamp-style program.",
+              "author": "john_strinlai",
+              "depth": 2
+            },
+            {
+              "text": "Goodwill with hiring managers is good.  But in a down economy it'd be helpful to boost your reputation more broadly.\nIf I were running your college's program, I would invest in a presence at Defcon.  If just one your students could use their skills to uncover and present something genuinely interesting, it would be worth covering their airfare and accommodations just to get your logo on the screen.  If you could do this every other year, your program would have an unparalleled brand.",
+              "author": "elevation",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://archive.ph/2026.03.24-100557/https://www.nytimes.com...",
+          "author": "mitchbob",
+          "replies": []
+        },
+        {
+          "top": "\"Two years later, enticed by the prospect that a higher degree would open doors to more opportunities, she enrolled at Rollins College, a private liberal arts school in Winter Park, Fla. She started studying art history, which felt like a natural extension of her love of art, writing and research.\"\nI'm surprised that one goes into a field as small and competitive as art history in these days.\nMuseums, how many relevant art related roles can there be nation wide?",
+          "author": "duttish",
+          "replies": []
+        },
+        {
+          "top": "A major issue I feel has been a proliferation of lower quality programs charging a premium price as well.\nIt's become harder to vet undergrads in the US for specific subfields because of either a lack of preparation or subpar career services.\nAdditonally, at least in CS/CE the number of candidates have skyrocketed, but the reality is most companies can limit new grad hiring to 10-20 target programs nationally and 2-3 local programs and get the talent pipeline they need.",
+          "author": "alephnerd",
+          "replies": [
+            {
+              "text": "> Additonally, at least in CS/CE the number of candidates have skyrocketed, but the reality is most companies can limit new grad hiring to 10-20 target programs nationally and 2-3 local programs and get the talent pipeline they need.\nWhy? In my opinion a new grads can do good work and they take very low salary.",
+              "author": "simianwords",
+              "depth": 1
+            },
+            {
+              "text": "> can do good work\nDoesn't mean will, and if their work isn't good the low salary isn't particularly beneficial.",
+              "author": "tmp10423288442",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://en.wikipedia.org/wiki/Elite_overproduction",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47503239",
+      "title": "Today's Layoffs",
+      "link": "https://www.epicgames.com/site/en-US/news/todays-layoffs",
+      "domain": "www.epicgames.com",
+      "author": "adrianhon",
+      "score": 67,
+      "comment_count": 1,
+      "created_ts": 1774362913,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47493938",
+      "title": "Ask HN: Is anyone here also developing \"perpetual AI psychosis\" like Karpathy?",
+      "link": "https://news.ycombinator.com/item?id=47493938",
+      "domain": "news.ycombinator.com",
+      "author": "jawerty",
+      "score": 29,
+      "comment_count": 26,
+      "created_ts": 1774293682,
+      "is_internal": true,
+      "post_text": "I read on Reddit about a podcast where Karpathy described how he went from writing 80% of his own code to 0%, being in a constant state of “AI psychosis” because the possibilities feel infinite.<p>I’ve personally found that my workflow has become very “opportunistic”—I feel like I can do anything with AI, so I try everything. That might be good…or bad. I’d be curious to see what HN has to say, or whether anyone else has experienced something similar.<p>Here’s the Reddit post for context: https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;ClaudeAI&#x2F;comments&#x2F;1s08r1c&#x2F;karpathy_says_he_hasnt_written_a_line_of_code&#x2F;<p>Anyone also feeling this way?? If not psychosis which may be an exaggeration then feeling more stressed, frazzled, whatever.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47474827",
+      "title": "Tell HN: MS365 upgrade silently to 25 licenses, tried to charge me $1,035",
+      "link": "https://news.ycombinator.com/item?id=47474827",
+      "domain": "news.ycombinator.com",
+      "author": "davidstarkjava",
+      "score": 24,
+      "comment_count": 8,
+      "created_ts": 1774158719,
+      "is_internal": true,
+      "post_text": "Hey guys, quick warning about a crazy MS 365 dark pattern I ran into last night.\nI was testing the business basic plan for a side project. Decided to upgrade to the annual tier to get the discount ($3.45&#x2F;mo). Clicked convert to paid, put my burner card in, and got a $0.00 confirmation email. Thought we were good.\nWoke up today to my bank blocking a charge for exactly $1,035.00.\nTurns out when you hit the annual upgrade, Microsoft silently defaults the quantity dropdown to 25 licenses. No warning prompt at all. (25 seats x 12 months x $3.45 = $1,035). They send the zero-dollar invoice to make you think it&#x27;s an auth hold, then try to drain your card while you sleep.\nThe best part? When I went to their support chat to ask why my billing was so high, the system conveniently gave me a &quot;System error, try again later&quot; message. You can&#x27;t even get help.\nLuckily I used a virtual corporate card with a strict limit for this test, otherwise my bootstrapped project would be out a grand today. Watch out for that hidden quantity field guys.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "side project",
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "> There was no clear pop-up, no \"Are you sure you want to\nYou haven't learned MSFT's m.o. yet... this kind of pop-up only shows up when you're absolutely certain about something, like removing files. In those cases they ask for confirmation endlessly and needlessly.\nWhen they're trying to collect money, they go ahead and quickly guess with all the defaults as they see fit. I'm surprised the default isn't 1000 seats tbh. After all, you're certain to be a huge success now that you've chosen them as a vendor.\n;-)",
+          "author": "reliefcrew",
+          "replies": [
+            {
+              "text": "Haha, fair point. Honestly I should be thanking them for believing my side project will magically hit 25 employees overnight!\nBut yeah, the contrast is wild. Try to delete an empty text file? \"ARE YOU ABSOLUTELY SURE?\". Try to upgrade a $3 billing plan? \"Let me just casually attempt to charge you $1k while you blink",
+              "author": "davidstarkjava",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What you described is true, I also experienced this same:\nhttps://news.ycombinator.com/item?id=46258982",
+          "author": "0xCE0",
+          "replies": []
+        },
+        {
+          "top": "> When I went to their support chat to ask why my billing was so high, the system conveniently gave me a \"System error, try again later\" message. You can't even get help.\nNew to Microsoft ?\nYou get more help from someone in the street than from Microsoft.\nDid you read the TOS before buying ? Microsoft has very good lawyers.",
+          "author": "hulitu",
+          "replies": []
+        },
+        {
+          "top": "This is why I use LibreOffice instead of Microsoft365.",
+          "author": "cable2600",
+          "replies": [
+            {
+              "text": "I love LibreOffice for documents, but in this case I was specifically trying to set up custom domain email routing (Exchange) for my project. Sadly LibreOffice can't host my MX records haha. If only setting up decent email deliverability was as easy as installing an open-source word processor.",
+              "author": "davidstarkjava",
+              "depth": 1
+            },
+            {
+              "text": "I've been using Fastmail for years now to host emails for my domains. Works like a charm. Maybe worth for you too.",
+              "author": "azarai",
+              "depth": 2
+            },
+            {
+              "text": "recently i was helping a a friend purchase a custom domain, and signup to a email service; even though i use fastmail, i was surprised to find proton was like 3eur per month (fastmail is 5eur). when my renewal expires, i will probably switch to proton - for 10eur the features are really good;",
+              "author": "john_saptra",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47500239",
+      "title": "Ask HN: Founders of estonian e-businesses – is it worth it?",
+      "link": "https://news.ycombinator.com/item?id=47500239",
+      "domain": "news.ycombinator.com",
+      "author": "udl",
+      "score": 12,
+      "comment_count": 4,
+      "created_ts": 1774344207,
+      "is_internal": true,
+      "post_text": "Hey there,<p>I&#x27;m currently considering opening an Estonian e-business for a small SaaS project. As somebody from Germany, establishing a company is a bit tedious and bureaucratic. Now I&#x27;ve come across the Estonian e-residency program and the option to run a business there. I don&#x27;t care so much about the tax implications, but more about the bureaucracy aspect. It all sounds quite good. But marketing is marketing and real life often is something else. So, long story short: I would be happy if somebody could share their real-life experiences. Was it&#x2F;is it worth it? Are there any pitfalls?<p>Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Did this myself recently. Here is the honest take.\nThe bureaucracy argument is real. Setting up an Estonian e-residency company is genuinely faster and simpler than a German GmbH. You can do it fully online, banking included if you use a provider like Wise or LHV.\nBut a few things nobody tells you upfront:\nBanking is the friction point. Getting a proper business bank account as an e-resident is harder than it used to be. Most EU banks won't touch you without physical presence. Wise Business works but has limits. Factor this in before you commit.\nYour tax situation doesn't change. This is the one people get wrong most often. You still pay taxes where you live. Estonia's 0% corporate tax on retained earnings is attractive but irrelevant if you're paying yourself a salary as a German resident. Talk to a tax advisor before assuming you'll save anything.\nFor a small SaaS it is probably worth it purely on the simplicity side. Less paperwork, easier to manage remotely, straightforward annual reporting. Just go in with realistic expectations on banking and taxes and you will be fine.",
+          "author": "golubovski",
+          "replies": [
+            {
+              "text": "This is an obviously completely LLM generated response.",
+              "author": "dog436zkj3p7",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Not answering your question directly but accounting and taxes are a thing everywhere. EU rules make accounting for companies quite complicated.\nFocus on your business, open the smallest and simplest entity you can to validate your product before spending time and money optimizing or scaling things.\nThat being said, I’m familiar with GmbHs in Germany and I would advise against going this route unless funding is available. Try a sole proprietorship instead if possible.",
+          "author": "dsnr",
+          "replies": [
+            {
+              "text": "Thank you! Yes, that's why I'm looking for a simpler and less bureaucratic alternative. I'm totally fine with general accounting and taxes. But I would be happy if there was an alternative somewhere where you don't have to go to a notary for every little change and don't necessarily need a tax advisor because you have to talk to five different tax offices. Germany really makes it more complicated than it needs to be.\nedit: just stumbled upon this really good blog post about the topic, in case anyone is interested: \nhttps://eidel.io/posts/estonias-e-residency-is-awesome-and-s...",
+              "author": "udl",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47501690",
+      "title": "Ask HN: $50 monthly budget, which coding models would you recommend now?",
+      "link": "https://news.ycombinator.com/item?id=47501690",
+      "domain": "news.ycombinator.com",
+      "author": "klueinc",
+      "score": 11,
+      "comment_count": 19,
+      "created_ts": 1774355501,
+      "is_internal": true,
+      "post_text": "I currently have a claude pro monthly subscription ($20) which I use for coding. It&#x27;s been useful but I&#x27;m fatigued from optimising my work around it&#x27;s session limits. There are so many choices and providers out there today but hard to get a good signal about what&#x27;s good. I&#x27;m not looking for another Opus-level model but something reliable enough that it can follow TDD well.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Right now I think GPT 5.4 beats Opus 4.6 and everything else. I get a lot from just the $10 Github Copilot, somehow it hasn't run out yet and i've been going at it insane everyday",
+          "author": "radio879",
+          "replies": []
+        },
+        {
+          "top": "Setup\nCursor – $20/month\nKilocode plugin (inside Cursor) – Free models\nGoogle Antigravity Pro\nOpencode – Free models\nWorkflow\n- Backend Development\nUse Cursor for major backend tasks\nFlow: Plan → Execute\n- Frontend Development\nUse Google Antigravity Pro for major frontend tasks\nFlow: Plan → Execute\n- Minor Tasks & Bug Fixes\nUse:\nOpencode\nKilocode (inside Cursor)\nRemote / On-the-Go Setup\nA Telegram-configured Opencode instance is set up on mobile\nUsed for:\nMinor tasks\nQuick fixes while away from the system",
+          "author": "user7878",
+          "replies": []
+        },
+        {
+          "top": "You can swicth to Sonnet 4.6. It is even an fantastic model for coding, without changing you subscription. \nHere the 5 hours window limit is much more larger, if using it with specific tasks.\nIf you want to change the LLM, my advice is Kimi K2 that's much more chip and very skilled for coding.\n(you are right: Opus is a very token-consuming even in my experience, but often it is over-skilled and you don't need it)",
+          "author": "aledevv",
+          "replies": []
+        },
+        {
+          "top": "Hey man, here's how to properly spend your 50 bucks and get the most bang for the $$:\nopencode go - $10 a month gets you decent allowance with latest GLM, MiniMax, and Kimi.\nWindsurf - $20 gives u access to nearlly all models.\nFor me, I'm having these two subscriptions plus: shared Codex plans & shared Kimi coding Allegretto from Chinese resellers for around $10.\nI only use the Claude Opus/Sonnet inside Windsurf after everything is crystal clear, or I want to let it handle tricky stuff where other models can't address. I use GLM/Kimi for everything else. And Windsurf offers free models all the time.",
+          "author": "Patt_",
+          "replies": [
+            {
+              "text": "Where do you find the resellers? Is there a catch like having a chinese phone number?",
+              "author": "klueinc",
+              "depth": 1
+            },
+            {
+              "text": "It's all over Chinese Taobao. biggest catch would be that all of the sutff is in Chinese, they have an international version in english but if you run into issues and have to talk to the seller, 99% of them don't speak Chinese but with AI translation that won't be a problem. you can even get Claude Code shared plan there as well, what they do is to buy the MAX plan and then have a couple people sharing it, which on average still beats your $20 Pro plan's allowance.\nYou can also add Google’s AntiGravity into the bunch. They have free allowances of Claude and Gemini 3.1 Pro there ready right after install & login. & you can also get cheap Google AI Pro shared plans there as well, just to get higher allowance on all these models.\nThere are many ways to get around the session limit, gotta be creative. \nUpdate: Windsurf has just made a shitty move by changing their pricing structure from credits to rolling window percentages, not sure if it's better or worse, free models are still there & I haven't hit any rate limit so far.",
+              "author": "Patt_",
+              "depth": 2
+            },
+            {
+              "text": "Thanks I appreciate the rundown!",
+              "author": "klueinc",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Just get a ChatGPT $20/month  subscription and use the codex-cli.  I’ve been using it every day since November and never run into limits",
+          "author": "raw_anon_1111",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47511823",
+      "title": "Ask HN: How do you offload all coding to AI?",
+      "link": "https://news.ycombinator.com/item?id=47511823",
+      "domain": "news.ycombinator.com",
+      "author": "makingstuffs",
+      "score": 10,
+      "comment_count": 13,
+      "created_ts": 1774400427,
+      "is_internal": true,
+      "post_text": "Hey all, hope everyone is well!<p>I’ve seen a lot of comments and posts where people have stated they ‘literally’ never write a line of code anymore and was curious as to what people mean when they state this.<p>I say this as a daily user of Claude code with a max plan, so I’m not bashing LLMs or people who use them. I just find it quite hard to understand how it can be productive to offload _all_ coding, especially on brownfield projects.<p>My reason for saying this is that I often have to debug and triage issues. Often my triage and diagnosis leads me to a point where I can see that the issue is a simple fix with a couple lines of code.<p>Of course, Claude could fix the issue but the time taken to prompt, wait for it to spit out a plan, evaluate said plan, wait for it to finish implementing said plan, and then evaluate the work would be considerably longer than just making the change quickly and making a PR myself.<p>Obviously is also possible to just offload the triage and diagnosis to Claude as well but I personally find it unproductive as it essentially ends up with a higher chance of the LLM going rogue and changing unrelated areas of the codebase.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The brownfield vs greenfield split is the real answer to \"how do people offload all coding.\" They mostly don't, on legacy codebases. The \"never write code\" crowd is almost always working on new projects where the AI has full context from the start.\nThe economics flip on brownfield for exactly the reason you describe: the diagnosis and fix are tightly coupled. You already did the expensive cognitive work to understand the bug. The AI's planning overhead exceeds the writing overhead at that point.\nWhere the calculus does shift on brownfield is larger feature additions that can be spec'd in isolation. \"Add this new endpoint that follows the same pattern as these three existing ones\" works well because the AI can pattern-match against existing code. \"Fix this subtle race condition in the session handler\" almost never does, because the AI's diagnosis phase is unreliable enough that you'd rather just trace it yourself.",
+          "author": "AbanoubRodolf",
+          "replies": [
+            {
+              "text": "Complete opposite in my experience. AI does best in a well established code base where it can use existing patterns as context. When you let it loose on a greenfield project and don't carefully and explicitly keep it in check you get back crap.",
+              "author": "kevinherron",
+              "depth": 1
+            },
+            {
+              "text": "Yeah that pretty much aligns with my experience in regard to feature additions. It’s great at those due to the reasons you mentioned!",
+              "author": "makingstuffs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The framing of \"offload\" might be the wrong model entirely. I don't offload coding to AI — I govern it.\nI work with a two-layer setup: one AI agent as architect and coordination layer, another as implementer. Every cross-file change requires a documented amendment before a single line is written. The AI reads the decision log before touching any file.\nThe result is that the AI produces something coherent and maintainable — not because it's smarter, but because it has constraints. Without them my experience matches what others describe here: it goes rogue and changes unrelated things.\nThe overhead is real but it's architectural overhead, not AI overhead. You'd need the same discipline with a junior human developer.",
+          "author": "xxwink",
+          "replies": []
+        },
+        {
+          "top": "Do not wait for your agent, launch parallel tasks when your agent is working. Then it does not matter anymore how long your agent takes, as long as you always have at least one idle agent.\nCodehydra (\nhttps://github.com/stefanhoelzl/codehydra\n) can help you with this workflow.",
+          "author": "stefanhoelzl",
+          "replies": []
+        },
+        {
+          "top": "I disagree that offloading all coding to AI makes sense. We started using Claude heavily for our services work about a year ago and what we found is you still need to understand the codebase deeply to know when the AI is hallucinating or changing wrong things. The prompt-wait-evaluate cycle you mentioned is real and kills productivity on brownfield projects. What actually worked for us was using AI for scaffolding new features or writing tests, not for debugging existing code. On debugging I still do it myself because I know our system and can fix it in 2 minutes vs 20 minutes prompting Claude. The people saying they never write code anymore probably either work on greenfield projects or they're not measuring their actual time cost accurately.",
+          "author": "ad-tech",
+          "replies": []
+        },
+        {
+          "top": "When people say they don't write the code, they mean they don't type it, but if there are not vibe coding garbage they are still watching what the agent outputs, and redirects it when it goes wrong. Instead of fixing the code manually they prompt the LLM.",
+          "author": "jryan49",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47495510",
+      "title": "Ask HN: Is using AI tooling for a PhD literature review dishonest?",
+      "link": "https://news.ycombinator.com/item?id=47495510",
+      "domain": "news.ycombinator.com",
+      "author": "latand6",
+      "score": 9,
+      "comment_count": 27,
+      "created_ts": 1774302192,
+      "is_internal": true,
+      "post_text": "I&#x27;m a PhD student in structural engineering. My dissertation topic is about using LLM agents in automating FEA calculations on common Ukrainian software that companies use. I&#x27;m writing my literature review now and I&#x27;ve vibecoded a personal local dashboard that helps me manage the literature review process.<p>I use LLM agents to fill up the LaTeX template (to automate formatting, also you can use IDE to view diffs) in github repo. Then I run ChatGPT Pro to collect all relevant papers (and how) to my topic. Then I collect the ones available online, where the PDFs are available. I have a special structure of folders with plain files like markdown and JSON.<p>The idea of the dashboard is the following: I run the Codex through a web chat to identify the relevant quotes — relevant for my dissertation topic — and how they are relevant, it combines them into a number of claims connected with each quote with a link. And then I review each quote and each claim manually and tick the boxes. There is also a button that runs the verification script, that validates the exact quote IS really in the PDF. This way I can collect real evidence and collect new insights when reading these.<p>I remember doing this all manually when I was doing my master&#x27;s degree in the UK. That was a very terrible and tedious experience partially because I&#x27;ve ADHD<p>So my question is, is it dishonest?<p>Because I can defend every claim in the review because I built the verification pipeline and reviewed manually each one. I arguably understand the literature better than if I had read it myself manually and highlighted all. But I know that many universities would consider any AI-generated text as academic misconduct.<p>I really don&#x27;t quite understand the principle behind this position. Because if you outsource the task of proofreading, nobody would care. When you use Grammarly, the same thing. But if I use an LLM to create text from verified, structured, human-reviewed evidence — it might be considered dishonest.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47504287",
+      "title": "Ask HN: Analog Model of Transformers",
+      "link": "https://news.ycombinator.com/item?id=47504287",
+      "domain": "news.ycombinator.com",
+      "author": "JPLeRouzic",
+      "score": 7,
+      "comment_count": 2,
+      "created_ts": 1774366763,
+      "is_internal": true,
+      "post_text": "(Sorry if this a stupid question)<p>Roughly 80 years ago many computers used analog logic, for example an amplifier with variable resistors could multiply and divide.<p>The matrix multiplication seems to be central in Transformer architecture.<p>I wonder if it would make sense to create a sort of Transformer on a vaguely similar concept?<p>If you wonder why this question, after all there are still guys who design digital computers with tubes or even mechanical relays, then why not analog Transformers?<p>https:&#x2F;&#x2F;hackaday.com&#x2F;2023&#x2F;12&#x2F;05&#x2F;a-single-board-computer-with-vacuum-tubes&#x2F;<p>https:&#x2F;&#x2F;hackaday.io&#x2F;project&#x2F;189725-homebrew-16-bit-relay-computer",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The term I've heard for this sort of thing is \"Physical Neural Networks\" or \"PNN\"s. My impression is that one of the big things holding them back is that because we can't manufacture components to perfect tolerances, you can't train a single model and reuse it like you can with digital logic. Even if you can get close, every single circuit needs some amount of tuning. And we haven't worked out great ways to train them.\nThere's a lot of research going on in this space though, because yeah, nature can solve certain mathematical problems more efficiently than digital systems.\nThere's a decent review article that came out recently: \nhttps://www.nature.com/articles/s41586-025-09384-2\n or \nhttps://arxiv.org/html/2406.03372v1",
+          "author": "SaberTail",
+          "replies": []
+        },
+        {
+          "top": "Deep networks these days can have hundreds of layers. Any non-digital system is going to pick up noise and gain variations at each stage. It might be possible to get around this with threshold circuits.\nThe problem then becomes training. The algorithm of choice is back propagation, which requires determining derivatives across the whole network. Doing training on an analog system would require tweaking each value as a batch of values is input multiple times to find the slope. This is impractical for large networks, as training usually requires a billion rounds.",
+          "author": "mikewarot",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47490244",
+      "title": "Ask HN: If there has been no prompt injection, is it safe?",
+      "link": "https://news.ycombinator.com/item?id=47490244",
+      "domain": "news.ycombinator.com",
+      "author": "sayYayToLife",
+      "score": 7,
+      "comment_count": 8,
+      "created_ts": 1774277011,
+      "is_internal": true,
+      "post_text": "As I use open claw I am concerned about prompt injection more than bad code. However I think I&#x27;m irrationally paranoid. I&#x27;m small fries I&#x27;m a single individual, someone actively trying to hack me is exploiting a multi-million dollar zero day and they&#x27;re not doing that on me.<p>If we&#x27;re thinking about accidentally deleting everything through a terminal command, I&#x27;ve yet to see this actually occur.<p>Deductively I can see all of the worst case scenarios with open claw. Inductively I&#x27;ve never seen it actually happen.<p>I find it a bit irrational to pretend that open claw is a genuine security risk.<p>The moment I see on Hacker News that someone got prompt injected, I think I&#x27;ll be concerned. Until then I would need almost a lottery like chance to get hacked as the first person through prompt injection.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I think the more likely attack vector in OpenClaw is convincing it to install a malicious npm package or script, have that siphon all machine/env secrets, and then watch those secrets get abused. (Cloud API key -> crypto mining. Wallet key->theft. Npm credentials->worm publishes more copies of itself. GitHub key->more theft and malicious code upload. Email API key->IP theft and password reset on other systems)\nAlmost all of this can be automated, so the attacker doesn’t have to know who you are.\nIt’s not targeted per se.",
+          "author": "TheTaytay",
+          "replies": []
+        },
+        {
+          "top": "I've been on the defense side for a while, and the \"it hasn't happened yet\" argument is dangerous territory. The surface area for attack definitely increases with agentic systems.\nThe comment about malicious package installs is a much more realistic threat, as an example. Prompt injection is one angle, but defending against a supply chain compromise or an agent being tricked into exfiltrating secrets should be a higher priority. That's a more direct and exploitable vector.",
+          "author": "MarcelinoGMX3C",
+          "replies": []
+        },
+        {
+          "top": "https://www.notion.so/Inside-OpenClaw-Deploying-Sniffing-and...\nLab 2 there shows you how you can use socat to intercept that data passing between OpenClaw and LLM. It's interesting to look at all the tooling (and modify it if you like) around the user prompt. --Might help if you are interested.",
+          "author": "Beckmeister",
+          "replies": []
+        },
+        {
+          "top": "> I find it a bit irrational to pretend that open claw is a genuine security risk.\nExcept that it is an actual security risk, no pretending is needed. In general, agents expand the security surface and attack vectors, regardless of framework.\nYour argument that it hasn't happened, therefore it doesn't exist is a well known cognitive bias.\nSee the Lethal Trifecta for one way in which security requires more thoughtfulness.",
+          "author": "verdverm",
+          "replies": []
+        },
+        {
+          "top": "I've seen more bad use from the AI itself than from prompt injections. e.g. someone's instructions exceeded context and it started deleting all her mail.\nOn stuff in the wild, we also very rarely see prompt injections and hacks. Not to say they're not a problem, but somewhere around #6 on the list of issues to be worried about.",
+          "author": "muzani",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47509345",
+      "title": "Ask HN: Does the World need more software?",
+      "link": "https://news.ycombinator.com/item?id=47509345",
+      "domain": "news.ycombinator.com",
+      "author": "Vektorceraptor",
+      "score": 5,
+      "comment_count": 11,
+      "created_ts": 1774386533,
+      "is_internal": true,
+      "post_text": "Is there a (natural) demand for more and more software?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47494475",
+      "title": "Veevo Health – book a CT angiogram to see plaque buildup in your arteries",
+      "link": "https://news.ycombinator.com/item?id=47494475",
+      "domain": "news.ycombinator.com",
+      "author": "arvindsr33",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1774296728,
+      "is_internal": true,
+      "post_text": "Hey HN, I built Veevo Health, a service that lets you book a 30-minute CT angiogram heart scan at one of 20+ imaging centers across the US and get clinician-reviewed results showing the real health of your heart arteries. Website is at https:&#x2F;&#x2F;veevohealth.com<p>I&#x27;m building this because my dad had passed away from a sudden heart attack. It still remains one of the biggest health threats and the best way to prevent it to know early about your arterial health.<p>You book online, show up for a 30-minute scan, and get results with a personalized action plan. It&#x27;s HSA&#x2F;FSA eligible.<p>The scheduling layer was the hardest part. Coordinating availability across imaging centers with different systems took a lot of plumbing.<p>Would love feedback from anyone who has looked at preventive cardiology or direct-to-consumer diagnostics.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    }
+  ]
+}
