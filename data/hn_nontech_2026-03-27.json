@@ -1,0 +1,592 @@
+{
+  "scraped_date": "2026-03-27",
+  "source": "hacker_news",
+  "total_scraped": 59,
+  "nontech_count": 21,
+  "posts": [
+    {
+      "id": "47493938",
+      "title": "Ask HN: Is anyone here also developing \"perpetual AI psychosis\" like Karpathy?",
+      "link": "https://news.ycombinator.com/item?id=47493938",
+      "domain": "news.ycombinator.com",
+      "author": "jawerty",
+      "score": 30,
+      "comment_count": 27,
+      "created_ts": 1774293682,
+      "is_internal": true,
+      "post_text": "I read on Reddit about a podcast where Karpathy described how he went from writing 80% of his own code to 0%, being in a constant state of “AI psychosis” because the possibilities feel infinite.<p>I’ve personally found that my workflow has become very “opportunistic”—I feel like I can do anything with AI, so I try everything. That might be good…or bad. I’d be curious to see what HN has to say, or whether anyone else has experienced something similar.<p>Here’s the Reddit post for context: https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;ClaudeAI&#x2F;comments&#x2F;1s08r1c&#x2F;karpathy_says_he_hasnt_written_a_line_of_code&#x2F;<p>Anyone also feeling this way?? If not psychosis which may be an exaggeration then feeling more stressed, frazzled, whatever.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47486365",
+      "title": "Ask HN: Running legacy IE/ActiveX clients without local admin rights?",
+      "link": "https://news.ycombinator.com/item?id=47486365",
+      "domain": "news.ycombinator.com",
+      "author": "Servant-of-Inos",
+      "score": 14,
+      "comment_count": 15,
+      "created_ts": 1774250450,
+      "is_internal": true,
+      "post_text": "We are currently maintaining a very old client-server architecture. The server collects real-time data from a large number of sensors and controllers, transmitting it to a legacy database under continuous, massive load (writes every few seconds).<p>The problem is the client side. It’s ancient, strictly requires Internet Explorer, and heavily relies on ActiveX. If a standard domain user launches the browser, the data fails to load and the browser completely hangs. It only functions correctly if run with local administrator privileges.<p>Giving users local admin rights is a massive security risk we can&#x27;t take. Currently, I have a workaround running in production using Task Scheduler to elevate just this specific application without giving the user the actual admin password. I documented the specific approach we are using here:\nhttps:&#x2F;&#x2F;www.hiddenobelisk.com&#x2F;how-to-let-a-standard-domain-user-run-one-program-as-administrator-without-giving-admin-rights&#x2F;#:~:text=least%20privilege.-,Approach%202%20%E2%80%94%20Running%20Applications%20with%20Administrative%20Privileges%20Using%20Task%20Scheduler,users%20can%20simply%20double%2Dclick%20the%20shortcut%20to%20launch%20the%20application.,-Changing%20the%20Shortcut<p>I recently started a thread over on r&#x2F;sysadmin trying to find a cleaner solution:\nhttps:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;sysadmin&#x2F;comments&#x2F;1rm6uv4&#x2F;how_do_you_let_a_standard_domain_user_run_one&#x2F;<p>The general consensus there was to either buy an expensive enterprise PAM (Privileged Access Management) solution, or deep-dive with Procmon. I am currently analyzing the software with Procmon based on that advice, but so far, I haven&#x27;t been able to make the client work without the Task Scheduler workaround.<p>My questions for the HN community:<p>1) Are there any reliable open-source PAM alternatives or privilege elevation tools for Windows that handle this &quot;per-app&quot; scenario effectively?<p>2) When dealing with hostile ActiveX components, are there specific legacy behaviors (beyond obvious file&#x2F;registry Access Denied) I should be looking for in my Procmon captures?<p>3) How do you isolate this kind of hardcoded legacy requirement when there is zero budget for commercial enterprise tools?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise",
+        "advice",
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "It might be possible to create/use some app compatibility shims:\nhttps://techcommunity.microsoft.com/t5/ask-the-performance-t...\nhttps://learn.microsoft.com/en-us/previous-versions/windows/...\nGiven that Windows 11 isn't that different from Windows 10, I assume the app compatibility toolkit can be coaxed to work.\nOr, more excitingly, probably more versatile in the longer term, and a pile of hacks upon hacks, it might be possible to run in the browser with the likes of jslinux + wine.\neg. \nhttps://github.com/lrusso/WinAppRunner\n\nor \nhttps://github.com/DustinBrett/daedalOS\nIf you get that working, that'd be really exciting.",
+          "author": "fowl2",
+          "replies": []
+        },
+        {
+          "top": "You can run just run whole Windows with IE6 in the browser these days thanks to WebAssembly:\n\nhttps://oldweb.today/?browser=ie6\n. It even works on my phone.",
+          "author": "ivankra",
+          "replies": []
+        },
+        {
+          "top": "This isn't really what you're asking for but is virtualization possible on the client side? Either through direct virtualization on the client PC or using VDI. Basically IE and Windows with admin rights would run in a restricted VM devoted solely to that app, with the VM restricted from network access outside of connections to the legacy server and any management/etc. requirements.\nThis would incur an added cost in licensing and possibly hardware but this would also be the cleanest way to do it. Also on the security side this would be safer than escalating a legacy ActiveX app on the secure client.\nHaving multiple instances of IE running remotely on Windows Server and then served using Citrix or something similar should work as well if you don't need full VM isolation between clients, and I've seen this used in real companies with legacy apps that can't run on the standard employee machines. Again though this has a licensing cost.",
+          "author": "mysteria",
+          "replies": []
+        },
+        {
+          "top": "If it runs the business, go talk to whoever failed the politics and didn't get the necessary investments to get back on track for the long term by rebuilding this in a modern stack. How are conversations about enterprise risk not happening here?\nSince you're just being squeezed to get through another day, why not P2V into VMs stripped of domain privileges - sounds like its all Windows - and use something like a remote access product to control and record entry?\nLet's assume you're broke and it's just the wild west over there in terms of processes and maturity, uh, you could P2V into Hyper-V or Proxmox, remove domain membership and all other accounts, leaving just the credentials needed to make the app work. You could go down the RD access route (blegh), but I'd probably go for something prebuilt and cheap like Splashtop to auth with MFA and permit a basket of users to connect to the VM(s) while recording all sessions. Hopefully there's some kind of EDR agent compatible with the guest OS in the VM to have some telemetry what's going on in there.\nBut the root of the problem is that someone failed you, politically.",
+          "author": "9x39",
+          "replies": []
+        },
+        {
+          "top": "Run it in a restricted VM, which is not joined to AD and cannot talk to it either. PAM will not save you, either will Airlock Digital or something like ATP or anything else like it.\nSoftware for running VMs is free.\n> Giving users local admin rights is a massive security risk we can't take.\nSounds like you made your endpoints into pets and bastions, that's an architecture that is guaranteed to fail. Work towards a design where the endpoint no longer matters.",
+          "author": "oneplane",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47500239",
+      "title": "Ask HN: Founders of estonian e-businesses – is it worth it?",
+      "link": "https://news.ycombinator.com/item?id=47500239",
+      "domain": "news.ycombinator.com",
+      "author": "udl",
+      "score": 14,
+      "comment_count": 5,
+      "created_ts": 1774344207,
+      "is_internal": true,
+      "post_text": "Hey there,<p>I&#x27;m currently considering opening an Estonian e-business for a small SaaS project. As somebody from Germany, establishing a company is a bit tedious and bureaucratic. Now I&#x27;ve come across the Estonian e-residency program and the option to run a business there. I don&#x27;t care so much about the tax implications, but more about the bureaucracy aspect. It all sounds quite good. But marketing is marketing and real life often is something else. So, long story short: I would be happy if somebody could share their real-life experiences. Was it&#x2F;is it worth it? Are there any pitfalls?<p>Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Did this myself recently. Here is the honest take.\nThe bureaucracy argument is real. Setting up an Estonian e-residency company is genuinely faster and simpler than a German GmbH. You can do it fully online, banking included if you use a provider like Wise or LHV.\nBut a few things nobody tells you upfront:\nBanking is the friction point. Getting a proper business bank account as an e-resident is harder than it used to be. Most EU banks won't touch you without physical presence. Wise Business works but has limits. Factor this in before you commit.\nYour tax situation doesn't change. This is the one people get wrong most often. You still pay taxes where you live. Estonia's 0% corporate tax on retained earnings is attractive but irrelevant if you're paying yourself a salary as a German resident. Talk to a tax advisor before assuming you'll save anything.\nFor a small SaaS it is probably worth it purely on the simplicity side. Less paperwork, easier to manage remotely, straightforward annual reporting. Just go in with realistic expectations on banking and taxes and you will be fine.",
+          "author": "golubovski",
+          "replies": [
+            {
+              "text": "This is an obviously completely LLM generated response.",
+              "author": "dog436zkj3p7",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Not answering your question directly but accounting and taxes are a thing everywhere. EU rules make accounting for companies quite complicated.\nFocus on your business, open the smallest and simplest entity you can to validate your product before spending time and money optimizing or scaling things.\nThat being said, I’m familiar with GmbHs in Germany and I would advise against going this route unless funding is available. Try a sole proprietorship instead if possible.",
+          "author": "dsnr",
+          "replies": [
+            {
+              "text": "Thank you! Yes, that's why I'm looking for a simpler and less bureaucratic alternative. I'm totally fine with general accounting and taxes. But I would be happy if there was an alternative somewhere where you don't have to go to a notary for every little change and don't necessarily need a tax advisor because you have to talk to five different tax offices. Germany really makes it more complicated than it needs to be.\nedit: just stumbled upon this really good blog post about the topic, in case anyone is interested: \nhttps://eidel.io/posts/estonias-e-residency-is-awesome-and-s...",
+              "author": "udl",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I professionally have been helping folks set up and maintain e-Residence and businesses, and all said here in the comments so far tracks: Estonia is absolutely unsurpassed qua \nadministrative ease\n (this giving you a \nclear and lasting\n business advantage), the tax advantages are real, and the \njurisdiction only gets better\n.-\nBanking and being scrupulous on your \npersonal\n taxes at your place of personal residence are issues, but nothing insurmountable, far from it.-",
+          "author": "Bluestein",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47511823",
+      "title": "Ask HN: How do you offload all coding to AI?",
+      "link": "https://news.ycombinator.com/item?id=47511823",
+      "domain": "news.ycombinator.com",
+      "author": "makingstuffs",
+      "score": 13,
+      "comment_count": 13,
+      "created_ts": 1774400427,
+      "is_internal": true,
+      "post_text": "Hey all, hope everyone is well!<p>I’ve seen a lot of comments and posts where people have stated they ‘literally’ never write a line of code anymore and was curious as to what people mean when they state this.<p>I say this as a daily user of Claude code with a max plan, so I’m not bashing LLMs or people who use them. I just find it quite hard to understand how it can be productive to offload _all_ coding, especially on brownfield projects.<p>My reason for saying this is that I often have to debug and triage issues. Often my triage and diagnosis leads me to a point where I can see that the issue is a simple fix with a couple lines of code.<p>Of course, Claude could fix the issue but the time taken to prompt, wait for it to spit out a plan, evaluate said plan, wait for it to finish implementing said plan, and then evaluate the work would be considerably longer than just making the change quickly and making a PR myself.<p>Obviously is also possible to just offload the triage and diagnosis to Claude as well but I personally find it unproductive as it essentially ends up with a higher chance of the LLM going rogue and changing unrelated areas of the codebase.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The brownfield vs greenfield split is the real answer to \"how do people offload all coding.\" They mostly don't, on legacy codebases. The \"never write code\" crowd is almost always working on new projects where the AI has full context from the start.\nThe economics flip on brownfield for exactly the reason you describe: the diagnosis and fix are tightly coupled. You already did the expensive cognitive work to understand the bug. The AI's planning overhead exceeds the writing overhead at that point.\nWhere the calculus does shift on brownfield is larger feature additions that can be spec'd in isolation. \"Add this new endpoint that follows the same pattern as these three existing ones\" works well because the AI can pattern-match against existing code. \"Fix this subtle race condition in the session handler\" almost never does, because the AI's diagnosis phase is unreliable enough that you'd rather just trace it yourself.",
+          "author": "AbanoubRodolf",
+          "replies": [
+            {
+              "text": "Complete opposite in my experience. AI does best in a well established code base where it can use existing patterns as context. When you let it loose on a greenfield project and don't carefully and explicitly keep it in check you get back crap.",
+              "author": "kevinherron",
+              "depth": 1
+            },
+            {
+              "text": "Yeah that pretty much aligns with my experience in regard to feature additions. It’s great at those due to the reasons you mentioned!",
+              "author": "makingstuffs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I disagree that offloading all coding to AI makes sense. We started using Claude heavily for our services work about a year ago and what we found is you still need to understand the codebase deeply to know when the AI is hallucinating or changing wrong things. The prompt-wait-evaluate cycle you mentioned is real and kills productivity on brownfield projects. What actually worked for us was using AI for scaffolding new features or writing tests, not for debugging existing code. On debugging I still do it myself because I know our system and can fix it in 2 minutes vs 20 minutes prompting Claude. The people saying they never write code anymore probably either work on greenfield projects or they're not measuring their actual time cost accurately.",
+          "author": "ad-tech",
+          "replies": []
+        },
+        {
+          "top": "The framing of \"offload\" might be the wrong model entirely. I don't offload coding to AI — I govern it.\nI work with a two-layer setup: one AI agent as architect and coordination layer, another as implementer. Every cross-file change requires a documented amendment before a single line is written. The AI reads the decision log before touching any file.\nThe result is that the AI produces something coherent and maintainable — not because it's smarter, but because it has constraints. Without them my experience matches what others describe here: it goes rogue and changes unrelated things.\nThe overhead is real but it's architectural overhead, not AI overhead. You'd need the same discipline with a junior human developer.",
+          "author": "xxwink",
+          "replies": []
+        },
+        {
+          "top": "Do not wait for your agent, launch parallel tasks when your agent is working. Then it does not matter anymore how long your agent takes, as long as you always have at least one idle agent.\nCodehydra (\nhttps://github.com/stefanhoelzl/codehydra\n) can help you with this workflow.",
+          "author": "stefanhoelzl",
+          "replies": []
+        },
+        {
+          "top": "I don't look at much code in my own work anymore. Sometimes, I'm just lazy. But mostly, I trust but verify. I spent a lot of months looking at every line, hand-editing, etc. I built a fair bit of trust. I learned the best way to assign tasks and structure the work. Beyond that, I definitely keep the architecture for myself. And I do believe that prior manual fluency is a requirement for being this hands off.",
+          "author": "paulwelty",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47501690",
+      "title": "Ask HN: $50 monthly budget, which coding models would you recommend now?",
+      "link": "https://news.ycombinator.com/item?id=47501690",
+      "domain": "news.ycombinator.com",
+      "author": "klueinc",
+      "score": 13,
+      "comment_count": 22,
+      "created_ts": 1774355501,
+      "is_internal": true,
+      "post_text": "I currently have a claude pro monthly subscription ($20) which I use for coding. It&#x27;s been useful but I&#x27;m fatigued from optimising my work around it&#x27;s session limits. There are so many choices and providers out there today but hard to get a good signal about what&#x27;s good. I&#x27;m not looking for another Opus-level model but something reliable enough that it can follow TDD well.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47526588",
+      "title": "Ask HN: How did you figure out what you wanted to do with your life?",
+      "link": "https://news.ycombinator.com/item?id=47526588",
+      "domain": "news.ycombinator.com",
+      "author": "icwtyjj",
+      "score": 12,
+      "comment_count": 28,
+      "created_ts": 1774498517,
+      "is_internal": true,
+      "post_text": "How does one decide their career path or personal goals in life when there are endless options, many of which probably will not work out?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "The thing you do anyway.\nMaybe it’s play games, or take photos of your dog, or play harmonica, or surf, or post on forums.\nYou probably do so many things on a regular basis all of them are valid, but some connect to finances more seamlessly than others.\nTry to see how you can get paid for the thing you do anyway. Often it’s in that exploration that a lightbulb moment happens - either you want to start a business, or you realize you want nothing to do with business, but some decision can be made.\nAnything that seems like “I could probably do that but idk” is a very good sign. Just don’t talk yourself out of it, and try it.",
+          "author": "vanillasand",
+          "replies": []
+        },
+        {
+          "top": "I'd argue that your life isn't a thing at you \"do\" something with. To think that it is seems like a category error to me. This doesn't preclude healthy ambition - but above all try to enjoy your brief time in the light, and be kind.\n----\n    Lying in a Hammock at William Duffy’s Farm in Pine Island, Minnesota\n\n    by James Wright\n\n    Over my head, I see the bronze butterfly,\n    Asleep on the black trunk,\n    Blowing like a leaf in green shadow.\n    Down the ravine behind the empty house,\n    The cowbells follow one another\n    Into the distances of the afternoon.\n    To my right,\n    In a field of sunlight between two pines,\n    The droppings of last year’s horses\n    Blaze up into golden stones.\n    I lean back, as the evening darkens and comes on.\n    A chicken hawk floats over, looking for home.\n    I have wasted my life.",
+          "author": "andyjohnson0",
+          "replies": []
+        },
+        {
+          "top": "I'm 62, and I never had huge goals. I wanted to be a programmer back in the 1980s, but I was ready to swear on a stack of Bibles that there was NO money to be made in software, in the 1980s, so I studied Electrical Engineering instead, then dropped out.\nI have learned that there is no straight career path. Your best bet is to have a large group of friends and acquainted, and keep in touch with all of them. They will present you with opportunities all the time, if you're open to them. I was interested in machining after decades in IT, and I got a job making gears. It was \nreally\n rewarding, but the pay and commute sucked. I still miss it, even though I got yeeted out of the work force with Long Covid.\nDon't wait to do the things you enjoy, take photos, write stories, visit with friends now, while they're all still here.  Work is what you do to pay for your life, not the other way around.\nMy biggest regret is not keeping a journal. I really appreciate the huge number of photos I took between 1997 and about 2016, recording my life with abandon. Now I'm mostly too tired to do anything sustained.",
+          "author": "mikewarot",
+          "replies": []
+        },
+        {
+          "top": "In college I took several tests that were supposed to tell me what would be a good career for me. All of them were inconclusive, with aptitude and interest pretty equal across the board.\nI ended up falling into a computer related major when my first choice became problematic due to the failings of my high school curriculum and the policies at the college left me in a kind of purgatory.\nAfter graduation I put my resume online and waited about 8-12 months until someone called me about a contract job. That lasted a couple months, then I got another call. I’ve been working at that 2nd call for 20 years.\nI still don’t know what I want to do. I’ve thought about quitting or completely changing careers almost everyday, but nothing really calls to me.\nConsidering I mostly left things up to chance, things worked out fairly well when I look at it objectively.\nI’ve worked with other people who have had dozens of careers for one reason or another. You don’t necessarily need something that will work out for 40 years, especially if you have a personality that likes some variety. You just need something that works for you right now.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "As someone in their late-30s, I'll let you know when I figure out what I want to do with my life.",
+          "author": "Jeremy1026",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47495510",
+      "title": "Ask HN: Is using AI tooling for a PhD literature review dishonest?",
+      "link": "https://news.ycombinator.com/item?id=47495510",
+      "domain": "news.ycombinator.com",
+      "author": "latand6",
+      "score": 9,
+      "comment_count": 29,
+      "created_ts": 1774302192,
+      "is_internal": true,
+      "post_text": "I&#x27;m a PhD student in structural engineering. My dissertation topic is about using LLM agents in automating FEA calculations on common Ukrainian software that companies use. I&#x27;m writing my literature review now and I&#x27;ve vibecoded a personal local dashboard that helps me manage the literature review process.<p>I use LLM agents to fill up the LaTeX template (to automate formatting, also you can use IDE to view diffs) in github repo. Then I run ChatGPT Pro to collect all relevant papers (and how) to my topic. Then I collect the ones available online, where the PDFs are available. I have a special structure of folders with plain files like markdown and JSON.<p>The idea of the dashboard is the following: I run the Codex through a web chat to identify the relevant quotes — relevant for my dissertation topic — and how they are relevant, it combines them into a number of claims connected with each quote with a link. And then I review each quote and each claim manually and tick the boxes. There is also a button that runs the verification script, that validates the exact quote IS really in the PDF. This way I can collect real evidence and collect new insights when reading these.<p>I remember doing this all manually when I was doing my master&#x27;s degree in the UK. That was a very terrible and tedious experience partially because I&#x27;ve ADHD<p>So my question is, is it dishonest?<p>Because I can defend every claim in the review because I built the verification pipeline and reviewed manually each one. I arguably understand the literature better than if I had read it myself manually and highlighted all. But I know that many universities would consider any AI-generated text as academic misconduct.<p>I really don&#x27;t quite understand the principle behind this position. Because if you outsource the task of proofreading, nobody would care. When you use Grammarly, the same thing. But if I use an LLM to create text from verified, structured, human-reviewed evidence — it might be considered dishonest.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47529107",
+      "title": "Ask HN: At what point you decided to pursue your startup fulltime?",
+      "link": "https://news.ycombinator.com/item?id=47529107",
+      "domain": "news.ycombinator.com",
+      "author": "kathir05",
+      "score": 7,
+      "comment_count": 13,
+      "created_ts": 1774523912,
+      "is_internal": true,
+      "post_text": "We all start with an idea, 0 customers, 0 followers, no clarity on long term on our startups.<p>AT some point, you get conviction, this will work and worth pursuing full-time even though 0 revenue to begin with.<p>For HuntYourTribe, after 2 months, we got 10 portfolios built by strangers and some even kept their link in Github profile. This is it!<p>Even with 0 paying customers, we decided to purse this  startup maze full-time, now 10+ paying customers.<p>What&#x27;s your inflection point?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "> We all start with an idea, 0 customers, 0 followers\nwat. No, this is not true at all. Most successful startups work through many ideas until they already have potential customers to work with as they build. And if the idea doesn't come together and prove that is can generate revenue, people don't build it. They move on.\nThis idea that someone has a vision that nobody else has bought into and turn it into a startup unicorn is a rare exception to how things go. It makes a good story, but isn't how thing play out in reality 99% of the time. Don't fall into the trap of thinking the other 1% is a reasonable expectation of how your idea will go.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": "yes. I totally agree with this. Every successful startups has multiple failure iteration in the past.\nSuccess at first attempt is rare. My original question was around when you decide to pursue one of your idea fulltime. It could be 1, 2, 3rd attempt but at some point, we only have 2 option. Quit or next iteration",
+              "author": "kathir05",
+              "depth": 1
+            },
+            {
+              "text": "no man you just take a bunch of psychedelics and it just like comes to you maaaannnn /s\nBut yeah fr it’s all about iterate/pivot until it snaps into place",
+              "author": "moomoo11",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I am building something of my own as well. Though some people are calling my idea useless, others are saying its worth it. I have finally decided even if no-one uses it I will pursue it and complete it no matter what.\nI believe building your own thing not only teach you technically, but you also make valuable connections, and other non-technical skills.\nI am really motivated after reading your post. I hope one day I can get paying customers too :)\nBest Wishes",
+          "author": "shivang2607",
+          "replies": [
+            {
+              "text": "All the best! You will figure out soon!",
+              "author": "kathir05",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": ">> AT some point, you get conviction, this will work and worth pursuing full-time even though 0 revenue to begin with.\nMy conviction was seeing myself using what I built growing from a few times a week to everyday use. Then when one random signup hit the analytics, I watched that person come back consistently too. That was the shift.\nThe harder part is the gap between \"people use it\" and \"people pay for it\". Usage is validating but it doesn't pay rent :( hence I press on.",
+          "author": "KalskiTheDan",
+          "replies": [
+            {
+              "text": "\"people use it\" and \"people pay for it\". Whoever figure out this gap and close it will win",
+              "author": "kathir05",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Wondering this myself, thanks for asking!\nBeing in the same boat, I'm waiting for more external feedback and interest, or ideally some customers, before calling it on the day job. Doesn't mean this fits everyone's situation, but just how I'm thinking about it.",
+          "author": "lyfeninja",
+          "replies": [
+            {
+              "text": "Yes. talk to more customers and get more feedbacks.",
+              "author": "kathir05",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been thinking about starting a business for a while now, but I haven't come up with a really good idea for a great app yet. I'm currently doing a lot of reading and trying to figure out what the market needs. Maybe that will spark the crucial idea. Best regards",
+          "author": "SArndt",
+          "replies": [
+            {
+              "text": "All the best! Get started soon!",
+              "author": "kathir05",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47504287",
+      "title": "Ask HN: Analog Model of Transformers",
+      "link": "https://news.ycombinator.com/item?id=47504287",
+      "domain": "news.ycombinator.com",
+      "author": "JPLeRouzic",
+      "score": 7,
+      "comment_count": 2,
+      "created_ts": 1774366763,
+      "is_internal": true,
+      "post_text": "(Sorry if this a stupid question)<p>Roughly 80 years ago many computers used analog logic, for example an amplifier with variable resistors could multiply and divide.<p>The matrix multiplication seems to be central in Transformer architecture.<p>I wonder if it would make sense to create a sort of Transformer on a vaguely similar concept?<p>If you wonder why this question, after all there are still guys who design digital computers with tubes or even mechanical relays, then why not analog Transformers?<p>https:&#x2F;&#x2F;hackaday.com&#x2F;2023&#x2F;12&#x2F;05&#x2F;a-single-board-computer-with-vacuum-tubes&#x2F;<p>https:&#x2F;&#x2F;hackaday.io&#x2F;project&#x2F;189725-homebrew-16-bit-relay-computer",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47490244",
+      "title": "Ask HN: If there has been no prompt injection, is it safe?",
+      "link": "https://news.ycombinator.com/item?id=47490244",
+      "domain": "news.ycombinator.com",
+      "author": "sayYayToLife",
+      "score": 7,
+      "comment_count": 8,
+      "created_ts": 1774277011,
+      "is_internal": true,
+      "post_text": "As I use open claw I am concerned about prompt injection more than bad code. However I think I&#x27;m irrationally paranoid. I&#x27;m small fries I&#x27;m a single individual, someone actively trying to hack me is exploiting a multi-million dollar zero day and they&#x27;re not doing that on me.<p>If we&#x27;re thinking about accidentally deleting everything through a terminal command, I&#x27;ve yet to see this actually occur.<p>Deductively I can see all of the worst case scenarios with open claw. Inductively I&#x27;ve never seen it actually happen.<p>I find it a bit irrational to pretend that open claw is a genuine security risk.<p>The moment I see on Hacker News that someone got prompt injected, I think I&#x27;ll be concerned. Until then I would need almost a lottery like chance to get hacked as the first person through prompt injection.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I think the more likely attack vector in OpenClaw is convincing it to install a malicious npm package or script, have that siphon all machine/env secrets, and then watch those secrets get abused. (Cloud API key -> crypto mining. Wallet key->theft. Npm credentials->worm publishes more copies of itself. GitHub key->more theft and malicious code upload. Email API key->IP theft and password reset on other systems)\nAlmost all of this can be automated, so the attacker doesn’t have to know who you are.\nIt’s not targeted per se.",
+          "author": "TheTaytay",
+          "replies": []
+        },
+        {
+          "top": "I've been on the defense side for a while, and the \"it hasn't happened yet\" argument is dangerous territory. The surface area for attack definitely increases with agentic systems.\nThe comment about malicious package installs is a much more realistic threat, as an example. Prompt injection is one angle, but defending against a supply chain compromise or an agent being tricked into exfiltrating secrets should be a higher priority. That's a more direct and exploitable vector.",
+          "author": "MarcelinoGMX3C",
+          "replies": []
+        },
+        {
+          "top": "https://www.notion.so/Inside-OpenClaw-Deploying-Sniffing-and...\nLab 2 there shows you how you can use socat to intercept that data passing between OpenClaw and LLM. It's interesting to look at all the tooling (and modify it if you like) around the user prompt. --Might help if you are interested.",
+          "author": "Beckmeister",
+          "replies": []
+        },
+        {
+          "top": "> I find it a bit irrational to pretend that open claw is a genuine security risk.\nExcept that it is an actual security risk, no pretending is needed. In general, agents expand the security surface and attack vectors, regardless of framework.\nYour argument that it hasn't happened, therefore it doesn't exist is a well known cognitive bias.\nSee the Lethal Trifecta for one way in which security requires more thoughtfulness.",
+          "author": "verdverm",
+          "replies": []
+        },
+        {
+          "top": "The \"I'm a small fry\" argument assumes that an attacker needs to target you personally. The reality of agentic security (especially with OpenClaw) is that you aren't the target of the hack, you're just the host for the execution.",
+          "author": "faizantahir_dev",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47518670",
+      "title": "Ask HN: Is Antigravity code search dropping results recently?",
+      "link": "https://news.ycombinator.com/item?id=47518670",
+      "domain": "news.ycombinator.com",
+      "author": "sankalpnarula",
+      "score": 6,
+      "comment_count": 0,
+      "created_ts": 1774452426,
+      "is_internal": true,
+      "post_text": "I’ve been having weird search problems with Antigravity lately.<p>Today, I searched for ListenUnixSocket to see where it was being used. The search only gave me about six results, and they were all just definitions and test files. The code that actually called the function was completely missing. I almost deleted it because I thought it was dead code.<p>I checked my spelling and capitalization, and I hard refreshed the page, but nothing changed. I ended up having to find the calling code manually.<p>Here’s the crazy part: after I opened that specific file and searched from inside it, the main search finally updated. The missing code magically started showing up in my normal searches.<p>It feels like a caching bug. Has anyone else noticed this happening?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47486885",
+      "title": "Ask HN: Are you using OpenClaw or similar agents? How?",
+      "link": "https://news.ycombinator.com/item?id=47486885",
+      "domain": "news.ycombinator.com",
+      "author": "nclin_",
+      "score": 6,
+      "comment_count": 12,
+      "created_ts": 1774256169,
+      "is_internal": true,
+      "post_text": "I keep hearing all the rage about Openclaw but can&#x27;t imagine a task I&#x27;d trust it with. What are people actually using it for?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47535533",
+      "title": "Ask HN: Personalized mRNA cancer vaccines, how real is the pipeline today?",
+      "link": "https://news.ycombinator.com/item?id=47535533",
+      "domain": "news.ycombinator.com",
+      "author": "imnotlost",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1774558196,
+      "is_internal": true,
+      "post_text": "I came across this open-source workflow for designing personalized mRNA cancer vaccines:<p>https:&#x2F;&#x2F;philfung.github.io&#x2F;openvaxx&#x2F;<p>And this recent story about a man who worked with researchers to create a personalized cancer vaccine for his dog:<p>https:&#x2F;&#x2F;medicalxpress.com&#x2F;news&#x2F;2026-03-ai-cancer-vaccine-dog-oncologist.html<p>It got me wondering what the current technology, research, and startup landscape looks like for personalized mRNA medicine in humans.<p>Are any HN people working in this space, or close to it? I’m especially curious about:\n- how real the pipeline is today outside major institutions\n- which parts are getting cheaper or more accessible\n- which parts of the pipeline is being taken over by software and possibly new AI models\n- where the real bottlenecks are: sequencing, target selection, manufacturing, QC, regulation, or something else\n- whether anyone is building tools, infrastructure, or startups around more individualized mRNA therapies",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47509345",
+      "title": "Ask HN: Does the World need more software?",
+      "link": "https://news.ycombinator.com/item?id=47509345",
+      "domain": "news.ycombinator.com",
+      "author": "Vektorceraptor",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1774386533,
+      "is_internal": true,
+      "post_text": "Is there a (natural) demand for more and more software?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47511075",
+      "title": "Ask HN: Do you feel less happy when coding with agent?",
+      "link": "https://news.ycombinator.com/item?id=47511075",
+      "domain": "news.ycombinator.com",
+      "author": "zane__chen",
+      "score": 5,
+      "comment_count": 15,
+      "created_ts": 1774395030,
+      "is_internal": true,
+      "post_text": "As titled.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47494475",
+      "title": "Veevo Health – book a CT angiogram to see plaque buildup in your arteries",
+      "link": "https://news.ycombinator.com/item?id=47494475",
+      "domain": "news.ycombinator.com",
+      "author": "arvindsr33",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1774296728,
+      "is_internal": true,
+      "post_text": "Hey HN, I built Veevo Health, a service that lets you book a 30-minute CT angiogram heart scan at one of 20+ imaging centers across the US and get clinician-reviewed results showing the real health of your heart arteries. Website is at https:&#x2F;&#x2F;veevohealth.com<p>I&#x27;m building this because my dad had passed away from a sudden heart attack. It still remains one of the biggest health threats and the best way to prevent it to know early about your arterial health.<p>You book online, show up for a 30-minute scan, and get results with a personalized action plan. It&#x27;s HSA&#x2F;FSA eligible.<p>The scheduling layer was the hardest part. Coordinating availability across imaging centers with different systems took a lot of plumbing.<p>Would love feedback from anyone who has looked at preventive cardiology or direct-to-consumer diagnostics.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47516319",
+      "title": "Ask HN: How do you feel when your coding assistant loses context?",
+      "link": "https://news.ycombinator.com/item?id=47516319",
+      "domain": "news.ycombinator.com",
+      "author": "noduerme",
+      "score": 4,
+      "comment_count": 16,
+      "created_ts": 1774440884,
+      "is_internal": true,
+      "post_text": "Background: My dad, my mom&#x27;s dad, and my uncle all suffered from dementia; having a deep, multi-threaded conversation which you were invested in, where you suddenly need to remind the other person of what you were talking about, or who they are, has emotional consequences that range from deep frustration to helpless anger.<p>Can you <i>feel</i> when your agent has just compressed or lost context? Can you tell by how it bullshits you that it knows where it is, while it&#x27;s trying to grasp what was going on? What&#x27;s your emotional response to that?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "If you have an emotional response to anything an agent or LLM does then you should lay off the sauce for a while and take a walk or something. This stuff is just dumb tech, no matter what the appearances and it does not warrant you getting emotionally invested in your interaction with it. It's a tool. Just like there is no point in getting upset at a hammer or a chainsaw. You are in control, you are the user.",
+          "author": "jacquesm",
+          "replies": [
+            {
+              "text": "The fact that it's supposed act like a tool, and you come to treat it as one, makes it \nmore\n frustrating. What if you bought a very expensive knife that went dull every 10 minutes? Of course, you would mutter some curses at the knife; that doesn't mean you believe it to be sentient.",
+              "author": "noduerme",
+              "depth": 1
+            },
+            {
+              "text": "Can you see the flip side of this?\nThe way the LLMs are configured by default is to be chatty and pretend to be human.\nThey're not talking like Data from Star Trek, nor HAL.\nThey're trying to be Samantha from Her.\nGo watch that movie and see the visceral human response that evokes.\nTo tell people to treat it as a tool, while it's deliberately trying to pass off as human is like telling us to piss in the wind.\nIt's bad advice and not how humans work.\nI think better advice might be 'set it to a different conversational tone' might be better advice.",
+              "author": "mattmanser",
+              "depth": 1
+            },
+            {
+              "text": "Yes, I see the flipside just fine, but we should \nall\n keep that flipside in mind all the time and not to let these tools get under our skin. That's why I keep any AI interaction off my main computer: no risk of contaminating my professional output and no way to let it become a habit.\nSetting it to a different conversational tone is a patch, not a solution, it will just postpone the same outcome because the interaction model is purposefully created to resemble the interaction with a human. They could easily fix that but somehow none of the AI peddlers want to do this.\nThis is part of the whole alignment problem and one of the reasons I have a hard time seeing this whole development as a net positive even if it allows me to do some stuff in an easier way than before. The companies behind this stuff lack in the ethics department and they all are eyeing your wallet. The more involved you are the easier it will be to empty your wallet. So don't let that happen.",
+              "author": "jacquesm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is indicative of too much context. Remember these systems don't \"think\" they predict. If you think of the context as an insanely large map with shifting and duplicate keys and queries, the hallucinating and seeming loss of context makes sense. Find ways to reduce the context for better results. Reduce sample sizes, exclude unrelated repositories and code. Remember that more context results in more cost and when the AI investment money dries up, this will be untenable for developers.\nIf you can't reduce context it suggests the scope of your prompt is too large. The system doesn't \"think\" about the best solution to a prompt, it uses logic to determine what outputs you'll accept. So if you prompt do an online casino website with user accounts and logins, games, bank card processing, analytics, advertising networks etc., the Agent will require more context than just prompting for the login page.\nSo to answer the question, if my agent loses context, I feel like I've messed up.",
+          "author": "gibbitz",
+          "replies": [
+            {
+              "text": "This is the first project where I've really let AI to do more than work on a single file at a time. The trouble is, there's no way for it to be useful without a fairly large context. When it runs out, it starts doing things that are actively destructive, yet very subtle and easy to miss at the same time. Mainly, it forgets the architecture. A couple days ago, it had a good handle on an a database table that I was writing side by side with an API that ran queries and did calculations on the data. I read the code it wrote for a particular API call, and didn't notice that it had started flipping the sign of one of the columns in a query, because it had misinterpreted the column name. A few minutes before that, it had written another query correctly, but from that point on it kept flipping the sign on that column. I only noticed after having it write several other queries and when it oddly mentioned in its \"thinking\" that X was Y-Z. Reading the thinking has been the main clue as to when it loses track, but if I didn't know exactly why X was Y+Z, the code built on that API would have given subtly inconsistent results that would have been very hard to trace.",
+              "author": "noduerme",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Context management is a core skill of using an LLM. So if it loses key context (e.g. tasks, instructions, or constraints), I screwed up, and I need to up my game.\nJust throwing stuff into an LLM and expecting it to remember what you want it to without any involvement from yourself isn't how the technology works (or could ever work).\nAn LLM is a tool, not a person, so I don't have an \nemotional\n response to hitting its innate limitations. If you get \"deeply frustrated\" or feel \"helpless anger\", instead of just working the problem, that feels like it would be an unconstructive reaction to say the least.\nLLMs are a limited tool, just learn what they can and cannot do, and how you can get the best out of them and leave emotions at the door. Getting upset a tool won't do anything.",
+          "author": "Someone1234",
+          "replies": []
+        },
+        {
+          "top": "I can totally feel the shift, the rot or whatever when it happens, with opus 1M it seems to happen more often in my recent experience, while my approach didn't change a bit.\nSo i teach myself to not have an emotional response while working with LLMs. The actual response would be starting a new session, or dive into code myself.",
+          "author": "setnone",
+          "replies": []
+        },
+        {
+          "top": "I just posted this on HN this morning and was looking through \"new\" but I'm trying to solve this exact problem:\nhttps://annealit.ai",
+          "author": "cdbattags",
+          "replies": [
+            {
+              "text": "That's interesting. I mean, I've got an openclaw setup with Claude that is merging and storing chats from whatsapp and the web client once a day, has a ton of context accessible... but there's something about being right in the middle of solving a hard technical problem where you're deep in the weeds about which columns should represent which data, and suddenly it's like, what were we talking about? Oh I should trying to read the database structure again from scratch. I don't think that's a problem that any clever arrangement of memory or personality files can actually solve.",
+              "author": "noduerme",
+              "depth": 1
+            },
+            {
+              "text": "But I think when you actually structure memory in the right form based on \"workload\" (i.e. Google Spreadsheet, Microsoft Word XML, coding lang AST/DAGs), then this is truly possible to have additive \"unforgetting\".\nEdit:\nI truly believe this is solvable just like we're doing for natural language but with code/schema/etc! Relational, document, graph, vector!",
+              "author": "cdbattags",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47513148",
+      "title": "Ask HN: Any recommended engineering/dev related Slack channels?",
+      "link": "https://news.ycombinator.com/item?id=47513148",
+      "domain": "news.ycombinator.com",
+      "author": "Kuraptka",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1774411997,
+      "is_internal": true,
+      "post_text": "I’m looking for a general developer community. But it would also be nice to have conversations related to non-engineering stuff like leadership, communication, how to look for a job, salary discussions, etc. a lot of communities I’ve found tend to focus more on open source development, and less on the non-engineering aspects of being a developer.<p>Does anyone have any recommended Slack or Discord channels that fit that bill?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication",
+        "leadership",
+        "salary"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47505445",
+      "title": "Does it make sense to ask Blackberry to re-license ancient QNX sources?",
+      "link": "https://news.ycombinator.com/item?id=47505445",
+      "domain": "news.ycombinator.com",
+      "author": "ymz5",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1774370471,
+      "is_internal": true,
+      "post_text": "The 17-year-old sources of QNX (to be found at github.com&#x2F;vocho&#x2F;openqnx) don&#x27;t have a clearly-defined license file&#x2F;status. In theory, one can use them, experiment with them, but they&#x27;re neither free-, nor completely open-source.<p>Does it make sense to ask QSS&#x2F;Blackberry to re-license them under e.g. Apache 2.0 license -- the same license they use for their startup code sources?<p>If yes, does it make sense to write&#x2F;publish an open petition?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47515656",
+      "title": "Lazy Tmux – Lazy-loading tmux sessions with a tree view",
+      "link": "https://news.ycombinator.com/item?id=47515656",
+      "domain": "news.ycombinator.com",
+      "author": "Alchemmist",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1774435922,
+      "is_internal": true,
+      "post_text": "Ever open tmux and dread that your dozens of sessions are all eating memory… or worse, might disappear if a plugin fails?<p>I used tmux-resurrect + tmux-continuum for years. They “work,” but:<p>- Sessions sometimes vanish entirely<p>- With many sessions, everything stays loaded in RAM<p>So I built Lazy Tmux:\nhttps:&#x2F;&#x2F;lazy-tmux.xyz<p>It shows all sessions as a tree — like they already exist — but only actually loads them when you enter.<p>- Keep dozens of sessions without bloating memory<p>- Navigate large session hierarchies quickly<p>- Lazy-load panes, commands, shells and scrollback history<p>It’s early, and there are many open issues on GitHub. Feedback, ideas, or contributions are welcome: https:&#x2F;&#x2F;github.com&#x2F;alchemmist&#x2F;lazy-tmux<p>If you’ve ever wrestled with tmux session management, this might make your workflow a lot smoother.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "management"
+      ],
+      "comments": []
+    }
+  ]
+}
