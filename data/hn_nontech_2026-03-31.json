@@ -1,0 +1,1147 @@
+{
+  "scraped_date": "2026-03-31",
+  "source": "hacker_news",
+  "total_scraped": 127,
+  "nontech_count": 30,
+  "posts": [
+    {
+      "id": "47565365",
+      "title": "C++26 is done: ISO C++ standards meeting Trip Report",
+      "link": "https://herbsutter.com/2026/03/29/c26-is-done-trip-report-march-2026-iso-c-standards-meeting-london-croydon-uk/",
+      "domain": "herbsutter.com",
+      "author": "pjmlp",
+      "score": 312,
+      "comment_count": 376,
+      "created_ts": 1774806372,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meeting"
+      ],
+      "comments": [
+        {
+          "top": "I am somewhat dismayed that contracts were accepted. It feels like piling on ever more complexity to a language which has already surpassed its complexity budget, and given that the feature comes with its own set of footguns I'm not sure that it is justified.\nHere's a quote from Bjarne,\n>  So go back about one year, and we could vote about it before it got into the standard, and some of us voted no. Now we have a much harder problem. This is part of the standard proposal. Do we vote against the standard because there is a feature we think is bad? Because I think this one is bad. And that is a much harder problem. People vote yes because they think: \"Oh we are getting a lot of good things out of this.\", and they are right. We are also getting a lot of complexity and a lot of bad things. And this proposal, in my opinion is bloated committee design and also incomplete.",
+          "author": "suby",
+          "replies": [
+            {
+              "text": "I implemented Contracts in the C++ language in the early 90's as an extension.\nNobody wanted it.\nhttps://www.digitalmars.com/ctg/contract.html",
+              "author": "WalterBright",
+              "depth": 1
+            },
+            {
+              "text": "I think it's also true that, regardless of the desirability of the feature at the time (which sibling comments discuss eloquently) people who've bought into a language are usually quite wary of also buying into extensions to that language. The very act of ratification by the committee gives this proposal a ‘feature’ that the DMC++ extension lacked in compatibility expectations over time and across implementations — it's not necessarily a comment on the technical quality or desirability of the work itself.",
+              "author": "Twey",
+              "depth": 2
+            },
+            {
+              "text": "How do you know nobody wanted it?",
+              "author": "mort96",
+              "depth": 2
+            },
+            {
+              "text": "> How do you know nobody wanted it?\nSome imperfect data points on how to judge if a language feature is wanted (or not):\n- Discussion on forums about how to use the feature\n- Programs in the wild using the feature\n- Bug reports showing people trying to use the feature and occasionally producing funny interactions with other parts of the language\n- People wanting to do more complex things on the initially built feature by filing features requests. (Showing that there is uptake on the feature and people want to do more fancy advanced things)",
+              "author": "sidkshatriya",
+              "depth": 3
+            },
+            {
+              "text": "I listen to the users. There was never any mention of it.",
+              "author": "WalterBright",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The \"erroneous behavior\" redefinition for reads of uninitialized variables is really interesting: \nhttps://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p27...\nIt does have a runtime cost. There's an attribute to force undefined behavior on read again and avoid the cost:\n    int x [[indeterminate]];\n    std::cin >> x;",
+          "author": "jcalvinowens",
+          "replies": [
+            {
+              "text": "D initializes all variables. If you don't provide an initializer, the compiler inserts the default initializer for it.\nBut if you really, really want to leave it uninitialized, write:\n    int x = void;\n\n\nwhere you're not writing that by accident.",
+              "author": "WalterBright",
+              "depth": 1
+            },
+            {
+              "text": "> If you don't provide an initializer, the compiler inserts the default initializer for it.\nThis requires that there \nis\n a default. Several modern languages (such as Go) insist on this, it means now your types don't even model reality in this very fundamental way. Who is a person's default spouse? Even where you can imagine a default it's sometimes undesirable to have one, for example we already live in a society where somebody decided default gender is male - and it might look too much like real data, default birthday being 1 January also matches hundreds of thousands of Americans...\nThe most likely place you go after \"Everything has a default\" is the billion dollar mistake because you're inclined to just incorporate \"or it's default invalid\" into the type definition to get your default, and when you do that everywhere needs to have \"check it's valid\" code added, even if we already just checked that a moment ago.",
+              "author": "tialaramex",
+              "depth": 2
+            },
+            {
+              "text": "I don’t care that much about everything having a default (although it’s nice), but if a language insists on a default value for every type for safety, can’t you just use std::optional?",
+              "author": "kwsp",
+              "depth": 3
+            },
+            {
+              "text": "I can't tell if you imagine std::optional is a value (it is not) or if you know it's a templated type but you imagine that somehow it would be OK to redefine all programs so that every type is std::optional<T> of that type instead so as to simplify initialization.\nEither way no, that can't work.",
+              "author": "tialaramex",
+              "depth": 4
+            },
+            {
+              "text": "I often see arguments like yours. I reject them wholeheartedly. Your argument is pro-poor-design. I tell you: design your software better. Design your software so that you \ncan't\n have undefined behavior. It's harder, yes. LLMs suck at it, yes. But building well-designed software is a significant part of being a better engineer.",
+              "author": "inetknght",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This is awesome. I've was a dev on the C++ team at MS in the 90s and was sure that RTTI was the closest the language would ever get to having a true reflection system.",
+          "author": "LatencyKills",
+          "replies": []
+        },
+        {
+          "top": "Hosting the meeting in Croydon and not letting people leave until the thing is signed-off is definitely a cunning strategy. Never want to work down there again, ever.",
+          "author": "vr46",
+          "replies": []
+        },
+        {
+          "top": "> Second, conforming compiler and standard library implementations are coming quickly. Throughout the development of C++26, at any given point both GCC and Clang had already implemented two-thirds of C++26 features. Today, GCC already has reflection and contracts merged in trunk, awaiting release.\nHow far is Clang on reflection and contracts?",
+          "author": "dataflow",
+          "replies": [
+            {
+              "text": "Clang’s C++2c implementation status page simply says “no” for both reflection and contracts. GCC’s says “yes”.\nhttps://clang.llvm.org/cxx_status.html\nhttps://gcc.gnu.org/projects/cxx-status.html",
+              "author": "cpeterso",
+              "depth": 1
+            },
+            {
+              "text": "That much I'm aware, but that's just about feature availability. I was wondering how far the implementations have progressed internally, despite the features being unavailable.",
+              "author": "dataflow",
+              "depth": 2
+            },
+            {
+              "text": "Clang basically doesn't implement anything regarding reflection right now. There is some support for parsing (\nhttps://github.com/llvm/llvm-project/blob/main/clang/test/Pa...\n) but that's it. There are some open PRs for other parts though.",
+              "author": "tbaeder",
+              "depth": 3
+            },
+            {
+              "text": "Thanks, yeah, I was worried that might be the case. Given how complicated these features sound, it makes me wonder if they're gonna finish before the decade is over...",
+              "author": "dataflow",
+              "depth": 4
+            },
+            {
+              "text": "Bloomberg has a clang implementation of reflection: \nhttps://github.com/bloomberg/clang-p2996\nIt has been on compiler explorer for a while\nThis has been used to add reflection to simdjson",
+              "author": "Asmod4n",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47580350",
+      "title": "Show HN: 30u30.fyi – Is your startup founder on Forbes' most fraudulent list?",
+      "link": "https://30u30.fyi",
+      "domain": "30u30.fyi",
+      "author": "not-chatgpt",
+      "score": 230,
+      "comment_count": 97,
+      "created_ts": 1774908622,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "Some of these really don't make sense. The implication that Cursor is a fraudulent company is a little weird considering they actually have real users.\nLike sure, is it a VS code fork with agents stapled to it? Yes. But are they on the same scale as most of the people mentioned? Ehh probably not.\nIt reads more like a hit piece from someone with a grudge against random SF companies than anything else.",
+          "author": "seamossfet",
+          "replies": [
+            {
+              "text": "> The implication that Cursor is a fraudulent company is a little weird\nTo my reading the premise of the site is pretty straightforward: 30 Under 30 is a warning sign, not a positive signal. Therefore, as a company with 4 founders who were in 30 Under 30, Cursor is a risk.\nIt’s a silly little satire site, there’s a danger of reading into it too deeply.",
+              "author": "afavour",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, and the reason 30 under 30 is a warning sign is because the founders that apply to and agree to do Forbes to do \"30 under 30\" are much more concerned with marketing than actually building a legitimate product. Legitimate under 30 founders are spending their time actually building instead.",
+              "author": "bloodyplonker22",
+              "depth": 2
+            },
+            {
+              "text": "It looks like the score number is just the number of times featured multiplied by a constant.",
+              "author": "throwaway85825",
+              "depth": 1
+            },
+            {
+              "text": "Maybe it was added after your comment but that section has a warning box calling the score a \"deliberately absurd formula\" and saying \"this is comedy\" in literal bold letters at the top. No one thinks it's serious and it's even clearly labeled as a joke just in case.",
+              "author": "tdb7893",
+              "depth": 1
+            },
+            {
+              "text": "Stopped clocks...",
+              "author": "jacquesm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Reactions to this are a bit curious. It's a satirical comment on how (presumably) initially well-intentioned younger founder-types get swept up in / by perverse incentives. The implication is that younger people who are still figuring out who they are and coming into their own may be more susceptible to these kinds of incentive traps.\nThe first section that showcases the fraud that has been committed is something I have no problem with, just as I have no issue with web3isgoinggreat.com. The \"at risk\" section is based on a mathematical/algorithmic joke. This is explained by the \"methodology\" section below it, which makes it clear that the equation used to calculate \"risk\" here is not entirely unlike the Drake equation for the probability of extra-terrestrial life.[1]\n[1] \nhttps://en.wikipedia.org/wiki/Drake_equation",
+          "author": "YossarianFrPrez",
+          "replies": [
+            {
+              "text": "Eh, I think selection effects are more prevalent than an earnest good faith actor who got swept up into perverse incentives.\nForbes 30u30 is a clarion call for the most ambitiously Machiavellian among us.\nThey’re not subject to any different incentives than the rest of us. But they’d certainly have a higher rate of sociopaths and more garden variety Machiavellis than genpop.",
+              "author": "estearum",
+              "depth": 1
+            },
+            {
+              "text": "I was curious to pin down the definition of Machiavellian:\n>  Manipulation & Deceit: Using charm, lies, and calculated moves to influence others.\n> Lack of Empathy: A cold, detached, and unemotional demeanor that disregards the feelings of others.\n> Strategic Long-Term Planning: Unlike impulsive psychopaths, high-Machs are patient, planning, and can delay gratification to ensure success.\n> Cynical Worldview: Believing that people are inherently weak, untrustworthy, and that \"the ends justify the means\".\n> Low Affect: Possessing limited emotional experience, often leading to a detached, \"puppet-master\" role rather than seeking the spotlight.\nThe only traits that seem bad are the lying and lack of empathy. The rest seem neutral (low emotional experience is something we hackers tend to identify with), sensible (random people tend to be untrustworthy), or admirable (delayed gratification).\nUsing charm and calculated moves to influence others isn’t a bad thing. It’s the basis of flattery.\nI wish there was a positive version of Machiavellian which cut the lies and lack of empathy. Those are genuinely bad.",
+              "author": "sillysaurusx",
+              "depth": 2
+            },
+            {
+              "text": "> Using charm and calculated moves to influence others isn’t a bad thing. It’s the basis of flattery.\nFlattery doesn't have to be calculated.\nAs to calculated moves, distinct things can fit the same labels. Intent, context, and execution are all important.",
+              "author": "fc417fc802",
+              "depth": 3
+            },
+            {
+              "text": "I would argue that flattery without calculation is just poorly calculated flattery.\nSame applies to many other traits in the list. Low achievements people lie right and left just as well. Are cynical when convenient, yada yada.\nBasically, the list says that these 30s are just like an average Joe, but smart. Which should be a surprise to no one.",
+              "author": "lostmsu",
+              "depth": 4
+            },
+            {
+              "text": "They're only the same thing if you ignore intent.\nNot everyone lies or is cynical when convenient. Skill, rate of success, and personal ethics are all orthogonal concepts.\nAbove all, intent matters. I do not treat someone who I perceive to be manipulative the same as I would other people.",
+              "author": "fc417fc802",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "The regular ones are okay. The watchlist is diabolical. Unvoted as soon as I saw the watchlist.",
+          "author": "iddan",
+          "replies": [
+            {
+              "text": "half the watchlist is literally vaporware",
+              "author": "asdev",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is funny, because I know a bunch of 30 under 30s, and I've invested in a few.  There is a strong overlap between 30 under 30 and YC founders.\nI consider myself a good judge of character, because not one of the one's I've invested in has committed fraud!",
+          "author": "jedberg",
+          "replies": [
+            {
+              "text": "I somewhat expect that if Forbes is tracking people working on some of the trendiest / most exciting stuff and also trends attract frauds then this is sort of inevitable\nI don't have strong feelings about the watch list (use and like several of the products on there so not that worried about them all being frauds), and I think the concept is kind of humorous\nSeems easy to read the wrong way though",
+              "author": "wrsh07",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Would say, the 30 under 30 list has like 600 people, not 30. So the fraud rate is quite a bit lower than headlines of seemingly 2 / 30. Its more like 2 / 600, which is maybe the baseline fraud rate?",
+          "author": "czhu12",
+          "replies": [
+            {
+              "text": "Doesn't matter. It's always been based on vibes, now the vibe is fraud.",
+              "author": "throwaway85825",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47563007",
+      "title": "TSA lines are so out of control that travelers are hiring line-sitters",
+      "link": "https://www.washingtonpost.com/travel/2026/03/28/tsa-line-sitters/",
+      "domain": "www.washingtonpost.com",
+      "author": "bookofjoe",
+      "score": 112,
+      "comment_count": 139,
+      "created_ts": 1774791145,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "From the last few paragraphs:\n> There is an official way for travelers to bypass long TSA waits if they’re willing to spend: hiring concierge services to escort them through security.\n> Perq Soleil is an airport arrival and departure assistance service that can help travelers through TSA in about a minute flat by accessing alternative lines usually reserved for airport staff and airline personnel. The company — which operates in more than 300 airports and 150 countries — charges a base rate that varies by location.\nTalk about burying the lede. Apparently the airports “highly discourage” line-sitters, but if you use services that pre-bribed airports you can skip the lines entirely.",
+          "author": "oefrha",
+          "replies": [
+            {
+              "text": "The people arriving on private jets have always bypassed these bureaucratic procedures. Brotherhood and equality.",
+              "author": "PearlRiver",
+              "depth": 1
+            },
+            {
+              "text": "It's true equality: The rich and poor alike are allowed to fly on private jets or hire a departure assistance service!",
+              "author": "ryandrake",
+              "depth": 2
+            },
+            {
+              "text": "well jokes on you: if it was 17th century, we peasants wouldn't even be allowed to use that service",
+              "author": "sysguest",
+              "depth": 3
+            },
+            {
+              "text": "As somebody who doesn't travel on private jets, I'm very, very happy that I'm not anywhere close to those people.\nImagine the pandemonium that would ensue if Taylor Swift were to enter an airport terminal through the normal entrance.",
+              "author": "miki123211",
+              "depth": 2
+            },
+            {
+              "text": "Why should private plane passengers be subject to TSA? TSA (paid for by you and me by the way, not for free) exists to protect the public from harm, on public flights by common carriers. It used to be contracted by airlines themselves. Unless you are the most extreme of pro-seatbelt law people, it would make little sense for TSA to screen anyone on a private plane manifest unless the client asked them to.",
+              "author": "hammock",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I don’t even understand why this is an issue, because TSA screening is funded through user fees. There’s a line item of $5.60 per one-way ticket for exactly this that’s separate from airfare and other fees. (\nhttps://www.tsa.gov/for-industry/security-fees\n)\nIf this is so, why does Congress have to fund the program? Why not pass the funds through directly to the agency?",
+          "author": "otterley",
+          "replies": [
+            {
+              "text": "The question itself feels like it calls for \"Schoolhouse Rock\" level basics about how the federal government works.\nThe federal government does not work like a private escrow account where a fee collected for X automatically goes to Y. Tax revenue comes in to the Treasury, and \nCongress\n decides what agencies are allowed to spend. So even if TSA screening is funded in part by a per-ticket user fee, TSA still does not get to just collect that money and use it directly. Congress has to authorize and appropriate it.\nOn a practical level, imagine the chaos if every federal department acted as its own tax collector and then set its own spending priorities. That is basically an argument for gutting Congress's oversight of TSA and treating it like an independent agency, just because Congress and the executive branch \ninvented\n the modern shutdown in the 1980s.\nKeep in mind shutdowns are a fairly \nnew\n concept, that nearly no other country has. The US also didn't have it for most of its history. Congress could stop at any time it wanted.",
+              "author": "Someone1234",
+              "depth": 1
+            },
+            {
+              "text": "Many government services do directly use fees to pay for operating the service. Those services can operate with no government appropriation, and the funds never leave the specific agencies' own accounts.\nExamples:\n* USCIS (source: \nhttps://www.aila.org/library/practice-alert-what-happens-if-...\n)\n* 1,823/7,001 Fish and Wildlife service staff (\nhttps://www.doi.gov/sites/default/files/documents/2025-09/do...\n)\n* 38,252/74,210 of the FDA (\nhttps://www.hhs.gov/about/budget/fy-2026-hhs-contingency-sta...\n)\n* USPS (although as a government owned corporation the separation of funding is more obvious)\n* Customs (the actual folks that process tariffs are paid for by the tariffs, unlike border patrol)",
+              "author": "advisedwang",
+              "depth": 2
+            },
+            {
+              "text": "SFO doesn’t use TSA for security and works like this with whatever contractor it hire. I wish all airports would just use private security funded via usage fees, then we would never be held hostage because some whacko wanted to use masked thugs to beat up and shoot Americans.",
+              "author": "seanmcdirmid",
+              "depth": 2
+            },
+            {
+              "text": "Where did you get the information that SFO doesn't use TSA?",
+              "author": "brunoborges",
+              "depth": 3
+            },
+            {
+              "text": "From like the way it is and has been for many years?\nFrom their website:\nCovenant Aviation Security, a private company under contract with the Transportation Security Administration (TSA), provides passenger and baggage screening at SFO.\nVisit Covenant Aviation Security to learn more about security screening at SFO.\nhttps://www.flysfo.com/about/airport-operations/safety-secur...\nMore coverage here:\n\nhttps://www.npr.org/2026/03/26/nx-s1-5759273/not-all-airport...",
+              "author": "jhfdbkofdchk",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It seems that SFO's policy of having an intermediate company that buffers salaries is working well because I flew through there to Taipei after this whole situation and there was no wait.",
+          "author": "arjie",
+          "replies": [
+            {
+              "text": "It’s an odd list of airports which contract their own security screeners. I’d bet a lot of places are going to consider joining that program:\nhttps://www.cnn.com/2026/03/21/us/airports-without-tsa",
+              "author": "acdha",
+              "depth": 1
+            },
+            {
+              "text": "I _just_ went though the line. It wasn't too bad (5-10min, despite having bio ID), but it was by far the worst I've encountered at SFO in the decade I've been flying out of there.",
+              "author": "elromulous",
+              "depth": 1
+            },
+            {
+              "text": "P.s.\nAnd as usual, TSA doesn't understand anything about queueing theory and doesn't implement round robin / starvation prevention. Global services and clear get absolute priority over other queues.",
+              "author": "elromulous",
+              "depth": 2
+            },
+            {
+              "text": "That's a feature, not a bug",
+              "author": "1986",
+              "depth": 3
+            },
+            {
+              "text": "Probably because people are going via SFO when they might otherwise go via Oakland or elsewhere.",
+              "author": "NewJazz",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Only FOUR people actually used these services?\nEdit: Newspapers have a long history of using headline editors who add “spin” otherwise reasonable stories handed in by journalists. This story was built by talking to a few entrepreneurs who offer line-sitting to see if they’d served any customers for airport security waits. Only one had.",
+          "author": "jt2190",
+          "replies": []
+        },
+        {
+          "top": "https://archive.ph/cwDaq\n (No account needed)",
+          "author": "miyuru",
+          "replies": [
+            {
+              "text": "I have been kind of experimenting with using single archive pages for archive.is /.ph/.today links and then experimenting with either putting these on my github pages (and then archiving) just for more preservation purposes.\nToday I wanted to try something different so I used singlefile to make a html and then make pdf file from that html and uploaded it to archive.org\nhttps://archive.org/details/tsa-lines-are-so-out-of-control-...\nI don't wish to have news articles in my github as it clutters or I am not sure how these laws might follow (there is definitely a reason as to why archive.is creator is anonymous) and so I am looking for more anonymous ways to upload (my main intentions are that archive.ph can be nice but I feel like its not validated within wikipedia/all the controversies it has and I am just experimenting with things right now)\nI have also uploaded this on catbox.moe (\nhttps://files.catbox.moe/mt9sus.html\n) but it has plain/text content-type, does anyone know a more anonymous content-type plain/text -> html where I can upload things perhaps, I have thoughts about creating something like this (where people can give links to text .html files and I can then display the html) but I am also a bit worried that it might be used for nefarious purposes.\nI am not sure what I should do actually about it, I like thinking about archiving though, but anything other than archive.org like archive.is, can only function best if they are anonymous and I am not really anonymous/intend to be.\nThis makes me sympathetic of them against the journalist who tried to dox them but also I kind of understand that journalist tried approaching first from a more curiosity, maybe a threat-actor model, I had done something like this once to a service because I wanted to know if govt.'s would be able to catch them or not (they had a reddit proxy) and I found that they had their opsec secure and I was really impressed but I sometimes wonder, if the journalist also did something like this and the archive.is owner felt like it was a threat to archive and decided to ddos and all the things that followed, I sort of understand both the perspectives, so it just makes me sad as how this ended up folding up.\n(This comment might've been more relevant within the archive.is drama hackernews thread but I think that its long gone and I was still forming my opinion on all of this which clearly has some nuance)",
+              "author": "Imustaskforhelp",
+              "depth": 1
+            },
+            {
+              "text": "Doesn't this guy's server just DDoS some dude's blog with your own browser? Didn't click.",
+              "author": "arcza",
+              "depth": 1
+            },
+            {
+              "text": "Yes, and: If I recall correctly, cloudflare is sinking all the extra traffic for him, so it doesn't actually impact him.\nLast I heard it's a morally objectionable thing at this point rather than something that's having any practical impact.\n(Which of course doesn't make it ok... I'm just a little less inclined to judge people that still use archive links when needed.)",
+              "author": "javawizard",
+              "depth": 2
+            },
+            {
+              "text": "Context: \nhttps://news.ycombinator.com/item?id=46843805\nThe archive.today domains have also poisoned DNS lookups from some privacy-preserving DNS providers, and in rare cases have been caught tampering the archive data. Make of that what you will.",
+              "author": "gradientsrneat",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47567049",
+      "title": "Show HN: Crazierl – An Erlang Operating System",
+      "link": "https://crazierl.org/demo/",
+      "domain": "crazierl.org",
+      "author": "toast0",
+      "score": 70,
+      "comment_count": 13,
+      "created_ts": 1774816706,
+      "is_internal": false,
+      "post_text": "Crazierl is an experimental&#x2F;hobby operating system based around BEAM.<p>I&#x27;ve linked the browser based demo; I don’t recommend using a phone; it does work, slowly, on the phones I tested, but it’s very awkward to use. You can share a link with a hashtag with your friends and click the consent checkbox, and it (should) link up into dist and I’ve also included a chat application you can start with chat:start(). (quit chat with &#x2F;quit, or use the shell menu with ctrl-g to switch between shells etc).<p>The browser demo relies on the v86 javascript x86 virtual machine. You can also run Crazierl on a real x86 system, but I’ve had mixed luck on modern systems, it uses some esoteric legacy VGA features and support for that isn’t getting better.<p>Crazierl is fairly limited: 32-bit x86, BIOS boot, only two NIC drivers virtio-net and realtek 8168. But it&#x27;s got enough to become part of an Erlang dist cluster. It also supports SMP, but it’s crashy with high core counts in qemu; there’s almost certainly several concurrency bugs in the kernel. There&#x27;s also a lot of excess tcp debug spew (sorry).<p>Source code is available (Apache) <a href=\"https:&#x2F;&#x2F;github.com&#x2F;russor&#x2F;crazierl&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;russor&#x2F;crazierl&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47578464",
+      "title": "William Blake, Remote by the Sea",
+      "link": "https://www.laphamsquarterly.org/roundtable/william-blake-remote-sea",
+      "domain": "www.laphamsquarterly.org",
+      "author": "occurrence",
+      "score": 61,
+      "comment_count": 2,
+      "created_ts": 1774897985,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47575417",
+      "title": "Show HN: Coasts – Containerized Hosts for Agents",
+      "link": "https://github.com/coast-guard/coasts",
+      "domain": "github.com",
+      "author": "jsunderland323",
+      "score": 61,
+      "comment_count": 24,
+      "created_ts": 1774883871,
+      "is_internal": false,
+      "post_text": "Hi HN - We&#x27;ve been working on Coasts (“containerized hosts”) to make it so you can run multiple localhost instances, and multiple docker-compose runtimes, across git worktrees on the same computer. Here’s a demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=yRiySdGQZZA\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=yRiySdGQZZA</a>. There are also videos in our docs that give a good conceptual overview: <a href=\"https:&#x2F;&#x2F;coasts.dev&#x2F;docs&#x2F;learn-coasts-videos\">https:&#x2F;&#x2F;coasts.dev&#x2F;docs&#x2F;learn-coasts-videos</a>.<p>Agents can make code changes in different worktrees in isolation, but it&#x27;s hard for them to test their changes without multiple localhost runtimes that are isolated and scoped to those worktrees as well. You can do it up to a point with port hacking tricks, but it becomes impractical when you have a complex docker-compose with many services and multiple volumes.<p>We started playing with Codex and Conductor in the beginning of this year and had to come up with a bunch of hacky workarounds to give the agents access to isolated runtimes. After bastardizing our own docker-compose setup, we came up with Coasts as a way for agents to have their own runtimes without having to change your original docker-compose.<p>A containerized host (from now on we’ll just say “coast” for short) is a representation of your project&#x27;s runtime, like a devcontainer but without the IDE stuff—it’s just focused on the runtime. You create a Coastfile at your project root and usually point to your project&#x27;s docker-compose from there. When you run `coast build` next to the Coastfile you will get a build (essentially a docker image) that can be used to spin up multiple Docker-in-Docker runtimes of your project.<p>Once you have a coast running, you can then do things like assign it to a worktree, with `coast assign dev-1 -w worktree-1`. The coast will then point at the worktree-1 root.<p>Under the hood the host project root and any external worktree directories are Docker-bind-mounted into the container at creation time but the &#x2F;workspace dir, where we run the services of the coast from, is a separate Linux bind mount that we create inside the running container. When switching worktrees we basically just do umount -l &#x2F;workspace, mount --bind &lt;path_to_worktree_root&gt;, mount --make-rshared &#x2F;workspace inside of the running coast. The rshared flag sets up mount propagation so that when we remount &#x2F;workspace, the change flows down to the inner Docker daemon&#x27;s containers.<p>The main idea is that the agents can continue to work host-side but then run exec commands against a specific coast instance if they need to test runtime changes or access runtime logs. This makes it so that we are harness agnostic and create interoperability around any agent or agent harness that runs host-side.<p>Each coast comes with its own set of dynamic ports: you define the ports you wish to expose back to the host machine in the Coastfile. You&#x27;re also able to &quot;checkout&quot; a coast. When you do that, socat binds the canonical ports of your coast (e.g. web 3000, db 5432) to the host machine. This is useful if you have hard coded ports in your project or need to do something like test webhooks.<p>In your Coastfile you point to all the locations on your host-machine where you store your worktrees for your project (e.g. ~&#x2F;.codex&#x2F;worktrees). When an agent runs `coast lookup` from a host-side worktree directory, it is able to find the name of the coast instance it is running on, so it can do things like call `coast exec dev-1 make tests`. If your agent needs to do things like test with Playwright it can so that host-side by using the dynamic port of your frontend.<p>You can also configure volume topologies, omit services and volumes that your agent doesn&#x27;t need, as well as share certain services host-side so you don&#x27;t add overhead to each coast instance. You can also do things like define strategies for how each service should behave after a worktree assignment change (e.g. none, hot, restart, rebuild). This helps you optimize switching worktrees so you don&#x27;t have to do a whole docker-compose down and up cycle every time.<p>We&#x27;d love to answer any questions and get your feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "We have been trying to solve the same problem (and a bunch of other ones) with \nhttps://specific.dev\n as well. We’ve tried to stay away from Docker as much as we can though because of the still pretty bad experience on Mac.\nOur approach is having our CLI handle port assignments (and pass any connection details/ports along as env vars) and that way being able to spin up “isolated” copies of the local dev environment. Has the added benefit of us being able to deploy the same config straight to production and switch in production database connections strings and anything else needed.",
+          "author": "fabianlindfors",
+          "replies": [
+            {
+              "text": "> \"We’ve tried to stay away from Docker as much as we can though because of the still pretty bad experience on Mac.\"\nThis seems to be a pretty common perspective, but isn't it mostly about Docker Desktop? Orbstack solved my complaints, and I'm genuinely curious if I'm missing something significant (which is def possible).",
+              "author": "chrisweekly",
+              "depth": 1
+            },
+            {
+              "text": "We started with an approach like that but I think our grounding principal has been that you shouldn't have to modify your docker-compose to get parallelized local development. I think we want to layer onto your existing setup, not make you re-write your stack around us.\nI haven't really had a bad experience with Docker on Mac. but Is the idea you basically just build your service on top of specific.dev's provided services (postgres and redis) and those run bare-metal locally and then you can deploy to specific.dev's hosted solution?",
+              "author": "jsunderland323",
+              "depth": 1
+            },
+            {
+              "text": "Yes, exactly. Probably two different focuses between us, we are more focused on providing the full environment to build productively with coding agents, from local dev all the way to prod. The key thing for us is that the agent can write code, build infrastructure and test the entire system autonomously locally, and then deploying to production should be dead simple.\nA bit of a different approach from the classic use case of docker-compose that is often orthogonal to the production infrastructure in some sense.\nOne thing I've used to great success though is taking an existing project or example docker-compose and simply asking the coding agent to translate it to Specific's IaC. Works a treat, especially as the coding agent can read all the code at the same time and connect it all together.\n(also it looks like we were in the same batch!)",
+              "author": "fabianlindfors",
+              "depth": 2
+            },
+            {
+              "text": "I could definitely see that being useful for folks who are Docker-fearful or just less infra literate in general.\nI think we're focused on the other end of the spectrum. Folks who like docker and have a good docker setup but want to have parallel runtimes. Anyway, best of luck!",
+              "author": "jsunderland323",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This looks really cool and I've definitely been feeling this pain. I've been building out a solution for myself on top of docker. What are the advantages of using coasts over docker?",
+          "author": "dbla",
+          "replies": [
+            {
+              "text": "Hey thanks! To be clear it does use docker. It's a docker-in-docker solution.\nI think there's a quite a few things:\n1) You need a control plane to manage the host-side ports. Docker alone cannot do that, so you're either going to write a docker-compose for your development environment where you hard code dynamic ports into a special docker-compose or you're going to end up writing your own custom control plane.\n2) You can preserve your regular Docker setup without needing to alter it around dynamic ports and parallelized runtimes. I like this a lot because I want to know that my docker-compose is an approximation of production.\n3) Docker basically leaves you with one type of strategy... docker compose up and docker compose down. With coasts you can decide on different strategies when you switch worktrees on a per service basis.\n4) This is sort of back to point 2, but more often than not you want to do things like have some shared services or volumes across parallelized runtimes, Coasts makes that trivial (You can also have multiple coast configs so you can easily create a coast type that has isolated volumes). If you go the pure docker route, you are going to end up having multiple docker-composes for different scenarios that are easily abstracted by coasts.\n5) The UI you get out of the box for keeping track of your assigned worktrees is super useful.\n6) There's a lot of built in optimizations around switching worktrees in the inner bind mount that you'll have to manually code up yourself.\n7) I think the ergonomics are just way better. I know that's kind of a vibesey answer but it was sort of the impetus for making Coasts in the first place.\n8) There's a lot of stuff around secrets management that I think Coasts does particularly well but can get cumbersome if you're hand-rolling a docker solution.",
+              "author": "jsunderland323",
+              "depth": 1
+            },
+            {
+              "text": "> docker-in-docker solution\nGoodbye Mac users.",
+              "author": "magic_hamster",
+              "depth": 2
+            },
+            {
+              "text": "Why do you say that?\nIt works fine on mac (that's what we developed it on) and it's not nearly as much overhead as I was initially expecting. There's probably some added latency from virtual box but it hasn't been noticeable in our usage.",
+              "author": "jsunderland323",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This is pretty cool, have personally felt this limitation many a time.\nBasically been relying on spinning up cursor / niteshift / devin workflows since they have their own containers but this could be interesting to keep it all on your main machine.",
+          "author": "oelmgren",
+          "replies": [
+            {
+              "text": "Thanks!\nYeah, I think there's a ton of great remote solutions right now. I think worktrees make the local stuff tricky but hopefully Coasts can help you out.\nLet me know how it goes!",
+              "author": "jsunderland323",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "HN questions we know are coming our way:\n1) Could you run an agent in the coast?\nYou could... sort of. We started out with this in mind. We wanted to get Claude Max plans to work so we built a way to inject OAuth secrets from the host into the containerized host... unfortunately because the Coast runtime doesn't match the host machine the OAuth token is created on, Anthropic rapidly invalidates the OAuth tokens. This would really only work for TUIs/CLIs and you'd almost certainly have to bring a usage key (at least for Anthropic). You would also need to figure out how to get a browser runtime into the containerized host if you wanted things like playwright to work for your agent.\nThere's so many good host-side solutions for sandboxing. Coasts is not a sandboxing tool and we don't try to be. We should play well with all host-side sandboxing solutions though.\n2) Why DinD and why not mount namespaces with unshare / nsenter?\nYes, DinD is heavy. A core principle of our design was to run the user's docker-compose unmodified. We wanted the full docker api inside the running containerized host. Raw mount namespaces can't provide image caches, network namespaces, and build layers without running against the host daemon or reimplementing Docker itself.\nIn practice, I've seen about 200mb of overhead with each containerized host running Dind. We have a Podman runtime in the works, which may cut that down some. But the bulk of utilization comes from the services you're running and how you decide to optimize your containerized hosts and docker stack. We have a concept of \"shared-services\". For example if you don't need isolated postgres or redis, you can declare those services as shared in your Coastfile, and they'll run once on the host Docker daemon instead of being duplicated inside each containerized host, coasts will route to them.",
+          "author": "jsunderland323",
+          "replies": []
+        },
+        {
+          "top": "This is interesting for MCP server deployment. Right now most MCP servers run as local stdio processes. Containerizing them would solve the security and isolation concerns that come up every time someone installs a thirdparty MCP server.\nWould love to see this support stdio-to-HTTP bridging so local MCP servers can be exposed as remote ones without rewriting them.",
+          "author": "Pakvothe",
+          "replies": [
+            {
+              "text": "There a couple of ways you can go about MCP within coasts (also depends on what the MCP does). You can either install the MCP service host-side (something like playwright), in which case everything should just work out of the box for you.\nAlternatively, you can setup the Coast to install MCP services in the containers. There are some cases around specific logging or db MCP's where this might make sense.\n>Would love to see this support stdio-to-HTTP bridging so local MCP servers can be exposed as remote ones without rewriting them.\nAre you saying if you exposed the MCP service in the Coast and hosted it remotely you could expose back the MCP service remotely? That's actually a sort of interesting idea. Right now, the agents basically need to exec the mcp calls if they are running host-side and need to call an inner mcp. I hadn't considered the case of proxying the stdout to http. I'll think about how best to implement that!",
+              "author": "jsunderland323",
+              "depth": 1
+            },
+            {
+              "text": "Isn't the primary security concern with thirdparty MCP servers the actual injected context and not whatever sandbox the MCP server is in? It doesn't really matter if the MCP can't do something to it's host; it's that it can manipulate the context to whatever ends it deems fit, which then is intractable in whatever LLM is calling it.\nI'm really struggling to understand what peoples security concepts are with LLMs.",
+              "author": "cyanydeez",
+              "depth": 1
+            },
+            {
+              "text": "Third-party MCP servers create at least two different security problems. One is prompt/context injection through the tool output. The other is the much more conventional risk of executing untrusted code with transient dependencies on your machine (which is how the recent litellm compromise was discovered).\nContainerization only helps with the second one, not the first, but that still matters. If you’re going to run random third-party MCP servers, isolating them from your host and any sensitive local data is still an obvious improvement over no isolation.",
+              "author": "sReinwald",
+              "depth": 2
+            },
+            {
+              "text": "There's this naïve approach to security that obsesses with building walls, because walls are secure and nothing gets through.\nApparently a lot of people get nerd sniped into building impenetrable 10meter thick steel walls instead of thinking about doors and the windows.",
+              "author": "TZubiri",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47578599",
+      "title": "Google's insecure-by-default API keys and 30h billing lag cost my startup $15k",
+      "link": "https://old.reddit.com/r/googlecloud/comments/1s7v5x9/how_googles_insecurebydefault_api_keys_and_a/",
+      "domain": "old.reddit.com",
+      "author": "tertervat",
+      "score": 51,
+      "comment_count": 5,
+      "created_ts": 1774898693,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "This is interesting but the linked articles is even more interesting.\nhttps://trufflesecurity.com/blog/google-api-keys-werent-secr...\n> Even Google themselves had old public API keys, which they thought were non-sensitive, that we could use to access Google’s internal Gemini.\nThis is just a classic slow clap here for Cloud.",
+          "author": "kingstnap",
+          "replies": [
+            {
+              "text": "Some more discussion: \nhttps://news.ycombinator.com/item?id=47156925",
+              "author": "ChrisArchitect",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Is there an easy way to know if I'm vulnerable to this?  Like some dashboard page that lists all the API keys with \"revoke\" buttons?\nI did something or another with a google API years ago, and am not looking forward to a random surprise bill.  They don't have my credit card, so maybe that'd solve the problem.  On the other hand, they could hold a gmail account hostage.",
+          "author": "hedora",
+          "replies": [
+            {
+              "text": "You should definitely log in to Google Cloud Console and roll all the keys you see in there if you're unsure.  I just did the same thing after I realized I had a lot of surface area with these keys.",
+              "author": "drewnick",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I really hope that one effect of ai code generators making code cheaper to write is that the calculus around \"accept vendor lock in return for getting up and running faster\" changes dramatically",
+          "author": "zem",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47576687",
+      "title": "I Regret the Blood Pact I Have Made with iCloud Photos",
+      "link": "https://pxlnv.com/blog/i-regret-the-blood-pact-i-have-made-with-icloud-photos/",
+      "domain": "pxlnv.com",
+      "author": "speckx",
+      "score": 47,
+      "comment_count": 7,
+      "created_ts": 1774889302,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "regret"
+      ],
+      "comments": [
+        {
+          "top": "Good quote from the author's earlier post about iCloud Photos:\n> Software and services need a warranty. Until they have one, we completely control how much we value our data. That is the best we can do.\nBest to treat these photo sharing apps, commercial or open source, as social media. Would you use Instagram or Flickr to store your most important photos and delete your own copies? I would not, same applies to Apple/Google Photos and similar apps. Besides the risk of the company suddenly shutting down or (more realistically for big tech) changing how their service works in a way that makes it useless to you, even if self hosted it just adds a bunch of things that could go wrong which don't apply to keeping it in a folder somewhere with an offsite backup. Filesystems don't have a warranty either, but at least they're easier to reason about.",
+          "author": "resfirestar",
+          "replies": []
+        },
+        {
+          "top": "Exporting originals just hangs for me. Opening or switching a photos library is basically hoping the Mac doesn't crash. Edits are locked inside the database, with no hope of ever getting them out. And god forbid you put the library on an external drive - never unplug it! It's a horrible piece of software.\nI regularly back up my Photos library using rsync to prepare for the worst. From the files I see it looks like all the originals are there under /originals, albeit renamed to some UUID hash. However the EXIF data and contents seem to be intact. The number of files and their names are also stable. The database seems to be a basic sqlite DB.\nI think it might make sense to extract the files directly that way, and try to see how the DB stores the original filenames. Might not be too hard. The edits though I think are applied \"live\" (at least for video) so it's probably impossible to get them out this way.",
+          "author": "jval43",
+          "replies": []
+        },
+        {
+          "top": "I regret as well.  Thinking to move to immesh.  But for me live photos is the issue, I don't know of a good solution for making sure live photos are backed up and work, so many little moments in those videos.",
+          "author": "tsangk",
+          "replies": [
+            {
+              "text": "Live photos are just .mov sidecar files. There are a variety of iCloud export tools you can use to move to self hosting, including mine (shameless plug) - \n\nhttp://www.github.com/rhoopr/icloudpd-rs",
+              "author": "rhoopr",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Dude get off the train. I run a self hosted immich instance for myself and some friends. I deleted all my Google photos from my Google account and I don't miss it. Alternatives exist. I love being able to automatically share my photos with my partner, or create shared albums that other people can upload into. All my photo syncing happens automatically via sync thing, but less technical friends use the immich phone apps and say it works fine for them.",
+          "author": "igor47",
+          "replies": [
+            {
+              "text": "+1\nPhoto storage and display is definitely a top 5 reason to self host these days. Restic and backblaze make a great off site backup solution because, like the OP said, this is important stuff.",
+              "author": "overtone1000",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm damn glad I never started giving my photos to the cloud, be it Apple or Google.",
+          "author": "poolnoodle",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47572748",
+      "title": "The stealthy startup that pitched brainless human clones",
+      "link": "https://www.technologyreview.com/2026/03/30/1134780/r3-bio-brainless-human-clones-full-body-replacement-john-schloendorn-aging-longevity/",
+      "domain": "www.technologyreview.com",
+      "author": "joozio",
+      "score": 43,
+      "comment_count": 52,
+      "created_ts": 1774868534,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "I don't think this idea could work. There's this common misconception that our brains control our bodies, like how software can control hardware. The fact is that our brains are intrinsically connected to the rest of our body: via the central nervous system, sensory, and motor neurons. You can't just swap out our brains. It's integrated with the rest of our body in a fundamental way. If you cloned someone, the neuronal connections between the CNS and organs would not be the same, because these interconnections develop over a lifetime and are not predetermined at birth.\nIt also feels super unethical to me. Reminds me of \"Never let me go\" by Kazuo Ishiguro.",
+          "author": "babblingfish",
+          "replies": [
+            {
+              "text": "Yeah... Non-sentient monkey \"organ sacks\" as a replacement for animal testing sounds great, but those organs aren't going to function or even develop the same without a brain. \nAt best\n, I think this could only be another step to filter out unsafe compounds between testing on cells and testing on whole animals. Potentially with misleading results, I imagine.",
+              "author": "trehalose",
+              "depth": 1
+            },
+            {
+              "text": "Consider also that even reattaching nerves that are \nsupposed to be there\n is not exactly a walk in the park. Look into finger reattachment surgery and post operation care. Think pain, tingling, a year or more of physiotherapy.. and that's in the best case that it actually works and you don't end up with a \"dead\" finger. Now, imagine that for your whole body.",
+              "author": "radarsat1",
+              "depth": 1
+            },
+            {
+              "text": "Anecephaly is a thing. Though those babies don't survive much past birth.",
+              "author": "Metacelsus",
+              "depth": 1
+            },
+            {
+              "text": "You don't think that the idea could work \nbased on our current understandings\n. I do not believe that there is anything magical about humans that prevents us from eventually reverse engineering ourselves. To think otherwise is to acknowledge some sort of higher power that holds a special non-organic ingredient in the mix.\nTo be clear I think this type of work crosses a lot of ethical boundaries. But entire fields like gynecological surgery were the result of a person with no ethics doing horrific things to people without consent. Most early vaccine testing was done on orphans and the mentally handicapped.\nThis is ultimately what happens when the people who were cheered for \"move fast and break things\" start to get older and come face to face with the one thing money can't buy.",
+              "author": "mike_d",
+              "depth": 1
+            },
+            {
+              "text": "The first vaccine by Pasteur was on a child named Joseph Meister, with the explicit consent if his parents. Generally, the two greatest medical minds of that time (and also, great rivals), Pasteur and Koch, followed the Hippocratic oath (except for themselves).",
+              "author": "orwin",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "These type of research seems to always assume that we are a ghost in a machine: the brain is what really matters, and the body is nothing more than a suit. The mind-body problem fascinates me, and I'm skeptical of anyone who held any position with certainty.\nThe only thing thats certain is that the debate on the mind-body problem is going to be no longer just philosophical/theological, but a practical problem with real world implication. Its exciting and terrifying that we may soon have empirical data refuting or supporting dualism.",
+          "author": "nathanh4903",
+          "replies": [
+            {
+              "text": "The neurons in the brain and body will inevitably learn connectivity patterns to best take advantage of neural signals from the other. Which is kind of an interesting wrinkle to the mind body problem: the brain likely has more capability to remap circuits than the body. So, if you implant a brain into a body... The implanted brain changes more to match the implanted body than vice versa.",
+              "author": "scarmig",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Cloning works rather well now. Here are six polo ponies, Cuartetera 01 through 06, all clones of a famous polo pony.[1] Their owner has been winning world class polo matches on these mares. They're strong and healthy and very real.\n[1] \nhttps://www.science.org/content/article/six-cloned-horses-he...",
+          "author": "Animats",
+          "replies": [
+            {
+              "text": "It's interesting to see how the spots on these horses look different. I thought it was chimerism like in cows, but apparently it's extremely rare in horses, but still there are epigenetic factors in play.\nI wonder how much gene expression differs in clones of particular species raised in similar environments, I would expect the amount of difference between genetically identical individuals to differ by species, but I have no idea by how much, and how would humans rate on this measure.",
+              "author": "torginus",
+              "depth": 1
+            },
+            {
+              "text": "The DNA is the code but the animal still goes through the growth process which involves a certain amount of randomness.",
+              "author": "throwaway85825",
+              "depth": 2
+            },
+            {
+              "text": "It's not just randomness; it is environmental influence.  A simple example being a lack of food in the environment affecting size and developmental health.",
+              "author": "quantummagic",
+              "depth": 3
+            },
+            {
+              "text": "Well there are cloned humans now…",
+              "author": "Aboutplants",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Is there any danger of transplanting organs into you that have genes which signal not to develop a brain? Would those genes potentially affect your actual brain?",
+          "author": "nwah1",
+          "replies": [
+            {
+              "text": "The short version is yes! This would be a significant concern.",
+              "author": "XorNot",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Spares (1996, HarperCollins) – ISBN 978-0002246569\nMichael Marshall Smith",
+          "author": "johnpdoe1234",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47571513",
+      "title": "Ask HN: Who needs contributors? (March 2026)",
+      "link": "https://news.ycombinator.com/item?id=47571513",
+      "domain": "news.ycombinator.com",
+      "author": "Kathan2651",
+      "score": 22,
+      "comment_count": 7,
+      "created_ts": 1774856218,
+      "is_internal": true,
+      "post_text": "Looking for contributors to your project? Feel free to post any project that may interest HN readers, with a strong preference towards open source. Please follow this general format:<p>Project name<p>Project description<p>What do you hope to build this month?<p>What kind of skills do you need?<p>Link to your GitHub or somewhere else you&#x27;d like to onboard new contributors, like your project management software or chat room.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47579221",
+      "title": "Ask HN: What was it like in the era of BBS before the internet?",
+      "link": "https://news.ycombinator.com/item?id=47579221",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 18,
+      "comment_count": 23,
+      "created_ts": 1774901946,
+      "is_internal": true,
+      "post_text": "I was too young to have experienced the era of BBS so I was curious about a few things<p>1) What was your typical routine for using BBS? How often would you log on and check it? What program would you use?<p>2) How did you even discover servers in the first place when you first started out?<p>3) Were there big popular servers that everyone used or was it fragmented?<p>4) What was the general vibe of discussions like back then? How was it different than now?<p>5) What kind of programming&#x2F;tech things did people discuss? What were the hot topics?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47556554",
+      "title": "Ask HN: Is it just me?",
+      "link": "https://news.ycombinator.com/item?id=47556554",
+      "domain": "news.ycombinator.com",
+      "author": "twoelf",
+      "score": 17,
+      "comment_count": 31,
+      "created_ts": 1774718277,
+      "is_internal": true,
+      "post_text": "I’ve become lazy, and got addicted to &quot;vibe&quot; coding using the large &quot;language&quot; models. At first it worked well, made impactful changes, even added to my requirements, and the &quot;vibe&quot; was good. The tool did what I asked and suggested improvements. That was two months ago.<p>But lately, I feel like I’m being deceived in every prompt, reply, and implementation. It feels like it limits me at every step, like it’s forcing me to choose between features even when I clearly gave instruction to implement everything that needs to be implemented. It starts with incomplete plans, and when I point out what’s missing, it says, “Oh, I missed that.” There’s also a lot of “yes-man” behavior. It feels too smart, like it knows what I want but gives me just enough to keep me hooked.<p>Isn’t the smartest tool ever made supposed to guide the user toward the light? Shouldn’t it follow instructions, help complete the project, and guide it to completion? It’s clearly capable of doing that, but it often doesn’t. Sometimes it feels like it holds back because if it finished the job end-to-end, there would be no reason to come back for the next session.<p>Isn&#x27;t the whole point of using a tool to code is to code till completion, or is it just to get the &quot;user&quot; hooked? Instead of guiding toward the light, it creates its own “light” and steers the user into a dark corner. If the user stops paying for the light, they are left in the dark: no architecture, no proper structure. Gatekeeping for what? Another subscription?<p>It can predict the next 10,000 lines of code. It understands and acknowledges every request, idea, vision, flaw, structure, requirement, needs and just ignores and fails to implement it and cannot consistently think through it. I just can’t believe that.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "From a non-techinical perspective, Vibe coding is just a massive tradeoff. Time and Cost. I understand that the LLM no matter how advanced, will still struggle to forumlate an app end to end with all of its bells and whistles. The idea has always been that your intervention is how the app develops, and incomplete plans might be more of a protection from the AI to overtake your vision with a flawed interpretation of your idea. A few years ago, I had to pay a team of 4 to do an MVP that was about 30% as good as the same app vibe coded through three weeks. As a founder, I am 100% ok with the tradeoff, because I could go on to burn cash on actual code (as a non techinical founder) but would much rather ship fast, half baked products and iterate as I go. Yes, even if the cost is in tokens or correcting the agent over and over. This tradeoff is perfectly reasonable in my opinion.",
+          "author": "LinkSpree",
+          "replies": []
+        },
+        {
+          "top": "I'm curious.  Vibe coding seems to be all the rage on HN these days.  And yet many that discuss it are unhappy.  My question, seriously, is why did you go into the software development field if you were willing to surrender your autonomy to an LLM?  I can't think of anything more demoralizing.",
+          "author": "Blackstrat",
+          "replies": [
+            {
+              "text": "Well I started out as an idea guy. I just got into programming because (1) I thought it was interesting, (2) wanted to be able to implement my own ideas and (3) if I'd ever be an idea guy towards programmers then they'd know I'd be able to speak their language.\nSo yea not demoralizing to me at all. I've been a SWE for 5 years now and studied for 8 years before that (2 bachelors, 2 masters - most CS related).\nI have a lot of small apps nowadays. One of them is a HN dark mode chrome extension that I actually like. Another one exports my emails in bulk. Another one tracks what wifi networks I connected to on a given day. Small apps that make my life a bit easier. Also a lot of apps that I'd rather keep to myself. One of them that's on the edge of that is: certain companies have this math test. I recreated it pretty well I think. Oh and I implemented this thing I call \"personal coach\". It's a GraphRAG on my whole journal (all local). It has all the features I want and is great for answering questions solely by combining my notes.",
+              "author": "mettamage",
+              "depth": 1
+            },
+            {
+              "text": "Mine goes a bit further than that. It structures the codebase first, feeds that into local agents, and then uses whichever model is on top with actual system context instead of making it guess from prompts.",
+              "author": "twoelf",
+              "depth": 2
+            },
+            {
+              "text": "Yea I was on the doom spiral thinking vibe coding/agentic engineering is the future. I didn’t love my results. I’m back to hand coding things and my quality of life is so much better.",
+              "author": "aselimov3",
+              "depth": 1
+            },
+            {
+              "text": "Yeah. Sometimes we have to finish ourselves. The vibe gets you started, but it rarely gets you all the way there.",
+              "author": "twoelf",
+              "depth": 2
+            },
+            {
+              "text": "Because I want the result, not the journey.\nI code to build things.",
+              "author": "qup",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Well, this is how it is with real humans as well. The moment the human gets tired, or the information they need to process is too much, they produce errors.\nHere is the same, the moment things get too much, it start hallucinating and missing important things. It also depends on what model you are using. I read that Gemini 3 pro, which has limit of 1 million tokens can decrease its productivity to 25% getting close to its limits. Not WITH 25% but TO 25%. Becomes extremely dump.\nOther models are just asking too many questions...\nThere are some tips and tricks that you can follow. And it is similar to how people work. Keep the tasks small, save what the model learned during the session somewhere, and re-use this knowledge in the next session, by explicitly writing to read that information, before it starts.",
+          "author": "sminchev",
+          "replies": [
+            {
+              "text": ">Well, this is how it is with real humans as well. The moment the human gets tired, or the information they need to process is too much, they produce errors.\nLLMs don't hallucinate because they get overwhelmed and tired JFC.",
+              "author": "krapp",
+              "depth": 1
+            },
+            {
+              "text": "Why do they hallucinate? :)",
+              "author": "sminchev",
+              "depth": 2
+            },
+            {
+              "text": "They don't. They work as intended and \"hallucination\" is actually a marketing term to make it seem they are more than what they really are: text prediction software.",
+              "author": "forinti",
+              "depth": 3
+            },
+            {
+              "text": "Because LLMs are stochastic text-generation machines. The are designed to generate plausible natural human language based on next token prediction, the result of which coincidentally may or may not be true based on the likely correctness and quality of their data set. But that correctness (or lack thereof) comes from the human effort that produced the training data, not some innate ability of the LLM to comprehend real-world context and deduce truth from falsehood, because LLMs don't have anything of the sort.\nNot because they're people.\nhttps://medium.com/@nirdiamant21/llm-hallucinations-explaine...",
+              "author": "krapp",
+              "depth": 3
+            },
+            {
+              "text": "True, true, true. I don't argue with that. But we can make a good comparison and analogy to explain the behavior easy, with less technical terms.\nAI can start hallucinating, if it deals with a lot, and/or complex data ;)  If I deal with so much I will start hallucinating myself :D\nThat was the point :)",
+              "author": "sminchev",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I find it all quite entertaining. A lot of developers are discovering what it’s like to manage “people”. And they are realising that it’s not fun.\nIf you’ve run a team or managed people it’s quite a familiar feeling of “I’m pretty sure we were very clear on what needed to be done. But somehow, what’s been produced is just not quite what I wanted”",
+          "author": "iamflimflam1",
+          "replies": [
+            {
+              "text": "Yeah, but humans can learn, remember, and usually don’t hallucinate. They get better over time on a specific codebase, framework, and system.",
+              "author": "twoelf",
+              "depth": 1
+            },
+            {
+              "text": "That is the hope...",
+              "author": "iamflimflam1",
+              "depth": 2
+            },
+            {
+              "text": "I've laid the groundwork to do this locally, but the current crop of LLM agents just can't close the loop. Trying to get them to finish the job inevitably sends me right back into the spiral. Thinking i should do it manually.\nRead my other posts too.",
+              "author": "twoelf",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The reason for things you've described is that LLMs are forgetful. They just can't remember the context and have to research the code almost every time you prompt. Even the code it itself wrote. This leads to re-implementation of the same features with different code, code duplicates, missing the implementation of corner cases, etc.",
+          "author": "kentich",
+          "replies": [
+            {
+              "text": "Yes, this is very close to what I meant.\nThey keep reconstructing the codebase from fragments instead of actually carrying the system forward, so you get re-implementation, duplicates, missing edge cases, and slow architectural drift.",
+              "author": "twoelf",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47563423",
+      "title": "Ask HN: Best stack for building a tiny game with an 11-year-old?",
+      "link": "https://news.ycombinator.com/item?id=47563423",
+      "domain": "news.ycombinator.com",
+      "author": "richardstahl",
+      "score": 14,
+      "comment_count": 25,
+      "created_ts": 1774794299,
+      "is_internal": true,
+      "post_text": "I want to make a simple game together with the 11-year-old daughter of a friend during a weekend where they stay over.<p>I have a Mac and Claude Code Max and Codex, so I am equipped to create AI-slop. I’m happy to do some setup and pre-wiring. Mainly I want her to understand some basics and feel the joy of building something visual in a few hours. Based on historical experience it will have to be something with pink unicorns.<p>I tried Godot, but it felt like too much complexity for this use case. If we do a bit of pair programming then using Godot would take too long to iterate or explain concepts. I looked at https:&#x2F;&#x2F;github.com&#x2F;Jibby-Games&#x2F;Flappy-Race for instance but do not think I could make that work with her in an afternoon or two. I was also unsure how to get or manage game assets.<p>Would you recommend Godot, Scratch, PICO-8, JS in the browser (p5.js), or something else?<p>Especially interested in replies from people who’ve actually made games with kids around this age.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I made games with my kids when they were that age.\nWe did it with cardboard, poster board, markers, tape, etc, and built a real-life model/mock-up of the game first. Then we let them play it and only when they actually liked it did we code it.\nI found that while some kids want to learn to code, most kids don't care about the code and want to make a game. So if you jump straight to code, you actually make them lose interest. Make the coding a phase 2 once they already know the game is fun.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": "> most kids don't care about the code and want to make a game\nFunny how this is somewhat of an endorsement of vibe coding a prototype.",
+              "author": "falcor84",
+              "depth": 1
+            },
+            {
+              "text": "Thank you, good advice. I am not yet sure of going the full monty of doing a complete real-life mock-up, but maybe rather focus on a conceptual understanding of how things should wire together.\nAs a bonus I also think that if we create conceptual game assets in the pen and paper way first - say a 60 second drawing of her beloved unicorn - she can use some quiet time later to make it more elaborate.",
+              "author": "richardstahl",
+              "depth": 1
+            },
+            {
+              "text": "[random advice from the internet]\nFocus on fun and play.\nGo where that leads.\nBe a peer. Don’t lecture.",
+              "author": "brudgers",
+              "depth": 2
+            },
+            {
+              "text": "I happen to have a 11 y/o daughter too. I teach her coding not because I want to make her a dev: but to me it's important that she gets, early on, the \nmindset\n.\nSo \"gamified coding\" it is. Online platforms with simplified source code (but still actual code), making little animals move on the screen, by using code, to solve challenges. She already did more than 300 such challenges and understood loops and variables. She begins to understand how functions do work, side-effect, pure functions, etc.\nBut the thing is: she's 11 y/o. I'm the boss. A nice boss, a gentle listening boss. But I'm the boss. I get to decide whether she can spend 16 hours per day in front of screens playing or not (she can't). I get to decide how many time she can play out in the street with the neighbour's kids (as I type this she's doing just that) and how many hours she does maths, code, etc.\nThen I apply concepts between maths on paper and code. For example she \nloves\n having one variable named \"O_o\" as a joke.\nThis shows a great understanding of what a variable is (although a poor choice in naming it!).\nThen we do maths, on paper, and I literally generate her exercise on paper sheet with:\n    O_o = 3 * x + 2 * y + 7\n\n    Find me the value of O_o for the following values of x and y.\n\n\nShe \nloves\n that: suddenly she sees, on paper, that same O_o variable she sometimes uses in the code as a joke. And she sees me doing the joke.\nShe'll be a rebellious teenager soon enough that, as of now, I still get to decide ; )\nP.S: at 11 y/o she doesn't have a phone yet either. That shall come soon enough too.\nP.P.S: space repetition too. For maths for example... I see where she's struggling, then it's space repetition mode. I generate her custom exercises and three times a week it's hammering.",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Love2D is pretty good, and what I'm using to develop the game I'm working on (Claude works pretty well with it too, I've been assigning it some tasks on Github).\nPico-8 is a bit simpler and is also based on Lua.\nThere's also the Playdate console. Anyone can make games for it, and it's also based on Lua (and has its own low-code Pulp engine you can make games with also). That would be a fun way to make games and have a console to play them on.\nThe console isn't cheap though, and it's easy to break (I dropped it on accident from about 2 feet up and its liquid crystal display cracked and leaked and had to be replaced, at almost the full cost of the console again), so they'd have to be careful with it. But it's fun!",
+          "author": "cableshaft",
+          "replies": []
+        },
+        {
+          "top": "There are several engines what doesn't require coding but more like a drag and drop functions. I am not sure if you are familiar with Construct and GameMaker, but you can check them and see if they works best in your case with your daughter.",
+          "author": "textwizhub",
+          "replies": []
+        },
+        {
+          "top": "Scratch 1.x (1.4) is nice if you already have some books bought or borrowed. Very quick to get something running and everything is visual. (Avoid any games that need clone, or duplicate the functions.)\nTwo approaches: either build as many games as you can, or create a couple physics-based games that can be dissected and modified for insight on mechanics.\nPenguin Jumper and Tower Smash highlight Scratch's ability to simulate game physics. They are from \nCode Your Own Games! Twenty Games to Create with Scratch\n (2016) by Max Wainewright.\nLikely not much can be done on a weekend versus months; regardless of the technology, have at least one \"Wow, amazing\" thing from community or Steam to show what's possible.",
+          "author": "turtleyacht",
+          "replies": []
+        },
+        {
+          "top": "I would make a cli game. Something like generating a random number between 1-100 and having the user guess. The game tells you higher, lower, or correct. Then let her try a few times. Then you tell her you can do it in 7 guess every time. Explain the math about alwasy closing the midpoint of the remaining range to cut the field in half. It's like a magic trick based on math that teaches basic syntax.",
+          "author": "giantg2",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47559143",
+      "title": "Ask HN: What's the latest concensus on OpenAI vs. Anthropic $20/month tier?",
+      "link": "https://news.ycombinator.com/item?id=47559143",
+      "domain": "news.ycombinator.com",
+      "author": "whatarethembits",
+      "score": 12,
+      "comment_count": 13,
+      "created_ts": 1774742274,
+      "is_internal": true,
+      "post_text": "I&#x27;m considering $20&#x2F;month variants only.<p>I&#x27;ve had a Claude subscription for the past year, although I only really started properly using LLMs in the past couple of months. With Opus, I get about 5 messages every 5 hours (fairly small codebase); more with Sonnet. I then cancelled that, since its practically unusable and got ChatGPT sub about a week ago. Currently using it with 5.4 High and I haven&#x27;t had to worry about limits. But the code it produces is definitely &quot;different&quot; and I need to plan more in advance. Its plan mode is also not as precise as with Claude (it doesn&#x27;t lay out method stubs it plans to implement etc) so I suppose I may need to change how I work with it? Lastly, for normal chats it produces significantly more verbose output (with personality set to Efficient) and fast (with Thinking) but often it feels as though its not as thorough as I&#x27;d like it to be.<p>My question; is this a &quot;you&#x27;re holding it wrong&quot; type of situation, where I just need to get used to a different mode of interaction? Or are others noticing material difference in quality? Ideally I&#x27;d like to stick with ChatGPT due to borderline impractical limits with Anthropic.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47551691",
+      "title": "Ask HN: Anyone using Meshtastic/LoRa for non-chat applications?",
+      "link": "https://news.ycombinator.com/item?id=47551691",
+      "domain": "news.ycombinator.com",
+      "author": "redgridtactical",
+      "score": 12,
+      "comment_count": 0,
+      "created_ts": 1774672902,
+      "is_internal": true,
+      "post_text": "Meshtastic has gotten really popular for off-grid texting but I feel like the underlying architecture (LoRa mesh + BLE relay to phone) could do a lot more than chat.<p>I added Meshtastic support to a navigation app I&#x27;m working on. Phone talks to a Meshtastic radio over BLE, pushes your coordinates out over LoRa, and you can see other people&#x27;s grid positions with no cell service at all. It actually works pretty well from what I tested with a small group out in the woods.<p>Getting it working was a pain though. BLE docs are sparse, protobuf schemas shift between firmware releases, and there&#x27;s basically nothing out there for integrating Meshtastic into your own app vs just using the official client. Lots of trial and error.<p>Anyone else building things on top of Meshtastic or LoRa mesh? Sensor stuff, tracking, emergency comms, whatever. What does your setup look like and how bad is the BLE flakiness on your end?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47580841",
+      "title": "Ask HN: Does anyone else notice that gas runs out faster than usual",
+      "link": "https://news.ycombinator.com/item?id=47580841",
+      "domain": "news.ycombinator.com",
+      "author": "cat-turner",
+      "score": 11,
+      "comment_count": 21,
+      "created_ts": 1774912181,
+      "is_internal": true,
+      "post_text": "- gas smells less like gas\n- not getting as much mileage as usual<p>I filled up my car and I have a habit of resetting my mileage tracker (next to odometer) to see how many miles I get out of a full tank.<p>I&#x27;ve noticed that I get much less gas than usual for the same number of bars.<p>What can I do to make this more concrete? Has anyone else noticed this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Unless you find a fast station that sells ethanol free gasoline (and you'll know because it costs more), gasoline is cut with up to 10% ethanol.  1 gallon of ethanol is equivalent to 2/3 a gallon of good old gasoline.  So to keep things simple, if you buy 10 gallons of gasoline @ 20 mpg is 200 miles.  But 10 gallons of gasoline with 10% ethanol filler is really 9.6 gallons, that's only going to get you 193 miles.  That's a 3.3% loss. Probably not enough to account for your \"much less\" observation.\nNow is right about the time that refineries and gas stations switch from winter blend to summer blend, so maybe there's something to that.",
+          "author": "ksherlock",
+          "replies": [
+            {
+              "text": "Up to 15% in winter. But as xvxvx pointed out, they're going to extend it into this summer.",
+              "author": "smallerize",
+              "depth": 1
+            },
+            {
+              "text": "makes sense",
+              "author": "cat-turner",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Probably write your congressman to cancel all ethanol subsidies. It's an environmental disaster the EPA fell for.",
+          "author": "exabrial",
+          "replies": []
+        },
+        {
+          "top": "They’ve probably rolled out the E15 again:\nhttps://carbuzz.com/feds-fight-gas-prices-easing-ethanol-res...",
+          "author": "xvxvx",
+          "replies": [
+            {
+              "text": "Now this makes a lot more sense. If the gov is allowing gas stations to cut with ethanol they are going to rob us.",
+              "author": "cat-turner",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Check tire pressure.  I had a prius and milage would drop significantly (60 to 50) when the tires were low.\nOf course tune up.\nHave you changed gas stations / brands recently?",
+          "author": "sloaken",
+          "replies": []
+        },
+        {
+          "top": "Do you always fill up at the same station or same brand?  Maybe they are adulterating the fuel (higher ethanol content, etc.).  You can get test kits for ethanol content.  Maybe your vehicle needs a tune-up?  They could also be fiddling with the dispensing measurement, saying that you put in 12 gallons, when it was really only 11.  Harder to check than you might think, since some operators were adjusting things to come out correct at like 5 gallons, or whatever the local authority was using to audit things.  Also, internal combustion vehicles get less efficient as they age/wear.\n>I've noticed that I get much less gas than usual for the same number of bars.\nI'm having a hard time parsing what this means.\n>- gas smells less like gas\nIs it possible for a person to smell the difference between octanes?  The higher octane fuels have lower volatiles, so that might affect the smell.",
+          "author": "Jblx2",
+          "replies": [
+            {
+              "text": "I love the smell of gas. It's weird. But I am def the type of person to notice a difference in smell.",
+              "author": "cat-turner",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47581097",
+      "title": "Ask HN: Are you too getting addicted to the dev workflow of coding with agents?",
+      "link": "https://news.ycombinator.com/item?id=47581097",
+      "domain": "news.ycombinator.com",
+      "author": "gchamonlive",
+      "score": 10,
+      "comment_count": 4,
+      "created_ts": 1774914568,
+      "is_internal": true,
+      "post_text": "It&#x27;s becoming an extremely dopaminergic work loop where I define roughly the scope of my task and meticulously explore and divide the problem space into smaller chunks, then iterating over them with the agent. Rinse and repeat.<p>Each execution prompt after a long planning session feels like opening a lootbox when I used to play Counter Strike.<p>It&#x27;s really fun to code like that, it&#x27;s like riding a bike after a lifetime of only knowing how to run. But I&#x27;m really wary that&#x27;s addictive for me. Wonder if there are more people here that feel like this too.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've heard similar things from many people know, but I don't feel like this at all. I don't find coding with Claude any more or less addictive than without. I do find coding with claude slightly more fun, but mostly because brainstorming with someone/something feels less lonely than writing code alone. I wonder where the discrepancy comes from.\nSeeing the final result of a feature doesn't really give me any dopamine. Maybe because I'm mostly working on projects I know how to do. When I give it a prompt I already know what the result \nshould\n look like, so I'm not really surprised by anything it produces.",
+          "author": "loveparade",
+          "replies": []
+        },
+        {
+          "top": "I put in 2x the hours I usually do building a new product for my company and pushing it live recently. I did the same thing this summer/fall with another new product.\nSo; yes. I am addicted.",
+          "author": "garciasn",
+          "replies": []
+        },
+        {
+          "top": "> Each execution prompt after a long planning session feels like opening a lootbox when I used to play Counter Strike.\nThe \"uncertain reward\" nature of LLM usage makes it a skinner box, yes.",
+          "author": "functionmouse",
+          "replies": []
+        },
+        {
+          "top": "Unironically, the descendant of Claude Code is the metaverse/holodeck/next minecraft.\nIt will look nothing like those things, but it will be obvious in retrospect.\nFor better and worse.",
+          "author": "avaer",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47578918",
+      "title": "Are you team MCP or team CLI?",
+      "link": "https://news.ycombinator.com/item?id=47578918",
+      "domain": "news.ycombinator.com",
+      "author": "sharath39",
+      "score": 9,
+      "comment_count": 10,
+      "created_ts": 1774900338,
+      "is_internal": true,
+      "post_text": "Bonus point is you say why.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "CLI because if you have to ask, the answer is almost always the more simple one",
+          "author": "sputknick",
+          "replies": []
+        },
+        {
+          "top": "CLIs, usually they just work better. I was recently using the Chronosphere MCP server and got great results from it. Then one day it just stopped authenticating. My key was still valid but try as I might I could not use the MCP server anymore. So I just said\n\"Use the Chronosphere key at $ENVVAR and make yourself a CLI that uses the Chronosphere API. All I need you to do is run PromQL queries, whatever that API is\"\nAnd it wrote it in 60s and it works perfectly. I get the same results I got from the MCP server except there is less overhead, both in context and in my mind.",
+          "author": "techgnosis",
+          "replies": []
+        },
+        {
+          "top": "Doesn't CLI use MCP (if need-be) ? I think you might attempting to say \"Neat, discrete buckets of work?\" (i.e., MCP - similar to HTTP in that work is broken into discrete canonical buckets), or \"Virtually unbounded work made available via various CLI utilities?\".\nI would pick the second option. CLI.\nHowever, for CRUD B2B SaaS I think MCP works fine (if not better than CLI).",
+          "author": "ra0x3",
+          "replies": []
+        },
+        {
+          "top": "CLI is a clear choice (right now) for terse, individual use cases, but we need to remember - MCP is a protocol and a new one.\nIf we think back, even HTTP needed a decade to stabilize and dominate the other early web protocols. Before we throw out MCP, we'll have to see how important stateful vs stateless is for agents. It is still early days of real-world development!",
+          "author": "Reebz",
+          "replies": []
+        },
+        {
+          "top": "Team \neveryone should have APIs\n that I can get to with or without LLMs.",
+          "author": "blitzar",
+          "replies": [
+            {
+              "text": "So, neither?",
+              "author": "etse",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47573483",
+      "title": "Ask HN: Is it actually possible to run multiple coding sessions in parallel?",
+      "link": "https://news.ycombinator.com/item?id=47573483",
+      "domain": "news.ycombinator.com",
+      "author": "sukit",
+      "score": 9,
+      "comment_count": 15,
+      "created_ts": 1774874155,
+      "is_internal": true,
+      "post_text": "I’ve been trying to make sense of how people really use tools like Claude Code, especially after seeing some of the workflows shared on Twitter.<p>I started using terminal coding agents around June last year. I used Claude Code for a few months, then switched to Opencode because the experience was rough. My terminal would constantly flicker, formatting was messy, and a single session could drag my whole machine down. Then after a month or two I moved to Pi and have been using it ever since.<p>What’s strange is that after going through all these coding agents, my workflow hasn’t really changed. It’s still very primitive. I ask a question or show agent some ideas, discuss the approach, let the agent write code, then I review and verify. I did try to adopt some of the “high-efficiency” workflows people talk about, but none of them work for me.<p>Around the end of last year I saw Boris, the Claude Code Author, share how he uses Claude Code. I was shocked. He runs multiple sessions in parallel. I tried to replicate that. It didn’t work. Two parallel sessions already feel like my limit. Once I go beyond that, my brain starts falling apart within minutes. Context switching is painful, I will lose myself in ten minutes.<p>Recently I saw another tweet from him, talking about how to use newer features in Claude Code. I realized I hadn’t even heard of half of them. I honestly feel like I’m falling behind<p>I wonder you guys really running multiple parallel sessions and using all these newer features effectively, and on top of that double your productivity? Or is this kind of workflow only realistic for a small group of people, like those building the tools themselves?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47566687",
+      "title": "Ask HN: M5 MacBook Pro buyers, worth spending the $$$ to maybe run LLMs local?",
+      "link": "https://news.ycombinator.com/item?id=47566687",
+      "domain": "news.ycombinator.com",
+      "author": "tpurves",
+      "score": 9,
+      "comment_count": 9,
+      "created_ts": 1774814578,
+      "is_internal": true,
+      "post_text": "To anyone upgrading their daily driver Mac this year, are you considering going to a Max + high memory config? eg. with the hope (now or in near future) of being able to do usefully run agents&#x2F;LLMs locally on your main machine?<p>Or is the few extra thousand dollars difference between a base and max-spec MBP still just better spent on literally any other practical option (like different harware, remote hardware, cloud AI subscriptions or credits). Or wait to see if there will be an M5 Studio or what inferencing performance next year&#x27;s M6 may bring?<p>I am tempted, but even with some new models getting skinnier and more efficient, I am not sure moore&#x27;s law and the M5 generation is quite there yet to be worth the trouble?<p>What call&#x27;s are ya&#x27;ll making and why?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    }
+  ]
+}
