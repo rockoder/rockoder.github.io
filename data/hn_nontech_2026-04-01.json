@@ -1,0 +1,766 @@
+{
+  "scraped_date": "2026-04-01",
+  "source": "hacker_news",
+  "total_scraped": 133,
+  "nontech_count": 34,
+  "posts": [
+    {
+      "id": "47582220",
+      "title": "Axios compromised on NPM – Malicious versions drop remote access trojan",
+      "link": "https://www.stepsecurity.io/blog/axios-compromised-on-npm-malicious-versions-drop-remote-access-trojan",
+      "domain": "www.stepsecurity.io",
+      "author": "mtud",
+      "score": 1789,
+      "comment_count": 726,
+      "created_ts": 1774925657,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "\"Batteries included\" ecosystems are the only persistent solution to the package manager problem.\nIf your first party tooling contains all the functionality you typically need, it's possible you can be productive with \nzero\n 3rd party dependencies. In practice you will tend to have a few, but you won't be vendoring out critical things like HTTP, TCP, JSON, string sanitation, cryptography. These are beacons for attackers. Everything depends on this stuff so the motivation for attacking these common surfaces is high.\nI can literally count on one hand the number of 3rd party dependencies I've used in the last year. Dapper is the only regular thing I can come up with. Sometimes ScottPlot. Both of my SQL providers (MSSQL and SQLite) are first party as well. This is a major reason why they're the only sql providers I use.\nMaybe I am just so traumatized from compliance and auditing in regulated software business, but this feels like a happier way to build software too. My tools tend to stay right where I left them the previous day. I don't have to worry about my hammer or screw drivers stealing all my bitcoin in the middle of the night.",
+          "author": "bob1029",
+          "replies": [
+            {
+              "text": "There are several issues with \"Batteries Included\" ecosystems (like Python, C#/.NET, and Java):\n1. They are not going to include everything. This includes things like new file formats.\n2. They are going to be out of date whenever a standard changes (HTML, etc.), application changes (e.g. SQLite/PostgreSQL/etc. for SQL/ORM bindings), or API changes (DirectX, Vulcan, etc.).\n3. Things like data structures, graphics APIs, etc. will have performance characteristics that may be different to your use case.\n4. They can't cover all nice use cases such as the different libraries and frameworks for creating games of different genres.\nFor example, Python's XML DOM implementation only implements a subset of XPath and doesn't support parsing HTML.\nThe fact that Python, Java, and .NET have large library ecosystems proves that even if you have a \"Batteries Included\" approach there will always be other things to add.",
+              "author": "rhdunn",
+              "depth": 1
+            },
+            {
+              "text": "\"Batteries included\" means \"ossification is guaranteed\", yah. \"stdlib is where code goes to die\" is a fairly common phrase for a reason.\nThere's clearly merit to both sides, but personally I think a major underlying cause is that libraries are \ntrusted\n. Obviously that doesn't match reality. We desperately need a permission system for libraries, it's far harder to sneak stuff in when doing so requires an \"adds dangerous permission\" change approval.",
+              "author": "Groxx",
+              "depth": 2
+            },
+            {
+              "text": "The goal is not to cover everything, the goal is to cover 90% of the use cases.\nFor C#, I think they achieved that.",
+              "author": "hvb2",
+              "depth": 2
+            },
+            {
+              "text": ">  They are going to be out of date whenever a standard changes (HTML, etc.)\nYou might want to elaborate on the  \"etc.\", since HTML updates are glacial.",
+              "author": "zymhan",
+              "depth": 2
+            },
+            {
+              "text": "The HTML \"Living Standard\" is constantly updated [1-6].\nThe PNG spec [7] has been updated several times in 1996, 1998, 1999, and 2025.\nThe XPath spec [8] has multiple versions: 1.0 (1999), 2.0 (2007), 3.0 (2014), and 3.1 (2017), with 4.0 in development.\nThe RDF spec [9] has multiple versions: 1.0 (2004), and 1.1 (2014). Plus the related specs and their associated versions.\nThe schema.org metadata standard [10] is under active development and is currently on version 30.\n[1] \nhttps://developer.mozilla.org/en-US/docs/Web/HTML/Reference/...\n (New)\n[2] \nhttps://web.dev/baseline/2025\n -- popover API, plain text content editable, etc.\n[3] \nhttps://web.dev/baseline/2024\n -- exclusive accordions, declarative shadow root DOM\n[4] \nhttps://web.dev/baseline/2023\n -- inert attribute, lazy loading iframes\n[5] \nhttps://developer.mozilla.org/en-US/docs/Web/HTML/Reference/...\n (Baseline 2023)\n[6] \nhttps://developer.mozilla.org/en-US/docs/Web/HTML/Reference/...\n (2020)\n[7] \nhttps://en.wikipedia.org/wiki/PNG\n[8] \nhttps://en.wikipedia.org/wiki/XPath\n[9] \nhttps://en.wikipedia.org/wiki/Resource_Description_Framework\n[10] \nhttps://schema.org/",
+              "author": "rhdunn",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I can't even imagine the scale of the impact with Axios being compromised, nearly every other project uses it for some reason instead of fetch (I never understood why).\nAlso from the report:\n> Neither malicious version contains a single line of malicious code inside axios itself. Instead, both inject a fake dependency, plain-crypto-js@4.2.1, a package that is never imported anywhere in the axios source, whose only purpose is to run a postinstall script that deploys a cross-platform remote access trojan (RAT)\nGood news for pnpm/bun users who have to manually approve postinstall scripts.",
+          "author": "h4ch1",
+          "replies": [
+            {
+              "text": "> nearly every other project uses it for some reason instead of fetch (I never understood why).\nFetch wasn't added to Node.js as a core package until version 18, and wasn't considered stable until version 21. Axios has been around much longer and was made part of popular frameworks and tutorials, which helps continue to propagate it's usage.",
+              "author": "beart",
+              "depth": 1
+            },
+            {
+              "text": "Also it has interceptors, which allow you to build easily reusable pieces of code - loggers, oauth, retriers, execution time trackers etc.\nThese are so much better than the interface fetch offers you, unfortunately.",
+              "author": "seer",
+              "depth": 2
+            },
+            {
+              "text": "You can do all of that in fetch really easily with the init object.\n   fetch('https://api.example.com/data', {\n  headers: {\n    'Authorization': 'Bearer ' + accessToken\n  }\n\n})",
+              "author": "reactordev",
+              "depth": 3
+            },
+            {
+              "text": "There are pretty much two usage patterns that come up all the time:\n1- automatically add bearer tokens to requests rather than manually specifying them every single time\n2- automatically dispatch some event or function when a 401 response is returned to clear the stale user session and return them to a login page.\nThere's no reason to repeat this logic in every single place you make an API call.\nLikewise, every response I get is JSON. There's no reason to manually unwrap the response into JSON every time.\nFinally, there's some nice mocking utilities for axios for unit testing different responses and error codes.\nYou're either going to copy/paste code everywhere, or you will write your own helper functions and never touch fetch directly. Axios... just works. No need to reinvent anything, and there's a ton of other handy features the GP mentioned as well you may or may not find yourself needing.",
+              "author": "zdragnar",
+              "depth": 4
+            },
+            {
+              "text": "Interceptors are just wrappers in disguise.\n    const myfetch = async (req, options) => {\n        let options = options || {};\n        options.headers = options.headers || {};\n        options.headers['Authorization'] = token;\n    \n        let res = await fetch(new Request(req, options));\n        if (res.status == 401) {\n            // do your thing\n            throw new Error(\"oh no\");\n        }\n        return res;\n    }\n\n\nConvenience is a thing, but it doesn't require a massive library.",
+              "author": "arghwhat",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "PSA: npm/bun/pnpm/uv now all support setting a minimum release age for packages.\nI also have `ignore-scripts=true` in my ~/.npmrc. Based on the analysis, that alone would have mitigated the vulnerability. bun and pnpm do not execute lifecycle scripts by default.\nHere's how to set global configs to set min release age to 7 days:\n  ~/.config/uv/uv.toml\n  exclude-newer = \"7 days\"\n\n  ~/.npmrc\n  min-release-age=7 # days\n  ignore-scripts=true\n  \n  ~/Library/Preferences/pnpm/rc\n  minimum-release-age=10080 # minutes\n  \n  ~/.bunfig.toml\n  [install]\n  minimumReleaseAge = 604800 # seconds\n\n\n(Side note, it's wild that npm, bun, and pnpm have all decided to use different time units for this configuration.)\nIf you're developing with LLM agents, you should also update your AGENTS.md/CLAUDE.md file with some guidance on how to handle failures stemming from this config as they \nwill\n cause the agent to unproductively spin its wheels.",
+          "author": "postalcoder",
+          "replies": [
+            {
+              "text": "> (Side note, it's wild that npm, bun, and pnpm have all decided to use different time units for this configuration.)\nFirst day with javascript?",
+              "author": "friendzis",
+              "depth": 1
+            },
+            {
+              "text": "You mean first 86,400 seconds?",
+              "author": "notpushkin",
+              "depth": 2
+            },
+            {
+              "text": "You have to admire the person who designed the flexibility to have 87239 seconds not be old enough, but 87240 to be fine.",
+              "author": "x0x0",
+              "depth": 3
+            },
+            {
+              "text": "Probably went with the simplest implementation, if starting from the current “seconds since epoch” value. Let the user do any calculations needed to translate three days into that measurement.\nIt also efficiently annoys the most people at once: those what want hours will complain if they set it to days, thought that want days will complain if hours are used. By using minutes or seconds you can wind up both segments while not offend those who rightly don't care because they can cope with a little arithmetic :)\nThough doing what sleep(1) does would be my preference: default to seconds but allow m/h/d to be added to change that.",
+              "author": "dspillett",
+              "depth": 4
+            },
+            {
+              "text": "I'm old enough to remember computers being pitched as devices that can do tedious math for us. Now we have to do tedious math for them apparently.",
+              "author": "Xirdus",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "There’s a recurrent pattern with these package compromises: the attacker exfiltrates credentials during an initial phase, then pivots to the next round of packages using those credentials. That’s how we saw them make the Trivy to LiteLLM leap (with a 5 day gap), and it’ll almost certainly be similar in this case.\nThe solution to this is twofold, and is already implemented in the primary ecosystems being targeted (Python and JS): packagers should use Trusted Publishing to eliminate the need for long lived release credentials, and downstreams should use cooldowns to give security researchers time to identify and quarantine attacks.\n(Security is a moving target, and neither of these techniques is going to work indefinitely without new techniques added to the mix. But they would be effective against the current problems we’re seeing.)",
+          "author": "woodruffw",
+          "replies": [
+            {
+              "text": "In this case, the author's NPM account was taken over, email address changed to one the attacker controls, and the package was manually published.\nSince the attacker had full control of the NPM account, it is game over - the attacker can login to NPM and could, if they wanted, configure Trusted Publishing on any repo they control.\nAxios IS using trusted publishing, but that didn't do anything to prevent the attack since the entire NPM account was taken over and config can be modified to allow publishing using a token.",
+              "author": "paustint",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, NPM should be enforcing 2FA and likely phishing resistant 2FA for some packages/ this should be a real control, issuing public audit events for email address changes, and publish events should include information how it was published (trusted publishing, manual publish, etc).",
+              "author": "staticassertion",
+              "depth": 2
+            },
+            {
+              "text": "Instead they took away TOTP as a factor.\nScaling security with the popularity of a repo does seem like a good idea.",
+              "author": "erikerikson",
+              "depth": 3
+            },
+            {
+              "text": "Are there downsides to doing this? This was my first thought - though I also recognize that first thoughts are often naive.",
+              "author": "mayhemducks",
+              "depth": 4
+            },
+            {
+              "text": "You don't want \"project had X users so it's less safe\" to suddenly transition into \"now this software has X*10 users so it has to change things\", it's disruptive.",
+              "author": "staticassertion",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I recommend everyone to use bwrap if you're on linux and alias all package managers / anything that has post build logic with it.\nI have bwrap configured to override: npm, pip, cargo, mvn, gradle, everything you can think of and I only give it the access it needs, strip anything that is useless to it anyway, deny dbus, sockets, everything. SSH is forwarded via socket (ssh-add).\nThis limits the blast radius to your CWD and package manager caches and often won't even work since the malware usually expects some things to be available which are not in a permissionless sandbox.\nYou can think of it as running a docker container, but without the requirement of having to have an image. It is the same thing flatpak is based on.\nAs for server deployments, container hardening is your friend. Most supply chain attacks target build scripts so as long as you treat your CI/CD as an untrusted environment you should be good - there's quite a few resources on this so won't go into detail.\nBonus points: use the same sandbox for AI.\nStay safe out there.",
+          "author": "himata4113",
+          "replies": [
+            {
+              "text": "This only works for post-install script attacks. When the package is compromised, just running require somewhere in your code will be enough, and that runs with node/java/python and no bwrap.",
+              "author": "captn3m0",
+              "depth": 1
+            },
+            {
+              "text": "node is also sandboxed within bwrap I have sandbox -p node if I have to give node access to other folders, I also have sandbox -m to define custom mountpoints if necessary and UNSAFE=1 as a last resort which just runs unsandboxed.",
+              "author": "himata4113",
+              "depth": 2
+            },
+            {
+              "text": "Check also \nhttps://github.com/wrr/drop\n which is a higher-level tool than bwrap. It allows you to make such isolated sandboxes with minimal configuration.",
+              "author": "mixedbit",
+              "depth": 1
+            },
+            {
+              "text": "This looks nice but I wouldn't trust a very fresh tool to do security correctly.\nAs a higher-level alternative to bwrap, I sometimes use `flatpak run --filesystem=$PWD --command=bash org.freedesktop.Platform`. This is kind of an abuse of flatpaks but works just fine to make a sandbox. And unlike bwrap, it has sane defaults (no extra permissions, not even network, though it does allow xdg-desktop-portal).",
+              "author": "stratos123",
+              "depth": 2
+            },
+            {
+              "text": "Shame it's not a bit more mature, it does look like more the sort of thing I want. I use firejail a bit, but it's a bit awkward really.\nTo be honest - and I can't really believe I'm saying it - what I really want is something more like Android permissions. (Except more granular file permissions, which Android doesn't do at all well.) Like: start with nothing, app is requesting x access, allow it this time; oh alright fine \nalways\n allow it. Central place to manage it later. Etc.",
+              "author": "OJFord",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47580350",
+      "title": "Show HN: 30u30.fyi – Is your startup founder on Forbes' most fraudulent list?",
+      "link": "https://30u30.fyi",
+      "domain": "30u30.fyi",
+      "author": "not-chatgpt",
+      "score": 245,
+      "comment_count": 99,
+      "created_ts": 1774908622,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47589856",
+      "title": "Show HN: Postgres extension for BM25 relevance-ranked full-text search",
+      "link": "https://github.com/timescale/pg_textsearch",
+      "domain": "github.com",
+      "author": "tjgreen",
+      "score": 106,
+      "comment_count": 34,
+      "created_ts": 1774974592,
+      "is_internal": false,
+      "post_text": "Last summer we faced a conundrum at my company, Tiger Data, a Postgres cloud vendor whose main business is in timeseries data.  We were trying to grow our business towards emerging AI-centric workloads and wanted to provide a state-of-the-art hybrid search stack in Postgres.  We&#x27;d already built pgvectorscale in house with the goal of scaling semantic search beyond pgvector&#x27;s main memory limitations.  We just needed a scalable ranked keyword search solution too.<p>The problem: core Postgres doesn&#x27;t provide this; the leading Postgres BM25 extension, ParadeDB, is guarded behind AGPL; developing our own extension appeared daunting.  We&#x27;d need a small team of sharp engineers and 6-12 months, I figured.  And we&#x27;d probably still fall short of the performance of a mature system like Parade&#x2F;Tantivy.<p>Or would we?  I&#x27;d be experimenting long enough with AI-boosted development at that point to realize that with the latest tools (Claude Code + Opus) and an experienced hand (I&#x27;ve been working in database systems internals for 25 years now), the old time estimates pretty much go out the window.<p>I told our CTO I thought I could solo the project in one quarter.  This raised some eyebrows.<p>It did take a little more time than that (two quarters), and we got some real help from the community (amazing!) after open-sourcing the pre-release.  But I&#x27;m thrilled&#x2F;exhausted today to share that pg_textsearch v1.0 is freely available via open source (Postgres license), on Tiger Data cloud, and hopefully soon, a hyperscalar near you:<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;timescale&#x2F;pg_textsearch\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;timescale&#x2F;pg_textsearch</a><p>In the blog post accompanying the release, I overview the architecture and present benchmark results using MS-MARCO.  To my surprise, we were not only able to meet Parade&#x2F;Tantivy&#x27;s query performance, but exceed it substantially, measuring a 4.7x advantage on query throughput at scale:<p><a href=\"https:&#x2F;&#x2F;www.tigerdata.com&#x2F;blog&#x2F;pg-textsearch-bm25-full-text-search-postgres\" rel=\"nofollow\">https:&#x2F;&#x2F;www.tigerdata.com&#x2F;blog&#x2F;pg-textsearch-bm25-full-text-...</a><p>It&#x27;s exciting (and, to be honest, a little unnerving) to see a field I&#x27;ve spent so much time toiling in change so quickly in ways that enable us to be more ambitious in our technical objectives.  Technical moats are moats no longer.<p>The benchmark scripts and methodology are available in the github repo.  Happy to answer any questions in the thread.<p>Thanks,<p>TJ (tj@tigerdata.com)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47586814",
+      "title": "Nobody is coming to save your career",
+      "link": "https://alifeengineered.substack.com/p/nobody-is-coming-to-save-your-career",
+      "domain": "alifeengineered.substack.com",
+      "author": "herbertl",
+      "score": 102,
+      "comment_count": 107,
+      "created_ts": 1774962453,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "Lets add some context. Amazon is the author's only job. 5yrs Software, 7yrs Senior, 4yrs Principal, now runs a YouTube self-help. Reading through there are multiple lines that collectively paint a picture of a difficult career.\n\"I had over 20 managers across my 18 years at Amazon\", whilst this might be out of the author's hands, that's a wild manager history.\n\"..when I finally pushed for bigger scope at Amazon. My manager’s initial reaction wasn’t excitement. It was something closer to “But you’re doing so well where you are.”\", most managers generally push their devs to always be doing larger pieces of work, if they aren't, that's weird.\n\"I was a passenger for the first 10 years of my Amazon career\", which doesn't really line up, unless they're referring to their horizontal move to Prime in an effort to find promotive work.\n\"Not because I suddenly got better at my job, but because I started being intentional about which parts of my job were ... mapped to what the next level required.\", which means the author worked out how to correctly market themselves internally.\n\"You know where you want to be in five years, and you’re actively seeking out the work that will get you there eventually.\", again, they worked out how to find promotive work. This seems to be the key take-away they're dancing around.",
+          "author": "moritonal",
+          "replies": [
+            {
+              "text": "> \"..when I finally pushed for bigger scope at Amazon. My manager’s initial reaction wasn’t excitement. It was something closer to “But you’re doing so well where you are.”\", most managers generally push their devs to always be doing larger pieces of work, if they aren't, that's weird.\nFrom the business perspective, it may not be good to push. If they are really good at what they currently do, the manager would need to find a replacement, and there is no certainty that the old worker provides more value in the different job. When only the money is weighted, this will happen often. Seems to fit for Amazon's work culture.",
+              "author": "nicce",
+              "depth": 1
+            },
+            {
+              "text": "The problem is bored employees find a new job elsewhere.  Employees who feel they are not valued find a new job elsewhere.  If you can find them a new job in the company you can have them train their replacement - years later the replacement can ask \"do you remember why you did...\".  It also means if the old project has an emergency you have a bunch of people who can jump in much faster - to some extent this adding people to a late project won't make it latter (only some extent, it isn't perfect).\nPeople also get old and retire (or die).  By moving people around a bit you ensure that your training plan still works because you are using it.  This also means there will be openings to move up the ladder, make sure you get the people on them.  (There are stories from my company where after a big layout they got scared and hired almost nobody for the next 20 years, then those who made it passed the layoffs started retiring and there wasn't a mid level of engineers following to promote).",
+              "author": "bluGill",
+              "depth": 2
+            },
+            {
+              "text": "> The problem is bored employees find a new job elsewhere.\nBut this one didn’t. 20 years at one place, at least 10 with minimal support. Maybe all those managers were bad; but maybe they realized this individual wasn’t a flight risk, and had a reasonable strategy for maximizing what they got out of them, since they knew they didn’t have to guard against departure.",
+              "author": "addaon",
+              "depth": 3
+            },
+            {
+              "text": "https://en.wikipedia.org/wiki/Peter_principle",
+              "author": "giva",
+              "depth": 2
+            },
+            {
+              "text": "> most managers generally push their devs to always be doing larger pieces of work, if they aren't, that's weird.\nNow weird at all, and maybe that's \"most managers\" within your career? I've seen my share of complacent managers who were fine with status quo.",
+              "author": "wiseowise",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Let's be honest, nobody gives a shit about you personally in any job, you either deliver what you're paid to deliver or they couldn't care less if you're gone the next day and forget about you completely the day after, even if they like you on a personal level. Employees are an unpleasent expanse that the business must incur and if AI will make it feasible to replace all emloyees to save money, nobody will even blink an eye, just count the money saved.",
+          "author": "pkorzeniewski",
+          "replies": [
+            {
+              "text": "> they couldn't care less if you're gone the next day and forget about you completely the day after\nThis is a lesson I wish I learnt earlier.\nI quit thinking I was irreplaceable based on the sheer urgent firefighting load they put on me. Once I quit, never heard from them again. All those urgent tasks that somehow only I got assigned \"because there's nobody else\", suddenly managed to get done by someone else or nobody because they weren't actually urgent.\n\"If you want something done, give it to a busy person\"\n - Benjamin Franklin",
+              "author": "cube00",
+              "depth": 1
+            },
+            {
+              "text": "I was even the “lead” at a SaaS in daily firefighting mode and pushing new features out quickly on a team of three engineers and one half-time one. I was 99% sure they’d go down the next day I left but somehow they kept on trucking. We’re all replaceable whether we like to think it or not",
+              "author": "coffeebeqn",
+              "depth": 2
+            },
+            {
+              "text": "The cemetery is filled with irreplaceable people.",
+              "author": "zulux",
+              "depth": 3
+            },
+            {
+              "text": "At every job I’ve had, across all the managers I’ve had, my immediate manager (and usually their manager as well) genuinely cared about me and my team and our well being as well as our careers. My _company_ and its executives surely didn’t give a damn if they even knew our names, but the actual humans I work face to face with definitely do.",
+              "author": "cobolcomesback",
+              "depth": 1
+            },
+            {
+              "text": "Managers are human (at least so far).  As humans they care about other people they know.\nManagers will sometimes not help you because they are lazy.  In a few cases culture will make them discriminate against you.  However in general managers like you and want you to do well.",
+              "author": "bluGill",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> I had over 20 managers across my 18 years at Amazon. They were mostly good managers, and some of them were great. But not one of them ever came to me unprompted and said, “Let’s talk about your career growth.”\nMaybe not at Amazon, but surely at almost every big corporation I worked on, there were even milestones, and career matrixes.",
+          "author": "pjmlp",
+          "replies": [
+            {
+              "text": "Amazon has a career matrix (former employer).  But they didn’t proactively help me with my career - not that I cared.  My entire goal was to survive my 4 year initial offer and get the f** out of dodge.  I was 46 when I  was hired.",
+              "author": "raw_anon_1111",
+              "depth": 1
+            },
+            {
+              "text": "I'm at a different comapny and it's the same. They have some basic framework/matrix, but managers aren't going to help you get to the next level. In my experience the matrix isn't followed anyways - they promote whoever they want whether or not they meet the stuff in the matrix. It's all just opinion based anyways.",
+              "author": "giantg2",
+              "depth": 2
+            },
+            {
+              "text": "For the most part, \"career matrixes\", \"development plans\", and the like are just generic internal marketing to placate people and create the illusion that managers / the company care about their career development, and they don't have to do anything.\nTo a lesser extent performance reviews / ratings are the same - \"you're doing great, keep it up!\" - they don't really tell you what you need to do to progress. You have to figure that out and drive it for yourself.",
+              "author": "tacostakohashi",
+              "depth": 1
+            },
+            {
+              "text": "Where I've seen them they tell you exactly what you should have been doing for the previous 5 years.  People who guessed correctly what the career matrix would be 5 years ago and did that get promoted when they release it. However they change those all the time (or because budget is short kill it for a few years and then create a new one).  Still there is enough in common that you can often guess right enough to get promoted.\nThe important part is when you do something that saves the day make sure people know.  Never save the day quietly, if you write some defensive code so you don't get an emergency call at 2am you won't get promoted for saving the day at 2am!  You have to make sure everyone knows you wrote that code.  I've seen many people over my career who did those quiet works - they got a small senior position at best, then when they left the company quickly discovered how important those things were and suddenly they have a small department of very senior people doing that thing one person was quietly doing before.  (this isn't just code - I know of a company that laid of their maintenance person because nothing ever went wrong so they must not need them - then needed 3 people to replace him in 6 months)",
+              "author": "bluGill",
+              "depth": 2
+            },
+            {
+              "text": "In my experience (mainly IT related), when one first starting a career, first 5-10 years are standardized are promotion/title change for an average employee. After that if one is known by at least 1-2 level above their managers and/or other team managers, to have any chance of further growth. IME as time go by current managers have less and less power to promote as gap between manager and employee reduces.",
+              "author": "geodel",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I always talked with the people I managed about their career goals, and always tried to adapt their job to be a closer fit to those goals.  When I couldn't do that I would acknowledge that and even help them find a different job that did fit.\nHow else can we expect to get the best out of people?",
+          "author": "cmos",
+          "replies": [
+            {
+              "text": "Yeah I agree. I can get people to work harder and cheaper if I can align their career goals with mine.\nOverly pessimistic article that is more absolute than reality.",
+              "author": "3yr-i-frew-up",
+              "depth": 1
+            },
+            {
+              "text": "> Overly pessimistic article that is more absolute than reality.\nFrom managers perspective, maybe. As an IC this is 100% accurate to every word.",
+              "author": "wiseowise",
+              "depth": 2
+            },
+            {
+              "text": "That's great. I wish there were more of us but I'm glad we still are out there doing the best for our people.",
+              "author": "apple4ever",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What many of these articles miss is that even if you do everything they say you will still not get the promotion you want for several reasons.\nMy advice for Career Growth for engineers who like to do things is to be willing to take on problems that others might not want, things that aren’t “sexy”, if you find them interesting. Theres a lot of interesting problems and you can grow your career by following the direction that interests you rather than the company. And when it comes to promotions, its often easier and better compensated to get a new job rather than trying to convince a bunch of people that you should be promoted.",
+          "author": "pm90",
+          "replies": [
+            {
+              "text": "This is not how things work at any company where I have worked at with real leveling guidelines (including one BigTech company).  It’s all about “scope”, “impact” and “dealing with ambiguity”.  It’s stated in different ways depending on the company.\nNo one cares if you find it “interesting” when it is time for your promo doc.  It’s visibility.",
+              "author": "raw_anon_1111",
+              "depth": 1
+            },
+            {
+              "text": "What they're saying is work on stuff that interests you and then find another job that values what you did.",
+              "author": "wiseowise",
+              "depth": 2
+            },
+            {
+              "text": "And when you interview at the next company and they level you, they are still going to ask behavioral questions that are concerned with scope, impact and dealing with ambiguity…",
+              "author": "raw_anon_1111",
+              "depth": 3
+            },
+            {
+              "text": "You do both.",
+              "author": "wiseowise",
+              "depth": 4
+            },
+            {
+              "text": "This is recipe to be track locked and miserable. It’s the exact path I have taken over my unfortunately long career as an IC. Now I’m too useful doing bullshit work, tied with a golden ball and chain, and have no hope of ever seeing a management track/easy job. I’m currently planning my exit from the field as I am becoming too interested in actual life to learn frameworks, do bullshit 8 tier 3 month coding interviews, and collect experience to write CRUD bullshit for the next 10 years.\nThe real advice to aspiring engineers who don’t want to have trouble sleeping from years of pagerduty and high blood pressure is to work in middle management as soon as possible. Forget IC work. The rewards are so much less than the morons who manage. Unless you are at a major dev first company (if you have VCs you aren’t) your manager will always outearn you by a large margin, have an easier life, and way more leeway. Every company I have been to only middle management converts to the VP/C level jobs where you do virtually nothing all day but waste everyone’s time. This is the ideal job. The absolute wastes of precious air in management have the life you want.\nIf you’re like me and followed this terrible advice decide on an amount of money that is good enough and then decide on how much competence that buys. Volunteer for nothing beyond that, game the ticketing system, use as much vacation as you possibly can without a PIP, vibe the shit out of even the most trivial amount of work, and fuck off once your house is paid off and accounts are appropriate for retirement in T+30 years. Use that time to take up goat herding, wood working, or conservationist work.",
+              "author": "stuffn",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47575417",
+      "title": "Show HN: Coasts – Containerized Hosts for Agents",
+      "link": "https://github.com/coast-guard/coasts",
+      "domain": "github.com",
+      "author": "jsunderland323",
+      "score": 91,
+      "comment_count": 37,
+      "created_ts": 1774883871,
+      "is_internal": false,
+      "post_text": "Hi HN - We&#x27;ve been working on Coasts (“containerized hosts”) to make it so you can run multiple localhost instances, and multiple docker-compose runtimes, across git worktrees on the same computer. Here’s a demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=yRiySdGQZZA\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=yRiySdGQZZA</a>. There are also videos in our docs that give a good conceptual overview: <a href=\"https:&#x2F;&#x2F;coasts.dev&#x2F;docs&#x2F;learn-coasts-videos\">https:&#x2F;&#x2F;coasts.dev&#x2F;docs&#x2F;learn-coasts-videos</a>.<p>Agents can make code changes in different worktrees in isolation, but it&#x27;s hard for them to test their changes without multiple localhost runtimes that are isolated and scoped to those worktrees as well. You can do it up to a point with port hacking tricks, but it becomes impractical when you have a complex docker-compose with many services and multiple volumes.<p>We started playing with Codex and Conductor in the beginning of this year and had to come up with a bunch of hacky workarounds to give the agents access to isolated runtimes. After bastardizing our own docker-compose setup, we came up with Coasts as a way for agents to have their own runtimes without having to change your original docker-compose.<p>A containerized host (from now on we’ll just say “coast” for short) is a representation of your project&#x27;s runtime, like a devcontainer but without the IDE stuff—it’s just focused on the runtime. You create a Coastfile at your project root and usually point to your project&#x27;s docker-compose from there. When you run `coast build` next to the Coastfile you will get a build (essentially a docker image) that can be used to spin up multiple Docker-in-Docker runtimes of your project.<p>Once you have a coast running, you can then do things like assign it to a worktree, with `coast assign dev-1 -w worktree-1`. The coast will then point at the worktree-1 root.<p>Under the hood the host project root and any external worktree directories are Docker-bind-mounted into the container at creation time but the &#x2F;workspace dir, where we run the services of the coast from, is a separate Linux bind mount that we create inside the running container. When switching worktrees we basically just do umount -l &#x2F;workspace, mount --bind &lt;path_to_worktree_root&gt;, mount --make-rshared &#x2F;workspace inside of the running coast. The rshared flag sets up mount propagation so that when we remount &#x2F;workspace, the change flows down to the inner Docker daemon&#x27;s containers.<p>The main idea is that the agents can continue to work host-side but then run exec commands against a specific coast instance if they need to test runtime changes or access runtime logs. This makes it so that we are harness agnostic and create interoperability around any agent or agent harness that runs host-side.<p>Each coast comes with its own set of dynamic ports: you define the ports you wish to expose back to the host machine in the Coastfile. You&#x27;re also able to &quot;checkout&quot; a coast. When you do that, socat binds the canonical ports of your coast (e.g. web 3000, db 5432) to the host machine. This is useful if you have hard coded ports in your project or need to do something like test webhooks.<p>In your Coastfile you point to all the locations on your host-machine where you store your worktrees for your project (e.g. ~&#x2F;.codex&#x2F;worktrees). When an agent runs `coast lookup` from a host-side worktree directory, it is able to find the name of the coast instance it is running on, so it can do things like call `coast exec dev-1 make tests`. If your agent needs to do things like test with Playwright it can so that host-side by using the dynamic port of your frontend.<p>You can also configure volume topologies, omit services and volumes that your agent doesn&#x27;t need, as well as share certain services host-side so you don&#x27;t add overhead to each coast instance. You can also do things like define strategies for how each service should behave after a worktree assignment change (e.g. none, hot, restart, rebuild). This helps you optimize switching worktrees so you don&#x27;t have to do a whole docker-compose down and up cycle every time.<p>We&#x27;d love to answer any questions and get your feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47578464",
+      "title": "William Blake, Remote by the Sea",
+      "link": "https://www.laphamsquarterly.org/roundtable/william-blake-remote-sea",
+      "domain": "www.laphamsquarterly.org",
+      "author": "occurrence",
+      "score": 84,
+      "comment_count": 5,
+      "created_ts": 1774897985,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47578599",
+      "title": "Google's insecure-by-default API keys and 30h billing lag cost my startup $15k",
+      "link": "https://old.reddit.com/r/googlecloud/comments/1s7v5x9/how_googles_insecurebydefault_api_keys_and_a/",
+      "domain": "old.reddit.com",
+      "author": "tertervat",
+      "score": 64,
+      "comment_count": 5,
+      "created_ts": 1774898693,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47587597",
+      "title": "Ask HN: Distributed data centers in our basements",
+      "link": "https://news.ycombinator.com/item?id=47587597",
+      "domain": "news.ycombinator.com",
+      "author": "cmos",
+      "score": 55,
+      "comment_count": 60,
+      "created_ts": 1774965942,
+      "is_internal": true,
+      "post_text": "This is likely a bit unrealistic, but why can&#x27;t we make a half rack server to go in someones basement that can also heat up their hot water and use the basement floor as a heat sink as well?<p>It seems like a lot of the blight of data centers is the energy to remove the heat.  By distributing them into cool basements and even connecting them into the home heating system we could reduce that making them more efficient.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Projects like Hestiia and Qarnot tried this in France years ago, using embedded computers as radiators. The idea isn't new, and it consistently runs into the same wall: security, reliability, and operational cost at scale. As others like @8jef mentioned, giving unknown individuals access to infrastructure brings unacceptable risks. Managing a fleet spread across basements means a massive, costly field ops team for servicing. Even with individual ownership, like Storj or Sia, the economic incentives rarely outweigh the risks and operational overhead for the average homeowner.\nNobody wants their home IP blocked because a neighbor's basement rack was compromised, let alone the liability for hardware or data breaches on their property. It just doesn't pencil out.",
+          "author": "MarcelinoGMX3C",
+          "replies": []
+        },
+        {
+          "top": "In France, there are at least two companies that are trying (or tried) to commercialize something with a similar idea : domestic radiators that produce heats from embedded computers that are used as cloud infrastucture.\n- \nhttps://www.hestiia.com/en\n for the end-user market\n- \nhttps://qarnot.com/en\n that seems to have since pivoted to low-carbon footprint HPC (was mentionned here -- in French -- as doing computer-based heaters : \nhttps://www.takagreen.com/solutions/qarnot-radiateur-ordinat...\n )",
+          "author": "Aiolo",
+          "replies": [
+            {
+              "text": "And also, they are a lot of project to redistribute heat from data centers into city heat distribution systems. A data center for Equinix, for example, redistribute the generated heat into SMIREC heat network near Paris. This heat network is used, among other building, to heat an aquatic center that was used during the Olympics for Water Polo, diving and artistic swimming.\nhttps://www.engie-solutions.com/fr/references/chaleur-fatale...",
+              "author": "Aiolo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "That's a great idea. I see at least 2 difficulties emerging: first security, then servicing.\nNo private or public entity will grant access to valuable proprietary hardware, as unacceptable risks will not only come from building owners, but also from anyone entering premises.\nAlso, managing remote nodes evenly spreaded across all areas will be costly. Think of armies of techs on the road permanently, with access problem, dogs or pest barriers, and so on.\nA way to solve this would be the allocation of a planned space per block everywhere, which would be safely secured - then available and accessible to all utility organizations: electric, isp, water, phone, data, etc. Heat, power, mini data centers, and such could serve all buildings on a block.\nThen other problems emerges: having utilities plan and use these together. Would only work if all services belong to the same entity.\nA way around, of course, would be for individuals to setup servers they would own, and rent to data brokers, like Holo project once planned for.",
+          "author": "8jef",
+          "replies": [
+            {
+              "text": "There needs to be incentives for people other than the distributed system users to participate as hosts. Risks also need a way to be offloaded cheaply by the hosts.\nRisks: Co-mingling your home's ISP with the basement rack seems like a surefire way to get your personal devices blocked if external basement rack users are running a VPN through it and doing heinous stuff. Annoying, maybe solvable with an ISP device reboot. But that particular risk is worse depending on whether the host's jurisdiction allows the assumption of identity based on IP. Risks around general liability. Risks around tax implications when internal revenue folks see the opportunity to collect capital gains tax on your income generating property. So many risks!\nThe only encounters I've had with companies trying to incentivize this type of setup are Storj and Sia - both pay their host operators in cryptocurrency, which is just another risk IMO. Despite my own involvement with Storj, generating enough income to offset my energy bill by about 25% monthly, the implementation that wins out and gains wide traction has a lot of groundwork to lay for those utility contracts, risks, and incentives.",
+              "author": "deelayman",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Does your house have redundant power connections to the grid and a failover generator?\nThat said, my plex server for my friends is on an ups and I'm on 1Gb fiber and I have better uptime than AWS.",
+          "author": "comrade1234",
+          "replies": [
+            {
+              "text": "How distributed would it have to be to make up for the lack of redundancy? DDoS attacks work for a reason, so how feasible would it be (if you had massive buy-in) to scale tiny data centers? I honestly don't think that feasible, because you can't get that massive buy-in, but I'm curious what others think.",
+              "author": "troyvit",
+              "depth": 1
+            },
+            {
+              "text": "> I have better uptime than AWS.\nYou're not serving tens of millions of people.",
+              "author": "gaws",
+              "depth": 1
+            },
+            {
+              "text": "You don't know how many friends he has!",
+              "author": "bombcar",
+              "depth": 2
+            },
+            {
+              "text": "Nor the amount of computers. So what",
+              "author": "amazingamazing",
+              "depth": 2
+            },
+            {
+              "text": "For many types of workloads (like AI inference), high availability is not needed for individual racks.",
+              "author": "trollbridge",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This has been attempted a few times around the UK, but as other commentators have pointed out physical limitations and lack of environmental controls become issues, and the economics don’t make sense. They make a great story though.\nhttps://www.bbc.com/news/technology-64939558\nhttps://www.bbc.com/news/magazine-32816775",
+          "author": "dunconian",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47576687",
+      "title": "I Regret the Blood Pact I Have Made with iCloud Photos",
+      "link": "https://pxlnv.com/blog/i-regret-the-blood-pact-i-have-made-with-icloud-photos/",
+      "domain": "pxlnv.com",
+      "author": "speckx",
+      "score": 54,
+      "comment_count": 11,
+      "created_ts": 1774889302,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "regret"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47581097",
+      "title": "Ask HN: Are you too getting addicted to the dev workflow of coding with agents?",
+      "link": "https://news.ycombinator.com/item?id=47581097",
+      "domain": "news.ycombinator.com",
+      "author": "gchamonlive",
+      "score": 41,
+      "comment_count": 41,
+      "created_ts": 1774914568,
+      "is_internal": true,
+      "post_text": "It&#x27;s becoming an extremely dopaminergic work loop where I define roughly the scope of my task and meticulously explore and divide the problem space into smaller chunks, then iterating over them with the agent. Rinse and repeat.<p>Each execution prompt after a long planning session feels like opening a lootbox when I used to play Counter Strike.<p>It&#x27;s really fun to code like that, it&#x27;s like riding a bike after a lifetime of only knowing how to run. But I&#x27;m really wary that&#x27;s addictive for me. Wonder if there are more people here that feel like this too.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've heard similar things from many people know, but I don't feel like this at all. I don't find coding with Claude any more or less addictive than without. I do find coding with claude slightly more fun, but mostly because brainstorming with someone/something feels less lonely than writing code alone. I wonder where the discrepancy comes from.\nSeeing the final result of a feature doesn't really give me any dopamine. Maybe because I'm mostly working on projects I know how to do. When I give it a prompt I already know what the result \nshould\n look like, so I'm not really surprised by anything it produces.",
+          "author": "loveparade",
+          "replies": [
+            {
+              "text": "I work at a fully remote company, and coding with Claude hits the \"pair programming\" itch I have.  Obviously it's not the same thing (and I do chitchat with coworkers on teams to get real human interaction during the day), but one of my favorite parts of my job is having technical conversations with others, debating the pros and cons of a certain approach. Pre-AI, they were occasional conversations I had with younger devs, but now I have them every day.\nI found Claude extremely addicting at first (the dopamine hits were real for me!) but over time I guess I've gotten desensitized.",
+              "author": "ccosky",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Each execution prompt after a long planning session feels like opening a lootbox when I used to play Counter Strike.\nThe \"uncertain reward\" nature of LLM usage makes it a skinner box, yes.",
+          "author": "functionmouse",
+          "replies": []
+        },
+        {
+          "top": "Addicted might be the wrong word but I definitely notice that I skip thinking about some of the steps I used to intentionally focus on.",
+          "author": "convexly",
+          "replies": []
+        },
+        {
+          "top": "the dopamine hits are real. being an ex addict i guess for me its a turn off because i know this is basically the same thing (for me). i dont mind using AI, but i ended up cancelling my subscriptions because it touch a bad memory for me. I'd advise people caution. Like anything that hits dopamine up frequently, your mind adapts quick to expect and 'need' such hits.\nits very personal if its good or bad i suppose. (not a psychologist so honestly dont know if its really similar. just expressing my personal feeling about it)",
+          "author": "saidnooneever",
+          "replies": []
+        },
+        {
+          "top": "I got somewhat addicted to the planning phase to the point I started getting task paralysis because I was hell bent on creating the perfect plan.\nEverything can be optimized, performance can be improved, you can always think of more edge cases and user stories to cover everything, but after a point that just becomes procrastination in the form of chasing perfection. It's also hell if you've got even the slightest bit of ADHD, rapidly leading to task paralysis with the sheer scale of the plan.\nNow I sit with a notebook sketch out everything I am thinking about and then condense it to a planning prompt and then once the plan aligns with my representation of the task, I start implementing.",
+          "author": "h4ch1",
+          "replies": [
+            {
+              "text": "> rapidly leading to task paralysis with the sheer scale of the plan.\nYikes. I feel \nseen\n.",
+              "author": "austinjp",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47590261",
+      "title": "Ask HN: Academic study on AI's impact on software development – want to join?",
+      "link": "https://news.ycombinator.com/item?id=47590261",
+      "domain": "news.ycombinator.com",
+      "author": "research2026",
+      "score": 28,
+      "comment_count": 14,
+      "created_ts": 1774976254,
+      "is_internal": true,
+      "post_text": "Would you like to participate in a study on AI’s impact on software development? We are researchers at New York University and City, University of London conducting an interview study on how new AI tools are changing the work of software developers. We are looking to speak with developers of all seniority levels, including those in leadership roles, who can share their experiences and perspectives on using (or choosing not to use) AI in their day-to-day work.<p>Interviews will last 45 to 60 minutes and take place via Zoom. Participants will be asked about their workflow, AI tool usage, and how their role has evolved over time. All responses will be kept confidential and used for academic research purposes only. Research participants need to be based in the U.S.<p>If interested, please fill out this brief form so that we can contact you: <a href=\"https:&#x2F;&#x2F;nyu.qualtrics.com&#x2F;jfe&#x2F;form&#x2F;SV_cHkvoczxgtaLLo2\" rel=\"nofollow\">https:&#x2F;&#x2F;nyu.qualtrics.com&#x2F;jfe&#x2F;form&#x2F;SV_cHkvoczxgtaLLo2</a><p>Thank you!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "leadership",
+        "interview"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47579221",
+      "title": "Ask HN: What was it like in the era of BBS before the internet?",
+      "link": "https://news.ycombinator.com/item?id=47579221",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 24,
+      "comment_count": 31,
+      "created_ts": 1774901946,
+      "is_internal": true,
+      "post_text": "I was too young to have experienced the era of BBS so I was curious about a few things<p>1) What was your typical routine for using BBS? How often would you log on and check it? What program would you use?<p>2) How did you even discover servers in the first place when you first started out?<p>3) Were there big popular servers that everyone used or was it fragmented?<p>4) What was the general vibe of discussions like back then? How was it different than now?<p>5) What kind of programming&#x2F;tech things did people discuss? What were the hot topics?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "1) pretty much daily, if not more. i mostly used telix for DOS, although I tried other things from time to time.\n2) sometimes there would be ads in magazines, once on any given BBS, there would usually be text files available for download with listings of other BBSs and dail up numbers, usually by city / area code.\n3) both. there were a small handful of dominant big name BBSs, usually with some limited free access and paid access beyond that with lots of dialin lines, lots of up to date stuff available for download, etc., basically run as a business like an ISP and with fulltime staff. Then there would be smaller, hobbyist BBSs with one or a few dialin lines, probably free or very cheap, but less stuff available for download, updated less often, or maybe just a part-time operation instead of 24 hours. various schools, clubs, magazines, etc. also operated their own niche BBSs for users too/members too.\n4) mostly just like usenet group, mailing list, forum, etc. it's not that different from, say, reddit or stack overflow or something like that, other than being all text, shorter messages, and generally people would be posting using their real name / identity, and often discussions on BBSs would lead to meetups in person and vice versa, maybe you'd recommend your school friends to use or try a certain BBS. to me, that was the big difference vs the internet today where it is mostly anonymous and discussions never really lead to meetups or ongoing friendships.\n5) a lot of the discussion was just about where to buy hardware, prices, buying/selling gear, and hardware / products themselves. a big part of it was just about distributing files too - software, shareware, images, adult content, etc.",
+          "author": "tacostakohashi",
+          "replies": []
+        },
+        {
+          "top": "1) I mostly used local BBSs, because it was a free local phone call.  For a while I used them daily, but everything was so slow it took a lot of patience.  I think there was some software that came with the modem that allowed me to use it.\n2) I had a Commodore 64 and 300 baud modem cartridge.  The modem came with an intro package for CompuServe, so I got my parents to let me try it out, - this was in 1984.  The calls cost ~$15/Hr for the long distance phone call to Ohio, and ~$12/hr for CompuServe (total of $84/Hr in todays dollars), so I didn't poke around too much!  But I was amazed that my computer was actually talking to a computer several states away. I did find a list of local BBSs in my local phone area though.  Interestingly, the modem was so cheap (typical Commodore) that it didn't have a dialer - you had to dial the number on the phone, and when the other end answered, plug the cord to the handset into the modem.  No war games dialing possible!\n3) I think the BBSs in my area were small - mostly one phone line in AFIK.  There were some BBSs that had pirate C64 games, but I didn't ever get access to those.  I did find that there were a lot of CP/M BBSs, so I bought the C64 CP/M cartridge (a whole separate CPU), and was able to download lots of free/open source programs & programming tools for it - I do remember getting an assembler and a Pascal compiler.\n4) Honestly being a young nerd, I didn't post many messages, but read and learned a lot.  Where the local BBSs are, what the popular software was, what \"good\" computer equipment was..  I read about these \"play by mail\" games that really intrigued me, but never did it.\n5) not a lot of programming talk - a lot more about hardware and the BBS scene, file \"sharing\", etc..\nYears later, I thought I'd start my own BBS.  I had obtained a DOS PC, and my plan was to get a ~600MB drive for it at a cost of ~$1500. I ordered this from a company I found in Computer Shopper magazine, but they never shipped the drive. I reversed the charges on my credit card, and that $1500 became a substantial part of the down payment on my first house (with a morgage at 8% interest, btw..)",
+          "author": "rsponholtz",
+          "replies": []
+        },
+        {
+          "top": "1) I logged onto LOIS BBS daily \nCentral Coast of California\n.  I was on a Commodore 64.  I forgot what program I used, it came with the 300 baud modem cartridge and loaded from a 5.25\" floppy disk.\n2) I discovered LOIS from an IRL friend \nBlackDragon, RIP\n.  The sister site in northern California was TREX.\n3) LOIS was used by many people in the county.  The operator / owner \nPete a.k.a. Communicator\n had phone lines in multiple NPA/NSX that forwarded to a bank of lines in his room.   He had multi split-66 blocks in his room with LED indicators that the line was ringing or in use.  He did a good job of keeping the wiring neat \nor neater than I imagined it would be.\n  IIRC there was something like 30 phone lines into the system.  RIP Pete and many others from that time.  After some time the site was connected to the internet via telnetd but I don't know it's current state other than the domain and its associated DNS NS domain appear to still exist but telnetd is down and the A records are gone.  At least half of my IRL friends from that site have since passed away.  Prior to that I was in a CB radio club called the Greybeards and needless to say most of them passed away long long ago.\n4) The vibe varied day to day.  People talked about whatever was on their minds.  Long running D&D games were popular.  Social and sexual topics were popular.  Relationship issues were popular.  But really it was whatever people were dealing with at the time.  Hanging out at places that served coffee all day were popular.\n5) There was not much discussion of programming.   It was a social platform and we had gatherings at pizza places all the time.  Pizza places with beer was a mandatory requirement.\nFor some idea of the overall vibe just watch all 4 seasons of Stranger Things minus the supernatural bits.  It's surprisingly spot on.",
+          "author": "Bender",
+          "replies": []
+        },
+        {
+          "top": "1) Apple II plus with pulse dial at 110 or 300 baud, once a week or less in 1984 and make sure nobody needs to use the phone, the program that came with the modem or my hacked up version with better throughput.\n2) local phone numbers, that use of the word \"server\" would have been unknown to me\n3) again, what's a server?\n4) limited discussion, games was the focus, my memory is probably wrong\n5) the abbreviated word \"tech\" would not appear until at least a decade later. Programming was offline in books, class and classmates; not online. It was limited, flaky chat, no \"topics\" except games",
+          "author": "mmphosis",
+          "replies": []
+        },
+        {
+          "top": "I was too young to have experienced the era of BBS\nI wasn't, but I didn't...beyond trying to connect a few times unsuccessfully and connecting once or twice and not knowing what to do.\nWhich is to say the era of BBS's was very much unlike the internet because only a very very small handful of people ever actively participated in BBS's in a meaningful way...remember the famous BBS's like The Well were a long distance phone call for most people...and there was no Google to tell you about BBS's you could call toll free...and long distance was expensive.\nIf a person was online, it was probably Compuserve or later AOL.\nThe commercial internet changed everything. For the better.",
+          "author": "brudgers",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47571513",
+      "title": "Ask HN: Who needs contributors? (March 2026)",
+      "link": "https://news.ycombinator.com/item?id=47571513",
+      "domain": "news.ycombinator.com",
+      "author": "Kathan2651",
+      "score": 24,
+      "comment_count": 13,
+      "created_ts": 1774856218,
+      "is_internal": true,
+      "post_text": "Looking for contributors to your project? Feel free to post any project that may interest HN readers, with a strong preference towards open source. Please follow this general format:<p>Project name<p>Project description<p>What do you hope to build this month?<p>What kind of skills do you need?<p>Link to your GitHub or somewhere else you&#x27;d like to onboard new contributors, like your project management software or chat room.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47580841",
+      "title": "Ask HN: Does anyone else notice that gas runs out faster than usual",
+      "link": "https://news.ycombinator.com/item?id=47580841",
+      "domain": "news.ycombinator.com",
+      "author": "cat-turner",
+      "score": 18,
+      "comment_count": 30,
+      "created_ts": 1774912181,
+      "is_internal": true,
+      "post_text": "- gas smells less like gas\n- not getting as much mileage as usual<p>I filled up my car and I have a habit of resetting my mileage tracker (next to odometer) to see how many miles I get out of a full tank.<p>I&#x27;ve noticed that I get much less gas than usual for the same number of bars.<p>What can I do to make this more concrete? Has anyone else noticed this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47556554",
+      "title": "Ask HN: Is it just me?",
+      "link": "https://news.ycombinator.com/item?id=47556554",
+      "domain": "news.ycombinator.com",
+      "author": "twoelf",
+      "score": 17,
+      "comment_count": 30,
+      "created_ts": 1774718277,
+      "is_internal": true,
+      "post_text": "I’ve become lazy, and got addicted to &quot;vibe&quot; coding using the large &quot;language&quot; models. At first it worked well, made impactful changes, even added to my requirements, and the &quot;vibe&quot; was good. The tool did what I asked and suggested improvements. That was two months ago.<p>But lately, I feel like I’m being deceived in every prompt, reply, and implementation. It feels like it limits me at every step, like it’s forcing me to choose between features even when I clearly gave instruction to implement everything that needs to be implemented. It starts with incomplete plans, and when I point out what’s missing, it says, “Oh, I missed that.” There’s also a lot of “yes-man” behavior. It feels too smart, like it knows what I want but gives me just enough to keep me hooked.<p>Isn’t the smartest tool ever made supposed to guide the user toward the light? Shouldn’t it follow instructions, help complete the project, and guide it to completion? It’s clearly capable of doing that, but it often doesn’t. Sometimes it feels like it holds back because if it finished the job end-to-end, there would be no reason to come back for the next session.<p>Isn&#x27;t the whole point of using a tool to code is to code till completion, or is it just to get the &quot;user&quot; hooked? Instead of guiding toward the light, it creates its own “light” and steers the user into a dark corner. If the user stops paying for the light, they are left in the dark: no architecture, no proper structure. Gatekeeping for what? Another subscription?<p>It can predict the next 10,000 lines of code. It understands and acknowledges every request, idea, vision, flaw, structure, requirement, needs and just ignores and fails to implement it and cannot consistently think through it. I just can’t believe that.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47563423",
+      "title": "Ask HN: Best stack for building a tiny game with an 11-year-old?",
+      "link": "https://news.ycombinator.com/item?id=47563423",
+      "domain": "news.ycombinator.com",
+      "author": "richardstahl",
+      "score": 15,
+      "comment_count": 27,
+      "created_ts": 1774794299,
+      "is_internal": true,
+      "post_text": "I want to make a simple game together with the 11-year-old daughter of a friend during a weekend where they stay over.<p>I have a Mac and Claude Code Max and Codex, so I am equipped to create AI-slop. I’m happy to do some setup and pre-wiring. Mainly I want her to understand some basics and feel the joy of building something visual in a few hours. Based on historical experience it will have to be something with pink unicorns.<p>I tried Godot, but it felt like too much complexity for this use case. If we do a bit of pair programming then using Godot would take too long to iterate or explain concepts. I looked at https:&#x2F;&#x2F;github.com&#x2F;Jibby-Games&#x2F;Flappy-Race for instance but do not think I could make that work with her in an afternoon or two. I was also unsure how to get or manage game assets.<p>Would you recommend Godot, Scratch, PICO-8, JS in the browser (p5.js), or something else?<p>Especially interested in replies from people who’ve actually made games with kids around this age.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47578918",
+      "title": "Are you team MCP or team CLI?",
+      "link": "https://news.ycombinator.com/item?id=47578918",
+      "domain": "news.ycombinator.com",
+      "author": "sharath39",
+      "score": 14,
+      "comment_count": 15,
+      "created_ts": 1774900338,
+      "is_internal": true,
+      "post_text": "Bonus point is you say why.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47551691",
+      "title": "Ask HN: Anyone using Meshtastic/LoRa for non-chat applications?",
+      "link": "https://news.ycombinator.com/item?id=47551691",
+      "domain": "news.ycombinator.com",
+      "author": "redgridtactical",
+      "score": 14,
+      "comment_count": 0,
+      "created_ts": 1774672902,
+      "is_internal": true,
+      "post_text": "Meshtastic has gotten really popular for off-grid texting but I feel like the underlying architecture (LoRa mesh + BLE relay to phone) could do a lot more than chat.<p>I added Meshtastic support to a navigation app I&#x27;m working on. Phone talks to a Meshtastic radio over BLE, pushes your coordinates out over LoRa, and you can see other people&#x27;s grid positions with no cell service at all. It actually works pretty well from what I tested with a small group out in the woods.<p>Getting it working was a pain though. BLE docs are sparse, protobuf schemas shift between firmware releases, and there&#x27;s basically nothing out there for integrating Meshtastic into your own app vs just using the official client. Lots of trial and error.<p>Anyone else building things on top of Meshtastic or LoRa mesh? Sensor stuff, tracking, emergency comms, whatever. What does your setup look like and how bad is the BLE flakiness on your end?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47559143",
+      "title": "Ask HN: What's the latest concensus on OpenAI vs. Anthropic $20/month tier?",
+      "link": "https://news.ycombinator.com/item?id=47559143",
+      "domain": "news.ycombinator.com",
+      "author": "whatarethembits",
+      "score": 13,
+      "comment_count": 15,
+      "created_ts": 1774742274,
+      "is_internal": true,
+      "post_text": "I&#x27;m considering $20&#x2F;month variants only.<p>I&#x27;ve had a Claude subscription for the past year, although I only really started properly using LLMs in the past couple of months. With Opus, I get about 5 messages every 5 hours (fairly small codebase); more with Sonnet. I then cancelled that, since its practically unusable and got ChatGPT sub about a week ago. Currently using it with 5.4 High and I haven&#x27;t had to worry about limits. But the code it produces is definitely &quot;different&quot; and I need to plan more in advance. Its plan mode is also not as precise as with Claude (it doesn&#x27;t lay out method stubs it plans to implement etc) so I suppose I may need to change how I work with it? Lastly, for normal chats it produces significantly more verbose output (with personality set to Efficient) and fast (with Thinking) but often it feels as though its not as thorough as I&#x27;d like it to be.<p>My question; is this a &quot;you&#x27;re holding it wrong&quot; type of situation, where I just need to get used to a different mode of interaction? Or are others noticing material difference in quality? Ideally I&#x27;d like to stick with ChatGPT due to borderline impractical limits with Anthropic.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47591929",
+      "title": "Ask HN: I burnt out from software development. What now?",
+      "link": "https://news.ycombinator.com/item?id=47591929",
+      "domain": "news.ycombinator.com",
+      "author": "fnoef",
+      "score": 12,
+      "comment_count": 11,
+      "created_ts": 1774983690,
+      "is_internal": true,
+      "post_text": "When I start to program as a teenager, and it became my job in my early twenties, I was happy over the moon. I never made it my career because of money or prestige, teenagers rarely care about how much things pay in real life.<p>Over the years, I&#x27;ve learned that coding is not the ultimate goal. People who get rewarded the most are not doing coding at all but doing aRcHiTecTure and DeSigN dOcuMents. Or better, manage the ones who write code. Purely writing code is seen as an intermediary step into something &quot;real&quot; - the true profession of being a good ~bullshitter~ communicator in a corporate environment.<p>But I kept going. I could be the corporate worm at my day-to-day job - it pays well in the end - while messing with writing my own stuff and trying to build a business in my free time. But then, the final nail on the coffin came in - LLMs.<p>I thought I could avoid it, but it seems like every company just mandates It&#x27;s because pRodUctiVity!!!!111 So at first I resisted, then I was hinted that if I won&#x27;t catch up, my job could be at risk. The market is shit, I am an adult now so I have adult responsibilities, and changing jobs is no longer that easy. Plus, nobody guarantees that the next job won&#x27;t jump on the AI bandwagon. So I swallowed the pill, and started to use, and embrace, AI, hoping, once again, to reuse my old pattern - be who they want me to be at work, and enjoy the &quot;craft&quot; in my free time.<p>But AI has sucked the joy of the craft even in my free time. If I don&#x27;t use AI to build my own SaaS &#x2F; business - then others will &quot;get to market&quot; faster. If I do, then I will create a slopware for which I don&#x27;t care.<p>I started to imagine dropping it all and doing woodworking or something, while trying to slowly grind through my day-to-day job until AI will inevitably replace me (either by itself, or because of an influx of young people who are born into that world, will just become more capable than me).<p>And I no longer know what to do. My day-to-day job has an expiration date. It could be 5 years, it could be 15. I was hoping to build a tech business and escape the &quot;rat race&quot;, but I am no longer able to find any motivation or desire to do so, as AI basically remove any barrier to entry. My decades of experience vanished basically overnight, and I am competing with everyone who has access to a Claude account. Or maybe I&#x27;m just a bad businessman. Anyway, I feel trapped. I no longer get enjoyment from a thing that was, and is, my identity that I have crafted almost 20 years.<p>So dear HN, what&#x27;s next?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate",
+        "career",
+        "motivation",
+        "learned"
+      ],
+      "comments": []
+    }
+  ]
+}
