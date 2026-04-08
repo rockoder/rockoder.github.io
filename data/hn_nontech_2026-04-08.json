@@ -1,0 +1,1139 @@
+{
+  "scraped_date": "2026-04-08",
+  "source": "hacker_news",
+  "total_scraped": 114,
+  "nontech_count": 25,
+  "posts": [
+    {
+      "id": "47666024",
+      "title": "Show HN: Ghost Pepper – Local hold-to-talk speech-to-text for macOS",
+      "link": "https://github.com/matthartman/ghost-pepper",
+      "domain": "github.com",
+      "author": "MattHart88",
+      "score": 453,
+      "comment_count": 194,
+      "created_ts": 1775505016,
+      "is_internal": false,
+      "post_text": "I built this because I wanted to see how far I could get with a voice-to-text app that used 100% local models so no data left my computer. I&#x27;ve been using a ton for coding and emails. Experimenting with using it as a voice interface for my other agents too. 100% open-source MIT license, would love feedback, PRs, and ideas on where to take it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "This is great, and I'm not knocking it, but every time I see these apps it reminds me of my phone.\nMy 2021 Google Pixel 6, when offline, can transcribe speech to text, and also corrects things contextually. it can make a mistake, and as I continue to speak, it will go back and correct something earlier in the sentence. What tech does Google have shoved in there that predates Whisper and Qwen by five years? And why do we now need a 1Gb of transformers to do it on a more powerful platform?",
+          "author": "arkensaw",
+          "replies": [
+            {
+              "text": "It's the same model used for the WebSpeech API, which can operate entirely offline.\nGoogle mostly funded the training of this model around 10 years ago, and it's quite good.\nThere are many websites that are simple frontends for this model which is built into Webkit and Blink based browsers. However to my knowledge the model is a blob packed into the apps which is not open source, hence the no Firefox support.\nhttps://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_...\nhttps://www.google.com/intl/en/chrome/demos/speech.html",
+              "author": "pushedx",
+              "depth": 1
+            },
+            {
+              "text": "Microsoft OneNote had this back in 2007 or so, granted the speech to text model wasn't nearly as advanced as they are now.\nI was actually on the OneNote team when they were transitioning to an online only transcription model because there was no one left to maintain the on device legacy system.\nIt wasn't any sort of planned technical direction, just a lack of anyone wanting to maintain the old system.",
+              "author": "com2kid",
+              "depth": 1
+            },
+            {
+              "text": "I remember trying out some voice-to-text around 2002 that I believe was included with Windows XP.. or maybe Office?\nYou had to go through some training exercises to tune it to your voice, but then it worked fairly well for transcription or even interacting with applications.",
+              "author": "rudhdb773b",
+              "depth": 2
+            },
+            {
+              "text": "OS/2 had it built in in 1996.",
+              "author": "silon42",
+              "depth": 3
+            },
+            {
+              "text": "The accuracy is much lower though.\nI've switched away from Gboard to Futo on Android and exclusively use MacWhisper on MacOS instead of the default Apple transcription model.",
+              "author": "adamsmark",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice one! For Linux folks, I developed \nhttps://github.com/goodroot/hyprwhspr\n.\nOn Linux, there's access to the latest Cohere Transcribe model and it works very, very well. Requires a GPU though. Larger local models generally shouldn't require a subordinate model for clean up.\nHave you compared WhisperKit to faster-whisper or similar? You might be able to run turbov3 successfully and negate the need for cleanup.\nIncidentally, waiting for Apple to blow this all up with native STT any day now. :)",
+          "author": "goodroot",
+          "replies": [
+            {
+              "text": "How does it compare to the more well established \nhttps://github.com/cjpais/handy\n? Are there any stand out features (for either option)? What was the reason for writing your own rather than using or improving existing software?",
+              "author": "VorpalWay",
+              "depth": 1
+            },
+            {
+              "text": "Not sure I know what you mean by IR...\nBut in this case I built hyprwhspr for Linux (Arch at first).\nThe goal was (is) the absolute best performance, in both accuracy & speed.\nPython, via CUDA, on a NVIDIA GPU, is where that exists.\nFor example:\nThe #1 model on the ASR (automatic speech recognition) hugging face board is Cohere Transcribe and it is not yet 2 weeks old.\nThe ecosystem choices allowed me to hook it up in a night.\nOther hardware types also work great on Linux due to its adaptability.\nIn short, the local stt peak is Linux/Wayland.",
+              "author": "goodroot",
+              "depth": 2
+            },
+            {
+              "text": "IR was a typo, meant \"it\" (fixed it). I blame the phone keyboard plus insufficient proof reading on my part.\nIf this needs nvidia CPU acceleration for good performance it is not useful to me, I have Intel graphics and handy works fine.",
+              "author": "VorpalWay",
+              "depth": 3
+            },
+            {
+              "text": "It works well with anything. :)\nThat said: If handy works, no need whatsoever to change.",
+              "author": "goodroot",
+              "depth": 4
+            },
+            {
+              "text": "I've been running whisper large-v3 on an m2 max through a self-hosted endpoint and honestly the accuracy is good enough that i stopped bothering with cleanup models. The bigger annoyance for me was latency on longer chunks, like anything over 30 seconds starts feeling sluggish even with metal acceleration. Haven't tried whisperkit specifically but curious how it handles longer audio compared to the full model.",
+              "author": "LuxBennu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Speech-to-text has become integral part of my dev flow especially for dictating detailed prompts to LLMs and coding agents.\nI have collected the best open-source voice typing tools categorized by platform in this awesome-style GitHub repo. Hope you all find this useful!\nhttps://github.com/primaprashant/awesome-voice-typing",
+          "author": "primaprashant",
+          "replies": [
+            {
+              "text": "Can you explain how exactly dictation is used for development? I type about 120 WPM so typing is always going to be way faster for me than talking. Aside for accessibility, is dictation development for slower typers or is it more so you can relax on a couch while vibe coding? If this comes off as condescension it's not intended, I am genuinely out of the loop here.",
+              "author": "ArlenBales",
+              "depth": 1
+            },
+            {
+              "text": "I think most people can speak faster than 120 WPM. For example this site says I speak at 343 WPM \nhttps://www.typingmaster.com/speech-speed-test/\n, and I self-measure 222 WPM on dense technical text.",
+              "author": "KerrickStaley",
+              "depth": 2
+            },
+            {
+              "text": "Micro machines guy could be vibe coding at an absurd rate.",
+              "author": "thakoppno",
+              "depth": 3
+            },
+            {
+              "text": "My LLM types at 2k WPM. So I ise that to talk to my LLMs",
+              "author": "mememememememo",
+              "depth": 3
+            },
+            {
+              "text": "For me personally, it's not really about typing speed. While I can type pretty fast and most likely I speak faster than typing, but typing and dictating are just different way of doing things for me. While the end result of both is same, but for me it's just like different way of doing things and it's not a competition between the two.\nI regularly just sit down and often just describe whatever I'm trying to do in detail and I speak out loud my entire thought process and what kind of trade-offs I'm thinking, all the concerns and any other edge cases and patterns I have in my mind. I just prefer to speak out loud all of those. I regularly speak out loud for 5 to 10 minutes while sometimes taking some breaks in between as well to think through things.\nI am not doing it just for vibe coding, I'm using it for everything. So obviously for driving coding agents, but also for in general, describing my thoughts for brainstorming or having some kind of like a critique session with LLMs for my ideas and thoughts. So for everything, I'm just using dictation.\nOne other benefit I think for me personally is that since I'm interacting with coding agents and in general LLMs a lot again and again every day, I end up giving much more context and details if I'm speaking out loud compared to typing. Sometimes I might feel a little bit lazy to type one or two extra sentences. But while speaking, I don't really have that kind of friction.",
+              "author": "primaprashant",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://handy.computer/\n already exists?",
+          "author": "cupcake-unicorn",
+          "replies": [
+            {
+              "text": "I have a few qualms with this app:\n1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or CVS on the mounted filesystem. From Windows or Mac, this FTP account could be accessed through built-in software.\n2. It doesn't actually replace a USB drive. Most people I know e-mail files to themselves or host them somewhere online to be able to perform presentations, but they still carry a USB drive in case there are connectivity problems. This does not solve the connectivity issue.\n3. It does not seem very \"viral\" or income-generating. I know this is premature at this point, but without charging users for the service, is it reasonable to expect to make money off of this?",
+              "author": "semiquaver",
+              "depth": 1
+            },
+            {
+              "text": "I got that reference!",
+              "author": "Graziano_M",
+              "depth": 2
+            },
+            {
+              "text": "why does it need to generate money?",
+              "author": "MegagramEnjoyer",
+              "depth": 2
+            },
+            {
+              "text": "This is the reply that was posted when Dropbox was first shown off on HN. It's a joke :)",
+              "author": "morelikeborelax",
+              "depth": 3
+            },
+            {
+              "text": "ah I wasn't aware! thanks for explaining :D",
+              "author": "MegagramEnjoyer",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Thank you for sharing, I appreciate the emphasis on local speed and privacy. As a current user of Hex (\nhttps://github.com/kitlangton/Hex\n), which has similar goals, what are your thoughts on how they compare?",
+          "author": "charlietran",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47662945",
+      "title": "Show HN: GovAuctions lets you browse government auctions at once",
+      "link": "https://www.govauctions.app/",
+      "domain": "www.govauctions.app",
+      "author": "player_piano",
+      "score": 311,
+      "comment_count": 88,
+      "created_ts": 1775492506,
+      "is_internal": false,
+      "post_text": "I&#x27;ve long been into finding deals on government auction sites (seizures, surplus sales etc.) - right now for example San Diego DHS is selling 26 tons of lead shot, with bidding starting at $1,000 ¯\\_(ツ)_&#x2F;¯<p>It has historically been extremely tedious though: scanning dozens of janky sites which have interminable page loading times; back buttons take you all the way back to the homepage etc.<p>The site I built - GovAuctions - lets you search every government surplus auction at once. You can filter by location, category, and price, save items to a watchlist, and get alerts when new auctions match what you&#x27;re looking for.<p>Let me know what you think, if you have any suggestions, and if you find any deals in your area!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lead"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47666488",
+      "title": "A macOS bug that causes TCP networking to stop working after 49.7 days",
+      "link": "https://photon.codes/blog/we-found-a-ticking-time-bomb-in-macos-tcp-networking",
+      "domain": "photon.codes",
+      "author": "RyanZhuuuu",
+      "score": 161,
+      "comment_count": 102,
+      "created_ts": 1775506854,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "networking"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47661065",
+      "title": "The team behind a pro-Iran, Lego-themed viral-video campaign",
+      "link": "https://www.newyorker.com/culture/infinite-scroll/the-team-behind-a-pro-iran-lego-themed-viral-video-campaign",
+      "domain": "www.newyorker.com",
+      "author": "tantalor",
+      "score": 160,
+      "comment_count": 257,
+      "created_ts": 1775484069,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;archive.is&#x2F;73hcR\" rel=\"nofollow\">https:&#x2F;&#x2F;archive.is&#x2F;73hcR</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47680309",
+      "title": "Show HN: Gemma 4 Multimodal Fine-Tuner for Apple Silicon",
+      "link": "https://github.com/mattmireles/gemma-tuner-multimodal",
+      "domain": "github.com",
+      "author": "MediaSquirrel",
+      "score": 129,
+      "comment_count": 20,
+      "created_ts": 1775590625,
+      "is_internal": false,
+      "post_text": "About six months ago, I started working on a project to fine-tune Whisper locally on my M2 Ultra Mac Studio with a limited compute budget. I got into it. The problem I had at the time was I had 15,000 hours of audio data in Google Cloud Storage, and there was no way I could fit all the audio onto my local machine, so I built a system to stream data from my GCS to my machine during training.<p>Gemma 3n came out, so I added that. Kinda went nuts, tbh.<p>Then I put it on the shelf.<p>When Gemma 4 came out a few days ago, I dusted it off, cleaned it up, broke out the Gemma part from the Whisper fine-tuning and added support for Gemma 4.<p>I&#x27;m presenting it for you here today to play with, fork and improve upon.<p>One thing I have learned so far: It&#x27;s very easy to OOM when you fine-tune on longer sequences! My local Mac Studio has 64GB RAM, so I run out of memory constantly.<p>Anywho, given how much interest there is in Gemma 4, and frankly, the fact that you can&#x27;t really do audio fine-tuning with MLX, that&#x27;s really the reason this exists (in addition to my personal interest). I would have preferred to use MLX and not have had to make this, but here we are. Welcome to my little side quest.<p>And so I made this. I hope you have as much fun using it as I had fun making it.<p>-Matt",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": [
+        {
+          "top": "I run whisper large-v3 on an m2 max 96gb and even with just inference the memory gets tight on longer audio, can only imagine what fine-tuning looks like. Does the 64gb vs 96gb make a meaningful difference for gemma 4 fine-tuning or does it just push the oom wall back a bit? Been wanting to try local fine-tuning on apple silicon but the tooling gap has kept me on inference only so far.",
+          "author": "LuxBennu",
+          "replies": [
+            {
+              "text": "Hey I was literally just working on this today (I was racing ahead on an audio FT myself but OP beat me by a few hours). For audio inference definitely try running your input through VAD first to drop junk data and if necessary, as one of several preprocessing steps before sending the audio to the large model. You can check out how I did it here: \nhttps://github.com/accretional/vad/blob/main/pkg/vad/vad.go\nI was using \nhttps://huggingface.co/onnx-community/pyannote-segmentation-...\n because with ONNX, I could run it on Intel servers with vectorized instructions, locally on my Mac, AND in-browser with transformers.js\nVAD is absurdly time-effective (I think like O(10s) to segment 1hr of audio or something) and reduces the false positive rate/cost of transcription and multimodal inference since you can just pass small bits of segmented audio into another model specializing in that, then encode it as text before passing it to the expensive model.",
+              "author": "weitendorf",
+              "depth": 1
+            },
+            {
+              "text": "Great minds think alike!\nAlso, I had a huge head start, as I spent a month or two working on this in September 2025, shelved it and dusted it back off this weekend.",
+              "author": "MediaSquirrel",
+              "depth": 2
+            },
+            {
+              "text": "Excellent work still, your repo is much more robust and fleshed out and I am just beelining straight to audio LoRa not really knowing what I'm doing, as this is my first time attempting a ~real ML training project.\nI think in \nhttps://github.com/mattmireles/gemma-tuner-multimodal/blob/m...\n and \nhttps://github.com/mattmireles/gemma-tuner-multimodal/blob/m...\n and \nhttps://github.com/mattmireles/gemma-tuner-multimodal/blob/m...\n you have a superset of the various cludges I have in my finetuning repo, I'm going to study this and do what I can to learn from it. Really appreciate you sharing it here!\nDefinitely interested in swapping notes if you are though. Probably the biggest thing that came out of this exercise for us was realizing that Apple actually has some really powerful local inference/data processing tools available locally, they just are much more marketed towards application developers so a lot of them fly under the radar.\nWe just published  \nhttps://github.com/accretional/macos-vision\n to make it easy for anybody to use Apple's local OCR, image segmentation, foreground-masking, facial analysis, classification, and video tracking functionality accessible via CLI and hopefully more commonly in ML and data workloads. Hopefully you or someone else can get some use of it. I definitely will from yours!",
+              "author": "weitendorf",
+              "depth": 3
+            },
+            {
+              "text": "Look inside here: \nhttps://github.com/mattmireles/gemma-tuner-multimodal/tree/m...\nHere’s the trick: use Gemini Pro deep research to create “Advanced Hacker’s Field Guide for X” where X is the problem that you are trying to solve. Ask for all the known issues, common bugs, unintuitive patterns, etc. Get very detailed if you want.\nThen feed that to Claude / Codex / Cursor. Basically, create a cheat sheet for your AI agents.\nThis will unlock a whole new level of capability.\nI’m @mattmireles on Twitter — feel free to DM me.",
+              "author": "MediaSquirrel",
+              "depth": 4
+            },
+            {
+              "text": "Memory usage increases quadratically with sequence length. Therefore, using shorter sequences during fine-tuning can prevent memory explosions. On my 64GB RAM machine, I'm limited to input sequences of about 2,000 tokens, considering my average output for the fine-tuning task is around 1,000 tokens (~3k tokens total).",
+              "author": "MediaSquirrel",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’m pretty excited about the edge gallery ios app with gemma 4 on it but it seems like they hobbled it, not giving access to intents and you have to write custom plugins for web search, etc. Does anyone have a favorite way to run these usefully? ChatMCP works pretty well but only supports models via api.",
+          "author": "conception",
+          "replies": []
+        },
+        {
+          "top": "Nice! I've been wanting to try local audio fine-tuning. Hopefully it works with music vocals too",
+          "author": "craze3",
+          "replies": []
+        },
+        {
+          "top": ">  I had 15,000 hours of audio data\ndo you really need that much data for fine-tuning?",
+          "author": "mandeepj",
+          "replies": [
+            {
+              "text": "More data -> better, faster on-device models\nThe actual plan was to distill Gemini 2.5 Pro into the best on-device voice dictation model.\nPretty sure it would have worked. Alas.",
+              "author": "MediaSquirrel",
+              "depth": 1
+            },
+            {
+              "text": "Reasons for running local aside...\nWhat is the practical latency difference you see between on-device and, say, whisper, in streaming mode, over the internet? Seems that internet latency would be mostly negligible (assuming reasonable cell coverage), or at least compensated for by the higher end hardware on the other side?",
+              "author": "nomel",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Thanks for doing this. Looks interesting, I'm going to check it out soon.",
+          "author": "dsabanin",
+          "replies": [
+            {
+              "text": "you are welcome! It was a fun side quest",
+              "author": "MediaSquirrel",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47667504",
+      "title": "Ask HN: How do you handle marketing as a solo technical founder?",
+      "link": "https://news.ycombinator.com/item?id=47667504",
+      "domain": "news.ycombinator.com",
+      "author": "lazarkap",
+      "score": 117,
+      "comment_count": 85,
+      "created_ts": 1775511407,
+      "is_internal": true,
+      "post_text": "I&#x27;ve shipped multiple products over the past few years. Every single one followed the same pattern: build, post, get 12 likes from friends, a bit of organic traction, then nothing. Back to coding a new thing.<p>I know I need marketing help but giving equity to someone I met online feels like a huge risk. At the same time hiring a paid marketer when you have zero revenue feels just as scary. And I&#x27;m not dancing on TikTok, that&#x27;s for sure.<p>Have any of you actually taken on a marketing co-founder? What made you say yes to that person specifically? Was it their track record, the way they pitched, a trial period first?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "equity",
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "I solo founded a business and it just crossed 100K MRR (still solo). The trick is:\n1. Don't give up after the first month of no traction, if you can get at least 1 customer at this stage that is a good sign.\n2. Make contact with every customer you acquire, find out why they installed your product and what they want from it. Build any feature that they say is missing and offer the best customer support possible\n3. Repeat this for a period of time. Once you have more customers the circumstances will change but this how you go from 0 -> 1 and get some runway IMO",
+          "author": "jason_zig",
+          "replies": [
+            {
+              "text": "Good advice. Do you think the part of point two about building every feature request might be a bit risky for some solo folks?\nIt’s easy to get carried away building every request, especially with early adopters who likely aren’t actually invested yet but may be excited about their own vision for it.\nMy personal experience is that too much of it leads to the product becoming a sort of shapeless, unwieldy ooze. Or perfect for one customer and few others. Some things can be tough to undo later too, so you might end up supporting them a lot longer than you’d like.",
+              "author": "Alacart",
+              "depth": 1
+            },
+            {
+              "text": "I agree there needs to be a way to fit it into the overall product direction. Solving these on a case-by-case basis is important and part of the job.\nWhen I first started, getting customer reviews was my north star, so i would add any feature and hide them under \"advanced\" if they were ridiculously long-tail. Still worth it for the review and positive experience even if you hide the feature...",
+              "author": "jason_zig",
+              "depth": 2
+            },
+            {
+              "text": "How do you know what feature request to add, then? The ones suggested by multiple users independently?",
+              "author": "chistev",
+              "depth": 2
+            },
+            {
+              "text": "This hit at the right time.\nI just launched something and the first \nfew days have been quiet. \nReading this made me decide to keep going.\nPoint 1 especially. Thank you.",
+              "author": "Meld5792",
+              "depth": 1
+            },
+            {
+              "text": "100K MRR solo is insane, congrats.\nI think the \"Make contact with every customer\" hits hard here. I think a bunch of people forget they you talk to people more.\nNothing to say, great advice.",
+              "author": "lazarkap",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "So many people are victims of what I like to call the \"Field of Dreams Fallacy.\"\nAlso known as: If you build it, they will come.\nIn the real world, it doesn't matter in the slightest if you build the best product in the history of the universe. If you don't have the proper marketing and sales pipelines, you will lose to the product that does.\nThere was a great article on here a while back about VHS and Betamax. While Betamax was better by nearly every metric, it lost.\nSame for HD-DVD against BluRay. And for so many other great products that have died on the vine.\nI think this is actually a bigger problem with society as a whole than people notice. The majority of people think that an idea alone is as valuable as a business. People regularly tell themselves that if they would have come up with X, Y, or Z, then they'd be rich and successful. When in reality, the product or idea doesn't equate to success in the slightest.\nIt's the same thing that I'm sure a lot of you in tech see, where people say \"Can you make me an app?\" or \"We should start a tech company that does this one thing better than the other guy.\" And yet almost every single time I explain to them that there are 4,000,000 versions of their app already, and that it's still a business that requires significant effort, they act like it's my fault for not helping them or not believing in their idea.\nI've let millions of better ideas fade from memory without a second thought. Because I've learned that operating a successful business is an entirely different world from building a cool thing. The idea is the easy part. Everything after it is the actual work.",
+          "author": "Akuehne",
+          "replies": [
+            {
+              "text": ">There was a great article on here a while back about VHS and Betamax. While Betamax was better by nearly every metric, it lost.\nNot every measure. It could hold like half the recording as a VHS.\nThe “killer app” for video tapes was being able to record live TV when you weren’t home with timers on the players. VHS could record more without any intervention.\nIt also meant most movies could be watched all the way through without interruption.\nPeople didn’t care about the ever so slightly better quality of Betamax. They cared about getting their moneys worth and not being interrupted.\nThat’s why VHS won.",
+              "author": "Gagarin1917",
+              "depth": 1
+            },
+            {
+              "text": "\"The idea is the easy part\" is something I knew deep down but was too afraid to admit to myself. It's easier to keep building than to confront that everything after it is the actual work. Took me years and a few dead products to really accept that.\nI feel like Im in the process of swallowing that pill.",
+              "author": "lazarkap",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You seem to have missed the key step. Talk to customers before you build. Build what they need. Then have them talk to you to adjust things until you really nailed down the product that solves their needs, and then have them talk to their friends about how much you rock.\nMarketing comes later.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": "Strong agree here. I'm a non-technical founder.\nI tend to interview 30-50 people initially to find a gap in the market. If I'm into something (strong PMF), a good percentage of those people I interviewed will be future buyers.\nI typically have cascading meetings for the following steps:\n1 - is this 10X better than what currently exists\n2 - does our prototype look 10X better\n3 - does our v1 solve the gap we found\n4 - what features do we need to build in order to get you to pay for it\n5 - what features do we need to get you to refer us to 3 friends\nA meeting for each of those goals typically leads to customers (again, if I've found PMF).",
+              "author": "collin128",
+              "depth": 1
+            },
+            {
+              "text": "How do you usually find the people you interview?",
+              "author": "ericd",
+              "depth": 2
+            },
+            {
+              "text": "You can use a platform like Respondent to recruit extremely specific demographics. It's not cheap, but if you're strategic with your interview questions you can get really concrete directional signals with as few as five participants.",
+              "author": "redbonsai",
+              "depth": 3
+            },
+            {
+              "text": "Ah very cool, thanks for the pointer!",
+              "author": "ericd",
+              "depth": 4
+            },
+            {
+              "text": "I'm in sales. This is going to sound shallow and tautological, but you find the people to interview for Product Market Fit by looking for the people you THINK are the ideal customers.\nIf you can't find your target market, you might want to consider a different demographic that you understand better. Most successful startup founders started a business specifically to solve the problems they dealt with at their last job. They understand their product market fit because they ARE their target market.",
+              "author": "abadar",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "In a similar situation and I understand where you're coming from. Although I have not taken on a Marketing co-founder, I have had a number of important and revealing conversations that I've learned a lot from.\n1. Make sure the market for your product exists before you make it. This is counterintuitive to builders like myself and probably you. building is what I'm good at, and I know what I'm making adds value, but that doesn't mean others will see that value.\n2. Kinda goes with #1, but talk to as many people as possible in the market you are considering a product for and learn what their problems and pain points are so you can solve them. If you can relieve someone's pain, the marketing will do itself. It's hard to even get the conversations, but each one is helpful, even if it's telling you something you don't want to hear.\n3. Focus on gaining external interest, not necessarily revenue. Again, hard, but a pilot or partnership with another startup or small business can go along way and showing value to future investors or customers.\n4. Talk to and learn from other founders. Your already doing this, but there are nuggets of information that can help even if it's just a slight change of perspective.\n5. Keep your head up. It's a slog and it's brutal, but it's a marathon.\nI'm still working on all these things myself, so you're not alone. The realization that a good product without a market is nothing, was a big revelation for me (and in hindsight makes me feel like an idiot). I honestly thought if you solve a hard enough problem or built a good enough product that the rest would fall in line, but that was not the case, but I'm not ready to give up yet.",
+          "author": "lyfeninja",
+          "replies": []
+        },
+        {
+          "top": "What's the product?\nI found the only thing that reliably works is direct sales. Find people that could potentially use your product and message them. Find them in forums, chats, email, LinkedIn, wherever.\nIf I had something I was into or did and someone took the time to reach out to me to try to show me something they built in a personal way, I would definitely be receptive.\nOnline stuff is cheap. I built products, posted on Reddit and had literally thousands of people come to my site. Not one person bothered to go to the home page and ask \"what is this product\". And this was when there were a lot fewer bots and scrapers. No ones going to use your product because he saw some crap on TikTok. It's cheap engagement",
+          "author": "bko",
+          "replies": [
+            {
+              "text": "Platform where technical founders post their live products and marketers pitch to join as co-founders or paid partners. Built it because I kept running into the exact problem in my post. Not live yet but close.\nI think I am definitely gonna try the direct sales approach, to try and fill out the platform once its ready.",
+              "author": "lazarkap",
+              "depth": 1
+            },
+            {
+              "text": "> No ones going to use your product because he saw some crap on TikTok. It's cheap engagement\nIf your product is a wellness product or app, that's like catnip for a TikTok influencer. If it's a B2B SaaS, probably the opposite.",
+              "author": "kmoser",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47681112",
+      "title": "Show HN: An interactive map of Tolkien's Middle-earth",
+      "link": "https://middle-earth-interactive-map.web.app/",
+      "domain": "middle-earth-interactive-map.web.app",
+      "author": "frasermarlow",
+      "score": 99,
+      "comment_count": 20,
+      "created_ts": 1775594557,
+      "is_internal": false,
+      "post_text": "An interactive map of Tolkien’s Middle-earth, with events from across the legendarium plotted as markers.<p>I have been commuting a fair bit between the East and West coast, and thanks to American Airlines&#x27; free onboard WiFi, I was able to vibe-code a full interactive map of Middle-earth right from my economy seat at the back of the bus.<p>It&#x27;s rather amazing how much an LLM knows about Tolkien&#x27;s work, and it was fun to delve into many of the nooks and crannies of Tolkien&#x27;s lore.<p>Some features:\n- Plot on the map the journey of the main characters in both The Hobbit and The Lord of the Rings.\n- Follow a list of events in the chronological Timeline\n- Zoom in on the high-def map and explore many of the off-the-main-plotline places\n- Use the &#x27;measure distances&#x27; feature to see how far apart things are.<p>I also had a lot of fun learning about tiling to allow for efficient zooming.<p>If you are anything like me, this should provide a fun companion to reading the books or watching the movies (note that on this site, I followed the book narrative, and did not include Peter Jackson&#x27;s many departures)<p>If you get the chance to check it out, I would love more feedback, and if there is demand, I might do the same for Game of Thrones.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "I notice the map is the one from the movies (it shows the Orocarni a bit too close, but it's nice they appear on the map).\nMaybe when describing historical events you should also put the year (it is given only for some of them).\nAnyway, very nice work! I think it's appropriate especially for casual fans (especially movie fans) to delve (sorry) deeper into the lore.",
+          "author": "bananaflag",
+          "replies": [
+            {
+              "text": "Hey thanks.  Good call, I will have Claude figure out the years for each event that can be pinned down.",
+              "author": "frasermarlow",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Arda was supposed to be drastically changed after the First Age. This map is from the Second/Third Ages. Do the events from the First Age map currently into what is shown? Do some have to be excluded?",
+          "author": "blevinstein",
+          "replies": [
+            {
+              "text": "Well I included 13 Silmarillion events, but most are actually Second Age events that map perfectly fine. Three of them are First age so it's a bit fudgy. \nThe project has no Beleriand events... they literally cannot be placed because Beleriand sank beneath the sea after the War of Wrath.\nCuiviénen it tricky.  The Sea of Helcar where it sat was reshaped when Morgoth's strongholds were taken out, so that is approximate.\nWould love to make age-appropriate (ha ha) maps, but I only had this one to work from.",
+              "author": "frasermarlow",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Would love just for fun to feed this through an image generator to make it look like satellite imagery or maybe even Google Maps.",
+          "author": "pants2",
+          "replies": [
+            {
+              "text": "The original map was found here: \nhttps://www.reddit.com/r/lotr/comments/18fy0ga/middleearth_m...\n - give it a whirl!",
+              "author": "frasermarlow",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Anyone know a decent place where I can buy a giant print of this for my wall?",
+          "author": "imwally",
+          "replies": [
+            {
+              "text": "Good question.  Check out Reddit - that is where I found the original.  I understand it was made for the movies but I have not been able to locate the exact source or a place to order it from.",
+              "author": "frasermarlow",
+              "depth": 1
+            },
+            {
+              "text": "The source image is here if it helps - \nhttps://i.redd.it/r8403tg0wo5c1.jpeg\n.",
+              "author": "frasermarlow",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Using a tile server for this feels hilarious",
+          "author": "shdh",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47676557",
+      "title": "Moving fast in hardware: lessons from lab to $100M ARR",
+      "link": "https://blog.zacka.io/p/simplify-then-add-lightness-bc4",
+      "domain": "blog.zacka.io",
+      "author": "rryan",
+      "score": 97,
+      "comment_count": 22,
+      "created_ts": 1775574458,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lessons"
+      ],
+      "comments": [
+        {
+          "top": "Fun read but a bit too much fluff? I was a design MechE for about a decade and I’m by no means as successful as the OP. But I have worked on a 5 person design team that had an annual net revenue of 30M and another job where I worked on 25M+ contract with just a team of 2, me and my mentor at the time. End of the day, hardware execution is hard and there’s a ton of product development cycle theories, you just need a culture with what I call good engineering discipline. Good communication, good documentation, and realistic milestones with accountability.",
+          "author": "syntaxing",
+          "replies": [
+            {
+              "text": "Fluff? It is written by a chatbot.",
+              "author": "doctorpangloss",
+              "depth": 1
+            },
+            {
+              "text": "That’s why I’m a huge proponent of pushing the idea of engineering discipline. And like any organization, discipline comes from the top to bottom. Coming from bottom to top is just a recipe for disaster and clear tell sign of misaligned objectives between management and the engineers.",
+              "author": "syntaxing",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I think Clearmotion has a very interesting technology and product (ride stabilization), but let's paint a full picture here: the company was founded in 2009, took on $370 million in funding, and only recently landed large contracts (a $1 billion dollar deal in 2023 with Chinese auto manufacturer, Nio).\nI'm sure they were in a constant struggle for survival and had to \"move fast\" to stay afloat, but their technology is more than a decade in the making.",
+          "author": "roadbuster",
+          "replies": [
+            {
+              "text": "I would venture a guess that there is little interest in adding complexity to the humble shock absorber. A simple passive mechanical system is replaced with a complex servomechanism featuring sensors and actuators which live a hard life under a car.\nWhat is the longevity vs a passive system? How much is it to service vs standard suspension? How much does this change the overall suspension design? How much weight does it add? I bet the answers to those questions since 2009 were not at all enticing to automotive designers or bean counters.\nPersonally, I would not want such a system on my car. It sounds like another expensive maintenance item you have to deal with that adds little or no value.",
+              "author": "MisterTea",
+              "depth": 1
+            },
+            {
+              "text": "I think the super long timelines in automotive make it really hard to succeed. Really impressed with what ClearMotion accomplished given that",
+              "author": "rryan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice read but falls into a vast reductionist trap,  a lot of survivorship bias dressed up as design philosophy or strategic bets.  The context of decisions made decades ago != now, people were working under different constraints etc.  Trying to frame the avionics example as the \"subtractive\" innovation is the most egregious, transistors were over 1000x times smaller, weight wasn't even a consideration.",
+          "author": "bfeynman",
+          "replies": [
+            {
+              "text": "> a lot of survivorship bias dressed up as design philosophy or strategic bets\nI wish more people realized this",
+              "author": "esseph",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm mostly curious how much of that revenue is \nactual\n ARR, which is to say contractually recurring. It is pretty dang rare for a hardware company to have nontrivial ARR.",
+          "author": "AbrahamParangi",
+          "replies": [
+            {
+              "text": "automotive contracts are typically on 6 year cycles, so tech gets designed into a new car and it's locked in until the next vehicle generation (5-7 years depending on the automaker). year to year sales can fluctuate but are fairly predictable.",
+              "author": "zacka",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Outsource the mature, insource the uncertain is very true. A lot of startups outsource precisely the part of the system they understand least, but that is oftentimes the worst possible decision.",
+          "author": "3dxsys",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47665194",
+      "title": "Zooming UIs in 2026: Prezi, impress.js, and why I built something different",
+      "link": "https://news.ycombinator.com/item?id=47665194",
+      "domain": "news.ycombinator.com",
+      "author": "tinchox6",
+      "score": 94,
+      "comment_count": 43,
+      "created_ts": 1775501595,
+      "is_internal": true,
+      "post_text": "There are essentially two established ways to use zooming in web interfaces today. They serve different purposes and make different tradeoffs. I built a third one, so I&#x27;ll try to be fair about what each does well and where it falls short.<p>* Prezi\nPrezi pioneered the zooming canvas for presentations and remains the market leader in that space. It recently added AI-powered generation and text editing tools. It&#x27;s a polished product with real traction.<p>But Prezi is a closed platform, not a library. You can&#x27;t use its zoom engine in your own app. Pricing starts at $15&#x2F;month for meaningful features, and exporting to PowerPoint flattens all zoom effects into static slides. A recurring complaint from users is that the zooming and panning transitions cause motion sickness. And fundamentally, Prezi uses zoom as a storytelling device between pre-arranged frames. It&#x27;s not a navigation model. It&#x27;s a presentation model.<p>* impress.js\nimpress.js brought Prezi-like zooming to the open web. It&#x27;s a presentation framework based on CSS3 transforms and transitions, directly inspired by Prezi. It was genuinely groundbreaking when it launched.\nIts architecture is step-based: you position &quot;steps&quot; in 3D space and the camera moves between them. That&#x27;s great for presentations, but it doesn&#x27;t help you build an app where users navigate by zooming into content. impress.js has no concept of dynamically mounting views, managing zoom depth, or handling navigation state. It&#x27;s a slide deck engine with a zoom trick.<p>* Zumly\nThis is what I built. Full disclosure: I&#x27;m the sole developer.\nThe idea is offering an alternative to traditional page navigation using zooming. You mark an element as zoomable, point it to a view, and Zumly handles the transition and inserts new views. That&#x27;s basically it.<p>I started Zumly in 2020 after leaving behind Zircle UI (a Vue zooming library), trying to take what I learned further. Framework-agnostic, focused just on the zoom part. Since then I&#x27;ve rewritten the engine several times, changed the approach more than once. Only now I&#x27;m actually happy with how it feels.<p>Views are dynamically mounted and unmounted during zoom transitions. In impress.js, all steps exist in the DOM simultaneously. In Zumly, you zoom into a trigger element, and the target view gets injected and scaled into place. This is closer to how routing works in SPAs than to how slide decks work.<p>The landing page is built with Zumly itself so you can get the feel before touching any code.<p>Curious if anyone else has thought about this space. What makes zooming UIs work or fail?<p>Landing page (built with Zumly): https:&#x2F;&#x2F;zumerlab.github.io&#x2F;zumly<p>GitHub: https:&#x2F;&#x2F;github.com&#x2F;zumerlab&#x2F;zumly",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47674749",
+      "title": "Hybrid Attention",
+      "link": "https://news.ycombinator.com/item?id=47674749",
+      "domain": "news.ycombinator.com",
+      "author": "JohannaAlmeida",
+      "score": 38,
+      "comment_count": 8,
+      "created_ts": 1775567188,
+      "is_internal": true,
+      "post_text": "TLDR: Forked pytorch and triton internals . Changed attention so its linear first layer , middle quadratic layer, last linear layer\nInference got much faster with a low perplexity hit in tests .<p>Full attention O(n²): 17.96s &#x2F; 5.6 tok&#x2F;s<p>HybridAttention O(n·W + n·D): 0.35s &#x2F; 286.6 tok&#x2F;s<p>I have been building a small Rust focused language model from scratch in PyTorch. This is not a finetune. It is byte level, trained from random initialization on a Rust heavy corpus assembled here: https:&#x2F;&#x2F;codeberg.org&#x2F;JohannaJuntos&#x2F;Sisyphus<p>Model and training setup<p>The model has 25.6M parameters with a 512 context length. It uses a byte level vocabulary of 256, with 8 layers, 8 heads, and 512 dimensional embeddings. Positional embeddings are learned and the embedding and LM head weights are tied.<p>Training ran for 30k steps on a 173.5M byte Rust corpus using a single RTX 4060 Ti 8GB.<p>Final metrics were a train loss of 0.5834, validation loss of 0.8217, and perplexity of 2.15. The best validation loss occurred around step 18.5k, which suggests some late overfitting or plateau.<p>Architecture<p>The model is a GPT style decoder, but replaces standard full attention with a HybridAttention block in each layer. This combines local windowed causal attention with a GRU like recurrent state path, along with a learned gate that mixes the two.<p>The local path handles short range syntax, while the recurrent path carries compressed long range state. The gate bias is initialized to favor local attention early in training.<p>Inference uses Triton kernels and custom torch.library ops.<p>Corpus<p>The biggest gain came from corpus expansion.<p>The run started with about 31MB from Rust official sources and major projects such as rustc, cargo, rust analyzer, tokio, serde, ripgrep, clap, and axum. The corpus was expanded to 173.5M bytes by cloning the top 500 crates, with 461 successful clones.<p>This expansion had more impact than any architectural change.<p>Inference performance<p>Full attention runs at about 5.6 tokens per second, while HybridAttention with KV cache reaches 286.6 tokens per second. This is about a 51x speedup with no visible quality loss.<p>The KV cache uses a hot window of 64 tokens in VRAM, while older tokens are compressed to 8 bit magnitude and angle and can be selectively promoted back to full precision. This changes the effective complexity from quadratic to near linear for this setup.<p>Quality<p>Surface Rust syntax looks decent, and imports and function signatures are often plausible. Semantics are still weak, and repetition and recursive patterns are common. It looks like Rust, but does not reason well yet.<p>What seems interesting<p>This project combines byte level Rust only pretraining from scratch, a hybrid local attention and recurrent architecture, large scale corpus expansion across the Rust ecosystem, and a practical KV cache paging strategy that delivers large speedups on consumer GPUs.<p>Next steps<p>I plan to run ablations comparing hybrid attention against local only and recurrent only variants, evaluate checkpoints around 18.5k versus the final model, and add syntax level validation such as parsing and compiling generated code. I also want to explore scaling context length from 256 up to 2048 and test whether switching from byte level to BPE becomes worthwhile now that the corpus is larger.<p>Questions<p>For small code models, which evaluations have been most useful beyond perplexity?<p>Has anyone seen hybrid local plus recurrent attention work well for code generation?<p>Given this setup, would you prioritize more tokens, longer context, or clean ablations first?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": [
+        {
+          "top": "I've been interested in faster attention and smaller models for some time but haven't had the time to do serious research so I can't answer your questions.\nHowever, everything you do sounds very interesting, useful and well thought out,  please keep doing it, I'd encourage others to work in the same direction too.\nI hope, more of us can find the time for more than best wishes in the near future.",
+          "author": "bigbadfeline",
+          "replies": []
+        },
+        {
+          "top": "Full attention O(n²): 17.96s / 5.6 tok/s\nHybridAttention O(n·W + n·D): 0.35s / 286.6 tok/s",
+          "author": "JohannaAlmeida",
+          "replies": []
+        },
+        {
+          "top": "Is this for just like auto complete, because you are not going to get anything very useful out of a code-only training set.",
+          "author": "empath75",
+          "replies": [
+            {
+              "text": "Yeah auto complete is an amazing use case. I needed a small model that used transformers , could fit on my weak consumer GPU .\nSo i needed to make fundamental arquitecture changes .Do some KV cache tricks.\nAnd then prove the new arquitecture was faster with benchmarks and perplexity was acceptable.",
+              "author": "JohannaAlmeida",
+              "depth": 1
+            },
+            {
+              "text": "Well, coding is a kind of extended autocomplete -  I prefer that way of working because I don't like the mess created by LLMs when you let them work on their own. Smaller models, specialized on a single language, make a lot of sense.",
+              "author": "bigbadfeline",
+              "depth": 1
+            },
+            {
+              "text": "I think it's more a proof of concept: locally trained. It would take lots of resources/time to train something non-trivial.",
+              "author": "altruios",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Look into RWKV.",
+          "author": "woodson",
+          "replies": [
+            {
+              "text": "Yeah RWKV is definitely related in spirit (recurrent state for long context). Here I’m combining local windowed attention with a gated recurrent path + KV cache compression, so it’s more hybrid than fully replacing attention",
+              "author": "JohannaAlmeida",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47644774",
+      "title": "Write Your Own Copy",
+      "link": "https://news.ycombinator.com/item?id=47644774",
+      "domain": "news.ycombinator.com",
+      "author": "operatingthetan",
+      "score": 31,
+      "comment_count": 17,
+      "created_ts": 1775347079,
+      "is_internal": true,
+      "post_text": "Every day I&#x27;m seeing people making websites for the sole purpose of posting to HN, and it&#x27;s all AI.  The site, the words, the ideas.  Obviously that person had the idea to begin with, but the execution is slop.<p>These people are putting their names on this stuff, and everyone in the world right now is learning to recognize the tells of AI writing.  The tone, the abstractness, the specific phrasing.  We all know it.  It&#x27;s a turn off.<p>So my idea is simple: write your own copy.  That&#x27;s an advantage now.  It&#x27;s becoming scarce today.  Be real. Whatever that means to you.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "I’m genuinely impressed by the speed of mass slopification raising the toxicity of the whole internet.\nAnd now poisoning human attention and the very ability to reason. At scale.\nMakes me think of Kali Yuga, the age of ignorance.\nAre we doing this to ourselves? Is it being done to us? Is it some kind of self destruct implanted by aliens in a dark forest scenario?\nIt’s just… really fascinating.\nAlso reminds me of this - story\nhttps://www.lightspeedmagazine.com/fiction/different-kinds-o...",
+          "author": "andrei_says_",
+          "replies": []
+        },
+        {
+          "top": "You're right, and it's getting exhausting.\n- generated by GPT",
+          "author": "lgq",
+          "replies": []
+        },
+        {
+          "top": "As a non-native English speaker this hits a nerve. AI writing is tempting because \"good English\" felt like a gatekeeping thing. But I've noticed when I just write in my own broken-but-real voice, people actually engage more. Polished AI copy reads like nobody home.",
+          "author": "Xiaoher-C",
+          "replies": []
+        },
+        {
+          "top": "For those who want to get better at writing, the easiest way is to read judiciously. Of course you do have to practice what you want to become good at as well.\nFor marketing copy, have conversations with users. They will give you the perspectives, pitches, and parlance you seek.",
+          "author": "verdverm",
+          "replies": [
+            {
+              "text": "Handwriting (copying word for word) good copy is also a great way to become a good copywriter.",
+              "author": "bhag2066",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "More fundamentally, in writing it out, I have to clarify my own thoughts.  The worst problem with AI writing isn't that, as Xiaoher-C said, \"AI copy reads like nobody home\" (beautifully said), and so nobody reads it.  The worst problem is that \nyou don't have to clarify your own thoughts and ideas\n.  There is a cost \nto you\n in that.",
+          "author": "AnimalMuppet",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47642541",
+      "title": "Ask HN: How Do You Relax?",
+      "link": "https://news.ycombinator.com/item?id=47642541",
+      "domain": "news.ycombinator.com",
+      "author": "azeirah",
+      "score": 22,
+      "comment_count": 26,
+      "created_ts": 1775331444,
+      "is_internal": true,
+      "post_text": "Bit of a different question than most of what usually gets discussed on HN, but I find myself occupied with work a lot and while I enjoy it a lot, it&#x27;s draining.<p>On top of that, I have ADHD, which makes it more difficult for me to really relax.<p>What do you do for relaxation?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I walk to the park during slow hours, sit on a bench, wait for a bunch of sparrows to come, and then I give them some sunflower seeds. Sometimes -but not often- a magpie will approach too. You \nhave\n to be quiet for birds to come near and fairly calm for them to approach you at all.\nOthers can only be spotted from a distance. Wagtails are quite timid but can be seen running around sometimes, and the blackbirds can be \nheard\n a lot even if you don't see them. I've also spotted a couple of woodpeckers. And once the park fell suddenly still and I looked up and there was a kite passing by (they have been spotted nesting in a much larger park a couple of miles away).\nIf the park is busy, then I'll watch the dogs, people going by. I ponder about the futility of life. Just sit there silently, doing nothing.",
+          "author": "genezeta",
+          "replies": [
+            {
+              "text": "This sounds lovely! This definitely sounds like the kind of thing that would really work well to let all the stresses of the everyday wash off!\nIt reminds me a lot of the YouTube channel \"life in jars\", he normally makes videos about microbiology and freshwater ecology in... jars!\nBut on top of that he also had a short series on gaining the trust of and befriending crows in his city.\nGood incentive for me to try this out!",
+              "author": "azeirah",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "- Programming and/or documenting personal projects\n- Tabletop games, though probably 90% of this means either tinkering with games (as opposed to playing them, e.g. creating inserts or new pieces for them) and/or hanging out on BoardGameGeek dot com.\n- Reading, mostly anthologies of fiction from Wildside Press which collect many works from the early/mid 20th century, purchasable DRM-free for $1-2 each (for anywhere from 300 to 1500 pages). (Not associated with them, but am a long-time happy customer.)",
+          "author": "sgbeal",
+          "replies": [
+            {
+              "text": "> \nhanging out on BoardGameGeek dot com\nWhat does this entail?",
+              "author": "gaws",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My job is social and deadline driven. Here's what works for me:\nLifting some weights in a deserted gym - no music or people.\nStretching for 20 minutes before bed each day.\nGetting a full night's sleep.\nGoing to a favourite restaurant once or twice a week. The rest of the time a simple, high fibre diet with lots of water, no alcohol, cigarettes or drugs.\nDoing a part-time postgraduate course to boost some depth and variety to the often-times surface-level demands of \nwork\n work.",
+          "author": "throwaway5465",
+          "replies": []
+        },
+        {
+          "top": "I go watch trains.  I often wander around while I'm waiting for a train to show up.  I think about things, pray, look around.  Sometimes I bring a book to read.\nI play ultimate frisbee.  The read-and-react way you play that game was a nice reset from the push-my-brain-through-concrete-walls character of my work.\nBefore I retired, I started taking smoke breaks at work.  I don't smoke, but if smokers can go outside for 15 minutes, so could I.",
+          "author": "AnimalMuppet",
+          "replies": []
+        },
+        {
+          "top": "When i feel i need to totally turn off, I'll turn on a podcast of something im somewhat interested in, and play a game that commands just a slight amount of attention, and pay a slight amount of attention to both things.",
+          "author": "sidrag22",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47651140",
+      "title": "Ask HN: Where are all the disruptive software that AI promised?",
+      "link": "https://news.ycombinator.com/item?id=47651140",
+      "domain": "news.ycombinator.com",
+      "author": "p-o",
+      "score": 20,
+      "comment_count": 18,
+      "created_ts": 1775407184,
+      "is_internal": true,
+      "post_text": "It may sound obtuse, but I&#x27;m genuinely curious. I understand that AI as an assistant can be empowering, but the way AI was sold to the masses was that it would replace everyone and everything.<p>It would allow small team to increase their velocity 10-fold. And I can see a glimpse of that here too where so many posts and comments share how much AI transformed one&#x27;s life.<p>So my question is, if AI is such a game changing platform, where are the apps? I&#x27;m still using the same stuff as I did before, I don&#x27;t see much disruption in any field. Am I just impatient?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "No, you're not! It's only a matter of attention. Today all eyes are on the LLM itself, but the big change is happening underground. I'm not a developer — I'm just a curious arborist who owns a company that prunes trees in Italy. In 4 months we have totally changed our company with the help of AI. AI, LLMs are just tools. It's the use that changes the output!",
+          "author": "pmaroe",
+          "replies": [
+            {
+              "text": "Suspicious emdash, new account, gushingly positive about AI.\nWeird.",
+              "author": "OccamsMirror",
+              "depth": 1
+            },
+            {
+              "text": "Strange, even",
+              "author": "AstroBen",
+              "depth": 2
+            },
+            {
+              "text": "That sounds really interesting. Could you elaborate a bit more on how AI has helped you to fundamentally change your company?",
+              "author": "fideli0",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": ">  if AI is such a game changing platform\nAgain, you need to question the premise. Perhaps all the sales and hype you heard simply wasn't true?\nIn reality, many organizations have already implemented the AI-based improvements to their systems that they need. That work is done, people are enjoying it. The AI vendors want to take it farther. Some coders want to take it farther. Some leaders are pushing it due to FOMO. But \"the masses\" do not want more. Step outside of the tech silos, and you'll find that most people do not want more AI than we already have.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": "Makes total sense. Consumer UX relies on pure determinism. When I click \"Save\", I know exactly what's going to happen. When I type a prompt into an \"AI agent\", I'm basically playing roulette every single time. Until we figure out how to wrap these probabilistic models inside rigid, predictable UX patterns, the mainstream crowd is going to keep treating AI like an annoying toy instead of an actual tool",
+              "author": "veunes",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Because AI only drove down the cost of writing code, not the cost of finding Product-Market Fit. Sure, you can spin up another Notion or Jira clone over the weekend using Cursor or Claude Code now. But getting users to actually migrate their data, change their workflow habits, and pay for it is just as brutally hard as it was a decade ago. Code is just a cheap commodity now, while distribution and trust have become exponentially more expensive",
+          "author": "veunes",
+          "replies": [
+            {
+              "text": "For me another Notion or Jira is not \"disruptive software\" I would expect disruptive software to be so... well, disruptive, as to fit a completely new niche or be so overwhelmingly better than their competitors that it doesn't even need good marketing.",
+              "author": "dysoco",
+              "depth": 1
+            },
+            {
+              "text": "I don’t think that code is that cheap either. Can we vibe code a new Notion? I doubt it. We probably can come up with a decent simulation, but I don’t think we can vibe code a Notion/Confluence/Slack that can handle millions of users in a performant way",
+              "author": "sdevonoes",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The signals are there but the usefulness/blast radius is being limited to \"I'm not a software developer but I have this specific issue I need to write software to solve. I've done that and here is a Linkedin post explaining what it is and how I did it.\"\nI think we're looking at the wrong demographic/professional sector and throwing up our hands. You have to look at people who don't have as much professional experience with it because everyone you didn't write software in the 2010's is writing it now.",
+          "author": "RationPhantoms",
+          "replies": []
+        },
+        {
+          "top": "- I'm seeing lots of internal apps to help our customer success teams.\n- I'm seeing prototypes escape Figma and live as code for a faster/closer demo experience for product managers.",
+          "author": "kingkongjaffa",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47633568",
+      "title": "Anthropic to limit Using third-party harnesses with Claude subscriptions",
+      "link": "https://news.ycombinator.com/item?id=47633568",
+      "domain": "news.ycombinator.com",
+      "author": "guiyuwei",
+      "score": 19,
+      "comment_count": 8,
+      "created_ts": 1775258038,
+      "is_internal": true,
+      "post_text": "Starting April 4 at 12pm PT &#x2F; 8pm BST, you’ll no longer be able to use your Claude subscription limits for third-party harnesses including OpenClaw. Instead, they’ll require extra usage.<p>Your subscription usage still covers all Claude products, including Claude Code and Claude Cowork. To keep using third-party harnesses with your Claude plan, enable extra usage for your account. This will be enforced April 4 starting with OpenClaw, but this policy applies to all third-party harnesses and will be rolled out to more shortly (read more).<p>To make the transition easier, we’re offering a one-time credit for extra usage equal to $200 on your Team plan. Redeem your credit by April 17. We’re also introducing discounts when you pre-purchase bundles of extra usage (up to 30%) for your team.<p>We’ve been working to manage demand across the board, but these tools put an outsized strain on our systems. Capacity is a resource we manage carefully and we need to prioritize our customers using our core products. We appreciate your support as we make these changes.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I feel they should leave an opening for claws that use the Claude code sdk (like nanoclaw) because they will still operate on behalf of the main user. The same rate limits can apply as for CC, so why not?\nOr even let us maybe use haiku only with claws?\nBut if this becomes a hassle, I won’t mind giving my $200/month to OpenAI instead.\nCuz for whatever reason, they seem to have way higher quotas even in the $20 plan.\nTime for nanoclaw to add an adapter to work with other SDKs.",
+          "author": "atonse",
+          "replies": []
+        },
+        {
+          "top": "There’s quite a large misconception that third party harnesses are banned. Anthropic specifically said the agent sdk is still allowed, as long as you build on top of it - you can create really powerful software that drives Claude code in an efficient, performant way other than the raw Claude code terminal app\n\nhttps://x.com/bcherny/status/2040207998807908432?s=48",
+          "author": "moropex",
+          "replies": []
+        },
+        {
+          "top": "Does this affect editor integrations that use the SDK for ACP support via claude-agent-acp¹, like Zed's Claude integration and Emacs' agent-shell?\n--\nhttps://github.com/agentclientprotocol/claude-agent-acp/rele...",
+          "author": "pxc",
+          "replies": []
+        },
+        {
+          "top": "Could've allowed us to use Haiku, Anthropic be reducing cc limits the same speed they're launching features.",
+          "author": "cloaky233",
+          "replies": []
+        },
+        {
+          "top": "Discussion (655 points, 1 month ago, 793 comments) \nhttps://news.ycombinator.com/item?id=47069299",
+          "author": "gnabgib",
+          "replies": [
+            {
+              "text": "More recent \nhttps://news.ycombinator.com/item?id=47633396",
+              "author": "sathyabhat",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47654062",
+      "title": "Ask HN: Any Interesting Niche Hobbies?",
+      "link": "https://news.ycombinator.com/item?id=47654062",
+      "domain": "news.ycombinator.com",
+      "author": "e-topy",
+      "score": 18,
+      "comment_count": 20,
+      "created_ts": 1775424619,
+      "is_internal": true,
+      "post_text": "I&#x27;m looking for something novel and interesting, that isn&#x27;t absolutely crowded that I could meaningfully contribute to.<p>In 2022 I was toying around with OpenAI&#x27;s RL Gym, right when the first non-instruct GPT3 model came out. I was thinking about getting into ML a lot more, but hesitated.\nBefore that it was 3D printers, mechanical keyboards, drones, etc.\nAll of these have exploded, and while they are still very interesting, I do love my Browns and manage Prusas for my local hackerspace, they have just, for the lack of a better term, industrialized.\nI&#x27;m also now in a position where I have time and money for it, not like when I was 15 and rating Ender motherboard upgrades I knew I&#x27;d never buy.<p>Right now I&#x27;m making a chess engine, but that&#x27;s already a solved problem.\nThere&#x27;s also biohacking, and while designing chips to go into my body is really interesting, I only have one, and don&#x27;t want to push it too far.\nOne promising idea is a kind of &#x27;Personal Computer 2&#x27;, where people try to innovate HCI, and while I really like that and do have some research ideas, I&#x27;d like to explore a bit more before delving deep into it.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "My hobby is organizing in-person meetups for random people to get together, chat and make friends. Barely structured, if at all. I've found this rewarding and ended up making friends this way.\nYou have to accept that 5-15% of the people who would show up to something like this are genuine weirdos you probably don't want to be around. And another 10% at any given meetup are autistic or neuro-divergent but well-meaning, kind and full of interesting insights and hobbies, although perhaps difficult to socialize with, at least until they get to know you're well-meaning too.\nThese challenges come with the territory. You end up talking to people you'd otherwise never meet in the normal course of your life, and it's neutral at worst and wonderful at best.",
+          "author": "unsupp0rted",
+          "replies": [
+            {
+              "text": "I organise events as well and I'm wondering if you ever charged for them. I used to do them for free but so many people signed up and didn't attend later that it was hard to put numbers to book a venue to meet. How did you solve this?",
+              "author": "Gooblebrai",
+              "depth": 1
+            },
+            {
+              "text": "I'm on the other side of this, in that I attend a lot of these.\nI made a big effort about 12 years ago to go to a bunch of these (like three meetups a week and trying out a variety of different meetups), but now I mostly stick to a couple of them as I don't have as much time or energy for it anymore. But I've met most of my current friends through those meetups.\nFind one you like and keep showing up until you're a regular, and get to know people slowly, and if they like you they start inviting you to things outside of the meetup, and then eventually you end up being friends.\nI've done this with three different groups over the years and despite naturally being shy and an introvert I've ended up making friends at each one.\nAt the height of me doing this (like ten years ago), it got to the point where I'd go about my daily life and about once every other month I'd run into random people I've met at meetups also out and about. Like go out to dinner and spot someone I knew from a meetup also showing up to the same place, or run into them shopping at a Best Buy or something.\nMeetups where you do a shared activity seems to be the best, like hikes or movies (+ dinner afterwards) or board games, since you can always focus on the activity if you don't feel like being social, and you have that activity you can always talk about as a subject.",
+              "author": "cableshaft",
+              "depth": 1
+            },
+            {
+              "text": "Great idea - a lot of the problems in the world are from social isolation, and people finding silos online\nI think the 10% neuro-divergent is a positive as it being ND can be very isolating for people\nMakes me think a focus around ND alone would be a great idea",
+              "author": "fiftyacorn",
+              "depth": 1
+            },
+            {
+              "text": "This reminds me of [0], basically just inviting the most interesting people I know (also transitively the most interesting people they know), and just getting to meet people.\nI would really like to do this, but half the most interesting people I know are PhD professors I rant with because I'm next to them in a lab. Maybe once my network gets bigger.\nBut I would still like to know more about how you do this, as other people doing this accidentally made me some good friendships, and I'd like to repay this favor to others\n[0] \nhttps://takes.jamesomalley.co.uk/p/this-might-be-oversharing",
+              "author": "e-topy",
+              "depth": 1
+            },
+            {
+              "text": "How I do it is context-specific. I used to live in a place where it's undoable and I was very lonely there. I moved to a place where people are much more open to it culturally and there's enough population to +/- bring in a constant flow of 4:1 regulars to newbies.\nI advertise on local meetup platforms and in local social media. And I go to so many meetups myself that when people ask me what my hobbies are and I tell them, they get curious and self-invite.",
+              "author": "unsupp0rted",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm into innovation in HCI as a hobby, but it does get expensive so I would like to bring in some additional financial support for my unusual builds.\nI didn't really plan to build HCI as a hobby, but I have a strong interest in hardware engineering and eventually I wanted to switch back to building things that anyone can physically see.\nYears ago I built a hemisphere keyboard and now I've built an LED globe with a viewing portal. I started building visible things again because I had a vision and it's very satisfying to use the result. I spend more time using it now than I did originally building it, although it is definitely a work in progress. I want to build it again for a 2.0 version.",
+          "author": "skyberrys",
+          "replies": []
+        },
+        {
+          "top": "> that isn't absolutely crowded\nI'm sure there are field that should be absolutely crowded but where you can do something meaningful.\nIf I had free time, I would write an app to learn foreign languages I'm interested in. I'm pretty sure that there are good apps, but I tried a few ones, and none really fit my needs.\nThere are also software that I use a lot, like transcribe! which works well, but that I could see how to improve.\nSo as others mentioned, do something that you would be interested in.",
+          "author": "yodsanklai",
+          "replies": []
+        },
+        {
+          "top": "If chess is a solved problem, think about skating to where the puck is going to be, an interest area a bit further away from relatively easier verifiability such as coding, math, and hard sciences.\nDo you have any interest in digital humanities? Knowledge work where verification is still important but not as black-and-white as does the math check out, does the code run.\nDo you have any interest in family history or genealogy?\nhttps://vibegenealogy.ai/p/the-genealogical-research-assista...",
+          "author": "DigitalArchivst",
+          "replies": []
+        },
+        {
+          "top": "You might look into applying RL in the domain of low cost robotics and drones. That would draw on some of your past experience but applied to a domain (robotics) which I perceive is seeing renewed interest.",
+          "author": "caprock",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47637083",
+      "title": "Ask HN: Learning resources for building AI agents?",
+      "link": "https://news.ycombinator.com/item?id=47637083",
+      "domain": "news.ycombinator.com",
+      "author": "7e10",
+      "score": 12,
+      "comment_count": 8,
+      "created_ts": 1775291190,
+      "is_internal": true,
+      "post_text": "I’ve recently gone through several materials, including Antonio Gulli’s AI Agentic Design Patterns, Sam Bhagwat’s Principles of Building AI Agents and Patterns for Building AI Agents, as well as the courses from LangGraph Academy and some content on DataCamp.<p>This space is evolving very quickly, so I’m curious how others here are approaching learning. What resources, courses, papers, or hands-on approaches have you found most useful while building AI agents?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "If you want something to actually build against mastra.ai is worth a look. its typescript framework and it covers the stuff you'll run into pretty quickly. workflows, memory, RAG, observability. I didn't build anything production ready with it but it's been great for getting a feel for how these pieces fit together",
+          "author": "tfun",
+          "replies": []
+        },
+        {
+          "top": "We wrote a couple of articles about it, but we were more focused on building on top of CLI-based agents like Claude Code (imagine a lead outreach agent based on Claude Code as an API).\n21st.dev/community/blog",
+          "author": "SerafimKorablev",
+          "replies": []
+        },
+        {
+          "top": "I think the best way for that new thing is doing some real thing/join a team building an Agent, and get some know-how.",
+          "author": "Storytool-io",
+          "replies": []
+        },
+        {
+          "top": "You can ask Claude or ChatGPT for help, or study the architecture of current well-known open-source agents.",
+          "author": "tianzheng-zhou",
+          "replies": []
+        },
+        {
+          "top": "Just start building my man. Would highly advise keeping it minimal, just use OpenAI Agents SDK. Most of these frameworks are overengineered af",
+          "author": "stochtinkerer",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47666811",
+      "title": "Ask HN: Alternatives to Claude (Code)?",
+      "link": "https://news.ycombinator.com/item?id=47666811",
+      "domain": "news.ycombinator.com",
+      "author": "vixalien",
+      "score": 10,
+      "comment_count": 6,
+      "created_ts": 1775508281,
+      "is_internal": true,
+      "post_text": "Hello all, been trying to switch away from Claude Code and have been trailing this:<p>- Harness: Opencode (via Openchamber)\n- Subscription: GitHub Copilot (50$)\n- API Usage (beyond subscription): Open router\n- Free models: Opencode go<p>Here&#x27;s the models I&#x27;ve trialed and like:<p>- Large (alternative to Opus): GPT 5.3 Codex\n- Medium (alternative to Sonnet): Minimax 2.7\n- Smol: GPT 5.4 mini<p>these models are not yet on par to their respective Claude alternatives for me, but maybe I need to switch to something else or tune them, what have you been using?<p>Also looking for nice Opencode plugins, skills, completion providers (alternative to Cursor that I could use with Zen).<p>Happy to hear about your choices and experience",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I ping pong back and forth between claude code and codex.\nIn my experience (very subjective, obviously) for backend/\"logical\" tasks Codex seems to outperform Claude.\nFor front-end/UX related tasks Claude wins easily.\nOverall, Claude does seem to be a little better in other areas too.\nCodex's biggest advantage in my personal opinion, however, is usage. I think maybe once in several months did I even get close to hitting my limit with the $20 plan.\nWith Claude, however, I feel like I can sneeze and half my weekly usage is gone. Same $20 price tag.\nThat's been my experience, I'm sure it differs user to user though.",
+          "author": "SunshineTheCat",
+          "replies": [
+            {
+              "text": "nice, I have been hearing about Codex a lot, so I will def try it",
+              "author": "vixalien",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just pay the $20 for codex and use it. It's the only real alternative.",
+          "author": "square_usual",
+          "replies": []
+        },
+        {
+          "top": "I've gone fully custom and would never look back. All of the popular tools lack the experience I'm after, generally lacking the advanced customization I have found makes weaker models more capable. I'm also moving towards open weight models.\nThe underlying motivation is to avoid Big Ai as much as possible. Incentives are not aligned.",
+          "author": "verdverm",
+          "replies": [
+            {
+              "text": ">  the advanced customization I have found makes weaker models more capable.\nLike what?",
+              "author": "kingkongjaffa",
+              "depth": 1
+            },
+            {
+              "text": "Good prompts and tools. When I first went down this path, I grabbed the Claude Code prompts and adapted them. Doing so made gemini-3-flash as good as pro for 80%+ of my normal tasks. I became spoiled with the turnaround time (much faster) and now become impatient with the mega models.\nI can also do things like out the AGENTS.md contents in the system prompt and change file read to put contents there as well. Thai avoids duplicates in the messages when they fail at editing and decide to reread the file",
+              "author": "verdverm",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47679021",
+      "title": "Ask HN: What are you working on? (April 2026) (Non AI)",
+      "link": "https://news.ycombinator.com/item?id=47679021",
+      "domain": "news.ycombinator.com",
+      "author": "cousin_it",
+      "score": 7,
+      "comment_count": 17,
+      "created_ts": 1775584892,
+      "is_internal": true,
+      "post_text": "Tell me about your latest non-AI project and I&#x27;ll check it out",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Making rent as an open source developer.\nShamelessly trying to attract new monthly sponsors and people willing to buy me the occasional pizza with my crap HTML skills.\nhttps://brynet.ca/wallofpizza.html",
+          "author": "brynet",
+          "replies": []
+        },
+        {
+          "top": "I'm building free immigration software for DIY applicants [1]\nIt's a free USCIS form-filling web-app(no Adobe required). USCIS forms still use XFA PDFs, which don’t let you edit in most browsers. Even with Adobe, fields break, and getting the signature is hard.\nSo I converted the PDF form into modern, browser-friendly web forms - and kept every field 1:1 with the original. You fill the form, submit it, and get the official USCIS PDF filled.\nI found out SimpleCitizen(YC S16) offers a DIY plan for $529 [2]\nSo, a free (and local-only) version might be a good alternative\n[1] \nhttps://fillvisa.com/demo\n[2] \nhttps://www.simplecitizen.com/pricing/",
+          "author": "junaid_97",
+          "replies": [
+            {
+              "text": "Wow! I'm not in the target audience, but this is exactly what I love to see :-) Thanks for doing this!",
+              "author": "cousin_it",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’m building DataJelly.com — a visibility layer for AI-built and JS-heavy sites.\nA lot of tools like Lovable and Bolt generate apps that look great but don’t expose content well to search or AI crawlers. The impact is lower search ranking, fewer AI citations, and broken social links.\nWe fix all of that by returning fully rendered HTML to SEO bots and clean Markdown to AI crawlers so they can actually understand the content. We also fix the Social Sharing broken links with custom HTML generated just for sharing your links on social.\nQuick setup, no code required.\nFree: visibility test: \nhttps://datajelly.com/#visibility-test\n \nOur Edge Product: \nhttps://datajelly.com/products/edge\nHappy to answer questions.",
+          "author": "jmacduff42",
+          "replies": []
+        },
+        {
+          "top": "I've also worked on this.\nManage Cloudflare, Anywhere\nhttps://apps.apple.com/us/app/cloudflare-remote/id6743181258\nhttps://play.google.com/store/apps/details?id=com.emrekeles....",
+          "author": "cloudflareapp",
+          "replies": []
+        },
+        {
+          "top": "I am working on \nhttps://spatialsheets.com\n Think geodata formulas + excel. Mostly for my own use just to quickly debug geodata. Used to heavily use geojson.io for it but it is not very good at handling large datasets and couldn't enrich data so I started working on this thing.",
+          "author": "kriz9",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47660705",
+      "title": "Ask HN: How are you orchestrating multi-agent AI workflows in production?",
+      "link": "https://news.ycombinator.com/item?id=47660705",
+      "domain": "news.ycombinator.com",
+      "author": "swrly",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1775482455,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been building AI agent pipelines for the past year and curious how others handle it. Specifically:<p>- Do you use a framework (LangChain, CrewAI) or roll your own\n - How do you handle agent-to-agent data passing?\n - What does your observability look like for agent runs?\n - Are you running agents on cron&#x2F;webhooks or manual-only?<p>Interested in hearing what&#x27;s working and what&#x27;s painful.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We have our own lightweight abstraction for running and managing agents, ironically managed by an agent.\nHow do you handle agent-to-agent data passing? - We do have a memory concept for the pipeline we are in\nWhat does your observability look like for agent runs? - locally, we are using our own test abstraction and eval. For production, we are using \nhttps://www.wayfound.ai\nAre you running agents on cron/webhooks or manual-only? - webhook and cron when needed",
+          "author": "go4horizon",
+          "replies": []
+        },
+        {
+          "top": "We have been using AGNO framework for HuntYourTribe quite sometime. It is pretty much working out well for us. Minimalistic design for isolation, decoupling and control plane architecture.",
+          "author": "kathir05",
+          "replies": [
+            {
+              "text": "Interesting — I hadn't looked into AGNO closely. The isolation and control plane approach sounds solid. How do you handle observability? That's been one of the harder parts for us — knowing exactly which agent produced which output when something goes wrong in a multi-step pipeline.\nAlso curious if you're running agents on triggers (webhooks, cron) or mostly manual execution?",
+              "author": "swrly",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47653057",
+      "title": "Ask HN: I don't get why Anthropic is limiting usage",
+      "link": "https://news.ycombinator.com/item?id=47653057",
+      "domain": "news.ycombinator.com",
+      "author": "ud0",
+      "score": 6,
+      "comment_count": 6,
+      "created_ts": 1775417927,
+      "is_internal": true,
+      "post_text": "I’m trying to understand the rationale behind Anthropic limiting certain types of third-party usage, e.g., OpenClaw<p>From a naive perspective, more usage should mean more revenue since customers pay per token. So why restrict it? If a third party is generating heavy usage, isn’t that ultimately beneficial for revenue and growth?<p>What other factors are they considering that are not immediately obvious? If I sold shoes, I&#x27;d be happy to sell more regardless of how many resellers are down the chain.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "> From a naive perspective, more usage should mean more revenue since customers pay per token.\nThey are not limiting usage through the API with per token payment.\nThey are limiting usage through a subscription that gives you a lot (but they won't tell you how much exactly) of tokens for a fixed monthly payment.\nUsing models through a subscription tends to be much cheaper than using the API and paying per token.\nAnthropic provides cheap subscriptions with less profit or even at a loss (we don't know) to promote its own tools. Using subscription for third-party tools obviously defeats this purpose.",
+          "author": "vova_hn2",
+          "replies": []
+        },
+        {
+          "top": "If you’re selling shoes to potentially 10,000 people, but ten customers consistently buy your entire stock, then you’re making the same money. But you’re limiting your future expansion, because whenever the other 9,990 potential customers try to buy your shoes they find none on the shelves and either choose to not use you in the future, or worse tell people how bad you are at supplying shoes.\nGiven finite server availability, my guess is that OpenClaw users were degrading the service (or start hitting service limits soon) for “normal” users, causing Anthropic to get worried that their cashcow in Claude would start to get negative press.",
+          "author": "robin_reala",
+          "replies": []
+        },
+        {
+          "top": "I believe all the AI providers are reaching capacity limits, and they want to preserve their margin for customers paying by the token, instead of monthly plans(which are effectively subsidize advertising).\nIt won't just be Anthropic.",
+          "author": "mikewarot",
+          "replies": []
+        },
+        {
+          "top": "Yeah but what if you sold shoe subscriptions because mostly people only wear one pair of shoes at a time -- but some people were using a service called OpenToe that was grabbing 50-100 shoes at a time?",
+          "author": "stray",
+          "replies": []
+        },
+        {
+          "top": "I think the strategy you're suggesting is: \"We lose money on every sale, but make it up in volume!\"\nIf the resellers down the chain were purchasing your shoes for less then your cost, would you still be happy?\nSay the resellers were abusing an 80% discount coupon. Anthropic is basically closing a 95% discount coupon that was being abused.\nIf OpenClaw users were paying the API rate, your strategy could make more sense.\nThe reason Anthropic is subsidizing inference is because they are trying to capture users (marketshare). However the acquisition costs for a single OpenClaw user is much higher. And OpenClaw users are less likely to convert into profitable users later.\n---\nIn addition, there is a supply bottleneck. Currently Anthropic is having trouble servicing all the demand due to a shortage of GPU's. And in the current market it is impossible to get more GPU's (or at least prohibitively expensive).\nAnthropic (and all other AI companies) also need GPU's to stay competitive: GPU's are needed to train better models. So you could view it as Anthropic has decided instead of subsidizing nonprofitable OpenClaw users, it is better to repurpose that GPU for internal R&D instead.",
+          "author": "Leftium",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
