@@ -1,3 +1,7 @@
+## 2026-02-16 – Structural vs. Generic Abstractions
+Learning: Technical discussions often conflate "universality" with "nativity." When experts defend text-based SCM or standardized SaaS, they are often defending the portability of the format rather than the utility of the representation.
+Implication: Future writing should distinguish between "Portability" (the ability to move data) and "Sovereignty" (the ability to define the meaning of data).
+
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
