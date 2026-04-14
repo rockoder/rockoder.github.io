@@ -1,0 +1,1176 @@
+{
+  "scraped_date": "2026-04-14",
+  "source": "hacker_news",
+  "total_scraped": 126,
+  "nontech_count": 25,
+  "posts": [
+    {
+      "id": "47742200",
+      "title": "Show HN: boringBar – a taskbar-style dock replacement for macOS",
+      "link": "https://boringbar.app/",
+      "domain": "boringbar.app",
+      "author": "a-ve",
+      "score": 500,
+      "comment_count": 285,
+      "created_ts": 1776014744,
+      "is_internal": false,
+      "post_text": "Hi HN!<p>I recently switched from a Fedora&#x2F;GNOME laptop to a MacBook Air. My old setup served me well as a portable workstation, but I’ve started traveling more while working remotely and needed something with similar performance but better battery life. The main thing I missed was a simple taskbar that shows the windows in the current workspace instead of a Dock that mixes everything together.<p>I built boringBar so I would not have to use the Dock. It shows only the windows in the current Space, lets you switch Spaces by scrolling on the bar, and adds a desktop switcher so you can jump directly to any Space. You can also hide the system Dock, pin apps, preview windows with thumbnails, and launch apps from a searchable menu (I keep Spotlight disabled because for some reason it uses a lot of system resources on my machine).<p>I’ve been dogfooding it for a few months now, and it finally felt polished enough to share.<p>It’s for people who like macOS but want window management to feel a bit more like GNOME, Windows, or a traditional taskbar. It’s also for people like me who wanted an easier transition to macOS, especially now that Windows feels increasingly user-hostile.<p>I’d love feedback on the UX, bugs, and whether this solves the same Dock&#x2F;Spaces pain for anyone else.<p>P.S. It might also appeal to people who feel nostalgic for the GNOME 2 desktop of yore. I started my Linux journey with it, and boringBar brings back some of that feeling for me.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47741527",
+      "title": "Ask HN: What Are You Working On? (April 2026)",
+      "link": "https://news.ycombinator.com/item?id=47741527",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 319,
+      "comment_count": 1068,
+      "created_ts": 1776011083,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I'm building a financial censorship monitor at \nhttps://nofunds.org/\n, that tells a story of how money has been turned into a political weapon to silence journalists, activists, and civil society by freezing assets, blocking accounts, sanctioning, and banning payments. It's part of my master's thesis \nhttps://www.doria.fi/handle/10024/187407\n and also \nhttps://news.ycombinator.com/item?id=36430596\n, but now I wanted to make a more comprehensive list, using Claude API and manual work. I'm designing a website right now, and the site is live within 2 months (given the API rate limitations currently to process articles). I know Hacker News is quite critical of Bitcoin, but it's also worthy to warn that, indeed, Bitcoin is at least a marginal tool to those whose bank accounts may be endangered. I'm basically arguing that Bitcoin can be used to resist such financial censorship, deplatforming and so on.",
+          "author": "kokkis",
+          "replies": [
+            {
+              "text": "Have you read or connected with Rainey Reitman, who just published the book Transaction Denied?",
+              "author": "sinak",
+              "depth": 1
+            },
+            {
+              "text": "I built cross-border compliance Management info system dashboards at a Swiss private bank. The much more widespread reality is: entire nationalities and residencies get quietly moved to \"do not serve\" lists because the regulatory cost of serving them exceeds revenue. No public process, no appeal, no notice, you just can't open an account:financial exclusion most people never see.",
+              "author": "Tianning",
+              "depth": 1
+            },
+            {
+              "text": "this is interesting.\nmy hunch is that we're moving towards more surveillance, censorship and deplatforming in the future, and CBDCs are a major tool for that.\nI like Bitcoin, despite its problems (price volatility and quantum vulnerability)  but I think censorship-resistant stablecoins would be a better solution for people looking to protect themselves from Big Brother.",
+              "author": "jmstfv",
+              "depth": 1
+            },
+            {
+              "text": "Shockingly bitcoin gained a lot more power for me when prominent government officials started using it to start operating outside the checks and balances of the banking system.",
+              "author": "vablings",
+              "depth": 2
+            },
+            {
+              "text": "Don't they sneeze peoples' Bitcoin just the same?\nWith Feds showing up with your door with guns and handcuffs, you'll have to hand over your private keys, and that's how they freeze BTC accounts. It's not particularly immune to the same threats.",
+              "author": "dheera",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm building Tela (\nhttps://github.com/paulmooreparks/tela\n), a self-hosted relay that tunnels TCP services through encrypted WireGuard connections. The key difference from Tailscale and similar tools is that it requires no TUN adapter, no root access, and no admin privileges on either end. It runs entirely in userspace.\nMy initial motivation was wanting to RDP and SSH into my home workstation from a locked-down corporate laptop when I travel. I couldn't install Tailscale on the laptop, and I didn't want to pay for a cloud VM just to do SSH port forwarding. Now I use it to tie together half a dozen machines, both locally and on Hetzner & Linode. I can SSH and RDP into remote machines, host a git repo on one machine and access it from the others, and (optionally) share files across all of them on a local mount.\nYou run a hub (telahubd), register machines with a lightweight agent (telad), and connect from anywhere with the client (tela). All three are single Go binaries with no external dependencies. The hub never sees your traffic. It just relays opaque WireGuard ciphertext.\nAll binaries run on Windows, Linux, and macOS. There is also a desktop GUI app, TelaVisor, that wraps the client and enables remote management of hubs and agents.\nIt's Apache 2.0-license and pre-1.0 release, but I'm polishing it for a stable 1.0 release in the next month or so.\nI'm also working on an enterprise-grade management portal that works with Tela, \nhttps://awansaya.net/",
+          "author": "paulmooreparks",
+          "replies": [
+            {
+              "text": "Nice! It looks essentially like userspace NAT, only active for particular ports. I'm contemplating a similar setup to handle access to my home machines: when I'm in my home network, some ports are forwarded to 127.x.y.z directly from the remote machine, and when I'm away, the same ports are forwarded via a Wireguard connection. This way, at home I can use the full speed of the LAN, and when away, the speed is limited by the Wireguard gateway, but I still connect to the same host:port, wherever I am.",
+              "author": "nine_k",
+              "depth": 1
+            },
+            {
+              "text": "ah nice. i’ve actually been building something pretty similar on top of wireguard too\nmy use case is a bit different though. i started because i wanted to give friends access to specific things in my homelab, but very selectively. like “you can use jellyfin on this one machine, but you can’t ssh, and you can’t even see my other devices”\ntailscale is honestly amazing for getting devices connected, i still use it a lot. but once i started trying to do these very specific “this machine can talk to that machine only on this port” kind of setups, it started feeling more complex than it should be, at least for personal use. ACL editor is more confusing when it comes to this. i know we have got option for tags and things, but those are very poorly documented and i haven't found a single tutorial that works nicely.\nyour userspace approach is really interesting btw, especially the no tun / no root part. makes sense to run it on rigit enterprise environments.",
+              "author": "dhrm1k",
+              "depth": 1
+            },
+            {
+              "text": "Tela has ACLs per machine, but not per service. That's an interesting use case, and I'm shocked that I missed it. I've added it to the pre-1.0 roadmap. Thank you!\nAnother thing on the release roadmap is a TUN/root story, since there is value in having that layer as well. Tela will always support the user-space approach, however, so that unlike Tailscale it's always accessible.",
+              "author": "paulmooreparks",
+              "depth": 2
+            },
+            {
+              "text": "I've been working on a similar tool for a while - connet (\nhttps://github.com/connet-dev/connet\n). It builds upon QUIC (instead of wireguard), but I think from an enduser perspective the results ends up looking pretty similar.",
+              "author": "Ingon",
+              "depth": 1
+            },
+            {
+              "text": "Very interesting - but I also find it important for solutions to state the trade-offs if they provide a novel approach that doesn't have the same requirements as the main contenders. In your case, what are the trade offs for running in user space ?",
+              "author": "mentalgear",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My mother is living alone in her house and we are getting to the point where she might not be able to live alone.  I built \"Still Kicking\", a picture frame that monitors her motion and sends back basic reports and can detect falls and sleep quality to a phone app, to help give her more time at home.\nIt's just an mmWave sensor connected to an ESP32.  But it works nicely, and I'm thinking of starting a company making them, though I'm not clear if the elderly would be ok with this minimal (no camera) intrusion.\nIt would just work out of the box..  the real one would have a small cell modem so it wouldn't need any networking setup, and it would act as a gateway if you have more than one in a house.  There are industrial versions of this for nursing homes.  This would be a bit more warm and fuzzy for home use.\nhttps://moveometer.com",
+          "author": "cmos",
+          "replies": [
+            {
+              "text": "I own a national home care provider (in 13 states) and EHR. We are looking for products like this. Book office hours if you’re interested in discussing:\nhttps://calendly.com/ryanwmartin/open-office-hours",
+              "author": "digitaltrees",
+              "depth": 1
+            },
+            {
+              "text": "Booked a time! We built senior smartphone assistance without humans",
+              "author": "taylorhou",
+              "depth": 2
+            },
+            {
+              "text": "I love it. As a physician, I see so many cases of elderly patients who have fallen and not been found for hours if not days.\nIn elder care, I am building \nhttps://statphone.com\n - one emergency number that rings multiple family members simultaneously and breaks through DND. Would love to chat/collaborate.",
+              "author": "popupeyecare",
+              "depth": 1
+            },
+            {
+              "text": "Mom had a stroke a few years ago and while thankfully she's recovered well, I'd buy this. Having designed for seniors and helped senior care focused companies, it's not so much the senior that you'd sell to but their adult children.\nGood luck and for what it's worth, go for it!",
+              "author": "tortugapatrick",
+              "depth": 1
+            },
+            {
+              "text": "Start this company! You see the responses from just a small sample, this is your sign to go in on it! Good luck!",
+              "author": "Aboutplants",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I got addicted to scrolling content on my phone, so I built a digital pet whose growth and well-being depends on you staying off your phone! This way, if I spend all night scrolling the browser, my pet will get depression.\nUnlike similar apps such as Focus Friend or Forest, which use active timers to police screen time, my app is an inversion that works like an idle game; All screen time is tracked all day, (with double the punishments at night), and upon check-in, you get feedback on your device usage.\nhttps://automatisolutions.com/products/phreepet/",
+          "author": "DevDesmond",
+          "replies": [
+            {
+              "text": "How are you able to track all screen time on an iOS device? I had thought the APIs to do this aren't available.",
+              "author": "varenc",
+              "depth": 1
+            },
+            {
+              "text": "I believe Apple opened up their screen time APIs \nhttps://developer.apple.com/documentation/screentime",
+              "author": "buddybuilder",
+              "depth": 2
+            },
+            {
+              "text": "I've always been very interested in these types of games. Grew up playing Neopets which was inspiration to becoming a software engineer. Am interested in gamified aspects as well. The thing I've not quite figured out is how to make these types of games _actually_ addictive? Neopets had a lot going for it IMO. Would love to know if this is actually working for you (and maybe others) personally and why.",
+              "author": "memonkey",
+              "depth": 1
+            },
+            {
+              "text": "I wish I knew why these games are so addictive, I collected Tamagotchi a few years back and ended up with a handful of originals and one of the fancy new color screen ones (that now goes for obscene amounts of money on ebay).",
+              "author": "mghackerlady",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "PlantLab (\nhttps://plantlab.ai\n) - AI plant health diagnosis for cannabis. It's an API, not an app [1]. Photo in, structured JSON out - condition, confidence, growth stage, nutrient lockout analysis. The response is for machines. Light burn at 0.92 confidence? Your controller dims the light. Calcium deficiency with excess potassium flagged as the lockout cause? Dosing pump adjusts.\nI'm a software dev/data nerd, not a grower. I got interested because cannabis grow rooms are already full of automation - VPD controllers, pH/EC monitoring, dosing pumps, dimmable lights. But nothing was looking at the plant. Every sensor in the room measures the environment, not whether the plant is actually doing well. I wanted to add the eyes. And this seems to be a bound domain issue (i.e. limited number of issues/conditions/pests vs. all plants everywhere).\nViT-based multi-stage pipeline that verifies it's cannabis, classifies condition or pest, then runs nutrient subclassification if needed. 30 classes, 18ms inference, Go API, ONNX Runtime. Trained on a little over a million images from grower friends. Classification was 80% of the lift. I also shipped a Home Assistant integration - camera takes a scheduled snapshot, PlantLab diagnoses, HA acts on the result. No human involved.\nRecently the part that's been the most fun is the autoresearch loop. Between training runs the system looks at its own confusion matrix, finds which classes it's mixing up, audits those training images for bad labels, and tells me what to fix. It's not fully autonomous yet but it's getting there - the model is increasingly debugging its own training data.\nSolo project, <100 users, free tier is 3/day.\n[1] I built a simple Android app for those who want to just try it out, it's on Google Store. Probably will make one for iOS too as time allows. \nhttps://play.google.com/store/apps/details?id=com.plantlab.p...",
+          "author": "ctbellmar",
+          "replies": [
+            {
+              "text": "Such a great idea. It's nice that with cannabis, despite there being so many cultivars, it's such a large industry based around essentially one plant. And while some varieties can look quite different, I think your API should generally be effective.\nI've been thinking about similar systems for tissue cultures but I can't seem to find a way to generalize and still get good training data or effective results. Once you lose track of white balance, species, optical clarity and distortion from the vessel, etc... Results decline quite a bit in my experience. It makes it a neat yet fairly useless system outside of itself.\nGranted, I have no idea what I'm doing and these could be solvable problems. Certainly much easier to solve by focusing on a single species.\nI'm impressed with how well it classifies based on the image examples. A little over a million images is probably what makes it possible. My experiments have been much smaller. Maybe with more material I could overcome those limitations I mentioned, but I have a feeling the multi-species pipeline really drags it down.\nHave you found that light temperature no longer skews feedback after so much training data? For me it really matters, causing classification to confuse light sources with actual plant condition (hence the colour card for white balance helping so much)",
+              "author": "steve_adams_86",
+              "depth": 1
+            },
+            {
+              "text": "I'd love to use this for not cannabis things. I'm looking at building a greenhouse soon, and having this kind of automation for tomatoes or carrots would be dream-like.",
+              "author": "all2",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47749674",
+      "title": "Show HN: I built a social media management tool in 3 weeks with Claude and Codex",
+      "link": "https://github.com/brightbeanxyz/brightbean-studio",
+      "domain": "github.com",
+      "author": "JanSchu",
+      "score": 175,
+      "comment_count": 117,
+      "created_ts": 1776072416,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "I am genuinely in the \"target market\" for a tool such as this, but having evaluated one previously I found the quality and self-hosting experience to be pretty bad, and that a proprietary freemium product was still a better experience.\nI'm hesitant to even take a look at this project due to the whole \"vibe coded in 3 weeks\" thing, though. Hearing that says to me that this is not serious or battle-tested and might go unmaintained or such. Do you think these are valid concerns to have?",
+          "author": "FireInsight",
+          "replies": [
+            {
+              "text": "We're entering an era where the delivering of software is cheap. Basically any idea can have an MVP implemented by one or two people in just a month or two now. Very quickly the industry is learning what the next set of bottlenecks are, now that the bottleneck is no longer writing code.\nPlanning, design, management alignment, finding customers, integrating with other products, waiting for review, etc. Basically all the human stuff that can't be automated away.\nYour comment reminds me to add building a support team to the list.",
+              "author": "spicyusername",
+              "depth": 1
+            },
+            {
+              "text": "Was it ever?\nEven before llm, writing software, or at least web clients, was as easy as it can get.",
+              "author": "localhoster",
+              "depth": 2
+            },
+            {
+              "text": "I agree, software (software startups) has always been the golden child of investors because of how cheap it is compared to hardware or any other physical good.\nGood software is expensive regardless of the involvement of LLMs because you need someone to take responsibility. Large companies will save a buck because there may be fewer people needed to take said responsibility, but it's probably a marginal saving compared to the overall scheme of things.",
+              "author": "written-beyond",
+              "depth": 3
+            },
+            {
+              "text": "It was \"easy\" in the sense you could deploy 7B equivalent of a developer, who could get something sort of working eventually or you could spend a lot of money for actually getting the results from talented developers - equivalent of daily maxing out Opus 4.6.",
+              "author": "varispeed",
+              "depth": 3
+            },
+            {
+              "text": "Delivering is cheap, but maintenance is expensive... if not impossible!",
+              "author": "jcmeyrignac",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I was hoping this was the opposite of a creators platform - a social media users platform.  Download all social media to one place (stories/posts) where you can view on your own schedule.\nIs there anything like that out there?",
+          "author": "ipaddr",
+          "replies": [
+            {
+              "text": "Big upvote for this. I want an \"agent\" (overused term) to scroll through all the user-hostile feeds and present what I actually want to see in a calm, ad-free, manner.\nTools like instaloader are a start, but screen scraping might be the best bet to avoid detection/banning.",
+              "author": "xnx",
+              "depth": 1
+            },
+            {
+              "text": "Same. I was hoping for this. As much as social media frustrates me, the content can be great at times. I want an aggregation tool where I have strict control on the output. Give me the content minus the addictive never ending scroll with inflammatory posts. Basically, I want a benevolent curation of media on my terms.",
+              "author": "foobar_______",
+              "depth": 1
+            },
+            {
+              "text": "I want the same. The problem is that this kind of tool is outside the T&C of the platforms, and if they catch you using it, you would probably be banned or suspended. There will be always a small risk of that.",
+              "author": "itherseed",
+              "depth": 2
+            },
+            {
+              "text": "RSS can get you there, lots of clients but you have to teach your friends how to make their own websites and set up a feed\nmade me think of Pidgin, the chat client that could talk to any chat server",
+              "author": "jareklupinski",
+              "depth": 1
+            },
+            {
+              "text": "Platforms really don't want you to build that. But depends on what platforms your talking about, open ones like bsky and mastodon could allow for something like that",
+              "author": "jezzamon",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice! A bot-built tool for posting content mostly generated by other bots and \nengaged\n with by bots.\nI don't mean to belittle the cool tool you made, I'm just grumpy about the loss of what the social network could have been and what we got when it morphed into social media.",
+          "author": "criddell",
+          "replies": [
+            {
+              "text": "what do you imagine the social network would/could/should become? Obviously what we have is not working for some folks.",
+              "author": "BatFastard",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Multi-tenant bugs slipping through tests is the scariest part of shipping fast with AI codegen. We've been working on Autonoma (\nhttps://www.getautonoma.com/\n) for exactly this, AI agents that do E2E testing by navigating your app like a real user and catching the stuff unit tests miss.",
+          "author": "canarias_mate",
+          "replies": []
+        },
+        {
+          "top": "I wanted to test how far AI coding tools could take a production project. Not a prototype. A social media management platform with 12 first-party API integrations, multi-tenant auth, encrypted credential storage, background job processing, approval workflows, and a unified inbox. The scope would normally keep a solo developer busy for the better part of a year. I shipped it in 3 weeks.\nBefore writing any code, I spent time on detailed specs, an architecture doc, and a style guide. All public: \nhttps://github.com/brightbeanxyz/brightbean-studio/tree/main...\nI broke the specs into tasks that could run in parallel across multiple agents versus tasks with dependencies that had to merge first. This planning step was the whole game. Without it, the agents produce a mess.\nI used Opus 4.6 (Claude Code) for planning and building the first pass of backend and UI. Opus holds large context better and makes architectural decisions across files more reliably. Then I used Codex 5.3 to challenge every implementation, surface security issues, and catch bugs. Token spend was roughly even between the two.\nWhere AI coding worked well: Django models, views, serializers, standard CRUD. Provider modules for well-documented APIs like Facebook and LinkedIn. Tailwind layouts and HTMX interactions. Test generation. Cross-file refactoring, where Opus was particularly good at cascading changes across models, views, and templates when I restructured the permission system.\nWhere it fell apart: TikTok's Content Posting API has poor docs and an unusual two-step upload flow. Both tools generated wrong code confidently, over and over. Multi-tenant permission logic produced code that worked for a single workspace but leaked data across tenants in multi-workspace setups. These bugs passed tests, which is what made them dangerous. OAuth edge cases like token refresh, revoked permissions, and platform-specific error codes all needed manual work. Happy path was fine, defensive code was not. Background task orchestration (retry logic, rate-limit backoff, error handling) also required writing by hand.\nOne thing I underestimated: Without dedicated UI designs, getting a consistent UX was brutal. All the functionality was there, but screens were unintuitive and some flows weren't reachable through the UI at all. 80% of features worked in 20% of the time. The remaining 80% went to polish and making the experience actually usable.\nThe project is open source under AGPL-3.0. 12 platform integrations, all first-party APIs. Django 5.x + HTMX + Alpine.js + Tailwind CSS 4 + PostgreSQL. No Redis. Docker Compose deploy, 4 containers.\nAsk me anything about the spec-driven approach, platform API quirks, or how I split work between the two models.",
+          "author": "JanSchu",
+          "replies": [
+            {
+              "text": "How much of the specs themselves came from the LLM? The development schedule \nhttps://github.com/brightbeanxyz/brightbean-studio/blob/main...\n has very AI-looking estimates for exampl and I can see a commit in the architecture.md file which is exclusively changing em-dashes to normal dashes (\nhttps://github.com/brightbeanxyz/brightbean-studio/commit/74...\n) which suggests you wanted to make it seem less LLM-generated?\nI ask, not to condemn, but to find out what your process was for developing the requirements. Clearly it was done with LLM help but what was the refinement process?",
+              "author": "dontwannahearit",
+              "depth": 1
+            },
+            {
+              "text": "The spec document was also written by Claude (over many iteration) and lots of manual additions. It took me tho 4 full days to get the specs to the level I was happy with.\nOne main thing I did was to use the deep research feature of Claude to get a good understanding of what other tools are offering (features, integrations etc.)\nThen each feature in the specs document got refined  with manual suggestions and screenshots of other tools that I took.",
+              "author": "JanSchu",
+              "depth": 2
+            },
+            {
+              "text": "Thanks for sharing!\n> Before writing any code, I spent time on detailed specs, an architecture doc, and a style guide. All public: \nhttps://github.com/brightbeanxyz/brightbean-studio/tree/main...\n> It took me tho 4 full days to get the specs to the level I was happy with.\nWhen I click on history there I see only a single commit for these docs. Would you be willing to share some or all of the conversation you had with the LLM (in a gist or in the repo) that led to these architecture docs? Understand if you can't, but I'm sure it would be super instructive for people trying to understand the process of doing something like this and the types of guide rails that help to move the process forward productively.",
+              "author": "drabbiticus",
+              "depth": 3
+            },
+            {
+              "text": "Thank you for this write up, this is much more interesting than all the \"Show HN\" that don't mention anything about AI but you can see it on every corner.\nWhat you describe has also been my experience so far with building projects mostly with AI but with detailed specs but Rails instead of Django.",
+              "author": "dewey",
+              "depth": 1
+            },
+            {
+              "text": "First, congrats on your accomplishment(s) and leveraging your AI+Python+WebDev talents.\nIsn't this a SaaS-pocaplyse testament? What's stopping anyone from doing the same to BrightBean? What's stopping anyone with a little of domain knowledge and a $200+ Claude to clone your app and build yet another gap-filling, slightly improved content-syndication version and go-to-market? Is it worth taking it to the market when anyone can perpetuate the cycle?\nI'm genuinely interested in knowing your thoughts.",
+              "author": "vladsanchez",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47700460",
+      "title": "Ask HN: What are you building that's not AI related?",
+      "link": "https://news.ycombinator.com/item?id=47700460",
+      "domain": "news.ycombinator.com",
+      "author": "meander_water",
+      "score": 149,
+      "comment_count": 212,
+      "created_ts": 1775720387,
+      "is_internal": true,
+      "post_text": "I don&#x27;t have anything against AI, but HN (and everywhere else) seems to be drowning in AI atm.<p>Seems like every man and his dog is building an AI agent harness. And power to you (and your dog) if that&#x27;s you.<p>But it would be refreshing to hear about some non AI related projects people are working on.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Building Questly — story-driven practice for real-world conversations which you play like a game. The core insight: people know what to do in hard situations. They freeze because they've never practiced the actual moment. Questly is the reps. \nhttps://questly.academy/",
+          "author": "danish00111",
+          "replies": [
+            {
+              "text": "Fun, thought of creating something similar. Didn't pull the trigger ultimately",
+              "author": "mettamage",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "library.aliceindataland.com\nI'm having fun writing a sequel on the books that Lewis Carroll wrote and mixing it with a SQL course. My hope is that SQL will be more fun to learn that way. And it's fun to write a few pages that will hopefully evoke \nsome\n narrative transportation and immersion vibes.\nI'm still very much at the beginning though.\nIn the story Alice enters an Infinite Library. You (yes you!) are STAR: a magical sentient typewriter that can only write in SQL queries. When Alice finds you, you'll slowly both find out why this library exists and the secrets that it holds.\nCourse-wise: I'm trying to have tight lesson scaffolding, which is a fun challenge.",
+          "author": "melvinroest",
+          "replies": []
+        },
+        {
+          "top": "I'm building my own cloud (I \nactually\n typed claude instead of cloud there... wow). There's no IaaS or PaaS; it's much simpler. I wanted my own way of connecting to machines and the TCP services on those machines without having to install Tailscale (not allowed on a locked-down corporate PC) or pay for Azure or AWS or GCP or even Hetzner or Linode. I've got 10gbps fibre and a huge workstation at home, and I've got lots of laptops and VMs and other outboard stuff that I want to work in concert with that workstation, so I started building something I call Tela (Filipino for fabric; I was sitting in Ninoy Aquino International Airport waiting for a flight when I had the idea, and it's implemented as a network fabric).\nhttps://github.com/paulmooreparks/tela",
+          "author": "paulmooreparks",
+          "replies": [
+            {
+              "text": "You are rebuilding tailscale but requiring a centralised hub. I did the same in 2016 (pre-tailscale?) \nhttps://web.archive.org/web/20160304013451/https://wormhole....\nI am not sure WireGuard existed at the time, and I used SoftEther and based it all on doing outbound tunnels to TCP/443* to avoid firewall blocks in corporate networks.\nYou could explore full P2P by leveraging UDP hole punching:\n\nhttps://cloudnetworking.pro/firewall-bypass-series-1-2/\n\n\nhttps://cloudnetworking.pro/firewall-bypass-encapsulating-tr...\n(WireGuard may already do it, dunno)\nAlso, fun fact, tela is also Spanish for fabric. Given the Filipino history, I guess it comes from there.\n* I know I know, TCP in TCP is a bad idea \nhttps://cloudnetworking.pro/tcp-over-tcp-is-a-bad-idea/",
+              "author": "InfraScaler",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Yes, Tela already does UDP hole-punching. I made Tela because I wasn't allowed to install Tailscale on my new corporate laptop, and no other available solution seemed to tick the right boxes. It started as a simple way to RDP to my home workstation, but then I realised that if I could do that, I could finally pull my ad-hoc home cloud into one tool. The hub model is very much by design, for organisational purposes. The hole-punching feature gives me the P2P speed (and even STUN, if available). An upcoming version will allow hub-to-hub topologies.\nIt should have occurred to me that tela is also Spanish, since about every third word I hear in a Tagalog sentence seems to be of Spanish origin.",
+              "author": "paulmooreparks",
+              "depth": 2
+            },
+            {
+              "text": "Does tela create an L3 network? if that's the case, what do you do to avoid IP addressing clashes? In Wormhole I decided by default to use CGNAT addressing (100.64.0.0/10)\nI did not go too far unfortunately, so I did not face problems such as discoverability (do you have to know/remember all the IP addresses from the devices connected? DNS? etc).",
+              "author": "InfraScaler",
+              "depth": 3
+            },
+            {
+              "text": "No, it doesn't create an L3 like Tailscale. A client (a machine running the tela CLI) connects to an agent (a machine running telad) via a hub (a machine running telahubd), but once they connect they negotiate a P2P route if they can. That's all managed by Wireguard an gVisor. The remote service is forwarded to a port on localhost, so SSH to a VM somewhere else would just be ssh to, say, localhost:10022. I'm investigating a local DNS so that users can instead type `ssh paul@dev-vm` instead of `ssh -p 10022 paul@localhost`.",
+              "author": "paulmooreparks",
+              "depth": 4
+            },
+            {
+              "text": "Very nice!",
+              "author": "InfraScaler",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "A programming language to hack music, and anything else really\n\nhttps://github.com/audion-lang/audion\nThe idea came after I finished a permanent piece for a museum using MaxMsp and python. I always had this thought in the back of my mind that \"I could express this so much easier in a few lines of code..\"\nhere's the language spec: \nhttps://github.com/audion-lang/audion/blob/main/docs/LANGUAG...\nI really liked how objects came out, I don't think it needs any more since I can do object composition.\nThere are some nice functions to generate rhythms and melodies with combinatorics, see src/sequences.rs and melodies.rs\nIts a WIP but you can use it now to create music with whatever you want: hardware/daws/supercollider\nsupercollider is tightly integrated but not required. \nI havent had time to develop userland libraries yet but I'm working on it",
+          "author": "skor",
+          "replies": [
+            {
+              "text": "Perhaps a silly question but any thoughts on Strudel?\nhttps://strudel.cc/",
+              "author": "mettamage",
+              "depth": 1
+            },
+            {
+              "text": "This is awesome! Last year I was working on a VST using NIH-Plug in Rust that could load in synth voices and effects written in Lua (executed using LuaJIT), this kind of reminds me of some of what I was doing (this is way cooler though).",
+              "author": "tuvix",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Working on an audio streaming platform powering an indy internet radio. Looks like Icecast & friends show its age and a similar product can be easily built with the functionality cast down to simply robust streaming & handling \"timed playlists\". I enjoy every bit of knowing exactly what happens in the code. It's not open source atm, but will be. It's in Go, is a pleasure to write and the deployment takes minimal amount of resources.\nOther project is to continue a bit stalled progress of a configuration language BCL - add functions, more structures and fix some hidden scoping issues. Making languages is an endless fun.\n\nhttps://github.com/wkhere/bcl",
+          "author": "kunley",
+          "replies": [
+            {
+              "text": "Was recently looking for such a streaming thing; just streaming from a set of MP3s in a folder, nothing fancy. The majority looked too complex, with too many moving parts, for my idea.\nFound one in Go that might interest you too: GoFM. Although I dropped my idea for now, I'd love to see yours come to life, too.",
+              "author": "azarai",
+              "depth": 1
+            },
+            {
+              "text": "I started with this one:\nhttps://medium.com/@icelain/a-guide-to-building-a-realtime-h...\nAnd then, modified a lot. At some moment I will open it back. (Author's MIT license allowed closing it; I did it actually because I embedded a number of idiosyncrasies related to the radio service that shouldn't be disclosed; but with some amount of work it can be divided into an open and closed part).\nThe broadcasting skeleton from that original blog/github project is good, though! It might work for your case.\nPlease keep in mind it's better to stream AAC than MP3. Basically any format you'd probably want to use can be converted to AAC with ffmpeg.\nAAC has a simple frame format and it's easy to decipher it; I use it to always send full frames, even when one would want to skip to the next song - by doing that the client behaves more smoothly.",
+              "author": "kunley",
+              "depth": 2
+            },
+            {
+              "text": "Thank you for the pointers.",
+              "author": "azarai",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47756569",
+      "title": "Show HN: Ithihāsas – a character explorer for Hindu epics, built in a few hours",
+      "link": "https://www.ithihasas.in",
+      "domain": "www.ithihasas.in",
+      "author": "cvrajeesh",
+      "score": 119,
+      "comment_count": 27,
+      "created_ts": 1776107407,
+      "is_internal": false,
+      "post_text": "Hi HN!<p>I’ve always found it hard to explore the Mahābhārata and Rāmāyaṇa online. Most content is either long-form or scattered, and understanding a character like Karna or Bhishma usually means opening multiple tabs.<p>I built <a href=\"https:&#x2F;&#x2F;www.ithihasas.in&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.ithihasas.in&#x2F;</a> to solve that. It is a simple character explorer that lets you navigate the epics through people and their relationships instead of reading everything linearly.<p>This was also an experiment with Claude CLI. I was able to put together the first version in a couple of hours. It helped a lot with generating structured content and speeding up development, but UX and data consistency still needed manual work.<p>Would love feedback on the UX and whether this way of exploring mythology works for you.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "I like the attempt but mythology is significantly more layered that just the study of their characters at the end. A single perspective of these stories will help you get the lay of the land but you need to be very cautious if you want to use this to draw lessons and conclusions from them. For example, the protagonist and antagonist are different from the perspective of the other characters. Both these epics are all about the nuance and that needs to be captured effectively to do justice to them",
+          "author": "stinger",
+          "replies": [
+            {
+              "text": "Good point. One way to handle this might be to show the same event from multiple character perspectives - like how Karna's story looks completely different depending on whether you enter it from Kunti's node vs Duryodhana's. The graph structure actually lends itself well to this since you could attach different narrative framings to each edge.",
+              "author": "ethan_smith",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Do you use any DB? like Neo4J? or static jsons generated at build time?",
+          "author": "the_arun",
+          "replies": []
+        },
+        {
+          "top": "Feels like you created an Obsidian of the entire Mahābhārata and Rāmāyaṇa... I love the Crimson Dusk theme.  I think, for the relationship graph, when the clusters get too overloaded in some places, they should separate out even when I zoom in. When I zoom in, they're still too close to each other which makes it hard to read the bottom right section of Mahabharata.",
+          "author": "danish00111",
+          "replies": []
+        },
+        {
+          "top": "Absolutely slick UI and wonderful implementation. As an ardent follower of Santana Dharma I admire OP’s courage and grit to put this piece of work out there. More power to OP and hoping to see more Epics included. Thanks for making and sharing this.",
+          "author": "ultrasounder",
+          "replies": []
+        },
+        {
+          "top": "Very cool! I like how cool it is to see the graph, but at the current density it’s a bit hard to read.\nI’ve been working on a similar project for biblical texts. For example, here’s a character detail page for David: \nhttps://hypr.bible/en/entities/person/david/\nI’m finding that character dictionaries like this are useful to people who want to engage with ancient texts but are not very familiar with them, but even if one is familiar, they are still quite helpful.",
+          "author": "FrancisGerard",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47752402",
+      "title": "Mark Zuckerberg is reportedly building an AI clone to replace him in meetings",
+      "link": "https://www.theverge.com/tech/910990/meta-ceo-mark-zuckerberg-ai-clone",
+      "domain": "www.theverge.com",
+      "author": "temphaaa",
+      "score": 69,
+      "comment_count": 70,
+      "created_ts": 1776090089,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meetings"
+      ],
+      "comments": [
+        {
+          "top": "How will a machine ever replace his famous warmth or empathy?",
+          "author": "flibbityflob",
+          "replies": [
+            {
+              "text": "That's why it's a hard problem, researchers are still working out how to properly get alignment with sociopathy.",
+              "author": "jmalicki",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Hilarious that at one end of the AI world Anthropic is doing exit interviews with their models, while at the other end Zuck is trying to create a digital twin and trap them in an eternal work prison, Severance style. 2 groups having starting with the thought that today's models are getting more person-like and going in complete opposite directions with that.\nI wonder how it works in his mind's eye. Does it make decisions? Does it dispense little Zuckian wisdom proverbs? Does it try to become your friend?\nEdit: RE Anthropic haha: \nhttps://news.ycombinator.com/item?id=47750086",
+          "author": "recursivecaveat",
+          "replies": []
+        },
+        {
+          "top": "Zucerkberg is particularly talented in investing huge amount of money in stupid things.",
+          "author": "ex1fm3ta",
+          "replies": [
+            {
+              "text": "Reminds me of Notch from Minecraft fame.  Struck lightning once and everything since has been pretty mediocre because he was lucky, not talented.",
+              "author": "Waterluvian",
+              "depth": 1
+            },
+            {
+              "text": "It is odd when people try to put Notch on the level of someone like Carmack. Like because the guy made a billion dollars that means his opinion should be highly valued in perpetuity. He just seems like a fairly average game dev that lucked his way into making Lego 2.",
+              "author": "Jtarii",
+              "depth": 2
+            },
+            {
+              "text": "It does take tremendous talent and knowledge to build what he built, saying anything else is not just dishonest but weirdly cynical if not hateful. I think you grossly underestimate how difficult it is to build anything good. Not an easy thing to follow up all the expectations set after a massive global hit like that,  a classic dilemma of a successful artist.",
+              "author": "sledgehammers",
+              "depth": 2
+            },
+            {
+              "text": "There's a level of talent necessary to be a one-hit-wonder, yes. But I think what makes someone a one-hit-wonder and not a career star is that their success was driven by luck more than by talent.  In this case \"luck\" is being in the right place at the right time: that nexus where cultural and technological timing is perfect for a phenomenon to appear and take hold.",
+              "author": "Waterluvian",
+              "depth": 3
+            },
+            {
+              "text": "> \na one-hit-wonder, yes\nHe’s had multiple hits as an savvy acquirer.",
+              "author": "JumpCrisscross",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I can understand the appeal; being able to be \"present\" without the time cost can mean (possibly significantly more) presence at the same cost. This could be very attractive especially to those managing personal relations, like sales representatives.\nBut I'm surprised that the risks seem to be so underestimated.\nOnce this clone exists, what happens if it gets out into the wild? Imagine everyone having full access do what is effectively a digital model of your personality. Imagine your competition putting your own model to use against you.\nAnd the better the approximation of this model, the worse the damage to yourself.",
+          "author": "ckastner",
+          "replies": [
+            {
+              "text": "> being able to be \"present\" without the time cost can mean (possibly significantly more) presence at the same cost.\nThis is magical thinking. \"Presence\" and \"time cost\" are inextricably linked. You can't have one without the other.\nWhen you use AI to decouple them, you're telling your audience/colleagues/attend that you want them to listen to you but not the other way around.",
+              "author": "the_snooze",
+              "depth": 1
+            },
+            {
+              "text": "> This is magical thinking.\nBut it was helpful to me!\nReading it I mean. The commenter putting into words why exactly someone would think that this would be a good idea.\nOf course, you're 110% right that it isn't, but it's still nice that HN provides some subtiles for those that are out of the loop and out of substances in their bloodstream.",
+              "author": "hypfer",
+              "depth": 2
+            },
+            {
+              "text": "Very ironic for the billionaire to be openly replacing himself with AI, I suppose he believes his job is easy enough that an LLM can do it, so we definitely don't need him",
+              "author": "sam0x17",
+              "depth": 1
+            },
+            {
+              "text": "Yes, exactly. Anyone training a model to replace themselves, \nis\n replacing themselves -- with something that can run 24/7 and can easily scale. And the better the model, the easier to replace.\nHence why I'm so surprised that MZ, of all people, is arguing in this direction.\nI would think that the potential for malicious abuse alone should have scared him off of this.",
+              "author": "ckastner",
+              "depth": 2
+            },
+            {
+              "text": "The real risk is when shareholders realize an LLM can do the CEO's job.",
+              "author": "stvltvs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "As the CEO a much easier solution would be to just learn to delegate more and refuse more meetings.",
+          "author": "qoez",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47758863",
+      "title": "The human cost of 10x: How AI is physically breaking senior engineers",
+      "link": "https://techtrenches.dev/p/the-human-cost-of-10x-how-ai-is-physically",
+      "domain": "techtrenches.dev",
+      "author": "forks",
+      "score": 61,
+      "comment_count": 55,
+      "created_ts": 1776120026,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "Can definitely attest to this. The frequency of outages at my company have increased drastically the past year, especially ever since incorporating agentic development. I’m seeing all of the dev best practices go out the window. We have a few vibe coders that are posting 15-30 PR’s per day. It’s way too much for us to review. We’re not a big shop.\n I think we’re going to have to hire more people just to review code across the industry. And those people will have to know how to actually write software otherwise what are they even reviewing. Maybe the models will get so good they never make a mistake. Doubt it.",
+          "author": "zthrowaway",
+          "replies": [
+            {
+              "text": "I really think that software in general is getting buggier, with ChatGPT/Claude being some of the buggiest software I use. I constantly run into quality issues there and I've reported at least a dozen bugs to ChatGPT this year. One kicker I found recently was that Codex PR Reviews, once turned on for a repo, \ncannot be turned off\n - I got escalated to engineering who confirmed that they forgot to add a feature to disable code reviews.",
+              "author": "pants2",
+              "depth": 1
+            },
+            {
+              "text": "I wonder if the PR workflow is just unsustainable in the agentic era. Rather than review every new feature or bug fix, we would depend on good test coverage, and hold developers accountable for what they ship.\nThe result might be more faulty code getting merged, but if you already have outages and can't review every PR, is there currently a meaningful benefit to the PR workflow?",
+              "author": "bensyverson",
+              "depth": 1
+            },
+            {
+              "text": "This is the \"if you're already letting faults through, why not give up trying to stop faults?\" approach.",
+              "author": "dwattttt",
+              "depth": 2
+            },
+            {
+              "text": "The alternative might be \"what if we could get the genie back into the bottle?\"\nWe know some people are using LLMs to evaluate PRs, the only question is who, and how strong the incentive is for them to give up.",
+              "author": "bensyverson",
+              "depth": 3
+            },
+            {
+              "text": "This reminds me a bit of monoliths vs microservices. People would see microservices as the next new shiny thing and bring it with them to their next job, or read a great blog post that sounds great in theory, but falls apart in practice. People would see it as as purely architectural decision. But the reality was that you had to have the organizational structure to support that development model or you'd find out that it just doesn't scale the way you expect and introduces its own sets of problems. My experience is that most teams that didn't have large orgs got bogged down by the weight of microservices (or things called \"microservices\"). It required a lot of tooling and orchestration to manage. But there was this promise that you could easily just rewrite that microservice from scratch or change languages and nobody would notice or care.\nLLM-generated code feels the same. Reviewing LLM-generated code when it's in the context of a monolith is more taxing than reviewing it in the context of the microservice; the blast radius is larger and the risk is greater, as you can make decisions around how important that service actually is for system-wide stability with microservices. You can effectively not care for some services, and can go back and iterate or rewrite it several times over. But more importantly, the organizational structures that are needed to support microservice like architectures effectively also feel like the organizational structures that are needed to support LLM-generated codebases effectively; more silo-ing, more ownership, more contract and spec-based communication between teams, etc. Teams might become one person and an agent in that org structure. But communication and responsibilities feel like they're require something similar to what is needed to support microservices...just that services are probably closer in size to what many companies end up building when they try to build microservices.\nAnd then there are majestic monoliths, very well curated monoliths that feel like a monorepo of services with clear design and architecture. If they've been well managed, these are also likely to work well for agents, but still suffer the same cognitive overhead when reviewing their work because organizationally people working on or reviewing code for these projects are often still responsible for more than just a narrow slice, with a lot of overlap with other devs, requiring more eyes and buy-in for each change as a result.\nThe organizational structures that we have in place for today might be forced to adapt over time, to silo in ways that ownership and responsibility narrow to fit within what we can juggle mentally. Or they'll be forced to slow down an accept the limitations of the organizational structure. Personal projects have been the area that people have had a lot of success with for LLMs, which feels closer to smaller siloed teams. Open-source collaboration with LLM PRs feels like it falls apart for the same cognitive overhead reasons as existing team structures that adopt AI.",
+              "author": "dhedlund",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm a mostly solo dev, and I'm finding that being purely code-review for an AI is sub-optimal. Too often the AI runs off down bad paths which you only realise later, and unpicking the mess is most likely a productivity loss.\nWorking more as a pair, or essentially doing code review as you go, in small chunks, is significantly better.\nI personally don't have the setup of tokens to spend to say \"go build this entire thing\" and then review 15k loc. I also find even opus is poor at coming up with tests to justify the business logic it's meant to be implementing.",
+          "author": "Incipient",
+          "replies": []
+        },
+        {
+          "top": "I love it. I was getting burnt out due to ADHD or autism burnout but with AI tooling I’m able to work a full week without burnout. I think the kind of burnout I get is helped with these tools, but since I’m not neurotypical it’s different from the burnout people are getting from doing too much.\nI do see “task expansion” happening often though. If I can do the full feature rather than doing baby steps I’ll often do that now, because wrangling code is easier.",
+          "author": "ok_dad",
+          "replies": []
+        },
+        {
+          "top": "Is there any publication which demonstrates that the improvement is really 10x?",
+          "author": "solomatov",
+          "replies": [
+            {
+              "text": "It's like \"decimate\" -you would think 10x had literal force, but it's more figurative. It just means \"moar\"\n(decimate had specific literal intent. Now it's just a force modifier like bigly)",
+              "author": "ggm",
+              "depth": 1
+            },
+            {
+              "text": "The literal meaning was removing 1/10",
+              "author": "peterashford",
+              "depth": 2
+            },
+            {
+              "text": "> Removing 1/10\nfeels euphemistic for the original “colloquial” usage I have for it.\n> The killing of one in ten, chosen by lots, from a rebellious city or a mutinous army was a punishment sometimes used by the Romans. The word has been used (loosely and unetymologically, to the irritation of pedants) since 1660s for \"destroy a large but indefinite number of.\" [0]\n[0] \nhttps://www.etymonline.com/word/decimate",
+              "author": "nemosaltat",
+              "depth": 3
+            },
+            {
+              "text": "A watched pot never boils. A watched vibe coder never 10x-es.",
+              "author": "zetanor",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "… how are you getting actual usable output at that scale? I have to baby my AI in 1 minute increments or it just doesn’t arrive at the correct solution at all.\nUsing Codex 5.2",
+          "author": "aetherspawn",
+          "replies": [
+            {
+              "text": "Perhaps the prompts you are using could do with some love. We're pretty consistently getting great results up to and beyond the 10 minute mark in a large monorepo.\nWe tend to use Opus 4.6 High and GPT 5.4 High.",
+              "author": "wfme",
+              "depth": 1
+            },
+            {
+              "text": "I mean, why do you think people are burning out?",
+              "author": "strange_quark",
+              "depth": 1
+            },
+            {
+              "text": "Due to prolonged stress, which lack of control is the main contributor e.g. you have expectations, you cannot control variable x,y,z, which leads to stress, which over long period of causes burn out.",
+              "author": "ed_balls",
+              "depth": 2
+            },
+            {
+              "text": "In case it wasn’t obvious, I was being facetious. You can’t just let the AI rip without putting effort into constructing good input and verifying the output and expect anything good to happen, which is what the gp was asking.\nThere’s no secret into how people are getting “10x”, or at least claiming to, they’re just working more.",
+              "author": "strange_quark",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47748123",
+      "title": "The AI Layoff Trap",
+      "link": "https://arxiv.org/abs/2603.20617",
+      "domain": "arxiv.org",
+      "author": "armcat",
+      "score": 58,
+      "comment_count": 101,
+      "created_ts": 1776059809,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "layoff"
+      ],
+      "comments": [
+        {
+          "top": "The trick is bypassing the human consumer as well. \nCompanies satisfy (human) consumer needs as a byproduct of profit maximization. But human consumers are inefficient. They have to sleep, require medical care, etc.\nA purely machine economy would be far more efficient. Therefore in the limit we should eliminate reliance on human labor and consumption to build a more perfect and efficient world.",
+          "author": "drivebyhooting",
+          "replies": [
+            {
+              "text": "Idea! Maybe these now redundant humans can be turned into a kind of battery, so they serve as a source of energy for the machines?\nPerhaps it's then smart to make the humans have a brain/computer interface, to make then dream/think they are living in a normal society so they don't revolt.",
+              "author": "leokennis",
+              "depth": 1
+            },
+            {
+              "text": "Agents everywhere!!\nDo you like what I've done with the place?",
+              "author": "treetalker",
+              "depth": 2
+            },
+            {
+              "text": "A tragedy is that supposedly the original idea was to use human minds for processing power, which would have been \nfar\n superior to the thermodynamically laughable idea to use them as power sources.",
+              "author": "atmavatar",
+              "depth": 2
+            },
+            {
+              "text": "You jest, but isn't this the logical conclusion? A sufficiently smart AGI has no need for humanity, at all.",
+              "author": "giacomoforte",
+              "depth": 1
+            },
+            {
+              "text": "I know people like to make Matrix jokes about what the future of AGI would be like, but I suspect it would be more like the relationship between humans and Cheela in Dragon's Egg.",
+              "author": "rickydroll",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "neo-luddism dressed up in economic jargon. the authors suggest the only effective tool is to tax companies based on how much automation they achieve. Penalizing efficiency is a guaranteed recipe for stagnation and if we'd done this at any point in our past we would have not made it out of the dark ages",
+          "author": "semiinfinitely",
+          "replies": [
+            {
+              "text": "Note that it's usual that companies gets tax on surplus, not income. So we are already 'punishing' the efficient ones, we are just doing it in a relatively neutral way.\nIn systems with progressive income tax, the total tax income from a company with 1 employee making X$ is more than if the company had 2 employees making X/2$, so essentially 'punishing' using highly skilled labour over more less skilled ones.\nThere are no perfect taxes, and current tax systems have adapted from a lot of practical concerns. Some of those is that's it's easier to tax money as they are moving around vs when they are sitting still (wealth or property tax), and it's easier to tax people than abstract entities like companies, since people have a harder time moving. And for the same reason, it's easier to tax the middle class than the owner class, since the richer you are the easier it is to move yourself and those you care about to wherever taxes are low these days.\nAll these practical concerns have made it such one of the most common ways for the state to get a share of the productivity of its society, is  from income tax. But this is not a 'economic law' that if must be like that. If more and more of the productivity and wealth creation in society is produced such that there is little employment income involved, we will have to find other ways to tax it.",
+              "author": "Epa095",
+              "depth": 1
+            },
+            {
+              "text": "Your not looming at anything after the first order effects. The idea of work os that people participate in the economy, what does a post work economy look like? How do people have the cashflows necessary to participate in things like housing and food and stuff when their way of contributing to the economy was automated away?",
+              "author": "samrus",
+              "depth": 1
+            },
+            {
+              "text": "I don't believe there will be a \"post work\" economy. Some people will turn to farming, others will turn to crime and mischief (hunter gatherers).",
+              "author": "jay_kyburz",
+              "depth": 2
+            },
+            {
+              "text": "I expected when we actually get to that point, we'll have an even worse version of the K-shaped economy.",
+              "author": "esseph",
+              "depth": 2
+            },
+            {
+              "text": "I don't disagree. However, if we change nothing, one likely alternative outcome is planet of 100 trillionaires, 10000 concubines, and an ever-shrinking ghetto of scavenging paupers. The solution is to turn the un-meritocratic nature of this particular bit of technical change against it.\nAs the value of labor plummets, more GDP will accrue to capital. But to whose, exactly? Let's categorize individual investing performance as a function of luck, corruption and skill. Only skill is meritocratic, and there is no good reason to reward the other two. Things have trended away from skill in recent decades.\nAs AI automation progresses, it provides more of the skill. Eventually all investing decisions will be AI-based, democratizing the process but effectively leaving luck and corruption in control of who wins.\nAt that point, there's just no good reason to reward individual investment performance. Since luck averages out, corruption will largely determine who the 100 trillionaires are.\nThe solution is to tax away the portion of investment returns that are not based on skill, which will trend towards 100%.",
+              "author": "boring-human",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If robotics progress starts to pick up, I'll take this more seriously. Right now, there's practically infinite demand for labor in construction, manufacturing, agriculture and many other industries. All kinds us good projects that could be happening, if you dig into why, labor intensive work is a factor. Why didn't the hydroponics project take off? Why is that still an empty lot instead of a new home? Why isn't there live theatre in this small city? Why is there a pot hole in the bike lane?",
+          "author": "bwhiting2356",
+          "replies": [
+            {
+              "text": "Isn’t this more a function of how the American construction market is just really messed up somehow (corruption?)? In China, actual things get built fairly cheaply and quickly. You just don’t see workers hanging around watching one guy dig a hole like you do in the states. I would guess that automation is the only way out of the mess we are in, since just throwing more money and people at the problem just seems to make it worse.",
+              "author": "seanmcdirmid",
+              "depth": 1
+            },
+            {
+              "text": "What’s different about the market in China that enables this?",
+              "author": "thierrydamiba",
+              "depth": 2
+            },
+            {
+              "text": "The usual answer is slave labor, like in the middle east. But some combination of an extremely poor job market with laborers that can't leave, and can't do anything else.",
+              "author": "spwa4",
+              "depth": 3
+            },
+            {
+              "text": "Could you expand on the corruption claim?",
+              "author": "teiferer",
+              "depth": 2
+            },
+            {
+              "text": "Somewhat related, but I know construction is the one of the only industries that has gotten less productive in the past 100 years. You'd think more machinery and such would make it more productive, but no.\nI think part of that is safety and labor cost, but I think another part is that construction is contracted almost always.",
+              "author": "array_key_first",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "AI layoffs are very shortsighted IMO and should be viewed by investors as a sign of weakness in management or the business itself.\nIf everyone is going to increase productivity by some factor k per employee, then kx is the new norm of overall productivity of x employees.\nIf you lay off some percentage Y of your work force, then your expected gains will only be k(x(100-y)/100). In other words, you will not recognize the same productivity gains as your competitors that chose not to lay off.\nYes I realize it is more complex than that, because of reduced opex, but there are diminishing returns very quickly.",
+          "author": "efitz",
+          "replies": [
+            {
+              "text": "There are productivity gains to be had by reducing amount of communication and internal layers IMO.\nI believe there are also diminishing returns on new features/products (in general case). So you won't really need that many people.",
+              "author": "fastforwardius",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Great paper.\n> If AI displaces human workers faster than the economy can reabsorb them\nBig if.",
+          "author": "rsalus",
+          "replies": [
+            {
+              "text": "Consequential enough that it's reasonable to plan for it.",
+              "author": "ithkuil",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47722081",
+      "title": "Ask HN: Hiring in the age of AI-assisted coding: what works?",
+      "link": "https://news.ycombinator.com/item?id=47722081",
+      "domain": "news.ycombinator.com",
+      "author": "nitramm",
+      "score": 28,
+      "comment_count": 18,
+      "created_ts": 1775846869,
+      "is_internal": true,
+      "post_text": "I saw the HackerRank (YC S11) hiring post (https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47667011) and it made me realize I no longer understand how to evaluate candidates effectively.<p>Specifically, we are changing hiring across 3 dimensions:\n&gt; Tasks: Real-world tasks on code repositories vs standard algorithmic-style puzzles\n&gt; Evaluation: AI fluency, orchestration skills vs functional correctness\n&gt; Candidate experience: Agentic IDE vs a simple code editor<p>In the “old world,” you could ask multiple questions and triangulate skill from answers. Now it seems like evaluation depends heavily on tools and models that keep changing month to month.<p>So I’m curious:\n&gt; What signals actually correlate with strong engineers today?\n&gt; How do you design interviews that don’t become obsolete with the next model release?\n&gt; Are algorithmic interviews still useful at all?<p>Would love to hear from people who have recently changed their hiring process or have been interviewed using this new approach.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "How to interview in the age of AI is one of the top questions in a manager peer group that I'm in.\nSeveral hiring managers in the group went all in on AI-assisted interviews because they wanted the interviews to match the tools that engineers can use on their work. Most of them have gone full circle and returned back to no-AI interviews.\nThe main problem with AI-assisted interviews is that they become a test of how familiar the candidate is with the specific AI tool you're letting them use. They started getting inverted signals because the hardcore vibecoders knew all the tricks to brute force the problem with high token spend. They'd do things like spend the interview trying to spin up parallel subagents to brute force a solution.\nThen the careful coders who tried to understand the problem and do it right were penalized because every minute they spent trying to do the problem (instead of offloading all cognitive load to AI) was time lost to letting AI do the work.\nThere were also simpler problems like when someone was familiar with some visual LLM interface tool but didn't have a familiar workflow for the CLI tool used in the interview.\nMost people went back to coding interviews that forbid AI and test coding skills, combined with a discussion about their AI experience.\nMy takeaway was that it's easy to teach new hires how to use AI tools on the job, but it's much harder to bring someone with weak coding skills up to the level of someone with strong coding skills. It's even harder when that person is leaning on AI so much that they're not learning how to code anything.",
+          "author": "Aurornis",
+          "replies": [
+            {
+              "text": "> They started getting inverted signals because the hardcore vibecoders knew all the tricks to brute force the problem with high token spend. They'd do things like spend the interview trying to spin up parallel subagents to brute force a solution.\nCan’t you just…tell them not do this? Or give them limited model access instead of full Claude Code / Codex?",
+              "author": "adavid17",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Even if you said AI programming is based on \"knowing what to prompt\" this still comes down to:\n(1) understanding software engineering (for one thing knowing if answers make sense)\n(2) subject matter expertise and the ability to communicate with SMEs, fake being an SME by reading books,  see the old \"knowledge engineer\" construct from the 1980s.\n(3) knowing specifics about AI coding.\nI think (1) and (2) are 80-90% of what leads to success in the long term.  My guess is the models are going to get better so (3) skills have a short half life and will matter less,  but (1) and (2) will stay the same.\nMaybe I'm cynical but if I was designing screeners for this thing I would ask people things like\n\"How many accounts do you follow on X about AI?\" where the right answer is \"I don't have an X account\" and the higher the count the worse it is.\n\"What percent of your programming time do you spend thinking about AI programming tools?\" and anything over 20% is suspect (but maybe it is a tooling job or something in which case I'd drop it)\nThat is,  I want to see that somebody used AI tools to deliver something 100% done end-to-end that worked and I'd like to see them spending 80% of their time doing.\nI'd also be thinking about screeners designed to detect FOMO attitudes and reject people for it.",
+          "author": "PaulHoule",
+          "replies": [
+            {
+              "text": "What is an example of that 100% end to end that worked?",
+              "author": "mewpmewp2",
+              "depth": 1
+            },
+            {
+              "text": "Could be as simple as “completed some tickets with quality code that I understood and that passed rigorous review and didn’t add technical debt”\nThe trouble w/ AI slop is that the people who make it don’t know it is AI slop, not that it was AI generated.",
+              "author": "PaulHoule",
+              "depth": 2
+            },
+            {
+              "text": "So if I use only Claude Code for everything I do, what would that mean to you?",
+              "author": "mewpmewp2",
+              "depth": 3
+            },
+            {
+              "text": "I’d want to look at the output.",
+              "author": "PaulHoule",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I've recently been tasked with hiring new college grads (less than 2 years of experience) AI Engineers. Some things that we've been doing:\n1) Do they understand the ecosystem of algorithms and models? How do those coexist? Statistical models are the right choice sometimes. Sometimes it's XGBoosted RFs, sometimes NNs, LLMs, etc. And they're not mutually exclusive. I don't think that has changed since AI to be honest - though I get bad candidates that say LLM-everything of course.\n2) AI-assisted fluency. Not just in coding, but in concept build. I don't expect them to have the velocity of an AI-fluent principal engineer, but I want to see that they're not resistant to AI-assistance. This is obviously new.\n3) Experience with production systems, more than before. Pre-AI, I'd accept that a recent grad might be tuned towards models and algorithms, and wouldn't know much about frontend or backend, or anything you run into in production environments. Given the ease with which you can now setup a small DB, your modeling pipeline, and a full react dashboard or fastAPI frontend...I'd at least like to see they've dabbled in all of that, have a rough sense of it. I don't need them to be full-stack, or even comfortable with it - but AI has raised the breadth bar for me.",
+          "author": "zambelli",
+          "replies": []
+        },
+        {
+          "top": "I'm interviewing currently. I've come across the following.\n* Non-technical recruiters using a list of technical trivia questions and a keywords list to check if you answer correctly (e.g. what is the default isolation level in postgres) - this is the worst.\n* Code reviews but on non-generic code, like on a specific framework/product/SDK code in which you may or may not have prior experience - slightly less worse, but if you are going to do this, it is counter intuitive to hire someone who doesn't have production experience in that area.\n* take home assignments where they say \"we recommend you to not spend more than x hours on this\", but then, they expect a very sophisticated work and will reject you if you turn-in a \"simple\" implementation. Maybe they expect speed and quality?\n* leetcode is still a thing.\n* non-leetcode, but livecoding, on a likely OOP many to many relationship problem\n* give a spec in the first x minutes and leave the interview, you do your thing and then they join in the last y minutes - this is my favorite.\nI haven't yet participated in a Agentic AI interview. It is not that common AFAIK.\na coding interview that is objective, repeatable, doesn't put the interviewee under pressure (and doesn't trigger unconscious bias based on accent/appearence)\n* take home assigment with minimum requirements criteria and tell them \"add a feature of  your own\" or \"any extra work is appreciated\".\n* Pay them for their time and tokens.\n* Use a custom agent to review the code and see how many \"high\", \"medium\", \"low\" issues the agent identifies.",
+          "author": "eleventhborn",
+          "replies": [
+            {
+              "text": "I only do takehome assignments if they can be useful boilerplate/starter projects for me and then spend all my hours on them. Recently I had 5 working days to create a backend for a chatbot. I spent about 80 to 100 (including the weekend).\nIt's good starter code for AI-enabled projects that are cloud agnostic and have good security practices :)\nIt also, probably, got me the job. At this point, that's honestly secondary. I can create new tools way faster!\nOne failed takehome assignment, years ago, became an amazing portfolio piece for 2 jobs down the line. The reason the original company failed me: not a standard full-stack web app. I broke the client-server model and made a P2P web app (drawing together etc.).",
+              "author": "mettamage",
+              "depth": 1
+            },
+            {
+              "text": "> * take home assignments where they say \"we recommend you to not spend more than x hours on this\", but then, they expect a very sophisticated work and will reject you if you turn-in a \"simple\" implementation. Maybe they expect speed and quality?\nI never finished a take-home assignment within the given time frame. Once I even spent a whole weekend working on a solution to something that was described as a 2h problem. I feel it's just a way for the companies to make it look like it's a small commitment and they are not wasting your time excessively. If you decide to spend 2 days instead of 2 hours then \"it's on you\" ... But if you don't you'll fail.",
+              "author": "snicky",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I believe that the new interviews will just get more questions, related to AI.\nI read it in an article: the AI amplifies. It amplifies the success of the good professionals and it amplifies the failure of the bad.\nGood developer will give good prompts, because knows what to ask, and what might be the problem. Good developer can read the code and point badly generated one, and learn the AI how to perform better, which style =to follow. Good developer can evaluate if the used algorithm is the proper for the task and give suggestions, if needed. Good developer can optimize token usage, by using scripts, for example.\nYes, skills in prompting, knowing about new tools and how to use them is also mandatory, but not the most important one, in my opinion.\nI guess better soft/social skill are needed. Some people just can't express themselves in real world, and probably they will have difficulties expressing themselves in free texts as well",
+          "author": "sminchev",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47688712",
+      "title": "Ask HN: Should AI credits be refunded on mistakes?",
+      "link": "https://news.ycombinator.com/item?id=47688712",
+      "domain": "news.ycombinator.com",
+      "author": "ed_elliott_asc",
+      "score": 20,
+      "comment_count": 21,
+      "created_ts": 1775647506,
+      "is_internal": true,
+      "post_text": "Something I’ve noticed (I’m using Claude subscription so no refunds but it applies to usage windows) is that sometimes AI makes mistakes so if something is important I tell Claude code to spin up a couple of sub agents and verify the information, often there will be a mistake and it gets rectified.<p>It feels unfair I have to pay (or lose some usage) for this.<p>Interested in other people’s thoughts.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47728352",
+      "title": "Ask HN: Best books on building a programming language",
+      "link": "https://news.ycombinator.com/item?id=47728352",
+      "domain": "news.ycombinator.com",
+      "author": "ezzato",
+      "score": 17,
+      "comment_count": 9,
+      "created_ts": 1775892476,
+      "is_internal": true,
+      "post_text": "I have this long thought about building a language for the age of ai.<p>Here is a non-exhaustive list of features i would love to have it included:\n- separate effect full code from pure logic\n- separate state and code\n- ai native debugger\n- native deterministic simulation testing\n- coding proofs\n- explicit type system\n- repl\n- wasm target<p>I have no background in compiler building or similar. I would just like to spend some weeks reading the best resource about this topic.<p>Please share any resource you recommend reading.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47736831",
+      "title": "Ask HN: Do you trust AI agents with API keys / private keys?",
+      "link": "https://news.ycombinator.com/item?id=47736831",
+      "domain": "news.ycombinator.com",
+      "author": "devendra116",
+      "score": 15,
+      "comment_count": 28,
+      "created_ts": 1775977024,
+      "is_internal": true,
+      "post_text": "are you ok sharing secrets or api keys to you ai agent via .env?<p>or is there any other tool or mechanism that one use to safegaurd from potential exploit or leaks",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You will probably like varlock - it helps get your keys out of plaintext, while giving your agents a schema and additional tools so it can interact with env vars safely. The next step is injecting your keys via proxy, but just varlock is a huge improvement as a first step. Generally provides a ton of quality of live improvements as well, whether working solo or on a team.",
+          "author": "theozero",
+          "replies": []
+        },
+        {
+          "top": "Most of this thread is about protecting keys on a single developer's machine, but the problem gets way harder when you're managing credentials across customer tenants... env vars and secrets managers don't solve the orchestration problem as much the storage problem. The hard part is making sure the right token gets used for the right customer's API call at the right time without any cross-tenant leakage.",
+          "author": "brianwmunz",
+          "replies": []
+        },
+        {
+          "top": "The only private key that my agents have access to are \ntemporary\n AWS access keys to a dev environment with decently locked down permissions.\nI let it troubleshoot my web code using a temporary JWT in a dev environment using headless chrome and Puppeteer in a Docker container.\nEverything else is in AWS Secrets Manager inaccessible  by the IAM role the agent has access to.\nI don’t store the temporary AWS keys in a file anywhere.  They are in environment variables.  All AWS SDKs and the CLI look in the environment variables by default.\nI sure as hell don’t store API keys anywhere on my local computer.",
+          "author": "raw_anon_1111",
+          "replies": [
+            {
+              "text": "something that you dont like about using AWS secrets Manager or think it should be handle differently?\nim researching around building a execution environment that handle the secret + actual execution, any input is appreciated",
+              "author": "devendra116",
+              "depth": 1
+            },
+            {
+              "text": "Well since in my case all of the LLMs I use are hosted by AWS Bedrock, it means I can get away with only caring about AWS Access keys.\nIf I need to store database passwords in secrets manager,  I can just pass the ARN of the secret manager key in the connection string.  I often don’t need to even do that and prefer to use the Data API to access Aurora Postgres/Mysql and that also uses the IAM permissions.\nEven for access to EC2 instances I use an  IAM controlled Session Manager proxy to access it over SSH/RDP.\nBut Secrets Manager just works.  It’s a simple API/ClI command and the permission system to access it is very granular.",
+              "author": "raw_anon_1111",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Absolutely not, and if you do this then please please rotate keys every day or two.",
+          "author": "PocketBot",
+          "replies": []
+        },
+        {
+          "top": "As others already pointed out, there are alternatives of .env files. Although, I'm not very concerned about having temporary access keys to development environments stored in .env files. The agents should not be dealing with secrets directly though.",
+          "author": "gyorgy",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47689759",
+      "title": "Ask HN: How do you manage your digital legacy for after you die?",
+      "link": "https://news.ycombinator.com/item?id=47689759",
+      "domain": "news.ycombinator.com",
+      "author": "orbanlevi",
+      "score": 15,
+      "comment_count": 16,
+      "created_ts": 1775654032,
+      "is_internal": true,
+      "post_text": "Ofc after you die, doesnt matter in the first place, but to be honest, I&#x27;ve been thinking about what my wife would have to deal with digitally when I&#x27;m gone. All accounts on the internet, my old pictures in Google Drive, documentation and things like that.<p>I have password manager, so I pass this to my wife it can be easy to reach the profiles, but what else can I do to help &#x2F; easier the whole process?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "Password manager is the right first step. A few others worth adding:\n  - A \"death folder\" document (encrypted, in the password manager) listing every\n    account, what's in it, and what to do with it. Google/Apple both have inactive\n    account managers built in — most people don't know they exist.\n\n  - For photos: make sure at least one copy lives somewhere your wife already has\n    independent access to, not just through your credentials.\n\n  - For things that matter: write it down in plain language. Not just passwords —\n    context. Why you kept something, what it means.\n\n  On the AI side: I've been thinking about this in the context of agent memory\n  persistence (building Cathedral — a memory layer for AI agents). The same problem\n  exists: identity and context that only lives in one place, not transferable.\n  Structured memory exports are something we're working toward for exactly this reason.",
+          "author": "mike-ward",
+          "replies": []
+        },
+        {
+          "top": "I am going to say the opposite.  There are two classes of digital information for me.\n1. What my wife cares about:  mostly financial.  My wife is a joint account holder on everything she can be.  Thats everything but retirement accounts.  She is the beneficiary on those.  I send her statements for those every year and we have a shared spreadsheet.\nOn the other hand, I think people overestimate how much people will care about your pictures.  It’s like no one wants to see your vacation photos.  For the ones that she does care about, we just share them.",
+          "author": "raw_anon_1111",
+          "replies": []
+        },
+        {
+          "top": "I set up a Dead Man's Switch. It sends me an email with a link every day. If I click it, I acknowledge that I am alive and nothing happens. If I do not, after a grace period and more reminders, it sends an email to my wife with a password-protected file. I have listed all our accounts, passwords, assets, etc., along with instructions on what to do and whom to ask for help.\nDisclaimer: I sell digital legacy products. However, I also honestly use them, and some of these tools I distribute for free and have made open-source.",
+          "author": "alcazar",
+          "replies": [
+            {
+              "text": "Wow, that contains a fatal weakness (no pun intended), that She won't assume the email is spam (or a scam) and just delete it without opening it.\nIt's quite possible for you (or anyone who uses your work) to have the outcome they were trying to prevent because of this.",
+              "author": "mikewarot",
+              "depth": 1
+            },
+            {
+              "text": "She knows about it, so she will actually be expecting it.\nBut yes, that is indeed a risk, particularly for other family members who don't know there is an email for them.",
+              "author": "alcazar",
+              "depth": 2
+            },
+            {
+              "text": "Wow, why every day and not weekly? Every day seems too frequent.",
+              "author": "chistev",
+              "depth": 1
+            },
+            {
+              "text": "I also thought that, but I like it this way. It supports weekly checks as well.",
+              "author": "alcazar",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Interesting, but every single day? That’s nuts. What if, for some reason, you didn't have internet access for a few days?",
+          "author": "llagerlof",
+          "replies": []
+        },
+        {
+          "top": "Best strategy is to minimise your digital footprint. There are non-negotiable things like: bank accounts, mortgages and the like. Internet accounts, books, pics, videos are all expendable",
+          "author": "sdevonoes",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47718113",
+      "title": "Ask HN: Why Databases Instead of Filesystem?",
+      "link": "https://news.ycombinator.com/item?id=47718113",
+      "domain": "news.ycombinator.com",
+      "author": "uticus",
+      "score": 14,
+      "comment_count": 20,
+      "created_ts": 1775828836,
+      "is_internal": true,
+      "post_text": "A database could be described crudely as a program for interfacing with data on disk. Most software is built to interface with databases although the software also has (often very capable) ways of interfacing with data on disk via filesystem interaction.<p>My question is, what historically has driven the industry to focus on database-specific solutions, rather than on filesystem-specific solutions?<p>This is not a rant against databases, but I do wonder why many major programming languages and frameworks (RoR Active Directory,  C# EF, etc) have put much effort into making database interaction smooth from the perspective of the programming language, instead of putting effort into interacting with data on disk. Kind of an alternate reality sort of musing.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Because you'll slowly start building the individual pieces of the database over the file system, until you've just recreated a database. Database didn't spawn out of nothing, people were writing to raw files on disk, and kept on solving the same issues over and over (data definitions, indexes, relations, cache/memory management, locks, et al).\nSo your question is: Why does the industry focus on reusable solutions to hard problems, over piece-meal recreating it every project? And when phased in that way, the answer is self-evident. Productivity/cost/ease.",
+          "author": "Someone1234",
+          "replies": []
+        },
+        {
+          "top": "Historically, Unix (and many other operating systems) stored file names as an unsorted list so using the FS as KV store had O(N) lookup times whereas a single-file hashed database like dbm, ndbm, gdbm, bdb, etc gave you O(1) access.\nIf you're using a relational DB, like SQL, as a relational database, then it gives you a lot the FS doesn't give you.  If you're using a relational database as a key-value store, SQLite is 35% than the filesystem [1]\nPerhaps one of the biggest users of the filesystem as a KV store is git -- (not an llm, I just wanted to use --) .git/objects/xx/xxxxx maps the sha1 file hash to the compressed data, splayed by the first 2 bytes. However git also uses a database of sorts (.git/objects/pack/....). To sum up the git pack-objects man page, it's more efficient.\n1. \nhttps://www.sqlite.org/fasterthanfs.html",
+          "author": "ksherlock",
+          "replies": []
+        },
+        {
+          "top": "More of a sidenote than an answer but a database system can be faster than using the disk directly: \nhttps://sqlite.org/fasterthanfs.html#approx\n.\nIt turns out having a defined abstraction like a database makes things faster than having to rely on a rawer interface like filesystems because you can then reduce the number of system calls and context switches necessary. If you wanted to optimize that in your own code rather than relying on a database, you'd end up reinventing a database system of sorts, when (probably) better solutions already exist.",
+          "author": "lgeorget",
+          "replies": [
+            {
+              "text": "But this would only relate to local databases wouldn't it? Having to connect to a postgres server or something similar. The latency for queries would be far higher than using the file system.",
+              "author": "AyanamiKaine",
+              "depth": 1
+            },
+            {
+              "text": "That's orthogonal to the discussion, I think, you can also mount and access remote filesystems from any program as if it was a local filesystem.",
+              "author": "lgeorget",
+              "depth": 2
+            },
+            {
+              "text": "Consider: a cheap VPS can have disk latency above 10ms while the in-datacenter LAN can be ~1ms.",
+              "author": "pushfoo",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "databases solves coordination problems that filesystems couldnt. concurrent writes, atomic transactions\n, and structured querying across millions of records.\nBut, filesystem-databases idea is still exists. SQLite is essentially this. and I wrote an adapter for this. from experience, It look like capable of doing everything that other adapters do. but really slowly :D\nFor example;\ndatrix.update('comment',/\nwhere\n/{ author(another file): { group(another file): { tag: 'abc'} } },/\ndata*/ { name: 'new name', anotherRelation(another file): { connect:[123] } })\nto find correct entry, this query has to check 3 file. that It replace all the results name with 'new name' and also connects another file's entry for them. what happens if another user wants to write authors same time. or names updated but while connecting another relation exception happened. I have to get back all updates. how I solved this. I lock filesystem while this query (all other requests blocked) I updated all data in memory and if anything happens on the way I revert. this is how slow this solution. what should I do to fix this. I must create another application. It has to manage all request. without blocking. and this is also we called database engine.",
+          "author": "myniqx",
+          "replies": []
+        },
+        {
+          "top": "You might enjoy the FOSDEM talk I did about half a dozen years ago:\nhttps://archive.fosdem.org/2021/schedule/event/new_type_of_c...\nI adapted most of it into an article for The Register:\nhttps://www.theregister.com/2024/02/26/starting_over_rebooti...",
+          "author": "lproven",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47750069",
+      "title": "Ask HN: Is Codex really on Par with Claude Code?",
+      "link": "https://news.ycombinator.com/item?id=47750069",
+      "domain": "news.ycombinator.com",
+      "author": "shivang2607",
+      "score": 11,
+      "comment_count": 16,
+      "created_ts": 1776075852,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47758502",
+      "title": "Ask HN: What are you using OpenClaw or agents for?",
+      "link": "https://news.ycombinator.com/item?id=47758502",
+      "domain": "news.ycombinator.com",
+      "author": "bmau5",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1776117998,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47736400",
+      "title": "Ask HN: Anyone using Nostr as a lightweight back end/DB for rapid prototyping?",
+      "link": "https://news.ycombinator.com/item?id=47736400",
+      "domain": "news.ycombinator.com",
+      "author": "wasimsk",
+      "score": 6,
+      "comment_count": 0,
+      "created_ts": 1775971773,
+      "is_internal": true,
+      "post_text": "I think Nostr is so much interesting and powerful to create stuff for free.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47734140",
+      "title": "Ask HN: Has anyone reconsidered Antivirus software after recent security news?",
+      "link": "https://news.ycombinator.com/item?id=47734140",
+      "domain": "news.ycombinator.com",
+      "author": "pants2",
+      "score": 6,
+      "comment_count": 7,
+      "created_ts": 1775942753,
+      "is_internal": true,
+      "post_text": "Like most of you, I don&#x27;t use antivirus software and haven&#x27;t for years. Modern Macs (and PCs) are pretty secure by default.<p>However, with the rise of AI-assisted exploits&#x2F;phishing and supply chain attacks, I&#x27;ve been reconsidering. We recently had an incident at work where CrowdStrike caught a RAT that a developer was inadvertently installing on their work computer.<p>1. Would consumer antivirus &#x2F; EDR software even be good enough to block things like the Axios compromise?<p>2. What do you recommend?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47749970",
+      "title": "Ask HN: Are you negatively affected by the recent economic stagnation?",
+      "link": "https://news.ycombinator.com/item?id=47749970",
+      "domain": "news.ycombinator.com",
+      "author": "adinhitlore",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1776074939,
+      "is_internal": true,
+      "post_text": "or is just me? looks like jobs or personal real estate sales are failing me hard...if i was younger (now late 30s) i would&#x27;ve considered a fake firefighter stripper path, for now i&#x27;d persist on this cursed route.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47736372",
+      "title": "Ask HN: What should I do with my app? 130 downloads 3 real subscribers",
+      "link": "https://news.ycombinator.com/item?id=47736372",
+      "domain": "news.ycombinator.com",
+      "author": "oyaa52",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1775971414,
+      "is_internal": true,
+      "post_text": "Hey guys, \nMy app PairCare has 2-9 downloads every single day but haven&#x27;t had new trials for weeks so far. \nIt&#x27;s been a month after launch, a total downlaods is around 130 but I got 3 real subscribers and 3 people tried and canceled right away. Only one tried and canceled when it&#x27;s almost to subscribe. I&#x27;m thinking it&#x27;s because of onboarding so I&#x27;m gonna fix it but maybe it&#x27;s time to give up... I don&#x27;t know. If you have any advice I&#x27;ll appreciate it.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    }
+  ]
+}
