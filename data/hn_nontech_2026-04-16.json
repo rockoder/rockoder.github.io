@@ -1,0 +1,1791 @@
+{
+  "scraped_date": "2026-04-16",
+  "source": "hacker_news",
+  "total_scraped": 128,
+  "nontech_count": 27,
+  "posts": [
+    {
+      "id": "47769796",
+      "title": "Tell HN: Fiverr left customer files public and searchable",
+      "link": "https://news.ycombinator.com/item?id=47769796",
+      "domain": "news.ycombinator.com",
+      "author": "morpheuskafka",
+      "score": 803,
+      "comment_count": 225,
+      "created_ts": 1776193000,
+      "is_internal": true,
+      "post_text": "Fiverr (gig work&#x2F;task platform, competitor to Upwork) uses a service called Cloudinary to process PDF&#x2F;images in messaging, including work products from the worker to client.<p>Besides the PDF processing value add, Cloudinary effectively acts like S3 here, serving assets directly to the web client. Like S3, it has support for signed&#x2F;expiring URLs. However, Fiverr opted to use public URLs, not signed ones, for sensitive client-worker communication.<p>Moreover, it seems like they may be serving public HTML somewhere that links to these files. As a result, hundreds are in Google search results, many containing PII.<p>Example query: site:fiverr-res.cloudinary.com form 1040<p>In fact, Fiverr actively buys Google Ads for keywords like &quot;form 1234 filing&quot; despite knowing that it does not adequately secure the resulting work product, causing the preparer to violate the GLBA&#x2F;FTC Safeguards Rule.<p>Responsible Disclosure Note -- 40 days have passed since this was notified to the designated vulnerability email (security@fiverr.com). The security team did not reply. Therefore, this is being made public as it doesn&#x27;t seem eligible for CVE&#x2F;CERT processing as it is not really a code vulnerability, and I don&#x27;t know anyone else who would care about it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "Extremely bad stuff here. Can't believe it's been 7 hours now and you can still pull up people's complete prepared tax returns right from a Google search. This should be a business-ending breach of trust and good practices, but I worry there's probably a lack of regulatory might or will to make anything happen.",
+          "author": "evmaki",
+          "replies": [
+            {
+              "text": "The company put out its first statement:\n> “Fiverr does not proactively expose users’ private information. The content in question was shared by users in the normal course of marketplace activity to showcase work samples, under agreements and approvals between buyers and sellers. This type of content requires the buyer’s explicit consent before it can be uploaded. As always, any request to remove content is handled promptly by our team.\"\nhttps://sqmagazine.co.uk/fiverr-security-flaw-private-docume...\nIt \nsounds\n like they are trying to claim the users involved published the links and that's why they are on Google? But how could anyone believe that multiple users intentionally published their SSN?\nRe the takedown, I'm also guessing it's from Cloudinary. Maybe HTTP Referrer based?",
+              "author": "morpheuskafka",
+              "depth": 1
+            },
+            {
+              "text": "The DMCA takedown also suggests at least one user was not aware of that file being public. This all comes down to what that \"sharing\" action specifically looked like.\nChatGPT recently had a similar case with the sharing feature on conversations leading to publicly indexed convos. That incident would have also matched the implied definition of sharing here.",
+              "author": "janoelze",
+              "depth": 2
+            },
+            {
+              "text": "It looks like they (cloudinary?) blocked the content.\nEach result from the query site:fiverr-res.cloudinary.com form 1040 returns 404",
+              "author": "deepserket",
+              "depth": 1
+            },
+            {
+              "text": "Yikes! It should not require the service provider to block PII, but at least someone plugged the leak.",
+              "author": "abustamam",
+              "depth": 2
+            },
+            {
+              "text": "It's very unfortunate but a significant amount of the most damaging stuff in this is from the underprivileged and those with minimal means who were trying to find help they could afford. Non-profits trying to get website help, confidential reports for charities trying to get translations, children seeking therapy (fiverr has a therapy category!?) for some truly dark stuff.\nUtterly inexcusable that this is still up after so many hours.",
+              "author": "TkTech",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Software development jobs are too accessible. Jobs with access to/control over millions of people's data should require some kind of genuine software engineering certification, and there should be business-cratering fines for something as egregious as completely ignoring security reports. It is ridiculous how we've completely normalised leaks like this on a weekly or almost-daily basis.",
+          "author": "applfanboysbgon",
+          "replies": [
+            {
+              "text": "At my last job, I opened up Shodan in my free time and clicked through our ASN with the free filters. In two minutes I found multiple iDRACs online. Surprisingly, none had default pw. But one had a public exploit vuln that was years old allowing takeover...\nTurns out during the firewall hardware migration years ago, several units firewalls were switched to audit mode (not enforcing rules). So an entire institute (health research!) had their whole subnet public with zero firewalls, both the server OS and iDRAC interfaces. iDRAC isn't even supposed to be on the same VLAN per Dell let alone on the internet.\nTo top it off, after making some tickets (admittedly not all as serious, ex MFP web UIs on internet) from Shodan, I got pushback from the firewall team for causing units to submit to many changes.\nI also got in trouble with our Qualys analyst for undermining his work because he hadn't gotten to that units annual review yet, even though I didn't even have a Qualys login. (And even if I had found it there, since when do we wait for annual reviews to fix that?)\nIt took at least three weeks internally to get it fixed, and by that I mean only the iDRAC IP blocked with the server itself still wide open.\nAnd that's only because I mentioned it to my manager (awesome guy and not formally responsible for firewall rules) after an unrelated no firewall host incident came through and he authorized an emergency rule.",
+              "author": "morpheuskafka",
+              "depth": 1
+            },
+            {
+              "text": "Huawei Enterprise devices tend to have a CAPTCHA by default on their BMC/OOB GUIs or the other various system/infrastructure service GUIs (such as the HuaweiCloud/FusionCloud products). I'm guessing the reason is that people leave the management ports and GUIs wide open to the public Internet, so the CAPTCHA is protecting at least from the very basic script kiddie bots.",
+              "author": "bblb",
+              "depth": 2
+            },
+            {
+              "text": "They may be part of it, but as a publicly traded company, there's got to be a at least a few people there with a fancy pedigree (not that that actually means they are good at their job or care). But if such a test existed, they presumably would have passed it.\nThey also have an ISO 27001 certificate (they try to claim a bunch of AWSs certs by proxy on their security page, which is ironic as they say AWS stores most of their data while apparently all uploads are on this).",
+              "author": "morpheuskafka",
+              "depth": 1
+            },
+            {
+              "text": "A while ago I had a customer come to me who had a simple Shopify site and fell for a phishing type of attack where someone simply had an email like \"shopify_security at gmail\" and kept telling her she needed to apply all kinds of changes. They laundered the payments through Fiverr.\nThen they would install WordPress plugins to make the site worse and claim even more \"work\" was needed.\nI documented the entire thing, including my own credentials, and sent it off to Fiverr. Fiverr's response was everything was fine and there was nothing they could do about it, even though it was obvious fraud.\nGoogle never did anything about it either, nor did Shopify.\nGiven how they handled such a minor situation like that... I guess it shouldn't be surprising they're just asleep at the switch for a major one like this.",
+              "author": "trollbridge",
+              "depth": 2
+            },
+            {
+              "text": "> But if such a test existed, they presumably would have passed it\nSure, and now they could have their credentials revoked, potential  be legally liable, and never find work in this field again which would prevent them from cocking up another company this way",
+              "author": "bluefirebrand",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am a freelancer on Fiverr, this is VERY concerning. The amount of PII that I have sent over Fiverr, after sending NDA's is potentially all out in the public. I hope there will be accountability for this. IMO Fiverr has had terrible management for years! They simply do not care about their freelancers (and apparently also not about their customers).",
+          "author": "viaredux",
+          "replies": [
+            {
+              "text": "Amazing that a company whose whole brand is based on hiring people for $5 turns out to not respect the workers who created value on their platform.",
+              "author": "tdeck",
+              "depth": 1
+            },
+            {
+              "text": "I get your criticism, however, there was a lot of talent working on the platform for many years. I was averaging 150 USD per project, significantly more than 5 USD.\nLast year Fiverr started to push AI to the detriments of their freelancers, as well as a new \"success score\" metric, but never specifying how these metrics are calculated, making it very hard for freelancers to do something about it. This caused many accounts to \"lose value\" and thus rank lower on searches, causing a drop in income.\nI've reported this on the Fiverr Freelancer Forums, let's see how long my post stays up...",
+              "author": "viaredux",
+              "depth": 2
+            },
+            {
+              "text": "> This caused many accounts to \"lose value\" and thus rank lower on searches\nwouldn't this make some other accounts rank higher on searches then? I mean it couldn't have been a problem that affected absolutely everyone so for someone it must've been a positive change.",
+              "author": "Sandworm5639",
+              "depth": 3
+            },
+            {
+              "text": "I assume it did not affect everyone indeed. \nHowever, a lot of \"Top Rated\" sellers, who were raking in good amounts of money saw their income fall drastically, while still providing the same quality of work. The only thing that changed was their Success Score being lower.\nIt's very hard to improve a metric when you don't know what are the criteria affecting the metric. I've reached out to Fiverr regaring this and they never bothered to tell anyone what impacted your Success Score. \"Just do better\", they told me.",
+              "author": "viaredux",
+              "depth": 4
+            },
+            {
+              "text": "There were also a ton of ArtIsts of the \"Take the job, generate it with AI, throw the slop\" rip and run kind of artistry.",
+              "author": "21asdffdsa12",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Wow, the other comments weren't exaggerating. This is really bad. If my tax returns or other data were part of this, I might consider legal action.\nI wonder if somewhere like Wired/Ars Technica/404media might pick this up?",
+          "author": "pesus",
+          "replies": [
+            {
+              "text": "I saw that this was also reported on r/Fiverr[0]. It looks like an almost verbatim copy of this. I don’t see much discussion (so far).\n[0] \nhttps://www.reddit.com/r/Fiverr/comments/1slzoey/other_atten...",
+              "author": "ChrisMarshallNY",
+              "depth": 1
+            },
+            {
+              "text": "Company is now telling media this is intended behavior and users knew these files were public / shared the URLs themselves. We need to get some media with wider scope to challenge that.",
+              "author": "morpheuskafka",
+              "depth": 1
+            },
+            {
+              "text": "And additionally a failure to handle a responsible disclosure.",
+              "author": "janoelze",
+              "depth": 2
+            },
+            {
+              "text": "> I wonder if somewhere like Wired/Ars Technica/404media might pick this up?\nMight also want to add El Reg [1] to the list.\n1: \nhttps://www.theregister.com/",
+              "author": "ayewo",
+              "depth": 1
+            },
+            {
+              "text": "https://fiverr-res.cloudinary.com/image/upload/f_pdf,q_auto/...\nThis is too funny",
+              "author": "2Gkashmiri",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You followed the correct reporting instructions.\nhttps://www.fiverr.com/.well-known/security.txt\n only has \"Contact: security@fiverr.com\" and in their help pages they say \"Fiverr operates a Bug Bounty program in collaboration with BugCrowd. If you discover a vulnerability, please reach out to security@fiverr.com to receive information about how to participate in our program.\"",
+          "author": "mtmail",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47777209",
+      "title": "Backpacks got worse on purpose",
+      "link": "https://www.worseonpurpose.com/p/your-backpack-got-worse-on-purpose",
+      "domain": "www.worseonpurpose.com",
+      "author": "113",
+      "score": 397,
+      "comment_count": 364,
+      "created_ts": 1776249748,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "While I personally find this kind of thing extremely annoying, to me, the main problem is the _difficulty_ of determining quality. The Donut media guys did a (relatively unscientific) video comparing a whole bunch of products from the 50s to modern day across several price points. What they found was that the things that \"looked\" the same now were simultaneously worse and also much cheaper. They also found that, if inflation adjusted, you get could, in most categories, the same or better quality for the same price. It was just that the brands and names that used to be quality were now usually not as much.\nSo it is often the case that today, you can get something for cheaper than you ever could in the past (albeit not at a great quality), and if you are willing to pay higher prices (but often about the same as you would have paid in the past), you can still get good or even better quality.\nThe main issue is that _determining_ which products actually are quality has also gotten harder in many cases.\nedit: found the video:\nhttps://www.youtube.com/watch?v=I4C62HC1HSo",
+          "author": "MostlyStable",
+          "replies": [
+            {
+              "text": "> They also found that, if inflation adjusted, you get could, in most categories, the same or better quality for the same price.\nI argue you must evaluate against median purchasing power; it accounts for inflation and (lack of) wage increases.\nComments from your linked video:\n> The problem with the “adjusted for inflation” argument is that it does not factor in buying power. The increase in wages has risen at out half the rate of inflation, so sure; $20 in 1975 would be $124 today, but the minimum wage in 1975 was $2.10 an hour as opposed to $7.25 today, giving you half the buying power you had  50 years ago.\n> healthcare, housing, and education ... have increased by an insane margin leaving people with less money once that has been paid for (if at all).\n> It's even worse when you consider that people are paying 45-55% of their monthly income on a house that cost 20x more than it would have in 1975. Your buying power is fucked from all sides.",
+              "author": "drBonkers",
+              "depth": 1
+            },
+            {
+              "text": "Purchasing power is probably a better metric in a vacuum, but it's hard to analyze accurately\nFor example, the comment you're citing is claiming that because minimum wage has increased only 3x over the same period of time in which inflation has eroded the relative value of a dollar by 6x, that wages overall have increased at half the rate of inflation. But minimum wage is a measurement of a minimum, while inflation is a measurement of /average/ price increase so they can't be compared 1:1 in this way.\nThe housing argument also seems odd. In New Zealand (where I'm from -- I'm not familiar with the US' housing market, so the commenter could be right about that geo!) house prices have increased by far more than 20x since the 70s, but the houses available are of substantially higher quality due to improved regulations (e.g. all newer homes are subject to healthy homes rules which mandate insulation) so just comparing inflation-adjusted home prices vs income doesn't tell the full story\n(Aside from that, a whole heap of items like food, electronics, transportation are all both far cheaper AND higher quality today than in the 70s)",
+              "author": "sophiabits",
+              "depth": 2
+            },
+            {
+              "text": "“Higher quality” isn’t an objective measurement though. And it certainly doesn’t matter if the end result is that people cannot afford to buy it.\nWhat I’d be interested to understand is whether changes to materials (be that buildings or home appliances) has caused an increase in the cost to manufacturer.\nI’d wager most things have gotten cheaper to produce these days because the same improvements in technology that can be integrated into the product also applies to technology used to reduce the cost to manufacturer. Plus if wages are below inflation then any labour costs would have declined (relatively speaking) in that time too.",
+              "author": "hnlmorg",
+              "depth": 3
+            },
+            {
+              "text": "Modern US houses are made of the cheapest, shittiest, flimsiest materials money can buy. I go out of my way not to live in US housing less than 50 years old.",
+              "author": "queenkjuul",
+              "depth": 3
+            },
+            {
+              "text": "This isn't true for median purchasing power. You're looking at the federal minimum wage, not the median. Only about 1% of hourly workers earn $7.25 or less.\nMedian earnings were $48,070 in 1975, measured in 2024 dollars, and $51,370 in 2024.",
+              "author": "nearbuy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you're looking for a backpack, I can't recommend Osprey enough. They are still a independent US company with a lifetime warranty they actually stand by. I had to call their customer service just last week after I ordered the wrong size bag. I was connected to an actual human immediately, and he sent me a prepaid return label, even though it was my fault and I was fully expecting to pay for return shipping myself. I own several of their bags and have never had a single issue with any of them.",
+          "author": "34679",
+          "replies": [
+            {
+              "text": "There is a whole community of bag enthusiasts who intricately review backpacks. Packhacker etc. It's super easy to find reviews of most backpacks and plenty of video reviews detailing every feature on the bag - and even in some cases reviews after a few months of usage. Day one might feel great, but after a few trips you start noticing flaws.\nI'd echo what one of the other commenters here said about AER and Cotopaxi. Although I have to say wearing my Cotopaxi Alppa 35l feels like a small child is trying to drag me to the floor compared to the comfort of having the AER straps on my back for the travel pack. I still love both though.",
+              "author": "deanc",
+              "depth": 1
+            },
+            {
+              "text": "Aer is sort of an interesting case to me. At its core the nylon material they use certainly make the bags feel like they'd last forever.\nBut I feel like Aer also tends to include features or materials that are just not designed for BIFL longevity. Two that jump to mind are the PU coatings on a lot of their zippers and their use of elastic straps as the main way to secure water bottles (but they might be moving away from the elastic on their newest bags). Both of those feel like they have a much more limited lifespan (relative to some of the other aspects of the bags).",
+              "author": "cosmic_bit_flip",
+              "depth": 2
+            },
+            {
+              "text": "+1 to that and I'll also add Cotopaxi and AER (quite expensive but built like a tank) to the list.\nMy year-ish old backpack gave out so I recently committed to extensively researching and buying a new set of travel + tech bags  that will last me basically forever, and I've been very happy with my purchases from these brands.",
+              "author": "njovin",
+              "depth": 1
+            },
+            {
+              "text": "I have an Osprey backpacking pack that's about 10 years old. I had a squirrel chew through the zipper on the removable pouch. I sent it off to Osprey to be repaired and they sent me a brand new pouch.",
+              "author": "bradyd",
+              "depth": 1
+            },
+            {
+              "text": "I'll add that I've had a very positive experience with a Projekt Gravy backpack since we're dropping favorite products. Excellent quality and I've been using this thing daily since 2021.",
+              "author": "yubblegum",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I'll be writing about those next.\nI doubt it, you didn't write about this! You prompted it and signed your name to it.",
+          "author": "furyofantares",
+          "replies": [
+            {
+              "text": "I missed this but now that you point it out, seems plausible.\nPretty ironic on an article about quality products being replaced by cheaper ones.",
+              "author": "fwipsy",
+              "depth": 1
+            },
+            {
+              "text": "Dead horse but I find it astonishing that people can still miss AI writing like this.\nDon't you find it incredibly grating that every paragraph grinds to a halt while 3 sentence fragments are repeated? Same rhetorical devices. Same tone. Same pointless constructions.\nThat's not good writing. It's cheap parlour tricks.\nThe rhythm continues almost as though the writing is in verse—with the effect of hypnotizing the reader so they don't notice nothing is being said at all. The result? Skimmable prose. Digestible reading. Shareable content.\nIt's not just bad style. It's actually rotting your brain. And if you can't notice that, maybe you weren't reading at all.",
+              "author": "rozab",
+              "depth": 2
+            },
+            {
+              "text": "this comment reeks of AI too, and the fact i can't tell if you're being tongue in cheek means i'm cooked",
+              "author": "genewitch",
+              "depth": 3
+            },
+            {
+              "text": "I'm moderately sure it's intentional irony.",
+              "author": "NoGravitas",
+              "depth": 4
+            },
+            {
+              "text": "I think the comment is mimicking the style of the article.",
+              "author": "badc0ffee",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I bought a north face backpack for college in 1998. It cost $60. It was an extravagant expense for me at the time and I felt horrible about it for weeks.\nThat backpack is currently at college with my son, who used it all through high school as well. It is by far the oldest and most durable daily-use object I’ve ever owned.",
+          "author": "emtel",
+          "replies": [
+            {
+              "text": "A cheap backpack ended up being the most expensive backpack I have ever owned.\nIn 2004 I was very young and all my income came from summer jobs, so I got a backpack from Walmart. It was one of their nicer models, had a lot of features and looked pretty good. IIRC it cost $20. I had worked all summer to save for an MP3 player, and 2 months after getting that backpack I getting off a bus, when I realized there was already a hole in the bottom of the bag. My MP3 player (a creative zen micro) had slipped out of the bag, and someone had already picked up my MP3 player and walked away with it. Adjusted for inflation I spent over $500 on that MP3 player. Even as an avid backpacker, I have not spent that much on fairly nice packs.\nIn 2007 I splurged and paid $100 for a backpack from Deuter, and I also felt a lot of guilt as that was a huge amount of money for me at the time for something like a backpack. It's been nearly 20 years, it's not just that the backpack is still working, it still functions virtually like new. None of the seams are stretching, even though it's been through incredible overstuffing and abuse. All of the zippers are smooth as silk, and even the cushioning on the straps and airflow offsets on the back are still supple and supportive.",
+              "author": "xnyan",
+              "depth": 1
+            },
+            {
+              "text": "I spent ~$400 on a Deuter baby/toddler backpack two years ago and it still works.  Beautiful thing.",
+              "author": "cmoski",
+              "depth": 2
+            },
+            {
+              "text": "We are the third owner of our Deuter baby/toddler backpack. We use it a fair a bit and it still looks like new. We don't need it anymore, so it's going on to a 4th owner who's going to get an amazing, comfortable, near-new carrier for the same token $20 bucks we paid.",
+              "author": "xnyan",
+              "depth": 3
+            },
+            {
+              "text": "Same, I was gifted a Sandqvist backpack ten years ago. I travel with it as my sole piece of luggage (you can imagine the overstuffing). It has outlived three laptop backpacks that don't go through half as much as it has.",
+              "author": "stavros",
+              "depth": 2
+            },
+            {
+              "text": "I bought a north face backpack 4 years ago. Looks brand new.",
+              "author": "Cider9986",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "As much as the result for consumers sucks, is this just a result of the quality backpack business not being a very profitable business to be in anymore?\nThe reason they were able to buy all those backpack brands is because each of those brands were not making much money running a backpack company selling quality at a reasonable price. The purchaser makes some money leeching value out of the brand reputation, but then that brand value falls because of the crappy product, and they sell the brand because they leeched all the value out of it.\nThis is only possible because you can’t make much money selling quality for a good price. Consumers will pick lower quality for the cheapest price every time.",
+          "author": "cortesoft",
+          "replies": [
+            {
+              "text": "It's much more likely to be a result of the modern drive for companies to keep growing. This leads to a need to maximize profit endlessly, which in turn leads to cutting corners as much as you think you can get away with, or just ballooning prices. And this problem goes up and down the supply chain, of course - even if you want to run a non-growth business manufacturing quality backpacks, if your suppliers want to run growth businesses, they will eat up your margins and force your hand.\nThis obsession with ever increasing revenue is a major source of our worse and worse consumer economy.",
+              "author": "tsimionescu",
+              "depth": 1
+            },
+            {
+              "text": "The onslaught of far east imports is also a factor. They weren't very relevant 30 years ago outside of discount merchants. Now you pop on to Amazon and choose something that looks appealing from dozens of mystery meat brands.",
+              "author": "kevin_thibedeau",
+              "depth": 2
+            },
+            {
+              "text": "One silver lining is that backpack industry doesn't have a huge moat. New companies can get started relatively easily as the older ones sell out and decay.\nThe bags I bought 15 years ago were made locally in San Francisco - Timbuk2 and Chrome - and had a reputation for quality. Now both brands are mainly produced overseas, but have been replaced by two other local brands with ties to the originals - Rickshaw and Mission Workshop.",
+              "author": "jerlam",
+              "depth": 2
+            },
+            {
+              "text": "That's not going to change though. Cheap asian manufacturing and wall st efficiency maximizing changed industry in America. Maybe there could be changes to how public markets are regulated to change BigCo incentives, but it will be hard to change consumer behaviour if they like buying cheap disposable crap for the lowest price.\nThere is still plenty of competition in the backpack market if you just visit an outdoors store instead of walmart. That's a higher end market though, which is where most high quality small/medium businesses flourish.",
+              "author": "dmix",
+              "depth": 2
+            },
+            {
+              "text": "Is this just the same kind of optimization? Consumers trying to optimize their margin while producers are trying to optimize theirs?\nIt leads to enshitification due to short term thinking but in the short term seems like a good decision.",
+              "author": "rubyfan",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47741527",
+      "title": "Ask HN: What Are You Working On? (April 2026)",
+      "link": "https://news.ycombinator.com/item?id=47741527",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 341,
+      "comment_count": 1153,
+      "created_ts": 1776011083,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I'm building a financial censorship monitor at \nhttps://nofunds.org/\n, that tells a story of how money has been turned into a political weapon to silence journalists, activists, and civil society by freezing assets, blocking accounts, sanctioning, and banning payments. It's part of my master's thesis \nhttps://www.doria.fi/handle/10024/187407\n and also \nhttps://news.ycombinator.com/item?id=36430596\n, but now I wanted to make a more comprehensive list, using Claude API and manual work. I'm designing a website right now, and the site is live within 2 months (given the API rate limitations currently to process articles). I know Hacker News is quite critical of Bitcoin, but it's also worthy to warn that, indeed, Bitcoin is at least a marginal tool to those whose bank accounts may be endangered. I'm basically arguing that Bitcoin can be used to resist such financial censorship, deplatforming and so on.",
+          "author": "kokkis",
+          "replies": [
+            {
+              "text": "I built cross-border compliance Management info system dashboards at a Swiss private bank. The much more widespread reality is: entire nationalities and residencies get quietly moved to \"do not serve\" lists because the regulatory cost of serving them exceeds revenue. No public process, no appeal, no notice, you just can't open an account:financial exclusion most people never see.",
+              "author": "Tianning",
+              "depth": 1
+            },
+            {
+              "text": "That's also very interesting phenomenon. Instead of censoring after the bank accounts have been granted, one could also \"censor\" or rather exclude a person or group of people or an organisation by not granting a bank account in the first place. Quite shrewd, and extremely unnoticeable. I mean, whole nationalities are excluded based on quite absurd reasons. But I guess fear led to this in many ways.",
+              "author": "kokkis",
+              "depth": 2
+            },
+            {
+              "text": "Have you read or connected with Rainey Reitman, who just published the book Transaction Denied?",
+              "author": "sinak",
+              "depth": 1
+            },
+            {
+              "text": "Hey, I haven't and that sounds very interesting to read in my case especially. I'll give it a look! Thanks mate.",
+              "author": "kokkis",
+              "depth": 2
+            },
+            {
+              "text": "this is interesting.\nmy hunch is that we're moving towards more surveillance, censorship and deplatforming in the future, and CBDCs are a major tool for that.\nI like Bitcoin, despite its problems (price volatility and quantum vulnerability)  but I think censorship-resistant stablecoins would be a better solution for people looking to protect themselves from Big Brother.",
+              "author": "jmstfv",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My mother is living alone in her house and we are getting to the point where she might not be able to live alone.  I built \"Still Kicking\", a picture frame that monitors her motion and sends back basic reports and can detect falls and sleep quality to a phone app, to help give her more time at home.\nIt's just an mmWave sensor connected to an ESP32.  But it works nicely, and I'm thinking of starting a company making them, though I'm not clear if the elderly would be ok with this minimal (no camera) intrusion.\nIt would just work out of the box..  the real one would have a small cell modem so it wouldn't need any networking setup, and it would act as a gateway if you have more than one in a house.  There are industrial versions of this for nursing homes.  This would be a bit more warm and fuzzy for home use.\nhttps://moveometer.com",
+          "author": "cmos",
+          "replies": [
+            {
+              "text": "I own a national home care provider (in 13 states) and EHR. We are looking for products like this. Book office hours if you’re interested in discussing:\nhttps://calendly.com/ryanwmartin/open-office-hours",
+              "author": "digitaltrees",
+              "depth": 1
+            },
+            {
+              "text": "Booked a time! We built senior smartphone assistance without humans",
+              "author": "taylorhou",
+              "depth": 2
+            },
+            {
+              "text": "Great talking to you. Very cool project.",
+              "author": "digitaltrees",
+              "depth": 3
+            },
+            {
+              "text": "Booked a time!",
+              "author": "cmos",
+              "depth": 2
+            },
+            {
+              "text": "I love it. As a physician, I see so many cases of elderly patients who have fallen and not been found for hours if not days.\nIn elder care, I am building \nhttps://statphone.com\n - one emergency number that rings multiple family members simultaneously and breaks through DND. Would love to chat/collaborate.",
+              "author": "popupeyecare",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm building Tela (\nhttps://github.com/paulmooreparks/tela\n), a self-hosted relay that tunnels TCP services through encrypted WireGuard connections. The key difference from Tailscale and similar tools is that it requires no TUN adapter, no root access, and no admin privileges on either end. It runs entirely in userspace.\nMy initial motivation was wanting to RDP and SSH into my home workstation from a locked-down corporate laptop when I travel. I couldn't install Tailscale on the laptop, and I didn't want to pay for a cloud VM just to do SSH port forwarding. Now I use it to tie together half a dozen machines, both locally and on Hetzner & Linode. I can SSH and RDP into remote machines, host a git repo on one machine and access it from the others, and (optionally) share files across all of them on a local mount.\nYou run a hub (telahubd), register machines with a lightweight agent (telad), and connect from anywhere with the client (tela). All three are single Go binaries with no external dependencies. The hub never sees your traffic. It just relays opaque WireGuard ciphertext.\nAll binaries run on Windows, Linux, and macOS. There is also a desktop GUI app, TelaVisor, that wraps the client and enables remote management of hubs and agents.\nIt's Apache 2.0-license and pre-1.0 release, but I'm polishing it for a stable 1.0 release in the next month or so.\nI'm also working on an enterprise-grade management portal that works with Tela, \nhttps://awansaya.net/",
+          "author": "paulmooreparks",
+          "replies": [
+            {
+              "text": "ah nice. i’ve actually been building something pretty similar on top of wireguard too\nmy use case is a bit different though. i started because i wanted to give friends access to specific things in my homelab, but very selectively. like “you can use jellyfin on this one machine, but you can’t ssh, and you can’t even see my other devices”\ntailscale is honestly amazing for getting devices connected, i still use it a lot. but once i started trying to do these very specific “this machine can talk to that machine only on this port” kind of setups, it started feeling more complex than it should be, at least for personal use. ACL editor is more confusing when it comes to this. i know we have got option for tags and things, but those are very poorly documented and i haven't found a single tutorial that works nicely.\nyour userspace approach is really interesting btw, especially the no tun / no root part. makes sense to run it on rigit enterprise environments.",
+              "author": "dhrm1k",
+              "depth": 1
+            },
+            {
+              "text": "Tela has ACLs per machine, but not per service. That's an interesting use case, and I'm shocked that I missed it. I've added it to the pre-1.0 roadmap. Thank you!\nAnother thing on the release roadmap is a TUN/root story, since there is value in having that layer as well. Tela will always support the user-space approach, however, so that unlike Tailscale it's always accessible.",
+              "author": "paulmooreparks",
+              "depth": 2
+            },
+            {
+              "text": "I've been working on a similar tool for a while - connet (\nhttps://github.com/connet-dev/connet\n). It builds upon QUIC (instead of wireguard), but I think from an enduser perspective the results ends up looking pretty similar.",
+              "author": "Ingon",
+              "depth": 1
+            },
+            {
+              "text": "Very interesting - but I also find it important for solutions to state the trade-offs if they provide a novel approach that doesn't have the same requirements as the main contenders. In your case, what are the trade offs for running in user space ?",
+              "author": "mentalgear",
+              "depth": 1
+            },
+            {
+              "text": "That's true. I'd say, probably performance is the first trade-off, weighing kernel against user-space. For the sorts of scenarios I envision for Tela, it's probably not a huge loss (I won't be running Facebook off of a Tela hub, I don't think). Another is that I have to run and tear down the client myself, though I do have support for running the tela client as a service.\nIt's funny... I've started using so many of the nifty management features of TelaVisor and Awan Saya that I am now considering adding lower-level support for the features that I explicitly wrote for user-space.",
+              "author": "paulmooreparks",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I got addicted to scrolling content on my phone, so I built a digital pet whose growth and well-being depends on you staying off your phone! This way, if I spend all night scrolling the browser, my pet will get depression.\nUnlike similar apps such as Focus Friend or Forest, which use active timers to police screen time, my app is an inversion that works like an idle game; All screen time is tracked all day, (with double the punishments at night), and upon check-in, you get feedback on your device usage.\nhttps://automatisolutions.com/products/phreepet/",
+          "author": "DevDesmond",
+          "replies": [
+            {
+              "text": "I've always been very interested in these types of games. Grew up playing Neopets which was inspiration to becoming a software engineer. Am interested in gamified aspects as well. The thing I've not quite figured out is how to make these types of games _actually_ addictive? Neopets had a lot going for it IMO. Would love to know if this is actually working for you (and maybe others) personally and why.",
+              "author": "memonkey",
+              "depth": 1
+            },
+            {
+              "text": "I wish I knew why these games are so addictive, I collected Tamagotchi a few years back and ended up with a handful of originals and one of the fancy new color screen ones (that now goes for obscene amounts of money on ebay).",
+              "author": "mghackerlady",
+              "depth": 2
+            },
+            {
+              "text": "How are you able to track all screen time on an iOS device? I had thought the APIs to do this aren't available.",
+              "author": "varenc",
+              "depth": 1
+            },
+            {
+              "text": "I believe Apple opened up their screen time APIs \nhttps://developer.apple.com/documentation/screentime",
+              "author": "buddybuilder",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm continuing to hack on Tiled Words, my daily word puzzle!\nhttps://tiledwords.com\nAfter winning the Playlin Player's Choice award I've noticed an uptick in players as well as some people sharing videos on YouTube which has been fun. I've got a few thousand people playing every day.\nI just launched user accounts today so user's can now track their progress across devices and share their stats with each other. This ended up being a bigger chunk of work than I expected but I'm really pleased with how it turned out. (Though I launched it 15 minutes ago so I'm holding my breath for bug reports)\nI'm fine-tuning my internal puzzle-building now with the goal of letting people use them to make and share their own puzzles soon!",
+          "author": "paulhebert",
+          "replies": [
+            {
+              "text": "I can't say I'm a regular user but a while ago I stumbled upon another post about tiledwords while a loved one was in the hospital and it was a fun and welcome distraction to solve some of the puzzles together while stuck in an otherwise grim environment.\nThanks for making this and I wish you all the success in the future.",
+              "author": "dodu_",
+              "depth": 1
+            },
+            {
+              "text": "I’m glad Tiled Words could make that hard time a little easier. I hope your loved one has recovered and is doing better now",
+              "author": "paulhebert",
+              "depth": 2
+            },
+            {
+              "text": "Congratulations on the award and the user accounts launch! A few thousand daily players as a solo founder is genuinely impressive traction.\nCurious about the user-created puzzles feature you're working toward - that's a classic community moat play. Once players can make and share puzzles, your distribution essentially scales with your most engaged users.\nI'm building ad-vertly.ai - marketing agents for solo founders. One thing I find fascinating with puzzle/game products is that the word-of-mouth loop is already there (people share scores, show friends), but it rarely gets deliberately amplified. Are you doing anything intentional to capture that organic sharing energy, beyond the stats sharing you just built?",
+              "author": "gaurav_singh09",
+              "depth": 1
+            },
+            {
+              "text": "Thanks\nSince the beginning I’ve allowed sharing your daily score. I have thought about extending that (leaderboards, etc.)\nDo you have other ideas to amplify it?",
+              "author": "paulhebert",
+              "depth": 2
+            },
+            {
+              "text": "I love tiled words, I've actually been doing the daily puzzle for a while, have completed over a 100 of them! It's part of my morning routine :)\nI'm not sure if it would fit the theme, but sometimes I end up searching what an expression means, or where does it come from. Maybe it would be cool to have a little info box after you discover what the word is. Just an idea! Not sure if it would clutter things, and you can always search it yourself, but something I've been thinking about. I still remember looking up peanut gallery and sand dollar!",
+              "author": "martimchaves",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47783940",
+      "title": "Ask HN: Who is using OpenClaw?",
+      "link": "https://news.ycombinator.com/item?id=47783940",
+      "domain": "news.ycombinator.com",
+      "author": "misterchocolat",
+      "score": 236,
+      "comment_count": 282,
+      "created_ts": 1776280930,
+      "is_internal": true,
+      "post_text": "I don&#x27;t use it personally, and neither does anyone in my circle...even though I feel like I&#x27;m super plugged into the ai world",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I have a clawlike. It’s just a small agentic loop with tools that are other specialized agents. It can write things itself but I upgrade many of the things it writes to first class if I use them a lot.\nAs an example, it has a built-in web server which I find useful.",
+          "author": "arjie",
+          "replies": []
+        },
+        {
+          "top": "I still use it and find it helpful.\nMy OpenClaw instance uses an Obsidian project as its memory. Mainly, it's just my main day-to-day LLM that I access via WhatsApp, but instead of the memory being locked away with a specific vendor, it's stored in version control that I can read and edit. That reason alone makes it compelling to me. When a better LLM comes along, I can just switch, and my memory and system prompts come with it.\nHowever, I also use it for calorie/weight/workout tracking, to-do lists (bill, birthday, event reminders), and to support my various life admin tasks. I don't give it access to much at all, except a few skills that give it read-only access to some data.\nHasn't given me a 10x productivity boost or anything. It's just handy.\nI wrote an article on it, if anyone is interested: \nhttps://notesbylex.com/openclaw-the-missing-piece-for-obsidi...",
+          "author": "lexandstuff",
+          "replies": [
+            {
+              "text": "I’ve also found it useful for personal stuff. For example I have my OpenClaw bot in a family group on Telegram and everyday it asks my family members stories from their lives that it meticulously documents and uses as a basis for further questions in the future and has so far managed to build a rich family history spanning 50 odd family members (a project I had always been planning to do for never found the time to).",
+              "author": "brtkwr",
+              "depth": 1
+            },
+            {
+              "text": "I am weirded out but this, I find it horrific, like some kind of mind zombie, leeching humanity from your family members.\nSomeone somewhere is thinking they're connecting with you and sharing their humanity but they're just shoveling their soul into a machine that is \"meticulously documenting\" them.\nSorry, but ick.",
+              "author": "eterm",
+              "depth": 2
+            },
+            {
+              "text": "To give a different perspective: archival is important. If nobody does this job, generational knowledge is lost at some point.\nI talked plenty with my grandpa, but I'm sure he didn't even tell me 20% of his life.\nAnd my other grandpa died when I was still a kid, so I didn't even get to have adult conversations with him.\nImagine making this available to your grandgrandgrandson.",
+              "author": "kaoD",
+              "depth": 3
+            },
+            {
+              "text": "Yeah, but you're kaoD.  You're a bonafide person.  You should talk with other people; it's good.  (We're chatting right now.)\nThat's quite different from chatting with a bot that pretends to be human.  (Do you want to chat with my bot?)",
+              "author": "ssl-3",
+              "depth": 4
+            },
+            {
+              "text": "I actually think this is cool. How is this different than sitting people down with a camera every day and asking for a new random story? we won't be around forever and documenting it is one way to keep memories alive in people's minds",
+              "author": "hypercube33",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "When I saw Jensen's talk about how Openclaw surpassed React and Linux in terms of GitHub stars within a few months, I knew the whole thing was manufactured bot hype.\nNo one can tell me a compelling use case. The whole thing seems designed around getting people to burn more tokens.",
+          "author": "redact207",
+          "replies": [
+            {
+              "text": "Monitors my company's support email, searches though code, GitHub etc to try and triage the issue and shoot me a message to give me a head start.\nConnects stripe subscription cancellation with PostHog events to see if something was frustrating.\nDoes the same leading up to when someone subscribes to describe successful paths.\nLots of novel thinking when events happen on its own being proactive.\nJust because people aren't talking about it doesn't mean it isn't useful. Think creatively.",
+              "author": "ChadMoran",
+              "depth": 1
+            },
+            {
+              "text": "Every time I've sat down to consider how it could be useful, I can't think of anything that I couldn't build as a series of cron jobs and Playwright scripts. (even using Claude Code to do the heavy lifting at first, but then the tokens are spent and I don't have ongoing cost)\nI can only guess it's really not for \"us\", but rather for those who aren't afraid of technology but aren't really engineers.",
+              "author": "bdcravens",
+              "depth": 1
+            },
+            {
+              "text": "My thoughts exactly. If whatever  i wanted it to do was so unimportant that I can trust this thing to have full control over it and to do it successfully why even do it anyways? The risks of giving it full unparalleled API key access and control fully outweigh whatever gain.",
+              "author": "Bridged7756",
+              "depth": 1
+            },
+            {
+              "text": "It's massive in China. Search for \"raise a lobster\" and check out the videos from the events.",
+              "author": "Kiro",
+              "depth": 1
+            },
+            {
+              "text": "It's massive in the sense of people hyping it on social media and grifters trying to profit from it. Pure FOMO, not dissimilar from the earlier \"earning a side income using ChatGPT\" hype. I doubt there are many people using it successfully for any purpose other than producing social media content promoting courses promising people to teach them how to use OpenClaw, for a fee of course.",
+              "author": "yorwba",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I disagree with practically every take here, and likely will get hate for this message.\nPersonally it has been a huge unlock and here are some specific use cases.\n1.Context engineering for “any task”: my claw agents debate with me, and write me files to be picked up by Claude code or Claude cowork to write code/build presentations.\n2. Discovering this page: my personal newsfeed that took me 10 mins to setup. Never had any newsfeed before this which could be personalised like this.\n3. Strategy: similar to point 1 above. I set up a “tough-coach” skill. Now all my 1am ideas go through the wringer of why they suck, and what, if anything could be differentiated about them.\n4. Many other small-ish things that are important enough for me to spend on them, but not important enough to invest my time.\nI run a conversational AI startup in India working mostly in Financial inclusion space - so most of time is spent in meetings (:-/).\nWith openclaw, the 2-3 hours before I sleep (low energy, high on ideas), convert into pretty productive sessions. No more “this is a great idea, I will do it tomorrow”. Instead “oh this sounded great but my agent just called it shit - what if I modify it a bit, and then let’s see”.",
+          "author": "utkarsh_apoorva",
+          "replies": []
+        },
+        {
+          "top": "I don't personally know many people who've used it so I'm not sure if this was a me thing but here was my experience in short:\nI set up OpenClaw on a raspberry pi 4 that I could ssh into using my main computer. My main goal for using OpenClaw was just as a morning debriefer that could scan my google calendar, trello board, and gmail to let me know what I had happening for the day and also weekly to give me a forecast for the weeks ahead to see how busy my month was. I spent about 40-50 bucks in one week just working through kinks and having it fix itself until I stumbled onto a post that helped me optimize my model usage for price instead of just throwing Opus and Sonnet at everything.\nEven after making this adjustment, the morning debriefer worked maybe once or twice a week and broke every other morning, telling me that it fixed itself and it would never happen again. At a certain point I just got fed up with it and cut the cron job, it's still running on my pi but I never use it.\nPretty sure Claude has something like this now but I'm pretty thrown off the whole thing, I'd rather just take the 30-45mins to plan out my day in the morning myself.",
+          "author": "bigpapikite",
+          "replies": [
+            {
+              "text": "I had a surprisingly large amount of issues getting it to correctly message me on discord if needed as part of heartbeat. Multiple times it broke and we fixed it. Then it was chewing through way too much usage so I set it to 6 hourly heartbeat and it stopped messaging entirely again, haven't bothered to fix.\nIt is nice though for debugging home server things when I ask it to.",
+              "author": "robryan",
+              "depth": 1
+            },
+            {
+              "text": "Works perfectly installed as part of a server and at mentioning you there. Direct DMs are finicky in my experience.",
+              "author": "haneul",
+              "depth": 2
+            },
+            {
+              "text": "Do you just give your Google account to OpenClaw, or create a separate account with limited permission? I'm worried that OpenClaw decides to create an entire website on GCP project without asking if they see a message like \"have you already developed and deployed the management dashboard?\"",
+              "author": "hamasho",
+              "depth": 1
+            },
+            {
+              "text": "Why not use Claude to write yourself a daily briefing, and deliver it to your email or someplace you’ll receive it?",
+              "author": "cadamsdotcom",
+              "depth": 1
+            },
+            {
+              "text": "Interesting. How's the performance on the Pi? I also have a Pi 4 running a few containers and thought about running Openclaw on it, but never got around to it because of performance concerns. I ended up installing Nullclaw which is simpler but much more lightweight.",
+              "author": "jpfaraco",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47778306",
+      "title": "Show HN: Every CEO and CFO change at US public companies, live from SEC",
+      "link": "https://tracksuccession.com/explore",
+      "domain": "tracksuccession.com",
+      "author": "porsche959",
+      "score": 173,
+      "comment_count": 63,
+      "created_ts": 1776257464,
+      "is_internal": false,
+      "post_text": "Built this solo. It watches SEC filings for executive and board changes, extracts the data, and shows it in real time. 2,100+ changes in the last 30 days. The comp data is interesting: average new CEO total comp is $8.4M across 284 appointments. The &#x2F;explore page is fully open, no login needed.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "comp"
+      ],
+      "comments": [
+        {
+          "top": "What would also be very interesting is a graph of relationships and movements. Let's see just how incestuous the boards really are, and what's going on with serial CEOs who move from one business to the next.",
+          "author": "thedougd",
+          "replies": [
+            {
+              "text": "Northdata [1] does basically this, but mostly ingests European data currently. Perhaps they will expand to ingest US data as well at some point. Not affiliated with them in any way. I just use them to look into company structures every now and again.\n[1] \nhttps://www.northdata.com/",
+              "author": "StrauXX",
+              "depth": 1
+            },
+            {
+              "text": "I worked on a knowledge graph map using Wikidata to get relationship between people and organizations, but data was limited to family, basic stuff. Being from Europe, there isn't an open data analogue of SEC. Now I will download this data, it is open so no license at all, and try to show these kind of relationships. It has the potential of being very investigative, especially for USA residents.",
+              "author": "abstracthinking",
+              "depth": 1
+            },
+            {
+              "text": "Is it that Europe doesn't have any open data analogues of the SEC, or is it that each European country has its own open data analog?",
+              "author": "HWR_14",
+              "depth": 2
+            },
+            {
+              "text": "Each european countries has various orgs, types of license. It is easier to start from SEC to integrate that data into my site, also you have to test a bit what users care about.",
+              "author": "abstracthinking",
+              "depth": 3
+            },
+            {
+              "text": "Wondering aloud -- this is clearly PII, but it's public information.  The site would be subject to GDPR, and other rules from the EU, and folks may want to have their data hidden or removed.  What would be the exposure for sourcing EU data?",
+              "author": "jasonjayr",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Given this is failing due to HN hug of death, might I suggest that you do a periodic batch, save the results and serve static?",
+          "author": "hliyan",
+          "replies": [
+            {
+              "text": "Thank you very much. Great call",
+              "author": "porsche959",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Getting “literally who” vibes from the list of execs that were listed with a job title but not a company name.\nMobile browser, if that makes a difference (maybe one of the people on the list helped me downsize as well at some point without me realizing it).",
+          "author": "Nuzzerino",
+          "replies": [
+            {
+              "text": "thats a bug. thanks for flagging. The company name is there but gets cut off on mobile. Will fix the layout.",
+              "author": "porsche959",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice idea. Small thing: the categories are pretty much fixed. If you have to abbreviate a never-changing category like \"Consumer Defen...\" in a widget, your design doesn't work in this aspect.",
+          "author": "WA",
+          "replies": [
+            {
+              "text": "Thanks for the feedback",
+              "author": "porsche959",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Essentially a cleaner, filtered, partial front-end for \nhttps://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&C...",
+          "author": "culi",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47700460",
+      "title": "Ask HN: What are you building that's not AI related?",
+      "link": "https://news.ycombinator.com/item?id=47700460",
+      "domain": "news.ycombinator.com",
+      "author": "meander_water",
+      "score": 153,
+      "comment_count": 222,
+      "created_ts": 1775720387,
+      "is_internal": true,
+      "post_text": "I don&#x27;t have anything against AI, but HN (and everywhere else) seems to be drowning in AI atm.<p>Seems like every man and his dog is building an AI agent harness. And power to you (and your dog) if that&#x27;s you.<p>But it would be refreshing to hear about some non AI related projects people are working on.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Simplyhra.com\nWhen I was early in my startup, health insurance terminology and finding company sponsored health insurance as a founder of 2 employee company sucked.\nSo I launched Simplyhra, it basically helps you reimburse your personal marketplace health insurance premium, cobra premium if you are in your old employers plan and your eligible expenses like pharmacy, copays, coinsurance, blood tests, imaging etc.\nIt's very straight forward, especially when compared to navigating group plan landscape.\nPS: DM me for discount code if anyone needs health coverage or wants your company to pay for your existing coverage.",
+          "author": "sinansari",
+          "replies": []
+        },
+        {
+          "top": "I'm building my own cloud (I \nactually\n typed claude instead of cloud there... wow). There's no IaaS or PaaS; it's much simpler. I wanted my own way of connecting to machines and the TCP services on those machines without having to install Tailscale (not allowed on a locked-down corporate PC) or pay for Azure or AWS or GCP or even Hetzner or Linode. I've got 10gbps fibre and a huge workstation at home, and I've got lots of laptops and VMs and other outboard stuff that I want to work in concert with that workstation, so I started building something I call Tela (Filipino for fabric; I was sitting in Ninoy Aquino International Airport waiting for a flight when I had the idea, and it's implemented as a network fabric).\nhttps://github.com/paulmooreparks/tela",
+          "author": "paulmooreparks",
+          "replies": [
+            {
+              "text": "You are rebuilding tailscale but requiring a centralised hub. I did the same in 2016 (pre-tailscale?) \nhttps://web.archive.org/web/20160304013451/https://wormhole....\nI am not sure WireGuard existed at the time, and I used SoftEther and based it all on doing outbound tunnels to TCP/443* to avoid firewall blocks in corporate networks.\nYou could explore full P2P by leveraging UDP hole punching:\n\nhttps://cloudnetworking.pro/firewall-bypass-series-1-2/\n\n\nhttps://cloudnetworking.pro/firewall-bypass-encapsulating-tr...\n(WireGuard may already do it, dunno)\nAlso, fun fact, tela is also Spanish for fabric. Given the Filipino history, I guess it comes from there.\n* I know I know, TCP in TCP is a bad idea \nhttps://cloudnetworking.pro/tcp-over-tcp-is-a-bad-idea/",
+              "author": "InfraScaler",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Yes, Tela already does UDP hole-punching. I made Tela because I wasn't allowed to install Tailscale on my new corporate laptop, and no other available solution seemed to tick the right boxes. It started as a simple way to RDP to my home workstation, but then I realised that if I could do that, I could finally pull my ad-hoc home cloud into one tool. The hub model is very much by design, for organisational purposes. The hole-punching feature gives me the P2P speed (and even STUN, if available). An upcoming version will allow hub-to-hub topologies.\nIt should have occurred to me that tela is also Spanish, since about every third word I hear in a Tagalog sentence seems to be of Spanish origin.",
+              "author": "paulmooreparks",
+              "depth": 2
+            },
+            {
+              "text": "Does tela create an L3 network? if that's the case, what do you do to avoid IP addressing clashes? In Wormhole I decided by default to use CGNAT addressing (100.64.0.0/10)\nI did not go too far unfortunately, so I did not face problems such as discoverability (do you have to know/remember all the IP addresses from the devices connected? DNS? etc).",
+              "author": "InfraScaler",
+              "depth": 3
+            },
+            {
+              "text": "No, it doesn't create an L3 like Tailscale. A client (a machine running the tela CLI) connects to an agent (a machine running telad) via a hub (a machine running telahubd), but once they connect they negotiate a P2P route if they can. That's all managed by Wireguard an gVisor. The remote service is forwarded to a port on localhost, so SSH to a VM somewhere else would just be ssh to, say, localhost:10022. I'm investigating a local DNS so that users can instead type `ssh paul@dev-vm` instead of `ssh -p 10022 paul@localhost`.",
+              "author": "paulmooreparks",
+              "depth": 4
+            },
+            {
+              "text": "Very nice!",
+              "author": "InfraScaler",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "A programming language to hack music, and anything else really\n\nhttps://github.com/audion-lang/audion\nThe idea came after I finished a permanent piece for a museum using MaxMsp and python. I always had this thought in the back of my mind that \"I could express this so much easier in a few lines of code..\"\nhere's the language spec: \nhttps://github.com/audion-lang/audion/blob/main/docs/LANGUAG...\nI really liked how objects came out, I don't think it needs any more since I can do object composition.\nThere are some nice functions to generate rhythms and melodies with combinatorics, see src/sequences.rs and melodies.rs\nIts a WIP but you can use it now to create music with whatever you want: hardware/daws/supercollider\nsupercollider is tightly integrated but not required. \nI havent had time to develop userland libraries yet but I'm working on it",
+          "author": "skor",
+          "replies": [
+            {
+              "text": "This is awesome! Last year I was working on a VST using NIH-Plug in Rust that could load in synth voices and effects written in Lua (executed using LuaJIT), this kind of reminds me of some of what I was doing (this is way cooler though).",
+              "author": "tuvix",
+              "depth": 1
+            },
+            {
+              "text": "That does sound really cool!! Would really like to see that in action!",
+              "author": "skor",
+              "depth": 2
+            },
+            {
+              "text": "Perhaps a silly question but any thoughts on Strudel?\nhttps://strudel.cc/",
+              "author": "mettamage",
+              "depth": 1
+            },
+            {
+              "text": "yes! with pleasure, I think its a great question ;)\nTidal/Strudel is awesome, the visual feedback, the simplicity of musical expression, that to me makes it a wonderful instrument. They are (broadly speaking) DSLs around functional pattern composition that abstract timing, structure, etc\nAudion for comparison is a general-purpose imperative scripting language, a \"for\" loop is your sequencer, a \"thread\" is your separate instrument/voice, and timing is a primitive you control directly. Hence the \"let's hack music\" in the readme. So essentially its the inverse of Tidal/Strudel :) more like a brain than just an instrument.\nWith Audion, the intention is to provide a few things I was missing in other tools\n1. An obvious way to program music/video/lighting/other-events, e.g. use a \"for\" or an infinite \"loop\" to trigger sounds & lighting, or a separate \"thread\" to read sensors on a performer\n2. A full-stack: full access to the OS: Network, File I/O, Serial, OSC, MIDI, DMX, et.al., and the freedom to build your own abstractions on top\n3. The freedom to mutate state and compose objects, your sounds can evolve and remember what happened before\n4. Tight timing: beat-accurate scheduling in control-rate land (Max/MSP needs special care when sequencing outside audio rate), Audion now comes with Ableton Link sync, so it plays well with a full live setup\nRight now Audion does not have a UI or visual feedback for seeing what is going on while live-coding, but the plan is to make a separate project/binary \"audion-window\" which will let you design any user interface you can think of for your audion project.",
+              "author": "skor",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Working on an audio streaming platform powering an indy internet radio. Looks like Icecast & friends show its age and a similar product can be easily built with the functionality cast down to simply robust streaming & handling \"timed playlists\". I enjoy every bit of knowing exactly what happens in the code. It's not open source atm, but will be. It's in Go, is a pleasure to write and the deployment takes minimal amount of resources.\nOther project is to continue a bit stalled progress of a configuration language BCL - add functions, more structures and fix some hidden scoping issues. Making languages is an endless fun.\n\nhttps://github.com/wkhere/bcl",
+          "author": "kunley",
+          "replies": [
+            {
+              "text": "Was recently looking for such a streaming thing; just streaming from a set of MP3s in a folder, nothing fancy. The majority looked too complex, with too many moving parts, for my idea.\nFound one in Go that might interest you too: GoFM. Although I dropped my idea for now, I'd love to see yours come to life, too.",
+              "author": "azarai",
+              "depth": 1
+            },
+            {
+              "text": "I started with this one:\nhttps://medium.com/@icelain/a-guide-to-building-a-realtime-h...\nAnd then, modified a lot. At some moment I will open it back. (Author's MIT license allowed closing it; I did it actually because I embedded a number of idiosyncrasies related to the radio service that shouldn't be disclosed; but with some amount of work it can be divided into an open and closed part).\nThe broadcasting skeleton from that original blog/github project is good, though! It might work for your case.\nPlease keep in mind it's better to stream AAC than MP3. Basically any format you'd probably want to use can be converted to AAC with ffmpeg.\nAAC has a simple frame format and it's easy to decipher it; I use it to always send full frames, even when one would want to skip to the next song - by doing that the client behaves more smoothly.",
+              "author": "kunley",
+              "depth": 2
+            },
+            {
+              "text": "Thank you for the pointers.",
+              "author": "azarai",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "My friend and I are building Strandfall, a highly physical outdoor larp (live action role playing game) that uses custom spatial computers: \nhttps://strandfall.com\nPlayers are survivors of a global disaster that has unleashed mysterious, deadly storms. For three hours, they investigate the origin of the storms and make fateful decisions about their future as individuals and as a community.\nWe received Immersive Arts funding, which means we can run it in Edinburgh later this year. Here's an excerpt from our 2025 grant application about exactly what those are:\n--\nOur “storm sensors” are novel spatial computers designed for outdoor usage over long distances. They will house ePaper displays, LoRa (long range) radios, accelerometers, gyroscopes, and GPS chips in a 3D-printed enclosure to provide a low-tech way to augment the reality of the park. These computers will be cheaper, more rugged, longer-lived, and more capable than smartphones, deployable to locations with zero cellular service and no battery charging options.\nThe sensors will be mounted on top of camera tripods for deployment. Runners will carry them through the park, then position and aim them in the correct direction, as co-ordinated by “operators” using walkie talkies. This will let players feel like they are really setting up important equipment, scanning historical sites for clues (like surveyors), and establishing laser communication links. Lacking colourful touchscreens, the sensors will be less distracting for runners, helping them focus on their surroundings. Essentially, they are a highly tactile and deeply realistic way of immersing players in a post-apocalyptic setting, since such devices – not smartphones – are the most likely to be used.",
+          "author": "adrianhon",
+          "replies": [
+            {
+              "text": "It might, if we weren't planning to put prominent stickers on the tripods making clear they're part of a larp, and also getting permission from the park and council and consulting with local parkgoers.",
+              "author": "adrianhon",
+              "depth": 2
+            },
+            {
+              "text": "yeah but scale it up so it's everywhere suddenly but without common understanding in the public sphere",
+              "author": "conorcleary",
+              "depth": 3
+            },
+            {
+              "text": "And? Not as if governments don't already waste money?\nI'd rather my tax dollars be wasted on people having some harmless fun compared to the other things they can be spent on.",
+              "author": "ChoGGi",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47764215",
+      "title": "Ask HN: I quit my job over weaponized robots to start my own venture",
+      "link": "https://news.ycombinator.com/item?id=47764215",
+      "domain": "news.ycombinator.com",
+      "author": "barratia",
+      "score": 115,
+      "comment_count": 76,
+      "created_ts": 1776166279,
+      "is_internal": true,
+      "post_text": "Two weeks ago, I quit my job at a robotics company. I was working with high-end hardware (Boston Dynamics, Unitree), but I found out they were planning to mount teleoperated weapons on the robotic platforms for a demo. I’m not willing to go there, so I resigned without another offer.<p>I’ve decided this is the right time to go back to entrepreneurship. We&#x27;re at an incredible moment for embodied intelligence, but I feel the tools and workflows we use to interact, monitor, and control these platforms are still lagging behind.<p>I&#x27;m currently exploring a couple of projects around how we build, test, and interact with robots. As part of my customer discovery phase, I&#x27;m trying to gather raw data on how roboticists and developers actually work day to day and what their main pain points are regarding control interfaces.<p>I put together a very short survey (3 mins) to validate some ideas. If you work in robotics, embedded systems, or just tinker with hardware, your input would be incredibly valuable:<p>Survey link: <a href=\"https:&#x2F;&#x2F;forms.gle&#x2F;3Nm76wkeT5CMt23c8\" rel=\"nofollow\">https:&#x2F;&#x2F;forms.gle&#x2F;3Nm76wkeT5CMt23c8</a><p>I&#x27;m also open to discussing the ethical lines in modern robotics or anything related to ROS2 &#x2F; HRI in the thread. Thanks for reading!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": [
+        {
+          "top": "Good on you. I quit my job in the defence sector over two decades ago for the same reasons. Best decision I ever made.",
+          "author": "440bx",
+          "replies": [
+            {
+              "text": "At what point did you realise what the defence sector was?",
+              "author": "bcjdjsndon",
+              "depth": 1
+            },
+            {
+              "text": "Well it's not all bad. Some of the stuff we did was entirely defence and disaster support. I basically got to choose projects I worked on until I was told I couldn't.",
+              "author": "440bx",
+              "depth": 2
+            },
+            {
+              "text": "Oh you mean defence = good, offence = bad?",
+              "author": "bcjdjsndon",
+              "depth": 3
+            },
+            {
+              "text": "Not really. Offence is sometimes the best defence. But when people start rubbing their hands at the prospect of a war being their retirement plan I don't want to be around them.",
+              "author": "440bx",
+              "depth": 4
+            },
+            {
+              "text": "Good for you. I find it disgusting when people get \nexcited\n about all the misery to come, because it gets them a nicer car or something.\nRelevant: \nhttps://m.youtube.com/watch?v=chWCcec_gzg",
+              "author": "nicbou",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Good on you for quitting, but unless you know of people in your network who're willing to buy what you're making not sure if this will work. Often times its the simplest ideas that make the most profitable businesses. You know, like selling handmade soap or coffee. The problem with what you're doing is you are trying to enter a market as the first person doing it. Which means nobody has taken the risk to prove there is a demand, and without that it means you're potentially burning a ton of time and resources with no logical place to pivot to next.",
+          "author": "rkozik1989",
+          "replies": []
+        },
+        {
+          "top": "As a citizen of a country currently defending in a war, unmanned systems are a literal lifesaver. We can send an armed robot where we previously would have to send a soldier. This is a good thing and before the war many had the same pacifist sentiment in the tech sector, but it's completely reversed now.\nThough I can understand your position being in a country that's not defending itself currently.",
+          "author": "thesmok",
+          "replies": []
+        },
+        {
+          "top": "I am building a very similar thing after a short stent at a robotics company in 2024. The industry is very far behind more general dev experience and tooling.\nI am forced to accept the popularity of ROS but I find it to generally be a terrible experience. Are you considering an alternative? Have you used foxglove?",
+          "author": "leetrout",
+          "replies": [
+            {
+              "text": "Hey! Great to hear from someone in the same boat. I completely agree, the general dev experience and tooling around ROS can be deeply frustrating...\nI am definitely looking into Foxglove! It seems to solve many of the transport/protocol headaches, but I feel like there's still a massive gap in how we actually interact with the robots day to day, especially when you are not glued to a desktop monitor.\nI'd love to hear more about your experience. What specific part of the tooling drove you crazy enough to start building an alternative?\n(Also, if you are open to a quick 15-min chat to share \"war\" stories, let me know!)",
+              "author": "barratia",
+              "depth": 1
+            },
+            {
+              "text": "Foxglove is not the only name in town. There are many, Transitive Robotics, the company I'm building is one of them. Different from Foxglove we are much more focused on live-remote monitoring and control, e.g., we have a pretty popular remote teleoperation module: \nhttps://transitiverobotics.com/caps/transitive-robotics/remo...\n\nYou can find all the other modules we're currently offering here: \nhttps://transitiverobotics.com/caps/\n\nThe platform itself is and remains open-source.",
+              "author": "chfritz",
+              "depth": 2
+            },
+            {
+              "text": "Would love to. My email is my username at gmail or my first name at my username dot com.",
+              "author": "leetrout",
+              "depth": 2
+            },
+            {
+              "text": "I will second this. You might not be able to get away without ROS compatibility depending on the market but a dependancy on it is a big pain in the neck from my point of view.",
+              "author": "rcxdude",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": ">\n... but I found out they were planning to mount teleoperated weapons on the robotic platforms for a demo. I’m not willing to go there, so I resigned without another offer.\nThere's a ton of anti-drone defense startups currently, but how does one defend against armed bipedal robots? They're a lot heavier than most drones, so presumably they can be decked out with various types of shielding.\nAs far as I'm aware, phased plasma rifles in the 40-watt range don't yet exist.",
+          "author": "rl3",
+          "replies": [
+            {
+              "text": "Metal, accelerated to roughly two thousand feet per second, usually does the trick.",
+              "author": "nicbou",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47778762",
+      "title": "Allbirds announces pivot from shoes to AI, stock explodes 175%",
+      "link": "https://www.cnbc.com/2026/04/15/allbirds-bird-stock-shoes-ai.html",
+      "domain": "www.cnbc.com",
+      "author": "1vuio0pswjnm7",
+      "score": 94,
+      "comment_count": 33,
+      "created_ts": 1776260084,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "This appears to be almost like a SPAC. Allbirds had already sold it's IP and other assets, now they raised new money and are continuing under a different name but they're still a publicly traded company.\nSo it's not really shoe retailer pivots to AI but a shoe retailer selling all assets and forming a new company but uses the previous public stock listing.",
+          "author": "mikeve",
+          "replies": [
+            {
+              "text": "So just starting a new and completely different company, but using an old brand name from a completely different business?",
+              "author": "kermatt",
+              "depth": 1
+            },
+            {
+              "text": "They're not even using the same brand name; they sold the Allbirds name and are now \"Newbird AI\". I guess it's just to stay on the exchange?",
+              "author": "presbyterian",
+              "depth": 2
+            },
+            {
+              "text": "This would be my bet - filing for an IPO or even direct listing is months of SEC review, audits, underwriters, due diligence, etc. A shell with an existing ticker gets you access to that sweet retail investor cash almost immediately, and with less of those pesky regulators asking if you actually have a functioning product or company.\nThis is more akin to a reverse merger than a SPAC (eg. Berkshire Hathaway being a failing textile mill and WPP being a wire basket company) except it is unusual to see it happen within an existing leadership team. They sold off all their IP so figured they might as well use the shell to try and cash in on AI hype, I guess.",
+              "author": "garethsprice",
+              "depth": 3
+            },
+            {
+              "text": "Can you explain to me how this isn't considered outright fraud? The SEC has rules specifically around the lifetime of a company / ticket in terms of things like inclusion in indexes and retirement accounts, right?\nHow does allowing this not simply encourage a world of, basically, stock market karma farming: making bullshit barely company companies, just to sell the ticket so they can be used to engage in a pump and dump scheme with the little wealth the working class has left?\nThis domain isn't exactly my forte...",
+              "author": "Tadpole9181",
+              "depth": 4
+            },
+            {
+              "text": "Basically.\nThey sold the Allbirds brand and IP for $39M:\n> The company, valued at around $4 billion at its peak, sold its intellectual property and other assets two weeks ago for $39 million.\n...used the ticker to build stock hype that will bring in another $50M:\n> The company, which according to the release will be called NewBird AI, announced a deal to raise up to $50 million in funding, expected to close in the second quarter of 2026.\n...and is planning on using that $90M of capital to sell a few extra shovels to the marginal buyer in the latest hype market.\n> “The Company will initially seek to acquire high-performance, low-latency AI compute hardware and provide access under long-term lease arrangements, meeting customer demand that spot markets and hyperscalers are unable to reliably service,” the company said in the announcement.\nThis is really just picking the corpse clean... company lost 99% of value, dropping from $4B to $0.04B. This is just redirecting what little capital is left into something that might get a small return for whoever is left holding shares.",
+              "author": "floatrock",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Someone tell me if my idea is dumb:\nYou know how adding \".ai\" to your company name / domain name increases your valuation an order of magnitude or whatever?\nWell has anyone tried \nchaining\n .ai's to their company name...???\nFor example could x.ai increase their valuation another 5-10x by renaming themselves x.ai.ai?\nWhat about perplexity.ai.ai.ai?\nSeems like a low-hanging fruit for increasing valuation / attention on your company, but let me know if I'm missing something.",
+          "author": "holtkam2",
+          "replies": [
+            {
+              "text": "ai.ai is still free!",
+              "author": "xg15",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Pets announces pivot from Pets to Pets.com, stock explodes 1000%",
+          "author": "usui",
+          "replies": [
+            {
+              "text": "Waait a minute, that sounds familiar...",
+              "author": "xg15",
+              "depth": 1
+            },
+            {
+              "text": "\"Pets.com, because pets can't drive.\"",
+              "author": "graydoubt",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Reminds me of \nhttps://en.wikipedia.org/wiki/Long_Blockchain_Corp\n.\nThat didn't end very well for them...",
+          "author": "bl4ckneon",
+          "replies": [
+            {
+              "text": "Or \"Linux Gold Corp\".\nhttps://finance.yahoo.com/quote/LNXGF/",
+              "author": "fanatic2pope",
+              "depth": 1
+            },
+            {
+              "text": "These moves never do.",
+              "author": "al_borland",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "They keep having to update the headline as the stock goes up, it's now at \"more than 300%\".",
+          "author": "onychomys",
+          "replies": [
+            {
+              "text": "Now 400%!",
+              "author": "frizlab",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47780971",
+      "title": "Show HN: Libretto – Making AI browser automations deterministic",
+      "link": "https://github.com/saffron-health/libretto",
+      "domain": "github.com",
+      "author": "muchael",
+      "score": 88,
+      "comment_count": 25,
+      "created_ts": 1776268674,
+      "is_internal": false,
+      "post_text": "Libretto (<a href=\"https:&#x2F;&#x2F;libretto.sh\" rel=\"nofollow\">https:&#x2F;&#x2F;libretto.sh</a>) is a Skill+CLI that makes it easy for your coding agent to generate deterministic browser automations and debug existing ones. Key shift is going from “give an agent a prompt at runtime and hope it figures things out” to: “Use coding agents to generate real scripts you can inspect, run, and debug”.<p>Here’s a demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=0cDpIntmHAM\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=0cDpIntmHAM</a>. Docs start at <a href=\"https:&#x2F;&#x2F;libretto.sh&#x2F;docs&#x2F;get-started&#x2F;introduction\" rel=\"nofollow\">https:&#x2F;&#x2F;libretto.sh&#x2F;docs&#x2F;get-started&#x2F;introduction</a>.<p>We spent a year building and maintaining browser automations for EHR and payer portal integrations at our healthcare startup. Building these automations and debugging failed ones was incredibly time-consuming.<p>There’s lots of tools that use runtime AI like Browseruse and Stagehand which we tried, but (1) they’re reliant on custom DOM parsing that&#x27;s unreliable on older and complicated websites (including all of healthcare). Using a website’s internal network calls is faster and more reliable when possible. (2) They can be expensive since they rely on lots of AI calls and for workflows with complicated logic you can’t always rely on caching actions to make sure it will work. (3) They’re at runtime so it’s not interpretable what the agent is going to do. You kind of hope you prompted it correctly to do the right thing, but legacy workflows are often unintuitive and inconsistent across sites so you can’t trust an agent to just figure it out at runtime. (4) They don’t really help you generate new automations or help you debug automation failures.<p>We wanted a way to reliably generate and maintain browser automations in messy, high-stakes environments, without relying on fragile runtime agents.<p>Libretto is different because instead of runtime agents it uses “development-time AI”: scripts are generated ahead of time as actual code you can read and control, not opaque agent behavior at runtime. Instead of a black box, you own the code and can inspect, modify, version, and debug everything.<p>Rather than relying on runtime DOM parsing, Libretto takes a hybrid approach combining Playwright UI automation with direct network&#x2F;API requests within the browser session for better reliability and bot detection evasion.<p>It records manual user actions to help agents generate and update scripts, supports step-through debugging, has an optional read-only mode to prevent agents from accidentally submitting or modifying data, and generates code that follows all the abstractions and conventions you have already in your coding repo.<p>Would love to hear how others are building and maintaining browser automations in practice, and any feedback on the approach we’ve taken here.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "I literally _just_ put up an announcement on our internal Slack of a tool I had spent a few weeks trying to get right. Strange to post the announcement and, literally the same day, see a better, publicly available toolkit to do enable that very workflow!\nI'm also using Playwright, to automate a platform that has a maze of iframes, referer links, etc. Hopefully I can replace the internals with a script I get from this project.",
+          "author": "anthuswilliams",
+          "replies": [
+            {
+              "text": "Haha that's wild, let me know if you run into any issues with it!",
+              "author": "muchael",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I like the pre-gen approach! Curious how it responds to JS that changes how components are rendered at run-time.",
+          "author": "boriskurikhin",
+          "replies": [
+            {
+              "text": "There are a couple ways to handle JS components rendered at runtime:\n- Libretto prefers network requests over DOM interaction when possible, so this will circumvent a lot of complex JS rendering issues\n- When you do need the DOM, playwright can handle a lot of the complexity out of the box: playwright will re-query the live DOM at action time and automatically wait for elements to populate. Libretto is also set up to pick selectors like data-testid, aria-label, role, id over class names or positional stuff that's likely to be dynamic.\n- At the end of the day the files still live as code so you could always just throw a browser agent at it to handle a part of a workflow if nothing else works",
+              "author": "muchael",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Love it! Do you have a BAA with Claude though? Otherwise, your demo is likely exposing PHI to 3rd parties and exposing you to risk related to HIPAA",
+          "author": "z3ugma",
+          "replies": [
+            {
+              "text": "just adding to michael's reply - we took care to make sure no PHI was exposed in our demo video as well.",
+              "author": "tanishqkanc",
+              "depth": 1
+            },
+            {
+              "text": "It's a good callout. We have a BAA + ZDR with Anthropic and OpenAI, and if you want to use libretto for healthcare use cases having a BAA is essential. Was using Codex in the demo, and we've seen that both Claude and Codex work pretty well",
+              "author": "muchael",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I built something very similar for my company internally. The idea was that that the maintenance of the code is on the agent and the code is purely an optimization. If it breaks the agent runs it iteratively, fixes the code for next time. Happy to replace my tool with this and see how it does!",
+          "author": "heyitsaamir",
+          "replies": [
+            {
+              "text": "Super cool! Please let me know how it goes. Since agents are so good at writing code, we think letting the agent rewrite/test the code on failure is better than just using a prompt at runtime",
+              "author": "muchael",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "how does it differ from \nhttps://github.com/browserbase/stagehand\n ?",
+          "author": "yehia2amer",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47772282",
+      "title": "What Claude Code's Source Revealed About AI Engineering Culture",
+      "link": "https://techtrenches.dev/p/the-snake-that-ate-itself-what-claude",
+      "domain": "techtrenches.dev",
+      "author": "lucketone",
+      "score": 71,
+      "comment_count": 49,
+      "created_ts": 1776205673,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "culture"
+      ],
+      "comments": [
+        {
+          "top": "I came away with a very different conclusion, which is that the fact that such “bad” software can be so resoundingly successful for a business, yet be so odious to experienced human reviewers, means that it was the right engineering choice to go fast, rather than “do things right” by emphasizing code quality.\nWhat good would it truly be if a 3K line function is split into 8 modules? It’ll be neater and more comprehensible to a human reader. More debuggable, definitely.\nBut given the business problem the have: winner takes all of a massive market, first mover wins, — the right move is to throw the usual rulebook about quality software out the window, and double down on the bets of the company, that AI will make human code engineering less and less necessary very quickly.\nIt turned out incredibly well despite the “bad” engineering — which in this case, I really count as good engineering.",
+          "author": "golly_ned",
+          "replies": [
+            {
+              "text": "It was \"good engineering\" only because this was a new kind of product and the customers were not aware yet of what they should get for the money they pay.\nThe bad quality of the Claude Code program has resulted in increased costs for the customers (very high memory consumption, slow execution, higher and sometimes much higher token count than necessary), and even for Anthropic, but nobody was aware of this, because there was no previous experience to compare with.\nThis kind of sloppy vibe coding works only when there is no competition. When the competition comes with something much more efficient, e.g. pi-dev, the inefficient application will be eliminated.\nAnthropic attempts to protect their badly written program by forbidding its customers to use other coding harnesses, but this will not be able to protect them from competition for long.\nIf you are the first on a new market without competitors, then indeed time-to-market matters more than anything else and the sloppiest vibe-coded application is the best if it can be delivered immediately.\nHowever, one must plan to replace that with a better and more efficient application ASAP, because the advantage of being the first is only temporary.",
+              "author": "adrian_b",
+              "depth": 1
+            },
+            {
+              "text": "I guess that now people are more aware on how bad their software is, we cannot blame the \"super intelligent ai\" to not be ready yet.\nThe amount of regex matching people found os staggering",
+              "author": "motbus3",
+              "depth": 2
+            },
+            {
+              "text": "Your kind of critique forgets the tradeoff between getting something out quick vs doing something slowly and nicely.\nIf you choose slowly, you are depriving your users of the value from your app for a long time. It’s not as clear a choice as you think",
+              "author": "simianwords",
+              "depth": 2
+            },
+            {
+              "text": "Have you read my entire comment?\nI have already said that sometimes time-to-market is the most important, so that should be the priority, but the advantage of delivering immediately the application is only temporary, so you must improve quickly your first possibly vibe-coded implementation, otherwise better alternatives will be delivered by others.\nClaude Code is an obvious example of this, because it has practically opened a new market, but because it has remained a mess now there are better alternatives.\nWhat is wrong is not generating instantly a proof-of-concept application that barely works and using it in the beginning, but continuing to build upon that even after you had enough time to rewrite it.",
+              "author": "adrian_b",
+              "depth": 3
+            },
+            {
+              "text": "They would have to trade off building new features for refactoring. It seems they consider shipping more important, and that as long as the existing features mostly work, that’s good enough. As customers, we have to ask: do we agree? Do we want features over stability? I think the answer is yes, at least for me (and the market seems to agree). But it’s certainly a risk Anthropic is taking.\nI will note that this strategy only really makes sense because Anthropic controls the compute. If open-source harnesses could also use Claude max plans, then they’d have to focus much more on stability and quality, or just build an open-source harness themselves, or probably better yet, get out of the harness-building business altogether. So they’re gambling on staying ahead of open-source models, which seems like it’s been a good bet so far, but we’ll see.",
+              "author": "all_factz",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "As someone who finds a huge amount of enjoyment in developing using Opus 4.6 in Claude code, I’d love to know what other harnesses people use that deliver the same experience as CC. CC is a vibe-coded mess, but it works very well for me.\nI do a lot of work in R and find codex (5.4 & 5.3-codex) just totally drop the ball with R. Anthropic’s models are far better with R, so I use them.\nBut I do wonder how much the harness affects performance.\nWould GPT-5.3-Codex perform just as well if it was plugged into CC?",
+          "author": "j_bum",
+          "replies": [
+            {
+              "text": "I used OpenCode and find it works just as well or better than CC.\nI dont think CC has a moat other than their model but their model is also available through Copilot.",
+              "author": "voidfunc",
+              "depth": 1
+            },
+            {
+              "text": "Have you found any cheaper models to work well with OpenCode? Like any of the Chinese models?",
+              "author": "_menelaus",
+              "depth": 2
+            },
+            {
+              "text": "I use Z.ai GLM-5.1 with Opencode, haven't had any issues.",
+              "author": "Alifatisk",
+              "depth": 3
+            },
+            {
+              "text": "Haven't tried, corporate pays for use on both work and personal projects.",
+              "author": "voidfunc",
+              "depth": 3
+            },
+            {
+              "text": "CC is riddled with bugs and poor UI/UX. It's effective \nin spite\n of that. Just think what a well-designed agent would do in place of that. I don't use other coding agents currently because the subscription with CC gets me what I need and I don't want to pay retail token rates. I would 100% prefer an open source agent so I could fork it and tweak it to my needs.",
+              "author": "lsaferite",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I’m seriously considering a pivot to security\nExactly my conclusion, unfortunately I'm too old to pivot now, but anyone in their junior-to-mid days as a software developer should consider this pivot.\nAnd this is only about generating source code in a closed environment. All hell will break loose when Openclaw et al get in the hands of average users...",
+          "author": "haspok",
+          "replies": [
+            {
+              "text": "I wouldn't. Until companies become liable for their security failures, and that liability comes with a big price tag, there will be no money in security. Currently, poor security costs companies nothing, so they won't pay to improve their security.",
+              "author": "ryandrake",
+              "depth": 1
+            },
+            {
+              "text": "Man, same boat. If I weren't only looking for another 10 years of working, I'd be doing the same.",
+              "author": "iainctduncan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I agree with the core of what you're saying, but I think the real split isn't \"Anthropic trustworthy or not\" — it's: what's proprietary vs what's open in the stuff you're actually building on.\nRoutines, Projects, Artifacts, Skills — that's vendor-specific, disposable by definition. MCP, CLAUDE.md, markdown in your repo — that's portable. If Anthropic pivots or nerfs the thing tomorrow, you just rewire your MCP tools onto another harness in 10 minutes.\nPersonally I build my agent workflows as scripts + MCP tools — called by Claude Code today, callable by whatever harness replaces it tomorrow. The building block is \"a set of MCP tools + one CLAUDE.md\", not \"a Routine defined in Anthropic's console\". Functionally the same, zero lock-in.\nRoutines are fine for quick-wins, but the moment you start stacking them into a real workflow you're just moving your tech debt into a proprietary format. At that point you might as well externalize to scripts from the start.",
+          "author": "R00mi",
+          "replies": []
+        },
+        {
+          "top": "Claude code has some basic security features like asking for user confirmation for bash commands, or restricting commands to the current directory. If these features are not being code reviewed, what assurances do we have that they actually work?",
+          "author": "markisus",
+          "replies": [
+            {
+              "text": "They don't work. Do not trust them. Run Claude Code in an isolated, disposable micro VM and assume it will break your environment, steal any available secrets, do destructive commands, etc. So don't give it any way to do that to anything you care about.",
+              "author": "ninininino",
+              "depth": 1
+            },
+            {
+              "text": "You don't. I learned this from it executing commands while in plan mode. It is LLMs all the way down.",
+              "author": "nurettin",
+              "depth": 1
+            },
+            {
+              "text": "if you read the thinking context while in plan mode (I had it shown to me, i think mistakenly, by switching modes while Claude was thinking a week or so ago) plan mode is just a pre-prompt saying “you are now in plan mode, don’t propose edits, read the code and understand how it works.”\nit’s not an actual limitation on the harness.",
+              "author": "jmux",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47771417",
+      "title": "SpaceX Is Basically a Huge Meme Stock",
+      "link": "https://www.theatlantic.com/ideas/2026/04/spacex-ipo-elon-musk/686793/",
+      "domain": "www.theatlantic.com",
+      "author": "breve",
+      "score": 62,
+      "comment_count": 25,
+      "created_ts": 1776200244,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "* \nhttps://web.archive.org/web/20260414235001/https://www.theat...\n* \nhttps://archive.md/w1p99\nSeems like a weird article though, with some inaccuracy in key data:\n> The company is in fact relatively small and losing money.\nWhereas it's widely reported to be profitable:\nhttps://www.reuters.com/business/finance/spacex-generated-ab...\n(many reports of that same info around)\nThe article also contradicts itself later on:\n> SpaceX’s rocket-launch and satellite-internet businesses are enormously profitable near-monopolies.\nWas this article just AI generated spam? :(",
+          "author": "justinclift",
+          "replies": [
+            {
+              "text": "https://news.ycombinator.com/item?id=47606845\nhttps://news.ycombinator.com/item?id=47613231",
+              "author": "tcp_handshaker",
+              "depth": 1
+            },
+            {
+              "text": "The article states right up front that they’re not profitable because of xAI’s costs.\nSo there’s nothing contradictory about it.\nIn the second paragraph:\n> SpaceX’s annual revenue last year was less than $20 billion, and it lost nearly $5 billion, according to a new report from The Information, mostly because of xAI’s huge capital costs.",
+              "author": "adjejmxbdjdn",
+              "depth": 1
+            },
+            {
+              "text": "That's right. SpaceX is likely a great business on its fundamentals, and starlink is probably even better. The meme-stock part of this is that they've swept all these different business up together. I would've loved the opportunity to invest in SpaceX and starlink, but I'm not convinced the AI and other parts of the business are anything other than a landfill fire. The orbital datacentre concept is just plain nutty and in a different way than most of Elon's major undertakings. Sweeping them all in together like this just creates a serious risk that the best space company in the world will go under when the AI bubble bursts.",
+              "author": "peebee67",
+              "depth": 2
+            },
+            {
+              "text": "9000 satellites that last less than five years, and no path from EBITDA to a GAAP profit. Never mind the crazy space data centers, even the supposedly profitable part won't be.",
+              "author": "Zigurd",
+              "depth": 3
+            },
+            {
+              "text": "> The orbital datacentre concept is just plain nutty\nIt's edge computing.  Obsoletes the round trip for ground based AI crunch and power draw, cooling.",
+              "author": "__patchbit__",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "There's a reason why he's trying to reserve 30% of the IPO for retail investors.",
+          "author": "BobAliceInATree",
+          "replies": [
+            {
+              "text": "please elaborate",
+              "author": "hampowder",
+              "depth": 1
+            },
+            {
+              "text": "https://news.ycombinator.com/item?id=47606845\nhttps://news.ycombinator.com/item?id=47613231",
+              "author": "tcp_handshaker",
+              "depth": 2
+            },
+            {
+              "text": "Bagholders",
+              "author": "killingtime74",
+              "depth": 2
+            },
+            {
+              "text": "Doesn't seem right as plenty of institutionals get cooked.\nHe claims loyalty with long-term holders who trust him (read:less nagging and more license). I suspect it's also more convenient for his IR team to avoid worthless meetings with super shareholders.",
+              "author": "caminante",
+              "depth": 3
+            },
+            {
+              "text": "Please hold this bag for me.",
+              "author": "Zigurd",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You misspelled fraud",
+          "author": "teddyX",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47729327",
+      "title": "Ask HN: Easiest UX for Seniors",
+      "link": "https://news.ycombinator.com/item?id=47729327",
+      "domain": "news.ycombinator.com",
+      "author": "khoury",
+      "score": 57,
+      "comment_count": 60,
+      "created_ts": 1775903511,
+      "is_internal": true,
+      "post_text": "I have been running a SaaS for ~10 years used heavily by people 65+ and a lot of them are tired and frustrated about remembering the domain&#x2F;path to login screen and then which email&#x2F;password they used, having to go through the whole forgot-password-flow, etc. I have tried simplifying this as much as i can but I feel like there must be better options. Google sigin in is confusing for them because they get thrown into Googles horrible UX flow where they might have multiple accounts and they don&#x27;t like when the website suddenly changes.<p>In general, what is the best way to simplify the auth UX for this group of users? Is there any UI libraries out there targeting this group more specifically? Any good web examples you know of?<p>thx",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "When I did phone support for the fruit company there was a woman who would come back to me time and again with roughly the same issue.\nShe had some form of extreme palsy, and her kids lived on a different continent.\nWhat she needed, was someone to talk to her as she tried to input her password the 10 or so times it would take her to get it entered correctly.\nIf she did it herself, she would become unsure that she was using the correct password, and give up because she was second guessing herself.\nIf she asked a nurse to help, the nurse would need to bail halfway through the process and address some other requirement.\nIn a separate incarnation, I was helping a 90 year old gentleman, who was providing free legal support for the organisation, to log on to his laptop. We had a 60 day password reset cycle. This gentleman would only attend the office every month. So every other visit required a password reset. He would berate me as he went, like the guy was a massive d bag. But my understanding was that he had chronic arthritis in his hands, so this process was very painful for him.\nI think the best workflow would be to use login codes and eschew passwords entirely. Definitely dont have mandatory password resets. I think the initial Passcode enrollment step might rule passcodes out but I have only really dealt with them on the MS side.\nThat said, you need a really good non password backstop for login codes, because in my experience, elderly people tend to replace phones/numbers/laptops/email addresses quite frequently too. I used to keep a folder in my password vault for my grandmother so I could recover her email/facebook, but not before she ended up with 3 email accounts and facebook pages.\nBiometric Authenticator App? IE key recovery / load to a new phone is biometric, but otherwise it just prompts a 6 digit code on login? I think younger generations have a better sense of \"I am X, but my email controls Y\" where older people are like \"I am me, so give me my emails\" and something that is unequivocally \"Me\" like biometrics might be the best way to meet them where they are.\nJust my 2 cents.",
+          "author": "protocolture",
+          "replies": [
+            {
+              "text": "On forced password resets, the NIST guidelines are clear. But alas, this kind of news travel very VERY slowly it seems. Even the large organisations that \"care deeply\" about security seem to miss the memos. Gets my goat all the time.\nThanks for the real world stories on people who are actually, physically challenged.",
+              "author": "chanux",
+              "depth": 1
+            },
+            {
+              "text": "Reminds me when I had the high-end 2016 fruittruck with the sticky keyboard. All sorts of bizarre shit happens when you can't type your password.",
+              "author": "flomo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I help my grandparents out with computer stuff quite a bit, but I live far away, so I usually have to help over the phone. So having an interface that you can easily describe over the phone is pretty important to me.\nWhen I try to sign in to most apps on my TV, it usually displays an code that you can type in on another device so that you don't have to type in a long password using the D-pad on the remote. Could you maybe implement something similar for your website? This way, my grandmother could just call and read me a code, and then I could handle the sign in remotely. As long as you only need to sign in ~once a year, this would be my preferred option.\nNot all seniors have trusted friends/family who can help them, but lots do, so making it easier for the helpers will in turn make it easier for the seniors. Plus, there's no phishing risk for the senior with this method, so it's a relatively secure option too. (There \nis\n a phishing risk for the helper, but presumably they're the least vulnerable person in this scenario)",
+          "author": "gucci-on-fleek",
+          "replies": []
+        },
+        {
+          "top": "Facebook must have optimized for this. Do whatever they do.\nAnd make it so they don't have to log back in frequently.",
+          "author": "aarreedd",
+          "replies": [
+            {
+              "text": "I think the key for Facebook (and Amazon) are your 2nd point. People login once, and likely never again.\nI got my mom, who is in her 70s, a new TV and wanted to sign her into Prime Video. I asked for her Amazon account and she had no idea. I think she said something like, “I don’t have an Amazon account, I never have to login. I don’t even know what it would be.” She has been a Prime member for a decade and hasn’t had to login for so long that she forgot she had an account. It took both me and my sister telling her she must have an account, and listing the reasons why she must have an account, to jog her memory or simply convince her that this was a reality.\nThis creates a different problem. People forget passwords, lose account info, and when they do need it the recovery is that much harder. Apple Keychain has saved the day with my mom several times.\nI was a 1Password user for about 18 years (recently migrated away), and it would ask for your master password every 2 weeks and this is why. If you only have one password, you better remember it. If people only have to login once, they’ll forget. There were a couple times over the years when I drew a blank on what it was and got kind of worried. I also always worried about what would happen if I had some kind of head injury, as I never wanted to actually write that password down anywhere.",
+              "author": "al_borland",
+              "depth": 1
+            },
+            {
+              "text": "> Apple Keychain has saved the day with my mom several times.\niOS fills out these forms, puts the random password in icloud keychain, and then auths with faceid or etc. Obviously doesn't help OS's saas. But tons better than using Buster123 on every website.",
+              "author": "flomo",
+              "depth": 2
+            },
+            {
+              "text": "I’m hoping with the advent of Apple Passwords that some of this password saving magic happens for more of her websites as well. Of course she has a tendency to turn off most of these helpful things after getting scared by videos on Facebook.",
+              "author": "al_borland",
+              "depth": 3
+            },
+            {
+              "text": "Login is probably the number 1 issue I have seen with old people. They generally have a book of passwords where most of them are simple or reused. And if they get logged out it's a nightmare to get back in.\nI'd suggest not having a password at all. Either use SMS/Email codes, or Passkeys.",
+              "author": "Gigachad",
+              "depth": 1
+            },
+            {
+              "text": "While on that note, same thing with Nextdoor. You do see a lot of older folks accidentally posting stuff there, though, and it’s a good lesson for what not to do also",
+              "author": "y-curious",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've spent a lot of time helping my 80 year old neighbor with life tech tasks. I've noticed that she seems to be okay with usernames/passwords as long as they're in her password book.\nBut the site layout can make entering the credentials near impossible. For example, on the login page of the California DMV \nhttps://www.dmv.ca.gov/portal/mydmv\n , the form submission button is below the fold on her 720p laptop. She has to scroll down the login page to log in. She often asks what she should do next because she can't see the button!\nIf the password isn't in the book we have to go through the forgot password flow. That's usually fine because her email works, but it's offensive to have to log in again after we've reset the password. It's painful to watch someone type these modern passwords, but it's cruel type it three times in a row: once to enter the new password, a second to confirm it, and then the third to actually log in. I'd much rather have the emailed magic link log me in rather than take me to the password reset page.\nI often wish that companies would:\n0. not actually require account creation (I can walk up to the DMV counter; why do I need to create a password to do it online?)\n1. stick to a simple, well established authentication pattern\n2. make the buttons large enough\n3. make all of the relevant information visible without scrolling on a 720p laptop (with too many pixels taken up by Chrome's tab bar, Windows' task bar, etc.)\n4. not have clickable things to sidetrack us (your survey? chatbot popup? an ad? all nightmares)",
+          "author": "src73",
+          "replies": []
+        },
+        {
+          "top": "I can relate because my dad is 84 and he really struggles with simple things like entering a password to sign in to Gmail. He forgets what he did last time and so I'm back to explaining how moving his mouse causes the pointy-arrow thing move around on the screen, to get it pointed at the wide rectangle near the middle of the screen, etc. No UI library is going to solve his struggles.\nI solved most of the sign-in problem for my dad by picking a simpler browser than Google Chrome, and by tweaking his browser settings to be just-so. That's not going to be much help for you, the website creator...\nMaybe allow passkeys for login? These days, passkeys usually get stored/supplied by the underlying OS. (By usually, I mean that's the statistically most common source of the passkey today. They can also come from a browser plugin or a hardware key.)",
+          "author": "troymc",
+          "replies": [
+            {
+              "text": "I worry that passkeys are going to \nconfuse the heck\n out of less technically sophisticated users the moment they hit an edge cases, and I bet they can find edge cases.",
+              "author": "simonw",
+              "depth": 1
+            },
+            {
+              "text": "I can't think of any two sites that work the same way once you start using them.  It seemed like every service was its own edge case.",
+              "author": "doubled112",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47722081",
+      "title": "Ask HN: Hiring in the age of AI-assisted coding: what works?",
+      "link": "https://news.ycombinator.com/item?id=47722081",
+      "domain": "news.ycombinator.com",
+      "author": "nitramm",
+      "score": 28,
+      "comment_count": 19,
+      "created_ts": 1775846869,
+      "is_internal": true,
+      "post_text": "I saw the HackerRank (YC S11) hiring post (https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=47667011) and it made me realize I no longer understand how to evaluate candidates effectively.<p>Specifically, we are changing hiring across 3 dimensions:\n&gt; Tasks: Real-world tasks on code repositories vs standard algorithmic-style puzzles\n&gt; Evaluation: AI fluency, orchestration skills vs functional correctness\n&gt; Candidate experience: Agentic IDE vs a simple code editor<p>In the “old world,” you could ask multiple questions and triangulate skill from answers. Now it seems like evaluation depends heavily on tools and models that keep changing month to month.<p>So I’m curious:\n&gt; What signals actually correlate with strong engineers today?\n&gt; How do you design interviews that don’t become obsolete with the next model release?\n&gt; Are algorithmic interviews still useful at all?<p>Would love to hear from people who have recently changed their hiring process or have been interviewed using this new approach.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "How to interview in the age of AI is one of the top questions in a manager peer group that I'm in.\nSeveral hiring managers in the group went all in on AI-assisted interviews because they wanted the interviews to match the tools that engineers can use on their work. Most of them have gone full circle and returned back to no-AI interviews.\nThe main problem with AI-assisted interviews is that they become a test of how familiar the candidate is with the specific AI tool you're letting them use. They started getting inverted signals because the hardcore vibecoders knew all the tricks to brute force the problem with high token spend. They'd do things like spend the interview trying to spin up parallel subagents to brute force a solution.\nThen the careful coders who tried to understand the problem and do it right were penalized because every minute they spent trying to do the problem (instead of offloading all cognitive load to AI) was time lost to letting AI do the work.\nThere were also simpler problems like when someone was familiar with some visual LLM interface tool but didn't have a familiar workflow for the CLI tool used in the interview.\nMost people went back to coding interviews that forbid AI and test coding skills, combined with a discussion about their AI experience.\nMy takeaway was that it's easy to teach new hires how to use AI tools on the job, but it's much harder to bring someone with weak coding skills up to the level of someone with strong coding skills. It's even harder when that person is leaning on AI so much that they're not learning how to code anything.",
+          "author": "Aurornis",
+          "replies": [
+            {
+              "text": "> They started getting inverted signals because the hardcore vibecoders knew all the tricks to brute force the problem with high token spend. They'd do things like spend the interview trying to spin up parallel subagents to brute force a solution.\nCan’t you just…tell them not do this? Or give them limited model access instead of full Claude Code / Codex?",
+              "author": "adavid17",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Even if you said AI programming is based on \"knowing what to prompt\" this still comes down to:\n(1) understanding software engineering (for one thing knowing if answers make sense)\n(2) subject matter expertise and the ability to communicate with SMEs, fake being an SME by reading books,  see the old \"knowledge engineer\" construct from the 1980s.\n(3) knowing specifics about AI coding.\nI think (1) and (2) are 80-90% of what leads to success in the long term.  My guess is the models are going to get better so (3) skills have a short half life and will matter less,  but (1) and (2) will stay the same.\nMaybe I'm cynical but if I was designing screeners for this thing I would ask people things like\n\"How many accounts do you follow on X about AI?\" where the right answer is \"I don't have an X account\" and the higher the count the worse it is.\n\"What percent of your programming time do you spend thinking about AI programming tools?\" and anything over 20% is suspect (but maybe it is a tooling job or something in which case I'd drop it)\nThat is,  I want to see that somebody used AI tools to deliver something 100% done end-to-end that worked and I'd like to see them spending 80% of their time doing.\nI'd also be thinking about screeners designed to detect FOMO attitudes and reject people for it.",
+          "author": "PaulHoule",
+          "replies": [
+            {
+              "text": "What is an example of that 100% end to end that worked?",
+              "author": "mewpmewp2",
+              "depth": 1
+            },
+            {
+              "text": "Could be as simple as “completed some tickets with quality code that I understood and that passed rigorous review and didn’t add technical debt”\nThe trouble w/ AI slop is that the people who make it don’t know it is AI slop, not that it was AI generated.",
+              "author": "PaulHoule",
+              "depth": 2
+            },
+            {
+              "text": "So if I use only Claude Code for everything I do, what would that mean to you?",
+              "author": "mewpmewp2",
+              "depth": 3
+            },
+            {
+              "text": "I’d want to look at the output.",
+              "author": "PaulHoule",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I'm interviewing currently. I've come across the following.\n* Non-technical recruiters using a list of technical trivia questions and a keywords list to check if you answer correctly (e.g. what is the default isolation level in postgres) - this is the worst.\n* Code reviews but on non-generic code, like on a specific framework/product/SDK code in which you may or may not have prior experience - slightly less worse, but if you are going to do this, it is counter intuitive to hire someone who doesn't have production experience in that area.\n* take home assignments where they say \"we recommend you to not spend more than x hours on this\", but then, they expect a very sophisticated work and will reject you if you turn-in a \"simple\" implementation. Maybe they expect speed and quality?\n* leetcode is still a thing.\n* non-leetcode, but livecoding, on a likely OOP many to many relationship problem\n* give a spec in the first x minutes and leave the interview, you do your thing and then they join in the last y minutes - this is my favorite.\nI haven't yet participated in a Agentic AI interview. It is not that common AFAIK.\na coding interview that is objective, repeatable, doesn't put the interviewee under pressure (and doesn't trigger unconscious bias based on accent/appearence)\n* take home assigment with minimum requirements criteria and tell them \"add a feature of  your own\" or \"any extra work is appreciated\".\n* Pay them for their time and tokens.\n* Use a custom agent to review the code and see how many \"high\", \"medium\", \"low\" issues the agent identifies.",
+          "author": "eleventhborn",
+          "replies": [
+            {
+              "text": "> * take home assignments where they say \"we recommend you to not spend more than x hours on this\", but then, they expect a very sophisticated work and will reject you if you turn-in a \"simple\" implementation. Maybe they expect speed and quality?\nI never finished a take-home assignment within the given time frame. Once I even spent a whole weekend working on a solution to something that was described as a 2h problem. I feel it's just a way for the companies to make it look like it's a small commitment and they are not wasting your time excessively. If you decide to spend 2 days instead of 2 hours then \"it's on you\" ... But if you don't you'll fail.",
+              "author": "snicky",
+              "depth": 1
+            },
+            {
+              "text": "I only do takehome assignments if they can be useful boilerplate/starter projects for me and then spend all my hours on them. Recently I had 5 working days to create a backend for a chatbot. I spent about 80 to 100 (including the weekend).\nIt's good starter code for AI-enabled projects that are cloud agnostic and have good security practices :)\nIt also, probably, got me the job. At this point, that's honestly secondary. I can create new tools way faster!\nOne failed takehome assignment, years ago, became an amazing portfolio piece for 2 jobs down the line. The reason the original company failed me: not a standard full-stack web app. I broke the client-server model and made a P2P web app (drawing together etc.).",
+              "author": "mettamage",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I believe that the new interviews will just get more questions, related to AI.\nI read it in an article: the AI amplifies. It amplifies the success of the good professionals and it amplifies the failure of the bad.\nGood developer will give good prompts, because knows what to ask, and what might be the problem. Good developer can read the code and point badly generated one, and learn the AI how to perform better, which style =to follow. Good developer can evaluate if the used algorithm is the proper for the task and give suggestions, if needed. Good developer can optimize token usage, by using scripts, for example.\nYes, skills in prompting, knowing about new tools and how to use them is also mandatory, but not the most important one, in my opinion.\nI guess better soft/social skill are needed. Some people just can't express themselves in real world, and probably they will have difficulties expressing themselves in free texts as well",
+          "author": "sminchev",
+          "replies": []
+        },
+        {
+          "top": "I've recently been tasked with hiring new college grads (less than 2 years of experience) AI Engineers. Some things that we've been doing:\n1) Do they understand the ecosystem of algorithms and models? How do those coexist? Statistical models are the right choice sometimes. Sometimes it's XGBoosted RFs, sometimes NNs, LLMs, etc. And they're not mutually exclusive. I don't think that has changed since AI to be honest - though I get bad candidates that say LLM-everything of course.\n2) AI-assisted fluency. Not just in coding, but in concept build. I don't expect them to have the velocity of an AI-fluent principal engineer, but I want to see that they're not resistant to AI-assistance. This is obviously new.\n3) Experience with production systems, more than before. Pre-AI, I'd accept that a recent grad might be tuned towards models and algorithms, and wouldn't know much about frontend or backend, or anything you run into in production environments. Given the ease with which you can now setup a small DB, your modeling pipeline, and a full react dashboard or fastAPI frontend...I'd at least like to see they've dabbled in all of that, have a rough sense of it. I don't need them to be full-stack, or even comfortable with it - but AI has raised the breadth bar for me.",
+          "author": "zambelli",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47780185",
+      "title": "Ask HN: How do you find motivation to do stuff?",
+      "link": "https://news.ycombinator.com/item?id=47780185",
+      "domain": "news.ycombinator.com",
+      "author": "RockstarSprain",
+      "score": 16,
+      "comment_count": 18,
+      "created_ts": 1776265698,
+      "is_internal": true,
+      "post_text": "Not sure how to put it better but the more I read about AI the less motivation I have to either keep up with the tech advances or to try doing new things... I wonder how others keep or even foster the kind of motivation necessary to try new things and actually stick to doing them long enough? I would appreciate input on this in the most general sense possible.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "motivation"
+      ],
+      "comments": [
+        {
+          "top": "Sometimes, I really get bored, reading about AI products. At some point there are so many that look the same: UI + API + AI. \nI usually lose motivation when I don't see that the effort will give me good results or gains.\n7 years ago I started learning Haskell, I read 2-3 book started working on a de-duplication app. At some point I realized that in order to learn the language to the level where I am confident that I know it, I need to practice it for at least an year, and afterwards, I need some miracle to happen to find a project and practice is. I decided that it does not worth the effort.\nNow, the other case, I have a newborn. Now with two kids I am highly motivated. Also, with AI, not knowing a language is not a stopper anymore. So I made a pretty descent Android application for monitoring elderly people, that runs 24/7 despite Android is trying to kill it all the time, without practicing the language. Knowing that I can do it, seeing the results, having the responsibility sleeping behind me, gives me good reasons to continue. :)\nAlso what are our alternatives? Because of AI, I am not sure that I will have a job after one year. If I can do an android app with 400+ source files for 4 months, with 2000 unit tests, then it might happen that my employer reduces the working force, because there is not enough work for everybody. If don't have a back-up plan, what will I do?\nIf I still find myself tired and not motivated, I get another cup of coffee and continue :D :D",
+          "author": "sminchev",
+          "replies": []
+        },
+        {
+          "top": "As far as work? I haven’t found a method to get over my addiction to food and shelter and I need money to support my addictions and need to convince companies to keep giving me money by doing work. Thats my motivation.\nAs far as learning new “things”, it depends on what those things are.\nI’ve been working in the AWS + app dev consulting space for six years and have been working with AWS for around 10.  I know CloudFormation for infrastructure as code well and started using it in 2017.  As I got more into consulting, I knew that eventually I was going to have to learn Terraform and the AWS CDK.  Last year, two projects came up where I had to use both respectively.\nI was able to one shot both with a detailed set of requirements I designed with ChatGPT.  Why bother learning either? I know system design on AWS and how to verify the correctness of the output.\nThe second anecdote.  I haven’t done any web development in decades and always wanted to get back into it enough at least to do internal websites.  I have a good sense of UX and putting myself in the shoes of users.  Now with v0 and coding agents, why bother? My goal was never to be a great web developer.  I just wanted to create usable internal tools.\nMy entire focus over the last decade was to become more architectural and customer focused in consulting.  I’m glad I did and those two areas have kept me employable and have been most of learning focus.  Before AI, I delegated the grunt work to more junior developers, now I delegate it to AI.\nAs far as where my focus is at now 50+ outside of staying employable? I’ve been a gym rat since I was 16 (including a 15 year previous stint as a part time fitness instructor), and I spend my free time learning Spanish for my eventual retirement out of the country (motivation enough to get the f** out of dodge) and near term starting this year, we will be spending a few months in our target country every year - we just came back from spending two months there.",
+          "author": "raw_anon_1111",
+          "replies": []
+        },
+        {
+          "top": "I'm finding there is a lot of stuff I can do that has no connection to AI. I've been climbing and drawing and journaling and gardening and going to live concerts, and AI only gives me more motivation to do these things.\nFor doing tech stuff... Yeah I don't know. Amateur radio is techy without a lot of AI.",
+          "author": "fullstick",
+          "replies": []
+        },
+        {
+          "top": "I have an obsession to not become mediocre technically. And because I’m indeed very mediocre it is nagging at me from time to time, so I got some sort of knee jerk reaction to do something.",
+          "author": "markus_zhang",
+          "replies": []
+        },
+        {
+          "top": "As a 27-year-old human, I’ve realized that life comes in phases. Recently, what really gave me a lot of motivation was launching a Chrome extension (side project, which no one 'll use probably :) ), built from scratch. Of course, AI helped a lot but I’m pretty sure that without it, I would have just started and never finished it.\nHaving something of your own, even if it’s just a side project compared to your main job, makes you sleep better and feel happier.\nI don't know how, but some months ago I found the motivation to read some technical Software books (never happened before).\nI’ll admit I’ve wasted a lot of time doing nothing (like videogames or useless YT videos), but honestly, finding an ally like AI has helped me overcome the barrier of ‘I’ve never done this before, it’ll take too long just to learn it.’",
+          "author": "alexisp_07",
+          "replies": [
+            {
+              "text": "FWIW, I think nothing is wasted time if you enjoyed the time when you were doing it.",
+              "author": "Gooblebrai",
+              "depth": 1
+            },
+            {
+              "text": "That’s an interesting POV. But, looking back, I feel like I could have invested even 15% of that time into something more productive.",
+              "author": "alexisp_07",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47776366",
+      "title": "Ask HN: What's the point in creating a startup when anyone can copy it in days?",
+      "link": "https://news.ycombinator.com/item?id=47776366",
+      "domain": "news.ycombinator.com",
+      "author": "wewewedxfgdf",
+      "score": 15,
+      "comment_count": 21,
+      "created_ts": 1776242888,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "My experience is that people cannot copy original ideas for two reasons:\n1. People generally fear originality until it receives sufficient social validation, but by then your business is established.\n2. People generally cannot copy anything original after a certain point of complexity without motivation well into unnatural territory. For example nobody is going to quit their jobs to replicate your unproven idea because the effort is too high for something completely unused.\nA rare exception to those two points is Minecraft. They replicated the idea of a sci-fi voxel game from scratch, changed the scenery, and kept in beta for years.",
+          "author": "austin-cheney",
+          "replies": []
+        },
+        {
+          "top": "This is called concurrency and it drives the world forward. Why do we have so many producers and sellers of clothes. If we had only one clothes manifaturer in the world, who will trigger the innovation and progress forward?!\nNobody can steal your identity, attitude, communication with clients and support. And usually, this is what makes the difference.\nAnd there are also other, legal ways to protect things, even though it is expensive. It is to patent your products and ideas. :)",
+          "author": "sminchev",
+          "replies": []
+        },
+        {
+          "top": "I don’t think anyone that has worked in an early stage startup would ask this question.\nBecause the reality is that 99% of a startup’s success is in the boring grind of doing marketing, sales, development, customer support, accounting, on and on.\nActually making the simple app is the easiest part of the process, and always has been, even before AI.",
+          "author": "keiferski",
+          "replies": []
+        },
+        {
+          "top": "Copying a product is easy.But copying timing,insight,execution speed,and user understanding is what actually matters, and that's what more people miss.",
+          "author": "late_night_fix",
+          "replies": []
+        },
+        {
+          "top": "The important parts of your business cannot, in fact, be \"copied in days\". Things like trust, based on demonstrated reliability over time, human relationships based on being a decent human being and treating your customers with respect, your willingness to bend over backwards to accomodate special requests from customers, your ability to embed yourself into your customers' environment and build a genuinely deep understanding of their problems and challenges... etc., etc.\nCopying technology is easy. But \"business ≠ technology\".",
+          "author": "mindcrime",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47761785",
+      "title": "Ask HN: LeetCode, anyone still doing it?",
+      "link": "https://news.ycombinator.com/item?id=47761785",
+      "domain": "news.ycombinator.com",
+      "author": "kwar13",
+      "score": 13,
+      "comment_count": 11,
+      "created_ts": 1776146337,
+      "is_internal": true,
+      "post_text": "Few years ago leetcode was all the range with an entire cottage industry around it for acing tech interviews. I feel like now with the advent of AI it has completely gone away. I haven&#x27;t done a technical interview in a long while but not even sure if it&#x27;s still the dominant screening tool.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "I wonder the same sometimes, but I still do it to brush up my problem-solving skills and fundamental understanding of systems and data structures. AI can make mistakes. I was implementing LRU Cache using a linked list, and AI coding did it well, but it wasn’t fitting for my system. I had a better understanding of the context, so maybe I failed to provide enough problem context to AI.",
+          "author": "rakshitpandit",
+          "replies": []
+        },
+        {
+          "top": "I feel that companies are shifting towards short take home assignments which I find good personally.\nGrinding leetcode was never optimizing for solving problems algorithmically but for performing well in live coding interviews.\nSo knowing solution design, time/space complexity, what tools and patterns exist for certain sets of problems is valued more than being able to correctly type them out in an unfamiliar UI often with limited functionality, while someone watches your face and screen and ideally you have to articulate your thought process clearly within 20 minutes or so.",
+          "author": "pawelduda",
+          "replies": []
+        },
+        {
+          "top": "The meta is definitely shifting. Since AI can now instantly output a flawless solution to almost any medium/hard LeetCode problem, asking someone to write it from memory on a whiteboard feels entirely disconnected from 2026 reality. What I'm seeing more of now is a heavy shift towards System Design, architecture, and \"Code Review\" interviews where you are given AI-generated code and asked to find the hidden bugs or security flaws.",
+          "author": "visiohex",
+          "replies": []
+        },
+        {
+          "top": "Mmm, I stopped doing leetcode back in 2024 because I realized that even though I was able to build highly efficient small portions of code, I wasn't actually able to build real software because I wasn't able to put all these small pieces together, so far I think it was a good decision because now I'm able to build real software. As for the current state in interviews I have no idea, but personally I think is not as importart or useful for most situations when developing software.",
+          "author": "koritsu-nezumi",
+          "replies": [
+            {
+              "text": "What did you do to bridge the gap between small portions of code and real software?",
+              "author": "gere",
+              "depth": 1
+            },
+            {
+              "text": "think of any type of software project, it's just a lot of functions calling to each other, getting that to scale without becoming a mess was really hard to me, so what I did was that I started to try different architectural patterns to see what worked for me, my current coding style is a mix of 1) functional programming, 2) hexagonal architecture, and 3) test driven development; and I found that object oriented programming is not good at all it causes plenty of problems as the codebase grows, I mention OOP because is one of the most mentioned ones but I think is not that good.\nI develop in TypeScript, so I use the library Effect plenty of it follows functional programming principles, it also has dependency inyection with the objects Context and Layer which can be used for hexagonal architecture and for test driven development I use vitest",
+              "author": "koritsu-nezumi",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "LeetCode is still used, but it’s not the only thing that matters now.\nWith AI, companies care more about how you think and solve real problems, not just memorizing questions.",
+          "author": "OutrageousTea",
+          "replies": [
+            {
+              "text": "How have the coding interviews changed recently? Some companies say that they don't allow AI during interviews, right?",
+              "author": "gaurangt",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47770115",
+      "title": "Ask HN: Are Web Agencies Cooked?",
+      "link": "https://news.ycombinator.com/item?id=47770115",
+      "domain": "news.ycombinator.com",
+      "author": "mijustin",
+      "score": 10,
+      "comment_count": 9,
+      "created_ts": 1776194288,
+      "is_internal": true,
+      "post_text": "I&#x27;m curious about what&#x27;s going on in the agency world right now.<p>I worked at web agencies for a lot of my career, and I&#x27;m thinking about the kinds of projects we would get: build a website, build a simple app, build internal tools, maintain a WordPress site, build a website theme, etc...<p>It feels like a lot of that is being taken over by LLMs and tools like Claude Code? Are agencies feeling cooked right now?<p>If you&#x27;re at an agency, what&#x27;s happening in your world?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "I have been thinking the same thing.\nIn fact, I recently started a one-man-show business I'm doing as a bit of an experiment in my city.\nEvery single web agency here builds WordPress sites. Really old, mostly ugly, WordPress sites.\nSo I've built out a next.js-powered CRM that's faster, more secure, easier to use, etc.\nNow I'm in the starting stages of rebuilding local sites for free just to grab the case studies.\nI'm doing this 1.) as a bit of an experiment and 2.) because it feels like the web agencies here are ripe for disruption (and no one else seems to even mention or touch AI)\nWith Claude + Codex (and a 15-year background in WordPress) I've jumped from taking around a month to build out a custom site to less than a day.\nThe interesting/tougher part will be product/market fit and building those first few paying clients.\nSo to answer your question? It definitely looks like it. I'm sure there are plenty out there who are adapting but they seem to be the exception in what I've seen.",
+          "author": "SunshineTheCat",
+          "replies": []
+        },
+        {
+          "top": "Web agencies talk to clients and provide them with packaged services in understandable language.\nCoding is a part of what clients pay for.\nAgency clients want nothing to do with coding.\nSo make that part cheaper and faster and use the competitive advantage.",
+          "author": "andrei_says_",
+          "replies": []
+        },
+        {
+          "top": "Not at all! My shop is having one of its best years ever. We've been switching to value based billing with our clients which has made them happier and us more profitable.\nUsing AI powered prototypes to sell clients on new features has gone really well for us. Many of our clients have presold themselves on adding AI features of some kind, which is nice because it generally means they will need support for these features going forwards.",
+          "author": "SoMomentary",
+          "replies": [
+            {
+              "text": "What do you mean by value based billing?",
+              "author": "Stoo",
+              "depth": 1
+            },
+            {
+              "text": "I think it means charging based on the value of the work to the client not just the cost of doing the work.\nThat means if you get fast and efficient at doing something valuable for the clients you get to enjoy better margins because your costs are relatively low but the value is high so the customers still happily pay a good amount for it.",
+              "author": "borplk",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The commodity parts of agency work — building a standard WordPress site, writing copy from a brief, doing a basic SEO audit — those are cooked, yes. AI does them faster and clients are starting to notice.\nWhat's trickier to replace is the accumulation of client context over time. Why the checkout flow is the way it is (there was a lawsuit in 2019). Why they won't touch the header layout (CEO personally designed it). The social graph of who needs to approve what. That institutional knowledge doesn't live in any document and takes months to build.\nThe agencies I've seen adapt are the ones repositioning from \"we build things\" to \"we make sure what you build works.\" Audits, performance optimization, conversion analysis — work where the output is insight rather than deliverables. AI makes auditing faster, not obsolete; if anything, it lets a two-person agency do the throughput of a ten-person one.\nThe agencies building WordPress sites for $3K without a clear differentiation story — those are cooked. The ones who use AI to 10x their analysis and charge for what they know rather than what they type — those might be fine.",
+          "author": "vdalhambra",
+          "replies": []
+        },
+        {
+          "top": "I will give you an example from recent weeks. I am a developer and I implemented a android app, all with AI, because Kotlin is not my language. But to make it working my expertise and skills to analyze, think of the architecture, security, databases, issues, debugging helped me make a stable product and I am really proud of the results. I got so confident that I thought I can do the marketing campaign with the same tools and success... AND I FAILED!!\nWhy? Because I don't know the basis, I can't decide what AI generated suggestion is good and what bad, what will work, and what won't work. Sometimes AI suggests things that are just not ethical. If I had a good basis, like in software development, I would have better results.\nYes, for sure, work will drop and it will affect some people, but web agencies will stay. \nI will give you another example. I have all the tools at home to make my own desk, but at the end of the day, I go to IKEA and buy a new from there ;) . I believe that the number of people needed to do a job will decrease, and the demanded quality will increase, because manual labor is more expensive. Because it is more expensive, it make sense clients to demand more for what they pay.\nTime will show :)",
+          "author": "sminchev",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47749970",
+      "title": "Ask HN: Are you negatively affected by the recent economic stagnation?",
+      "link": "https://news.ycombinator.com/item?id=47749970",
+      "domain": "news.ycombinator.com",
+      "author": "adinhitlore",
+      "score": 8,
+      "comment_count": 21,
+      "created_ts": 1776074939,
+      "is_internal": true,
+      "post_text": "or is just me? looks like jobs or personal real estate sales are failing me hard...if i was younger (now late 30s) i would&#x27;ve considered a fake firefighter stripper path, for now i&#x27;d persist on this cursed route.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I have been out of work for roughly two years, though I should note that, for religious reasons, I have limited my search to positions involving Rust. Toward the end of last year, however, it seemed that the situation was beginning to improve: new job postings appeared that looked credible, and by the start of this year I had two interviews (both initiated by companies themselves). In one case, I advanced to the later stages of the process and was close to receiving an offer. So I was hopeful things will turn around.\nI think, now, given what's happening in the Gulf, you can firmly assume that the recovery will fully stop; if not worse. It's safer to assume that this will not resolve any time soon. I am from near the region, and I know a few friends who had to go back to the country because their jobs/workplace was affected. So that's one job market that's now bust.\nInterest rates will remain high, if not go higher. Life will get significantly more expensive with $100+ oil. This will be a global pain, unfortunately.",
+          "author": "csomar",
+          "replies": [
+            {
+              "text": "I am curious - what does choosing only Rust have to do with religion? Or am I taking your statement to literally?",
+              "author": "raw_anon_1111",
+              "depth": 1
+            },
+            {
+              "text": "Not the OP, but I interpreted \"religious\" as something like a strong, unyielding preference. As in \"I wear my helmet religiously when cycling.\"",
+              "author": "andyjohnson0",
+              "depth": 2
+            },
+            {
+              "text": "That’s what I thought too but didn’t want to make any assumptions.  In that case it’s honestly stupid to not having income come in for two years because of a preference for a certain language.\nWhen I’m out of job - which has only happened for a grand total of 5 weeks in 30 years including 3x where I was laid off or PIPed (Amazon 2023) - my first priority was to get any job to stop the bleeding and keep interviewing if it wasn’t what I wanted.  Luckily, only once did I have to take a stop gap job/contract (2011)",
+              "author": "raw_anon_1111",
+              "depth": 3
+            },
+            {
+              "text": "See the Epistle of James (James 5:3)\n\"And their rust will be a witness against you and will consume your flesh like fire.\"",
+              "author": "ksherlock",
+              "depth": 2
+            },
+            {
+              "text": "Now you've got me curious about what the Bible has to say about crustaceans, and if anyone's already created a religion around Rust [the programming language].",
+              "author": "rl3",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Fewer people migrate to Germany,  and those who already migrated struggle to find jobs. My website helps people settle in Germany. Many of my colleagues are relocation consultants. They feel the difference. I spoke with someone at the city's talent and business promotion board and they see it too.\nI have much more unemployed friends and they stay unemployed longer. Employers have started requiring fluent German.\nFor me, AI is a bigger threat. It wrecked my prospects as a developer, which was always my fallback if the site failed. Then LLMs and AI overviews started wrecking my traffic. It made me divert a lot of attention away from making the website helpful, towards making it resilient.",
+          "author": "nicbou",
+          "replies": [
+            {
+              "text": "If nicbou the builder is having a hard time, that's all the economic downturn data point I need.\nI share a similar sentiment about Germany. I mean, we do have a recession for a couple of years already.\nAs a Software Developer, I've experienced layoffs of International companies just nuking their German team, for both cost and law risks (from people trying to create a worker council and the like).\nI'm still employed because of my YOE, my skills & a wide network of people that have seen the quality of my work, but I see even previous CTOs and great engineers without a job.\nMaybe in the years ahead, I might need to work doing something else.\nI've always wanted to go to trade school and run my own business anyways, just didn't due to software engineering being so fun, interesting, challenging and ofc, well-paid.\nI've been practicing my German a lot (C1+), so in worst case scenario I can do other work, maybe become an electrician or something that involves moving atoms, rather than bits.",
+              "author": "thiago_fm",
+              "depth": 1
+            },
+            {
+              "text": "Do you see an impact on how people behave at work?",
+              "author": "nicbou",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am presently employed, but it has been difficult to find a new job. The market is worse than the dot-com crash, great financial crisis, or 2020.",
+          "author": "icedchai",
+          "replies": []
+        },
+        {
+          "top": "My salary hasn't kept up with inflation, but I had some really good years before that, while keeping my expenses low, so I've been ok. I've always been pretty obsessed with keeping my fixed costs low, which helps in times like these.\nI have been questioning if I need to adjust some things based on what seem to be higher monthly costs, or if I've just had a few months of one-off expenses that make it feel that way. It would probably take me a few hours to sit down and figure this out and I haven't had the chance.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "I am affected my a political choice, which is law which did happen in\n2015/2016 in my country (EU member state).\nThis have been disastrous: the web sites of my administration have been\nreplaced by web apps, of course requiring one of the web engines from\nthe WHATNG cartel.",
+          "author": "sylware",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47762585",
+      "title": "Claude Code OAuth down for >12 hours",
+      "link": "https://news.ycombinator.com/item?id=47762585",
+      "domain": "news.ycombinator.com",
+      "author": "pixel_popping",
+      "score": 8,
+      "comment_count": 8,
+      "created_ts": 1776153008,
+      "is_internal": true,
+      "post_text": "Claude Code OAuth on 2.1.107 is stuck on `Paste code here if prompted &gt;` - Impossible to paste (tried many methods, INCLUDING typing with xdotool the OAuth), there is a serious error that seems under-reported outside of Reddit &amp; Discord right now, why isn&#x27;t this considered an emergency and isn&#x27;t reported on the status page.<p>It&#x27;s not about the account because the account isn&#x27;t even validated yet, clicking on the link given, success, claude.com gives out the Token, then can&#x27;t copy it back to Terminal (any terminal, tmux&#x2F;ttyd&#x2F;bash&#x2F;vscode...)<p>Tried to contact Anthropic about it but the chatbot is unhelpful, hoping that they&#x27;ll notice by posting here because we are probably talking about thousand of users stuck here. Typing the code (although very annoying) doesn&#x27;t seem to work as well because it &quot;validates&quot; it after typing maybe half of it and just early return.<p>To be clear, pasting does work anywhere else than the specific OAuth frame with `Browser didn&#x27;t open? Use the url below to sign in (c to copy)`.<p>Anthropic, what are you doing?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47778035",
+      "title": "Ask HN: Is Claude Getting Worse?",
+      "link": "https://news.ycombinator.com/item?id=47778035",
+      "domain": "news.ycombinator.com",
+      "author": "sahli",
+      "score": 6,
+      "comment_count": 13,
+      "created_ts": 1776255605,
+      "is_internal": true,
+      "post_text": "It feels like most Claude Code users have already noticed a quality drop in the Claude models. As a Claude Pro subscriber (Web version; I don&#x27;t use Claude Code), I’ve seen a clear decline over the last couple of weeks. I can’t complete tasks in a single turn anymore. Claude often stops streaming because it hits some internal tool-call&#x2F;turn limit, so I have to keep pressing “Continue.” Each continuation has to re-feed context, which quickly burns through tokens and quota. The model also makes more mistakes and fails to fully complete tasks it used to handle reliably.<p>This is especially frustrating because Sonnet 4.6 was a real step up: it could produce long, correct code in one pass much more often. That seems basically gone now.<p>As a paying Pro user, I honestly find myself using free alternatives like DeepSeek and Z.ai (GLM) more than Claude lately. I’ve also stopped touching Opus entirely—it’s so token-hungry that it drains my weekly quota too fast to be practical.<p>Is Anthropic trying to limit usage or drive people away?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
