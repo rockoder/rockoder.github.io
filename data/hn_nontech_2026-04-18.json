@@ -1,0 +1,671 @@
+{
+  "scraped_date": "2026-04-18",
+  "source": "hacker_news",
+  "total_scraped": 131,
+  "nontech_count": 26,
+  "posts": [
+    {
+      "id": "47769796",
+      "title": "Tell HN: Fiverr left customer files public and searchable",
+      "link": "https://news.ycombinator.com/item?id=47769796",
+      "domain": "news.ycombinator.com",
+      "author": "morpheuskafka",
+      "score": 819,
+      "comment_count": 231,
+      "created_ts": 1776193000,
+      "is_internal": true,
+      "post_text": "Fiverr (gig work&#x2F;task platform, competitor to Upwork) uses a service called Cloudinary to process PDF&#x2F;images in messaging, including work products from the worker to client.<p>Besides the PDF processing value add, Cloudinary effectively acts like S3 here, serving assets directly to the web client. Like S3, it has support for signed&#x2F;expiring URLs. However, Fiverr opted to use public URLs, not signed ones, for sensitive client-worker communication.<p>Moreover, it seems like they may be serving public HTML somewhere that links to these files. As a result, hundreds are in Google search results, many containing PII.<p>Example query: site:fiverr-res.cloudinary.com form 1040<p>In fact, Fiverr actively buys Google Ads for keywords like &quot;form 1234 filing&quot; despite knowing that it does not adequately secure the resulting work product, causing the preparer to violate the GLBA&#x2F;FTC Safeguards Rule.<p>Responsible Disclosure Note -- 40 days have passed since this was notified to the designated vulnerability email (security@fiverr.com). The security team did not reply. Therefore, this is being made public as it doesn&#x27;t seem eligible for CVE&#x2F;CERT processing as it is not really a code vulnerability, and I don&#x27;t know anyone else who would care about it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47783940",
+      "title": "Ask HN: Who is using OpenClaw?",
+      "link": "https://news.ycombinator.com/item?id=47783940",
+      "domain": "news.ycombinator.com",
+      "author": "misterchocolat",
+      "score": 333,
+      "comment_count": 374,
+      "created_ts": 1776280930,
+      "is_internal": true,
+      "post_text": "I don&#x27;t use it personally, and neither does anyone in my circle...even though I feel like I&#x27;m super plugged into the ai world",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I still use it and find it helpful.\nMy OpenClaw instance uses an Obsidian project as its memory. Mainly, it's just my main day-to-day LLM that I access via WhatsApp, but instead of the memory being locked away with a specific vendor, it's stored in version control that I can read and edit. That reason alone makes it compelling to me. When a better LLM comes along, I can just switch, and my memory and system prompts come with it.\nHowever, I also use it for calorie/weight/workout tracking, to-do lists (bill, birthday, event reminders), and to support my various life admin tasks. I don't give it access to much at all, except a few skills that give it read-only access to some data.\nHasn't given me a 10x productivity boost or anything. It's just handy.\nI wrote an article on it, if anyone is interested: \nhttps://notesbylex.com/openclaw-the-missing-piece-for-obsidi...",
+          "author": "lexandstuff",
+          "replies": [
+            {
+              "text": "I’ve also found it useful for personal stuff. For example I have my OpenClaw bot in a family group on Telegram and everyday it asks my family members stories from their lives that it meticulously documents and uses as a basis for further questions in the future and has so far managed to build a rich family history spanning 50 odd family members (a project I had always been planning to do for never found the time to).",
+              "author": "brtkwr",
+              "depth": 1
+            },
+            {
+              "text": "I can't relate to this need to fully explore and then document everyone's history - I can have a conversation for an evening and forget everything the next day, and I'm happy with that, the truly important things (to me) will distill themselves naturally.\nA case of different strokes for different folks I suppose.",
+              "author": "nullandvoid",
+              "depth": 2
+            },
+            {
+              "text": "In my case, I was curious about my ancestry and Nepal doesn't currently have an equivalent of an ancestry.com therefore the best source of the information is my family themselves while they're still alive.",
+              "author": "brtkwr",
+              "depth": 3
+            },
+            {
+              "text": "I am weirded out but this, I find it horrific, like some kind of mind zombie, leeching humanity from your family members.\nSomeone somewhere is thinking they're connecting with you and sharing their humanity but they're just shoveling their soul into a machine that is \"meticulously documenting\" them.\nSorry, but ick.",
+              "author": "eterm",
+              "depth": 2
+            },
+            {
+              "text": "To give a different perspective: archival is important. If nobody does this job, generational knowledge is lost at some point.\nI talked plenty with my grandpa, but I'm sure he didn't even tell me 20% of his life.\nAnd my other grandpa died when I was still a kid, so I didn't even get to have adult conversations with him.\nImagine making this available to your grandgrandgrandson.",
+              "author": "kaoD",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "When I saw Jensen's talk about how Openclaw surpassed React and Linux in terms of GitHub stars within a few months, I knew the whole thing was manufactured bot hype.\nNo one can tell me a compelling use case. The whole thing seems designed around getting people to burn more tokens.",
+          "author": "redact207",
+          "replies": [
+            {
+              "text": "Every time I've sat down to consider how it could be useful, I can't think of anything that I couldn't build as a series of cron jobs and Playwright scripts. (even using Claude Code to do the heavy lifting at first, but then the tokens are spent and I don't have ongoing cost)\nI can only guess it's really not for \"us\", but rather for those who aren't afraid of technology but aren't really engineers.",
+              "author": "bdcravens",
+              "depth": 1
+            },
+            {
+              "text": ">series of cron jobs and Playwright scripts\nThis is approximately the Dropbox reply.\n>I can only guess it's really not for \"us\"\nExactly correct.",
+              "author": "snypher",
+              "depth": 2
+            },
+            {
+              "text": "> >series of cron jobs and Playwright scripts\n> This is approximately the Dropbox reply.\nlol that wasn't my intent but I totally see it now.\nI actually don't want to be dismissive of OpenClaw; I want to believe the hype. It's just what I've heard and what I see don't add up to me. If anything, it's a calculus where I have to decide if it's worth the time of setting up a machine and the learning curve.",
+              "author": "bdcravens",
+              "depth": 3
+            },
+            {
+              "text": "numberOfProgrammersInTheWorld : numberOfPeopleInTheWorld",
+              "author": "ethbr1",
+              "depth": 3
+            },
+            {
+              "text": "I’ve built a few recurring tasks with an OpenClaw. It’s fun to sit on the sofa and task it. That said, everything I’ve built with it I’ve realised would work better as a script.",
+              "author": "enochthered",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I’m a professional maintenance gardener and I have used NanoClaw running on my Mac to do the following:\nSchedule jobs on my job management tool (I vibed it) using a custom MCP. I’ll ask it questions like “what jobs are on today” etc. start the job, complete the job etc.\nIt will watch Gmail using a MCP for work orders from local real estate agents, where it will schedule quote visits.\nAfter the quote visit I add the photos to telegram (the channel I happen to use) where I then ask it to analyse the photos.\nClaude in NanoClaw does a good job of figuring out what needs to be done, but it doesn’t always get it quite right, so I use intake-api which is a “session inbox” [1] that generates a form and uploads it to Cloudflare along with the images and puts a link to the form in the chat so I can make adjustments to the annotated images of the property. After I’m happy, I click submit.\nI’ll then go back to the telegram channel and let it know I have submitted the form. Claude will then pull the JSON payload back down into the session and integrate it into the quote.\nIt will ask me questions about what the job will cost etc, and anything else it thinks it needs to know.\nIt will then generate a full PDF proposal using Latex between 14 and 32 pages long depending on how many photos were taken.\nThere are sections with terms and conditions as well as a bit of sales guff etc. as well as quite a nice cover page with their contact details and mine etc.\nWhen I’m happy I’ll ask it to create a draft email in Gmail with the attached pdf proposal.\nI’ll review it quickly and then send it.\nI also have the Xero MCP setup so I can ask it to create invoices and contacts etc.\nI do all of this when getting in and out of my truck.\nIt’s freed up my home life to spend more time with my children and my Mrs.\nThere is alot of scope for small business owners who need these sorts of agentic assistant tasks and with my Agentic CRM I’m see a glimpse of the future for guys like me I think.\nIntake API:\nhttps://github.com/mjsweet/intake-api",
+          "author": "mjsweet",
+          "replies": [
+            {
+              "text": "I think it's great that you were able to build all of that! It sounds very useful. I'd recommend asking Claude Code to evaluate your entire setup and try to identify areas where a script running on a schedule could replace parts of this framework. You could probably get 90% of it from simple repeatable scripts which would let you save more tokens for things that actually need LLM \"intelligence\". But if you're happy with the ROI then it seems to be working quite well for you!",
+              "author": "tstrimple",
+              "depth": 1
+            },
+            {
+              "text": "I actually have a /loop running scheduled tasks like syncing customer data from  routeboard (my job scheduler) and a flat file (MD and JSON) agentic CRM I have created that keeps tabs on the status of all the jobs, invoicing etc. This happens at 2am every day.\nThe great things about NanoClaw is that its actually Claude running in an Apple Container on my Mac. I gave up on OpenClaw fairly quickly because it seems like the biggest security regression ever created in the history of human kind.\nI have a Max 5x plan and it'm very happy to pay the money TBH, considering that proposals take only 20 minutes to build, and my conversion rate is quite high.\nWhen I send them for the first time to a new real estate agent they love them because it's easier for them to \"sell\" my service to their client.",
+              "author": "mjsweet",
+              "depth": 2
+            },
+            {
+              "text": "Just be careful. By all accounts I don't believe that the subscription plans cover 3rd party harness support. You may be at risk of all of this being shut down. That's \none\n of the reasons I haven't explored other harnesses. The main one being, I can accomplish everything they can from within CC with some extra steps I know how to do compliant with a CC Max Plan Terms of Service.",
+              "author": "tstrimple",
+              "depth": 3
+            },
+            {
+              "text": "Yeah I know, I have experimented locally with CC channels - but it's brittle and buggy at the moment. I will give it another go in a few weeks once they iron out the kinks.",
+              "author": "mjsweet",
+              "depth": 4
+            },
+            {
+              "text": "If you do run into any troubles you're not sure how to navigate, please feel free to reach out to me. Hell, even before that. I'm happy to collaborate on your LLM experience. But if the worst happens, I can probably get you back and running at that baseline even if Anthropic bans you. And this isn't me trying to worm my way into you paying me. Just a better understanding of what you've implemented versus how I typically use these tools and if I can close the \"token\" gap.",
+              "author": "tstrimple",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I don't personally know many people who've used it so I'm not sure if this was a me thing but here was my experience in short:\nI set up OpenClaw on a raspberry pi 4 that I could ssh into using my main computer. My main goal for using OpenClaw was just as a morning debriefer that could scan my google calendar, trello board, and gmail to let me know what I had happening for the day and also weekly to give me a forecast for the weeks ahead to see how busy my month was. I spent about 40-50 bucks in one week just working through kinks and having it fix itself until I stumbled onto a post that helped me optimize my model usage for price instead of just throwing Opus and Sonnet at everything.\nEven after making this adjustment, the morning debriefer worked maybe once or twice a week and broke every other morning, telling me that it fixed itself and it would never happen again. At a certain point I just got fed up with it and cut the cron job, it's still running on my pi but I never use it.\nPretty sure Claude has something like this now but I'm pretty thrown off the whole thing, I'd rather just take the 30-45mins to plan out my day in the morning myself.",
+          "author": "bigpapikite",
+          "replies": [
+            {
+              "text": "I work on something called Town (town.com) and your morning debriefer is basically a preset workflow we ship out of the box. You connect your Google Calendar and email, flip it on, and it just sends you a daily rundown. No cron jobs, no token tuning, no \"I fixed myself\" lies. Took us a while to get the reliability right but it genuinely doesn't break every other morning. It's free still for early tester, feel free to give it a shot!",
+              "author": "littlemishka",
+              "depth": 1
+            },
+            {
+              "text": "> No X, no Y, no Z.\nPlease, everyone, stop this.",
+              "author": "jimmygrapes",
+              "depth": 2
+            },
+            {
+              "text": "Well done. This is precisely what the future will look like. I’ve hacked together my own version of this using N8N whereby I feed in tasks via text or photo through telegram and it outputs a to do list. At some point I’ll link it to my personal wiki and then have it action tasks. This was just a fun project, but one design decision is to keep third party services away from commercially sensitive emails.",
+              "author": "Biologist123",
+              "depth": 2
+            },
+            {
+              "text": "I had a surprisingly large amount of issues getting it to correctly message me on discord if needed as part of heartbeat. Multiple times it broke and we fixed it. Then it was chewing through way too much usage so I set it to 6 hourly heartbeat and it stopped messaging entirely again, haven't bothered to fix.\nIt is nice though for debugging home server things when I ask it to.",
+              "author": "robryan",
+              "depth": 1
+            },
+            {
+              "text": "Works perfectly installed as part of a server and at mentioning you there. Direct DMs are finicky in my experience.",
+              "author": "haneul",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I don't use OpenClaw I tried but found it fragile and it's personality off putting. I then tried NanoClaw, but found the lack of communication channels limiting and could never really get it to create skills that felt solid. I recently just switched to Hermes Agent (like last week) and it's the first one where it didn't feel like I was constantly needing to fix it, so at the moment I'm happy with it.\nWhat do I use it for? I basically just use it as a personal assistant and a way to centralize a lot of other automations that I have elsewhere.\n- I have an automation that rolls everything on my todo list over to the next day at 11:59pm\n- I have one that checks the weather and tells me if it's going to be windy in the next few days since I need to bring the lawn furniture in\n- I have it set up so that I can forward it email with invoices and it will extract the data from a PDF and enter it into a cost tracking sheet\n- I have it check my outlook calendar and tell me if there are any 1:1 meetings where the other person has declined the invite (since Outlook doesn't show that clearly and I'd often show up to meetings and sit for 5 minutes before realizing the other person cancelled)\nNothing I'm doing is life changing, it all could be done using other tools, and honestly, for anything important, I want something more deterministic anyway, but I kind of love. It's just a low lift way to automate away minor annoyances through a single interface that I can access from just about anywhere. It's far from perfect, but I don't use it for anything where I need to to be perfect, so I'm happy.",
+          "author": "superfrank",
+          "replies": [
+            {
+              "text": "> - I have an automation that rolls everything on my todo list over to the next day at 11:59pm\nI use Daily Notes in Obsidian as my TODO list and I roll over the unfinished tasks daily. I started doing it manually, then had NanoClaw do it, then after multiple cases of NanoClaw “forgetting” to do it or accidentally running multiple times (apparently “once a day” was too complicated for it), I vibe coded a cron job which was great unless my computer was asleep or similar, so finally I vibe coded a obsidian plugin so that the first time I open my daily note on my phone or computer it will copy over my tasks while leaving behind anything I added to the daily note (aka my scratch pad).\nThe first 1-2 times NanoClaw did it for me it felt magical. I knew I could do it on a cron but it took me only a minute to explain what I wanted and while I knew it was massive overkill (to use an LLM to do want a simple script could do) I found it acceptable. That is, until it started messing it up.\nI’m not saying this is the case for you but I feel like some people see Open/Nano/WhateverClaw do something right a single time and gush about it but I have zero confidence in its ability to reliably and consistently do these things. My task for it was incredibly simple, in fact it was the ONLY thing I asked it to do really, and it failed miserably.",
+              "author": "joshstrange",
+              "depth": 1
+            },
+            {
+              "text": "The personality part, wow I thought I was the only one since no one else seems to have mentioned it anywhere. I agree.\nDuring initial setup it even asked how you want its personality to be, I said upbeat and cheery. I know, I know, cliche for AI chatbots, but I kinda like it that way. But after that setup, it was nothing like it. Everything it says is just matter-of-fact-ly/stoic. That wouldn't be so bad if it didn't also have this quirk where if you point out its mistakes, it keeps saying it'll fix it, but it still does not work right the next time. It just keeps reassuring you it'll be fine, in that stoic way, and then it's not fine. That's enough to drive me nuts.\nI got used to it now though and I don't get mad at it or scold it. I just learned to work with its quirks and still get tasks accomplished.",
+              "author": "godot",
+              "depth": 1
+            },
+            {
+              "text": "You may need to add a SOUL.md as per Hermes documentation that I don't have handy right now. Ask you hermes to do it for you. It really improved my interactions with it.",
+              "author": "elkos",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47803745",
+      "title": "How Big Tech wrote secrecy into EU law to hide data centres' environmental toll",
+      "link": "https://www.investigate-europe.eu/posts/big-tech-data-centres-secrecy-eu-law-environment-footprint",
+      "domain": "www.investigate-europe.eu",
+      "author": "cyberlimerence",
+      "score": 179,
+      "comment_count": 62,
+      "created_ts": 1776414774,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "big tech"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47792525",
+      "title": "Show HN: MacMind – A transformer neural network in HyperCard on a 1989 Macintosh",
+      "link": "https://github.com/SeanFDZ/macmind",
+      "domain": "github.com",
+      "author": "hammer32",
+      "score": 146,
+      "comment_count": 42,
+      "created_ts": 1776345389,
+      "is_internal": false,
+      "post_text": "I trained a transformer in HyperCard.  1,216 parameters.  1989 Macintosh.  And yes, it took a while.<p>MacMind is a complete transformer neural network, embeddings, positional encoding, self-attention, backpropagation, and gradient descent, implemented entirely in HyperTalk, the scripting language Apple shipped with HyperCard in 1987.  Every line of code is readable inside HyperCard&#x27;s script editor.  Option-click any button and read the actual math.<p>The task: learn the bit-reversal permutation, the opening step of the Fast Fourier Transform.  The model has no formula to follow.  It discovers the positional pattern purely through attention and repeated trial and error.  By training step 193, it was oscillating between 50%, 75%, and 100% accuracy on successive steps, settling into convergence like a ball rolling into a bowl.<p>The whole &quot;intelligence&quot; is 1,216 numbers stored in hidden fields in a HyperCard stack.  Save the file, quit, reopen: the trained model is still there, still correct.  It runs on anything from System 7 through Mac OS 9.<p>As a former physics student, and the FFT is an old friend, it sits at the heart of signal processing, quantum mechanics, and wave analysis.  I built this because we&#x27;re at a moment where AI affects all of us but most of us don&#x27;t understand what it actually does.  Backpropagation and attention are math, not magic.  And math doesn&#x27;t care whether it&#x27;s running on a TPU cluster or a 68030 from 1989.<p>The repo has a pre-trained stack (step 1,000), a blank stack you can train yourself, and a Python&#x2F;NumPy reference implementation that validates the math.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47764215",
+      "title": "Ask HN: I quit my job over weaponized robots to start my own venture",
+      "link": "https://news.ycombinator.com/item?id=47764215",
+      "domain": "news.ycombinator.com",
+      "author": "barratia",
+      "score": 118,
+      "comment_count": 86,
+      "created_ts": 1776166279,
+      "is_internal": true,
+      "post_text": "Two weeks ago, I quit my job at a robotics company. I was working with high-end hardware (Boston Dynamics, Unitree), but I found out they were planning to mount teleoperated weapons on the robotic platforms for a demo. I’m not willing to go there, so I resigned without another offer.<p>I’ve decided this is the right time to go back to entrepreneurship. We&#x27;re at an incredible moment for embodied intelligence, but I feel the tools and workflows we use to interact, monitor, and control these platforms are still lagging behind.<p>I&#x27;m currently exploring a couple of projects around how we build, test, and interact with robots. As part of my customer discovery phase, I&#x27;m trying to gather raw data on how roboticists and developers actually work day to day and what their main pain points are regarding control interfaces.<p>I put together a very short survey (3 mins) to validate some ideas. If you work in robotics, embedded systems, or just tinker with hardware, your input would be incredibly valuable:<p>Survey link: <a href=\"https:&#x2F;&#x2F;forms.gle&#x2F;3Nm76wkeT5CMt23c8\" rel=\"nofollow\">https:&#x2F;&#x2F;forms.gle&#x2F;3Nm76wkeT5CMt23c8</a><p>I&#x27;m also open to discussing the ethical lines in modern robotics or anything related to ROS2 &#x2F; HRI in the thread. Thanks for reading!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": [
+        {
+          "top": "Good on you. I quit my job in the defence sector over two decades ago for the same reasons. Best decision I ever made.",
+          "author": "440bx",
+          "replies": [
+            {
+              "text": "At what point did you realise what the defence sector was?",
+              "author": "bcjdjsndon",
+              "depth": 1
+            },
+            {
+              "text": "Well it's not all bad. Some of the stuff we did was entirely defence and disaster support. I basically got to choose projects I worked on until I was told I couldn't.",
+              "author": "440bx",
+              "depth": 2
+            },
+            {
+              "text": "Oh you mean defence = good, offence = bad?",
+              "author": "bcjdjsndon",
+              "depth": 3
+            },
+            {
+              "text": "Not really. Offence is sometimes the best defence. But when people start rubbing their hands at the prospect of a war being their retirement plan I don't want to be around them.",
+              "author": "440bx",
+              "depth": 4
+            },
+            {
+              "text": "Good for you. I find it disgusting when people get \nexcited\n about all the misery to come, because it gets them a nicer car or something.\nRelevant: \nhttps://m.youtube.com/watch?v=chWCcec_gzg",
+              "author": "nicbou",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Good on you for quitting, but unless you know of people in your network who're willing to buy what you're making not sure if this will work. Often times its the simplest ideas that make the most profitable businesses. You know, like selling handmade soap or coffee. The problem with what you're doing is you are trying to enter a market as the first person doing it. Which means nobody has taken the risk to prove there is a demand, and without that it means you're potentially burning a ton of time and resources with no logical place to pivot to next.",
+          "author": "rkozik1989",
+          "replies": []
+        },
+        {
+          "top": "As a citizen of a country currently defending in a war, unmanned systems are a literal lifesaver. We can send an armed robot where we previously would have to send a soldier. This is a good thing and before the war many had the same pacifist sentiment in the tech sector, but it's completely reversed now.\nThough I can understand your position being in a country that's not defending itself currently.",
+          "author": "thesmok",
+          "replies": []
+        },
+        {
+          "top": "I am building a very similar thing after a short stent at a robotics company in 2024. The industry is very far behind more general dev experience and tooling.\nI am forced to accept the popularity of ROS but I find it to generally be a terrible experience. Are you considering an alternative? Have you used foxglove?",
+          "author": "leetrout",
+          "replies": [
+            {
+              "text": "Hey! Great to hear from someone in the same boat. I completely agree, the general dev experience and tooling around ROS can be deeply frustrating...\nI am definitely looking into Foxglove! It seems to solve many of the transport/protocol headaches, but I feel like there's still a massive gap in how we actually interact with the robots day to day, especially when you are not glued to a desktop monitor.\nI'd love to hear more about your experience. What specific part of the tooling drove you crazy enough to start building an alternative?\n(Also, if you are open to a quick 15-min chat to share \"war\" stories, let me know!)",
+              "author": "barratia",
+              "depth": 1
+            },
+            {
+              "text": "Foxglove is not the only name in town. There are many, Transitive Robotics, the company I'm building is one of them. Different from Foxglove we are much more focused on live-remote monitoring and control, e.g., we have a pretty popular remote teleoperation module: \nhttps://transitiverobotics.com/caps/transitive-robotics/remo...\n\nYou can find all the other modules we're currently offering here: \nhttps://transitiverobotics.com/caps/\n\nThe platform itself is and remains open-source.",
+              "author": "chfritz",
+              "depth": 2
+            },
+            {
+              "text": "Would love to. My email is my username at gmail or my first name at my username dot com.",
+              "author": "leetrout",
+              "depth": 2
+            },
+            {
+              "text": "I will second this. You might not be able to get away without ROS compatibility depending on the market but a dependancy on it is a big pain in the neck from my point of view.",
+              "author": "rcxdude",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thank you so much for quitting and putting the long-term needs of humanity over your short-term economic comfort.  This is nothing short of a heroic move.\nI hope you are able to convince some of your colleagues to do likewise.",
+          "author": "jMyles",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47794514",
+      "title": "Launch HN: Kampala (YC W26) – Reverse-Engineer Apps into APIs",
+      "link": "https://www.zatanna.ai/kampala",
+      "domain": "www.zatanna.ai",
+      "author": "alexblackwell_",
+      "score": 94,
+      "comment_count": 84,
+      "created_ts": 1776352794,
+      "is_internal": false,
+      "post_text": "Hey! I am Alex and together with my co-founder Tarun built Kampala (<a href=\"https:&#x2F;&#x2F;www.zatanna.ai&#x2F;kampala\">https:&#x2F;&#x2F;www.zatanna.ai&#x2F;kampala</a>). It’s a man-in-the-middle (MITM) style proxy that allows you to agentically reverse engineer existing workflows without brittle browser automation or computer use agents. It works for websites, mobile apps, desktop apps.<p>Demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=z_PeostC-b4\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=z_PeostC-b4</a>.\nMany people spend hours per day in legacy dashboards and on-prem solutions reconciling data across platforms. Current attempts at automation use browser automations or computer use agents which are brittle, slow, and nondeterministic. \nI come from a web reverse engineering background and spent the last 7-8 years building integrations by hand for sneaker&#x2F;ticket releases, sportsbooks logins, and everything in\\ between. During that time I consulted for several companies and brought them off of browser based infrastructure into the requests layer.<p>When we started Zatanna (that’s our company name) we worked in dental tech, which meant we had to deal with tons of insurance payer dashboards and legacy dental-practice solutions. Our superpower (as a fairly undifferentiated voice agent&#x2F;front desk assistant company) was that we could integrate with nearly any system requested. During this time we built extensive tooling (including what we’re now calling Kampala) to allow us to spin up these integrations quickly. \nExisting MITM proxies and tooling didn’t work for a few reasons: (1) They manipulated the TLS and HTTP2 fingerprint over the wire which was detected by strict anti-bots. (2) They had bad MCPs which did not adequately expose necessary features like scripts&#x2F;replay. (3) They did not allow for building workflows or actions given a sample or sequence of requests.<p>As the tools we built got more powerful, we began to use them internally to scrape conference attendees, connect to external PMS systems, and interact with slack apps. I even sent it to my property manager mom, who (with a lot of help from me lol), automated 2-3 hours of billing information entry in Yardi. At that point we realized that this wasn’t really about dentistry :)<p>Because Kampala is a MITM, it is able to leverage existing session tokens&#x2F;anti-bot cookies and automate things deterministically in seconds. You can either use our agent harness that directly creates scripts&#x2F;apis by prompting you with what actions to make, or our MCP by manually doing a  workflow once, and asking your preferred coding agent to use Kampala to make a script&#x2F;API to replicate it. Once you have an API&#x2F;script, you can export, run, or even have us host it for you.<p>We think the future of automation does not consist of sending screenshots of webpages to LLMs, but instead using the layer below that computers actually understand. Excited to hear your thoughts&#x2F;questions&#x2F;feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47803524",
+      "title": "Ask HN: Building a solo business is impossible?",
+      "link": "https://news.ycombinator.com/item?id=47803524",
+      "domain": "news.ycombinator.com",
+      "author": "fnoef",
+      "score": 35,
+      "comment_count": 55,
+      "created_ts": 1776412518,
+      "is_internal": true,
+      "post_text": "I, like many engineers, dream about turning my love to programming into a side business. Nothing crazy, but enough to replace an average SWE income. And I, like many engineers, fell into the &quot;build, and they will come&quot; trap.<p>I tried to build, calibrate, engage in SEO, talk to customers, but I can&#x27;t seem to find traction. On one hand, people say that you need to build to solve a problem. You find a problem in a niche, say accounting for plumbers, and build for that, then you just go and market to these people. On the other hand, I see people who advocate for &quot;I just built something that I needed, and it got traction&quot;. There are multiple examples for both camps, but the problem is that they contradict each other.<p>This leads me to believe that most people either get lucky and then apply a framework in retrospect to justify their luck, or they simply don&#x27;t tell the whole truth.<p>I want to escape a salaried coder job, more so with the &quot;push&quot; of vibe coding across the board. But I have no idea how to approach a business. I refuse to believe that everyone who succeeded with a side project and replaced their job - is a liar, but maybe the truth is that it does not take 7 months, but 7 years?<p>Anyone got something helpful to share in that regard?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "side project"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47797632",
+      "title": "Ask HN: How do you maintain flow when vibe coding?",
+      "link": "https://news.ycombinator.com/item?id=47797632",
+      "domain": "news.ycombinator.com",
+      "author": "fny",
+      "score": 29,
+      "comment_count": 29,
+      "created_ts": 1776364688,
+      "is_internal": true,
+      "post_text": "It&#x27;s been a year now since I made Claude Code my daily driver, but I feel exhausted by all the context switching from managing 2-3 agents at a time. I know some people advocate for letting agents run wild, but in my experience that leads to subtle bugs that compound and reviews become 100x more painful.<p>What have you done to retain some semblance of flow, stay organized, and limit spinner staring?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47787042",
+      "title": "Durable Object alarm loop: $34k in 8 days, zero users, no platform warning",
+      "link": "https://news.ycombinator.com/item?id=47787042",
+      "domain": "news.ycombinator.com",
+      "author": "thewillmoss",
+      "score": 27,
+      "comment_count": 2,
+      "created_ts": 1776298139,
+      "is_internal": true,
+      "post_text": "Sharing this as a warning to anyone using Cloudflare Durable Objects with alarms.<p>Root cause:<p>My DO agent&#x27;s onStart() handler called this.ctx.storage.setAlarm() on every wake-up without checking whether an alarm was already scheduled. Combined with 60+ preview Worker deployments each creating independent DO instances, this created a runaway self-health-check loop.<p>Timeline:\n- April 3: loop began (zero DO usage before this date)<p>- April 4-5: peaked at ~930 billion row reads&#x2F;day<p>- April 11: found it, fixed it<p>- April 15: $34,895 invoice due with no billing response yet<p>The fix:<p>&#x2F;&#x2F; Before (dangerous)\nasync onStart() {\n  await this.ctx.storage.setAlarm(Date.now() + 60_000)\n}<p>&#x2F;&#x2F; After (safe)\nasync onStart() {\nconst existing = await this.ctx.storage.getAlarm()\n  if (!existing) {\n    await this.ctx.storage.setAlarm(Date.now() + 60_000)\n  }\n}<p>Other things worth doing:\n- Strip DO bindings from preview environments entirely\n- Deploy a budget monitor kill switch Worker\n- Add a circuit breaker that checks alarm state before scheduling<p>Why I had no warning:<p>Cloudflare&#x27;s Workers Usage Notifications only monitors CPU time. Not Durable Object row reads or writes. There is also no hard spending cap for DO operations available in the dashboard or Wrangler config. Nothing would have fired an alert during this runaway. I found out when the bill showed up.<p>This is worth knowing if you&#x27;re using DO alarms. The platform will not tell you when DO row reads&#x2F;writes go exponential. You have to build your own kill switch.<p>One more thing that I think deserves more attention than it&#x27;s getting: this is Agents Week. Cloudflare is running a dedicated marketing push right now to get individual developers building AI agents on Durable Objects. Blog posts, announcements, the whole thing. That is a deliberate effort to onboard solo developers and indie founders into a product that can silently generate a five-figure bill with zero platform warning. There is no spending cap for DO operations. The usage notification system doesn&#x27;t cover DO reads or writes. Cloudflare knows this. Running Agents Week while that gap exists is not a neutral decision.<p>I&#x27;ve filed Case 02067725. I&#x27;m a pre-launch sole proprietor who put all my personal savings into this startup. This bill would financially destroy me for usage that generated zero business value. Sharing here both as a technical warning and because I need help getting this in front of someone at Cloudflare who can make a decision.<p>Has anyone escalated a billing dispute with Cloudflare successfully?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47780185",
+      "title": "Ask HN: How do you find motivation to do stuff?",
+      "link": "https://news.ycombinator.com/item?id=47780185",
+      "domain": "news.ycombinator.com",
+      "author": "RockstarSprain",
+      "score": 24,
+      "comment_count": 22,
+      "created_ts": 1776265698,
+      "is_internal": true,
+      "post_text": "Not sure how to put it better but the more I read about AI the less motivation I have to either keep up with the tech advances or to try doing new things... I wonder how others keep or even foster the kind of motivation necessary to try new things and actually stick to doing them long enough? I would appreciate input on this in the most general sense possible.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "motivation"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47761785",
+      "title": "Ask HN: LeetCode, anyone still doing it?",
+      "link": "https://news.ycombinator.com/item?id=47761785",
+      "domain": "news.ycombinator.com",
+      "author": "kwar13",
+      "score": 19,
+      "comment_count": 14,
+      "created_ts": 1776146337,
+      "is_internal": true,
+      "post_text": "Few years ago leetcode was all the range with an entire cottage industry around it for acing tech interviews. I feel like now with the advent of AI it has completely gone away. I haven&#x27;t done a technical interview in a long while but not even sure if it&#x27;s still the dominant screening tool.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "Its getting phased out, just like explaining your python experience.  not saying its gone, but getting more irrelevant with AI.",
+          "author": "blemis",
+          "replies": []
+        },
+        {
+          "top": "I wonder the same sometimes, but I still do it to brush up my problem-solving skills and fundamental understanding of systems and data structures. AI can make mistakes. I was implementing LRU Cache using a linked list, and AI coding did it well, but it wasn’t fitting for my system. I had a better understanding of the context, so maybe I failed to provide enough problem context to AI.",
+          "author": "rakshitpandit",
+          "replies": []
+        },
+        {
+          "top": "The meta is definitely shifting. Since AI can now instantly output a flawless solution to almost any medium/hard LeetCode problem, asking someone to write it from memory on a whiteboard feels entirely disconnected from 2026 reality. What I'm seeing more of now is a heavy shift towards System Design, architecture, and \"Code Review\" interviews where you are given AI-generated code and asked to find the hidden bugs or security flaws.",
+          "author": "visiohex",
+          "replies": []
+        },
+        {
+          "top": "I feel that companies are shifting towards short take home assignments which I find good personally.\nGrinding leetcode was never optimizing for solving problems algorithmically but for performing well in live coding interviews.\nSo knowing solution design, time/space complexity, what tools and patterns exist for certain sets of problems is valued more than being able to correctly type them out in an unfamiliar UI often with limited functionality, while someone watches your face and screen and ideally you have to articulate your thought process clearly within 20 minutes or so.",
+          "author": "pawelduda",
+          "replies": []
+        },
+        {
+          "top": "Do interviewers still ask LC questions?\nIt's been a while since I last interviewed.",
+          "author": "blahblahblogger",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47804807",
+      "title": "Ask HN: Getting depressed day by day, how to cope?",
+      "link": "https://news.ycombinator.com/item?id=47804807",
+      "domain": "news.ycombinator.com",
+      "author": "throwaw12",
+      "score": 15,
+      "comment_count": 14,
+      "created_ts": 1776425916,
+      "is_internal": true,
+      "post_text": "How are you coping with AI constantly improving?<p>I am getting depressed day by day about what is coming.<p>Companies will not tolerate careful work when others can deliver same with 10% less quality but 60% faster.<p>I am drowning in internal fight between: I should care about what I am building vs this can be released faster because of AI and company doesnt care anyway about my efforts.<p>Everyday my inner voice and expectations are fighting, drowning me in endless thoughts.<p>How do I get over it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47800507",
+      "title": "Ask HN: How did you get your first users with zero audience?",
+      "link": "https://news.ycombinator.com/item?id=47800507",
+      "domain": "news.ycombinator.com",
+      "author": "arikusi",
+      "score": 14,
+      "comment_count": 8,
+      "created_ts": 1776379788,
+      "is_internal": true,
+      "post_text": "Solo developer, no audience, no network, no community presence.I&#x27;ve shipped working products (open-source) but every distribution channel has a cold start problem. you need traction to get traction. Even posting about your work requires reputation you can only build by posting. \nFor those who built something with no existing audience to launch to: what specifically worked to get your first real users? Less interested in theory, more in &quot;I did X and it actually moved the needle.&quot;",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47789816",
+      "title": "Ask HN: Who is your favourite Entrepreneur/Visionary?",
+      "link": "https://news.ycombinator.com/item?id=47789816",
+      "domain": "news.ycombinator.com",
+      "author": "wasimsk",
+      "score": 13,
+      "comment_count": 31,
+      "created_ts": 1776324598,
+      "is_internal": true,
+      "post_text": "I love Steve Jobs. His style, vision and overall charisma made me his fan.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47791163",
+      "title": "Ask HN: How are you actively keeping your thinking sharp while using LLMs daily?",
+      "link": "https://news.ycombinator.com/item?id=47791163",
+      "domain": "news.ycombinator.com",
+      "author": "smonk108",
+      "score": 12,
+      "comment_count": 10,
+      "created_ts": 1776335934,
+      "is_internal": true,
+      "post_text": "I&#x27;ve noticed AI tools have made me lazier. I used to think and reason through problems deeply, writing out my thoughts, going back and forth on items. With LLMs so easily available, I find myself having a conversation with Claude instead. I&#x27;m concerned that I&#x27;m not exercising my deep thinking muscles much.<p>Anyone else feel this? And more specifically — what deliberate practices are you using to keep your reasoning sharp?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "LLMs are just a tool. Doesnt mean you dont have to think. They lie all the time, take short cuts, try to please you, etc. I treat them like a consultant almost, and  make them explain what they are doing and why all the time. They can do things i can never do, but often they just do things that I could do, just faster.  Yes i could code that, but an LLM can literally type the code faster than i ever could. I also find that plan mode makes me think.. just my $0.02",
+          "author": "blemis",
+          "replies": []
+        },
+        {
+          "top": "When I use LLMs heavily, I definitely stop exercising parts of my thinking I used to rely on. That can look like regression.\nBut consider: Stone Age humans spent all their energy just getting food. No capacity left for higher-order thinking. Programming and document creation worked the same way for me - they consumed the mental bandwidth that could have gone elsewhere.\nNow that AI handles that layer, I can think at a different level. In my case, handing all the coding to Claude has freed up real mental space for product strategy - decisions that actually matter.\nMaybe the question isn't whether we're thinking deeply, but whether we're thinking deeply about the right things.",
+          "author": "yoaso",
+          "replies": []
+        },
+        {
+          "top": "Quite the opposite. Review is the bottleneck. LLMs generate more code, hence more cognitive load on my mind to comprehend and review it all. Review isn't optional if it's a production system that other people use.\nAfter I see how astonishingly poor LLMs are at decision-making (even the best ones, like Claude Opus or GPT 5.4) while writing code, I naturally stop trusting them in other areas of life too much to \"just have a conversation with them and get all the answers\".\nIt's all fun and games while the stakes are non-existent, but if the question really matters, would you trust an LLM fully as much as to not exercise thinking at all?",
+          "author": "unsaved159",
+          "replies": []
+        },
+        {
+          "top": "I also feel a shift in what I spend my time on. Sometimes I just don’t feel like thinking about complex things. But is that really a problem? If you’re too lazy to do something, maybe it doesn’t need to be done at all?",
+          "author": "edmondx",
+          "replies": []
+        },
+        {
+          "top": "I am yet to give any LLM a prompt where I would get a practical and meaningful solution for a real problem, no thinking involved.\nThe actual thinking task is still very much mine.\nLLM helps with solving the task faster, but here too, with lots of corrections and involving an extremely solid supervision process.\nSo, I kind of doubt the sincerity of your post. In fact, I doubt it very much.",
+          "author": "itmitica",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47800456",
+      "title": "Aliens.gov Resolves – To a WordPress \"Site Not Found\" Error",
+      "link": "https://news.ycombinator.com/item?id=47800456",
+      "domain": "news.ycombinator.com",
+      "author": "ascarola",
+      "score": 11,
+      "comment_count": 5,
+      "created_ts": 1776379436,
+      "is_internal": true,
+      "post_text": "After a month of &quot;Stay tuned! &quot; from White House Principal Deputy Press Secretary Anna Kelly, the U.S. government&#x27;s long-awaited UFO disclosure portal has achieved a major milestone: it now returns what appears to be a WordPress multisite configuration error instead of nothing.<p>Progress.<p>The domain was registered by CISA on March 17th amid much fanfare following Trump&#x27;s directive to release classified files on UAPs, extraterrestrial life, and &quot;any and all other information connected to these highly complex but extremely interesting and important matters.&quot; The Pentagon got involved. Avi Loeb wrote a think piece. A cottage industry of fake mirror sites (aliens-gov.online, aliensgov.online, etc.) sprang up overnight.<p>The actual government site? SITE_NOT_FOUND.<p>To be fair, this is likely a CMS multisite DNS&#x2F;mapping issue — the server is live, the content just hasn&#x27;t been deployed yet. So disclosure is technically imminent, in the same way that a 90s GeoCities page was technically imminent once you bought the domain.<p>The real question is whether the classified files revealing 70 years of extraterrestrial contact will be organized with Categories, Tags, and a sidebar widget showing Recent Posts. :)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "principal"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47791832",
+      "title": "Ask HN: How are you using LLMs in production?",
+      "link": "https://news.ycombinator.com/item?id=47791832",
+      "domain": "news.ycombinator.com",
+      "author": "Anon84",
+      "score": 8,
+      "comment_count": 10,
+      "created_ts": 1776341233,
+      "is_internal": true,
+      "post_text": "I’m curious how people are leveraging LLMs in production. We’re all familiar with using them to write code through your IDE, or agent, etc… but what applications have you built that use LLMs as part of the functionality?<p><pre><code>    - What applications&#x2F;industries have you found them to be the most useful in?\n    - What tools do you use for orchestration? LangGraph&#x2F;CrewAI&#x2F;built your own&#x2F;etc?\n    - What models? Centralized or locally deployed?</code></pre>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "currently working on a sales presentation generator.\nit is provided curated research and its goal is to make a compelling sales deck someone can present. current feedback is its better than our old version.\nthere's a master agent that have 8 sub agents it can run as tools. it can run them up to 65 times. its been really fun playing with the agents as tools.\nI was extremely excited when I seen the critic agent provided a critique->main agent called -> story written for slide x -> creative writter for slide -> then critic again to verify.",
+          "author": "laptop-man",
+          "replies": []
+        },
+        {
+          "top": "Regarding applications/industries - after software development as an industry I see scientific research benefiting the most from agentic AI and autonomous machine reasoning. Another domain which is still not saturated would be something I call \"personal guardian angel\", which usually extends to whole families. Quite often people use OpenClaw for these use cases. Personally I build my own harnesses. One instance is set up as a CEO of my organization, taking care of operations, and another one, completely separate, operating over private knowledge about my family matters, schedules, medical history, etc. I predict context graph and metacognitive use cases to get rapid adoption this year.\n- I've built 2 harnesses, one called Claudine - an older sister of Claude Code which now I use for teaching harness engineering, and Golem XIV, with context/knowledge graph management and self-directed metacognitive research.\n- In practice rather Anthropic models if the quality of the metacognitive reasoning process and self-improvement loops are considered.",
+          "author": "morisil",
+          "replies": []
+        },
+        {
+          "top": "I have a little pipeline that monitors specific parts of specific webpages for a value. If it changes, it makes a pull request to update a constant in a file. Basically, \"if the minimum wage changes, update MINIMUM_WAGE in constants.json\".\nI use a tiny model (currently OpenAI, soon self-hosted Qwen) to extract values from raw text.\nThis helps me maintain a growing collection of guides about German bureaucracy. I monitor about a hundred values. I aim to watch as many facts as possible that way.",
+          "author": "nicbou",
+          "replies": [
+            {
+              "text": "That’s interesting, thank you.",
+              "author": "Anon84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have done integration it two applications:\n(1) I use it to analyze behavior, sleep and still patterns, and detect frequently visited locations, based on recorded and provided data. It is an monitoring app for elderly people;\n(2) suggestions, parsing files, as database. The first two are clear. The third, instead of supporting and maintaining a database, I call the AI to give me the information;\nUsed LLMs: Gemini 2.5 Flash. ChatGPT 5",
+          "author": "sminchev",
+          "replies": [
+            {
+              "text": "Thank you, that’s helpful.",
+              "author": "Anon84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "For financial and stock investment domains, heard lots of product stories around LLM like one in \nhttps://www.google.com/finance/beta",
+          "author": "myui",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47791157",
+      "title": "Advice for tracking down a listening device?",
+      "link": "https://news.ycombinator.com/item?id=47791157",
+      "domain": "news.ycombinator.com",
+      "author": "comrade1234",
+      "score": 8,
+      "comment_count": 5,
+      "created_ts": 1776335907,
+      "is_internal": true,
+      "post_text": "I have a neighbor with an ex-boyfriend stalker who seems to have information from conversations within her house. The stalker police (I don&#x27;t know the proper name - it&#x27;s a group within the Zürich police) have offered to scan her home for bugs but they want her to first check her router for suspicious wifi devices.<p>She&#x27;s not technical at all and has asked me to help. Also, the stalker is not technical at all either but he&#x27;s done some impressive things using advice from chatGPT. It is probably just a consumer device.<p>Has anyone had experience with this? Some thoughts I&#x27;ve had are:\n- The police say that a battery-operated device that is sound-activated can function a very long time. How long?<p>- Do consumer listening devices spoof their MAC address to appear to be a different manufacturer, for example Apple?<p>- Do consumer listener devices connect to wifi only sporadically, when it&#x27;s time to upload information? (in this case I&#x27;d have to find some way to turn on logging on her router)<p>For anyone that has had to track down a listening device, how did you do it?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "Probably the police wants to gather some evidence.\nThe easiest way to block a wifi tap is to change the wifi password... or wifi name. Both things will be noticed by the eavesdropper because they will block the device *but* it is an easy way to block it asap.\nWhat I would do:\n1 - Get an old android phone.\n2 - Configure the phone to act as an access point with the same wifi name and password.\n3 - Change the wifi password or name in the router.\n4 - Change wifi passwords in laptop, etc... (I know, it is a pain).\n4 - Activate the phone access point.\n5 - * IF * the listening device connects to the phone AP wifi, you know there's a wifi tap.\nYou can connect the phone to your home wifi later... and it will look transparent to the stalker.\nBest of luck with this situation.",
+          "author": "eb0la",
+          "replies": []
+        },
+        {
+          "top": "I would suggest to enable logging on her router (if possible) and to check the MAC address of all devices that connect to her home Wi-Fi.\nOn smartphones, tablets, and computers, it should be easy to find in the settings (but check if they've set up a rotating private Wi-Fi address; if so, disable it).\nIt might be more difficult with other devices: for televisions or other appliances, you might need to unplug them and check the router logs to see if a specific MAC address disconnects at that precise moment.\nUltimately, if you have a MAC address that stays connected all the time or even just occasionally and doesn't match any known device, you have a good candidate for the listening device.",
+          "author": "N19PEDL2",
+          "replies": []
+        },
+        {
+          "top": "Cryptomuseum.com has information on listening devices and countermeasures that some kind poster on HackerNews linked a long time ago. \nhttps://cryptomuseum.com/df/tscm.htm",
+          "author": "TimBurman",
+          "replies": []
+        },
+        {
+          "top": "Some routers can block internet access for new/specific devices. You could try to find the correct device by blocking them all and unblock them after finding and checking them. One possibility is that the stalker uses an old android. That would harder to detect, since its possible that the device is not connected via wifi.",
+          "author": "stop50",
+          "replies": [
+            {
+              "text": "I would rule out the possibility that the listening device is a smartphone, as the battery would last only a few days even with the most conservative energy saving settings.",
+              "author": "N19PEDL2",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47778035",
+      "title": "Ask HN: Is Claude Getting Worse?",
+      "link": "https://news.ycombinator.com/item?id=47778035",
+      "domain": "news.ycombinator.com",
+      "author": "sahli",
+      "score": 8,
+      "comment_count": 19,
+      "created_ts": 1776255605,
+      "is_internal": true,
+      "post_text": "It feels like most Claude Code users have already noticed a quality drop in the Claude models. As a Claude Pro subscriber (Web version; I don&#x27;t use Claude Code), I’ve seen a clear decline over the last couple of weeks. I can’t complete tasks in a single turn anymore. Claude often stops streaming because it hits some internal tool-call&#x2F;turn limit, so I have to keep pressing “Continue.” Each continuation has to re-feed context, which quickly burns through tokens and quota. The model also makes more mistakes and fails to fully complete tasks it used to handle reliably.<p>This is especially frustrating because Sonnet 4.6 was a real step up: it could produce long, correct code in one pass much more often. That seems basically gone now.<p>As a paying Pro user, I honestly find myself using free alternatives like DeepSeek and Z.ai (GLM) more than Claude lately. I’ve also stopped touching Opus entirely—it’s so token-hungry that it drains my weekly quota too fast to be practical.<p>Is Anthropic trying to limit usage or drive people away?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47788765",
+      "title": "Ask HN: How to highlight talent from untraditional backgrounds?",
+      "link": "https://news.ycombinator.com/item?id=47788765",
+      "domain": "news.ycombinator.com",
+      "author": "etherus",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1776315004,
+      "is_internal": true,
+      "post_text": "Exceptional people come from many places. Really good generalists seem to come from very eclectic backgrounds, and hiring (and other) systems seem to implicitly filter a lot of this. What are some ways to find this sort of ability and cultivate it?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": []
+    }
+  ]
+}
