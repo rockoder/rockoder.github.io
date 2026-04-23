@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-22 – The Reviewer’s Paradox and Skill Atrophy
+
+**Learning:** Engineering judgment is not a static library; it is a muscle that atrophies without direct engagement with problem-solving. Decoupling the senior engineer from the act of "doing" to maximize "reviewing" creates a fragile organizational layer. The reviewer eventually loses the edge required to audit the machine they are supposed to supervise.
+
+**Implication:** Organizations should be wary of measuring seniority purely by review throughput or agent shepherding. The act of struggle is a necessary investment in future judgment.
+
+---
+
+## 2026-02-22 – The Administrative Tax of AI Leverage
+
+**Learning:** AI leverage does not eliminate work; it transforms it. The time saved on implementation is being reallocated into a new middle-management layer for Individual Contributors. Workflows like "Research -> Plan -> Annotate -> Implement" are essentially managerial overhead applied to the terminal.
+
+**Implication:** Headcount planning that assumes AI reduces the need for engineers ignores the increased complexity and administrative burden of managing agentic output. Velocity is high, but the "judgment tax" is increasing.
