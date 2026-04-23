@@ -53,3 +53,27 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-24 – The Authorization Bottleneck and Judgment Capital
+
+**Learning:** "Productivity" metrics in AI-assisted environments are dangerously incomplete because they only track the collapse of production costs, while ignoring the fixed (or increasing) cost of authorization. Every unit of unverified AI output creates an "audit debt" that senior engineers must absorb. If the organization only rewards the generator, the auditor becomes a structural blocker, leading to a rational but dangerous compression of review depth.
+
+**Implication:** Future essays should focus on the "sign-off" layer rather than the "typing" layer. The real shift is not in how much we can build, but in how much we can safely verify.
+
+---
+
+## 2026-02-24 – Vibe-Coding as Shadow IT Revival
+
+**Learning:** AI has lowered the barrier to software construction so far that "Shadow IT" has returned as a team-level productivity hack. Bespoke tools (vibecoded dashboards, CRM bridges) are trading Organizational Legibility for Task Velocity. These tools are only "disposable" until they become critical path, at which point they become unmanaged maintenance liabilities that Staff engineers eventually inherit.
+
+**Implication:** When evaluating "productivity gains" from AI internal tools, look for the latent maintenance cliff. The saved vendor cost is often just a deferred complexity tax.
+
+---
+
+## 2026-02-24 – Forced Documentation through Agent Context
+
+**Learning:** A surprising inversion: because AI agents require high-fidelity state to function across sessions, developers are being forced back into disciplined documentation (ADRs, AGENTS.md, decision logs). This is not a cultural change but a functional necessity for tool performance. The agent's need for context is achieving what years of engineering management could not.
+
+**Implication:** Monitor the shift from "slop" to "specification." The most successful teams might not be those with the best prompts, but those with the best context management.
