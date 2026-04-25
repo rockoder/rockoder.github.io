@@ -1,0 +1,638 @@
+{
+  "scraped_date": "2026-04-25",
+  "source": "hacker_news",
+  "total_scraped": 88,
+  "nontech_count": 20,
+  "posts": [
+    {
+      "id": "47878117",
+      "title": "MeshCore development team splits over trademark dispute and AI-generated code",
+      "link": "https://blog.meshcore.io/2026/04/23/the-split",
+      "domain": "blog.meshcore.io",
+      "author": "wielebny",
+      "score": 273,
+      "comment_count": 168,
+      "created_ts": 1776963313,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I would absolutely encourage everyone reading this to check out Reticulum [1] if you haven't already. I believe the base project might be in need of new maintainers(?) at the moment and the main dev has some very strong takes, but it is a very well-thought out approach to distributed networking at the protocol layer. The existing implementations out there include a desktop app which can function over the internet (IP) or a USB connection to some existing LoRA boards. I recently purchased a LilyGo T-Echo [2] and have had a great experience flashing the open-source firmware and using it connected to a desktop over USB or connected over Bluetooth to the \nfantastic\n new companion app Columba [3]. This app seriously makes Reticulum feel like a first class citizen when it comes to parity support for messaging. You can even send files/images (with limitations of course)! And since it works at the network level, you can make your own apps to run over Reticulum as well.\n[1] \nhttps://reticulum.network/\n\n[2] \nhttps://lilygo.cc/products/t-echo-lilygo\n\n[3] \nhttps://github.com/torlando-tech/columba",
+          "author": "lukeasch21",
+          "replies": [
+            {
+              "text": "don’t forget that although it already works fine on lora, it’s a protocol that’s transport channel agnostic, and is gonna do great with other transports (halow, optical, wifi, whatever) when people finally start realizing that lora is never going to be able to keep up with bandwidth/speed requirements of anything much beyond simple text messaging.\nalthough, i’ve already done real time voice calls over 1 hop of reticulum lora on and it works pretty ok.\nedit - community wiki with getting started instructions is here:\nhttps://reticulum.miraheze.org/wiki/Welcome",
+              "author": "405nm",
+              "depth": 1
+            },
+            {
+              "text": "> simple text messaging\nAlso great for position tracking, sensor data or motion detection etc.",
+              "author": "Levitating",
+              "depth": 2
+            },
+            {
+              "text": "This for days. Cheap sensors that anyone can churn out for days and deploy to anywhere for weeks to years. No longer do I have to know if the garden beds need to be watered.",
+              "author": "rho138",
+              "depth": 3
+            },
+            {
+              "text": "I spent an entire month trying to build something with Reticulum, but there just isn’t great tooling for dealing with the protocol. Makes for a pretty infuriating devex if you’re just trying to build your app.\nNeat concept but so many footguns that (imo) it’s not really sustainable to try bootstrapping.\nSpecifically, I had tried to port the stack to Rust no-std to use on nrf52 LoRA devices to use/abuse the existing MeshCore network to deliver reticulum packets. Turned out to be a nightmare just trying to figure out if my packets were even correctly formed.",
+              "author": "montyanne",
+              "depth": 1
+            },
+            {
+              "text": "Why is Reticulum and MeshCore the issue here and not rust?",
+              "author": "fragmede",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "What is it with mesh projects and having these super draconian trademark enforcers? Meshtastic is the same. One of the main reasons I got interested in MeshCore was reading the Meshtastic trademark rules and just finding them... really really over the top.",
+          "author": "Trannosaur",
+          "replies": [
+            {
+              "text": "I get the feeling the culture in radio is just not the same as regular open source. The free unrestricted sharing of things is an unusual quirk in the world rather than the norm.",
+              "author": "SchemaLoad",
+              "depth": 1
+            },
+            {
+              "text": "In my experience, amateur radio (both licensed and license-free) and 3d printing both seem to have cultural perspectives on open source that differ considerably from the regular open source software community.\nBut while in 3d printing, outside of hardware, that difference often feels confused (eg, I've seen the Multiboard creator post compliments online about models that blatantly violate his own license), in radio the difference often feels hostile.  You have OpenGD77, for example, with its 'we were never GPL' rug-pull that was likely illegal (they had outside contributions) [1]. You have Meshcore with its 'we are open source, except...', and, as you can see in this thread, a difficulty actually finding parts of the code.  You have the heavy cultural push against uSDX (seemingly open hardware+source) toward truSDX (DRM-encumbered), and what seems like the quiet acceptance of things like QMX, where you can solder together a radio with DRM that prevents you from installing your own firmware.  You even have digital modes that are legally required to be publicly documented, and actually aren't in any meaningful way: VARA FM is probably the worst offender [2], but even modes that are in-crowd enough to be advertised in FCC license exam questions are often effectively proprietary and legally dubious.\nWhat's particularly foreign to me about the culture is that oftentimes, much of the community seems to support behavior that seems malicious from an open source perspective, and attack the open source proponents.\n[1]: \nhttps://hackmd.io/@ajorg/opengd77-is-closed\n\n[2]: \nhttps://themodernham.com/reverse-engineering-vara-fm-part-1-...",
+              "author": "cge",
+              "depth": 2
+            },
+            {
+              "text": "I don't know any of the players but I'd bet they're licensed amateur radio operators.",
+              "author": "tbyehl",
+              "depth": 1
+            },
+            {
+              "text": "Actually the opposite, tons of ppl in the meshtastic community (Discord) berate amateur radio operators.  I stopped even discussing the subject because of how much derision I observed or was subjected to.  Lots of insults and nasty jokes in passing as soon as the topic even comes up whatsoever.  Kinda like your post, actually - offhanded derogatory remarks about an entire group of people solely because of the hobby they're involved in.",
+              "author": "amatecha",
+              "depth": 2
+            },
+            {
+              "text": "The person in question has many radios in the background of his videos, so maybe the comment you've replied to is into something :P",
+              "author": "celsoazevedo",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": ">We have always been wary of AI generated code, but felt everyone is free to do what they want and experiment, etc. But, one of our own, Andy Kirby, decided to branch out and extensively use Claude Code, and has decided to aggressively take over all of the components of the MeshCore ecosystem: standalone devices, mobile app, web flasher and web config tools.\n>And, he’s kept that small detail a secret - that it’s all majority vibe coded.\nWithout any more context, I am highly suspicious of this framing.\n1) Someone \"taking over\" the ecosystem seems like an entirely different issue. How is this possible? Does it mean he's publishing things and people want to use them?\n2) Is the code bad? It sounds like they had no idea he was using AI. That seems to imply there was nothing wrong with the code as-is. Why not judge it on it's merits?\n>The team didn’t feel it was our place to protest, until we recently discovered that Andy applied for the MeshCore Trademark (on the 29th March, according to filings) and didn’t tell any of us.\nTaking this at face value, this is indeed hostile and bad.\nBut no, I'm not going to get outraged that someone is simply using Claude Code.",
+          "author": "nonethewiser",
+          "replies": [
+            {
+              "text": "Agreed.  I use meshcore and have multiple repeaters setup.  I don't care about people using ai assisted coding but I think it should be disclosed especially if its closed source.\nNow the trademark take over seems crazy especially given Andy hasn't contributed to the github project, only personal for profit add ons.\nI do also think that the meshcore core team have \"tacked on\" and tried to enforce a stronger narrative with their anti ai coding bias.",
+              "author": "prism56",
+              "depth": 1
+            },
+            {
+              "text": "It wasn't ai assisted coding, it was vibe coding from someone with no real coding background. A communication protocol can't be vibe coded, how do you enforce security if the person is unable to understand what the tool created?\nEspecially when they try to hide that they were using those tools in the first place",
+              "author": "jeromegv",
+              "depth": 2
+            },
+            {
+              "text": ">It wasn't ai assisted coding, it was vibe coding from someone with no real coding background.\nCan you elaborate on this?\nI'd agree that is problematic. But that's not what the article said. The article just said he was using Claude Code a lot. It's ridiculous to equivocate those two things. That's what I have an issue with.",
+              "author": "nonethewiser",
+              "depth": 3
+            },
+            {
+              "text": "> only personal for profit add ons\nIn that context it is quite logical to take a trademark out once the project is mature enough so you can profit off other people's work.\nConsidering their user base does not like the hidden vibe coded idea I don't think this is bias but a sane rationalisation.",
+              "author": "consp",
+              "depth": 2
+            },
+            {
+              "text": "There’s a lot of framing in how questions are asked. I’m going to bet asking the community “Would you like more features if they’re made using AI assistance?” is going to get wildly different results.",
+              "author": "stingraycharles",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I've played with MeshCore and Meshtastic a bit, and while they are fun, the general hype seems overblown. The \"SHTF\" types that get involved with this tend to just taint the whole concept for me. I was/am interested in the use cases for building sensor networks, but most of the chatter seems to be around people who just want to send Hello World type texts back and forth, without realizing how poorly a network like this would perform in a real SHTF scenario.",
+          "author": "brk",
+          "replies": [
+            {
+              "text": "I feel the same way, and both mobile apps are pretty janky, with Meshtastic being extra obnoxious because the UI teams between Android and Apple apparently don't talk to each other- very hard to onboard/answer questions from someone new if you're on a different platform than them.\nIt was fun and cheap to set up, but I look forward to something with better messaging persistence so you can at least reliably not miss stuff.",
+              "author": "RankingMember",
+              "depth": 1
+            },
+            {
+              "text": "I got to participate in a game that used Meshtastic and GPS where you walk around a large camp and \"capture\" different regions. It worked great for that and was a lot of fun.\nIf there ever where a more serious situation where my life depended on one of these meshes, I would be feeling pretty uneasy. They are absolutely not reliable enough to even consider such a thing. I suppose they might be better than nothing.\nTo say nothing of what is required to set up the devices. I wanted to put a full dev system on a raspberry pi 3 just so it would all be in one place and I could work on it when in a location with no internet - it ran out of memory trying to compile the massive web app that is the default client interface.",
+              "author": "alnwlsn",
+              "depth": 1
+            },
+            {
+              "text": "> I got to participate in a game that used Meshtastic and GPS\nCan you name the game? Meshtastic has got me thinking about that kind of stuff.",
+              "author": "Levitating",
+              "depth": 2
+            },
+            {
+              "text": "It was just something a friend of mine came up with - we called it \"Area Capture\" or something (and was ironically, mostly vibe-coded).\nThere were 4 or 5 \"color\" teams. Each one carries a meshtastic node, and they all report to a central server back at base. The play field was roughly a square mile divided up into a grid of smaller squares. If you walk into one and it's past the cooldown time, it claims it for your team. Most squares at the end of two hours wins. The server would send out updates over meshtastic also: \"Blue captures H12\" \"Red has 18\", etc. If you were at the base station, you got to see it all play out live on a big map.\nThere was another one played at night which was a hide and seek game / capture the flag sort of game. It would tell the seekers some limited information about the seekers, and each side had special functions they could use. Hiders could \"go invisible\" or fake their location for a certain time. Seekers could call a limited number of \"drone strikes\" on different squares. The game ends when either the hiders are caught, or they make it to a specific target location.\nLots of possibility for that sort of thing with Meshtastic. I guess either could have run on a phone since now even rural camping areas have decent cell coverage these days, but that's not quite as impressive.",
+              "author": "alnwlsn",
+              "depth": 3
+            },
+            {
+              "text": "I largely agree and want to add more,I also think the lack of standards also will effect it's usability in a real shtf scenario. why should I use meshstastic over meshcore for example. I also don't think lora will be in my mind in that kind of scenario.",
+              "author": "takipsizad",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Is this client app still closed source? Non-starter for me, also a strong indicator that anything like this was bound to happen, and this will not be the end of it.",
+          "author": "the_gipsy",
+          "replies": [
+            {
+              "text": "https://github.com/zjs81/meshcore-open\nThe closed client isn't needed anymore.",
+              "author": "LaserBeam1000",
+              "depth": 1
+            },
+            {
+              "text": "I develop an open-source self-hosted client (very mobile friendly) for base-station radios that you want to use from anywhere, and also support MQTT/community observers/bots/webhooks/etc. It spawned out of my need for a daily-driver client that wasn't chained to the radio, and turned into a super fully featured companion client for power users.\nThe radio API and firmware is open; I have no ire for people who choose to make software closed source so that it can be monetized when there are SO many other options that in many cases supersede the functionality of the closed source option.\nhttps://github.com/jkingsman/Remote-Terminal-for-MeshCore",
+              "author": "jkingsman",
+              "depth": 1
+            },
+            {
+              "text": "Wow, very surprised to learn that it is closed source, and that's probably not changing.\nMy local mesh was testing out meshcore last week, this definitely kills my interest too",
+              "author": "queenkjuul",
+              "depth": 1
+            },
+            {
+              "text": "Thankfully there is an open-source client, which has pretty much all the features of the main client as well as some extras.\nhttps://github.com/zjs81/meshcore-open",
+              "author": "drpfenderson",
+              "depth": 2
+            },
+            {
+              "text": "Shame to hear that: the protocol works well, scaling up to thousands of nodes across hundreds of miles. This is the local mesh where I live:\n\nhttps://cascadiamesh.org/map/\nYou don't \nhave\n to use the closed source app; there's an open-source client too, there are Blackberry-style client devices which don't require an app at all, and all the actual firmware is open source (MIT).",
+              "author": "marssaxman",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47834213",
+      "title": "Ask HN: How to solve the cold start problem for a two-sided marketplace?",
+      "link": "https://news.ycombinator.com/item?id=47834213",
+      "domain": "news.ycombinator.com",
+      "author": "alegd",
+      "score": 148,
+      "comment_count": 164,
+      "created_ts": 1776692557,
+      "is_internal": true,
+      "post_text": "I&#x27;m building a P2P crowdshipping marketplace, basically BlaBlaCar but for packages instead of passengers. Travelers going between cities&#x2F;countries carry items for people who need to send stuff.<p>About to launch the MVP and hitting the classic chicken-and-egg problem.<p>Travelers won&#x27;t sign up without packages to carry, senders won&#x27;t post without travelers available. Every marketplace founder says &quot;focus on one side first&quot; but nobody gets specific about how they actually did it, especially when you can&#x27;t fake supply like you can with a SaaS landing page.<p>For those who&#x27;ve built P2P platforms or two-sided marketplaces: what actually worked for your first 50-100 transactions? Did you manually match people? Subsidize one side? Constrain to one route&#x2F;city?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47853021",
+      "title": "Anthropic bans orgs without warning",
+      "link": "https://news.ycombinator.com/item?id=47853021",
+      "domain": "news.ycombinator.com",
+      "author": "alpinisme",
+      "score": 36,
+      "comment_count": 18,
+      "created_ts": 1776798151,
+      "is_internal": true,
+      "post_text": "I work at at an agricultural technology company. On Monday, everyone in our org woke up to emails saying that their Claude accounts had been suspended (~70 users).<p>At first -- since the email was to me, with a link to a Google Form if I personally wanted to appeal -- I thought it must be an individualized ban (at least after deciding it wasn’t a phishing attempt). I couldn’t figure out why, but it set me searching my mind for possible triggers in my recent activity.<p>On Slack, though, it quickly became apparent this was actually an organization-wide ban. And none of us had been warned, including our account admins. We submitted the Google Form, but that was just a black hole. We’re waiting to hear back still a day and a half later.<p>But this is insane for a number of reasons:<p>1. Banning an organization for the behavior of an individual is a recipe for disaster in a business context. Disgruntled employees, incompetent interns -- anyone could maliciously or accidentally revoke Claude access for the whole business.<p>2. We didn’t just have a Claude Team plan, we also had an API account, which is paid for separately but had the same admins. The API account continues to allow us to use our API keys and sent us a renewal bill yesterday (after the Team account suspension). But none of our admins can actually view usage or billing, because our email addresses were banned.<p>3. Banning without warning makes every move dangerous. Was it because we had conversations about fertilizer? GPS satellites? other agriculture-related things? We can’t know and can’t avoid it.<p>We’ve reached out to Anthropic via a number of channels but have received only radio silence. There was a twitter thread about a similar issue (https:&#x2F;&#x2F;x.com&#x2F;patomolina&#x2F;status&#x2F;2045281665363386504), and we tried DM’ing the Anthropic employee who chimed in there. Also no response.\nI’m sure if we wait long enough we’ll come to some form of resolution here, but you have to ask yourself if this is a platform you can entrust your daily workflows to as a business.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47888068",
+      "title": "Ask HN: Am I getting old, or is working with AI juniors becoming a nightmare?",
+      "link": "https://news.ycombinator.com/item?id=47888068",
+      "domain": "news.ycombinator.com",
+      "author": "MichaelRazum",
+      "score": 35,
+      "comment_count": 45,
+      "created_ts": 1777025245,
+      "is_internal": true,
+      "post_text": "This is already the second time I’ve observed this. People coming from highly respected universities are doing everything with AI. It’s even hard to argue with them, since it’s all cross-checked with ChatGPT and similar tools.<p>The picture of software development also looks completely different. Code that used to be readable in a few lines becomes 100 lines—overblown because, well, code is cheap. Now, I could argue that it makes things unreadable and so on, but honestly, who cares? Right? The AI can fix it if it breaks...<p>So what do you guys think? Is this the future? Maybe the skill to focus on is orchestrating AI, and if you don’t do that, you become a legacy developer—someone with COBOL-like skills—still needed, but from the past millennium.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "It's a problem. Seniors with AI perform far better because they have the skills and experience to properly review the LLM's plans and outputs.\nJuniors don't have that skillset yet, but they're being pushed to use AI because their peers are using it. Where do you draw the line?\nWhat will happen when the current senior developers start retiring? What will happen when a new technology shows up that LLMs don't have human-written code to be trained on? Will pure LLM reasoning and generated agent skills be enough to bridge the gap?\nIt's all very interesting questions about the future of the development process.",
+          "author": "Daedren",
+          "replies": [
+            {
+              "text": "Indeed, great (though scary) questions to ponder.  There are two possibilities I see:\n1. AI gets better enough fast enough that by the time the senior people are retiring, it won't matter anyway\n2. Software becomes mostly unreadable and nobody really understands how it works, but the AI is good enough that this is ok\nBoth are hard for me to imagine right now, but if you'd asked me five years ago if AI would ever be good enough to commit to \nmy\n codebase, I would have said, \"I really doubt it\".  Yet here we are, AI code is sometimes better than handwritten code (depending on the person of course).\nWould love to hear others thoughts on these as well.",
+              "author": "freedomben",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I don't think many people expected things to change this rapidly even just a year ago. will we be able to completely keep 'spaghetti legacy code' under control? Or will the sheer drop in the 'cost of code' actually make maintenance even more of a nightmare? I'm not entirely sure, but one thing is certain that we are definitely at an inflection point right now.",
+          "author": "tughvn",
+          "replies": []
+        },
+        {
+          "top": "I think all of this has a dark future. And this can be argued based on how AI works.\nAI systems look at code on the internet that was written by humans. This is smart, clean code. And they learn from it. What they produce — unreadable spaghetti code — is the maximum they can squeeze out of the best code written by humans.\nIn the near future, AI-generated code will flood the internet, and AI will start training on its own code. On the other hand, juniors will forget how to write good code.\nAnd when these two factors come together in the near future, I honestly don’t know what will happen to the industry.",
+          "author": "baCist",
+          "replies": [
+            {
+              "text": "We’ve had a looming crisis for decades of young people increasingly not understanding a lot of the fundamentals of mathematical logic. And I think treating LLMs (which are amazing tools) as “AI,” and having it play this type of role, is the final step towards a lot of unrecoverable self-destruction.\nWe need to remember that the core of what “logic” is can be understood by every human mind, and that it’s our individual responsibility to endeavor to build this understanding, not delegate or hand-wave it. For all of human history, delegating/hand-waving away basic logic that can be understood by actuarial/engineering types has never gone well in the long term.",
+              "author": "pseudocomposer",
+              "depth": 1
+            },
+            {
+              "text": "Do most young people need to understanding the fundamentals of mathematical logic? We seem to get by without that.\nEven at the presidential level, today:\n>RFK Jr claims basic math rules don’t apply to White House \nhttps://www.independent.co.uk/tv/news/rfk-jr-math-percentage...",
+              "author": "tim333",
+              "depth": 2
+            },
+            {
+              "text": "You do if what you are implementing requires it.   Beyond this, if you don't understand the code the AI agent outputted, you shouldn't let other people run it in production.",
+              "author": "tracker1",
+              "depth": 3
+            },
+            {
+              "text": "Yes, and the country is destroying itself because those in power lack basic reasoning skills.",
+              "author": "estimator7292",
+              "depth": 3
+            },
+            {
+              "text": "But it's not all smart, clean, good code...  I've seen AI repeatedly make the same kinds of errors and interpretations that I would expect from a human working on something.  I find that more time in planning, (pre)documentation and testing, even some TDD helps a lot.\nI agree, that AI generated code will really start to piss in the pool so to speak.  I'm not sure the models will get better without a lot of hand curation and signals of what is good vs bad vs popular code.  They emphatically are not the same.",
+              "author": "tracker1",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "MichaelRazum, you're hitting on something crucial many of us in the trenches are seeing. The \"code is cheap\" mentality, as you call it, leads to bloated, unreadable code. As baCist points out, if AI starts training on its own generated code, we're headed for a real problem with quality degradation.\nI've found experienced developers leverage AI as a force multiplier because they can scrutinize the output, unlike juniors who often just paste and move on. The real skill is becoming an AI orchestrator, prompting effectively, and critically validating the output. Otherwise, if you're just a wrapper for AI, then yes, you become the \"legacy developer\" you mention because you're adding no critical thinking or value.",
+          "author": "MarcelinoGMX3C",
+          "replies": [
+            {
+              "text": "My own repeated analogy is that it's been a lot like managing/leading a few foreign dev teams on a project.  You have to document a lot more and have really well defined tasks, you also have to have dalliance in follow-up and QA/QC.  The real difference is that you are getting results in minutes instead of days.\nI can't imagine the people using many agents in parallel are actually even checking the fitness of the output they are generating, let alone the design, structure and quality of the code itself.",
+              "author": "tracker1",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Reviewing code becomes more arduous. Not only are the pull requests more bloated, the developer who pushed them doesn't always understand the implications of their changes. It's harder to maintain and track down bugs. I spend way too much time explaining AI generated code to the developer who \"wrote\" it.",
+          "author": "decasteve",
+          "replies": [
+            {
+              "text": "Agree, especially a review is always an knowledge update/exchange and for juniors a learning experience. If it is AI generated, its just not worth the time.",
+              "author": "MichaelRazum",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47845050",
+      "title": "Ask HN: What skills are future proof in an AI driven job market?",
+      "link": "https://news.ycombinator.com/item?id=47845050",
+      "domain": "news.ycombinator.com",
+      "author": "sunny678",
+      "score": 35,
+      "comment_count": 77,
+      "created_ts": 1776750584,
+      "is_internal": true,
+      "post_text": "For developers and non-developers alike: What&#x27;s worth learning today to stay relevant in an AI first world",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47884457",
+      "title": "Ask HN: How do solo devs protect their work in the age of vibe coding?",
+      "link": "https://news.ycombinator.com/item?id=47884457",
+      "domain": "news.ycombinator.com",
+      "author": "langs",
+      "score": 18,
+      "comment_count": 13,
+      "created_ts": 1776994406,
+      "is_internal": true,
+      "post_text": "I am working on a new open-source project. (My project is in AI infrastructure. It already gets SOTA results on several well-known benchmarks.) The core value is not just the code, but a fairly specific algorithmic approach that came out of many failed attempts, experiments, and design iterations.<p>The dilemma I am facing is this:<p>If I open-source early, I get feedback, trust, users, and maybe contributors. But I also expose the core design and algorithm. With LLMs, turning a repo into a different implementation is much cheaper than it used to be.<p>If I keep it closed, I protect the work for longer, but I also lose the main advantages of OSS: adoption, review, community, and credibility. Worse, someone else may still build something similar and become the default project in the space.<p>I’m a new solo dev with almost no audience. If a large org or a well-known developer sees the idea and ships a similar implementation, they can get more attention immediately than I can get in months. And in the end I get nothing for open-sourcing my project.<p>How would you handle this as a solo dev?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "> \nI’m a new solo dev with almost no audience. If a large org or a well-known developer sees the idea and ships a similar implementation, they can get more attention immediately than I can get in months. And in the end I get nothing for open-sourcing my project.\nThis has always been a fear of open source development… but in reality it’s over exaggerated, thousands of FOSS ideas are posted every day…\nMy advice would be to treat posting your project like a launch, and get all the readme’s, docs etc ready before posting, so it has the best chance of growing an audience, which seems to be your goal.\nBut if you really don’t want other people to recycle your idea, then open source is not for you…",
+          "author": "gitgud",
+          "replies": []
+        },
+        {
+          "top": "1) If it's open source, what's the incentive to steal from you anyway?  It's free.  That's one of the interesting moats in the age of AI.\n2) If it's at risk of being stolen/copied today, it will be the same thing 10-100-1000 days from now.  There is no hiding from AI copy cats.  Just put it out there and find out if someone actually will want to do it.  If yes, you saved yourself a bunch of time.",
+          "author": "ertok",
+          "replies": []
+        },
+        {
+          "top": "Open source but license it properly - AGPL works best if you are worried about someone making money off your idea. Honestly though with AI everything is copyable - wouldn't worry about that. Instead focus on the fastest path to get feedback and iterate",
+          "author": "comicink",
+          "replies": []
+        },
+        {
+          "top": "API security is the most common blind spot. Vibe coding tools generate endpoints fast but almost never think about broken authentication, excessive data exposure, or injection flaws. A solo dev can ship a beautiful frontend with completely exposed APIs behind it. At minimum — test your own endpoints like an attacker would before going live.",
+          "author": "preetigagarwal",
+          "replies": []
+        },
+        {
+          "top": "There is no way to protect your idea from being copied/stolen.\nIt happened a million times over, you have some brilliant idea, people start using it, and after a few months some big company puts 10-100 engineers on it and they do the same thing.\nI would say that the key is to get to a big enough audience so they would rather buy you out than compete. Easier said than done :P\nAnd the biggest question is: do you want to commit 100% of your time and money to building your company, or you would rather spend your time building new things?",
+          "author": "gajo357",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47883217",
+      "title": "Ask HN: Dear astronomers, what are the most interesting things in space lately?",
+      "link": "https://news.ycombinator.com/item?id=47883217",
+      "domain": "news.ycombinator.com",
+      "author": "simonebrunozzi",
+      "score": 14,
+      "comment_count": 5,
+      "created_ts": 1776984405,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47888857",
+      "title": "Ask HN: Scaling a targeted web crawler beyond 500M pages/day",
+      "link": "https://news.ycombinator.com/item?id=47888857",
+      "domain": "news.ycombinator.com",
+      "author": "honungsburk",
+      "score": 12,
+      "comment_count": 1,
+      "created_ts": 1777031036,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been reading up on crawler architecture. The two most useful sources I&#x27;ve found are the blog post &quot;Crawling a billion web pages in just over 24 hours, in 2025&quot; and the Mercator paper (&quot;Mercator: A Scalable, Extensible Web Crawler&quot;).<p>Both of these, and most other material I&#x27;ve come across, focus on crawling the broad open web rather than a targeted set of domains. For product prices it&#x27;s the latter. Mercator calls out DNS resolution as a major bottleneck, for example, but when you&#x27;re only hitting a few hundred domains that isn&#x27;t really a concern.<p>The other gap is that both assume static HTML. For our use case we need a headless browser, and we also have to deal with Cloudflare and similar anti-bot systems.<p>For product prices specifically, a lot of sites publish price feeds which simplifies things, but plenty don&#x27;t, and getting good coverage still requires scraping. Our current system does about 500M pages&#x2F;day and we&#x27;re looking to improve its performance.<p>Does anyone here have experience in this space, or know of articles&#x2F;blog posts on scaling targeted (rather than broad) crawlers with headless browsers? Any pointers appreciated.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47884294",
+      "title": "Ask HN: Why are companies so distrustful of remote employees?",
+      "link": "https://news.ycombinator.com/item?id=47884294",
+      "domain": "news.ycombinator.com",
+      "author": "lyfeninja",
+      "score": 11,
+      "comment_count": 19,
+      "created_ts": 1776992709,
+      "is_internal": true,
+      "post_text": "I just passed on a job for a quality company in the Bay area because they wouldn&#x27;t budge on remote work. I already work remote and have since the pandemic and it works for me and my employer. I do travel occasionally, but whenever I do I always think &quot;wow, I&#x27;d get so much more done right now at home.&quot;<p>I&#x27;ve always been skeptical of the entire RTO storyline. I literally work on a computer all day with an Internet connection and can complete every aspect of my job remotely, no if, ands, or buts, about it. Also, at this point many are tracking our mouse movements and key strokes, and the work gets done, so they know we&#x27;re working too<p>I&#x27;m used to the short sided mindset at this point, but the situation just got me thinking about it again.<p>Meanwhile, companies are throwing everything at AI (which works remotely), laying off employees to do so, and then having obsurd in office policies and skimping on benefits. Just makes you wonder why they distrust people so much.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "rto"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47873423",
+      "title": "Ask HN: Would you take a job programming VMS?",
+      "link": "https://news.ycombinator.com/item?id=47873423",
+      "domain": "news.ycombinator.com",
+      "author": "smackeyacky",
+      "score": 11,
+      "comment_count": 19,
+      "created_ts": 1776932883,
+      "is_internal": true,
+      "post_text": "I’m an older programmer but I spent my career staying up to date.  I’ve managed that for 36 years give or take.  Now with AI doing a lot of my current job I can see that there’s a definite end point where the combo of competing with younger programmers for a shrinking pool of work is going to get tough.<p>However there seem to be a few niches where I could be productive until I’m ready to retire and there might be an opportunity to join a team working on a system they’re trying to get off of.  My quick evaluation is that there’s 3 or 4 solid years doing that in a backwater where AI is going to struggle.<p>In this situation would you do it?  I frankly don’t care about being on top of tech any more but I’m keen to use my years of experience being productive.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47887549",
+      "title": "Ask HN: Chrome, Brave, Firefox or Something Else?",
+      "link": "https://news.ycombinator.com/item?id=47887549",
+      "domain": "news.ycombinator.com",
+      "author": "wasimsk",
+      "score": 7,
+      "comment_count": 15,
+      "created_ts": 1777021101,
+      "is_internal": true,
+      "post_text": "My favourite is Brave.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47867083",
+      "title": "Need advice: Back end engineer → infrastructure: how do you make the transition?",
+      "link": "https://news.ycombinator.com/item?id=47867083",
+      "domain": "news.ycombinator.com",
+      "author": "gokuljs",
+      "score": 7,
+      "comment_count": 6,
+      "created_ts": 1776881041,
+      "is_internal": true,
+      "post_text": "I’ve been a backend-heavy engineer for about 4 to 5 years, mostly in startups. For about 3 months I’ve been reading and building small things, but I’m not sure if I’m progressing or just spinning. I also don’t really have people around me in these areas, so I’ve mostly been trying to figure this out on my own, including using tools like GPT and Claude, but I still feel unclear.<p>My work includes APIs, some real-time systems like WebRTC and streaming, and debugging production issues such as latency, buffering, and reliability. I’ve used AWS, Docker, Redis, and similar tools.<p>I’m trying to move toward more systems-oriented work, such as infrastructure, distributed systems, or AI infrastructure like inference pipelines and data flow.<p>The problem is I feel stuck and scattered. I keep jumping between directions such as infrastructure, SRE or platform work, and AI infrastructure, and I don’t have a clear sense of what the actual path looks like from where I am.<p>Some questions:<p>How do people actually move from backend or product work into infrastructure or systems roles?<p>Is it better to pick one direction early, or explore broadly first?<p>How do you pick a theme or direction that actually compounds over time instead of second-guessing constantly?<p>What kinds of projects really signal readiness?<p>And practically, how do you start getting interviews without already having an infrastructure title?<p>Would really appreciate advice from people who’ve made this transition.<p>Thanks",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47890749",
+      "title": "Ask HN: How are you using AI code assistants on large messy legacy code bases?",
+      "link": "https://news.ycombinator.com/item?id=47890749",
+      "domain": "news.ycombinator.com",
+      "author": "thinkingtoilet",
+      "score": 5,
+      "comment_count": 11,
+      "created_ts": 1777040677,
+      "is_internal": true,
+      "post_text": "My company is starting to explore AI coding. I am a dev with 20+ years of experience and I am tasked with trying to help see how we can use this tool to help our company. I have only used Claude so my experience is limited to that.<p>As you might guess, I find AI to be extremely good at some things and actively terrible at others. A lot of the things I read and demos I watch all have to do with reasonable code bases. Our code base is not reasonable. It&#x27;s over 20 years old, coded by a multitude of different developers with different coding styles, design patterns, etc... What you would expect from a small company that has been slowly growing for decades. I also work in the medical field so slow evolving old code bases are the norm.<p>One of the reasons the AI fails constantly is that it has no context of the entire code base. It simply can&#x27;t keep that context in scope for every session. So it actively adds bloat to the system unless it&#x27;s guided by a skilled developer who already knows the system. I am using memories where I can but it has to regularly read huge chunks of code and that uses a lot of tokens. I regularly hit my limit on a Pro account.<p>What are your experiences with this? Any tips or tricks to improve output and cost? Any help is most appreciated. Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Just go the old way. You will save a lot of time, and gain a lot of knowledge.\nIn my company we have tried using claude for exactly the same task you have. The results were bad. We discovered a few interesting things, but most of the stuff was wrong: we had to dif through the code base the old way to confidently accept/reject what Claude was telling us. So we could have save a lot of time and money simply by doing it ourselves. As an upside we also learned about the codebase so now people rely on us for that (that feels good too)",
+          "author": "sdevonoes",
+          "replies": []
+        },
+        {
+          "top": "Part of why you're hitting your limit is that Claude's Pro subscription is completely unusable with the current usage limits. I legitimately mean it when I say, you should cancel.\nBut to the actual question: A lot of people's gut instinct on how to solve this doesn't work. They start going down the road of \"well, if I teach the AI about my legacy codebase, it will be smarter, and therefore more efficient.\" But all you wind up doing is consuming all of your available context, with irrelevancies, and your agent gets dumber and costs more.\nWhat you actually need to do is tackle it the same way a human would: Break it down into smaller problems, where the agent is able to keep the \"entire problem\" within context at once. Meaning 256K or less (file lengths + prompt + outputs). Then of course use a scratchpad file that holds notes, file references, constraints, and line numbers. That's your compaction protection. Restart the chat with the same scratchpad when you move between minor areas.\nContext is your primary-limited resource. Fill it \nonly\n with what should absolutely need to be there, and nothing else at all.",
+          "author": "Someone1234",
+          "replies": [
+            {
+              "text": "Are you managing your scrathpad file or letting the AI do it? Or both?",
+              "author": "thinkingtoilet",
+              "depth": 1
+            },
+            {
+              "text": "I have the agent automatically manage its own scratchpad file. But it is meant to be fully disposable; it isn't committed, and is destroyed if you shift areas.",
+              "author": "Someone1234",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've been in a similar position; where I was tasked to refactor a messy LARGE codebase that was created by a bunch of different previous team members. Here's what I would recommend:\n- If your codebase contains sensitive or IP related code make sure to remove that before interacting with your AI assistant of choice\n- Upload the repo/codebase to Claude Code (or codex or whatever you prefer); and ask it to analyse it: the good, the bad and the ugly\n- Based on the analysis ask the AI assistant to create an .md file with all recommendations/optimisations required to improve code (make sure to have all relevant tests included in the refactoring loop)\n- Note the before outcomes/outputs; do the refactoring using Claude Code again or  whatever tool you prefer; then check after outcomes/outputs to make sure nothing did break\nUsually it's an iterative process; if done correctly you could end up with a much better codebase.\nGood luck!",
+          "author": "mc7alazoun",
+          "replies": [
+            {
+              "text": "Do you recall how much it cost to review your code base? I worry it's going to be hundreds of dollars just for it to review the thousands of files, let alone organize it all and create suggestions.",
+              "author": "thinkingtoilet",
+              "depth": 1
+            },
+            {
+              "text": "Not thousands of files in my cases .. The Claude 5x Max plan was enough!\nI'd suggest splitting your code review into reasonable sized chunks .. don't try to do it all at once.",
+              "author": "mc7alazoun",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I just came across this yesterday, \nhttps://github.com/safishamsi/graphify\n\nIt's supposed to help the agent find the structure and relations in a code base.",
+          "author": "sds357",
+          "replies": []
+        },
+        {
+          "top": "Preparation: Let it explore small parts of the code and ask it to write .md documentation. It will pick it up and read it later. Create an AGENTS.md file and put in your coding principles. Let it always update its documentation. Do that until the whole repo is in good shape.\nThen for execution: Use plan mode. Let it always write a plan first, check it, correct it and only then allow it to implement it.\nTry to break big tasks down in small substeps. As small as possible. Let it implement changes iteratively. Let it do a lot of local git commits. Both Codex and Claude Code use this as documentation as well.\nBasically, treat it like a junior developer working under you.\nMake sure appropriate tests are written for every code change.",
+          "author": "4l3x4f1sh3r",
+          "replies": [
+            {
+              "text": "I'm using memories for things like coding style and preferences. Is using AGENTS any better?",
+              "author": "thinkingtoilet",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47862274",
+      "title": "Ask HN: Are cloud coding agents useful in real workflows yet?",
+      "link": "https://news.ycombinator.com/item?id=47862274",
+      "domain": "news.ycombinator.com",
+      "author": "Rperry2174",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1776858781,
+      "is_internal": true,
+      "post_text": "Objectively, cloud-based agents have several functional advantages over local ones: persistent environments, asynchronous execution, longer-running tasks, shared context across teams, easier access to compute, and the ability to operate while you’re offline or doing something else.<p>Yet a lot of discussion around AI coding tools still seems centered on editor UX, autocomplete, and whether something is “just” an IDE, GUI, or TUI wrapper.<p>Especially as many major tools are now investing in cloud agents it makes me wonder if people are underestimating where the real leverage may be or if cloud just isn&#x27;t actually &quot;the future&quot;.<p>Are people here actually using cloud coding agents in real workflows yet?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47847257",
+      "title": "My file access workaround for cron in Tahoe",
+      "link": "https://news.ycombinator.com/item?id=47847257",
+      "domain": "news.ycombinator.com",
+      "author": "noduerme",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1776770344,
+      "is_internal": true,
+      "post_text": "Suppose you want to access a folder in a cron job. Maybe it&#x27;s on another drive, maybe it&#x27;s a Dropbox folder. Oh no, you can&#x27;t! Not allowed! It&#x27;s not a permissions issue, it&#x27;s the chain of custody for full disk access!<p>No problem you say, I&#x27;ll go and give cron full disk access in this handy GUI full of system preferences with the nice ultra-round window corners. TL;DR, you can&#x27;t give full disk access to cron. You can try, over and over, but it will not work. You can&#x27;t give full disk access to lots of other extremely useful binaries that should be allowed to have it if you want them to. You can&#x27;t even give it to sshd for the love of God. About all you can do is find the buried preference in General &gt; Sharing &gt; Remote Login &gt; (info button) &gt; &quot;Allow Full Disk Access for Remote Users&quot;. Which, rather ironically, lets <i>anyone who connects via SSH get full disk access</i>.<p>Heheheh.<p>Tonight I fixed the inane system Apple created that prevents me from accessing my own machine with cron jobs: Change that setting, now just have your cron jobs ssh into localhost and everything works perfectly ;)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47868481",
+      "title": "Ask HN: How are you handling data retention across your stack?",
+      "link": "https://news.ycombinator.com/item?id=47868481",
+      "domain": "news.ycombinator.com",
+      "author": "preston-kwei",
+      "score": 4,
+      "comment_count": 6,
+      "created_ts": 1776887917,
+      "is_internal": true,
+      "post_text": "For people building SaaS with data across multiple systems (S3, DBs, caches, etc), do you actually have a clean way to manage retention&#x2F;deletion across all of them? (Especially when each customer has custom policies)<p>Or is it more a mix of lifecycle rules, cron jobs, and manual cleanup?<p>How are you doing this today? I feel like this is a blocker in enterprise deals when selling to regulated industries.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47884063",
+      "title": "Ask HN: How many tabs do you have open in the browser(s) and why?",
+      "link": "https://news.ycombinator.com/item?id=47884063",
+      "domain": "news.ycombinator.com",
+      "author": "juujian",
+      "score": 4,
+      "comment_count": 14,
+      "created_ts": 1776990646,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47896082",
+      "title": "Ask HN: Any Developer from Wales?",
+      "link": "https://news.ycombinator.com/item?id=47896082",
+      "domain": "news.ycombinator.com",
+      "author": "danver0",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1777066427,
+      "is_internal": true,
+      "post_text": "how&#x27;s the dev job market there ? or do you work in UK ?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47898119",
+      "title": "Ask HN: Are We Destroying Earth?",
+      "link": "https://news.ycombinator.com/item?id=47898119",
+      "domain": "news.ycombinator.com",
+      "author": "vednig",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1777084674,
+      "is_internal": true,
+      "post_text": "we&#x27;re creating thousands of megajoules of energy evvery second by splitting atoms,fusion, coal, wood,fossil fuels, water among other things, and over 90% of the generated enery is dissipated as heat in over 75% of electrical appliances that means billions of people contributing directly to destruction of earth daily<p>i&#x27;m concerned could there be a better way or it&#x27;s the cost of evolution",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47896789",
+      "title": "Ask HN: Any recommendataions for exporting data from Amazon?",
+      "link": "https://news.ycombinator.com/item?id=47896789",
+      "domain": "news.ycombinator.com",
+      "author": "coreyp_1",
+      "score": 2,
+      "comment_count": 2,
+      "created_ts": 1777071147,
+      "is_internal": true,
+      "post_text": "I was hoping that there would be an official API or MCP server for getting my own shopping&#x2F;order history out of Amazon, but I&#x27;m not finding anything.  Has anyone solved this problem?<p>Context: I&#x27;m just trying to get more efficient with tax paperwork and household management.  An MCP server in which my agent could search for products (and examine the listings to see if they actually match my requirements, such as dietary restrictions) would be even more amazing, but that&#x27;s probably asking too much.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    }
+  ]
+}
