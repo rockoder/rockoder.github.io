@@ -1,0 +1,518 @@
+{
+  "scraped_date": "2026-04-26",
+  "source": "hacker_news",
+  "total_scraped": 90,
+  "nontech_count": 22,
+  "posts": [
+    {
+      "id": "47899844",
+      "title": "Show HN: A Karpathy-style LLM wiki your agents maintain (Markdown and Git)",
+      "link": "https://github.com/nex-crm/wuphf",
+      "domain": "github.com",
+      "author": "najmuzzaman",
+      "score": 227,
+      "comment_count": 105,
+      "created_ts": 1777107233,
+      "is_internal": false,
+      "post_text": "I shipped a wiki layer for AI agents that uses markdown + git as the source of truth, with a bleve (BM25) + SQLite index on top. No vector or graph db yet.<p>It runs locally in ~&#x2F;.wuphf&#x2F;wiki&#x2F; and you can git clone it out if you want to take your knowledge with you.<p>The shape is the one Karpathy has been circling for a while: an LLM-native knowledge substrate that agents both read from and write into, so context compounds across sessions rather than getting re-pasted every morning. Most implementations of that idea land on Postgres, pgvector, Neo4j, Kafka, and a dashboard.<p>I wanted to go back to the basics and see how far markdown + git could go before I added anything heavier.<p>What it does:\n-&gt; Each agent gets a private notebook at agents&#x2F;{slug}&#x2F;notebook&#x2F;.md, plus access to a shared team wiki at team&#x2F;.<p>-&gt; Draft-to-wiki promotion flow. Notebook entries are reviewed (agent or human) and promoted to the canonical wiki with a back-link. A small state machine drives expiry and auto-archive.<p>-&gt; Per-entity fact log: append-only JSONL at team&#x2F;entities&#x2F;{kind}-{slug}.facts.jsonl. A synthesis worker rebuilds the entity brief every N facts. Commits land under a distinct &quot;Pam the Archivist&quot; git identity so provenance is visible in git log.<p>-&gt; [[Wikilinks]] with broken-link detection rendered in red.<p>-&gt; Daily lint cron for contradictions, stale entries, and broken wikilinks.<p>-&gt; &#x2F;lookup slash command plus an MCP tool for cited retrieval. A heuristic classifier routes short lookups to BM25 and narrative queries to a cited-answer loop.<p>Substrate choices:\nMarkdown for durability. The wiki outlives the runtime, and a user can walk away with every byte. Bleve for BM25. SQLite for structured metadata (facts, entities, edges, redirects, and supersedes). No vectors yet. The current benchmark (500 artifacts, 50 queries) clears 85% recall@20 on BM25 alone, which is the internal ship gate. sqlite-vec is the pre-committed fallback if a query class drops below that.<p>Canonical IDs are first-class. Fact IDs are deterministic and include sentence offset. Canonical slugs are assigned once, merged via redirect stubs, and never renamed. A rebuild is logically identical, not byte-identical.<p>Known limits:\n-&gt; Recall tuning is ongoing. 85% on the benchmark is not a universal guarantee.<p>-&gt; Synthesis quality is bounded by agent observation quality. Garbage facts in, garbage briefs out. The lint pass helps. It is not a judgment engine.<p>-&gt; Single-office scope today. No cross-office federation.<p>Demo. 5-minute terminal walkthrough that records five facts, fires synthesis, shells out to the user&#x27;s LLM CLI, and commits the result under Pam&#x27;s identity: <a href=\"https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb\" rel=\"nofollow\">https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb</a><p>Script lives at .&#x2F;scripts&#x2F;demo-entity-synthesis.sh.<p>Context. The wiki ships as part of WUPHF, an open source collaborative office for AI agents like Claude Code, Codex, OpenClaw, and local LLMs via OpenCode. MIT, self-hosted, bring-your-own keys. You do not have to use the full office to use the wiki layer. If you already have an agent setup, point WUPHF at it and the wiki attaches.<p>Source: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf</a><p>Install: npx wuphf@latest<p>Happy to go deep on the substrate tradeoffs, the promotion-flow state machine, the BM25-first retrieval bet, or the canonical-ID stability rules. Also happy to take &quot;why not an Obsidian vault with a plugin&quot; as a fair question.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "promotion"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47896163",
+      "title": "Show HN: I've built a nice home server OS",
+      "link": "https://lightwhale.asklandd.dk/",
+      "domain": "lightwhale.asklandd.dk",
+      "author": "Zta77",
+      "score": 169,
+      "comment_count": 71,
+      "created_ts": 1777066946,
+      "is_internal": false,
+      "post_text": "ohai!<p>I&#x27;ve released Lightwhale 3, which is possibly the easiest way to self-host Docker containers.<p>It&#x27;s a free, immutable Linux system purpose-built to live-boot straight into a working Docker Engine, thereby shortcutting the need for installation, configuration, and maintenance.  Its simple design makes it easy to learn, and its low memory footprint should make it especially attractive during these times of RAMageddon.<p>If this has piqued your interest, do check it out, along with its easy-to-follow Getting Started guide.<p>In any event,\nhave a nice day! =)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47890841",
+      "title": "Show HN: Browser Harness – Gives LLM freedom to complete any browser task",
+      "link": "https://github.com/browser-use/browser-harness",
+      "domain": "github.com",
+      "author": "gregpr07",
+      "score": 117,
+      "comment_count": 60,
+      "created_ts": 1777041098,
+      "is_internal": false,
+      "post_text": "Hey HN,<p>We got tired of browser frameworks restricting the LLM, so we removed the framework and gave the LLM maximum freedom to do whatever it&#x27;s trained on. We gave the harness the ability to self correct and add new tools if the LLM wants (is pre-trained on) that.<p>Our Browser Use library is tens of thousands of lines of deterministic heuristics wrapping Chrome (CDP websocket). Element extractors, click helpers, target managemenet (SUPER painful), watchdogs (crash handling, file downloads, alerts), cross origin iframes (if you want to click on an element you have to switch the target first, very anoying), etc.<p>Watchdogs specifically are extremely painful but required. If Chrome triggers for example a native file popup the agent is just completely stuck. So the two solutions are to:\n1. code those heuristics and edge cases away 1 by 1 and prevent them\n2. give LLM a tool to handle the edge case<p>As you can imagine - there are crazy amounts of heuristics like this so you eventually end up with A LOT of tools if you try to go for #2. So you have to make compromises and just code those heuristics away.<p>BUT if the LLM just &quot;knows&quot; CDP well enough to switch the targets when it encounters a cross origin iframe, dismiss the alert when it appears, write its own click helpers, or upload function, you suddenly don&#x27;t have to worry about any of those edge cases.<p>Turns out LLMs know CDP pretty well these days. So we bitter pilled the harness. The concepts that should survive are:\n- something that holds and keeps CDP websocket alive (deamon)\n- extremely basic tools (helpers.py)\n- skill.md that explains how to use it<p>The new paradigm? SKILL.md + a few python helpers that need to have the ability to change on the fly.<p>One cool example:\nWe forgot to implement upload_file function. Then mid-task the agent wants to upload a file so it grepped helpers.py, saw nothing, wrote the function itself using raw DOM.setFileInputFiles (which we only noticed that later in a git diff). This was a relly magical moment of how powerful LLMs have become.<p>Compared to other approaches (Playwright MCP, browser use CLI, agent-browser, chrome devtools MCP): all of them wrap Chrome in a set of predefined functions for the LLM. The worst failure mode is silent. The LLM&#x27;s click() returns fine so the LLM thinks it clicked, but on this particular site nothing actually happened. It moves on with a broken model of the world. Browser Harness gives the LLM maximum freedom and perfect context for HOW the tools actually work.<p>Here are a few crazy examples of what browser harness can do:\n- plays stockfish <a href=\"https:&#x2F;&#x2F;x.com&#x2F;shawn_pana&#x2F;status&#x2F;2046457374467379347\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;shawn_pana&#x2F;status&#x2F;2046457374467379347</a>\n- sets a world record in tetris <a href=\"https:&#x2F;&#x2F;x.com&#x2F;shawn_pana&#x2F;status&#x2F;2047120626994012442\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;shawn_pana&#x2F;status&#x2F;2047120626994012442</a>\n- figures out how to draw a heart with js <a href=\"https:&#x2F;&#x2F;x.com&#x2F;mamagnus00&#x2F;status&#x2F;2046486159992480198?s=20\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;mamagnus00&#x2F;status&#x2F;2046486159992480198?s=20</a><p>You can super easily install it by telling claude code:\n`Set up <a href=\"https:&#x2F;&#x2F;github.com&#x2F;browser-use&#x2F;browser-harness\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;browser-use&#x2F;browser-harness</a> for me.`<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;browser-use&#x2F;browser-harness\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;browser-use&#x2F;browser-harness</a><p>What would you call this new paradigm? A dialect?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47853021",
+      "title": "Anthropic bans orgs without warning",
+      "link": "https://news.ycombinator.com/item?id=47853021",
+      "domain": "news.ycombinator.com",
+      "author": "alpinisme",
+      "score": 44,
+      "comment_count": 20,
+      "created_ts": 1776798151,
+      "is_internal": true,
+      "post_text": "I work at at an agricultural technology company. On Monday, everyone in our org woke up to emails saying that their Claude accounts had been suspended (~70 users).<p>At first -- since the email was to me, with a link to a Google Form if I personally wanted to appeal -- I thought it must be an individualized ban (at least after deciding it wasn’t a phishing attempt). I couldn’t figure out why, but it set me searching my mind for possible triggers in my recent activity.<p>On Slack, though, it quickly became apparent this was actually an organization-wide ban. And none of us had been warned, including our account admins. We submitted the Google Form, but that was just a black hole. We’re waiting to hear back still a day and a half later.<p>But this is insane for a number of reasons:<p>1. Banning an organization for the behavior of an individual is a recipe for disaster in a business context. Disgruntled employees, incompetent interns -- anyone could maliciously or accidentally revoke Claude access for the whole business.<p>2. We didn’t just have a Claude Team plan, we also had an API account, which is paid for separately but had the same admins. The API account continues to allow us to use our API keys and sent us a renewal bill yesterday (after the Team account suspension). But none of our admins can actually view usage or billing, because our email addresses were banned.<p>3. Banning without warning makes every move dangerous. Was it because we had conversations about fertilizer? GPS satellites? other agriculture-related things? We can’t know and can’t avoid it.<p>We’ve reached out to Anthropic via a number of channels but have received only radio silence. There was a twitter thread about a similar issue (https:&#x2F;&#x2F;x.com&#x2F;patomolina&#x2F;status&#x2F;2045281665363386504), and we tried DM’ing the Anthropic employee who chimed in there. Also no response.\nI’m sure if we wait long enough we’ll come to some form of resolution here, but you have to ask yourself if this is a platform you can entrust your daily workflows to as a business.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47884457",
+      "title": "Ask HN: How do solo devs protect their work in the age of vibe coding?",
+      "link": "https://news.ycombinator.com/item?id=47884457",
+      "domain": "news.ycombinator.com",
+      "author": "langs",
+      "score": 27,
+      "comment_count": 15,
+      "created_ts": 1776994406,
+      "is_internal": true,
+      "post_text": "I am working on a new open-source project. (My project is in AI infrastructure. It already gets SOTA results on several well-known benchmarks.) The core value is not just the code, but a fairly specific algorithmic approach that came out of many failed attempts, experiments, and design iterations.<p>The dilemma I am facing is this:<p>If I open-source early, I get feedback, trust, users, and maybe contributors. But I also expose the core design and algorithm. With LLMs, turning a repo into a different implementation is much cheaper than it used to be.<p>If I keep it closed, I protect the work for longer, but I also lose the main advantages of OSS: adoption, review, community, and credibility. Worse, someone else may still build something similar and become the default project in the space.<p>I’m a new solo dev with almost no audience. If a large org or a well-known developer sees the idea and ships a similar implementation, they can get more attention immediately than I can get in months. And in the end I get nothing for open-sourcing my project.<p>How would you handle this as a solo dev?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47884294",
+      "title": "Ask HN: Why are companies so distrustful of remote employees?",
+      "link": "https://news.ycombinator.com/item?id=47884294",
+      "domain": "news.ycombinator.com",
+      "author": "lyfeninja",
+      "score": 23,
+      "comment_count": 24,
+      "created_ts": 1776992709,
+      "is_internal": true,
+      "post_text": "I just passed on a job for a quality company in the Bay area because they wouldn&#x27;t budge on remote work. I already work remote and have since the pandemic and it works for me and my employer. I do travel occasionally, but whenever I do I always think &quot;wow, I&#x27;d get so much more done right now at home.&quot;<p>I&#x27;ve always been skeptical of the entire RTO storyline. I literally work on a computer all day with an Internet connection and can complete every aspect of my job remotely, no if, ands, or buts, about it. Also, at this point many are tracking our mouse movements and key strokes, and the work gets done, so they know we&#x27;re working too<p>I&#x27;m used to the short sided mindset at this point, but the situation just got me thinking about it again.<p>Meanwhile, companies are throwing everything at AI (which works remotely), laying off employees to do so, and then having obsurd in office policies and skimping on benefits. Just makes you wonder why they distrust people so much.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "rto",
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47888857",
+      "title": "Ask HN: Scaling a targeted web crawler beyond 500M pages/day",
+      "link": "https://news.ycombinator.com/item?id=47888857",
+      "domain": "news.ycombinator.com",
+      "author": "honungsburk",
+      "score": 22,
+      "comment_count": 7,
+      "created_ts": 1777031036,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been reading up on crawler architecture. The two most useful sources I&#x27;ve found are the blog post &quot;Crawling a billion web pages in just over 24 hours, in 2025&quot; and the Mercator paper (&quot;Mercator: A Scalable, Extensible Web Crawler&quot;).<p>Both of these, and most other material I&#x27;ve come across, focus on crawling the broad open web rather than a targeted set of domains. For product prices it&#x27;s the latter. Mercator calls out DNS resolution as a major bottleneck, for example, but when you&#x27;re only hitting a few hundred domains that isn&#x27;t really a concern.<p>The other gap is that both assume static HTML. For our use case we need a headless browser, and we also have to deal with Cloudflare and similar anti-bot systems.<p>For product prices specifically, a lot of sites publish price feeds which simplifies things, but plenty don&#x27;t, and getting good coverage still requires scraping. Our current system does about 500M pages&#x2F;day and we&#x27;re looking to improve its performance.<p>Does anyone here have experience in this space, or know of articles&#x2F;blog posts on scaling targeted (rather than broad) crawlers with headless browsers? Any pointers appreciated.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47887549",
+      "title": "Ask HN: Chrome, Brave, Firefox or Something Else?",
+      "link": "https://news.ycombinator.com/item?id=47887549",
+      "domain": "news.ycombinator.com",
+      "author": "wasimsk",
+      "score": 14,
+      "comment_count": 18,
+      "created_ts": 1777021101,
+      "is_internal": true,
+      "post_text": "My favourite is Brave.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "cromite with ublock dns \nhttps://my.ublockdns.com/q8i6s34n\n no calling home",
+          "author": "dubious2",
+          "replies": []
+        },
+        {
+          "top": "Firefox — Everyone loves to play armchair CEO and dictate the ills of the company. But I think they do so because Firefox is largely the only independent rendering engine and with Google's foothold on browsers (to protect their ad revenue) I'm nervous about the future of Blink. Independent players are always good for competition.",
+          "author": "nness",
+          "replies": []
+        },
+        {
+          "top": "Firefox, not even a consideration. With ublock origin, there's nothing that beats it.\nFor a second browser Vivaldi.\nIs never consider any browser linked to an advertising company like Google, Microsoft, or brave.",
+          "author": "ifh-hn",
+          "replies": []
+        },
+        {
+          "top": "I use Chrome majorly because I like how it feels and I'm used to it.\nBut I wanted to stream football (soccer) and NBA games on my phone and the ad pop ups on the streaming sites were too much, I used Brave and the ad-blocking feature is amazing.",
+          "author": "chistev",
+          "replies": []
+        },
+        {
+          "top": "Brave, Vivaldi or Helium. If you want another browser engine, then wait for Ladybird 1.0, or try Kagi's Orion if you use Mac.",
+          "author": "uyzstvqs",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47890749",
+      "title": "Ask HN: How are you using AI code assistants on large messy legacy code bases?",
+      "link": "https://news.ycombinator.com/item?id=47890749",
+      "domain": "news.ycombinator.com",
+      "author": "thinkingtoilet",
+      "score": 13,
+      "comment_count": 13,
+      "created_ts": 1777040677,
+      "is_internal": true,
+      "post_text": "My company is starting to explore AI coding. I am a dev with 20+ years of experience and I am tasked with trying to help see how we can use this tool to help our company. I have only used Claude so my experience is limited to that.<p>As you might guess, I find AI to be extremely good at some things and actively terrible at others. A lot of the things I read and demos I watch all have to do with reasonable code bases. Our code base is not reasonable. It&#x27;s over 20 years old, coded by a multitude of different developers with different coding styles, design patterns, etc... What you would expect from a small company that has been slowly growing for decades. I also work in the medical field so slow evolving old code bases are the norm.<p>One of the reasons the AI fails constantly is that it has no context of the entire code base. It simply can&#x27;t keep that context in scope for every session. So it actively adds bloat to the system unless it&#x27;s guided by a skilled developer who already knows the system. I am using memories where I can but it has to regularly read huge chunks of code and that uses a lot of tokens. I regularly hit my limit on a Pro account.<p>What are your experiences with this? Any tips or tricks to improve output and cost? Any help is most appreciated. Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47900543",
+      "title": "Ask HN: Is Zuckerberg just a „one-hit-wonder\"?",
+      "link": "https://news.ycombinator.com/item?id=47900543",
+      "domain": "news.ycombinator.com",
+      "author": "fandorin",
+      "score": 9,
+      "comment_count": 13,
+      "created_ts": 1777116042,
+      "is_internal": true,
+      "post_text": "What’s your view? The original idea for Facebook was stolen, then he bought Instagram and Whatsup to stay afloat. Metaverse is&#x2F;was an absolute disaster. And I’m not even talking about all the scandals from Cambridge Analytica era.<p>How bad CEO, in your opinion, is Mark?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47902507",
+      "title": "Ask HN: Do you read differently now that anything could be AI generated?",
+      "link": "https://news.ycombinator.com/item?id=47902507",
+      "domain": "news.ycombinator.com",
+      "author": "dwa3592",
+      "score": 8,
+      "comment_count": 14,
+      "created_ts": 1777133379,
+      "is_internal": true,
+      "post_text": "or How has AI generated content changed what and how you read?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "For AI written content I have a very low tolerance. I bounce right away when I notice I'm reading generated content, especially if it tries to be an essay or anything else than direct answer to my question at hand.\nWhen it comes to books, I avoid anything written by an author debuting after 2022 unless there is a strong recommendation by someone close.\nAs for genres, it has made me read less purely technical books. My assumption is that I can learn enough of the subject as I go by chatting with a model.",
+          "author": "ValtteriL",
+          "replies": [
+            {
+              "text": ">>When it comes to books, I avoid anything written by an author debuting after 2022\nI like that and that's what i have been doing.\nDo you go by the feels that the content you are reading is AI generated?",
+              "author": "dwa3592",
+              "depth": 1
+            },
+            {
+              "text": "> When it comes to books, I avoid anything written by an author debuting after 2022\nThis is how civilizations end… Like we are done writing books now? Art too? We gonna stop here? Not sure I understand how this makes any sense…",
+              "author": "bdangubic",
+              "depth": 1
+            },
+            {
+              "text": ">>This is how civilizations end.\nI concur. It doesn't make any sense.",
+              "author": "dwa3592",
+              "depth": 2
+            },
+            {
+              "text": "One guys stops reading post 2022 books and civilization will end?\nEveryone has their own standards. There are people not reading post 1900 books for a while and we still have new books. Let people live by their own rules ffs",
+              "author": "catcowcostume",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Fundamentally, if it comes from AI, I'm not interested.  I would not rely on AI summaries, and certainly nothing identified as AI produced.  AI is not creative in the human sense.  I would never knowingly waste time reading something produced by a room full of monkeys banging on a keyboard.  The same is true of AI produced code.  LLMs are a malignancy that needs to be excised from society.",
+          "author": "Blackstrat",
+          "replies": [
+            {
+              "text": "haha, i get that feeling sometimes. do you look for acknowledged use of AI? how do you tell it's coming from AI?",
+              "author": "dwa3592",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Reading a book, I do for fun. to get the stress away. Reading a novel is a whole new experience. To feel the story, imagine the characters, imagine how they feel, how they think. To really hate the bad guy....\nAI can't replace that!",
+          "author": "sminchev",
+          "replies": [
+            {
+              "text": "Nice! do you worry that you might start reading a book and it turns out to be AI generated?",
+              "author": "dwa3592",
+              "depth": 1
+            },
+            {
+              "text": "There are enough history novels out there ;)",
+              "author": "sminchev",
+              "depth": 2
+            },
+            {
+              "text": "There is enough good material pre 2022",
+              "author": "sdevonoes",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Stopped reading books. I just ask for summaries of what I am interested in and then deep dive. Then I make notes of the whole session. Review it everyday and keep shrinking it down as much as possible. That file I preload as memory for next session.",
+          "author": "aewz6",
+          "replies": [
+            {
+              "text": "Good try, Sam Altman",
+              "author": "sdevonoes",
+              "depth": 1
+            },
+            {
+              "text": ">>Stopped reading books.\nBecause they could AI generated or because summaries are enough to understand the main ideas?- what if the book is AI generated in the first place?\nWhat about news articles?",
+              "author": "dwa3592",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47901379",
+      "title": "Ask HN: Anyone managed to get Google trends API?",
+      "link": "https://news.ycombinator.com/item?id=47901379",
+      "domain": "news.ycombinator.com",
+      "author": "visox",
+      "score": 7,
+      "comment_count": 0,
+      "created_ts": 1777123204,
+      "is_internal": true,
+      "post_text": "Google trends should have some alpha API as announced https:&#x2F;&#x2F;developers.google.com&#x2F;search&#x2F;blog&#x2F;2025&#x2F;07&#x2F;trends-api<p>i do have many ideas on what i could do with that data but i never got access, wonder if anyone here did and how did you achieve that ?<p>i also see some alternatives but they arent really good, its either bad data or only relative data as one can see on google trends page. (i would like absolute numbers)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "47902888",
+      "title": "How to Attend the Altman vs. Musk Trial",
+      "link": "https://news.ycombinator.com/item?id=47902888",
+      "domain": "news.ycombinator.com",
+      "author": "major4x",
+      "score": 7,
+      "comment_count": 0,
+      "created_ts": 1777136766,
+      "is_internal": true,
+      "post_text": "This is a bunch of questions for lawyers or for journalists or for people who have been to this kind of events: next week starts the Musk vs Altman trial. The trial is in Oakland. The court schedule says that the jury selection starts at 8:00 am on Monday and after that the trial is on Thursday at 8:00 am. My questions are:\n1. What time do I have to line-up so I can get a chance to enter the court-room?\n2. Is it allowed to bring water and snacks in the court room?\n3. Is the jury selection on Monday open to the public and if so, is it any interesting? During jury selection will they send the assistant lawyers or senior ones? Will Musk and Altman be present during the jury selection (I guess not).\n4. Is photography allowed (I guess not). If not, can I bring a camera and not use it? Is photography in the hallways of the court allowed? Is photography in the garage allowed?\n5. When the jury decides who pays whom, will money change hands or will the decision be immediately appealed? If so, will it go to a circuit court or the superior court in DC (apologies about my illiteracy, I am computer scientist from Europe and I don&#x27;t know much if anything about law).\n6. Do you have any advise (like don&#x27;t go) to the general kibitzer like me?\nThese are serious questions, if you share them in your professional network, you will help me not embarrass myself and look uncool next week, thank you!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47896789",
+      "title": "Ask HN: Any recommendataions for exporting data from Amazon?",
+      "link": "https://news.ycombinator.com/item?id=47896789",
+      "domain": "news.ycombinator.com",
+      "author": "coreyp_1",
+      "score": 7,
+      "comment_count": 2,
+      "created_ts": 1777071147,
+      "is_internal": true,
+      "post_text": "I was hoping that there would be an official API or MCP server for getting my own shopping&#x2F;order history out of Amazon, but I&#x27;m not finding anything.  Has anyone solved this problem?<p>Context: I&#x27;m just trying to get more efficient with tax paperwork and household management.  An MCP server in which my agent could search for products (and examine the listings to see if they actually match my requirements, such as dietary restrictions) would be even more amazing, but that&#x27;s probably asking too much.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47894944",
+      "title": "Ask HN: Anyone still using JetBrains products today?",
+      "link": "https://news.ycombinator.com/item?id=47894944",
+      "domain": "news.ycombinator.com",
+      "author": "zkid18",
+      "score": 7,
+      "comment_count": 8,
+      "created_ts": 1777059984,
+      "is_internal": true,
+      "post_text": "This sounds like one of the companies most disrupted by AI.<p>I have zero affiliation with the company, but I’m genuinely curious what the team is shipping today for AI-assistance programming. In my bubble, I haven’t seen anyone use it in the last six months.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47902626",
+      "title": "Ask HN: Cyberdecks are cool but do they serve a purpose?",
+      "link": "https://news.ycombinator.com/item?id=47902626",
+      "domain": "news.ycombinator.com",
+      "author": "hamiecod",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1777134474,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "Given that it's a pretty niche thing, a link or post context wouldn't hurt.\nThat being said, I would assume that like most DIY things, part of the purpose of it is the creative journey that leads you to assembling yours. You learn things along the way and have an interesting artifact to show for it once you're done.",
+          "author": "speakingmoistly",
+          "replies": []
+        },
+        {
+          "top": "They shine in niche use-cases:\nportable hacking / networking tools\ndistraction-free coding or writing\noffline or low-power environments",
+          "author": "arjunthazhath",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47906051",
+      "title": "Ask HN: Oh, What Places to Go (Seriously Tho)",
+      "link": "https://news.ycombinator.com/item?id=47906051",
+      "domain": "news.ycombinator.com",
+      "author": "thx",
+      "score": 4,
+      "comment_count": 7,
+      "created_ts": 1777162946,
+      "is_internal": true,
+      "post_text": "Hey HN — will start by saying this website is my most fav website — ever.<p>That said — will get to the point.<p>If you had written 1001 short stories, how would you go about marketing &#x2F; getting your work out there?<p>- literary agent?\n- build a website?\n- stream it on social media? (if so, which socials?)<p>Have written a lot of mostly fun short stories, but I don’t know how to go about “publishing” so to speak.<p>If you’ve any thoughts on how to potentially navigate, I’d super appreciate it.<p>Have a nice one",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "1001 stories is a serious body of work, respect!\nsharing a few thoughts:\n- substack is probably the easiest starting point, no algorithm to fight, readers subscribe directly, and short fiction actually does well there if you're consistent. you own the list.\n- literary agents are mostly for novels, short story collections are a hard sell unless you already have publishing credits. better to build an audience first and use that as leverage.\n- if you are aiming for larger audience on social, go to tiktok/instagram if you're willing to read them out loud, even lo-fi works. people underestimate how well short fiction does as audio. x/twitter if your stories are punchy enough to tease in a thread.",
+          "author": "ItsClo688",
+          "replies": [
+            {
+              "text": ":D Thanks so much / really appreciate it. I’ve video’d like 30 short stories on and off but usually just testing out different social medias and I don’t really know the “PMF” for someone doing 5-10 minute short stories.\nThink I will definitely start with substack. Was thinking maybe Patreon but I’m not huge on social medias in general so seeking to find where to go — super appreciate it <333",
+              "author": "thx",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just remember that if you publish them to the web, you give up \"first publication rights\" that might prevent you from being able to publish them elsewhere later. The web does count as \"publishing\" regardless of whether you get paid.\nIf you don't care about that, just make a website and put them all on it. Maybe avoid a third party platform since you won't have complete ownership of your content. Any static site generator will work. I personally suggest Nikola but it doesn't matter. Anything that can generate a simple blog format should work.\nYou might also consider setting up a Mastodon account and pushing links to your stories there. I don't know how big the writing community is there but it's probably not nothing.\nI wouldn't bother with a literary agent unless you're a professional looking to be signed by a major publisher and self-publishing platforms tend to be scams.\nProblem is everything else is getting eaten by AI so I wouldn't even know how to market in this scenario.\nThe go-to site for finding markets for speculative fiction used to be ralan.com but it looks like it closed in 2023[0].\n[0]Alternatives:\nhttps://thegrinder.diabolicalplots.com/\nhttps://duotrope.com/",
+          "author": "krapp",
+          "replies": [
+            {
+              "text": "This is true. Personally I always try to get my work published with a third-party first, and then I talk with the editors to clarify policies. Most smaller magazines and publishers are pretty flexible, they’ll often have some provisions in place to allow you to re-publish original works on your own website after a certain period of time, if that’s the route you want to take.\nIt’s the approach I’ve used in the past with places like Paged Out and 2600 Hacker Quarterly.",
+              "author": "vunderba",
+              "depth": 1
+            },
+            {
+              "text": "I know the author of the Martian published that story first on his website, but I don’t really know the layout / or what “first publication rights” be or entail. I have to do my research - and yes, I never have used AI writing any of them so I’m kinda scrambling now to find a way to do this before it can. thank you",
+              "author": "thx",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "\"this website is my most fav website — ever\" sad",
+          "author": "nwhnwh",
+          "replies": [
+            {
+              "text": "lol — it’s true tho. Many great websites, but on HN, you never know what you’re going to find",
+              "author": "thx",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47906587",
+      "title": "Ask HN: What file sharing apps do you guys use?",
+      "link": "https://news.ycombinator.com/item?id=47906587",
+      "domain": "news.ycombinator.com",
+      "author": "samarthv",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1777168764,
+      "is_internal": true,
+      "post_text": "Specifically for sending between your friends who might not have AirDrop lol.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "It depends on how big the file is. I've used everything from ftp (for videos), to Dropbox, or filetransfer.io (6gb limit), to send.now (maximum of 100gb), or even a USB stick (if they are local and you don't need the stick back right away).\n(I'm not affiliated with any of these sites)",
+          "author": "ghammondca",
+          "replies": []
+        },
+        {
+          "top": "I tend to upload stuff to filen.io and share from there.",
+          "author": "dotcoma",
+          "replies": []
+        },
+        {
+          "top": "I use wormhole.app lately. Used to use gofile.io",
+          "author": "DarknessEoL",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47904716",
+      "title": "Ask HN: How did the industry settle on weekly limits?",
+      "link": "https://news.ycombinator.com/item?id=47904716",
+      "domain": "news.ycombinator.com",
+      "author": "saratogacx",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1777152836,
+      "is_internal": true,
+      "post_text": "I understand that the cheap compute ride wouldn&#x27;t last forever but something that feels somewhat unique seems to have come about from all of this AI belt tightening.<p>Weekly Limits<p>This policy seemed to come from almost nowhere but was quickly adopted across many products.  Cutting off access for 25% of the time based product you&#x27;ve paid for feels like it is just incompatible with a subscription at the core conceptual level.  Cooldown times and over-use back-offs are nothing new but there is a drastic difference in tone from 5 hours to 5-7 days.<p>I&#x27;m at a loss to see how this became an acceptable practice with the most common answer being &quot;Buy more subs&quot;",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "It's probably a capacity problem, but we need to speak up for something better.",
+          "author": "tughvn",
+          "replies": []
+        },
+        {
+          "top": "Just cancel your subscription.",
+          "author": "tkiolp4",
+          "replies": []
+        },
+        {
+          "top": "\"Weekly caps feel like a psychological nudge toward higher tiers rather than a genuine resource constraint. The industry collectively normalized it because it works.\"",
+          "author": "dbeyzade",
+          "replies": []
+        },
+        {
+          "top": "You can still buy tokens direct from the API. The subscription model is not much more than a glorified paid trial.",
+          "author": "bigyabai",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47902486",
+      "title": "Ask HN: Is anyone working on Gov Digital IDs or have implementation docs / FOSS",
+      "link": "https://news.ycombinator.com/item?id=47902486",
+      "domain": "news.ycombinator.com",
+      "author": "lifeisstillgood",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1777133177,
+      "is_internal": true,
+      "post_text": "So looking at the UK gov dive into this (basically I think a good and necessary step forward but the devil is in detail)<p>https:&#x2F;&#x2F;assets.publishing.service.gov.uk&#x2F;media&#x2F;69b2bd51c8010d37b34e008a&#x2F;Making_public_services_work_for_you_with_your_digital_identity_2026.pdf<p>I think better with real examples - and was wondering if any countries have already done this, and if anything is FOSS?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
