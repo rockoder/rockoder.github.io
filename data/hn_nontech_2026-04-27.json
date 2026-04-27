@@ -1,0 +1,26 @@
+{
+  "scraped_date": "2026-04-27",
+  "source": "hacker_news",
+  "total_scraped": 30,
+  "nontech_count": 1,
+  "posts": [
+    {
+      "id": "47899844",
+      "title": "Show HN: A Karpathy-style LLM wiki your agents maintain (Markdown and Git)",
+      "link": "https://github.com/nex-crm/wuphf",
+      "domain": "github.com",
+      "author": "najmuzzaman",
+      "score": 252,
+      "comment_count": 112,
+      "created_ts": 1777107233,
+      "is_internal": false,
+      "post_text": "I shipped a wiki layer for AI agents that uses markdown + git as the source of truth, with a bleve (BM25) + SQLite index on top. No vector or graph db yet.<p>It runs locally in ~&#x2F;.wuphf&#x2F;wiki&#x2F; and you can git clone it out if you want to take your knowledge with you.<p>The shape is the one Karpathy has been circling for a while: an LLM-native knowledge substrate that agents both read from and write into, so context compounds across sessions rather than getting re-pasted every morning. Most implementations of that idea land on Postgres, pgvector, Neo4j, Kafka, and a dashboard.<p>I wanted to go back to the basics and see how far markdown + git could go before I added anything heavier.<p>What it does:\n-&gt; Each agent gets a private notebook at agents&#x2F;{slug}&#x2F;notebook&#x2F;.md, plus access to a shared team wiki at team&#x2F;.<p>-&gt; Draft-to-wiki promotion flow. Notebook entries are reviewed (agent or human) and promoted to the canonical wiki with a back-link. A small state machine drives expiry and auto-archive.<p>-&gt; Per-entity fact log: append-only JSONL at team&#x2F;entities&#x2F;{kind}-{slug}.facts.jsonl. A synthesis worker rebuilds the entity brief every N facts. Commits land under a distinct &quot;Pam the Archivist&quot; git identity so provenance is visible in git log.<p>-&gt; [[Wikilinks]] with broken-link detection rendered in red.<p>-&gt; Daily lint cron for contradictions, stale entries, and broken wikilinks.<p>-&gt; &#x2F;lookup slash command plus an MCP tool for cited retrieval. A heuristic classifier routes short lookups to BM25 and narrative queries to a cited-answer loop.<p>Substrate choices:\nMarkdown for durability. The wiki outlives the runtime, and a user can walk away with every byte. Bleve for BM25. SQLite for structured metadata (facts, entities, edges, redirects, and supersedes). No vectors yet. The current benchmark (500 artifacts, 50 queries) clears 85% recall@20 on BM25 alone, which is the internal ship gate. sqlite-vec is the pre-committed fallback if a query class drops below that.<p>Canonical IDs are first-class. Fact IDs are deterministic and include sentence offset. Canonical slugs are assigned once, merged via redirect stubs, and never renamed. A rebuild is logically identical, not byte-identical.<p>Known limits:\n-&gt; Recall tuning is ongoing. 85% on the benchmark is not a universal guarantee.<p>-&gt; Synthesis quality is bounded by agent observation quality. Garbage facts in, garbage briefs out. The lint pass helps. It is not a judgment engine.<p>-&gt; Single-office scope today. No cross-office federation.<p>Demo. 5-minute terminal walkthrough that records five facts, fires synthesis, shells out to the user&#x27;s LLM CLI, and commits the result under Pam&#x27;s identity: <a href=\"https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb\" rel=\"nofollow\">https:&#x2F;&#x2F;asciinema.org&#x2F;a&#x2F;vUvjJsB5vtUQQ4Eb</a><p>Script lives at .&#x2F;scripts&#x2F;demo-entity-synthesis.sh.<p>Context. The wiki ships as part of WUPHF, an open source collaborative office for AI agents like Claude Code, Codex, OpenClaw, and local LLMs via OpenCode. MIT, self-hosted, bring-your-own keys. You do not have to use the full office to use the wiki layer. If you already have an agent setup, point WUPHF at it and the wiki attaches.<p>Source: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;nex-crm&#x2F;wuphf</a><p>Install: npx wuphf@latest<p>Happy to go deep on the substrate tradeoffs, the promotion-flow state machine, the BM25-first retrieval bet, or the canonical-ID stability rules. Also happy to take &quot;why not an Obsidian vault with a plugin&quot; as a fair question.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "promotion",
+        "team"
+      ],
+      "comments": []
+    }
+  ]
+}
