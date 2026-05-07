@@ -1,0 +1,824 @@
+{
+  "scraped_date": "2026-05-07",
+  "source": "hacker_news",
+  "total_scraped": 120,
+  "nontech_count": 20,
+  "posts": [
+    {
+      "id": "48019025",
+      "title": "Lessons for Agentic Coding: What should we do when code is cheap?",
+      "link": "https://www.dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html",
+      "domain": "www.dbreunig.com",
+      "author": "ingve",
+      "score": 258,
+      "comment_count": 232,
+      "created_ts": 1777964725,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lessons"
+      ],
+      "comments": [
+        {
+          "top": "A lot of people down on AI in this thread, but I'm watching the industry slip over the line of trust with these latest frontier models. GPT 5.5 is the first model good enough for me to just let rip.\nEvery jira ticket I see now has acceptance criteria, reproduction steps, and detailed information about why the ticket exists.\nEvery commit message now matches the repo style, and has detailed information about what's contained in the commit.\nEvery MR now has detailed information about what's being merged.\nEvery code base in the teams around me now has 70 to 90%+ code coverage.\nEvery line of code now comes with best practices baked in, helpful comments, and optimized hot paths.\nI regularly ship four features at a time now across multiple projects.\nThe MCP has now automated away all of the drudgery of programming, from summarizing emails, to generating confluence documentation, to generating slide decks.\nPeople keep screaming that tech debt is going to pile up, but I think it's going to be exactly the opposite. Software is going to pile up because developing it is now cheap.\nMost code before llms sucked. Most projects I on-boarded to were a massive ball of undocumented spaghetti, written by humans. The floor has been raised significantly as to what bad code can even look like, and fixing issues is now basically free if your company is willing to shell out for tokens.",
+          "author": "spicyusername",
+          "replies": [
+            {
+              "text": "> Software is going to pile up because developing it is now cheap.\nSoftware to do what, though ?!\nCoding, maybe 10% of a developers job (Brooks \"Silver Bullet\" estimates 1/6), was never the bottleneck, and even if you automated that away entirely then you've only reduced development time by 10% (assuming you are not doing human code review etc).\nI would also argue that software development as a whole (not just the coding part) was also typically never the bottleneck to companies shipping product faster, maybe also not for automating their business faster (internal IT systems), since the rest of the company is not moving that fast, business needs are not changing that fast, and external factors that might drive change are not moving that fast either.\nI think that when the dust settles we'll find that LLM-assisted coding has had far less impact than those trying to sell it to us are forecasting. There will be exceptions of course, especially in terms of what a lone developer can do, or how fast a software startup can get going, but in terms of impact to larger established companies I expect not so much.",
+              "author": "HarHarVeryFunny",
+              "depth": 1
+            },
+            {
+              "text": "+1 for any mention of Fred Brooks. I like your point about software as a whole not being a bottleneck. In the 1970s the hardware was co-evolving with business uses (it still is, but constraints were much more severe) leading to large headcounts on software projects that _absolutely_ had to work and _absolutely_ required uncommon expertise. Most people had no concept of a computer's capabilities, computer science was not as widely distributed.\nOne thing that I would point to today to show that the landscape is different - the average programmer/engineer/developer today has no actual admin staff. Fred Brooks' example team setup of \"The Surgical Team\" has more support staff than programmers. Anyone who responds to the questions like \"who manages the calendar\" and \"who manages the documentation\" will state that the engineers doing it themselves offer the best results. Same goes for designing test cases, performing rollbacks, etc.\nThe fact of the matter is that any self respecting engineer today works in an environment where pro-activity and self-sufficiency are prerequisites. Managing your calendar and workload, communicating to leadership and users, these are all common tasks that would have been another person a generation ago.\nSo when discussing writing code more efficiently and aiding in software development, what I am essentially seeing is more people trying everything they can to offload work that used to be another person's job anyway. If you care about communication - you offload coding standards. If you care about security - you offload feature refactors, and so on.\nIn my opinion, I think that at some point we'll either realize that we need highly competent people _and also_ regular people to help us ensure the work gets done to a good standard. Or, we will each eventually survive by working alone in a room with a suite of AI tools, and wonder why we're still making software in the first place.",
+              "author": "rafterydj",
+              "depth": 2
+            },
+            {
+              "text": "> Most people had no concept of a computer's capabilities, computer science was not as widely distributed.\nI am not sure that has changed....",
+              "author": "worik",
+              "depth": 3
+            },
+            {
+              "text": "> Software to do what, though ?!\nReplace all Oracle Applications in the Enterprise, for example. That will keep Corporate IT/Dev teams busy for quite a while.\nOf course, this does not involve Oracle infrastructure, such as Database.",
+              "author": "g42gregory",
+              "depth": 2
+            },
+            {
+              "text": "That's kind of the point in GP... everything around the code has improved... the workflows, definitions, documentation, process.  I'd say that all of those things are improving and expanding at a rate faster than the improvements in code output, which are also happening at a faster turn around than actual people.\nI've said several times that when I use an Agent, I'm getting about 2-4x the value and about 10x the output... the \"value\" is features landing in code and the difference to the 10x is documentation and testing.  While a lot of that may not get reviewed by every person that touches a product, it helps with further ai based feature development.\nI'm not a big fan of running many agents or outright vibe coding slop... but you can definitely leverage the coding agents and get a lot of improved output.",
+              "author": "tracker1",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If writing code was the only part of the job, and it was easy, these jobs wouldn't pay so well.\nEngineering is hard. It's always going to be hard. I'm glad that AI makes some parts of it easier, and we (software engineers) can focus on engineering, that's nice.\nCode is NEVER cheap. Just because, at current completely unrealistic AI pricing, using agents is cheaper than hiring juniors, does not make code cheap. It makes producing code cheap, which has always been low-cost. Every line of code is a cost, is a maintenance burden, is complexity. An AI, even with somehow infinite context window, will cost more money the more code you have.\nCould you replace a whole team of engineers with AI? Probably, yeah. Could you simply fire everyone at your company and close it down, without much of a problem? Also probably yes, for most companies.\nAIs can help with debugging, can help with writing code, with drafting designs, they can help with almost every step. The second you let OpenAI, or Anthropic, take full code ownership over your products, and you fire the last engineer, is the time when the AI pricing can go up to match what engineers make today. You've just reinvented the highly paid consultant.\nOr you could take the middle-ground and hire good engineers, make sure they maintain an understanding of the codebase, and let them use whatever tools they use to get the job done, and done well. This is the way that I've seen competent companies handle it.",
+          "author": "lionkor",
+          "replies": [
+            {
+              "text": "\"Producing code has always been low cost\"\nRelative to what?\nI don't understand people dismissing the massive decrease in both cost of producing code and the speed of producing code.\nBefore AI, people running businesses had similar issued as people have with AI now, but the costs were much greater.\nThey could hire someone to write them a prototype for their idea, but it would cost them on the order of 1000s of dollars, and it would take weeks at the minimum!\nNow it could cost them 20$ and be done in a few days. The feedback loop is the bottleneck.",
+              "author": "peab",
+              "depth": 1
+            },
+            {
+              "text": "I'm not dismissing it, I'm saying it's never been the bottleneck. Like you said, the feedback loop is A bottleneck, so is figuring out all the nasty things that nobody on HN seems to have heard of before, like \"what are the requirements\", \"which tradeoffs can we make to get this done in time\", \"what is the architecture for this\", and building it in such a way that you can guarantee that it won't fall apart in 20 years when your requirements change.",
+              "author": "lionkor",
+              "depth": 2
+            },
+            {
+              "text": "Code has always been a bottleneck for any product which involves software.",
+              "author": "LEDThereBeLight",
+              "depth": 3
+            },
+            {
+              "text": "I understood it in the spirit of “code is a liability not an asset.” Code still needs to be maintained, changed, etc whether that is by a human or LLM.\nIn other words, just because more code can be produced quickly does not mean that it is cheap.\nedit: I’m maybe hearing your point is that LLMs may change that POV but I think that is TBD.",
+              "author": "isaacaggrey",
+              "depth": 2
+            },
+            {
+              "text": "I don't really think that's accurate either, from a business POV.\nSoftware has been such a gold mine, exactly because the maintenance are minimal when you scale, compared to the revenue. The upfront costs are expensive, but once you have software built, in most cases it's \nrelatively\n cheap to maintain",
+              "author": "peab",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Certain types of code are cheap. Proof of concept is cheap. Adding small features that fit within the existing architecture is cheap. Otherwise, I'm not so sure. Coding agents are fantastic at minutiae, but have no taste. They'll turn a code base into a ball of mud very quickly, given the opportunity.",
+          "author": "noelwelsh",
+          "replies": [
+            {
+              "text": "While I agree with you that agentic coding still has quite a way to go and is not always producing the quality that I would want from it, I can say quite confidently that its baseline is way above some of the production code in many applications many people use today. It really isn’t that code before agents was primarily written with taste and beautiful structure in mind. Your average code base is a messy hell full of quick fixes that turned into all kinds of debt over the years.",
+              "author": "pell",
+              "depth": 1
+            },
+            {
+              "text": "I took the previous post, with its mention of the ball of mud, to be about complexity.\n“Taste”, is used in many cases, I suspect, to give a name the collection of practices and strategies developers use to keep their code and projects at a manageable level of complexity.\nLLMs don’t seem to manage complexity. They’ll just blow right past manageable and keep on going. That’s a problem. The human has to stay in the loop because LLMs only build what we tell them to build (so far).\nBTW, the essay that introduced the big ball of mud pattern to me didn’t hold it up as something entirely bad to be avoided. It pointed out how many projects — successful or at least on-going projects — use it, and how its passive flexibility might actually be an advantage. Big ball of mud might just be the steady state where progress can be made while leaving complexity manageable.",
+              "author": "jmull",
+              "depth": 2
+            },
+            {
+              "text": "I think there are at least two factors behind ye olde ball of mud that LLMs should be able to help with:\n1. Lack of knowledge of existing conventions, usually caused by churn of developers working on a project. LLMs read very quickly.\n2. Cost of refactoring existing code to meet current best practices / current conception of architecture. LLMs are ideal for this kind of mostly mechanical refactoring.\nCurrently, though, they don't see to be much help. I'm not sure if this is a limitation in their ability to use their context window, or simply that they've been trained to reproduce code as seen in the wild with all its flaws.",
+              "author": "noelwelsh",
+              "depth": 3
+            },
+            {
+              "text": "Keeping complexity down is always a conscious act. Because you need to go past the scope of the current problem and start to think about how it affects the whole project. It’s not a matter of convention, nor refactoring. It’s mostly prescience (due to experience) that a solution, even if correct and easy to implement, will be harmful in the long term.\nArchitecture practices is how to avoid such harmful consequences. But they’re costly and often harmful themselves. So you need to know which to pick and when to start applying them. LLM won’t help you there.",
+              "author": "skydhash",
+              "depth": 4
+            },
+            {
+              "text": "I agree. I do wonder if what I'm seeing is a limitation of the reasoning power of LLMs or if it's just replicating the patterns (or lack thereof) in the training data.",
+              "author": "noelwelsh",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I came here exactly to point out what I'm glad to see is 10. \"Free as in puppies\" is a wonderful way to put it.\nEvery time I open linkedin I'm scared of how many big heads have taken the wrong lesson that coding almost free == free engineering. So many bait posts asking engineers why they would need to pay them any longer, or being glad they're generating millions of lines a month....this is going to end badly.",
+          "author": "torben-friis",
+          "replies": [
+            {
+              "text": "I had a business owner tell me that they don't need to hire juniors anymore because claude can do all of that work for them. This was not a software shop so it's not even about writing code but I also thought that was something that will bite in the near future. A business that is not investing in juniors is a business that is not investing in the future.",
+              "author": "scorpioxy",
+              "depth": 1
+            },
+            {
+              "text": "The role of AI in non-software shops is going to be interesting. To a great extent it's not competing with devs, it's competing with Excel. However bad a system your AI can produce, it can't compare to the workflows that a group of non-techies armed only with Office can produce.\nOn the other hand, like giving a supercar to a teenager, this just enables them to get into trouble faster.\n(the \"my vibe coded app deleted prod!\" stories are funny schadenfreude when they happen to SV startups, whose whole business is pretending to know better. When this happens to a small business who've suddenly lost all their finanacials and now maybe will lose their house, it's a tragedy. And this can happen on a much larger, not AI-related scale, like Jaguar Land Rover: \nhttps://www.bbc.co.uk/news/articles/cy9pdld4y81o\n )",
+              "author": "pjc50",
+              "depth": 2
+            },
+            {
+              "text": "> The role of AI in non-software shops is going to be interesting\nI have friend in west Texas who does industrial electrical gear sales (like those giant spools of cable you see on tractor trailers). He’s 110% good old boy Texan but has adopted and loves AI. He says it’s been a huge help pulling quotes together and other tasks. Coincidentally he lives in Abilene where one of the stargate campuses are going. Btw, the scale of what’s being built in Abilene is like nothing I’ve ever seen.",
+              "author": "chasd00",
+              "depth": 3
+            },
+            {
+              "text": "> 10. Code is cheap, but maintenance, support, and security aren’t.\nI also keep circling around this point. So many software repositories in the AI space seem to follow a publish and forget pattern. If you simply can show that you have the patience to maintain a project, ideally with manual intervention instead of a fully autonomous AI, then you already have an outstanding project.",
+              "author": "mxmlnkn",
+              "depth": 1
+            },
+            {
+              "text": "yeah, if a project is purely vibe coded, it tend to need to be rewritten at some point of time",
+              "author": "dickeeT",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am in India, junior developer hiring is all down. Ai has reduced offshoring to India and eliminated the need for janitor work (often offloaded to juniors).\nMany people are finding it difficult to even land internships.\nThe most affected areas are sysadmin, devops, and frontend. Where you'll have very hard time getting any offer.\nCompanies like BrowserStack are withdrawing campus placement offers.\nMeanwhile, I am writing apps for my own use and have reached 10,000+ monthly active users already, even though I am making zero money from doing all this, but it's fun.",
+          "author": "faangguyindia",
+          "replies": [
+            {
+              "text": "Looking at the entire market in Europe it is also down but that is not due to \"AI\" but because they are easiest to fire with least consequences. There is a global recession looming, despite Wall Street saying otherwise.",
+              "author": "consp",
+              "depth": 1
+            },
+            {
+              "text": "Europe is easiest to fire? I would've thought the opposite.",
+              "author": "satvikpendem",
+              "depth": 2
+            },
+            {
+              "text": "depends on the country, i would guess.\nbut firing because \"ai makes us more productive\" is basically impossible in most eu countries.",
+              "author": "fernandotakai",
+              "depth": 3
+            },
+            {
+              "text": "I'm surprised sys-admin hires are down, is AI doing a lot of that as well?",
+              "author": "aspectrr",
+              "depth": 1
+            },
+            {
+              "text": "Yah, that comment is odd.\nSysadmins, Devops engineers will the be the last ones replaced by AI. The context window for their problems are huge.\nUnless you define Sysadmins and Devops as fiddling with YAML all day, which might be the case here.",
+              "author": "rirze",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48026342",
+      "title": "Show HN: Explore color palettes inspired by 3000 master painter artworks",
+      "link": "https://paletteinspiration.com/",
+      "domain": "paletteinspiration.com",
+      "author": "ouli",
+      "score": 204,
+      "comment_count": 77,
+      "created_ts": 1778004794,
+      "is_internal": false,
+      "post_text": "I built PaletteInspiration.com, a browsable archive of color palettes pulled from artworks by 3,000+ master painters (Monet, Vermeer, Raphael, Van Gogh).\nWhy I built it: every color palette generator I tried converged on the same five muted pastels. Painters spent centuries figuring out color and we mostly ignore that body of work when picking colors for digital design.\nPlease share your feedback on the Color Harmony Explorer - drag the wheel to any color and it shows which hues master painters historically paired with it (not only standard complementary, analogous, triadic, etc.) It is solely based on co-occurrence across thousands of real paintings. Not algorithmic color theory rules - actual empirical pairings.<p>No signup, no paywall, no email capture. Just curious what people think.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48023496",
+      "title": "Show HN: Airbyte Agents – context for agents across multiple data sources",
+      "link": "https://news.ycombinator.com/item?id=48023496",
+      "domain": "news.ycombinator.com",
+      "author": "mtricot",
+      "score": 140,
+      "comment_count": 42,
+      "created_ts": 1777993398,
+      "is_internal": true,
+      "post_text": "I’m Michel, co-founder and CEO of Airbyte (<a href=\"https:&#x2F;&#x2F;airbyte.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;airbyte.com&#x2F;</a>). We’ve spent the last six years building data connectors. Today we&#x27;re launching Airbyte Agents (<a href=\"https:&#x2F;&#x2F;docs.airbyte.com&#x2F;ai-agents&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;docs.airbyte.com&#x2F;ai-agents&#x2F;</a>), a unified data layer for agents to discover information and take action across operational systems.<p>Here’s a quick walkthrough: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=ZosDytyf1fg\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=ZosDytyf1fg</a><p>As agents move into real workflows, they need access to more tools (e.g. Slack, Salesforce, Linear). That means a ton of API plumbing: authentication, pagination, filters, handling schema, and matching entities across systems.<p>Most MCPs don’t fix this. They’re thin wrappers over APIs, so agents inherit their weak primitives and still get it wrong most of the time, especially when working across tools.<p>An even deeper issue is that APIs assume you already know what to query (think endpoints, Object IDs, fields), whereas agents usually start one step earlier: they need first to discover what matters before they can even start reasoning.<p>So we built Airbyte Agents to be a context layer between your Agents and all of your data. The core of this is something we call Context Store: a data index optimized for agentic search, populated by our replication connectors. All that work on data connectors the last six years comes in handy here!<p>This gives agents a structured way to discover data, while still allowing them to read and write directly to the upstream system when needed.<p>What got us working on this was an insane trace from an agent we were migrating to our new SDK. It was supposed to answer &quot;which customers are at risk of leaving this quarter?&quot; The trace had 47 steps. Most were API calls. The agent first had to find a bunch of accounts, then map them to the right customers, then look for tickets, bla bla... and when the Agent finally responded, the answer sounded ok, but was wrong. Not only that, it was excruciatingly slow. So we had to do something about it.<p>That 47-step agent is one example of a question where Airbyte Agents does particularly well. Other examples: - “Show me all enterprise deals closing this month with open support tickets.&quot; - “Find every support ticket that doesn’t have a Github issue opened”<p>Some of these might sound simple, but the quality of the answer changes dramatically when the agent doesn’t have to assemble all that context at runtime.<p>Once we had an early version of the product, I spent a weekend building a benchmark harness to see if it worked. Also for fun, I like writing benchmarks :). I compared calling the Airbyte Agent MCP vs calling a bunch of vendor MCPs directly. I tested retrieval, and search.<p>For the sake of simplicity, I used token consumption as a unit of measure. I think that’s a good proxy for how well agents are working. A failing agent (like the one that took 47 steps), will churn through lots of tokens while getting nowhere, while a successful one will get straight to the point.<p>Here&#x27;s what I found when measuring: for Gong, it used up to 80% fewer tokens than their own MCP, for Zendesk up to 90% fewer, for Linear up to 75%, and for Salesforce up to 16% (Salesforce’s own SOQL does a good job here).<p>Of course there is the usual obvious bias: we are the builders of what we are benchmarking. So we made the test harness public: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;airbytehq&#x2F;airbyte-agents-benchmarks\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;airbytehq&#x2F;airbyte-agents-benchmarks</a>. Feel free to poke at it, and please tell us what you find if you do!<p>It&#x27;s still early and some parts are rough, but we wanted to share this with the community asap. We&#x27;d love to hear from people building agents:\n- Are you indexing data ahead of time, or letting the agent call APIs live?\n- How are you matching entities across systems?<p>Would also love to hear any thoughts, comments, or ideas of how we could make this better, and if there are obvious things we’re missing. For now, we’re excited to keep building!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "What are the main differences to Glean? My company is evaluating Glean and I feel like Airbyte is a strong alternative (at least for some use cases).\nHow does Airbyte handle data authorization?",
+          "author": "smadam9",
+          "replies": []
+        },
+        {
+          "top": "(former employee here) congrats Michel! so glad to see you guys adapting to the AI age so well (and using the crap out of Devin!)\nhmm so airbyte agents could serve as a form of MCP gateway, or a key building block of an MCP gateway, which btw is how anthropic uses mcp themselves for all their internal apps \nhttps://www.youtube.com/watch?v=CD6R4Wf3jnY&t=1s&pp=0gcJCd4K...\ni think my most sad/interesting observation about ai engineers is that many ai apps are super data hungry, but many dont have the necessary data engineering background to even know they need an airbyte or what tradeoffs to make in an etl pipeline. would love a \"data engineering for ai engineers\" type braindump session from someone from airbyte at AIE (\nhttps://ai.engineer/cfp\n )",
+          "author": "swyx",
+          "replies": [
+            {
+              "text": "Hey, swyx! Great seeing you here.\n> airbyte agents could serve as a form of MCP gateway\nExactly! And a single set of tools for agents to access both realtime (direct reads/writes) as well as cached (Context Store), bringing hopefully the best access path for each different use case.\n> would love a \"data engineering for ai engineers\" type braindump ... at AIE\nGreat idea - we have a booth at AIE, and we'll submit there for a talk. Mario will reach out to you about this. :)",
+              "author": "aaronsteers",
+              "depth": 1
+            },
+            {
+              "text": "Thanks swyx! We'd love to do that session \"data engineering for ai engineers\", will make you an intro to the right person in the team.",
+              "author": "jeanlaf",
+              "depth": 1
+            },
+            {
+              "text": "saw your email, will get back!",
+              "author": "swyx",
+              "depth": 2
+            },
+            {
+              "text": "I think this is right ( a big gap ) but I don’t think data companies even now what the right shape is for AI.\nIt’s definitely not old school ETL + dbt + BI tool, it might be something like this, but it’s very early",
+              "author": "sails",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Your billing support email forwards to a google group which rejects the email entirely. So i embedded my question inside the websites sales enquiry form and received multiple rounds of emails that couldn’t be further from human.\nIt’s not why we started using posthog but it definitely sealed the deal when you see how simple and reliable that experience is",
+          "author": "slurpyb",
+          "replies": [
+            {
+              "text": "Sorry for that experience. We had a bad billing support routing issue and it’s since been fixed. Thank you for calling it out. We'll aim to do better!",
+              "author": "davinchia",
+              "depth": 1
+            },
+            {
+              "text": "Let me see what's up and fix that!",
+              "author": "mtricot",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I feel like we've been working in parallel here :) We are using PyAirbyte (hi \naaronsteers) for our users to connect their data sources to our agents. We originally wanted to use the airbyte white-label platform, but the team said that it was being deprecated. I think this really drives home just how crucial it is to have a clear model for accessing your data, and Airbyte has been great at that for quite a while.",
+          "author": "jscheel",
+          "replies": [
+            {
+              "text": "Hello, Jared! Small world! Yes, we did deprecate our old PbA (Powered by Airbyte) offering, but in many ways our new Agents and Embedded offering is a more robust and agent-friendly successor to that older offering.\nI am happy to hear you are still getting value out of PyAirbyte! If you do try out Airbyte Agents, please let us know how it goes! We are always listening to feedback and would love to hear from you as you explore the new tools and capabilities.",
+              "author": "aaronsteers",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "We built something similar an A/B testing framework that measures Unblocked's impact on real AI coding agents.\nIt spawns agent CLIs (Claude Code, Codex, Cursor, GitHub Copilot) with and without Unblocked's MCP server attached, then statistically compares the results: \nhttps://github.com/unblocked/unblocked-harness-compare\nWe likewise measured token savings, (wall clock) time, # tool calls, and # turns.",
+          "author": "dennispi",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47988268",
+      "title": "Ask HN: Is the Job Market Actually Bad?",
+      "link": "https://news.ycombinator.com/item?id=47988268",
+      "domain": "news.ycombinator.com",
+      "author": "idontwantthis",
+      "score": 126,
+      "comment_count": 201,
+      "created_ts": 1777741835,
+      "is_internal": true,
+      "post_text": "I’m not trying to brag, I am just genuinely confused. I got laid off recently and I had a new job within a week because I constantly get contacted by recruiters both through LinkedIn and directly by email. I’ve never sent an application to anyone and I’ve had dozens of interviews in the past year while I was looking for a new job before getting laid off.<p>I would have had a new one earlier except I was aiming for fully remote and a big raise, and I failed their correspondingly difficult evaluations. Never got ghosted, never had to deal with AI, never had to fill out an application. I took a local, in office offer that I would have ignored if I were still employed.<p>Currently I’m waiting for a final decision from another fully remote company and I’m in midstage with 2 more.<p>I’m not a super genius engineer, and I don’t have any fancy companies on my resume. How unusual is this experience?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "job market"
+      ],
+      "comments": [
+        {
+          "top": "I had a friend with plenty of experience in HR get laid off.\nHe looked for a job for 13 months. One of the top 3 smartest people I’ve ever known looked for seven months and had to take a big step back in his career, despite having Amazon and Home Depot on his resume.\nBoth of them said that even getting an interview was almost impossibly hard.\nThese are people in different parts of the county, and in different industries.\nI think we have a serious problem on our hands with employment that’s probably not getting better any time soon.",
+          "author": "iambateman",
+          "replies": [
+            {
+              "text": "Don't want to discredit or invalidate your/your friend's experience, but I do want to offer some hope during these times where a lot of what you see on the web is doomer posts.\nFrom Google:\nThe Jevons paradox occurs when technological improvements increase the efficiency of a resource, but the resulting drop in cost causes demand to rise so much that total consumption of that resource increases rather than decreases.\nThe message being, it may seem now that because the friction for creating software is so minimal now that there will be no need for software engineers in the future. But historically when friction has been reduced, we have seen an increase in demand that outweighs the efficiency gain, increasing total consumption. I believe that software won't be an exception to this millennia-old pattern.\nWhile what \"software engineering\" may look like might change, I still believe strongly that people who understand software will actually be in higher demand than ever in the future.",
+              "author": "doomkaiser21",
+              "depth": 1
+            },
+            {
+              "text": "To paraphrase Keynes, in the future we are all dead. His friend is suffering now, not in some theoretical far off future where the magic market had been blessed by the invisible hand.",
+              "author": "bluecheese452",
+              "depth": 2
+            },
+            {
+              "text": "So much pre-employment screening and automated filtering. Getting to the interview stage is like having your paper refereed  instead of  desk rejected.",
+              "author": "paulpauper",
+              "depth": 1
+            },
+            {
+              "text": "Cold applications are very difficult, especially because of the sheer volume of applicants.\nUnless I have a referral, it’s such a low probability exercise it’s not worth it for me.\nWhenever I see “100+ candidates have applied” on LinkedIn, I just ignore the job posting.",
+              "author": "Esophagus4",
+              "depth": 2
+            },
+            {
+              "text": "HR, particularly recruitment, was one of the biggest hit departments when the blood-letting started at Meta in 2022. The hiring freeze that followed didn't help.",
+              "author": "NBJack",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Having a decent linkedin profile, and getting regular contacts by recruiters on linkedin is the way.\nThose recruiters tend to be internal recruiters working directly for the company, which I find less pushy/annoying to deal with, and they tend to be already somewhat keen on you by the time they contact you, because they have already decided you are an appealing candidate. They'll generally fast-track you to an interview, not make you fill in some long ATS application form, keep in contact regularly, etc. - it is a \nmuch\n better experience than cold \"applying\" via an ATS / workday portal and having that go into a black hole.\nI'd say, if you're not regularly getting recruiters contacting you on linkedin every week, your profile isn't very good and you should fix it until you do.\nIt amuses me a bit when people complain about linkedin post in the newsfeed being lame (which they are), or reminiscing about the old days when people would have their email addresses next to loud warnings saying \"do not contact me if you are a recruiter!!!\".\nIt turns out, the only thing worse than being contacted by recruiters is not being contacted by recruiters. It only takes a second to respond with a polite \"no thanks, not looking right now, maybe another time!\", and it is far easier to start engaging with a steady stream of regular contacts than trying to \ncreate\n that stream when you need it.",
+          "author": "tacostakohashi",
+          "replies": []
+        },
+        {
+          "top": "My current job search has been the longest and most difficult of my career (5 months so far). Caveats:\n- I’m only applying with climate tech companies\n- I’m trying to transition back to engineering after a detour into product\n- I’m trying to pivot into more hardware-focused roles\nMost companies I apply to don’t respond at all, and I’ve had about 6 phone screens, two technical interviews, and one “we’d love to hire you once we get the funding for this position sometime in June”.\nSo from my perspective, the job market is awful, but YMMV.\nP.S. if you’re working on any clean energy related software, I’d be a great addition to your team — \nhttps://matthewgerring.com",
+          "author": "mbgerring",
+          "replies": [
+            {
+              "text": "Having just been on the job market, my experience was that career pivots are much harder now. I initially intended to transition to a neighboring field after an education break - but none of the companies in that field would speak to me. At most I had a recruiter call with one who decided to reject. To complete this transition I had been planning on a massive pay cut.\nWhen I focused on areas I had some more credible experience in, I got significantly better engagement and eventually found a very narrow niche where I had substantial success.\nI think we're partially adjusting to a world where employers expect a very narrow experience match to their role. Employers are also paying a premium within that narrow match.",
+              "author": "lumost",
+              "depth": 1
+            },
+            {
+              "text": "Companies are primarily hiring on the spot market and paying through the nose for it.",
+              "author": "datadrivenangel",
+              "depth": 2
+            },
+            {
+              "text": "To be fair, in the best of climates that is still searching in a niche market with an attempt to do something new with an engineering experience gap",
+              "author": "kzzzznot",
+              "depth": 1
+            },
+            {
+              "text": "Be sure to talk with and apply at \nhttps://charmindustrial.com/\n I dont have an in / network I can share with you, but Peter was a great person to work for :)",
+              "author": "maerF0x0",
+              "depth": 1
+            },
+            {
+              "text": "How was your detour into product? What kind of skills/instincts you developed being in product? I always imagined it being kind of freeing -- leaving behind engineering implementation details and thinking more in terms of the final results.",
+              "author": "bcbb7",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's primarily a discovery problem, on both sides of the market.\nCandidate-wise, everyone is slinging ChatGPT'd resumes left and right, which just leads to an arms race where the other side \nhas\n to use LLMs to filter them, which just makes the situation even worse. The bar for \"senior software engineer\" is insanely low right now (and no, Leetcode doesn't count - I'm talking more pragmatic skills like being able to use a *nix terminal).\nEmployer-wise, everyone wants a unicorn that will lick their ass but isn't willing to pay (in either money or benefits) well for said service. Then they complain that \"nobody wants to work anymore\" or that there are no good candidates. Well, it's just that the good ones don't even bother applying.\nAs a result, lucky, good actors on either side find themselves via networking, while the less lucky ones are left to swim in a sea of trash.",
+          "author": "noprocrasted",
+          "replies": [
+            {
+              "text": "> Candidate-wise, everyone is slinging ChatGPT'd resumes left and right, which just leads to an arms race where the other side has to use LLMs to filter them, which just makes the situation even worse.\nEveryone had to start doing that to get through the often dumb-as-a-brick ATS system filtering that became farcical - I remember applying for one position that was around building care and management systems for pregnant mothers - EHR, practice management, claims benefits, etc., all of which I had over a decade of experience in. \"Name something that might stand you out from the crowd.\" \"In addition to all this I've also delivered 12 babies as a paramedic\". Twenty minutes later \"we are looking for candidates whose experiences and skill sets are more closely aligned with the role we are looking to fill\". That was my push to realize \"I need to do something to ATS optimize my resume and plan otherwise I'll be unemployed for months.\"\n> Employer-wise, everyone wants a unicorn that will lick their ass but isn't willing to pay\n\"Principal Product Manager. Must have 10-15 years experience, much of it in healthcare domain, including leadership and team ownership. Salary range: $90-130K\".\nYup.",
+              "author": "FireBeyond",
+              "depth": 1
+            },
+            {
+              "text": "Wait, you mean there are senior software engineers who don't know how to use a *nix terminal? I've been using them since I was like 16 or so.",
+              "author": "devinprater",
+              "depth": 1
+            },
+            {
+              "text": "You can 100% work your way to a senior position without ever leaving windows. The people who are like that just don't tend to be hanging out on platforms like HN.",
+              "author": "pibaker",
+              "depth": 2
+            },
+            {
+              "text": "To be clear, this was developing software running on *nix environments, and they were all using Mac (or WSL) and the usual open-source *nix dev tools. This is not a case of developers purely targeting Microsoft environments (indeed it would be excusable in that case).",
+              "author": "noprocrasted",
+              "depth": 3
+            },
+            {
+              "text": "I am, although I have used nix occasionally.\nIn Europe C# fills the role of Java.\nYou're just in an American echo chamber.\nNow the number of senior C# engineers in Europe who couldn't fix a broken deploy on IIS or SSL cert problem on a windows server? That is rather high in the windows field too.",
+              "author": "mattmanser",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I have 2-3 years of professional software experience. I've been unemployed for 4 years, barely able to get a \nresponse\n from employers, let alone interviews, let alone a job. My response rate (even just a rejection email) from applying to jobs has gone from an average of ~35% down to an average of ~18%. Numbers wise, the job market is very frustrating for me.\nI apply everywhere in the US, and at this point I consider it a success if I get a rejection email, since that's getting pretty rare. The only recruiters who reach out to me are \nvery clearly\n shotgun recruiters who have not read my resume and bring positions which are obviously looking for a different type of applicant.\nI know I can do the work. Half of my friends work in software or software adjacent roles. I'm at least as capable as them, and, based on how much they have to complain about them, more capable than some of their coworkers.\nSo, I don't know what the issue is. Clearly I'm not good at marketing myself, but what exactly to change, I'm not sure. I know the 4 year gap looks awful to recruiters, but it's not getting any smaller and I didn't choose it willingly. At this point I'm just mindlessly sending out more resumes, because I don't know what else to do.",
+          "author": "xboxnolifes",
+          "replies": [
+            {
+              "text": "Lie and ChatGPT your resume to hell. Use those interview cheating tools to pass the bullshit interviews that will be thrown at you.\nYour competition is doing it, there is no reason for you not to.",
+              "author": "noprocrasted",
+              "depth": 1
+            },
+            {
+              "text": "Wisepilled response. The state of hiring is completely broken. I started a new position recently and what they told me the position was like vs what I saw/learned after I started were two completely different things. It's like managers don't even know what their own team does.",
+              "author": "zingababba",
+              "depth": 2
+            },
+            {
+              "text": "No one knows anything and no one cares.",
+              "author": "ai_slop_hater",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48029753",
+      "title": "Xbox CEO ends Copilot AI development and overhauls leadership",
+      "link": "https://www.dexerto.com/gaming/xbox-ceo-ends-copilot-ai-development-overhauls-leadership-3361353/",
+      "domain": "www.dexerto.com",
+      "author": "gmays",
+      "score": 110,
+      "comment_count": 39,
+      "created_ts": 1778021027,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "leadership"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48021420",
+      "title": "Show HN: I built a new word game, Wordtrak",
+      "link": "https://wordtrak.com/blog/2026-05-05-I-built-a-new-word-game",
+      "domain": "wordtrak.com",
+      "author": "qrush",
+      "score": 74,
+      "comment_count": 44,
+      "created_ts": 1777983257,
+      "is_internal": false,
+      "post_text": "Hi HN! Looking for feedback on this 1v1 and daily word dueling game I&#x27;ve built over the last few months.<p>Play here: <a href=\"https:&#x2F;&#x2F;wordtrak.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;wordtrak.com&#x2F;</a><p>Or on iOS here: <a href=\"https:&#x2F;&#x2F;apps.apple.com&#x2F;us&#x2F;app&#x2F;wordtrak&#x2F;id6760442363\">https:&#x2F;&#x2F;apps.apple.com&#x2F;us&#x2F;app&#x2F;wordtrak&#x2F;id6760442363</a> (Android version soon!)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48038191",
+      "title": "Ask HN: Is anyone seriously considering a career change?",
+      "link": "https://news.ycombinator.com/item?id=48038191",
+      "domain": "news.ycombinator.com",
+      "author": "zeven7",
+      "score": 25,
+      "comment_count": 19,
+      "created_ts": 1778085137,
+      "is_internal": true,
+      "post_text": "There may still be engineering jobs today, but I honestly wonder how long that can last and how long they&#x27;ll still pay well. I&#x27;m in the middle of looking for my next engineering role but also wondering if I should be going back to school in my 40s instead.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "Many engineers with a long career have probably thought about becoming a manager at one point. A large portion of them decided to stay in the IC (individual contributor) track because they did not like some of the aspects of being a manager. Some decided to stick to the IC role because they liked creating code.\nWith AI, every engineer will need to become a manager to manager one or more AI assistants who do a lot of the work. The good news is that this will not involve dealing with performance reviews, psychological problems, and raises. You will also remain close to the code.\nLook at the manager role again, and see which parts of it will be needed to manage AI agents. Learn those parts from standard management books. You will kind of pivot, but still remain close to the code.\nOn the other hand, if all you enjoyed is typing in code, but hated working with product people to understand the intent, doing code reviews, or building software that is easy to QA, there will be fewer and fewer such jobs.",
+          "author": "koliber",
+          "replies": [
+            {
+              "text": "I'm finding that people skills are more important than managing AI currently. Both people and agents will build 10 versions of the same product if you let them.\nCommunication is key, and it always has been.\nI'm moving more to management after 13 years of IC work and being lead for the last year. We are all in on AI for everything at my company, and that's not just lip service.",
+              "author": "fullstick",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Go back to school for what though?\nI'm 43 and I've been thinking I might just retire if I get laid off and can't find something new. I'm frugal and have enough saved up that I could make it work if I leave my high cost of living area.\nI'm not worried about engineering jobs being eliminated. I'm more worried that companies are going to expect insane velocity because of these tools and I'm not going to be able to keep up in part because I care about quality. At my company, the people that use AI to generate the most code seem to get the most recognition.",
+          "author": "OnionBlender",
+          "replies": []
+        },
+        {
+          "top": "I'm in my early 20s. Many people here have much shorter time horizons to me.\nWell... my timescale is 20 years. Many people reading this now are older than I will be in 20 years. So how will things look in 2046?\nCan't say, but I find it worth thinking about.\nTo me it seems like the sentiment has already shifted among developers on what the scope of change we'll see with AI will be. It seems like at any point in time there's a lot of skepticism that it will ever be able to get over whatever the current big limitation right now is. But when thinking of careers they don't play out over 5 years or even 10 but 20 30 or more years.",
+          "author": "bauldursdev",
+          "replies": []
+        },
+        {
+          "top": "At 40+ , especially if you have kids and other responsibilities, just going back t school is really, really hard. I may also say, impossible. I tried to learn German a few years ago. My brain does not work the same way, as when I was before 36.\nI read it in a report, and I wrote it here in HN many times in the last few weeks:\nAI amplifies... It amplifies the success of the good professionals, and it amplifies the failure of the bad ones.\nGood professionals are needed so that AI is used the proper way. I think that the way we do our job will change, but there will also be place for developers, PMs, POs, Team leaders, etc.",
+          "author": "sminchev",
+          "replies": [
+            {
+              "text": "> My brain does not work the same way, as when I was before 36.\nI'm not sure it's that bad if you do it full-time like any other student.  Getting a degree should be doable even at 40+. I used to be a university lecturer in CS, and occasionally I got older students who did very well.\nThat being said, I think the issue is employability. You may get a degree, but is anyone getting to hire an older person with not experience?",
+              "author": "yodsanklai",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm in my 40s too. I haven't switched roles in ~4 years, and probably won't for the next ~4, 5 years. But I have always painted and drawn as hobby. Seriously considering trying that for a short time during a sabbatical or -- more likely -- find a job as contractor from Mon to Wed, and spend the rest of the time drawing and painting.\nIf you are concerned about employability then I think going back to school or investing in a masters or some technical courses could be interesting. Or even moving to coordination/leader/engineer roles?\nBut if you have a hobby, maybe you could consider trying something different like either doing it in parallel, or maybe combining with engineering. e.g. I'm considering something like Blender3D + drawing using Grease pencil. Blender can be programmed with Python too, and this way I'd combine two things that I like.",
+          "author": "kinow",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48026211",
+      "title": "Ask HN: Is there a term for feeling sad about forced AI adoption?",
+      "link": "https://news.ycombinator.com/item?id=48026211",
+      "domain": "news.ycombinator.com",
+      "author": "ge96",
+      "score": 21,
+      "comment_count": 32,
+      "created_ts": 1778004276,
+      "is_internal": true,
+      "post_text": "I feel like I don&#x27;t have a choice to accept it. If I want to keep my job I need to use it. I felt pride in making things with code but now that you can just type in words into a prompt and code comes out, it just feels empty now. There&#x27;s no joy in writing code anymore doing this.<p>I know for my personal hobbies I can do that... I need money is the thing, I can&#x27;t walk away yet but I think I will if this is how every job will be.<p>I&#x27;m not denying its capability it&#x27;s like today I need to make a bluetooth android app that can do HFP today, NOW. I can&#x27;t do that with my current knowledge but AI can... and anybody who can type can use it so why am I needed kind of thing.<p>So yeah right now my plan is to coast using these tools, do the things I enjoy to do then make enough money to get out. I&#x27;ll write my own code for my own fun.<p>I&#x27;ve been a developer&#x2F;writing code since 2013.<p>I&#x27;m not saying I&#x27;m against the technology enabling other people to code, I&#x27;m saying if I have to use it and I don&#x27;t have to write code anymore I feel sad about that. No feeling of accomplishment.<p>The other thing is if you push back on it, you&#x27;re seen as like a negative person&#x2F;luddite, just do it everyone else is kind of thing.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48013758",
+      "title": "Tell HN: The saddest irony of my/our craft",
+      "link": "https://news.ycombinator.com/item?id=48013758",
+      "domain": "news.ycombinator.com",
+      "author": "dakiol",
+      "score": 21,
+      "comment_count": 16,
+      "created_ts": 1777922900,
+      "is_internal": true,
+      "post_text": "So I wouldn&#x27;t mind to lose my job for almost any other reason. Bad market, company pivot, even my own stupid mistakes... fine, thats life. But losing it because of the love I put in my open source projects? C&#x27;mon man, that one really pisses me off.\nI had side projects on weekends just for fun like everyone else, stack overflow answers at 2am for strangers I never gonna meet, and repos nobody paid me for..<p>Honestly that kinda of culture was the best thing about being a dev and now it became the training set. I hate how openai&#x2F;google&#x2F;anthropic&#x2F;etc scraped it all, learned from it, and now they sell our love back to us as a product. Sure, I get it, it&#x27;s capitalism, whatever, but I feel like the biggest fool out there. I guess I just have to accept it, put my head down and keep going. There&#x27;s one thing I dislike most though: the people around here that glorify AI&#x2F;LLMs. It&#x27;s just a matter of time until the higher ups normalize reducing even more headcount because of AI, 90% of us will be affected. Not everything is about the technical details people!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned",
+        "culture"
+      ],
+      "comments": []
+    },
+    {
+      "id": "47998643",
+      "title": "Ask HN: Those building Swift apps without touching Xcode, what is your workflow?",
+      "link": "https://news.ycombinator.com/item?id=47998643",
+      "domain": "news.ycombinator.com",
+      "author": "p5v",
+      "score": 18,
+      "comment_count": 9,
+      "created_ts": 1777825989,
+      "is_internal": true,
+      "post_text": "It&#x27;s one thing having to download this monstrosity, and a whole other, having to use it daily to write code.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48017668",
+      "title": "Ask HN: Best Embedding Models?",
+      "link": "https://news.ycombinator.com/item?id=48017668",
+      "domain": "news.ycombinator.com",
+      "author": "devstein",
+      "score": 17,
+      "comment_count": 18,
+      "created_ts": 1777950910,
+      "is_internal": true,
+      "post_text": "Hey HN, which embedding models are people using? There has been so much development around foundational LLMs, but haven&#x27;t seen much news about embedding models.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "not a single \"of what data\" or \"in what env\"\nbest in what?",
+          "author": "mutant",
+          "replies": []
+        },
+        {
+          "top": "Benchmarks only paint part of the picture, but it's still a decent place to start looking into recent models:\nhttps://huggingface.co/spaces/mteb/leaderboard",
+          "author": "PhilippGille",
+          "replies": []
+        },
+        {
+          "top": "I've liked qwen and embeddinggemma for local search. Qwen because 32K is enough to basically fit a whole page into the context window and embeddiggemma because it's crazy efficient.",
+          "author": "rapatel0",
+          "replies": []
+        },
+        {
+          "top": "Cohere's embed-v4.0 is my daily driver as far as a high performance model is concerned. I do a lot of cluster analysis and data visualization and I like that there's an `input_type=\"clustering\"` mode in addition to the standard `input_type=\"search\"` mode.\nFor a fast, open, and local model, I've found it hard to beat \nhttps://huggingface.co/sentence-transformers/all-MiniLM-L6-v...",
+          "author": "stevenfazzio",
+          "replies": []
+        },
+        {
+          "top": "I am using openai small embedding model with custom compression. It is super cheap. You can read more at \nhttps://corvi.careers/blog/vector-search-embedding-compressi...",
+          "author": "sp1982",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48030736",
+      "title": "Ask HN: The death of software development as a job?",
+      "link": "https://news.ycombinator.com/item?id=48030736",
+      "domain": "news.ycombinator.com",
+      "author": "piratesAndSons",
+      "score": 15,
+      "comment_count": 26,
+      "created_ts": 1778028152,
+      "is_internal": true,
+      "post_text": "A lot of programmers I read here and elsewhere say LLM isn&#x27;t going to change much, some say LLM is just going to make them more productive, and some even say not using LLM makes you some sort of relic. What is not debated is that LLM has changed our industry. Programming is a lot more accessible to a lot more people than five years ago. Someone who has never coded anything could sit in front of Claude and produce an entire app ready to be used today.<p>Assuming software development becomes a commodity and the job becomes something like a fast food job where practically any adult who wants it can do it, what is your next move?<p>Anthropic and OpenAI are working hard to redirect the salary you earn to themselves in the form of API costs, so let&#x27;s assume that in the year 2030, the average yearly wage for a programmer is around the same as a McDonald&#x27;s worker, because companies have the option of paying Anthropic or OpenAI for API access as an alternative. What is your move?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "salary"
+      ],
+      "comments": [
+        {
+          "top": "Most comments already explained it, however:\nNo! It's a common misunderstanding (imho) that software development is about \"writing code\" or knowing a programming language's syntax. It never was, it never will be. I experienced this misunderstanding:\nI never studied CS or IT or anything related. All my skills are self taught, starting when I was a litle boy. When I was young, I had problems getting into this busines, because HR and recruiters where tasking me with \"Write this <x> using this <y>\". They wanted to see A grades from 6 years of a master in CS.\nWell. I am not that guy that memorizes syntax or coding rules. My approach is very different - and so are many, I assume. And this is what software development is about: You get a problem and you find a way to solve it. At many stations in my professional career I was able to proof that. I \"mastered\" Pascal from the scratch, on the job. Same goes for VBA, Shell scripting, Python, PHP, JavaScript... you name it.\nIt may sound arrogant - but then you misunderstood what I am trying to say: The language, the syntax, the coding rules are just \"tools\" for me. I don't care what I use. I focus on the problem.\nIsn't it the same as \"Write this <x> using this <y>\" you may ask? No. Because this expects a specific solution. Not saying this will not lead to a result. It just a very narrow view on the solution.\nThere are good software developers that can answer those questions \"Write this <x> using this <y>\". That's not the point. The point is: There are also great software developers who can't.\nWith AI you don't have to worry to memorize syntax or rules. You can focus on the problem solving process.\nSo, AI is changing how software will be created. It make it more efficient. And it changes how HR and recruites hopefully will look at this profession. It's not about A grades in a CS class.",
+          "author": "y42",
+          "replies": []
+        },
+        {
+          "top": "Actually writing code was never the difficult part for the majority of software created. It required skill yes, but the really hard part was figuring out what to implement in the first place.\nWhich features should the software have, how should they function and interact, which tradeoffs to make given the limitations. Stuff like that.\nPeople who were good at those things but lacked training or capabilities to actually write functioning code can now make viable software.\nPeople who were essentially code monkeys who wrote code based off detailed descriptions of what should be done, without much thought of or influence on the higher level issues have to step up or face tough times I think.",
+          "author": "magicalhippo",
+          "replies": [
+            {
+              "text": ">\nActually writing code was never the difficult part for the majority of software created. It required skill yes, but the really hard part was figuring out what to implement in the first place.\nNah, it was mostly writing the code. One can have a very good idea of \"what to implement\", even on a feature by feature and architecture basis, but still need many man-weeks or months or even years with a large team to make it into code.\n>\nWhich features should the software have, how should they function and interact, which tradeoffs to make given the limitations. Stuff like that.\nStuff like that a person can sit down and plan. Which is what the techical lead or software architect role does.\nThey still needed to work themselves plus anything from a couple to dozens of coders to make it into actual runnable code.\nIf the industry was just senior tech lead roles, yeah, it would be affected less. But 95% of it is regular coding roles, even mostly boring coding roles.",
+              "author": "coldtea",
+              "depth": 1
+            },
+            {
+              "text": "> but still need many man-weeks or months or even years with a large team to make it into code.\nThat's an argument that writing code was the time-consuming part, which is different from it being the difficult part.",
+              "author": "akerl_",
+              "depth": 2
+            },
+            {
+              "text": "Well, that itself is a dillema about \"which is the most difficult part\", whereas the discussion is about whether AI will severely impact/kill the coding job market.\nFor which question, whether writing code is the most difficult part or not is irrelevant. It's still the part on whch most employed develoopers spend the most time on, and thus, if it gets more/fully automated, a lot of those jobs will be killed.",
+              "author": "coldtea",
+              "depth": 3
+            },
+            {
+              "text": "> For which question, whether writing code is the most difficult part or not is irrelevant.\nI find it exactly opposite, in that \nbecause\n most coding is not very difficult in most cases, it is the part that will be replaced by AI.",
+              "author": "magicalhippo",
+              "depth": 4
+            },
+            {
+              "text": "> but still need many man-weeks or months or even years with a large team to make it into code.\nWe planted our own hedge. The hard part was finding the right type of bush that we liked but could grow well here yet not require too much maintenance, and how to properly plant them. The easy but really time consuming part was digging the trench, preparing the soil (including drainage where needed), putting the plants in, fill back up and then make sure they didn't die the following week.\n> But 95% of it is regular coding roles, even mostly boring coding roles.\nWhich AI can now do very well if guided by someone who knows the requirements and targets very well, and knows how to test the product well.",
+              "author": "magicalhippo",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> an entire app ready to be used today.\nThat is exactly where the disagreement stems from. That app is a draft version that might work for a couple people. It won't scale. It won't be secure. It won't handle edge cases. It won't be flexible enough to iterate based on customer feedback.\nThat doesn't mean LLM-assisted code has no value. It does mean the guidance needed to go from \"v000.1\" to something you could actually build a business upon is still significant.\nWill LLMs bridge that gap more in the future? Maybe. But honestly, hopefully not. Instead, I hope they stop just churning out the same CRUD apps and wrappers that we did a few years ago and do something new. Because if all they do is: What humans do, just faster... cool, useful, but not worth all the hype.\nLLMs are useful tools. I use them. But just like the hammer that sits on my shelf and also gets used, they are just a tool. They won't be truly interesting (to me, at least) unless they are doing things that humans cannot do.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": ">\nThat is exactly where the disagreement stems from. That app is a draft version that might work for a couple people. It won't scale. It won't be secure. It won't handle edge cases. It won't be flexible enough to iterate based on customer feedback.\nAs if startup code doesn't have the same issues pre-AI? And still they get to billions of valuations with such code.\nThey can always pay some beefier consultants when they absolutely have to, for scaling it up or hardening it.\nThat \"it won't be flexible enough to iterate based on customer feedback\" is more wishful thinking. It would be code like any other code, following some patterns. In fact, the architecture can be fine tuned by the human in the loop anyway - they just wont be needed 5 more humans to assist them to code it.\n>\nBecause if all they do is: What humans do, just faster... cool, useful, but not worth all the hype.\nThat's literally what automation in any field is. Why should be something more, as if this huge breakthrough is already taken for granted within a few years of being available?",
+              "author": "coldtea",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Work for any enterprise software company.  And you will know coding is the easiest part of shipping software.  Organizing, working with other teams, understanding the domain, coordinating.  All higher level and higher order tasks than coding.",
+          "author": "GoldenMonkey",
+          "replies": []
+        },
+        {
+          "top": "> software development becomes a commodity and the job becomes something like a fast food job where practically any adult who wants it can do it\nThat will never happen. Sure, anyone can program something, but to make it professionally there is bar of quality and competition will push most people out. Similarly anyone can write, draw or sing but only a few do it well enough to be paid for it.\nAnd I am old enough to see many tools that allow \"anyone to program\". They pop up whenever certain standards (like web) become popular, then programming goes in different direction and they vanish in irrelevance. Soon there will be a large set of skill on top of \"using AI\" and \"chat, make me an app\" will go out of the window as viable way to make something others want to use and pay for.",
+          "author": "fiedzia",
+          "replies": [
+            {
+              "text": ">\nThat will never happen. Sure, anyone can program something, but to make it professionally there is bar of quality\nEver seen most high profile apps in the last 10-15 years? Not to mention regular average apps, which still employ millions of people. Or most enterprise software.\nTrust me, the \"bar of quality\" wont be the issue.",
+              "author": "coldtea",
+              "depth": 1
+            },
+            {
+              "text": "> Ever seen most high profile apps in the last 10-15 years?\nNo, but the ones I am paying for are few and with rather solid development record. Looking at top android apps, we have some that have very high bar of engineering (firefox, google translate), some just useful dataset (cooking recipes), but again, even the simple ones outcompeted tons of alternatives.\n> most enterprise software\nI am not saying enterprise software is super complex, but it is very competitive  domain.",
+              "author": "fiedzia",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48033457",
+      "title": "Ask HN: Who got hired with Who wants to be hired? (On 2026)",
+      "link": "https://news.ycombinator.com/item?id=48033457",
+      "domain": "news.ycombinator.com",
+      "author": "Gooblebrai",
+      "score": 13,
+      "comment_count": 8,
+      "created_ts": 1778053651,
+      "is_internal": true,
+      "post_text": "I see a lot of activity every months in the &quot;Who wants to be hired&quot; threads but I wonder how many end up actually hired from these posts during 2026?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48016031",
+      "title": "Ask HN: Where are you getting your AI news from?",
+      "link": "https://news.ycombinator.com/item?id=48016031",
+      "domain": "news.ycombinator.com",
+      "author": "baetylus",
+      "score": 10,
+      "comment_count": 14,
+      "created_ts": 1777935304,
+      "is_internal": true,
+      "post_text": "Besides Hacker News, I&#x27;m wondering where people are finding good sources of AI progression and news. Of course I can read arxiv and such, but wondering what folks have going for them!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48009180",
+      "title": "Ask HN: Is a hands-off, family-friendly, de-Googled \"home lab\" feasible?",
+      "link": "https://news.ycombinator.com/item?id=48009180",
+      "domain": "news.ycombinator.com",
+      "author": "strix_varius",
+      "score": 10,
+      "comment_count": 11,
+      "created_ts": 1777904632,
+      "is_internal": true,
+      "post_text": "I finally got a kick in the pants. I now need a new AC2200 access point for my Google Wifi 5 mesh. Which is no longer sold. And Google decided to make Wifi 6 non-backwards-compatible. So I can either:<p>1) Find one on eBay and try to keep an unsupported system limping along.<p>2) Finally put in the time to set up something under my control.<p>Several things have been bugging me:<p>* The complexity &amp; expense - but mostly complexity - of streaming video in 2026.<p>* The looming worry that one random whim from Google could wipe out my most valuable data (the photos &amp; videos of my kids growing up).<p>* The overall awfulness of the Google Home app &amp; the unreliability of Google Home devices, like speakers.<p>* The amount of personal &amp; family data I implicitly share with Google by just living our regular, daily lives.<p>Someone, somewhere has built exactly the sort of setup I want, and there&#x27;s a good chance they&#x27;re on HN. There&#x27;re probably several &quot;unknown unknowns&quot; that I&#x27;m blind to, so I&#x27;d appreciate any tips from HN users with homelabs (is that even the right term these days?).<p>Design goals:<p>1. A shared, collective archive of family photos taken on Androids &amp; iPhones, stored privately, with some backup system.<p>2. A streaming server that can host the couple of shows my wife &amp; I care about, plus shows we&#x27;ve selected for our kids. Our TV and laptops should be able to stream from the server.<p>3. Speakers placed in various rooms in the house (we have ~8 of them now) that are wirelessly controllable. When they happen to work, our Google Home speakers have been awesome with kids and with hosting.<p>4. Everything must be usable by non-tech friends &amp; family. They&#x27;re used to shared Google Photos albums, the Google TV interface, playing music in various rooms in the house via Apple Music &#x2F; Spotify -&gt; Google Home speakers.<p>5. Stretch: I&#x27;d love to be able to host small &#x2F; simple &#x2F; fun services from my house. Just toys that today I&#x27;d stick on Netcup or Hetzner.<p>6. Stretch: I&#x27;d love to be able to locally host models and even do light training. Maybe a framework desktop in a closet?<p>I&#x27;m researching options now but I&#x27;d love guidance from humans who have already taken this journey. I&#x27;m moderately comfortable with linux (Fedora is my daily driver) and I have a 1 GB symmetrical fiber connection. Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48014837",
+      "title": "Ask HN: When did you move from AI agentic loops to simpler deterministic system?",
+      "link": "https://news.ycombinator.com/item?id=48014837",
+      "domain": "news.ycombinator.com",
+      "author": "laxmena",
+      "score": 7,
+      "comment_count": 5,
+      "created_ts": 1777928081,
+      "is_internal": true,
+      "post_text": "Industry is increasingly moving towards complex, autonomous agentic loops and feedback chains. They obviously comes with significant latency, non-determinism, low-accuracy and cost.<p>I&#x27;m interested in hearing from engineers who have moved in the opposite direction.<p>At what point in your product lifecycle did you decide that agentic approach was wrong tool for the job?<p>What was the specific failure mode (reliability, cost, latency, maintainability) pushed you to replace agentic loop with more deterministic system&#x2F;pipeline?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "failure",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48032863",
+      "title": "Ask HN: Is the future everyone having 100 MCP processes running on their PC?",
+      "link": "https://news.ycombinator.com/item?id=48032863",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1778048052,
+      "is_internal": true,
+      "post_text": "Some things I don&#x27;t understand with MCP vs. CLI<p>Permissions: you can already scope CLI command permissions<p>Discoverability: you can already discover commands&#x2F;arguments with a help flag<p>Why add a whole other process to the computer?<p>Do MCP proponents imagine in the future every program on your PC has another MCP process also running?<p>It seems like adding extra complexity&#x2F;moving parts for not much benefit.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48035508",
+      "title": "Ask HN: How to start up as an individual developer?",
+      "link": "https://news.ycombinator.com/item?id=48035508",
+      "domain": "news.ycombinator.com",
+      "author": "alexyan0431",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1778071045,
+      "is_internal": true,
+      "post_text": "I have been trying to become an individual developer for a period, and have developed several tools or little projects (mainly open source). Some of them actually are very helpful at least to me, but unfortunately I am the only one to use them.<p>No pull requests, no issues, even no stars except the only one from myself. I found it hard for them to be seen. I feel down because if there are no users, I can&#x27;t get any feedbacks and it&#x27;s hard for me to improve my projects. I feel trapped into a hole and can do nothing but to stay at the origin and get drowned.<p>How can I promote my open-source projects (and maybe products in the future) ? I&#x27;ll really appreciate it if someone with related experiences can offer me some advice.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "What do you find them useful for? Could they potentially provide value to another open source project if integrated?",
+          "author": "milkytron",
+          "replies": []
+        },
+        {
+          "top": "You could start by putting a link to your projects or blogs in your HN profile.",
+          "author": "didgetmaster",
+          "replies": []
+        },
+        {
+          "top": "Please share some of your tools.",
+          "author": "hnarayanan",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48038988",
+      "title": "Ask HN: How do I get freelance developer jobs?",
+      "link": "https://news.ycombinator.com/item?id=48038988",
+      "domain": "news.ycombinator.com",
+      "author": "downbad_",
+      "score": 5,
+      "comment_count": 4,
+      "created_ts": 1778088721,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "freelance"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48018160",
+      "title": "Ask HN: Why would we care about \"extended time horizons\" and LLMs?",
+      "link": "https://news.ycombinator.com/item?id=48018160",
+      "domain": "news.ycombinator.com",
+      "author": "ozozozd",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1777956525,
+      "is_internal": true,
+      "post_text": "Is it more impressive to take longer to answer 2 + 2? It’s not. The longer one takes, the less intelligent we would rate that person.<p>Somehow for AI agents taking longer is getting praise with the framing “maintaining attention for long-time horizons?”<p>Have we collectively gone down to room temperature IQs with COVID?<p>Why would the time dimension matter for a tool that is limited in context window? Doesn’t matter if you fill up the window in 1 second or 60 minutes. Also, it’s super easy to game. Insert random lags, reduce tokens&#x2F;sec, there you have a model that maintains attention over “long-time horizons”<p>Maybe more importantly how do people in this field buy into these easily game-able non-indicators so easily? How did they not develop the instinct to instantly call out metrics like lines of code, number of tokens burned or time taken to process a task as BS the instant they hear it?<p>How do they benchmark their code? The longer running the better? Number of CPU cycles spent?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
