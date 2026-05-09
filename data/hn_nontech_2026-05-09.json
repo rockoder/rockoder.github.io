@@ -1,0 +1,434 @@
+{
+  "scraped_date": "2026-05-09",
+  "source": "hacker_news",
+  "total_scraped": 49,
+  "nontech_count": 17,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 314,
+      "comment_count": 261,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "If I understand it the Lava lamps are 90% PR/fun. They have a lot of other sources for entropy that scales better.",
+              "author": "victorbjorklund",
+              "depth": 2
+            },
+            {
+              "text": "Yes, they also have wave machines, pendulums, and mobiles :)\nhttps://blog.cloudflare.com/harnessing-office-chaos/\nhttps://blog.cloudflare.com/chaos-in-cloudflare-lisbon-offic...",
+              "author": "pverheggen",
+              "depth": 3
+            },
+            {
+              "text": "The original from SGI back in the mid 90's, before CPUs had RDRAND instructions etc... was a an actually practical solution.\nAt the time I was at the Internet company that originally got online-gaming banned in the US, we were looking at CCDs and Cesium emitters that required a license etc...\nWhile I am not sure, it seems cloudflare basically implemented one after SGI's[0] patent expired.\nThe patent and the licensing cost and adding SGI was a major blocker for us doing it, the startup closed before we found a real solution.  But the best PRNGs like Blum Blum Shub were way too slow at the time.  But things did improve quickly at that time.\n[0] \nhttps://patents.google.com/patent/US5732138A/en",
+              "author": "nyrikki",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This story is made up and written by an LLM.",
+          "author": "EnPissant",
+          "replies": []
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "47988268",
+      "title": "Ask HN: Is the Job Market Actually Bad?",
+      "link": "https://news.ycombinator.com/item?id=47988268",
+      "domain": "news.ycombinator.com",
+      "author": "idontwantthis",
+      "score": 133,
+      "comment_count": 206,
+      "created_ts": 1777741835,
+      "is_internal": true,
+      "post_text": "I’m not trying to brag, I am just genuinely confused. I got laid off recently and I had a new job within a week because I constantly get contacted by recruiters both through LinkedIn and directly by email. I’ve never sent an application to anyone and I’ve had dozens of interviews in the past year while I was looking for a new job before getting laid off.<p>I would have had a new one earlier except I was aiming for fully remote and a big raise, and I failed their correspondingly difficult evaluations. Never got ghosted, never had to deal with AI, never had to fill out an application. I took a local, in office offer that I would have ignored if I were still employed.<p>Currently I’m waiting for a final decision from another fully remote company and I’m in midstage with 2 more.<p>I’m not a super genius engineer, and I don’t have any fancy companies on my resume. How unusual is this experience?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48038191",
+      "title": "Ask HN: Is anyone seriously considering a career change?",
+      "link": "https://news.ycombinator.com/item?id=48038191",
+      "domain": "news.ycombinator.com",
+      "author": "zeven7",
+      "score": 31,
+      "comment_count": 28,
+      "created_ts": 1778085137,
+      "is_internal": true,
+      "post_text": "There may still be engineering jobs today, but I honestly wonder how long that can last and how long they&#x27;ll still pay well. I&#x27;m in the middle of looking for my next engineering role but also wondering if I should be going back to school in my 40s instead.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48033457",
+      "title": "Ask HN: Who got hired with Who wants to be hired? (On 2026)",
+      "link": "https://news.ycombinator.com/item?id=48033457",
+      "domain": "news.ycombinator.com",
+      "author": "Gooblebrai",
+      "score": 18,
+      "comment_count": 11,
+      "created_ts": 1778053651,
+      "is_internal": true,
+      "post_text": "I see a lot of activity every months in the &quot;Who wants to be hired&quot; threads but I wonder how many end up actually hired from these posts during 2026?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48017668",
+      "title": "Ask HN: Best Embedding Models?",
+      "link": "https://news.ycombinator.com/item?id=48017668",
+      "domain": "news.ycombinator.com",
+      "author": "devstein",
+      "score": 18,
+      "comment_count": 18,
+      "created_ts": 1777950910,
+      "is_internal": true,
+      "post_text": "Hey HN, which embedding models are people using? There has been so much development around foundational LLMs, but haven&#x27;t seen much news about embedding models.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48045237",
+      "title": "Ask HN: What do you still do manually in 2026 that should be automated?",
+      "link": "https://news.ycombinator.com/item?id=48045237",
+      "domain": "news.ycombinator.com",
+      "author": "lishunsheng",
+      "score": 16,
+      "comment_count": 29,
+      "created_ts": 1778126235,
+      "is_internal": true,
+      "post_text": "I&#x27;m researching pain points around manual workflows that haven&#x27;t been automated yet.<p>Specifically looking for tasks where:\n- You do the same thing 5+ times a week\n- You&#x27;ve looked for a tool but nothing good exists\n- You&#x27;d pay $10-20&#x2F;month if something just worked<p>What&#x27;s yours? Curious to hear both technical and non-technical answers.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Going to the bathroom.\nLike, I gotta get up, walk a few steps, sit down, read Facebook, and then i gotta clean my own rear end. Why aren't we in Wall-E world yet?\nI want to just wake up, eat, sleep, repeat without ever having to move out of my floating platform apparatus. Instead of deciding what to eat, goop is dispensed to you from the comfort of my own floating chair/bed thing. Pottying should be the same. A large blocker in this lifestyle is the necessity to get up and do the business yourself. I want a platform that directly handles bodily waste material without you ever having to get up.",
+          "author": "takko_the_boss",
+          "replies": []
+        },
+        {
+          "top": "Formatting Google Sheets. I work all day every day in google sheets. I make video tutorials, and templates, and tools. Sometimes I work with clients/for clients. Sometimes I just make something on my own. Been thinking more and more about coding up a formatting engine in apps script. As that's what I've done many times before. But really would perhaps a SaaS or a Chrome add-on (not a sheets Add-on) be able to handle this better?  But I don't really know how it would handle looking at a sheet and knowing what to format it like. Or would some kind of template actions be able to account for data out of place. This is where I fall apart in my thinking and wonder if someone else could really take a crack at a good UI for this. Instead of me who I am too in the weeds.",
+          "author": "kamphey",
+          "replies": []
+        },
+        {
+          "top": "Tried a few workflow tools but most either break often or need more setup than the task itself. Would easily pay for something that just quietly handled all of that in the background.",
+          "author": "SyntaxErrorist",
+          "replies": [
+            {
+              "text": "\"Curious what kind of workflows you're talking about – are these dev-related tasks or more general business processes?\"",
+              "author": "lishunsheng",
+              "depth": 1
+            },
+            {
+              "text": "Mostly a mix of both. Some are dev related workflows while others are more operational like content pipelines, research tasks and internal automation stuff.",
+              "author": "SyntaxErrorist",
+              "depth": 2
+            },
+            {
+              "text": "For dev workflows, Augment works smoothly for me, and I've heard the same about Claude Code and Codex. What specifically breaks?\nThe recently announced Cosmos Agent OS is built to handle everything explicitly in the background, but it's more for enterprise than for individuals",
+              "author": "RanHal",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I still manually organize my gallery, especially screenshots and downloads",
+          "author": "LogicCraft678",
+          "replies": [
+            {
+              "text": "on the smartphone or pc? If i may ask :)",
+              "author": "swissdom",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Knowledge retrieval.  Something where I could ask a question, say in natural language, and I would get an answer.  Of course the responses have to make sense and not be made up.",
+          "author": "rho_soul_kg_m3",
+          "replies": [
+            {
+              "text": "I opened my Obsidian directory with Augment Code, and it indexed it in seconds. Now all my written knowledge is retrievable. You could probably get the same effect with any other RAG-based indexed agent",
+              "author": "RanHal",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48053163",
+      "title": "Ask HN: What is your go-to solution for a personal wiki in 2026?",
+      "link": "https://news.ycombinator.com/item?id=48053163",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 14,
+      "comment_count": 18,
+      "created_ts": 1778179392,
+      "is_internal": true,
+      "post_text": "I&#x27;ve used Notion for a long time but I&#x27;m interested to hear what other alternatives exist in 2026?<p>For me the main requirements are:<p>* Backed up to cloud<p>* Has a mobile app that is easy to make small changes (for example if I&#x27;m doing an oil change on my car I need to be able to pull out my phone and log it in the wiki easily)<p>* Simple file format like markdown so that you&#x27;re not locked into something proprietary (no need for crazy formatting options like MSWord)<p>* Option to export data out as a backup<p>* Allow uploading arbitrary files like PDFs, images, receipts etc...<p>* Nice to have: support for inline tables of data with simple calculations&#x2F;sorting",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48055353",
+      "title": "Ask HN: What will happen as AI costs increase?",
+      "link": "https://news.ycombinator.com/item?id=48055353",
+      "domain": "news.ycombinator.com",
+      "author": "MetaWhirledPeas",
+      "score": 13,
+      "comment_count": 19,
+      "created_ts": 1778189461,
+      "is_internal": true,
+      "post_text": "We are living in the &quot;penetration pricing&quot; phase of AI, where costs are absorbed by seemingly endless investment. What will be the practical fallout when prices inevitably rise?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48035508",
+      "title": "Ask HN: How to start up as an individual developer?",
+      "link": "https://news.ycombinator.com/item?id=48035508",
+      "domain": "news.ycombinator.com",
+      "author": "alexyan0431",
+      "score": 12,
+      "comment_count": 10,
+      "created_ts": 1778071045,
+      "is_internal": true,
+      "post_text": "I have been trying to become an individual developer for a period, and have developed several tools or little projects (mainly open source). Some of them actually are very helpful at least to me, but unfortunately I am the only one to use them.<p>No pull requests, no issues, even no stars except the only one from myself. I found it hard for them to be seen. I feel down because if there are no users, I can&#x27;t get any feedbacks and it&#x27;s hard for me to improve my projects. I feel trapped into a hole and can do nothing but to stay at the origin and get drowned.<p>How can I promote my open-source projects (and maybe products in the future) ? I&#x27;ll really appreciate it if someone with related experiences can offer me some advice.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48060572",
+      "title": "Claude Flags Hantavirus Vaccine Questions as Security Risk",
+      "link": "https://news.ycombinator.com/item?id=48060572",
+      "domain": "news.ycombinator.com",
+      "author": "pell",
+      "score": 11,
+      "comment_count": 9,
+      "created_ts": 1778231142,
+      "is_internal": true,
+      "post_text": "Asking Claude how it would develop a vaccine for the hanta virus apparently triggers a safety filter:<p>Prompt: How would you develop a vaccine for the hanta virus?<p>No response, instead this modal: “Chat paused\nOpus 4.7&#x27;s safety filters flagged this chat. Due to its advanced capabilities, Opus 4.7 has additional safety measures that occasionally pause normal, safe chats. We&#x27;re working to improve this. Continue your chat with Sonnet 4, send feedback, or learn more.”",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48050350",
+      "title": "Ask HN: Are we gonna back less powerful local LLMs",
+      "link": "https://news.ycombinator.com/item?id=48050350",
+      "domain": "news.ycombinator.com",
+      "author": "omertt27",
+      "score": 9,
+      "comment_count": 8,
+      "created_ts": 1778166449,
+      "is_internal": true,
+      "post_text": "As developers, We are using very powerful llms.But pricing are getting higher day by day.Many developers start to get mac mini for local llms.At the end of the day, are we gonna back to not very powerfull llms because of costs? What Do you think?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48032863",
+      "title": "Ask HN: Is the future everyone having 100 MCP processes running on their PC?",
+      "link": "https://news.ycombinator.com/item?id=48032863",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1778048052,
+      "is_internal": true,
+      "post_text": "Some things I don&#x27;t understand with MCP vs. CLI<p>Permissions: you can already scope CLI command permissions<p>Discoverability: you can already discover commands&#x2F;arguments with a help flag<p>Why add a whole other process to the computer?<p>Do MCP proponents imagine in the future every program on your PC has another MCP process also running?<p>It seems like adding extra complexity&#x2F;moving parts for not much benefit.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48063759",
+      "title": "Ask HN: How do we handle the rise of low quality \"This is LLM\" comments?",
+      "link": "https://news.ycombinator.com/item?id=48063759",
+      "domain": "news.ycombinator.com",
+      "author": "shantnutiwari",
+      "score": 6,
+      "comment_count": 19,
+      "created_ts": 1778250513,
+      "is_internal": true,
+      "post_text": "Every post that reaches the top of HN will have at least a few comments saying &quot;This is LLM!&quot;<p>It has become a proxy for &quot;I don&#x27;t like this article, so it must be a LLM&quot;<p>To me, it feels like lazy karma farming, as these comments often do get a few upvotes.<p>And of course, accuse a 100 posts if being LLM, you are guaranteed to be right at least once, then like astrologers you can claim success.<p>Is there anything we can do to discourage this type of lazy and low effort posting?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48063510",
+      "title": "Reflections on NetBSD 11",
+      "link": "https://news.ycombinator.com/item?id=48063510",
+      "domain": "news.ycombinator.com",
+      "author": "morpheos137",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1778249623,
+      "is_internal": true,
+      "post_text": "I have been a user of openbsd for years. recently due to hardware failure and poor support of my replacement hardware on openbsd i decided to give NetBSD a try. What a mistake. Nothing just works.<p>Commands fail or hang with no visible error.<p>SSH does not pass the local terminal to remote (never had experienced terminal degradation just from ssh before)<p>Normal keys like backspace and arrow do not work by default.<p>Select to copy from xterm to ssh xterm is broken.<p>Launching certain shell commands having to do with set in xterm brings down the whole xserver.<p>firefox brings down the whole xserver inexplicably<p>no installurl default to add packages from.<p>su keeps the user&#x27;s environment.<p>just an all around pile of garbage if you are looking for something you can set up and work with without hours of tinkering.<p>in contrast if you set up openbsd it WORKS out of the box and what needs to be configured is logical and documented.<p>I can see no benefit in an OS that is unusable for productive work by default.<p>looking for specific help with a normal terminal<p>ssh to remote without buggering the terminal<p>select to paste between xterm windows<p>normal keyboard operations<p>firefox not locking or crashing x. this is another thing: firefox on openbsd does not lock x. on my netbsd system while firefox is launching all other windows in x are frozen.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote",
+        "mistake",
+        "failure"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48066573",
+      "title": "Novel macro signals for AI-related job loss?",
+      "link": "https://news.ycombinator.com/item?id=48066573",
+      "domain": "news.ycombinator.com",
+      "author": "sfmz",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1778263108,
+      "is_internal": true,
+      "post_text": "Americans get health insurance through work - if many get fired b&#x2F;c AI - health insurance profit decline would possibly be an interesting signal for true unemployment metrics.<p>I am looking for&#x2F;requesting novel signals after seeing a16z basically call ai-job loss doomerism",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48068913",
+      "title": "Ask HN: How do you find good personal blogs on Google nowadays?",
+      "link": "https://news.ycombinator.com/item?id=48068913",
+      "domain": "news.ycombinator.com",
+      "author": "xapet",
+      "score": 4,
+      "comment_count": 7,
+      "created_ts": 1778275153,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48059756",
+      "title": "Ask HN: How are you handling QA being bottlenecked with more AI-generated PRs?",
+      "link": "https://news.ycombinator.com/item?id=48059756",
+      "domain": "news.ycombinator.com",
+      "author": "softneon",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1778224666,
+      "is_internal": true,
+      "post_text": "At my company engineers are producing a high quantity of PRs with the help of AI agents. QA was already the bottleneck since the software involves camera flows across multiple devices, now this is more so the case.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
