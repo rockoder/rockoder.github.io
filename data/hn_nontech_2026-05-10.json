@@ -1,0 +1,434 @@
+{
+  "scraped_date": "2026-05-10",
+  "source": "hacker_news",
+  "total_scraped": 100,
+  "nontech_count": 4,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 427,
+      "comment_count": 320,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "> There is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThis blew my mind. Thank you!\nI had to think about it a bit, so for anyone scratching their head right now trying to figure it out, consider it this way:\nwhat matters is the ordering, of heads-then-tails, or tails-then-heads.\nIt doesn't matter that it's biased one way or the other, if you keep flipping pairs until you get a result with two \ndifferent\n values, it's a 50/50 chance whether the less-likely result comes first, or second.\nYou might only have a 20% chance of any particular pair having a tails (for example), but in the cases where you do have a tails, it's a 50/50 chance that it comes first or second.",
+              "author": "ms_menardi",
+              "depth": 3
+            },
+            {
+              "text": "And for people who like equations, here is my attempt at explaining it.\nAssume each flip is independent and the bias remains same in each flip.\nLet\n  P(H) = p,\n  P(T) = 1 - p.\n\n\nThen\n  P(HH) = p^2,\n  P(HT) = p(1 - p),\n  P(TH) = (1 - p)p,\n  P(TT) = (1 - p)^2.\n\n\nTherefore\n  P(HT or TH) = 2p(1 - p).\n\n\nNow calculate\n  P(HT | HT or TH) = p(1 - p) / (2p(1 - p)) = 1/2,\n  P(TH | HT or TH) = (1 - p)p / (2p(1 - p)) = 1/2.",
+              "author": "susam",
+              "depth": 4
+            },
+            {
+              "text": "You don't need conditional probability here, as the flips are independent.\nIt's just p(H)p(T).\nAnd p(H)p(T) = p(T)p(H), thus 2*p(H)p(T) = 2p(1-p).",
+              "author": "taegee",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Damn, I got the paper stack wet with all that ocean water. Guess I'm starting again from scratch...",
+              "author": "dalmo3",
+              "depth": 2
+            },
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            },
+            {
+              "text": "They have been not at work on doing that.",
+              "author": "ted_dunning",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "What you're talking about is so extremely rare that it's much more likely that the entire Earth is destroyed by an asteroid right this inst...",
+          "author": "adyavanapalli",
+          "replies": [
+            {
+              "text": "It is not quite as rare. I calculated it to be less common than being hit by a meteorite, and added a section about that and the Birthday Paradox to Wikipedia, to the article about UUIDs. It got removed / replaced a few years ago however. (If my source was correct, there was actually a woman hit by a meteorite, but she survived, with a leg injury.)\nIf you do have a UUID collision, chances are extremely high that it's either a software bug, or glitch in the computer. It could be a cosmic ray. Cosmic rays messing with the computer memory or CPU are actually relatively common.",
+              "author": "thomasmg",
+              "depth": 1
+            },
+            {
+              "text": "About as rare as an asteroid typing an ellipsis and clicking the add comment button.",
+              "author": "delichon",
+              "depth": 1
+            },
+            {
+              "text": "Well, this joke dates back to (at least) the dial-up days where {#`%${%&`+'${`%& NO CARRIER",
+              "author": "throw0101c",
+              "depth": 2
+            },
+            {
+              "text": "That’s just a result of jounce from localized gravity effects and atmospheric pressure disturbances in the moments before impact.\nThink the ultrasonic typing hacking scene in Pantheon combined with the keyboard bouncing due to rumbling.",
+              "author": "xerox13ster",
+              "depth": 2
+            },
+            {
+              "text": "It's very common if you improperly seed, as others in the thread brought up! Or in your framing, as rare as earth getting hit if it were surrounded by a sci-fi density asteroid field.",
+              "author": "spindump8930",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48063548",
+      "title": "Show HN: Git for AI Agents",
+      "link": "https://github.com/regent-vcs/re_gent",
+      "domain": "github.com",
+      "author": "doshay",
+      "score": 114,
+      "comment_count": 65,
+      "created_ts": 1778249736,
+      "is_internal": false,
+      "post_text": "hi guys.\nbeen working on something i think is fundamentally missing in today&#x27;s workflow with ai agents.<p>vcs.<p>i find myself struggling with questions that agents can&#x27;t answer like &quot;why did you do it?&quot;, &quot;when did u delete this folder? why?&quot;, etc. or trying to &#x2F;rewind (after a &#x2F;compact...) or basically `bisect` to find when and why something was done by the agent in the current &#x2F; previous session.<p>just like git did for code, i think we are the same core capabilities with ai agents<p>so...<p>i developed an open source solution for that (currently supporting claude code)<p>would love to get feedback, contribution or maybe other ideas or solutions you find for those problems.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "People in this thread seem to be too focused on the agent creating a git log. This seems to be solving a different problem than that does.\nWhen you're interacting with agents, multiple prompts may reasonable culminate in a single commit. It may be useful to track or undo things between commits - at the prompt level. I personally have a workflow when I use Jujutsu (jj) for git already, and this slotted in very nicely to solve this problem. The auto-committing in jj makes it very easy and natural to compare diffs between prompts, and undo specific chunks or restore previous states without making a new commit every prompt. I only finish a commit, giving it a message and advancing the branch, once I've iteratively dialed in the changes I want.\nI probably won't use this tool since I already have a flow that works for me, but maybe this will help people see why such a tool can be helpful.\nEdit: fixed typo",
+          "author": "Zambyte",
+          "replies": [
+            {
+              "text": "tnx for the honest feedback! really, appreciate it!\nwould you mine sharing more details about your workflow with jj?",
+              "author": "doshay",
+              "depth": 1
+            },
+            {
+              "text": "Sure. I was a bit loose with my vocab in my previous comment - I'm going to try to be more specific by using the terms as defined in the jj glossary[0] (particularly \"change\" vs \"commit\").\n  - I start by using jj new to create a new change where I want to start working.\n  - I open codex, and prompt it to do something.\n  - Roughly every prompt, I will naturally check the cumulative diff using jj diff.\n  - If I want to check the diff log of the working change, I'll use jj evolog.\n  - If I want to check the diff from the previous prompt, I'll use jj diff -f xx/1, where xx is the short change ID for the working change, and 1 is how many prompts ago I want to look at the diff for (jj evolog can help with finding the change I'm interested in)\n  - If I want to undo all or some of what a prompt did, I'll use jj restore -f xx/1, potentially with -i or a fileset.\n  - When I've prompted / restored / made changes myself to the point where I am happy with a change, I'll usually ask codex to write a conventional commit message for <commit_id>. Codex will then use *git* to look at the diff in that commit (which has no commit message), and give it will usually give an appropriate commit message[1] (sometimes I'll tweak this if there are details I want to add or remove). I use jj ci (short for jj commit) to finish the change and add the commit message.\n  - I'll then advance bookmarks as necessary with jj b m (short for jj bookmark move) and probably push.\n\n\n[0] \nhttps://www.jj-vcs.dev/v0.41.0/glossary/\n[1] \nhttps://www.conventionalcommits.org/en/v1.0.0/",
+              "author": "Zambyte",
+              "depth": 2
+            },
+            {
+              "text": "cool approach,\ni havent used jj actually in my workflow, ill try to adopt",
+              "author": "doshay",
+              "depth": 3
+            },
+            {
+              "text": "That's actually the one feature of cursor that i really miss in claude, even though I need it a lot less often.",
+              "author": "empath75",
+              "depth": 1
+            },
+            {
+              "text": "Hit ESC-ESC in the Claude Code terminal.",
+              "author": "adastra22",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I think this is very interesting but you need a better slogan.\nMany people here made comments such as “why do I need another SVC since agents are pretty good with git”, which means they barely read your blurb and did not understand your project.",
+          "author": "clutter55561",
+          "replies": [
+            {
+              "text": "Agree. The slogan or header should what is in the first sentence. “Version Control for AI agent activity”",
+              "author": "infecto",
+              "depth": 1
+            },
+            {
+              "text": "absolutely right, i got this feedback from many people actually ...",
+              "author": "doshay",
+              "depth": 1
+            },
+            {
+              "text": "maybe the intro sentence needs changed then. if your elevator pitch is losing the room, change the pitch.",
+              "author": "flowardnut",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just use git. If your agent (especially claude) doesnt seem to know how, there are skills and hooks and other options to make it work. My 2c.",
+          "author": "tfrancisl",
+          "replies": [
+            {
+              "text": "Just read before posting. My 2c.",
+              "author": "cyclopeanutopia",
+              "depth": 1
+            },
+            {
+              "text": "I have found that git.exe outperforms any other codebase representation with GPT5.x once you figure out how to not mangle the arguments. Commands like \ngrep\n and \nlog\n can replace a lot of other tools if you can use them reliably.",
+              "author": "bob1029",
+              "depth": 1
+            },
+            {
+              "text": "Exactly like I didn’t do anything super important - but I just tell agent “commit after successful build.\nI think it would work with “commit before you want to delete stuff” the same way.",
+              "author": "ozim",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This seems easily solved with a tool use hook that calls git add .; git commit a -m \"<tool description>\", specifying an alternate .git directory if desired",
+          "author": "lifis",
+          "replies": [
+            {
+              "text": "but then you would have to commit each tool and action of the agents, which is polluting the git history and also huge overhead (at least imo)",
+              "author": "doshay",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Everything but trivial changes should go through a prompt -> plan -> impl phase where you revise a concrete plan file until it's ready for impl.\nNow impl is just a derivation of the plan, and the plan gets checked in with the same commit so that you can see the why, the intent, the objective, the research that informed the decisions.\nMuch simpler, and a much, much more effective process than prompt -> impl.",
+          "author": "hombre_fatal",
+          "replies": [
+            {
+              "text": "yep. i built recursive-mode for this. it offers full traceability with workflow run docs that are human-readable. as a bonus, you can also use this to train or finetune your model. \nhttps://recursive-mode.dev/introduction",
+              "author": "try-working",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48080587",
+      "title": "Show HN: Building a web server in assembly to give my life (a lack of) meaning",
+      "link": "https://github.com/imtomt/ymawky",
+      "domain": "github.com",
+      "author": "imtomt",
+      "score": 47,
+      "comment_count": 13,
+      "created_ts": 1778382104,
+      "is_internal": false,
+      "post_text": "This is ymawky, a static file web server for MacOS written entirely in ARM64 assembly. It supports GET, PUT, DELETE, HEAD, and OPTIONS requests, and supports Range: bytes=X-Y headers (which allows scrubbing for video streaming). It decodes percent-encoded URLs, strictly enforces docroot, serves custom error pages for any HTTP error response, supports directory listing, and has (some) mitigations against slowloris-like attacks.<p>I’ve also written a more detailed writeup here: <a href=\"https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "I don’t know why, but this project has me irrationally excited!",
+          "author": "digitaltrees",
+          "replies": []
+        },
+        {
+          "top": "Gave me a warm feeling to know that someone would actually still bother to do this by hand. I'm not the only one!",
+          "author": "trollbridge",
+          "replies": [
+            {
+              "text": "Thank you! I've been obsessed with this idea for a while, finally decided to start on it, then obsessed over it for a couple weeks. I'd love to see some of your projects if you have anything similar, I'm glad I'm not the only one too! I think most programmers would benefit a lot from taking a few weeks or months to try and learn some assembly, and demystify how CPUs and compiled languages work.",
+              "author": "imtomt",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I feel the guy’s suspicion towards any high level language. I exclusively programmed in assembly on C64, Amiga and the recognized that this ain’t sustainable on PC because there are more and more edge cases or different machine configurations.\nI had a very hard time simply using and even utilizing C++ or Java.\nC and Turbo Pascal especially was easier because the compiled code was very much resembling to hand written code.\nAs the author described, you can do in 4.000 lines what others can do with way less pain in 100.\nSo you build macros, come up with your own library and in the end you kind of build a meta language build on top of assembly because some lines are so hard to grasp that you delegate working code into a library for reuse.\nIt is funny how much we take conventions for numbers for granted. If you happen to know assembly and its intricacies you immediately will learn to work with a sign bits which mark negative numbers. But how do you know? Maybe you use the whole addressable space only for positive numbers.\nSmall things that make a huge different.\nNice article, I enjoyed your adventures and would do the same.",
+          "author": "_the_inflator",
+          "replies": []
+        },
+        {
+          "top": "I'm wanting to read this repository as a learning tool, so it'd also be nice to include docs—even AI-generated docs, but obvious I'd prefer docs with your own design notes and decisions—about the architecture of the code.\nReally cool project though!",
+          "author": "thatxliner",
+          "replies": [
+            {
+              "text": "Thanks, I appreciate it a lot! I tried to comment my code pretty heavily (~3000 lines of code, ~1000 lines of comments all together), since this was a learning project for myself in the first place. Hopefully those will be of some use. But separate in-depth documentation is definitely a good idea, I'll work on adding that. In the meantime I'm always down to answer any questions about it!",
+              "author": "imtomt",
+              "depth": 1
+            },
+            {
+              "text": "My first question would be where should I start reading? It seems like you modularized it into multiple assembly files (how does that even work?)",
+              "author": "thatxliner",
+              "depth": 2
+            },
+            {
+              "text": "Honestly, read the main file, ymawky.S first. Then I'd read through get.S maybe, checking parse.S on an as-needed basis for parsing-related functions. delete.S or options.S are pretty short, too, so give those a read too.\nModularizing it into multiple files was easier than I expected it to be, you basically have other functions/labels in other files, and mark them as .global at the top. The Makefile compiles each file into their own .o, which you then link all together. You can \"b\" or \"bl\" to any label from any other file, as long as it's global and linked together. Same with data in .bss or .data, mark them as .global and they can be accessed from elsewhere.",
+              "author": "imtomt",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "That fake O'Reilly book cover is pure gold.",
+          "author": "chrisweekly",
+          "replies": [
+            {
+              "text": "That book is exactly what inspired me to make this in the first place, haha. The subtitle of the book gave me the acronym I named it.",
+              "author": "imtomt",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48075059",
+      "title": "Show HN: Mochi.js: bun-native high-fidelity browser automation library",
+      "link": "https://mochijs.com/",
+      "domain": "mochijs.com",
+      "author": "ccheshirecat",
+      "score": 39,
+      "comment_count": 19,
+      "created_ts": 1778335300,
+      "is_internal": false,
+      "post_text": "Hi HN,<p>I’m sharing mochi.js (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;0xchasercat&#x2F;mochi\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;0xchasercat&#x2F;mochi</a>), a Bun-native, raw-CDP browser automation framework. It&#x27;s designed to make programmatic browser use more effective by focusing on consistency and measured parity with regular traffic, purely from the JS layer, against stock Chromium.<p>The most common forms of browser automation focus heavily on client-side line by line probes, which are mostly cosmetic. This makes people feel better but it doesn&#x27;t have much relevance to actual WAF or anti-automation defences.<p>Mochi.js focuses on what actually matters, allowing you to get past captchas, WAF&#x27;s and most defence mechanisms. In fact, in some cases it actually outperforms chromium forks simply by virtue of not having to lie.<p>The foundation is built on a probe manifest based on analyzing several WAF&#x27;s and trying to cover most of the ground that matters, and from there building upwards while ensuring every decision is backed by data. Solves turnstile&#x2F;interstitial automatically, single digit fpjs suspect score, very good client-side results, though browserscan and a few others are known limitations that are fundamentally conflicting with what WAF&#x27;s probe for.<p>I&#x27;ll be here if anyone wants to discuss the details, check out the docs and github. It&#x27;s completely free and open source, MIT, strictly no relationship to any proprietary products whatsoever. No affiliation to patched chromium forks, or SaaS.<p>But I also want to talk about why I built this, because the current paradigm of &quot;bot detection&quot; is fundamentally broken.<p>Traditionally they would probably try to label my repository a malicious tool, or at best, a grey hat one.<p>Let&#x27;s take Turnstile for example,  If you attach a debugger to see what data they are extracting from your hardware, their script intentionally self-destructs.\nWhen they try to extract your data—acting as a guest on your silicon, using your electricity, without asking, the industry calls it &quot;Security.&quot;<p>But if you write a script to control exactly what data your own hardware emits, refusing to provide the data they have no right to ask for, you are suddenly labeled a &quot;Malicious Actor&quot; engaged in &quot;Bot Evasion.&quot;<p>I find it absurd we let ourselves put up with this, and the stance of the bot-evasion community only makes them feel more able to take a higher moral ground.<p>I have built a library that respects my hardware&#x27;s reality. If that breaks your security model, that&#x27;s because your security model relies on trespassing and secrecy. I stopped apologizing. Who&#x27;s next?<p>Mochi is the exact opposite of WAF opacity. It is a glass box. It is MIT-licensed. The entire DAG, fingerprint manifest schema, harvesting process, is documented. We even commit our live benchmarks to the public record (mochi on a Linux datacenter IP scored a suspect_score: 8 and bot: not_detected against FingerprintJS Pro v4).<p>We don&#x27;t even lie unnecessarily. We default to host-OS matching. If you run mochi on a Linux server, it uses privacy-sensible fingerprints for Linux, not Windows, because Linux is a real-user signal. It proves that WAFs aren&#x27;t actually blocking what most people think they are, which begs the question of what they are really doing in that obfuscated payload.<p>The legitimacy argument is exactly how they captured the narrative. And nobody challenged it because the people on the other side were too busy acting like they were doing something wrong.<p>Is this a conspiracy theory? For sure, but only because they allow it to be. Try make a conspiracy theory about the sticky riceball.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "It's worth flagging that the homepage and the docs are both nearly unreadable on mobile. If you're going to have cheeky rhetoric like \"no crumbs\" please take the time to actually test the pages your LLM made for you in a bunch of different ways.",
+          "author": "bastawhiz",
+          "replies": [
+            {
+              "text": "Reads fine for me. I’m getting a bit worn out with the number of  ‘if you’re going to use an LLM then take the time to …’ posts. I’ve looked at plenty of HN submissions that don’t render at all on mobile and yes I found it frustrating but didn’t just attribute it to an LLM.",
+              "author": "jarym",
+              "depth": 1
+            },
+            {
+              "text": "Check the cards that are wrapped, along with the footer",
+              "author": "ramon156",
+              "depth": 2
+            },
+            {
+              "text": "They're nearly unreadable on desktop, too. The prose is incomprehensibly jargon-heavy, I literally have no idea what it's talking about.",
+              "author": "SwellJoe",
+              "depth": 1
+            },
+            {
+              "text": "I feel the same. I have no idea what “CDP” and “WAF” means in this context.\nI feel awkward about all this probably-LLM-generated prose that does not respect me enough as a reader to explain acronyms and give context.",
+              "author": "david_p",
+              "depth": 2
+            },
+            {
+              "text": "hate to tag along on this take but i agree\n\"...browser automation framework...\" was about all i understood\nand even then it had me guessing if it was talking about an alternative e2e testing framework like cypress, selenium, playwright.....and somehow I was right lmao (i think?)\nbut literally all the other jargon there had me stumped. I'm still afraid to google\n  a getParameter(0x9245) probe\n\n\nLikewise, the text does come across to me as LLM heavy (with a spice of pizzazz), but even as a dev who uses playwright I doubt I would change after seeing this.\nTo OP: not convincing enough.\nMaybe this is targeted towards super users who are deep in the weeds of various browser automation framework internals.\nA better marketing approach towards someone like me who just uses this to test my apps e2e and be done with it, would be to have simple cliches like:\n  \"10x faster than playwright\", \n  \n  \"Same API\", \n  \n  \"Did we mention....SUPER FAST!?\"\n\n\nI might call bs on that, but I'd be more likely to try it out.",
+              "author": "BandButcher",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I tried running the hello-mochi.ts and just modified the URL and removed the session closing:\n- Trying to navigate to `\nhttps://deviceandbrowserinfo.com/are_you_a_bot\n` crashes it for some reason\n- Trying to go to `\nhttps://grok.com\n` and the page doesn't render\nI wished it actually worked because I use my own hand-rolled thin-wrapper over CDP and I would love for a more robust solution to avoid being detected, but man this does not inspire confidence.",
+          "author": "simjnd",
+          "replies": []
+        },
+        {
+          "top": "> The entire DAG, fingerprint manifest schema, harvesting process, is documented. We even commit our live benchmarks to the public record (mochi on a Linux datacenter IP scored a suspect_score: 8 and bot: not_detected against FingerprintJS Pro v4).\nDoesn't this defeats the purpose? Essentially giving away the mechanism to the ones implementing fingerprint so they can learn how to detect you and starting a cat/mouse chase in the open\nThere's a reason why some kinds of technology stay opaque, not always publishing these things help in the way you think they do",
+          "author": "hmokiguess",
+          "replies": [
+            {
+              "text": "it's not that much of a black box when you can literally see the API's they call(albeit some with more effort than others), but i prefer not to engage in theatre..",
+              "author": "ccheshirecat",
+              "depth": 1
+            },
+            {
+              "text": "fair point, I was mostly referring to how certain things are only useful because they do not have wide adoption and pushing for adoption breaks their value (meaning widespread adoption leads to the other side catching up to it)",
+              "author": "hmokiguess",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Off topic, but the name reminds me of mochikit and early JS library in the JQuery kind of area.\nMochikit got bundled with Turbogears an early Rails like Python framework. Rails inspired a lot of frameworks back then. Must be over 20yrs ago.",
+          "author": "antod",
+          "replies": []
+        },
+        {
+          "top": "Forget all the fancy fingerprinting - sites that really care about blocking bots will detect that, in the first place, you are running a browser in debug mode. Does this tool prevent that?",
+          "author": "wavemode",
+          "replies": [
+            {
+              "text": "Not this but I do have something along those lines if you're interested!",
+              "author": "ccheshirecat",
+              "depth": 1
+            },
+            {
+              "text": "what would that be? Heard good things about Camoufox",
+              "author": "arewethereyeta",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
