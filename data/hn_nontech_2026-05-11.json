@@ -1,0 +1,788 @@
+{
+  "scraped_date": "2026-05-11",
+  "source": "hacker_news",
+  "total_scraped": 123,
+  "nontech_count": 21,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 447,
+      "comment_count": 328,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "> There is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThis blew my mind. Thank you!\nI had to think about it a bit, so for anyone scratching their head right now trying to figure it out, consider it this way:\nwhat matters is the ordering, of heads-then-tails, or tails-then-heads.\nIt doesn't matter that it's biased one way or the other, if you keep flipping pairs until you get a result with two \ndifferent\n values, it's a 50/50 chance whether the less-likely result comes first, or second.\nYou might only have a 20% chance of any particular pair having a tails (for example), but in the cases where you do have a tails, it's a 50/50 chance that it comes first or second.",
+              "author": "ms_menardi",
+              "depth": 3
+            },
+            {
+              "text": "And for people who like equations, here is my attempt at explaining it.\nAssume each flip is independent and the bias remains same in each flip.\nLet\n  P(H) = p,\n  P(T) = 1 - p.\n\n\nThen\n  P(HH) = p^2,\n  P(HT) = p(1 - p),\n  P(TH) = (1 - p)p,\n  P(TT) = (1 - p)^2.\n\n\nTherefore\n  P(HT or TH) = 2p(1 - p).\n\n\nNow calculate\n  P(HT | HT or TH) = p(1 - p) / (2p(1 - p)) = 1/2,\n  P(TH | HT or TH) = (1 - p)p / (2p(1 - p)) = 1/2.",
+              "author": "susam",
+              "depth": 4
+            },
+            {
+              "text": "You don't need conditional probability here, as the flips are independent.\nIt's just p(H)p(T).\nAnd p(H)p(T) = p(T)p(H), thus 2*p(H)p(T) = 2p(1-p).",
+              "author": "taegee",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Damn, I got the paper stack wet with all that ocean water. Guess I'm starting again from scratch...",
+              "author": "dalmo3",
+              "depth": 2
+            },
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "This idea of everyone producing absurd amounts of git objects is less fantastic now [1]. We're still far from these numbers, but an order of magnitude less far than last year [2].\nAlso an interesting bit of history here: apparently there was a time when people were already writing books on Git but \"one enormous Git repository\" wasn't yet the most common mode of using it.\n[1] \nhttps://news.ycombinator.com/item?id=47932422\n[2] \nhttps://x.com/kdaigle/status/2040164759836778878",
+              "author": "owl57",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What you're talking about is so extremely rare that it's much more likely that the entire Earth is destroyed by an asteroid right this inst...",
+          "author": "adyavanapalli",
+          "replies": [
+            {
+              "text": "It is not quite as rare. I calculated it to be less common than being hit by a meteorite, and added a section about that and the Birthday Paradox to Wikipedia, to the article about UUIDs. It got removed / replaced a few years ago however. (If my source was correct, there was actually a woman hit by a meteorite, but she survived, with a leg injury.)\nIf you do have a UUID collision, chances are extremely high that it's either a software bug, or glitch in the computer. It could be a cosmic ray. Cosmic rays messing with the computer memory or CPU are actually relatively common.",
+              "author": "thomasmg",
+              "depth": 1
+            },
+            {
+              "text": "About as rare as an asteroid typing an ellipsis and clicking the add comment button.",
+              "author": "delichon",
+              "depth": 1
+            },
+            {
+              "text": "Well, this joke dates back to (at least) the dial-up days where {#`%${%&`+'${`%& NO CARRIER",
+              "author": "throw0101c",
+              "depth": 2
+            },
+            {
+              "text": "That’s just a result of jounce from localized gravity effects and atmospheric pressure disturbances in the moments before impact.\nThink the ultrasonic typing hacking scene in Pantheon combined with the keyboard bouncing due to rumbling.",
+              "author": "xerox13ster",
+              "depth": 2
+            },
+            {
+              "text": "Well it would be statistically even rarer for that UUID collision to happen and the earth to be destroyed by an asteroid.",
+              "author": "sebazzz",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48080587",
+      "title": "Show HN: Building a web server in assembly to give my life (a lack of) meaning",
+      "link": "https://github.com/imtomt/ymawky",
+      "domain": "github.com",
+      "author": "imtomt",
+      "score": 392,
+      "comment_count": 212,
+      "created_ts": 1778382104,
+      "is_internal": false,
+      "post_text": "This is ymawky, a static file web server for MacOS written entirely in ARM64 assembly. It supports GET, PUT, DELETE, HEAD, and OPTIONS requests, and supports Range: bytes=X-Y headers (which allows scrubbing for video streaming). It decodes percent-encoded URLs, strictly enforces docroot, serves custom error pages for any HTTP error response, supports directory listing, and has (some) mitigations against slowloris-like attacks.<p>I’ve also written a more detailed writeup here: <a href=\"https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "This is brilliant, I love it.\nThe absolute best projects ever posted here are the ones made for no other reason than “just because I wanted to”.",
+          "author": "sen",
+          "replies": []
+        },
+        {
+          "top": "If you actually start writing big stuff in assembly, esp a macro-assembler, you'd quickly realize it is more verbose, but not fundamentally that different from higher level programming. You basically need to get a hang of how to build abstractions with procedures and macros and you'd be good to go. Reading assembly effectively is often much harder than writing it.",
+          "author": "tgma",
+          "replies": [
+            {
+              "text": "Yeah, that's what I realized during this, too. You need to be much more explicit, but the way any given function works isn't fundamentally different. \"strlen\" will always iterate through a string searching for a NULL byte whether it's in C, Rust, Assembly, or whatever other language. I think it can feel almost \nmore\n straightforward than other languages, since you're laying out exactly what the CPU needs to do, in what exact order.",
+              "author": "imtomt",
+              "depth": 1
+            },
+            {
+              "text": "> \"strlen\" will always iterate through a string searching for a NULL byte whether it's in C, Rust, Assembly\nNot all languages use NULL terminated strings. I think Rust actually stores the string length alongside a pointer to the start of the string data. You can do the same in C, but you'd have to do it manually using a struct. In assembly you could do the same thing since you get to decide basically everything.\nhttps://www.youtube.com/watch?v=y8PLpDgZc0E",
+              "author": "wkjagt",
+              "depth": 2
+            },
+            {
+              "text": "Pascal stores the length of the string next to the string, but the other thing of note is with the advent of Unicode, strlen is strlen, but often not actually the number you need/want.",
+              "author": "fragmede",
+              "depth": 3
+            },
+            {
+              "text": "Arguably a POSIX assembly programmer would also naturally keep strings along with their size, either explicitly or known implicitly, more similar to Pascal, not null-terminated, as that's how syscalls expect it. Null-terminated would chiefly be a libc-ism.",
+              "author": "tgma",
+              "depth": 4
+            },
+            {
+              "text": "I argue that strlen is actually still quite often the number you need+want, because possibly the main use case for it is determining how many bytes long a string is.",
+              "author": "jchw",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It's a beautiful project, well crafted. To reflect to the other comments, projects like this are more like a Minecraft map for me. There are giant and amazing maps, small survival maps, local hosted for my friends and myself, and commercial focused high scale servers. Building a house, or designing a new road in the server became extremely easy with AI, put the value created in the world depends on the original purpose of the server and whether creating more houses and roads actually makes sense.\nI think it's a super thing that commercial server can build out faster and be bigger with more houses and roads on it, but\nThe love an art project creates in the world is incomparable.",
+          "author": "matteohorvath",
+          "replies": []
+        },
+        {
+          "top": "Gave me a warm feeling to know that someone would actually still bother to do this by hand. I'm not the only one!",
+          "author": "trollbridge",
+          "replies": [
+            {
+              "text": "Thank you! I've been obsessed with this idea for a while, finally decided to start on it, then obsessed over it for a couple weeks. I'd love to see some of your projects if you have anything similar, I'm glad I'm not the only one too! I think most programmers would benefit a lot from taking a few weeks or months to try and learn some assembly, and demystify how CPUs and compiled languages work.",
+              "author": "imtomt",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "That fake O'Reilly book cover is pure gold.",
+          "author": "chrisweekly",
+          "replies": [
+            {
+              "text": "That book is exactly what inspired me to make this in the first place, haha. The subtitle of the book gave me the acronym I named it.",
+              "author": "imtomt",
+              "depth": 1
+            },
+            {
+              "text": "I frequently reference this exact meme to people whenever someone complains about complicated or difficult-to-write code. Now that’s you’ve made this project I suppose we have zero room to complain anymore!",
+              "author": "orthogonal_cube",
+              "depth": 2
+            },
+            {
+              "text": "Fauxreilly!",
+              "author": "____tom____",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 152,
+      "comment_count": 530,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I had a raspberry pi 3a+ and the old raspberry pi touchscreen laying around. So I'm writing a custom dashboard for it using Rust/Slint[1]. It directly uses opengl without any display manager/window system. It mostly talks to home assistant. Right now, when I start a 3d print, it automatically switches to a view with live camera of the printer and some stats. I can monitor the status of my washer/dryer so I know when they are done (using cheap TP-Link Tapo smart plugs[2]). My favorite thing it does, is if any motion is detected on my Ring cameras, it just automatically pulls up that live feed. Took a little work to get decent playback performance but the pi 3a+ has hardware h264 decoding.\nIts nice, overall, to have a little dedicated touchscreen on my desk that I can easily tweak to display whatever I want. Its silent and low power.\n[1] \nhttps://slint.dev/\n[2] \nhttps://a.co/d/044MIM3t",
+          "author": "montecarl",
+          "replies": []
+        },
+        {
+          "top": "Working on a GraphViz replacement (again):\nSite: \nhttps://azriel.im/disposition\nRepo: \nhttps://github.com/azriel91/disposition\nIt's written in Rust, has stable node positions, is stylable (and has default styling, dark mode styles), among other things.\nThe hardest part is calculating coordinates for edges:\n- ranking nodes / positioning them when edges connect nodes of different nesting levels\n- ensure edges don't overlap with nodes to not obscure content\n- ensure edges don't overlap with each other\nIt's about 60% of what my version of \"complete\" looks like. Remaining parts:\n- edge labels (might need a rewrite of how edge paths are calculated.\n- images in nodes\n- generating diagrams for different screen sizes\n- LSP support (?)",
+          "author": "azriel91",
+          "replies": []
+        },
+        {
+          "top": "Working on my language. Recently implemented shapes for objects, like in Self and V8. Reviewing and polishing up the code before publication.\nAlso working on a handheld computer project. Did improvised thumb typing tests with paper and a stack of notebooks to determine my typing area. Next step is ordering some switches to see what they feel like.",
+          "author": "matheusmoreira",
+          "replies": []
+        },
+        {
+          "top": "* This is my first time actually posting anything on HN.\nI've been making a DSL for writing sheet music specifically for drums as raw text, inspired by ABC Notation (but of course just for drums).\nNow writing this I noticed that it's kind of complicated to explain and having a landing page would make my life so much easier.\nBut the gist of it is, you write notation that looks like this: \nhttps://gist.github.com/Luigi123/945af7e5cc8dfbfd186f0a99754...\n and it renders sheet music in PDF, and also allows you to play the same music as a game (DrumMania / DTXMania style).\nNow the language / compiler itself has been working quite well and I've been dogfooding it for like six months now. The next thing is an IDE-style editor where you can import a song and write the notation following it. Making THAT has been quite the journey. Here's a screenshot for good measure: \nhttps://i.imgur.com/EmlqlrM.png",
+          "author": "luigi_123",
+          "replies": [
+            {
+              "text": "Oh dude, I love this. I've been working on an interactive music thingy (\nhttps://trebel.la\n, it's sort of gamified but more designed to structure practice sessions for serious classical musicians) and struggling with the ABC vs. MusicXML choice.\nLike most people in the space I'm using ABC for LLM generation (e.g. generating sightreading exercises and etudes) but MusicXML for processing and rendering the output. Would be nice to have something somewhere in between the over-simplified ABC and overly verbose MusicXML.",
+              "author": "sbrother",
+              "depth": 1
+            },
+            {
+              "text": "Maybe 10 years ago I started to build Guitar Hero style game with real electric drums, initially to teach myself drumming. The idea was to extract drum information from real songs (so I was exploring a DSL as well). I guess modern AIs could be used to implement this much quicker.",
+              "author": "kukkeliskuu",
+              "depth": 1
+            },
+            {
+              "text": "oo interesting.\nis this intended for drummers, or electronic music composers?",
+              "author": "8note",
+              "depth": 1
+            },
+            {
+              "text": "It's intended for drummers, but I wouldn't rule out anybody. It \ncan\n generate sound, and I'm even using some nicer sounding samples I found on the internet, so using it for composition is realistic.\nBut the main use case I'm going for is my own: making sheet music for drum practice.",
+              "author": "luigi_123",
+              "depth": 2
+            },
+            {
+              "text": "On the drummer side of the audience  whats the need for plain text vs writing with pencil on paper?\naiming for more extensions to The New Breed than just Syncopation that you could auto-generate for funny practice/things you wouldnt think of to play?",
+              "author": "8note",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "My partner and I got a 1 year old rescue schnauzer a few weeks back, so we are learning to dog while trying to teach her to sit, stay, and come.\nTech thoughts: this week I decided to move to a new to me NameBrand™ Arch distro. Even though I’ve been daily driving Linux for more than 10 years I still can’t get a new install up on the first try. This time the boot loader wouldn’t load. No error, no log, and no boot loading. A few reinstalls later, I picked a different choice and was finally booting. But then the next problem was the login display manager doesn’t want to sleep the monitor if nobody logs in. Learned this after an overnight power flicker caused a reboot. The monitors running full tilt for several hours waiting for someone to log in. While I would like to say this issue is another joy of the Wayland-way of Linuxing, I have found that other display managers offer the same defect.\nAnyway dogs are great, I shouldn’t have waited so long to get one.",
+          "author": "asciimov",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "47988268",
+      "title": "Ask HN: Is the Job Market Actually Bad?",
+      "link": "https://news.ycombinator.com/item?id=47988268",
+      "domain": "news.ycombinator.com",
+      "author": "idontwantthis",
+      "score": 135,
+      "comment_count": 209,
+      "created_ts": 1777741835,
+      "is_internal": true,
+      "post_text": "I’m not trying to brag, I am just genuinely confused. I got laid off recently and I had a new job within a week because I constantly get contacted by recruiters both through LinkedIn and directly by email. I’ve never sent an application to anyone and I’ve had dozens of interviews in the past year while I was looking for a new job before getting laid off.<p>I would have had a new one earlier except I was aiming for fully remote and a big raise, and I failed their correspondingly difficult evaluations. Never got ghosted, never had to deal with AI, never had to fill out an application. I took a local, in office offer that I would have ignored if I were still employed.<p>Currently I’m waiting for a final decision from another fully remote company and I’m in midstage with 2 more.<p>I’m not a super genius engineer, and I don’t have any fancy companies on my resume. How unusual is this experience?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48088576",
+      "title": "Obsidian plugin was abused to deploy a remote access trojan",
+      "link": "https://cyber.netsecops.io/articles/obsidian-plugin-abused-in-campaign-to-deploy-phantom-pulse-rat/",
+      "domain": "cyber.netsecops.io",
+      "author": "cmbailey",
+      "score": 111,
+      "comment_count": 63,
+      "created_ts": 1778450563,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "I hope I'm speaking as a minority but when I first started using Obsidian the Youtube videos I watched encourage the usage of community plugins, even with these warnings I would enable the community plugins. You may very well have good actors that eventually turn bad for these plugins and users won't know.\nMaybe I just also have a higher personal risk appetite, but even as a dev and knowing these risks I would have enabled the community plugin option. Again, hope I'm just the minority here and not most user behaviour.",
+          "author": "brusselsprout",
+          "replies": []
+        },
+        {
+          "top": "Obsidian CEO here. There is a major update coming soon for plugin security. I think it will address many of the concerns people have raised in this thread. It's a hard problem but we are working on it.\nThat said, the headline is misleading. This article is about a social engineering attack that requires the user to actively reject multiple safety warnings in Obsidian. As far as I know this is a proof of concept, I haven't seen any reports of users being affected by this attack.",
+          "author": "kepano",
+          "replies": [
+            {
+              "text": "lol we told you plugins were insecure years ago. I distinctly remember getting flamed in your discord because I said that they had full disk access. Too little too late.",
+              "author": "ibash",
+              "depth": 1
+            },
+            {
+              "text": "These types of problems usually only get fixed when it’s too late.",
+              "author": "stingraycharles",
+              "depth": 2
+            },
+            {
+              "text": "Releasing the source code to the clients would also address many of our concerns.",
+              "author": "sebastienbarre",
+              "depth": 1
+            },
+            {
+              "text": "How would that make a difference for plugin security? Almost all plugins are already open source.\nIf you mean for the security of the app without plugins you can currently inspect the app's code in app.js and review third-party audits:\nhttps://obsidian.md/security",
+              "author": "kepano",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I really like Obsidian. I use it every day and I don't use any community plugins because the permissions aren't up to snuff. I hope for a day where a plugin defines what it will need and that gets presented to me as a user.\nI have to imagine the Obsidian team is going to respond seriously to this and I look forward to seeing what they do. They have my full confidence. I'm surprised the system was initially designed as it is without those better permissions and sandboxing, though.",
+          "author": "jjice",
+          "replies": []
+        },
+        {
+          "top": "Reading the content the problem does not start with a plugin in Obisidian store but rather with a malicious vault they lure you to open.",
+          "author": "dbacar",
+          "replies": []
+        },
+        {
+          "top": "> The victim is prompted to enable the \"Installed community plugins\" synchronization feature.\nObsidian has the proper protections in place to prevent this type of attack, and the victims are being convinced to ignore them. This is just a successful social engineering event. I hate to see Obsidian dragged down by this headline, since this attack is not exploiting a vulnerability in it or its plugin system.",
+          "author": "slowmover",
+          "replies": [
+            {
+              "text": "Ehm. No? \nhttps://obsidian.md/help/plugin-security#Plugin+capabilities\n>\nDue to technical limitations, Obsidian cannot reliably restrict plugins to specific permissions or access levels. This means that plugins will inherit Obsidian's access levels. As a result, consider the following examples of what community plugins can do:\n    Community plugins can access files on your computer.\n    Community plugins can connect to internet.\n    Community plugins can install additional programs.\n\n\n\nObsidian has no protection \nat all\n. Installing a plugin gives it full access to your computer.\nThis was only a matter of time, and honestly I think it's inexcusably negligent that they shipped a plugin system like this at all since about 2010 (or arguably much earlier).",
+              "author": "Groxx",
+              "depth": 1
+            },
+            {
+              "text": "It does give full access but Obsidian does tell you that. Community plugins are not enabled by default, you have to enable them manually. Same happens with a shared vault: once you get it you still have to manually enable plugins. So far no one managed to sneak in a plugin completely unnoticed.",
+              "author": "pointlessone",
+              "depth": 2
+            },
+            {
+              "text": "That's horse hockey. Obsidian is not a usable system without community plugins.\nFolks will reply \"but I use it every day without plugins\".\nThat position disregards software usability as a formal discipline, along with decades of UX research and standards.",
+              "author": "kid64",
+              "depth": 3
+            },
+            {
+              "text": "If you want to use a niche, academic definition of \"usable\", that's fine but you better be ready to explain yourself.\nBecause in general, \"usable\" means \"people use it\". Which they do for Obsidian without community plugins without issues.",
+              "author": "wasabi991011",
+              "depth": 4
+            },
+            {
+              "text": "To make an actual counter, you need numbers. If only a tiny niche of users use it without community plugins, then yes, it's unusable (in a practical definition of the term)",
+              "author": "eviks",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48075059",
+      "title": "Show HN: Mochi.js: bun-native high-fidelity browser automation library",
+      "link": "https://mochijs.com/",
+      "domain": "mochijs.com",
+      "author": "ccheshirecat",
+      "score": 44,
+      "comment_count": 19,
+      "created_ts": 1778335300,
+      "is_internal": false,
+      "post_text": "Hi HN,<p>I’m sharing mochi.js (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;0xchasercat&#x2F;mochi\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;0xchasercat&#x2F;mochi</a>), a Bun-native, raw-CDP browser automation framework. It&#x27;s designed to make programmatic browser use more effective by focusing on consistency and measured parity with regular traffic, purely from the JS layer, against stock Chromium.<p>The most common forms of browser automation focus heavily on client-side line by line probes, which are mostly cosmetic. This makes people feel better but it doesn&#x27;t have much relevance to actual WAF or anti-automation defences.<p>Mochi.js focuses on what actually matters, allowing you to get past captchas, WAF&#x27;s and most defence mechanisms. In fact, in some cases it actually outperforms chromium forks simply by virtue of not having to lie.<p>The foundation is built on a probe manifest based on analyzing several WAF&#x27;s and trying to cover most of the ground that matters, and from there building upwards while ensuring every decision is backed by data. Solves turnstile&#x2F;interstitial automatically, single digit fpjs suspect score, very good client-side results, though browserscan and a few others are known limitations that are fundamentally conflicting with what WAF&#x27;s probe for.<p>I&#x27;ll be here if anyone wants to discuss the details, check out the docs and github. It&#x27;s completely free and open source, MIT, strictly no relationship to any proprietary products whatsoever. No affiliation to patched chromium forks, or SaaS.<p>But I also want to talk about why I built this, because the current paradigm of &quot;bot detection&quot; is fundamentally broken.<p>Traditionally they would probably try to label my repository a malicious tool, or at best, a grey hat one.<p>Let&#x27;s take Turnstile for example,  If you attach a debugger to see what data they are extracting from your hardware, their script intentionally self-destructs.\nWhen they try to extract your data—acting as a guest on your silicon, using your electricity, without asking, the industry calls it &quot;Security.&quot;<p>But if you write a script to control exactly what data your own hardware emits, refusing to provide the data they have no right to ask for, you are suddenly labeled a &quot;Malicious Actor&quot; engaged in &quot;Bot Evasion.&quot;<p>I find it absurd we let ourselves put up with this, and the stance of the bot-evasion community only makes them feel more able to take a higher moral ground.<p>I have built a library that respects my hardware&#x27;s reality. If that breaks your security model, that&#x27;s because your security model relies on trespassing and secrecy. I stopped apologizing. Who&#x27;s next?<p>Mochi is the exact opposite of WAF opacity. It is a glass box. It is MIT-licensed. The entire DAG, fingerprint manifest schema, harvesting process, is documented. We even commit our live benchmarks to the public record (mochi on a Linux datacenter IP scored a suspect_score: 8 and bot: not_detected against FingerprintJS Pro v4).<p>We don&#x27;t even lie unnecessarily. We default to host-OS matching. If you run mochi on a Linux server, it uses privacy-sensible fingerprints for Linux, not Windows, because Linux is a real-user signal. It proves that WAFs aren&#x27;t actually blocking what most people think they are, which begs the question of what they are really doing in that obfuscated payload.<p>The legitimacy argument is exactly how they captured the narrative. And nobody challenged it because the people on the other side were too busy acting like they were doing something wrong.<p>Is this a conspiracy theory? For sure, but only because they allow it to be. Try make a conspiracy theory about the sticky riceball.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48045237",
+      "title": "Ask HN: What do you still do manually in 2026 that should be automated?",
+      "link": "https://news.ycombinator.com/item?id=48045237",
+      "domain": "news.ycombinator.com",
+      "author": "lishunsheng",
+      "score": 20,
+      "comment_count": 31,
+      "created_ts": 1778126235,
+      "is_internal": true,
+      "post_text": "I&#x27;m researching pain points around manual workflows that haven&#x27;t been automated yet.<p>Specifically looking for tasks where:\n- You do the same thing 5+ times a week\n- You&#x27;ve looked for a tool but nothing good exists\n- You&#x27;d pay $10-20&#x2F;month if something just worked<p>What&#x27;s yours? Curious to hear both technical and non-technical answers.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Going to the bathroom.\nLike, I gotta get up, walk a few steps, sit down, read Facebook, and then i gotta clean my own rear end. Why aren't we in Wall-E world yet?\nI want to just wake up, eat, sleep, repeat without ever having to move out of my floating platform apparatus. Instead of deciding what to eat, goop is dispensed to you from the comfort of my own floating chair/bed thing. Pottying should be the same. A large blocker in this lifestyle is the necessity to get up and do the business yourself. I want a platform that directly handles bodily waste material without you ever having to get up.",
+          "author": "takko_the_boss",
+          "replies": []
+        },
+        {
+          "top": "Formatting Google Sheets. I work all day every day in google sheets. I make video tutorials, and templates, and tools. Sometimes I work with clients/for clients. Sometimes I just make something on my own. Been thinking more and more about coding up a formatting engine in apps script. As that's what I've done many times before. But really would perhaps a SaaS or a Chrome add-on (not a sheets Add-on) be able to handle this better?  But I don't really know how it would handle looking at a sheet and knowing what to format it like. Or would some kind of template actions be able to account for data out of place. This is where I fall apart in my thinking and wonder if someone else could really take a crack at a good UI for this. Instead of me who I am too in the weeds.",
+          "author": "kamphey",
+          "replies": []
+        },
+        {
+          "top": "Upwork removed their RSS feed. I'd like a tool that sends me an email when a certain job matching certain job/client filter criteria is made, rather than me checking the recent jobs.\nThe tools that I could find didn't have email support and weren't good enough in some ways I don't remember.\nThe inbuilt Upwork alert system sucks.",
+          "author": "chistev",
+          "replies": []
+        },
+        {
+          "top": "Knowledge retrieval.  Something where I could ask a question, say in natural language, and I would get an answer.  Of course the responses have to make sense and not be made up.",
+          "author": "rho_soul_kg_m3",
+          "replies": [
+            {
+              "text": "I opened my Obsidian directory with Augment Code, and it indexed it in seconds. Now all my written knowledge is retrievable. You could probably get the same effect with any other RAG-based indexed agent",
+              "author": "RanHal",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Tried a few workflow tools but most either break often or need more setup than the task itself. Would easily pay for something that just quietly handled all of that in the background.",
+          "author": "SyntaxErrorist",
+          "replies": [
+            {
+              "text": "\"Curious what kind of workflows you're talking about – are these dev-related tasks or more general business processes?\"",
+              "author": "lishunsheng",
+              "depth": 1
+            },
+            {
+              "text": "Mostly a mix of both. Some are dev related workflows while others are more operational like content pipelines, research tasks and internal automation stuff.",
+              "author": "SyntaxErrorist",
+              "depth": 2
+            },
+            {
+              "text": "For dev workflows, Augment works smoothly for me, and I've heard the same about Claude Code and Codex. What specifically breaks?\nThe recently announced Cosmos Agent OS is built to handle everything explicitly in the background, but it's more for enterprise than for individuals",
+              "author": "RanHal",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48087925",
+      "title": "Ask HN: Will low quality AI customer support be the new normal?",
+      "link": "https://news.ycombinator.com/item?id=48087925",
+      "domain": "news.ycombinator.com",
+      "author": "0-bad-sectors",
+      "score": 18,
+      "comment_count": 10,
+      "created_ts": 1778446647,
+      "is_internal": true,
+      "post_text": "Now whenever I reach for customer&#x27;s support chat or phone I get an AI agent replying to me and I get into a useless loop for a couple of minutes before I start begging it to link me to a real person.<p>Will companies start losing customers because of that or people will eventually get used to this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Yes. Because, the incentives for companies are too big to ignore. The math being done right now is $10/hr for voice support in (say) the Phillipines is much more than $0.10/hr having an AI do it, even factoring in the cost of some customer churn. And the risk of the latter for some services can be discounted to zero if the user has no viable alternative.\nSecond, the best support line is one where no one calls in. So there are strong incentives to make it hard to do so, either positive (create good self service options) or bad (hide the number, hide emails, etc).\nIf you don't want this future then make sure you always ask for the human and constructively provide feedback that you will penalize any supplier that relies on it.\nWe are already in a K shaped economy wrt call centers. Being a very frequent Hilton hotel guest, say, gets you a separate call center  number, US based live human support, people who can solve your problem, etc. Not being a Hilton member gets you the 45 minute wait and a bot.",
+          "author": "kjellsbells",
+          "replies": []
+        },
+        {
+          "top": "I think eventually you probably will not able to tell whether support is ai or human. models and agents will only continue to improve, and customer support is one of the clearest business use case.\nFor companies, ai is cheaper, scalable and does not require the same onboarding process and training process. so in that sense, yes, it probably becomes the new normal. \nMy guess is in the long term, we will have something like a hybrid model. Where ai answers repetitive questions and straightforward workflows, while humans can answers the nuance.",
+          "author": "TejashMKumar",
+          "replies": []
+        },
+        {
+          "top": "Voice agents are a royal pita. They have trouble with any kind of British regional accent, they are tiny models because anything usable is too slow, and they have zero capability because they'd probably mangle the toolcalls anyway.\nElevenlabs using a completely incapable voice agent for sales outreach made me wonder if they were actively trying to dissuade customers.\nIt feels like the sort of thing a disinterested engineer implemented to appease a manager fixated on the shiny.",
+          "author": "Leynos",
+          "replies": []
+        },
+        {
+          "top": "The real fun one is calling the utility company to report a downed line from a pole snapped in half and the bot agent doesn’t transfer you to a human even when you say “emergency”, “public hazard”, “utility pole obstructing a roadway”, “potential property damage your corporation will be liable for”, “immenient danger to life and limb” or any and all applicable keyword variations that might warrant humanly answering (and, to add insult to injury, cannot take a report of the event either but simply ends 10 of your calls in a row with a texted link to livechat with its textbot sibling). Like +−×÷ says nearby, it’s austerity.",
+          "author": "keane",
+          "replies": []
+        },
+        {
+          "top": "It’s part of the continual squeeze of more water out of the same rock\nSomething that was table stakes in the past would now be seen as crazy for a company to spend money on",
+          "author": "ex-aws-dude",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48053163",
+      "title": "Ask HN: What is your go-to solution for a personal wiki in 2026?",
+      "link": "https://news.ycombinator.com/item?id=48053163",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 15,
+      "comment_count": 20,
+      "created_ts": 1778179392,
+      "is_internal": true,
+      "post_text": "I&#x27;ve used Notion for a long time but I&#x27;m interested to hear what other alternatives exist in 2026?<p>For me the main requirements are:<p>* Backed up to cloud<p>* Has a mobile app that is easy to make small changes (for example if I&#x27;m doing an oil change on my car I need to be able to pull out my phone and log it in the wiki easily)<p>* Simple file format like markdown so that you&#x27;re not locked into something proprietary (no need for crazy formatting options like MSWord)<p>* Option to export data out as a backup<p>* Allow uploading arbitrary files like PDFs, images, receipts etc...<p>* Nice to have: support for inline tables of data with simple calculations&#x2F;sorting",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48055353",
+      "title": "Ask HN: What will happen as AI costs increase?",
+      "link": "https://news.ycombinator.com/item?id=48055353",
+      "domain": "news.ycombinator.com",
+      "author": "MetaWhirledPeas",
+      "score": 15,
+      "comment_count": 23,
+      "created_ts": 1778189461,
+      "is_internal": true,
+      "post_text": "We are living in the &quot;penetration pricing&quot; phase of AI, where costs are absorbed by seemingly endless investment. What will be the practical fallout when prices inevitably rise?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48035508",
+      "title": "Ask HN: How to start up as an individual developer?",
+      "link": "https://news.ycombinator.com/item?id=48035508",
+      "domain": "news.ycombinator.com",
+      "author": "alexyan0431",
+      "score": 14,
+      "comment_count": 13,
+      "created_ts": 1778071045,
+      "is_internal": true,
+      "post_text": "I have been trying to become an individual developer for a period, and have developed several tools or little projects (mainly open source). Some of them actually are very helpful at least to me, but unfortunately I am the only one to use them.<p>No pull requests, no issues, even no stars except the only one from myself. I found it hard for them to be seen. I feel down because if there are no users, I can&#x27;t get any feedbacks and it&#x27;s hard for me to improve my projects. I feel trapped into a hole and can do nothing but to stay at the origin and get drowned.<p>How can I promote my open-source projects (and maybe products in the future) ? I&#x27;ll really appreciate it if someone with related experiences can offer me some advice.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48084086",
+      "title": "Ask HN: Is this the SWE workflow of the future?",
+      "link": "https://news.ycombinator.com/item?id=48084086",
+      "domain": "news.ycombinator.com",
+      "author": "mc-0",
+      "score": 10,
+      "comment_count": 9,
+      "created_ts": 1778421821,
+      "is_internal": true,
+      "post_text": "Internally transferred to a new team in a top-10 F500 company. This team is pushing incredibly hard to be seen as &quot;AI-First&quot; &amp; is very opinionated about what other teams should be doing.<p>I was explicitly told I am not to write any code by hand. Claude usage is mandatory coupled with a proprietary superpowers &#x2F; speckit &#x2F; GSD framework with 100+ agents and skill files.<p>All code reviews are agent driven. No one takes the time to actually understand anything. Documentation has become novel length slop, as have Jira tickets.<p>I ship stuff I don&#x27;t understand. Management says there won&#x27;t be a need for many SWEs in the future.<p>Am I alone in experiencing this? Is this the future of work?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "No. We have one team at our company doing this. Management loves them, but no one in engineering trusts them and they literally just write MCPs that have no users and still experience daily incidents.",
+          "author": "dimbletimbers",
+          "replies": []
+        },
+        {
+          "top": "No, the current state of things isn't stable enough to last a long time. I don't know what the future will look like but it can't be this, and it's not going to be rolling the clock back 5 years either.",
+          "author": "trio8453",
+          "replies": []
+        },
+        {
+          "top": "You are not alone, but it is not the future. I currently am working a short-term gig within a company with a similar setup - the leadership wants to go that way, and some teams are doing so. Those teams are also failing. Their code passes tests, but doesn't hold up to real usage. The team members don't know the code well enough to even talk about the problems. The DevOps teams don't know the platforms well enough to talk about problems either. Some of the most senior folks in the org will just paste AI slop into a document, then not even be able to navigate their own document on a call to explain things.\n\"Miserable\" is absolutely the right word for it. \"Dystopian\" is another word I use to describe it. Either way, the results I'm seeing make me think that this trend won't last. These companies will either figure out that it isn't working, or they will fail.\nFWIW, \"AI-first\" is one thing. \"AI-only\" is where it crosses from a strategic choice into a f'ing pile of stupidity.",
+          "author": "codingdave",
+          "replies": []
+        },
+        {
+          "top": "How does your team handle security audits or compliance? If the code reviews are also agent driven, you have created a closed loop system with no human accountability.",
+          "author": "SyntaxErrorist",
+          "replies": []
+        },
+        {
+          "top": "You are definitely not alone.\nI worked at a place which took a similar approach. As someone whose been doing this for 30 years, I found this to be chaotic, wasteful and antithetical to everything I've learned about software development or even basic communication. This was months ago and things are moving fast. Lately, I see best practices starting to emerge and have confirmed with friends working at other companies that people are employing them.\nIs this the future though?\nThe sense that I get is that a lot of us are still trying to figure things out. Giants like Martin Fowler and Kent Beck have said as much. This article written by Annie Vella sums it up quite well:\nhttps://annievella.com/posts/finding-comfort-in-the-uncertai...\nI periodically check in with people I have worked with in the past to see what they are up to and everyone is in a similar boat in terms of trying to figure it all out. Honestly, it feels a little like we are all at one of the different stages of grief. Some are angry and in complete denial. Others are absolutely delusional about the purpose and capabilities of this technology. Most of us I suspect are simply trying to process what is happening.",
+          "author": "sifuwheelie",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48063510",
+      "title": "Reflections on NetBSD 11",
+      "link": "https://news.ycombinator.com/item?id=48063510",
+      "domain": "news.ycombinator.com",
+      "author": "morpheos137",
+      "score": 9,
+      "comment_count": 4,
+      "created_ts": 1778249623,
+      "is_internal": true,
+      "post_text": "I have been a user of openbsd for years. recently due to hardware failure and poor support of my replacement hardware on openbsd i decided to give NetBSD a try. What a mistake. Nothing just works.<p>Commands fail or hang with no visible error.<p>SSH does not pass the local terminal to remote (never had experienced terminal degradation just from ssh before)<p>Normal keys like backspace and arrow do not work by default.<p>Select to copy from xterm to ssh xterm is broken.<p>Launching certain shell commands having to do with set in xterm brings down the whole xserver.<p>firefox brings down the whole xserver inexplicably<p>no installurl default to add packages from.<p>su keeps the user&#x27;s environment.<p>just an all around pile of garbage if you are looking for something you can set up and work with without hours of tinkering.<p>in contrast if you set up openbsd it WORKS out of the box and what needs to be configured is logical and documented.<p>I can see no benefit in an OS that is unusable for productive work by default.<p>looking for specific help with a normal terminal<p>ssh to remote without buggering the terminal<p>select to paste between xterm windows<p>normal keyboard operations<p>firefox not locking or crashing x. this is another thing: firefox on openbsd does not lock x. on my netbsd system while firefox is launching all other windows in x are frozen.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "mistake",
+        "remote",
+        "failure"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48079444",
+      "title": "Ask HN: Before Open Source took over the server, what was the discourse like?",
+      "link": "https://news.ycombinator.com/item?id=48079444",
+      "domain": "news.ycombinator.com",
+      "author": "mbgerring",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1778370105,
+      "is_internal": true,
+      "post_text": "My understanding of the early Internet is that there was fierce competition among commercial, closed-source server and database software, and that the dominance of Linux, Apache, MySQL (and now PostgreSQL) etc were far from obvious or guaranteed. I think we’re in a similar moment with LLMs, and I’d love to read some stories, or see some examples of discourse on mailing lists, forums, or whatever on this subject from that earlier period. I think it would be helpful for grounding present-day discussions. What can you share from this era?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48080516",
+      "title": "Ask HN: Can a tinnitus be triggered by high frequency noises?",
+      "link": "https://news.ycombinator.com/item?id=48080516",
+      "domain": "news.ycombinator.com",
+      "author": "tinnitus_crazy",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1778381351,
+      "is_internal": true,
+      "post_text": "Not exactly technical, but HN feels like the correct crowd to ask because asking anywhere else I would be considered mentally ill.<p>I have a tinnitus that seems to stay 99,9% of the day, it’s away for some minutes sometimes and it’s very high frequency. Imagine a power supply coil whine.<p>Now the mentally ill part: the tinnitus can change position (left&#x2F;right ear) and change volume. I didn’t hear the tinnitus on the right ear for some days, now it’s back on it (and still audible on the left ear) after sitting on the couch again.<p>The couch, you ask? Two weeks ago, when the tinnitus started, we changed the layout of our living room. The couch was now located next to our WiFi router. The tinnitus started shortly after that. I never had tinnitus before. Guess what, the router makes the same noise (even my partner can hear it). After some days of realizing it might be from the router, I changed the position of it to the other side of the room, but now somehow I can still hear the high frequency from the router from 3 meters apart. And as soon as I start sitting on the couch, the tinnitus gets much worse. Even disabling electricity in the full house I still hear that WiFi router noise in my ear.<p>Am I insane? Is this a thing? Can some frequency cause a tinnitus which can be re-triggered by the same frequency? Can it have a memory effect? Could it be it doesn’t go away even if I don’t sit on the couch for days because all these power supplies have high frequency coil whine in each and every facility these days, which trigger it again?<p>I feel like Neo from The Matrix who got enlightened and now can hear electricity, but without the rest of the super powers :(<p>PS: I visited a doctor and am doing the usual medical procedures to deal with tinnitus (Prednisolone 60mg&#x2F;day), but it doesn’t help in any way.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48059756",
+      "title": "Ask HN: How are you handling QA being bottlenecked with more AI-generated PRs?",
+      "link": "https://news.ycombinator.com/item?id=48059756",
+      "domain": "news.ycombinator.com",
+      "author": "softneon",
+      "score": 5,
+      "comment_count": 4,
+      "created_ts": 1778224666,
+      "is_internal": true,
+      "post_text": "At my company engineers are producing a high quantity of PRs with the help of AI agents. QA was already the bottleneck since the software involves camera flows across multiple devices, now this is more so the case.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48066573",
+      "title": "Novel macro signals for AI-related job loss?",
+      "link": "https://news.ycombinator.com/item?id=48066573",
+      "domain": "news.ycombinator.com",
+      "author": "sfmz",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1778263108,
+      "is_internal": true,
+      "post_text": "Americans get health insurance through work - if many get fired b&#x2F;c AI - health insurance profit decline would possibly be an interesting signal for true unemployment metrics.<p>I am looking for&#x2F;requesting novel signals after seeing a16z basically call ai-job loss doomerism",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48088126",
+      "title": "Ask HN: Which LLM are you using to evaluate your ideas?",
+      "link": "https://news.ycombinator.com/item?id=48088126",
+      "domain": "news.ycombinator.com",
+      "author": "Marius77",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1778447681,
+      "is_internal": true,
+      "post_text": "Question as in the title.\nCurious about your experience and which LLM helped you out the most without saying yes to everything..",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I actually haven’t gotten to evaluating ideas yet I’ve been too busy asking each llm why they thought they would be best for the task. Just kidding\nI use ChatGPT and Gemini and Claude in various ways in my workflow",
+          "author": "quintes",
+          "replies": []
+        },
+        {
+          "top": "I am mostly using Gemini, but that's a decision I made 2-3 months ago. I try my best not to hint at what answer I am hoping for/would benefit me, and I play devil's advocate as much as possible.",
+          "author": "apparent",
+          "replies": [
+            {
+              "text": "I only use Gemini 3.1 Pro. In my opinion, it's is better/cheaper/faster.\nI'm not coding with it much.",
+              "author": "thisisauserid",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "For now, I'd say Claude. \nI tried to work with other LLMs such as Gemini, Codex, GPT and Grok(high versions), but still Claude (4.8) gave me the best outcome.",
+          "author": "moduxis",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48076414",
+      "title": "Ask HN: Former master-tech building AI systems – how to break into software?",
+      "link": "https://news.ycombinator.com/item?id=48076414",
+      "domain": "news.ycombinator.com",
+      "author": "nicku711",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1778346058,
+      "is_internal": true,
+      "post_text": "So to keep a very long story short, I was 28, was exactly a year ago from april i was awarded top 2000 technicaians in the Nation from Stellantis of North America. I was(and still am) dealing with life long knee pain and hip pain from just wear and tear of automotive repair. Due to this i knew automotive was over for me. Then I discovered claude.ai and one question led to another text thing you kmow im building a dual rtx msi b550 tomohawk max wifi 64gb ram, amd am4 5900xt cpu. 3tb ssd nvme ssd. Within 2 months of discovering the potential of CS. That said. I ended up creatinf a ton of projects to teach myself. Mind you im doing all this while the world around me is crashing and burning. I built printmakerai.com. I know ai is amazing at coding, and is very useful, but im the kind of guy who firmly believes &quot;if you want it done right you must do it yourself.&quot; The reason im posting this is im seeking advice on what I should do. I cant land a career in cs without a formal degree. Im coming from one of the most technically advanced trades there are. We aren&#x27;t &quot;mechanics&quot; anymore were technicians and for good reason. I can directly translate canbus, sensor fusion,.redundant systems, trace wiring diagrams,<p>Seperate circuits and modules and accurately Diagnose a module, circuit or more. Heck I was able to translate oil wicking to solder wicking. Like how 2018+ wranglers throw excessive dash lights and can stall? Everyone assumes abs module because the abs is throwing the dtc and there was a year plagued with bad abs modules. But its really a starconnector behind the glove box that has solder wicking down the pcb. And even being this smart is clearly not enough to land me a job in any real cs world. Thanks to claude.ai I found what makes brain light up like a Christmas tree but genuinely need help navigating this confusing field. That said ill be treaching myzelf python today because we&#x27;ll I cant code myself lmao. And I know thats blocker number 1.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career",
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48074184",
+      "title": "Ask HN: What is the underlying stack behind multi-agent platforms?",
+      "link": "https://news.ycombinator.com/item?id=48074184",
+      "domain": "news.ycombinator.com",
+      "author": "throwaw12",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1778327351,
+      "is_internal": true,
+      "post_text": "Recently, I am seeing lots of startups with multi-agent platform, where you can create your own agent template, attach tools and run it reliably.<p>Which frameworks, platforms are you using for these kind of multi-agentic platforms?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
