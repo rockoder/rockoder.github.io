@@ -1,0 +1,841 @@
+{
+  "scraped_date": "2026-05-12",
+  "source": "hacker_news",
+  "total_scraped": 51,
+  "nontech_count": 19,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 459,
+      "comment_count": 334,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "> There is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThis blew my mind. Thank you!\nI had to think about it a bit, so for anyone scratching their head right now trying to figure it out, consider it this way:\nwhat matters is the ordering, of heads-then-tails, or tails-then-heads.\nIt doesn't matter that it's biased one way or the other, if you keep flipping pairs until you get a result with two \ndifferent\n values, it's a 50/50 chance whether the less-likely result comes first, or second.\nYou might only have a 20% chance of any particular pair having a tails (for example), but in the cases where you do have a tails, it's a 50/50 chance that it comes first or second.",
+              "author": "ms_menardi",
+              "depth": 3
+            },
+            {
+              "text": "And for people who like equations, here is my attempt at explaining it.\nAssume each flip is independent and the bias remains same in each flip.\nLet\n  P(H) = p,\n  P(T) = 1 - p.\n\n\nThen\n  P(HH) = p^2,\n  P(HT) = p(1 - p),\n  P(TH) = (1 - p)p,\n  P(TT) = (1 - p)^2.\n\n\nTherefore\n  P(HT or TH) = 2p(1 - p).\n\n\nNow calculate\n  P(HT | HT or TH) = p(1 - p) / (2p(1 - p)) = 1/2,\n  P(TH | HT or TH) = (1 - p)p / (2p(1 - p)) = 1/2.",
+              "author": "susam",
+              "depth": 4
+            },
+            {
+              "text": "You don't need conditional probability here, as the flips are independent.\nIt's just p(H)p(T).\nAnd p(H)p(T) = p(T)p(H), thus 2*p(H)p(T) = 2p(1-p).",
+              "author": "taegee",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Damn, I got the paper stack wet with all that ocean water. Guess I'm starting again from scratch...",
+              "author": "dalmo3",
+              "depth": 2
+            },
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "This idea of everyone producing absurd amounts of git objects is less fantastic now [1]. We're still far from these numbers, but an order of magnitude less far than last year [2].\nAlso an interesting bit of history here: apparently there was a time when people were already writing books on Git but \"one enormous Git repository\" wasn't yet the most common mode of using it.\n[1] \nhttps://news.ycombinator.com/item?id=47932422\n[2] \nhttps://x.com/kdaigle/status/2040164759836778878",
+              "author": "owl57",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What you're talking about is so extremely rare that it's much more likely that the entire Earth is destroyed by an asteroid right this inst...",
+          "author": "adyavanapalli",
+          "replies": [
+            {
+              "text": "It is not quite as rare. I calculated it to be less common than being hit by a meteorite, and added a section about that and the Birthday Paradox to Wikipedia, to the article about UUIDs. It got removed / replaced a few years ago however. (If my source was correct, there was actually a woman hit by a meteorite, but she survived, with a leg injury.)\nIf you do have a UUID collision, chances are extremely high that it's either a software bug, or glitch in the computer. It could be a cosmic ray. Cosmic rays messing with the computer memory or CPU are actually relatively common.",
+              "author": "thomasmg",
+              "depth": 1
+            },
+            {
+              "text": "About as rare as an asteroid typing an ellipsis and clicking the add comment button.",
+              "author": "delichon",
+              "depth": 1
+            },
+            {
+              "text": "Well, this joke dates back to (at least) the dial-up days where {#`%${%&`+'${`%& NO CARRIER",
+              "author": "throw0101c",
+              "depth": 2
+            },
+            {
+              "text": "That’s just a result of jounce from localized gravity effects and atmospheric pressure disturbances in the moments before impact.\nThink the ultrasonic typing hacking scene in Pantheon combined with the keyboard bouncing due to rumbling.",
+              "author": "xerox13ster",
+              "depth": 2
+            },
+            {
+              "text": "Well it would be statistically even rarer for that UUID collision to happen and the earth to be destroyed by an asteroid.",
+              "author": "sebazzz",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48080587",
+      "title": "Show HN: Building a web server in assembly to give my life (a lack of) meaning",
+      "link": "https://github.com/imtomt/ymawky",
+      "domain": "github.com",
+      "author": "imtomt",
+      "score": 417,
+      "comment_count": 223,
+      "created_ts": 1778382104,
+      "is_internal": false,
+      "post_text": "This is ymawky, a static file web server for MacOS written entirely in ARM64 assembly. It supports GET, PUT, DELETE, HEAD, and OPTIONS requests, and supports Range: bytes=X-Y headers (which allows scrubbing for video streaming). It decodes percent-encoded URLs, strictly enforces docroot, serves custom error pages for any HTTP error response, supports directory listing, and has (some) mitigations against slowloris-like attacks.<p>I’ve also written a more detailed writeup here: <a href=\"https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;imtomt.github.io&#x2F;ymawky&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "What I love most about your project is the super clean Makefile (\nhttps://github.com/imtomt/ymawky/blob/main/Makefile\n). It is a great template to jump start an ARM64 assembly project.\nI made a self documented (all the related links are in the file) single makefile (\nhttps://gist.github.com/ontouchstart/d3ad8e4d0adf63532303a90...\n) so that anyone can build ymawky from scratch and dig deeper by tinkering.",
+          "author": "ontouchstart",
+          "replies": [
+            {
+              "text": "The reason I wrote that compact makefile is that I am at the beginning of a long journey to study the coding style of ngnk (\nhttps://news.ycombinator.com/user?id=ngnk\n).\nI can see the potential of doing some implementation of APL/J/K at levels even lower than C, like how those guys did APL\\360 using assembly language. It is going to be super fun in the era of everyone using LLM to pump out verbose Python/TS/Rust code with context windows bigger than the whole operating system.",
+              "author": "ontouchstart",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If you actually start writing big stuff in assembly, esp a macro-assembler, you'd quickly realize it is more verbose, but not fundamentally that different from higher level programming. You basically need to get a hang of how to build abstractions with procedures and macros and you'd be good to go. Reading assembly effectively is often much harder than writing it.",
+          "author": "tgma",
+          "replies": [
+            {
+              "text": "Yeah, that's what I realized during this, too. You need to be much more explicit, but the way any given function works isn't fundamentally different. \"strlen\" will always iterate through a string searching for a NULL byte whether it's in C, Rust, Assembly, or whatever other language. I think it can feel almost \nmore\n straightforward than other languages, since you're laying out exactly what the CPU needs to do, in what exact order.",
+              "author": "imtomt",
+              "depth": 1
+            },
+            {
+              "text": "> \"strlen\" will always iterate through a string searching for a NULL byte whether it's in C, Rust, Assembly\nNot all languages use NULL terminated strings. I think Rust actually stores the string length alongside a pointer to the start of the string data. You can do the same in C, but you'd have to do it manually using a struct. In assembly you could do the same thing since you get to decide basically everything.\nhttps://www.youtube.com/watch?v=y8PLpDgZc0E",
+              "author": "wkjagt",
+              "depth": 2
+            },
+            {
+              "text": "Pascal stores the length of the string next to the string, but the other thing of note is with the advent of Unicode, strlen is strlen, but often not actually the number you need/want.",
+              "author": "fragmede",
+              "depth": 3
+            },
+            {
+              "text": "Arguably a POSIX assembly programmer would also naturally keep strings along with their size, either explicitly or known implicitly, more similar to Pascal, not null-terminated, as that's how syscalls expect it. Null-terminated would chiefly be a libc-ism.",
+              "author": "tgma",
+              "depth": 4
+            },
+            {
+              "text": "I argue that strlen is actually still quite often the number you need+want, because possibly the main use case for it is determining how many bytes long a string is.",
+              "author": "jchw",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It's a beautiful project, well crafted. To reflect to the other comments, projects like this are more like a Minecraft map for me. There are giant and amazing maps, small survival maps, local hosted for my friends and myself, and commercial focused high scale servers. Building a house, or designing a new road in the server became extremely easy with AI, put the value created in the world depends on the original purpose of the server and whether creating more houses and roads actually makes sense.\nI think it's a super thing that commercial server can build out faster and be bigger with more houses and roads on it, but\nThe love an art project creates in the world is incomparable.",
+          "author": "matteohorvath",
+          "replies": []
+        },
+        {
+          "top": "Gave me a warm feeling to know that someone would actually still bother to do this by hand. I'm not the only one!",
+          "author": "trollbridge",
+          "replies": [
+            {
+              "text": "Thank you! I've been obsessed with this idea for a while, finally decided to start on it, then obsessed over it for a couple weeks. I'd love to see some of your projects if you have anything similar, I'm glad I'm not the only one too! I think most programmers would benefit a lot from taking a few weeks or months to try and learn some assembly, and demystify how CPUs and compiled languages work.",
+              "author": "imtomt",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "That fake O'Reilly book cover is pure gold.",
+          "author": "chrisweekly",
+          "replies": [
+            {
+              "text": "That book is exactly what inspired me to make this in the first place, haha. The subtitle of the book gave me the acronym I named it.",
+              "author": "imtomt",
+              "depth": 1
+            },
+            {
+              "text": "I frequently reference this exact meme to people whenever someone complains about complicated or difficult-to-write code. Now that’s you’ve made this project I suppose we have zero room to complain anymore!",
+              "author": "orthogonal_cube",
+              "depth": 2
+            },
+            {
+              "text": "Fauxreilly!",
+              "author": "____tom____",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48095550",
+      "title": "Software engineering may no longer be a lifetime career",
+      "link": "https://www.seangoedecke.com/software-engineering-may-no-longer-be-a-lifetime-career/",
+      "domain": "www.seangoedecke.com",
+      "author": "movis",
+      "score": 392,
+      "comment_count": 637,
+      "created_ts": 1778510048,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "Multiple times per week I have the same conversation.  It goes something like this:\n  - AI will make developers irrelevant\n  - Why?\n  - Because LLMs can write code\n  - Do you know what I do for a living?\n  - Yes, write code?\n  - Yes, about 2-5% of the time.  Less now.\n  - But you said you are a developer?\n  - I did\n  - So what do you do 95-98% of the time?\n  - I understand things and then apply my ability to formulate solutions\n  - But I can do that!\n  - So why aren't you?\n\n\nThe developers who still think their job is about writing code will perhaps not have a job in the future.  Brutal as it may sound: I'm fine with that. I'm getting old and I value my remaining time on the planet.\nBusiness owners who think they can do without developers because they think LLMs replace developers are fine by me too.  Natural selection will take care of them in due course.",
+          "author": "bborud",
+          "replies": [
+            {
+              "text": "On one of my very first jobs in around 2000 I got paired with a much more experienced software engineer. He’d been a pro since the early 70s.  I was stoked to learn from him.\nOn like my fourth day he said “now I’m going to teach you the thing that helped me the most in my career…” I waited, ready for the received wisdom. And he said “always number your punch cards so if you drop them they will be easy to put back into order”. I was upset. We were long past the point where punch cards were in use. And then he said “I said what would help _me_ the most, not what would help _you_. Software is always changing”.\nI’ve thought about that a lot lately.",
+              "author": "kasey_junk",
+              "depth": 1
+            },
+            {
+              "text": "This is a bit of glib answer.  Most of the time is spent coding which encompasses typing, retyping, and retyping again.  It also includes banging your head against the wall while trying to get one of your rewrites to work against and under-documented API.\nOP's formulation makes SWE sound like a purely noble enterprise like mathematics.  It's more like an oil rig worker banging on pieces of metal with large hammers to get the drill string put together.  They went in with a plan, but the reality didn't agree and they are on a tight schedule.",
+              "author": "doug_durham",
+              "depth": 1
+            },
+            {
+              "text": "Most of the time is spent figuring what the right thing to do is, not writing the implementation. Sometimes the process of writing the implementation surfaces new considerations about what the right thing is, but still, producing text to feed to a compiler is not the bulk of the work of a software engineer. It is to unearth requirements and turn them into repeatable software.",
+              "author": "estebank",
+              "depth": 2
+            },
+            {
+              "text": "Feels like lately most of the time is spent arguing about or at least worrying about whether or not AI is going to replace all software developers.",
+              "author": "powvans",
+              "depth": 3
+            },
+            {
+              "text": "If you’re spending time thinking and not experimenting, then it’s because experimentation is expensive. With an LLM you don’t have to try to predict a complex system in advance, experiments are so cheap to can just converge to a solution directly. None of this pontificating; it’s really not that useful anymore.",
+              "author": "7e",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "In my experience, it's been the complete opposite. The very experienced engineers that are actually willing to use top of the line tooling are much better than they were before, including those that are over 40, and over 50.\nPart of the practical degradation of traditional programmers over time has always been concentration and deep calculation, just like in chess. The old chess player knows chess much better than a 19 year old phenom, but they cannot calculate for that many hours at the same speed as before, so their experience eventually loses to the raw calculation. Maybe at 35, or at 45, but you are just not as good. Claude Code and Codex save you the computation, while every single instinct and 2 second \"intuition\", which is what you build with experience, is still online.\nIt's not just that it's a more fair competition: It's now unfair in the opposite direction. The senior that before could lead a team of 6 is now leading a team of agents, and reviewing their code just as before. Hell, it's easier to get the agent to change direction than most juniors around me,  which will not be easy to correct with just plain, low-judgement feedback.",
+          "author": "hibikir",
+          "replies": [
+            {
+              "text": "> The senior that before could lead a team of 6 is now leading a team of agents, and reviewing their code just as before.\nI don't see this in practice. Senior engineers can prompt Claude just as fast as junior engineers can. Claude can debug broken code at roughly the same speed regardless of who's pressing Enter.\nIn fact, I've basically stopped using agents for most of my work. It's far more valuable for me to help the junior engineers develop a better sense of what's good and right, than it is for me to sit and review Claude commits all day.",
+              "author": "bastawhiz",
+              "depth": 1
+            },
+            {
+              "text": "> Part of the practical degradation of traditional programmers over time has always been concentration and deep calculation, just like in chess.\nFortunately SWEs have the architect path, which frequently rewards having lots of deep intuition even as the details of calculation continue to change.  So one question that's urgent but unknowable until we get there is.. are we going to get good architects if they don't come up through the trenches?  I'm not sure.  All I know is that everyone has a war story about the least qualified ones that got the role \nwithout\n that experience.\nSince intuition \nis\n what LLMs do more than calculation, it's worth mentioning that this is true but different.  They have the collective unconscious of the internet, which isn't taste that comes from good/bad experience.  Besides intuition what comes to mind is \"good taste\".. the actual foundation of good review and really the main job of senior positions in any technical field.",
+              "author": "robot-wrangler",
+              "depth": 1
+            },
+            {
+              "text": "A software architect who doesn't actually code is worse than useless imo, because they drag actual developers down, forcing them to implement their Powerpoint apps. I say that having worked in the architecture group at one of largest companies in the world.\n\"I don't care if the app is a synchronous multi-page form with zero no need for websockets. It must have them!\" (because it says so on my slide)",
+              "author": "suzzer99",
+              "depth": 2
+            },
+            {
+              "text": "> I don't care if the app is a synchronous multi-page form with zero no need for websockets. It must have them\nSounds exactly like the kind of intuition an LLM will have.. \"best practice\" that's really whatever fads/marketing hype that there is a lot of noise about, never been informed by experiments or pain.\nThere was a post complaining about AI preference for god objects earlier, but the thing about stuff like that is, you could mechanically disincentivize it purely from complexity metrics or ASTs, either in training, or at the agentic layer later.  I'm really \nmuch\n more worried about when LLMs are flooding the internet with marketing, and LLMs are consuming the marketing to determine best practice",
+              "author": "robot-wrangler",
+              "depth": 3
+            },
+            {
+              "text": "But when a senior can do the job of 6 coworkers, what do you suppose will happen to the coworkers?\nIn farming, those who were replaced by tractors did not keep their jobs. What is different now?",
+              "author": "bel8",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> AI-users thus become less effective engineers over time, as their technical skills atrophy\nBased on my experience, I think this will prove more true than not in the long run, unfortunately.\nProfessionally, I see people largely falling into two camps: those that augment their reasoning with AI, and those that replace their reasoning with AI. I’m not too worried about the former, it’s the latter for whom I’m worried.\nMy mom is a (US public school) high school teacher, and she vents to me about the number of students who just take “Google AI overview” as an absolute source of truth. Maybe it’s just the new “you can’t cite Wikipedia”, but she feels that since the pandemic, there’s a notable decline in the critical thinking skills of children coming through her classes.\nWe have a whole generation (or two) of kids that have grown up being told what to like, hate, believe, etc. by influencers and anonymous people on the internet. They’d already outsourced their reasoning before LLMs were a thing. Most of them don’t appear to be ready to constructively engage with a system that is designed to make them believe they are getting what they want with dubious quality.",
+          "author": "Teknoman117",
+          "replies": [
+            {
+              "text": "I work with people who generate solutions without really looking at what was produced (group A). They click around the app or run some tests and decide if they're content with the result, then ship it. You can see Claude's fingerprints all over the PR and it's safe to assume they didn't change much of anything.\nThen I have coworkers who work through the problems, build harnesses to test the changes and verify results, work through multiple solutions, synthesize ideal outcomes into a single one, benchmark, refine, test the result thoroughly, and provide sane verification processes in the PR. This is group B.\nThey're entirely different versions of using AI. One seems passable for now (look how fast we're going!), and the other is arguably a new version of what's possible (in a given time frame at least) and defines a totally new normal for software engineering that I virtually never saw outside of exceptionally professional contexts. You don't move as quickly as group A, but you still move faster and produce better software than most people have in virtually every company I've worked for.\nI see group A being totally pushed out of the field fairly quickly. LLMs let you work incredibly effectively if you care to learn how. That kind of rigor is going to be the default (group B), and might become the only way humans can still be a useful component in the loop. Group A is likely to become replaceable with frontier models before very long.",
+              "author": "steve_adams_86",
+              "depth": 1
+            },
+            {
+              "text": "Bro group B might as well write the code themselves. this is getting silly",
+              "author": "i_love_retros",
+              "depth": 2
+            },
+            {
+              "text": "> My mom is a (US public school) high school teacher, and she vents to me about the number of students who just take “Google AI overview” as an absolute source of truth.\nI notice many of the adults in my life are doing this now as well.",
+              "author": "Ancalagon",
+              "depth": 1
+            },
+            {
+              "text": "> Professionally, I see people largely falling into two camps: those that augment their reasoning with AI, and those that replace their reasoning with AI. I’m not too worried about the former, it’s the latter for whom I’m worried.\nRelated recent article posted on HN - \nhttps://news.ycombinator.com/item?id=47913650",
+              "author": "shadow28",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Anecdotally, it feels like something materially changed in the US software hiring market at the start of this year to me. It feels like more and more businesses are taking a wait and see approach to avoid over-investing in human capital in the next few years.\nIt also feels like the hiring \"signal\", which was always weak before, is just completely gone now, when every job you do advertise receives over 500 LLM written applications and cover letters that all look and feel the same.\nThe pro-athlete comparison in this article is bit silly IMO- there are obvious physical body issues that occur with aging if you rely on your muscles etc to make money. If you compare to other fields of knowledge work, such as say law or medicine, there are loads of examples of very experienced, very sharp operators in their 40s and 50s.",
+          "author": "giobox",
+          "replies": [
+            {
+              "text": "Anecdotally as well, but I believe that US companies are hiring in big waves in India and other developing markets. I know people who went from zero contacts to daily messages from big tech recruiters in these countries. I've seen people saying that is the result of that specific US section that expired last year, but I'm a layman, so I don't have the knowledge to debate the reasons.",
+              "author": "tuesdaynight",
+              "depth": 1
+            },
+            {
+              "text": "Honestly, AI doesn't feel like it's affecting hiring needs from the trenches.  We don't have engineers sitting on their hands because AI wrote up everything the leadership could imagine.\nInstead, we get an economy that feels like it's on the cusp of a fall or at the very least a roller coaster.  Poor tax incentives to hire.  ZIRP is long gone.  And the hiring managers are overrun with slop.\nBut bosses are happy to say it's AI because that makes you sound in control.",
+              "author": "jayd16",
+              "depth": 1
+            },
+            {
+              "text": "Thank you, it's been all but confirmed that lot of \"AI layoffs\" are due to reaching a workforce equilibrium from Covid era over hiring.\nSaying AI for anything, good news or bad news, is a get out of jail free card for execs who want to appease shareholders.",
+              "author": "mainmailman",
+              "depth": 2
+            },
+            {
+              "text": "Who did they overhire? Like, Covid didn’t just increase the number of people in the field. Prior to Covid there was a so called talent shortage. The hiring that did occur was mostly net zero in aggregate. Workers got poached, grads got hired, compensation went to far up. And, that’s what they mean by overhired. They over paid. They now see the benefits of hiring cheaper talent on another continent. Cheaper talent that can use the same tools as you are going to use. AI equalized a lot of talent, the US labor doesn’t have the edge it once did. In a sense, this should have been happening at higher rates much earlier than it did but for some reason investors saw value if you paid big salary to smart people in one part of California for a very long time. Now, the thing that should have happened is happening. And they also realize it’s not limited to California, turns out even salaries in Alabama are high compared to other parts of the world.\nThere is also much more productivity. But I’m not sure it’s really a driving force yet as with the new productivity people are still just trying to do more with it which doesn’t translate to efficiency. Yet. It might once AI loses its wow factor and is just status quo. I feel like this is fast approaching but still may be a few years away.",
+              "author": "conductr",
+              "depth": 3
+            },
+            {
+              "text": "Yeah so most of my friends who are dealing with spike in outsourced devs in their work environments are cleaning up the AI slop churned out by offshore people who are slinging code and getting the business requirements all wrong. Their jobs are now to clean up the mountains of code coming in from people who don't really get the problems they are being asked to solve.",
+              "author": "Lord_Zero",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I keep reading about how AI will be fine because people can just retrain for different careers. However, I never read what those careers are or who is going to pay for retraining.\nI certainly don't have the money or time to go back to college and start a new career at the bottom.",
+          "author": "harimau777",
+          "replies": [
+            {
+              "text": "The argument is that “that’s what always happened in the past”.\nWhich is true, but it’s true as long as it’s not true.\nThe classic example of how drastically this kind of thinking can fail is Malthusian theory, that populations would collapse because food growth was linear while population growth was exponential. This was true for all of history until Malthus actually made this observation.\nAt a mechanistic level, the “we have always found other jobs” argument misses that the reason we’ve always found other jobs is because humans have always had an intelligence advantage over automation. Even something as mechanical as human inputs in an assembly line was eventually dependent on the human ability to make tiny, often imperceptibly, adjustments that a robot couldn’t.\nBut if something approximating AGI does work out, human labor has absolutely no advantage over automation so it’s not clear why the past “automation has created more human jobs” logic should continue.",
+              "author": "adjejmxbdjdn",
+              "depth": 1
+            },
+            {
+              "text": "> Which is true, but it’s true as long as it’s not true.\nIt also isn't true. The story of the last 50 years has been that technology, especially computer and communications technology, has facilitated the concentration of wealth. The skilled work got computerized, or outsourced to India or China. That left U.S. workers with service jobs where they have much lower impact on P&L and thus much less leverage.\nIn my field, we used to have legal secretaries and law librarians and highly experienced paralegals. They got paid pretty well and had pretty good job security because the people who brought in the revenue interacted with them daily and relied on them. Now, big firms have computerized a lot of that work and consolidated much of the rest into centralized off-site back-office locations. Those folks who got downsized never found comparable work. They didn't, and couldn't, go work for WestLaw to maintain the new electronic tools. The law firms also held on to many of them until retirement or offered them early retirement packages, and then simply never filled the positions. It used to be a pretty solid job for someone with an associates degree, and it simply doesn't exist anymore.\nThe only thing keeping the job market together is the explosion in healthcare workers. My Gen-Z brother and sister in law are both going into those fields. In a typical tertiary American city, the largest employers are the local hospital and perhaps a university or community college. Both of those get most of their revenue directly or indirectly from the government. It's not clear to me how that's sustainable.",
+              "author": "rayiner",
+              "depth": 2
+            },
+            {
+              "text": "Healthcare really seems like the only safe direction anymore. They're needed and a human is still required to physically do it.",
+              "author": "vips7L",
+              "depth": 3
+            },
+            {
+              "text": "My wife is a nurse and keeps in touch with her school professors. They said that the number of people flooding into healthcare careers is more than most colleges can handle, and is starting to cause supply glut in some roles.",
+              "author": "upupupandaway",
+              "depth": 4
+            },
+            {
+              "text": ">\nIt's not clear to me how that's sustainable\nIf it makes you feel better, I'm pretty sure it isn't sustainable. (But I'm not an economist so take that with a block of salt.)\nI don't think anyone has the answers. It's just some of us are honest enough to concede we have no answers, while others promote an answer that aligns best with their belief system.\n\"It'll all work out.\"\n\"It's the immigrants/blacks/jews/whatever dragging us down.\"\n\"Nothing's going to happen and we can all continue doing the work we always have.\"\n\"Burn the rich.\"\nEtc etc.\nNot a lot of serious attempts out there at even getting a hand on the issues, let alone fixing the issues.",
+              "author": "bilbo0s",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48088576",
+      "title": "Obsidian plugin was abused to deploy a remote access trojan",
+      "link": "https://cyber.netsecops.io/articles/obsidian-plugin-abused-in-campaign-to-deploy-phantom-pulse-rat/",
+      "domain": "cyber.netsecops.io",
+      "author": "cmbailey",
+      "score": 350,
+      "comment_count": 214,
+      "created_ts": 1778450563,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "Obsidian CEO here. There is a major update coming soon for plugin security. I think it will address many of the concerns people have raised in this thread. It's a hard problem but we are working on it.\nThat said, the headline is misleading. This article is about a social engineering attack that requires the user to actively reject multiple safety warnings in Obsidian. As far as I know this is a proof of concept, I haven't seen any reports of users being affected by this attack.",
+          "author": "kepano",
+          "replies": [
+            {
+              "text": "Obsidian is great. And glad to see how you’re looking at plugin security. But one more thing you should consider is: How do you reduce the need for plugins for basic product behavior. E.g., I use a plugin to be able to open a file in new tab instead of replacing current tab. That should be a setting, not a plugin I’m forced to use.",
+              "author": "sinatra",
+              "depth": 1
+            },
+            {
+              "text": "I agree. \nhttps://news.ycombinator.com/item?id=48097206",
+              "author": "kepano",
+              "depth": 2
+            },
+            {
+              "text": "I don't understand the hate here. Obsidian is a well working product that scratches many inches. Plugins allow to scratch some more itches, but are not mandatory.\nI am using several plugins and would prefer not to, but they allow me to bring the (mobile) app closer to what I want (notably templater and homepage as I want to get a new daily note sorted in monthly folders, which obsidian doesn't seem to allow natively).\nMaybe an alternative would also be to more explicitly allow users to create their own scripts - but maybe that's possible and I just don't know.\nOverall I think the key challenge with obsidian use is that it offers too much, and there's a lot to fiddle with. While it will bother the power users probably best would be to just move on many ways to \"default\" behaviours and e.g. make many of the \"core plugins\"  just settings to make the list lsss overwhelming.",
+              "author": "goobatrooba",
+              "depth": 1
+            },
+            {
+              "text": "lol we told you plugins were insecure years ago. I distinctly remember getting flamed in your discord because I said that they had full disk access. Too little too late.",
+              "author": "ibash",
+              "depth": 1
+            },
+            {
+              "text": "The insecurity is part of the benefit. Obsidian being so open, allowing easy customizing is what makes it great. They should add some more bells, whistles and guards to prevent sneaky social attacks, but they can't close Obsidian all together, or it would kill the app.",
+              "author": "PurpleRamen",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I really like Obsidian. I use it every day and I don't use any community plugins because the permissions aren't up to snuff. I hope for a day where a plugin defines what it will need and that gets presented to me as a user.\nI have to imagine the Obsidian team is going to respond seriously to this and I look forward to seeing what they do. They have my full confidence. I'm surprised the system was initially designed as it is without those better permissions and sandboxing, though.",
+          "author": "jjice",
+          "replies": [
+            {
+              "text": "I started using it too when I got sick of using VS Code to look at md. Glad I never had the need to install any plug-ins! Very poor form on their part from what I can tell.",
+              "author": "BrissyCoder",
+              "depth": 1
+            },
+            {
+              "text": "Just wait until you want to create a simple table with ADD/SUM.",
+              "author": "lossyalgo",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> The victim is prompted to enable the \"Installed community plugins\" synchronization feature.\nObsidian has the proper protections in place to prevent this type of attack, and the victims are being convinced to ignore them. This is just a successful social engineering event. I hate to see Obsidian dragged down by this headline, since this attack is not exploiting a vulnerability in it or its plugin system.",
+          "author": "slowmover",
+          "replies": [
+            {
+              "text": "Ehm. No? \nhttps://obsidian.md/help/plugin-security#Plugin+capabilities\n>\nDue to technical limitations, Obsidian cannot reliably restrict plugins to specific permissions or access levels. This means that plugins will inherit Obsidian's access levels. As a result, consider the following examples of what community plugins can do:\n    Community plugins can access files on your computer.\n    Community plugins can connect to internet.\n    Community plugins can install additional programs.\n\n\n\nObsidian has no protection \nat all\n. Installing a plugin gives it full access to your computer.\nThis was only a matter of time, and honestly I think it's inexcusably negligent that they shipped a plugin system like this at all since about 2010 (or arguably much earlier).",
+              "author": "Groxx",
+              "depth": 1
+            },
+            {
+              "text": "It does give full access but Obsidian does tell you that. Community plugins are not enabled by default, you have to enable them manually. Same happens with a shared vault: once you get it you still have to manually enable plugins. So far no one managed to sneak in a plugin completely unnoticed.",
+              "author": "pointlessone",
+              "depth": 2
+            },
+            {
+              "text": "That's horse hockey. Obsidian is not a usable system without community plugins.\nFolks will reply \"but I use it every day without plugins\".\nThat position disregards software usability as a formal discipline, along with decades of UX research and standards.",
+              "author": "kid64",
+              "depth": 3
+            },
+            {
+              "text": "If you want to use a niche, academic definition of \"usable\", that's fine but you better be ready to explain yourself.\nBecause in general, \"usable\" means \"people use it\". Which they do for Obsidian without community plugins without issues.",
+              "author": "wasabi991011",
+              "depth": 4
+            },
+            {
+              "text": "To make an actual counter, you need numbers. If only a tiny niche of users use it without community plugins, then yes, it's unusable (in a practical definition of the term)",
+              "author": "eviks",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I don't know when Obsidian gathered the hate I'm seeing here, but 'bad plugins' is a failure mode of most everything that has plugins.\nPersonally it feels similar to being mad at Windows if you were to install an exe someone emailed you and it turned out to be a virus.\nYou can install bad chrome plugins, bad wow addons, basically anything that's purpose is to run user code can be used to run bad code.\nPersonally I'm glad the _note taking app_ prioritized allowing for custom plugins over pushing back features so they could spend an extra year locking down user plugins. They can put some additional effort in but running unknown code will always be a risk.",
+          "author": "ApolloFortyNine",
+          "replies": []
+        },
+        {
+          "top": "This is a misleading headline. It makes it seem like another supply chain attack where some good plug-in was taken over and used to deliver malware. Thats not the case here. Victims are invited to collaborate on a synced vault which comes preloaded with a non official plug-in that delivers the rat. Very very different story",
+          "author": "nstart",
+          "replies": [
+            {
+              "text": "What’s misleading?\n\"Novel Campaign Abuses Obsidian Note-Taking App to Target Finance and Crypto Professionals with PHANTOMPULSE RAT”\nIt’s novel (new), an abuse of Obsidian, specifically targeting a group of people.. and the RAT is embedded in the vault.",
+              "author": "deafpolygon",
+              "depth": 1
+            },
+            {
+              "text": "The headline on HN is different: \"Obsidian plugin was abused to deploy a remote access trojan\". It's not a plugin that was abused, but the ability for shared vaults to contain plugins.",
+              "author": "kepano",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 263,
+      "comment_count": 978,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48087925",
+      "title": "Ask HN: Will low quality AI customer support be the new normal?",
+      "link": "https://news.ycombinator.com/item?id=48087925",
+      "domain": "news.ycombinator.com",
+      "author": "0-bad-sectors",
+      "score": 22,
+      "comment_count": 19,
+      "created_ts": 1778446647,
+      "is_internal": true,
+      "post_text": "Now whenever I reach for customer&#x27;s support chat or phone I get an AI agent replying to me and I get into a useless loop for a couple of minutes before I start begging it to link me to a real person.<p>Will companies start losing customers because of that or people will eventually get used to this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48084086",
+      "title": "Ask HN: Is this the SWE workflow of the future?",
+      "link": "https://news.ycombinator.com/item?id=48084086",
+      "domain": "news.ycombinator.com",
+      "author": "mc-0",
+      "score": 15,
+      "comment_count": 10,
+      "created_ts": 1778421821,
+      "is_internal": true,
+      "post_text": "Internally transferred to a new team in a top-10 F500 company. This team is pushing incredibly hard to be seen as &quot;AI-First&quot; &amp; is very opinionated about what other teams should be doing.<p>I was explicitly told I am not to write any code by hand. Claude usage is mandatory coupled with a proprietary superpowers &#x2F; speckit &#x2F; GSD framework with 100+ agents and skill files.<p>All code reviews are agent driven. No one takes the time to actually understand anything. Documentation has become novel length slop, as have Jira tickets.<p>I ship stuff I don&#x27;t understand. Management says there won&#x27;t be a need for many SWEs in the future.<p>Am I alone in experiencing this? Is this the future of work?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48092561",
+      "title": "Ask HN: Best static site generator for a docs site in 2026?",
+      "link": "https://news.ycombinator.com/item?id=48092561",
+      "domain": "news.ycombinator.com",
+      "author": "agenttestjekuqz",
+      "score": 9,
+      "comment_count": 11,
+      "created_ts": 1778489115,
+      "is_internal": true,
+      "post_text": "I&#x27;m looking for recommendations for a static site generator to rebuild our documentation site in 2026.<p>1. Markdown support\n2. Fast build (&lt;60s)\n3. Search without JS\n4. Deploy on GitHub Pages<p>Budget: $0",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "https://starlight.astro.build/\nThe whole site can be configured in the astro.config.js file and the rest is markdown.\nIf you want an example you can look at sst.dev and their github repo at \nhttps://github.com/anomalyco/sst/tree/dev/www",
+          "author": "trcarney",
+          "replies": []
+        },
+        {
+          "top": "How are you expecting search to work without JS?   I'm pretty sure you would need either some sort of backend OR JS for any sort of search to work.\nOr maybe another option would be to outsource the search part to \"site:yourdomain\" on google or something similar.",
+          "author": "johntash",
+          "replies": []
+        },
+        {
+          "top": "Gitbook gets the job done",
+          "author": "noashavit",
+          "replies": []
+        },
+        {
+          "top": "I use and recommend Lume [1] for static site generation, and I know it has a couple of search plugins, but I haven't used them. As others have mentioned, your search without JS requirement will be hard to implement, unless you use an external provider for the indexing and search.\n[1] \nhttps://lume.land",
+          "author": "BrunoBernardino",
+          "replies": []
+        },
+        {
+          "top": "I use Hugo Book[1] for the documentation of FormBeep[2]\nIt's been super easy and I host it free on CF pages:\n[1]\nhttps://hugo-book-demo.netlify.app/docs/example/\n\n[2]\nhttps://docs.formbeep.com",
+          "author": "rishikeshs",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48079444",
+      "title": "Ask HN: Before Open Source took over the server, what was the discourse like?",
+      "link": "https://news.ycombinator.com/item?id=48079444",
+      "domain": "news.ycombinator.com",
+      "author": "mbgerring",
+      "score": 8,
+      "comment_count": 3,
+      "created_ts": 1778370105,
+      "is_internal": true,
+      "post_text": "My understanding of the early Internet is that there was fierce competition among commercial, closed-source server and database software, and that the dominance of Linux, Apache, MySQL (and now PostgreSQL) etc were far from obvious or guaranteed. I think we’re in a similar moment with LLMs, and I’d love to read some stories, or see some examples of discourse on mailing lists, forums, or whatever on this subject from that earlier period. I think it would be helpful for grounding present-day discussions. What can you share from this era?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48092573",
+      "title": "Ask HN: Do you know the ethics of Developers?",
+      "link": "https://news.ycombinator.com/item?id=48092573",
+      "domain": "news.ycombinator.com",
+      "author": "eropatori",
+      "score": 7,
+      "comment_count": 17,
+      "created_ts": 1778489292,
+      "is_internal": true,
+      "post_text": "Do you know what should go in that last point?<p>Do you believe others (developers or not) know?<p>- Doctors: do no harm.<p>- Lawyers: defend the client, but do not lie to the court.<p>- Judges: be impartial.<p>- Journalists: verify before publishing. protect sources.<p>- Developers: ??????",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48096861",
+      "title": "Ask HN: How do you choose a model for a task?",
+      "link": "https://news.ycombinator.com/item?id=48096861",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 6,
+      "comment_count": 8,
+      "created_ts": 1778515633,
+      "is_internal": true,
+      "post_text": "How do you decide a model is good enough for a given task? Right now I use Opus for planning and harder tasks and switch to sonnet for more defined tasks. But I feel like sonnet is kind of stupid and is introducing issues because it can’t grasp the larger context? Is there some definitive way to say a model is good enough for a task? Or is it all vibes?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Evaluation is harder than you think because of statistics.\nLike if you want to accurately know if one model is better than another you have to test it on hundreds if not thousands of examples which are carefully graded in difficulty, not in the training sets, etc.\nPractically you might try model A and model B and use each one 2-3 times on different tasks and walk out with the impression that A is really good and B sux,  but it could be model A got lucky because you asked it to do things it is good at or maybe it just got lucky and got the right answer anyway.\nSee \nhttps://arxiv.org/html/2410.12972v1\n and \nhttps://arxiv.org/pdf/2505.14810\n -- those papers are considering a general space of tasks but you could totally do the same kind of eval for the tasks you care about.",
+          "author": "PaulHoule",
+          "replies": [
+            {
+              "text": "Have you implemented any of this in practice? Eg are you benchmarking models?",
+              "author": "bix6",
+              "depth": 1
+            },
+            {
+              "text": "I've done some for classification, ranking, and other sorts of non-generative tasks.",
+              "author": "PaulHoule",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is a hard problem for me as well.  Right now I've just been using the best model available (like Opus, or GPT 5.5, or Gemin Pro) but it's not ideal.  My problem is anytime I step down the results are subtlely worse and sometimes I don't notice immediately depending on what I'm doing.\nAs far as Opus vs. GPT 5.5 etc, I generally decide with:\n1.  Code? -> Opus\n2.  Docs? -> GPT\n3.  Real-time or recent information needed? -> Gemini\nIt's far from perfect though.  Would love to hear others thoughts.",
+          "author": "freedomben",
+          "replies": [
+            {
+              "text": "Opus eats tokens so fast so I try to minimize it but compared to Sonnet I definitely see fewer issues in my larger projects. Sonnet has gone off the rails a few times.",
+              "author": "bix6",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The short answer is that it depends how well you define the boundaries of the task and the relative complexity. For example, smaller model is usually fine for something like summarization, but an \"easier\" coding task might still actually be quite difficult unless you eval it heavily like @paulhoule said",
+          "author": "mikejulietbravo",
+          "replies": []
+        },
+        {
+          "top": "Gemini for recent search and google workspace automation\nPerplexity for deep research\nClaude Opus for coding, Sonnet for writing\nGemma4 for local AI overviews and analysis\nQwen coder for local prototyping",
+          "author": "noashavit",
+          "replies": []
+        },
+        {
+          "top": "for short, stateless stuff,definitions, formatting, quick lookups I have never noticed a meaningful difference between models. But anything that requires reasoning across a lot of prior context, it's usually claude sonet or opus.\nBut feels like the vibe will soon take me to codex",
+          "author": "shouvik12",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48094258",
+      "title": "Ask HN: What would you like to be working on?",
+      "link": "https://news.ycombinator.com/item?id=48094258",
+      "domain": "news.ycombinator.com",
+      "author": "DDerTyp",
+      "score": 6,
+      "comment_count": 8,
+      "created_ts": 1778503559,
+      "is_internal": true,
+      "post_text": "Contrary to &quot;What are you working on?&quot;, what would you like to be working on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48080516",
+      "title": "Ask HN: Can a tinnitus be triggered by high frequency noises?",
+      "link": "https://news.ycombinator.com/item?id=48080516",
+      "domain": "news.ycombinator.com",
+      "author": "tinnitus_crazy",
+      "score": 6,
+      "comment_count": 15,
+      "created_ts": 1778381351,
+      "is_internal": true,
+      "post_text": "Not exactly technical, but HN feels like the correct crowd to ask because asking anywhere else I would be considered mentally ill.<p>I have a tinnitus that seems to stay 99,9% of the day, it’s away for some minutes sometimes and it’s very high frequency. Imagine a power supply coil whine.<p>Now the mentally ill part: the tinnitus can change position (left&#x2F;right ear) and change volume. I didn’t hear the tinnitus on the right ear for some days, now it’s back on it (and still audible on the left ear) after sitting on the couch again.<p>The couch, you ask? Two weeks ago, when the tinnitus started, we changed the layout of our living room. The couch was now located next to our WiFi router. The tinnitus started shortly after that. I never had tinnitus before. Guess what, the router makes the same noise (even my partner can hear it). After some days of realizing it might be from the router, I changed the position of it to the other side of the room, but now somehow I can still hear the high frequency from the router from 3 meters apart. And as soon as I start sitting on the couch, the tinnitus gets much worse. Even disabling electricity in the full house I still hear that WiFi router noise in my ear.<p>Am I insane? Is this a thing? Can some frequency cause a tinnitus which can be re-triggered by the same frequency? Can it have a memory effect? Could it be it doesn’t go away even if I don’t sit on the couch for days because all these power supplies have high frequency coil whine in each and every facility these days, which trigger it again?<p>I feel like Neo from The Matrix who got enlightened and now can hear electricity, but without the rest of the super powers :(<p>PS: I visited a doctor and am doing the usual medical procedures to deal with tinnitus (Prednisolone 60mg&#x2F;day), but it doesn’t help in any way.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48101373",
+      "title": "Ask HN: How are you preparing for interviews nowadays?",
+      "link": "https://news.ycombinator.com/item?id=48101373",
+      "domain": "news.ycombinator.com",
+      "author": "holden_nelson",
+      "score": 5,
+      "comment_count": 15,
+      "created_ts": 1778537554,
+      "is_internal": true,
+      "post_text": "Hey all, just wondering how you&#x27;re preparing for interviews in 2026? I&#x27;m assuming system design plays a larger role and the bar is probably higher across all levels. Do I still need to grind leetcode?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48088126",
+      "title": "Ask HN: Which LLM are you using to evaluate your ideas?",
+      "link": "https://news.ycombinator.com/item?id=48088126",
+      "domain": "news.ycombinator.com",
+      "author": "Marius77",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1778447681,
+      "is_internal": true,
+      "post_text": "Question as in the title.\nCurious about your experience and which LLM helped you out the most without saying yes to everything..",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48103273",
+      "title": "Ask HN: How to get started in electronic music",
+      "link": "https://news.ycombinator.com/item?id=48103273",
+      "domain": "news.ycombinator.com",
+      "author": "A_Random_Nerd",
+      "score": 4,
+      "comment_count": 5,
+      "created_ts": 1778550905,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been interested in learning how to make electronic music (e.g. Geometry dash, Undertale, Daft Punk, C418), but there doesn&#x27;t seem to be any real documentation or tutorials on how to start.<p>To summarize my question:\na.) What are the first 3 steps (or more) to learn to compose music?\nb.) Any links, resources etc. to share?<p>Thanks for your time and interest.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48090164",
+      "title": "Ask HN: What Wintel/AMD (Laptop) Harware are you liking?",
+      "link": "https://news.ycombinator.com/item?id=48090164",
+      "domain": "news.ycombinator.com",
+      "author": "aagha",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1778464021,
+      "is_internal": true,
+      "post_text": "Everyone seems to be on a Mac with their amazing M1-4 chips and having a great time with local models[0].<p>I never made the move. Probably never will.<p>I&#x27;d love to know what Intel&#x2F;AMD (laptop) hardware people are liking for local AI models nowadays.<p>0 - https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48089091",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48076414",
+      "title": "Ask HN: Former master-tech building AI systems – how to break into software?",
+      "link": "https://news.ycombinator.com/item?id=48076414",
+      "domain": "news.ycombinator.com",
+      "author": "nicku711",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1778346058,
+      "is_internal": true,
+      "post_text": "So to keep a very long story short, I was 28, was exactly a year ago from april i was awarded top 2000 technicaians in the Nation from Stellantis of North America. I was(and still am) dealing with life long knee pain and hip pain from just wear and tear of automotive repair. Due to this i knew automotive was over for me. Then I discovered claude.ai and one question led to another text thing you kmow im building a dual rtx msi b550 tomohawk max wifi 64gb ram, amd am4 5900xt cpu. 3tb ssd nvme ssd. Within 2 months of discovering the potential of CS. That said. I ended up creatinf a ton of projects to teach myself. Mind you im doing all this while the world around me is crashing and burning. I built printmakerai.com. I know ai is amazing at coding, and is very useful, but im the kind of guy who firmly believes &quot;if you want it done right you must do it yourself.&quot; The reason im posting this is im seeking advice on what I should do. I cant land a career in cs without a formal degree. Im coming from one of the most technically advanced trades there are. We aren&#x27;t &quot;mechanics&quot; anymore were technicians and for good reason. I can directly translate canbus, sensor fusion,.redundant systems, trace wiring diagrams,<p>Seperate circuits and modules and accurately Diagnose a module, circuit or more. Heck I was able to translate oil wicking to solder wicking. Like how 2018+ wranglers throw excessive dash lights and can stall? Everyone assumes abs module because the abs is throwing the dtc and there was a year plagued with bad abs modules. But its really a starconnector behind the glove box that has solder wicking down the pcb. And even being this smart is clearly not enough to land me a job in any real cs world. Thanks to claude.ai I found what makes brain light up like a Christmas tree but genuinely need help navigating this confusing field. That said ill be treaching myzelf python today because we&#x27;ll I cant code myself lmao. And I know thats blocker number 1.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice",
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48097132",
+      "title": "Ask HN: How often do you investigate issues in production vs. looking at logs?",
+      "link": "https://news.ycombinator.com/item?id=48097132",
+      "domain": "news.ycombinator.com",
+      "author": "aspectrr",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1778516773,
+      "is_internal": true,
+      "post_text": "Something I&#x27;ve noticed is that I am having to look at production systems manually to do debugging alongside the logs which just made me wonder how other people were doing it",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
