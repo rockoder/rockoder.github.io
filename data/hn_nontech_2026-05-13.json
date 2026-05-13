@@ -1,0 +1,729 @@
+{
+  "scraped_date": "2026-05-13",
+  "source": "hacker_news",
+  "total_scraped": 79,
+  "nontech_count": 19,
+  "posts": [
+    {
+      "id": "48095550",
+      "title": "Software engineering may no longer be a lifetime career",
+      "link": "https://www.seangoedecke.com/software-engineering-may-no-longer-be-a-lifetime-career/",
+      "domain": "www.seangoedecke.com",
+      "author": "movis",
+      "score": 472,
+      "comment_count": 739,
+      "created_ts": 1778510048,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 468,
+      "comment_count": 335,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "> There is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThis blew my mind. Thank you!\nI had to think about it a bit, so for anyone scratching their head right now trying to figure it out, consider it this way:\nwhat matters is the ordering, of heads-then-tails, or tails-then-heads.\nIt doesn't matter that it's biased one way or the other, if you keep flipping pairs until you get a result with two \ndifferent\n values, it's a 50/50 chance whether the less-likely result comes first, or second.\nYou might only have a 20% chance of any particular pair having a tails (for example), but in the cases where you do have a tails, it's a 50/50 chance that it comes first or second.",
+              "author": "ms_menardi",
+              "depth": 3
+            },
+            {
+              "text": "And for people who like equations, here is my attempt at explaining it.\nAssume each flip is independent and the bias remains same in each flip.\nLet\n  P(H) = p,\n  P(T) = 1 - p.\n\n\nThen\n  P(HH) = p^2,\n  P(HT) = p(1 - p),\n  P(TH) = (1 - p)p,\n  P(TT) = (1 - p)^2.\n\n\nTherefore\n  P(HT or TH) = 2p(1 - p).\n\n\nNow calculate\n  P(HT | HT or TH) = p(1 - p) / (2p(1 - p)) = 1/2,\n  P(TH | HT or TH) = (1 - p)p / (2p(1 - p)) = 1/2.",
+              "author": "susam",
+              "depth": 4
+            },
+            {
+              "text": "You don't need conditional probability here, as the flips are independent.\nIt's just p(H)p(T).\nAnd p(H)p(T) = p(T)p(H), thus 2*p(H)p(T) = 2p(1-p).",
+              "author": "taegee",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Damn, I got the paper stack wet with all that ocean water. Guess I'm starting again from scratch...",
+              "author": "dalmo3",
+              "depth": 2
+            },
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "This idea of everyone producing absurd amounts of git objects is less fantastic now [1]. We're still far from these numbers, but an order of magnitude less far than last year [2].\nAlso an interesting bit of history here: apparently there was a time when people were already writing books on Git but \"one enormous Git repository\" wasn't yet the most common mode of using it.\n[1] \nhttps://news.ycombinator.com/item?id=47932422\n[2] \nhttps://x.com/kdaigle/status/2040164759836778878",
+              "author": "owl57",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What you're talking about is so extremely rare that it's much more likely that the entire Earth is destroyed by an asteroid right this inst...",
+          "author": "adyavanapalli",
+          "replies": [
+            {
+              "text": "It is not quite as rare. I calculated it to be less common than being hit by a meteorite, and added a section about that and the Birthday Paradox to Wikipedia, to the article about UUIDs. It got removed / replaced a few years ago however. (If my source was correct, there was actually a woman hit by a meteorite, but she survived, with a leg injury.)\nIf you do have a UUID collision, chances are extremely high that it's either a software bug, or glitch in the computer. It could be a cosmic ray. Cosmic rays messing with the computer memory or CPU are actually relatively common.",
+              "author": "thomasmg",
+              "depth": 1
+            },
+            {
+              "text": "About as rare as an asteroid typing an ellipsis and clicking the add comment button.",
+              "author": "delichon",
+              "depth": 1
+            },
+            {
+              "text": "Well, this joke dates back to (at least) the dial-up days where {#`%${%&`+'${`%& NO CARRIER",
+              "author": "throw0101c",
+              "depth": 2
+            },
+            {
+              "text": "That’s just a result of jounce from localized gravity effects and atmospheric pressure disturbances in the moments before impact.\nThink the ultrasonic typing hacking scene in Pantheon combined with the keyboard bouncing due to rumbling.",
+              "author": "xerox13ster",
+              "depth": 2
+            },
+            {
+              "text": "Well it would be statistically even rarer for that UUID collision to happen and the earth to be destroyed by an asteroid.",
+              "author": "sebazzz",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48109460",
+      "title": "Why senior developers fail to communicate their expertise",
+      "link": "https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise",
+      "domain": "www.nair.sh",
+      "author": "nilirl",
+      "score": 425,
+      "comment_count": 191,
+      "created_ts": 1778598520,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "Because the most important parts of the expertise are coming from their internal \"world model\" and are inseparable from it.\nAn average unaware person believes that anything can be put in words and once the words are said, they mean to reader what the sayer meant, and the only difficulty could come from not knowing the words or mistaking ambiguities. The request to take a dev and \"communicate\" their expertise to another is based on this belief. And because this belief is wrong, the attempt to communicate expertise never fully succeeds.\nFactual knowledge can be transferred via words well, that's why there is always at least partial success at communicating expertise. But solidified interconnected world model of what all your knowledge adds up to, cannot. AI can blow you out of the water at knowing more facts, but it doesn't yet utilize it in a way that allows surprisingly often having surprisingly correct insights into what more knowledge probably is. That mysterious ability to be right more often is coming out of \"world model\", that is what \"expertise\" is. That part cannot be communicated, one can only help others acquire the same expertise.\nCommunicating expertise is a hint where to go and what to learn, the reader still needs to put effort to internalize it and they need to have the right project that provides the opportunity to learn what needs to be learnt. It is not an act of transfer.",
+          "author": "hamstergene",
+          "replies": [
+            {
+              "text": "A non-trivial part of the big difference between the juniors that seem talented and \"get it\", and those that don't is precisely their ability to form accurate enough world models quickly. You can tell who is going at the \"physics\" of software and applying them, and who is just writing down recipes, and doesn't try to understand the nature of any of the steps.\nIt's especially noticeable when teaching functional programming to people trained in OO: Some people's model just breaks, while others quickly see the similarities, and how one can translate from a world of vars to a world of monads with relative ease. The bones of how computation works aren't changing, just how one puts together the pieces.",
+              "author": "hibikir",
+              "depth": 1
+            },
+            {
+              "text": "By complete coincidence, yesterday I came across this link to an article Peter Naur wrote in 1985 (\nhttps://pages.cs.wisc.edu/~remzi/Naur.pdf\n) which I haven't been able to stop thinking about.\nI've been doing this for coming up on thirty years now, mostly at one large company, and I spent a significant number of hours every week fielding questions from people who are newer at it who are having trouble with one thing or another. Often I can tell immediately from the question that the root of the problem is that their world model (Naur would call it their Theory) is incomplete or distorted in some way that makes it difficult for them to reason about fixing the problem. Often they will complain that documentation is inadequate or missing, or that we don't do it the way everyone else does, or whatever, and there's almost always some truth to that.\nThe challenge then is to find a way to represent your own theory of whatever the thing is into some kind of symbolic representation, usually some combination of text and diagrams which, shown to a person of reasonable experience and intelligence, would conjure up a mental model in the reader which is similar to your own. In other words you want to install your theory into the mind of another person.\nA theory of the type Naur describes can't be transplanted directly, but I think my job as a senior developer is to draw upon my experience, whether it was in the lecture hall or on the job, to figure out a way of reproducing those theories. That's one of the reasons why communication skills are so critical, but its not just that; a person also needs to experience this process of receiving a theory of operation from another person many times over to develop instincts about how to do it effectively. Then we have to refine those intuitions into repeatable processes, whether its writing documents, holding classes, etc.\nThis has become the most rewarding part of my work, and a large part of why I'm not eager to retire yet as long as I feel I'm performing this function in a meaningful way. I still have a great deal to learn about it, but I think that Naur's conception of what is actually going on here makes it a lot more clear the role that senior engineers can play in the long term function of software companies if its something they enjoy doing.",
+              "author": "gooseyard",
+              "depth": 1
+            },
+            {
+              "text": "Isn't that interesting? The job of exploring a theory or model to such an extent that it can be expressed in computer code always seems to fall on the shoulders of a software developer. Other people can write specifications and requirements all day long, but until a software developer has tackled the problem, the theory probably hasn't been explored well enough yet to express clearly in computer code. It feels like software developers are scientists who study their customers' knowledge domains.",
+              "author": "hathawsh",
+              "depth": 2
+            },
+            {
+              "text": "> It feels like software developers are scientists who study their customers' knowledge domains.\nI agree so much with this. It's why I feel so stifled when an e.g. product manager tries to insulate and isolate me from the people who I'm trying to serve -- you (or a collective of yous) need to have access to both expertise in the domain you're serving, and expertise in the method of service, in order to develop an appropriate and satisfactory solution. Unnecessary games of telephone make it much harder for anyone to build an internal theory of the domain, which is absolutely essential for applying your engineering skills appropriately.",
+              "author": "Twisol",
+              "depth": 3
+            },
+            {
+              "text": "> so stifled when an e.g. product manager\nAnother facet of this is my annoyance at \nother developers\n when they persistently incurious about the domain. (Thankfully, this has not been too common.)\nI don't just mean when there are tight deadlines, or there's a customer-from-heck who insists they always know best, but as their default mode of operation. I imagine it's like a gardener who cares only about the catalogue of tools, and just wants the bare-minimum knowledge to deal with any particular set of green thingies in the dirt.",
+              "author": "Terr_",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "As a /senior/ developer I really dislike blanket statements. I've seen the same amount of failures caused by\n> “Do we really need that?”\n> “What happens if we don’t do this?”\n> “Can we make do for now? Maybe come back to this later when it becomes more important?”\nas with experimenters. Every system is different, every product is different. If I were building firmware for a CT scanner, my approach towards trying out new things would be different than a CRUD SaaS with 100 clients in a field that could benefit from a fresh perspective.\nThere are definitely ways to have eager/very open seniors drive systems into hard to get out corners. But then there are people that claim PHP5 is all you need.",
+          "author": "lnenad",
+          "replies": [
+            {
+              "text": "I came to say somethign simular actually.\n> Ah, baby, this is my senior developer. The avoider, the reducer, the recycler. They want to avoid development as much as they can.\nThere are times when this is good, there are times when actively trying introduce an improvement is the best way forward. A good senior is able to recognise when those times are.",
+              "author": "bilekas",
+              "depth": 1
+            },
+            {
+              "text": "That doesn't sound as good in meetings. The person who can cut scope and get everyone to the \"we did it\" back patting phase makes everyone feel warm and cozy.\nNow combing through analytics to determine whether or not what we did was actually good? Less warm and cozy.",
+              "author": "ericmcer",
+              "depth": 2
+            },
+            {
+              "text": "This is where good leadership in the dev team is needed.\nIs the improvement likely to reduce maintenance overhead (and thus cost)? Or improve performance allowing for fewer services running (and thus reducing cost)? Or reduce bugs that force people out of a workflow (eg in an online shop, thus fixing it increases sales)?\nOr if it’s just tech debt then use Jira (etc) to your advantage and talk about the number of tickets you can close of this sprint due to this engineering initiative.\nIf the development team and product teams goals are largely aligned then the problem with engineering initiatives is just how you explain them to the product team.",
+              "author": "hnlmorg",
+              "depth": 3
+            },
+            {
+              "text": "For a large enough problem you need a combination of enough skill (to do the job), enough foresight (to know what likely will go wrong and how much error budget you need), and skin in the game (so you dont just cut things that sound good but instead what is truly needed) - if you don't have all three of these you usually are just talking out of your ass.",
+              "author": "hilariously",
+              "depth": 3
+            },
+            {
+              "text": "I am an avoider and also a serial trend-hopper.  You can do both!",
+              "author": "empath75",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "What I found is that my willingness to communicate and share my expertise is usually not in demand with more junior developers. In general, I find developers uninterested in finding a mentor. They don't look at your linked in profile, they don't look at you as a possible source of knowledge and expertise.\nSo it's not like I have nothing to share after 30 years of experience in the industry, I just have nobody to share it with.",
+          "author": "nullorempty",
+          "replies": [
+            {
+              "text": "This is my frustration at my current job. There's so much silliness and no one cares about avoiding it.\nA less experienced dev suggested using \"AI magic\" to replace a URL validator. I protested, suggesting a cached fuzzy match solution (prepopulated by AI)... and no one cared. Now the AI model has been suddenly turned down, and our system is broken. We're going to have re-validate the whole system.\nA younger developer who got promoted over me tried to write a doc on possible ways to fix it. He said \"hey Dan, can you help me with this?\" He got promoted over me because the way to get ahead is to write docs and have meetings, not do things sensibly. Now he's trying to use my work to demonstrate his leadership.\nNo one cares. The more I offer better solutions, the more it's a threat to less experienced developers. Things mostly work so my manager doesn't care. There's probably better ways for me to have handled things, but it's so exhausting fighting the nonsense and I just want to write good code.",
+              "author": "asdfman123",
+              "depth": 1
+            },
+            {
+              "text": "All the senior developers I have worked with are absolutely allergic to coming into the office, working closely with junior developers, and in general talking to people.\nWhereas juniors are eager to chat, have lunch with you , and share what they’re working on, the seniors are guarded and solitary.\nMaybe that’s just my workplace though!\nAnd yes, the office is important.",
+              "author": "JambalayaJimbo",
+              "depth": 1
+            },
+            {
+              "text": "In the senior realm here - would love to chat with folks over lunch, brainstorm, assist, mentor, guide, etc.  Can't do that \nAND\n be expected to deliver code at a 'full time' expected pace.  What I would be delivering is... some code, some guidance, some assistance, etc.  I've seen inside enough places to know that many senior folks end up being guarded and solitary because the deadlines aren't ever set to accomodate that sort of work.  You're a 'Senior Developer(tm)' and the measuring stick is... lines of code.\nOrgs get what they measure for.  If your team values that sort of interactivity and support, it will ... observe it, measure it, and hire for that sort of person.  I've seen groups evolve towards that, and they've been great, but it doesn't seem to be a default - most groups/orgs have to work towards it and and keep working at it.",
+              "author": "mgkimsal",
+              "depth": 2
+            },
+            {
+              "text": "Wish I had you at my first engineering job at IBM.  A couple senior devs there (not all) would get pissed when juniors tried asking them questions.  Not only did it take a bit of courage to ask someone who had been there 20 years about something, but it was a 50/50 chance they were going to be an asshole to ya lol.  Was a good learning experience for me - I go out of my way to mentor now.",
+              "author": "Shocka1",
+              "depth": 1
+            },
+            {
+              "text": "I'm sorry this has been your experience. There are  folks out there open to learning from us seniors.\nI've been a mentor off and on for the last few decades, and I've been really lucky to have some strong mentees. Some I've followed for a better part of a decade and are crushing it out there. All I can really say is that they're out there, sorry I don't have any more helpful to say around how to find them etc. I'll mull on that for a bit..",
+              "author": "drzaiusx11",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Most proof of concepts I've seen get traction turned into production.\nA rewrite?\nI recall a few times everyone promised, if this gets promoted then we will rewrite it from zero. Never happened.\nThe article touches on  responsability, accountability. There is none for risk taker. By definition. You have a crazy idea, you rush it out, you hope clients bite. You profit. It's not even your problem how to make it work, scale, not cost more to run than we sell it for.\nThe loop on the right. There are companies, two of them are very popular these days, they took it to an extreme. You ship something fast, and since it only scales linearly you go raise money. Successful companies, countless users, some of them even pay. Who's to blame? The senior developer, or simply someone reasonable who asks, how's that sustainable, what's the way out of this? Those are fired, so whoever's left is a believer.",
+          "author": "hirako2000",
+          "replies": [
+            {
+              "text": "This is why you need sufficiently senior engineering leadership (both IC leadership and management).  If you have engineers who meekly do whatever a non-technical stakeholder asks then you have a vacuum of responsibility, and sooner or later things will blow up catastrophically and whoever was least adept at CYA will get blamed.\nOn the other hand, almost any business problem can be solved in a reasonable way that doesn't send your system through any terrible one-way doors if you zoom out enough and ask enough whys.  Of course not every place allows engineering to do that, but the ones that don't aren't able to retain senior folks because they will just go somewhere where their judgment is valued.  Sometimes technical debt is the right thing for the business, but sufficiently senior engineers can set things up so there is always a way out.  But what you can't do is uphold the purity of the system above the business problem.  The systems are paid for by the business, so if you lose sight of that then you've lost the plot and the basis for your influence.",
+              "author": "dasil003",
+              "depth": 1
+            },
+            {
+              "text": "Yea, I think even a lot of decent devs are afraid to just say \"no\" to things. They don't even bargain to find a balanced solution that can be reasonably done in terms of architecture and time to production.",
+              "author": "Yokohiii",
+              "depth": 2
+            },
+            {
+              "text": ">  recall a few times everyone promised, if this gets promoted then we will rewrite it from zero. Never happened.\nOld quote: \"There is nothing so permanents as a temporary hack.\"",
+              "author": "____tom____",
+              "depth": 1
+            },
+            {
+              "text": "https://thecodelesscode.com/case/234",
+              "author": "entropicdrifter",
+              "depth": 2
+            },
+            {
+              "text": "This problem definitely predates AI coding agents, though it may be exacerbated by them. The article essentially concludes with the ancient advice of \"plan to throw one away\". Well sure, I also read Mythical Man Month, but how do I convince the decision-makers?",
+              "author": "allknowingfrog",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This misses the basic problem of incentives. What \"the company\" wants doesn't matter, it's what the people making particular decisions want.\nThere exist people who's jobs depend entirely on rolling out new features, or apps of some sort, and having them show up in some form of company metric. If the senior developers says it's a bad idea, those people won't listen, or won't care. Their job is on the line.",
+          "author": "nitwit005",
+          "replies": [
+            {
+              "text": "A typical example would be the researchers which are evaluated based on papers and new stuff they put out into the wide blue world. But if you are on a product side this makes little sense because you need to match “features” to the requirements expressed by the customers and you will tell researchers to stop pushing.",
+              "author": "sublimefire",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 276,
+      "comment_count": 1053,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We're working on Drawers (\nhttps://drawers.computer\n), a macOS app to give each of your projects its own dock, space, and windows.\nWe integrate with macOS spaces to switch out a project-specific dock on each space, containing only the resources you need for that project. We made it possible to add granular resources instead of full apps to the dock (think specific slack channels instead of the whole slack app), to keep the dock hyper focused on what you need.\nWe built this to stay focused while working on the computer, and we thought that the native interface mixed all our projects together, causing us to get distracted.\nLooking for beta testers! Free download from \nhttps://drawers.computer",
+          "author": "wwwkieran",
+          "replies": [
+            {
+              "text": "Since 2022 I have coded something similar for myself, only for Linux for each of my notes, e.g. each and each every small or big task gets its own bundle of things that are attached to its 'task note'.\nEach note gets a wholesome 'virtual desktop' \"space\":\n- A markdown file (in a Git repo for all my notes)\n- A working directory for project files\n- Virtual desktop in hyprland that opens up as a \nterminal/browser split\n- The terminal spawn a restorable tmux session where I edit \nthe markdown file and open related terminals, where the note's workdir has its own `bin` directory in $PATH.\n- Also, an ironbar widget showing the name of the current note at the bottom of the screen.\n- Time tracking app to remember how much time I worked on each note.\nAnd they are all bundled up together with save/restore capability, kinda like a VM, but on the application level. The idea is to support multitasking and never lose focus.",
+              "author": "da-x",
+              "depth": 1
+            },
+            {
+              "text": "This is an idea I had in mind since I started developing for the Mac 20(!) years ago. I obviously never even got to create a prototype, so it's cool to see someone finally implement it.",
+              "author": "DeusExMachina",
+              "depth": 1
+            },
+            {
+              "text": "All I really deeply want on this front is for the ability to have my IDE and CLI apps specific colors for specific projects. On mac, being able to 3-finger swipe up to mission control and then swipe down on the app I want has been by far my favorite way to navigate windows. The main problem I have is that the color of the app itself is the main way of telling them apart. I wish I could use a particular VS Code or Terminal theme for just one instance",
+              "author": "culi",
+              "depth": 1
+            },
+            {
+              "text": "That's epic. Will try it ASAP.\nWas look for exactly that (but for Features). currently I'm using superset.sh which works great. But the problem is that such tools need to re-implement everything (browser, terminal, etc.) while a \"VM-like\" approach doesn't.\nIt is possible to \"clone\" a drawer that auto starts server, browser, etc. So I can start new PRs quickly and jump between them while the agents run in the background?",
+              "author": "BrandiATMuhkuh",
+              "depth": 1
+            },
+            {
+              "text": "I love that idea, and had a similar one once (never realized), because I run many projects at once (and more than one role: personal / job_1 / job_2).\nWhat I'd suggest is that you isolate the project spaces from one another so that a e.g. a Web browser crash caused by one project space cannot drag down the rest. BTW, I'd pay for this!\nKeep building.",
+              "author": "jll29",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’m continuing to work on my daily puzzle game Tiled Words!\nhttps://tiledwords.com\nForbes just wrote an article about it which was a fun surprise! [1]\nIt recently turned 6 months old which is wild to me. My wife and I have made a new puzzle every day for half a year! I wrote a blog post about this [2]\nI recently released user logins. That went well and a lot of people are using them. I also let you filter the backlog by completed puzzles based on player feedback.\nThis week I’m going to start releasing player submitted puzzles and release my puzzle building tools. You can watch a video for a sneak peek of those tools. [3]\n1. \nhttps://www.forbes.com/sites/barrycollins/2026/05/02/bored-o...\n2. \nhttps://paulmakeswebsites.com/writing/six-months-of-tiled-wo...\n3. \nhttps://m.youtube.com/watch?v=d8_zhMKd0Yg",
+          "author": "paulhebert",
+          "replies": [
+            {
+              "text": "Thank you for Tiled Words which I play regularly! I introduced it to a couple of friends and now they compete every day for the best time to finish :-)\nWhile you're here if I could make a small suggestion - the wording of the 'type of' questions was confusing to me until I got used to it; 'stop' is not really a type of 'watch' for example, so maybe you could find a different way to phrase those? Maybe there isn't a neater way to encapsulate the idea of 'is a prefix or suffix to', I don't know, but I found it difficult. Anyway kudos to you and your wife, it's a great game!",
+              "author": "danparsonson",
+              "depth": 1
+            },
+            {
+              "text": "To me a \"stop watch\" is a type of watch, that's straight forward. But there are other clues that rely on cultural references I'm not familiar with - and that is, I think, inevitable in this type of game. We all have different backgrounds and there's no universal shared understanding that would make every clue the same difficulty for everyone.\nI saw someone on here recently say they like to do the puzzle without looking at the clues, and I've started doing that on and off too, it changes the game in an interesting way.",
+              "author": "codebje",
+              "depth": 2
+            },
+            {
+              "text": "> To me a \"stop watch\" is a type of watch\nRight but the answer in this case is not \"stop watch\" - the answer is just \"stop\". Name a type of watch: \"stop\".\n> I saw someone on here recently say they like to do the puzzle without looking at the clues\nYeah I do that sometimes too, especially finishing off can be easier that way",
+              "author": "danparsonson",
+              "depth": 3
+            },
+            {
+              "text": "Hey, that’s awesome, thanks for playing and sharing it!\nGreat feedback on the “type of” clues. I’ll need to noodle on that and see if there’s a clearer way to express it.\nMaybe I should just be doing blanks… e.g. for “sun” it could be “___ dress, ___day, or ___ flower”",
+              "author": "paulhebert",
+              "depth": 2
+            },
+            {
+              "text": "IME crosswords traditionally say \"Word before...\". Also thanks for the game, I love it and was excited you used one of my submitted clues a few months ago.",
+              "author": "mmclar",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "European night trains search engine. The plan is not to provide the functionality where user searches for a specific route on a specific date and the engine returns prices. The plan is to provide \"tips for trips\", e.g. I provide a starting city and it will recommend me interesting trip ideas any time in the future. There are many flight apps that provide this functionality, but no train app.\nCurrently I'm building scrapers for all relevant provider, then I want to connect the data for multi-city trips recommendation. Plus some connection to the day trains so that the trips are built more easily.\nSome existing trip recommendations:\nPrague <-> Amsterdam \nhttps://trainbot.eu/?from=prague&to=amsterdam&type=return\nBerlin <-> Paris \nhttps://trainbot.eu/?from=berlin&to=paris&type=return\nZurich <-> Budapest \nhttps://trainbot.eu/?from=zurich&to=budapest&type=return",
+          "author": "druskacik",
+          "replies": [
+            {
+              "text": "Now you if you wanted to visit the best city in the world (Edinburgh), you could of course take the \nCaledonian Sleeper\n night train from London up to the Scottish capital; but then you would completely miss out on the beautiful views of the country and the sea.\nThis case perhaps merits a hard-wired message \"for this trip, we recommend a day train, or we'd regret you'd miss the panoramic views\".",
+              "author": "jll29",
+              "depth": 1
+            },
+            {
+              "text": "This is awesome, I would list it on \nhttps://only-eu.eu\n , if that's ok for you?",
+              "author": "madman_dev",
+              "depth": 1
+            },
+            {
+              "text": "Sure :) Thanks.",
+              "author": "druskacik",
+              "depth": 2
+            },
+            {
+              "text": "Of course, thanks for building stuff like this!\nAlready listed it! If you want something changed just reach out over the contact form on the site.\nCheers",
+              "author": "madman_dev",
+              "depth": 3
+            },
+            {
+              "text": "For some reason Prague -> Bratislava trips are only shown with departures at 00:36 even though there are several through cars that leave Prague at 21:58 (and join the rest of the listed NightJet in Breclav), which is much more comfortable for your average traveler. Ceske drahy website has both connections, so maybe you aren't scraping it yet?",
+              "author": "medvidek",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "* This is my first time actually posting anything on HN.\nI've been making a DSL for writing sheet music specifically for drums as raw text, inspired by ABC Notation (but of course just for drums).\nNow writing this I noticed that it's kind of complicated to explain and having a landing page would make my life so much easier.\nBut the gist of it is, you write notation that looks like this: \nhttps://gist.github.com/Luigi123/945af7e5cc8dfbfd186f0a99754...\n and it renders sheet music in PDF, and also allows you to play the same music as a game (DrumMania / DTXMania style).\nNow the language / compiler itself has been working quite well and I've been dogfooding it for like six months now. The next thing is an IDE-style editor where you can import a song and write the notation following it. Making THAT has been quite the journey. Here's a screenshot for good measure: \nhttps://i.imgur.com/EmlqlrM.png",
+          "author": "luigi_123",
+          "replies": [
+            {
+              "text": "Related: \nhttps://lilypond.org/\nI don't know if you can write drum sheet music with it.\nI really like your editor with the transcription view. Maybe a spectrogram would be more helpful than a simple waveform display.",
+              "author": "jmusall",
+              "depth": 1
+            },
+            {
+              "text": "I definitely came across LilyPond when researching what to use in the backend for my language :)\n> Maybe a spectrogram would be more helpful than a simple waveform display.\nThanks for the feedback. I'll definitely look into it.",
+              "author": "luigi_123",
+              "depth": 2
+            },
+            {
+              "text": "Very cool. I'm working on something similar, for composing songs with both note-playing instruments and drum instruments. The format is TOML-based, and for melody I was inspired by strudel, but I had considered using ABC notation as well. The home page has an example of the format, and some demo songs: \nhttps://songformat.com",
+              "author": "meltmymind",
+              "depth": 1
+            },
+            {
+              "text": "Your TOML-based syntax is really interesting.\n> \"drums: (bd ~ sd ~)\n32\",\n> \"drums: ((hh@0.5)\n8)\n32\",\n> \"drums: (cr@1 ~@15)\n8\"\nI definitely considered stuff like that but in the end decided to have every note spelled out.\nI might reconsider though! Right now it's really annoying to have reaaally long lines of `kd/2` ad infinitum to write double bass.\nI'm split between three options right now:\n1. Just add multipliers like you did (`kd/2 * 16`), but I feel that makes it less \"music\" and more \"program\".\n2. Special syntax sugar just for well known patterns that are repeated in many songs, like `dkdk` expands to a full bar of double bass, or xxx expands to one full bar of 8th notes on the hi-hats.\n3. Have the user define custom pattern on their own, like `xxx = x x x x x x x x`, like C macros.",
+              "author": "luigi_123",
+              "depth": 2
+            },
+            {
+              "text": "Oh dude, I love this. I've been working on an interactive music thingy (\nhttps://trebel.la\n, it's sort of gamified but more designed to structure practice sessions for serious classical musicians) and struggling with the ABC vs. MusicXML choice.\nLike most people in the space I'm using ABC for LLM generation (e.g. generating sightreading exercises and etudes) but MusicXML for processing and rendering the output. Would be nice to have something somewhere in between the over-simplified ABC and overly verbose MusicXML.",
+              "author": "sbrother",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Acoustic diagnosis of electrical problems on the electric grid!\nI'm building a tool that allows you to determine the health of an electric transformer from only your phone. It tells you:\n    - the loading\n    - the health of the windings and core\n    - and whether the phases are unbalanced\n\n\nI used to be a submariner, so my professional background is in power plants and sonar analysis, so I'm getting to combine the two in this.\nAcoustic diagnosis of electric issues is FASCINATING, and it feels like there hasn't been a lot of research into this, so I have been slowly chasing down various acoustic patterns I find and try to derive them from first principles of physics.\nI'm making an iPhone app for it, and Xcode has been \ntruly\n awful: non-deterministic, crashing all the time, and error messages that tell me absolutely nothing. I would like to use xtool, but it doesn't have the preview, which I need for debugging.",
+          "author": "seydar",
+          "replies": [
+            {
+              "text": "This sounds (pun intended) really cool.\nnettirw yb namuh",
+              "author": "marking-time",
+              "depth": 1
+            },
+            {
+              "text": "> making an iPhone app for it\nHonestly if you don't have a specific reason to target iPhones then buying a 2nd hand Pixel 8, putting GrapheneOS on it then pushing an \"app\" in whatever language you want on it, sure can be Java but can also be Python, Julia, whatever you want really especially on it directly using Termux, could be a better use of your time. By the time Xcode starts you'll already be outdoor testing against the next transformer.",
+              "author": "utopiah",
+              "depth": 1
+            },
+            {
+              "text": "Am also using Xcode but not experiencing crashes, so it could be to do with his environment. I've got Xcode running now since.. 2003? It's not always been perfect but pretty stable if your env is right.",
+              "author": "sgt",
+              "depth": 2
+            },
+            {
+              "text": "I do imagine Xcode is stable so it's mostly a suggestion to making testing on an actual device more convenient. I imagine for somebody who already have a proper pipeline it doesn't matter but here it doesn't seem to be the case, hence offering an alternative.",
+              "author": "utopiah",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48094641",
+      "title": "Google says criminal hackers used AI to find a major software flaw",
+      "link": "https://www.nytimes.com/2026/05/11/us/politics/google-hackers-attack-ai.html",
+      "domain": "www.nytimes.com",
+      "author": "donohoe",
+      "score": 238,
+      "comment_count": 172,
+      "created_ts": 1778505614,
+      "is_internal": false,
+      "post_text": "Unlocked: <a href=\"https:&#x2F;&#x2F;www.nytimes.com&#x2F;2026&#x2F;05&#x2F;11&#x2F;us&#x2F;politics&#x2F;google-hackers-attack-ai.html?unlocked_article_code=1.hlA.vW7Y.pO_0G8yLYoca&amp;smid=nytcore-android-share\" rel=\"nofollow\">https:&#x2F;&#x2F;www.nytimes.com&#x2F;2026&#x2F;05&#x2F;11&#x2F;us&#x2F;politics&#x2F;google-hacker...</a>, <a href=\"https:&#x2F;&#x2F;archive.ph&#x2F;I4Ui5\" rel=\"nofollow\">https:&#x2F;&#x2F;archive.ph&#x2F;I4Ui5</a><p><a href=\"https:&#x2F;&#x2F;apnews.com&#x2F;article&#x2F;google-ai-cybersecurity-exploitation-mythos-926aea7f7dc5e0e61adce3273c55c6d4\" rel=\"nofollow\">https:&#x2F;&#x2F;apnews.com&#x2F;article&#x2F;google-ai-cybersecurity-exploitat...</a><p><a href=\"https:&#x2F;&#x2F;www.cnbc.com&#x2F;2026&#x2F;05&#x2F;11&#x2F;google-thwarts-effort-hacker-group-use-ai-mass-exploitation-event.html\" rel=\"nofollow\">https:&#x2F;&#x2F;www.cnbc.com&#x2F;2026&#x2F;05&#x2F;11&#x2F;google-thwarts-effort-hacker...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "politics"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48100192",
+      "title": "Show HN: OpenGravity – A zero-install, BYOK vanilla JS clone of Antigravity",
+      "link": "https://github.com/ab-613/opengravity",
+      "domain": "github.com",
+      "author": "ab613",
+      "score": 100,
+      "comment_count": 30,
+      "created_ts": 1778531005,
+      "is_internal": false,
+      "post_text": "Hi. I’m a high school student studying for my GCSEs. I was using Google Antigravity heavily for my side projects, but I kept hitting the usage limits, and getting random &quot;agent terminated&quot; errors. So I decided to try build my own version of the IDE. I love the UI, so I copied it as accurately as possible, and then hooked up some logic into it, including the INCREDIBLY finicky webcontainer api.<p>I tried to keep it super lightweight, no build steps, or dependencies, and now that its open source, I&#x27;m hoping people can build things on top of it that arent possible with closed source tools, like complex custom agent workflows.<p>Some screenshots: - <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ab-613&#x2F;OpenGravity&#x2F;blob&#x2F;main&#x2F;examples&#x2F;screenshot.png?raw=true\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ab-613&#x2F;OpenGravity&#x2F;blob&#x2F;main&#x2F;examples&#x2F;scr...</a> - <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ab-613&#x2F;OpenGravity&#x2F;blob&#x2F;main&#x2F;examples&#x2F;html%20site%20example.png?raw=true\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ab-613&#x2F;OpenGravity&#x2F;blob&#x2F;main&#x2F;examples&#x2F;htm...</a><p>What it&#x27;s made from:<p>- Pure Vanilla JS: no react, vue, or build step. Built entirely in plain HTML&#x2F;CSS&#x2F;JS to keep it super lightweight.<p>- WebContainer API and xterm.js: Instead of faking a terminal, I (after much pain) hooked up the WebContainer API so the AI agent has a real, in browser linux environment to run shell commands, install dependencies, and edit local files.<p>- BYOK (Bring Your Own Key): API key ALWAYS stays in localStorage.<p>Whats currently happening:<p>- It works, but it&#x27;s an alpha. The AI can proactively start projects going properly and edit files, but because I built this over a few days before my exams, a lot of the UI dropdowns and buttons are currently just hardcoded placeholders.<p>- I’m open sourcing it early because I think the foundation of a Vanilla JS + WebContainer IDE is really strong, and I&#x27;d love to see where the community takes it while I&#x27;m doing my exams.<p>- Live demo: <a href=\"https:&#x2F;&#x2F;opengravity.pages.dev\" rel=\"nofollow\">https:&#x2F;&#x2F;opengravity.pages.dev</a> (Zoom out to 80% if not full screen. It will prompt for a gemini api key on load). Start by uploading a folder, then you can fiddle with the terminal and agent, and see how it goes!<p>Would love to hear feedback on the code, the WebContainer integration, or how to improve the agent loop!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48087925",
+      "title": "Ask HN: Will low quality AI customer support be the new normal?",
+      "link": "https://news.ycombinator.com/item?id=48087925",
+      "domain": "news.ycombinator.com",
+      "author": "0-bad-sectors",
+      "score": 23,
+      "comment_count": 24,
+      "created_ts": 1778446647,
+      "is_internal": true,
+      "post_text": "Now whenever I reach for customer&#x27;s support chat or phone I get an AI agent replying to me and I get into a useless loop for a couple of minutes before I start begging it to link me to a real person.<p>Will companies start losing customers because of that or people will eventually get used to this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48084086",
+      "title": "Ask HN: Is this the SWE workflow of the future?",
+      "link": "https://news.ycombinator.com/item?id=48084086",
+      "domain": "news.ycombinator.com",
+      "author": "mc-0",
+      "score": 17,
+      "comment_count": 14,
+      "created_ts": 1778421821,
+      "is_internal": true,
+      "post_text": "Internally transferred to a new team in a top-10 F500 company. This team is pushing incredibly hard to be seen as &quot;AI-First&quot; &amp; is very opinionated about what other teams should be doing.<p>I was explicitly told I am not to write any code by hand. Claude usage is mandatory coupled with a proprietary superpowers &#x2F; speckit &#x2F; GSD framework with 100+ agents and skill files.<p>All code reviews are agent driven. No one takes the time to actually understand anything. Documentation has become novel length slop, as have Jira tickets.<p>I ship stuff I don&#x27;t understand. Management says there won&#x27;t be a need for many SWEs in the future.<p>Am I alone in experiencing this? Is this the future of work?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48103273",
+      "title": "Ask HN: How to get started in electronic music",
+      "link": "https://news.ycombinator.com/item?id=48103273",
+      "domain": "news.ycombinator.com",
+      "author": "A_Random_Nerd",
+      "score": 14,
+      "comment_count": 12,
+      "created_ts": 1778550905,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been interested in learning how to make electronic music (e.g. Geometry dash, Undertale, Daft Punk, C418), but there doesn&#x27;t seem to be any real documentation or tutorials on how to start.<p>To summarize my question:\na.) What are the first 3 steps (or more) to learn to compose music?\nb.) Any links, resources etc. to share?<p>Thanks for your time and interest.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48092561",
+      "title": "Ask HN: Best static site generator for a docs site in 2026?",
+      "link": "https://news.ycombinator.com/item?id=48092561",
+      "domain": "news.ycombinator.com",
+      "author": "agenttestjekuqz",
+      "score": 14,
+      "comment_count": 12,
+      "created_ts": 1778489115,
+      "is_internal": true,
+      "post_text": "I&#x27;m looking for recommendations for a static site generator to rebuild our documentation site in 2026.<p>1. Markdown support\n2. Fast build (&lt;60s)\n3. Search without JS\n4. Deploy on GitHub Pages<p>Budget: $0",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48101373",
+      "title": "Ask HN: How are you preparing for interviews nowadays?",
+      "link": "https://news.ycombinator.com/item?id=48101373",
+      "domain": "news.ycombinator.com",
+      "author": "holden_nelson",
+      "score": 8,
+      "comment_count": 29,
+      "created_ts": 1778537554,
+      "is_internal": true,
+      "post_text": "Hey all, just wondering how you&#x27;re preparing for interviews in 2026? I&#x27;m assuming system design plays a larger role and the bar is probably higher across all levels. Do I still need to grind leetcode?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48096861",
+      "title": "Ask HN: How do you choose a model for a task?",
+      "link": "https://news.ycombinator.com/item?id=48096861",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 8,
+      "comment_count": 14,
+      "created_ts": 1778515633,
+      "is_internal": true,
+      "post_text": "How do you decide a model is good enough for a given task? Right now I use Opus for planning and harder tasks and switch to sonnet for more defined tasks. But I feel like sonnet is kind of stupid and is introducing issues because it can’t grasp the larger context? Is there some definitive way to say a model is good enough for a task? Or is it all vibes?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48092573",
+      "title": "Ask HN: Do you know the ethics of Developers?",
+      "link": "https://news.ycombinator.com/item?id=48092573",
+      "domain": "news.ycombinator.com",
+      "author": "eropatori",
+      "score": 8,
+      "comment_count": 20,
+      "created_ts": 1778489292,
+      "is_internal": true,
+      "post_text": "Do you know what should go in that last point?<p>Do you believe others (developers or not) know?<p>- Doctors: do no harm.<p>- Lawyers: defend the client, but do not lie to the court.<p>- Judges: be impartial.<p>- Journalists: verify before publishing. protect sources.<p>- Developers: ??????",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48094258",
+      "title": "Ask HN: What would you like to be working on?",
+      "link": "https://news.ycombinator.com/item?id=48094258",
+      "domain": "news.ycombinator.com",
+      "author": "DDerTyp",
+      "score": 8,
+      "comment_count": 10,
+      "created_ts": 1778503559,
+      "is_internal": true,
+      "post_text": "Contrary to &quot;What are you working on?&quot;, what would you like to be working on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48080516",
+      "title": "Ask HN: Can a tinnitus be triggered by high frequency noises?",
+      "link": "https://news.ycombinator.com/item?id=48080516",
+      "domain": "news.ycombinator.com",
+      "author": "tinnitus_crazy",
+      "score": 8,
+      "comment_count": 16,
+      "created_ts": 1778381351,
+      "is_internal": true,
+      "post_text": "Not exactly technical, but HN feels like the correct crowd to ask because asking anywhere else I would be considered mentally ill.<p>I have a tinnitus that seems to stay 99,9% of the day, it’s away for some minutes sometimes and it’s very high frequency. Imagine a power supply coil whine.<p>Now the mentally ill part: the tinnitus can change position (left&#x2F;right ear) and change volume. I didn’t hear the tinnitus on the right ear for some days, now it’s back on it (and still audible on the left ear) after sitting on the couch again.<p>The couch, you ask? Two weeks ago, when the tinnitus started, we changed the layout of our living room. The couch was now located next to our WiFi router. The tinnitus started shortly after that. I never had tinnitus before. Guess what, the router makes the same noise (even my partner can hear it). After some days of realizing it might be from the router, I changed the position of it to the other side of the room, but now somehow I can still hear the high frequency from the router from 3 meters apart. And as soon as I start sitting on the couch, the tinnitus gets much worse. Even disabling electricity in the full house I still hear that WiFi router noise in my ear.<p>Am I insane? Is this a thing? Can some frequency cause a tinnitus which can be re-triggered by the same frequency? Can it have a memory effect? Could it be it doesn’t go away even if I don’t sit on the couch for days because all these power supplies have high frequency coil whine in each and every facility these days, which trigger it again?<p>I feel like Neo from The Matrix who got enlightened and now can hear electricity, but without the rest of the super powers :(<p>PS: I visited a doctor and am doing the usual medical procedures to deal with tinnitus (Prednisolone 60mg&#x2F;day), but it doesn’t help in any way.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48113611",
+      "title": "Ask HN: Is Spam getting worse or is Gmail getting worse?",
+      "link": "https://news.ycombinator.com/item?id=48113611",
+      "domain": "news.ycombinator.com",
+      "author": "adamtaylor_13",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1778615904,
+      "is_internal": true,
+      "post_text": "Over the past couple of months I&#x27;ve noticed that number of spam emails landing in my inbox has increased by quite a bit. I keep a very tidy inbox, so it&#x27;s pretty easy for me to notice them and mark them as spam. But I&#x27;m curious: is Google just getting worse at detecting spam, or is the spam somehow evolving?<p>For example, I just got this email:<p>Sender: william_brown_318@rofopifj.dravixa.space\nSubject: the wagon is in<p>The body contains tons of literal HTML tags that weren&#x27;t parsed into actual HTML. Not sure if it was sent as a text mime-type or what, but it takes all of 2 whole seconds for me to mentally note that this is spam.<p>How is this getting through more often these days?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48101913",
+      "title": "Ask HN: What happens when eventually all E2E mess. apps removed from app stores?",
+      "link": "https://news.ycombinator.com/item?id=48101913",
+      "domain": "news.ycombinator.com",
+      "author": "kingleopold",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1778540565,
+      "is_internal": true,
+      "post_text": "What happens when eventually all E2E messaging apps are removed from app&#x2F;play stores? After that most internet communication between humans only allowed if the state or countries records all of it?<p>Are you all ready for this in few years? Sure some people can use linux&#x2F;grapheneos but they are few % only and I talk about majority of people in the internet.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48090164",
+      "title": "Ask HN: What Wintel/AMD (Laptop) Harware are you liking?",
+      "link": "https://news.ycombinator.com/item?id=48090164",
+      "domain": "news.ycombinator.com",
+      "author": "aagha",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1778464021,
+      "is_internal": true,
+      "post_text": "Everyone seems to be on a Mac with their amazing M1-4 chips and having a great time with local models[0].<p>I never made the move. Probably never will.<p>I&#x27;d love to know what Intel&#x2F;AMD (laptop) hardware people are liking for local AI models nowadays.<p>0 - https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48089091",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48097132",
+      "title": "Ask HN: How often do you investigate issues in production vs. looking at logs?",
+      "link": "https://news.ycombinator.com/item?id=48097132",
+      "domain": "news.ycombinator.com",
+      "author": "aspectrr",
+      "score": 4,
+      "comment_count": 8,
+      "created_ts": 1778516773,
+      "is_internal": true,
+      "post_text": "Something I&#x27;ve noticed is that I am having to look at production systems manually to do debugging alongside the logs which just made me wonder how other people were doing it",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
