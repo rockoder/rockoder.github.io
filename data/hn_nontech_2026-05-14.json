@@ -1,0 +1,659 @@
+{
+  "scraped_date": "2026-05-14",
+  "source": "hacker_news",
+  "total_scraped": 47,
+  "nontech_count": 14,
+  "posts": [
+    {
+      "id": "48109460",
+      "title": "Why senior developers fail to communicate their expertise",
+      "link": "https://www.nair.sh/guides-and-opinions/communicating-your-expertise/why-senior-developers-fail-to-communicate-their-expertise",
+      "domain": "www.nair.sh",
+      "author": "nilirl",
+      "score": 776,
+      "comment_count": 319,
+      "created_ts": 1778598520,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "Because the most important parts of the expertise are coming from their internal \"world model\" and are inseparable from it.\nAn average unaware person believes that anything can be put in words and once the words are said, they mean to reader what the sayer meant, and the only difficulty could come from not knowing the words or mistaking ambiguities. The request to take a dev and \"communicate\" their expertise to another is based on this belief. And because this belief is wrong, the attempt to communicate expertise never fully succeeds.\nFactual knowledge can be transferred via words well, that's why there is always at least partial success at communicating expertise. But solidified interconnected world model of what all your knowledge adds up to, cannot. AI can blow you out of the water at knowing more facts, but it doesn't yet utilize it in a way that allows surprisingly often having surprisingly correct insights into what more knowledge probably is. That mysterious ability to be right more often is coming out of \"world model\", that is what \"expertise\" is. That part cannot be communicated, one can only help others acquire the same expertise.\nCommunicating expertise is a hint where to go and what to learn, the reader still needs to put effort to internalize it and they need to have the right project that provides the opportunity to learn what needs to be learnt. It is not an act of transfer.",
+          "author": "hamstergene",
+          "replies": [
+            {
+              "text": "A non-trivial part of the big difference between the juniors that seem talented and \"get it\", and those that don't is precisely their ability to form accurate enough world models quickly. You can tell who is going at the \"physics\" of software and applying them, and who is just writing down recipes, and doesn't try to understand the nature of any of the steps.\nIt's especially noticeable when teaching functional programming to people trained in OO: Some people's model just breaks, while others quickly see the similarities, and how one can translate from a world of vars to a world of monads with relative ease. The bones of how computation works aren't changing, just how one puts together the pieces.",
+              "author": "hibikir",
+              "depth": 1
+            },
+            {
+              "text": "I was even as a junior the kind, who tried to understand the nature of the steps. I failed many times, but I learned from them all the time. I remember my mutable public static variables, and terrible small JavaScript apps. But every time when I did something like that, I tried to understand it. I knew that I failed. Sometimes it took me a year or more (like when I first encountered React about a decade ago, I immediately knew why some of my apps failed with architecture previously).\nHowever, I've seen developers who were in this field for decades, and they still followed just recipes without understanding them.\nSo, I'm not entirely sure, that the distinction is this clear. But of course, it depends how we define \"senior\". Senior can be developers who try to understand the underlying reasons and code for a while. But companies seem to disagree.\nBtw regarding functional programming. When I first coded in Haskell, I remember that I coded in it like in a standard imperative languages. Funnily, nowadays it's the opposite: when I code in imperative languages, it looks like functional programming. I don't know when my mental model switched. But one for sure, when I refactor something, my first todo is to make the data flow as \"functional\" as possible, then the real refactoring. It helps a lot to prevent bugs.\nWhat really broke my mind was Prolog. It took me a lot to be able to do anything more than simple Hello World level things, at least compared to Haskell for example.",
+              "author": "ruszki",
+              "depth": 2
+            },
+            {
+              "text": "I had to learn Prolog for a university paper and I have to agree; out of the dozen-ish languages I've had to learn, something just didn't \"click\" with Prolog.\nNo real value is this comment, I'm just happy to share a moment over the brain-fuck that is Prolog (ironically Brainfuck made a whole lot more sense).",
+              "author": "cwsx",
+              "depth": 3
+            },
+            {
+              "text": "I wouldn't really try to equate arbitrary job titles awarded based on tenure with actual expertise; titles aren't consistently applied across the industry, or awarded on conditions other than actual merit.",
+              "author": "9dev",
+              "depth": 3
+            },
+            {
+              "text": "There are a lot of very young developers who have less years of experience than me who have tons more expertise than me.\nThe problem is, as is evident by this article and thread, it's difficult to measure (and thus communicate) expertise, but it's really easy to measure years of experience.",
+              "author": "abustamam",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "As a /senior/ developer I really dislike blanket statements. I've seen the same amount of failures caused by\n> “Do we really need that?”\n> “What happens if we don’t do this?”\n> “Can we make do for now? Maybe come back to this later when it becomes more important?”\nas with experimenters. Every system is different, every product is different. If I were building firmware for a CT scanner, my approach towards trying out new things would be different than a CRUD SaaS with 100 clients in a field that could benefit from a fresh perspective.\nThere are definitely ways to have eager/very open seniors drive systems into hard to get out corners. But then there are people that claim PHP5 is all you need.",
+          "author": "lnenad",
+          "replies": [
+            {
+              "text": "I came to say somethign simular actually.\n> Ah, baby, this is my senior developer. The avoider, the reducer, the recycler. They want to avoid development as much as they can.\nThere are times when this is good, there are times when actively trying introduce an improvement is the best way forward. A good senior is able to recognise when those times are.",
+              "author": "bilekas",
+              "depth": 1
+            },
+            {
+              "text": "That doesn't sound as good in meetings. The person who can cut scope and get everyone to the \"we did it\" back patting phase makes everyone feel warm and cozy.\nNow combing through analytics to determine whether or not what we did was actually good? Less warm and cozy.",
+              "author": "ericmcer",
+              "depth": 2
+            },
+            {
+              "text": "This is where good leadership in the dev team is needed.\nIs the improvement likely to reduce maintenance overhead (and thus cost)? Or improve performance allowing for fewer services running (and thus reducing cost)? Or reduce bugs that force people out of a workflow (eg in an online shop, thus fixing it increases sales)?\nOr if it’s just tech debt then use Jira (etc) to your advantage and talk about the number of tickets you can close of this sprint due to this engineering initiative.\nIf the development team and product teams goals are largely aligned then the problem with engineering initiatives is just how you explain them to the product team.",
+              "author": "hnlmorg",
+              "depth": 3
+            },
+            {
+              "text": "For a large enough problem you need a combination of enough skill (to do the job), enough foresight (to know what likely will go wrong and how much error budget you need), and skin in the game (so you dont just cut things that sound good but instead what is truly needed) - if you don't have all three of these you usually are just talking out of your ass.",
+              "author": "hilariously",
+              "depth": 3
+            },
+            {
+              "text": "> There are times when this is good, there are times when actively trying introduce an improvement is the best way forward. A good senior is able to recognise when those times are.\nThis is what I was thinking - I'd say the biggest step up a developer can make is to recognize that sometimes you need a bit of one approach, sometimes a bit of another one.\nSometimes minimalism is the way, and you need to wonder if the pain, workload or lacking capabilities and features are problematic. Or, sometimes adding the smallest possible thing is a good way, as long as we don't paint ourself into a corner and enable learning and accumulating information of what we actually need.\nSometimes buying a thing is a good way, if you can find a good vendor and a tool fitting your use case and especially if the effort of doing it on your own is high. This commonly occurs in security, because keeping up to date with the ongoing vulnerability and threat landscape can be a full job on its own.\nAnd sometimes adding something bigger is the way, if the effort of maintaining it are less than the effort and pain incurred by not having it.  Or if we can ramp up the effort of the thing incrementally, while reaping benefits along the way. This can be validated often by doing a small thing.\nWhat the AI will do in my opinion is to push the bar more in this direction. Cozily hacking CRUD-Code in a web server together most likely won't be enough in a year or two for the average development job.",
+              "author": "tetha",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> They want to avoid development as much as they can.\nOne of my favorite .sigs was:\n    I hate code, and want as little of it as possible in my software.\n\n\nI don't remember where I saw it, but it was a while ago. It's possible the author has an HN account.\nOne of the things that happens to \"avoiders,\" is that they get attacked for being \"negative.\" It can get career-ending, when the management chain is the \"Move fast and break things\" type.\nI just stopped offering suggestions, after encountering that crap a few times, and learned to just quietly make preparations for when the wheels fall off.\nI have spent my entire adult life, \nshipping\n, and shipping means \nlots\n of \"not-shiny,\" boring stuff. But it gets onto shelves, and into end-users' hands. I was originally trained in hardware development, where mistakes can't be fixed with an OTA update. It taught me to \"play the tape through,\" and make sure that I do a good job on \nevery\n part of the project; which includes a lot of anticipating problems, and designing mitigations and prevention.",
+          "author": "ChrisMarshallNY",
+          "replies": []
+        },
+        {
+          "top": "Most proof of concepts I've seen get traction turned into production.\nA rewrite?\nI recall a few times everyone promised, if this gets promoted then we will rewrite it from zero. Never happened.\nThe article touches on  responsability, accountability. There is none for risk taker. By definition. You have a crazy idea, you rush it out, you hope clients bite. You profit. It's not even your problem how to make it work, scale, not cost more to run than we sell it for.\nThe loop on the right. There are companies, two of them are very popular these days, they took it to an extreme. You ship something fast, and since it only scales linearly you go raise money. Successful companies, countless users, some of them even pay. Who's to blame? The senior developer, or simply someone reasonable who asks, how's that sustainable, what's the way out of this? Those are fired, so whoever's left is a believer.",
+          "author": "hirako2000",
+          "replies": [
+            {
+              "text": ">  recall a few times everyone promised, if this gets promoted then we will rewrite it from zero. Never happened.\nOld quote: \"There is nothing so permanents as a temporary hack.\"",
+              "author": "____tom____",
+              "depth": 1
+            },
+            {
+              "text": "https://thecodelesscode.com/case/234",
+              "author": "entropicdrifter",
+              "depth": 2
+            },
+            {
+              "text": "This is why you need sufficiently senior engineering leadership (both IC leadership and management).  If you have engineers who meekly do whatever a non-technical stakeholder asks then you have a vacuum of responsibility, and sooner or later things will blow up catastrophically and whoever was least adept at CYA will get blamed.\nOn the other hand, almost any business problem can be solved in a reasonable way that doesn't send your system through any terrible one-way doors if you zoom out enough and ask enough whys.  Of course not every place allows engineering to do that, but the ones that don't aren't able to retain senior folks because they will just go somewhere where their judgment is valued.  Sometimes technical debt is the right thing for the business, but sufficiently senior engineers can set things up so there is always a way out.  But what you can't do is uphold the purity of the system above the business problem.  The systems are paid for by the business, so if you lose sight of that then you've lost the plot and the basis for your influence.",
+              "author": "dasil003",
+              "depth": 1
+            },
+            {
+              "text": "Yea, I think even a lot of decent devs are afraid to just say \"no\" to things. They don't even bargain to find a balanced solution that can be reasonably done in terms of architecture and time to production.",
+              "author": "Yokohiii",
+              "depth": 2
+            },
+            {
+              "text": "I guess it's company culture? I had a job and we initially had quick solutions that went messy. We set a hard policy that every \"quick and dirty\" feature will have a follow up story that gets pulled into the following 1-2 sprints. Often it turned out that the feature didn't live up to expectations and we just disabled or deleted it, the other times we reviewed it and refactored it properly.\nWe were highly autonomous team though and hardly had cadence complains. But mostly because the all other departments were lagging. Except marketing, marketing always has \"ideas\".",
+              "author": "Yokohiii",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What I found is that my willingness to communicate and share my expertise is usually not in demand with more junior developers. In general, I find developers uninterested in finding a mentor. They don't look at your linked in profile, they don't look at you as a possible source of knowledge and expertise.\nSo it's not like I have nothing to share after 30 years of experience in the industry, I just have nobody to share it with.",
+          "author": "nullorempty",
+          "replies": [
+            {
+              "text": "This is my frustration at my current job. There's so much silliness and no one cares about avoiding it.\nA less experienced dev suggested using \"AI magic\" to replace a URL validator. I protested, suggesting a cached fuzzy match solution (prepopulated by AI)... and no one cared. Now the AI model has been suddenly turned down, and our system is broken. We're going to have re-validate the whole system.\nA younger developer who got promoted over me tried to write a doc on possible ways to fix it. He said \"hey Dan, can you help me with this?\" He got promoted over me because the way to get ahead is to write docs and have meetings, not do things sensibly. Now he's trying to use my work to demonstrate his leadership.\nNo one cares. The more I offer better solutions, the more it's a threat to less experienced developers. Things mostly work so my manager doesn't care. There's probably better ways for me to have handled things, but it's so exhausting fighting the nonsense and I just want to write good code.",
+              "author": "asdfman123",
+              "depth": 1
+            },
+            {
+              "text": "I feel you. Similar experience on my side. I think it might've been like this before, but AI coding tools made it worse. Everybody thinks they can do it better - when there is a problem, the coding agent can just fix it. Why bother building relationships with senior devs or with anybody?\nLooking deeper into it: these people don't understand the underlying foundations anymore. Just keep building fast, without building proper mental models (that would take time).",
+              "author": "mdavid626",
+              "depth": 2
+            },
+            {
+              "text": "You need to advocate for yourself, because nobody else will, unless your manager is really good at his job.\nOur work is largely very difficult to understand to outsiders, we need to write docs and have meetings to show what we have done. It's part of the job, and yes, if you don't do that, it doesn't matter how fantastic the software is that you wrote (sadly).",
+              "author": "lionkor",
+              "depth": 2
+            },
+            {
+              "text": "you've healed me - resonates",
+              "author": "blastro",
+              "depth": 2
+            },
+            {
+              "text": "As a junior I will share my perspective from the other side.\nCompanies have outlandish hiring practices. They want juniors who already know everything. That's why admitting that you don't know something is seen as showing weakness to the company in the eyes of a junior. Also, not knowing things will actively keep you from getting promoted.\nI'm sure it's not like that everywhere but it's juniors playing the corpo game.",
+              "author": "floro",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 470,
+      "comment_count": 335,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is surprisingly common.\nThe security of UUIDv4 is based on the assumption of a high-quality entropy source. This assumption is invalidated by hardware defects, normal software bugs, and developers not understanding what \"high-quality entropy\" actually means and that it is required for UUIDv4 to work as advertised.\nIt is relatively expensive to detect when an entropy source is broken, so almost no one ever does. They find out when a collision happens, like you just did.\nUUIDv4 is explicitly forbidden for a lot of high-assurance and high-reliability software systems for this reason.",
+          "author": "jandrewrogers",
+          "replies": [
+            {
+              "text": "This is why CloudFlare has done what they did with the lava lamp wall. Not that the wall is such a great source of entropy on its own - I'm sure it's not their \nonly\n source, but you can never have too many sources of entropy - but it makes it \nvisible\n in a way that can grab those who don't fully understand the concepts of RNGs and how entropy plays into that.\nThe more sources of entropy, the more closely you approach \"perfect\" randomization. And a large chunk of those entropy sources need to be non-deterministic. Even on the small level, local applications running on local systems, like games, can use things like the mouse coordinates, the timings between button presses, the exact frame count since game start before the player presses Start to greatly enhance randomness while still using PRNGs under the hood\nYes, for the latter, that's \ntechnically\n deterministic (and the older the game considered, the more deterministic it is, see TAS runs of old games obliterating the \"RNG\"). But when you have fifty different parameters feeding into the initial seed, that's fifty things an attack would have to perfectly predict or replay (and there are other ways to avoid replay attacks that can be layered on top)\nIf CloudFlare had less than 100 different sources of entropy, I'd be disappointed. And that's assuming their algorithm for blending those entropy sources into a single seed value is good",
+              "author": "LocalH",
+              "depth": 1
+            },
+            {
+              "text": "> you can never have too many sources of entropy\nThis is so true. And the beauty is that with algorithms, we don't even need to know much about the entropy to be able to extract it.\nThere is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThere are more modern algorithms that can be even better (in that they need less coin tosses if you have a very unbalanced coin).\nAnd then there is modern cryptographic hashing. Feed it all the bits you can. Collisions end up only happening in the real world if every single one of those bits is identical. So if you have actual entropy being fed, that cannot be controlled, predicted, or replicated, modern cryptography tells you that the end result is unique.",
+              "author": "greiskul",
+              "depth": 2
+            },
+            {
+              "text": "> There is the Von Neumann method of generating an unbiased coin from a biased coin. Of throwing it twice, and checking if you got HT or TH. And completely discarding all HH or TT results. It doesn't matter if the coin you are using is 20% or 80%, the result will be a true 50/50.\nThis blew my mind. Thank you!\nI had to think about it a bit, so for anyone scratching their head right now trying to figure it out, consider it this way:\nwhat matters is the ordering, of heads-then-tails, or tails-then-heads.\nIt doesn't matter that it's biased one way or the other, if you keep flipping pairs until you get a result with two \ndifferent\n values, it's a 50/50 chance whether the less-likely result comes first, or second.\nYou might only have a 20% chance of any particular pair having a tails (for example), but in the cases where you do have a tails, it's a 50/50 chance that it comes first or second.",
+              "author": "ms_menardi",
+              "depth": 3
+            },
+            {
+              "text": "And for people who like equations, here is my attempt at explaining it.\nAssume each flip is independent and the bias remains same in each flip.\nLet\n  P(H) = p,\n  P(T) = 1 - p.\n\n\nThen\n  P(HH) = p^2,\n  P(HT) = p(1 - p),\n  P(TH) = (1 - p)p,\n  P(TT) = (1 - p)^2.\n\n\nTherefore\n  P(HT or TH) = 2p(1 - p).\n\n\nNow calculate\n  P(HT | HT or TH) = p(1 - p) / (2p(1 - p)) = 1/2,\n  P(TH | HT or TH) = (1 - p)p / (2p(1 - p)) = 1/2.",
+              "author": "susam",
+              "depth": 4
+            },
+            {
+              "text": "You don't need conditional probability here, as the flips are independent.\nIt's just p(H)p(T).\nAnd p(H)p(T) = p(T)p(H), thus 2*p(H)p(T) = 2p(1-p).",
+              "author": "taegee",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Funny story no one will believe, but it’s true. A good friend of mine joined a startup as CTO 10 years ago, high growth phase, maybe 200 devs… In his first week he discovered the company had a microservice for generating new UUIDs. One endpoint with its own dedicated team of 3 engineers …including a database guy (the plot thickens). Other teams were instructed to call this service every time they needed a new ‘safe’ UUID. My pal asked wtf. It turned out this service had its own DB to store every previously issued UUID. Requests were handled as follows: it would generate a UUID, then ‘validate’ it by checking its own database to ensure the newly generated UUID didn’t match any previously generated UUIDs, then insert it, then return it to the client. Peace of mind I guess. The team had its own kanban board and sprints.",
+          "author": "throwaway_19sz",
+          "replies": [
+            {
+              "text": "> One endpoint with its own dedicated team of 3 engineers\n> The team had its own kanban board and sprints.\nMy early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nLater in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nIt was as weird time. We had this same situation where there were 3-4 person teams who had their own sprints and planning sessions where they would come up with more ways to make work for themselves. Some of them moved so slow that they could spend entire sprints doing tiny changes. Others were working on the most over-engineered solutions you'd ever seen for trivial problems.\nThere was one meeting where I suggested we re-assign some people on a stable project to work on something that we needed urgently, but I got shut down. That would have removed another excuse to hire more people, which would have conflicted with someone's KPIs to grow the engineering team to a specific number",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> My early jobs were at startups startups with limited resources. Every decision to build something or hire someone was carefully made after much consideration. This story would have looked like fiction to me at the time.\nThis was pre-2015\n> Later in my career I joined a startup like this where every new concern someone could think up turned into a new microservice with new hires to form a new team. It didn't matter how small it was, everything was a reason to hire new people and form a new team. I sat in meetings where the express goal of the quarter was communicated as growing the engineering team.\nThis was post-2015\n---\nAm I right?\nYou're describing exactly what I've tried to express in various comments. There was a point in the latter half of the 2010s when it became genuinely hard to find tech work where you were building useful stuff. Startups become increasingly absurd and the focuses of their engineering teams even more so.\nIn 2019 I was working for a company who were so desperate to hire new engineers at one point they decided to just start offering jobs to candidates which failed interviews. It was absolutely insane.",
+              "author": "kypro",
+              "depth": 2
+            },
+            {
+              "text": "Ah, the heady days when we shipped a new AWS service with a team of 40, and when I came into work the next day we had 120 people and 80 of them were just inventing work out of whole cloth…",
+              "author": "swiftcoder",
+              "depth": 3
+            },
+            {
+              "text": "I need to hear more stories, I'm begging",
+              "author": "momojo",
+              "depth": 4
+            },
+            {
+              "text": "> someone's KPIs to grow the engineering team to a specific number\nSigh!\nSpecific numbers!\nI believe a more common specific number is the yearly EBITDA or ARR (or some other acronyms in this alley I care zero about to memorize) nowadays, for investor's sake. Like in our company. Since we were acquired - and some time before - the only talk in company meetings are EBITDA, ARR, compared to a number dreamed up by someone and to be reached in 5 years time. Specific financial results in specific timeframe. Our goals are specific numbers being above today's numbers by a chosen margin. The company talk are marketing campaigns and reach, campaign efficiency measurements, pricing strategies, subscription centric licensing, sales strategies, churn, and other slang around customer bullying I also do not care about, also organizational streamlining - what a loaded word! -, bla bla bla, all for the specific sacred number put up on the pedestal.\nWhat we have zero talk about? Functionality, engineering.\nI seriously do not understand these people. Why are they fiddling around with selling software in a niche sensitive to global economic fluctuations insted of selling ... I don't know. Shoes? Or better yet sugary water ... no, better is vitamin water ... no, the trendiest is protein water. That is something that needs no balanced functionality and engineering that is laborous so it is resource intensive to achieve. And is in the way of reaching the sacred number put up there. Engineers are in the way towards our goals. We are pulling back the cart! We are cost center now!!\nI do not stay long.",
+              "author": "mihaaly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is usually caused by an insufficently seeded PRNG.\nAre you generating the UUID in the backend, or the frontend? Frontend is fundamentally unreliable for many reasons, including deliberate collisions. So if that case you'll need to handle collisions somehow. Though you can still engineer around common sources of collisions, the specifics depend on the environment.\nOn the other hand making a backend reliable is feasible. What kind of environment is your code running in? Historically VMs sometimes suffered from this problem, though this should be solved nowadays. Heavily sandboxed processes might still run into this, if the RNG library uses an unsafe fallback. Forking processes or VMs can cause state duplication and thus collisions.",
+          "author": "CodesInChaos",
+          "replies": [
+            {
+              "text": "I remember hearing about Segment (analytics company) had their entire product based around UUIDs generated in web browsers. There were collisions all over the place, the product was seemingly incapable of producing useful data at a fundamental level because of it. Hopefully they've fixed that now.",
+              "author": "danpalmer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of a passage from the book \"Pro Git\".\n<\nhttps://git-scm.com/book/en/v2\n>\n\"Here’s an example to give you an idea of what it would take to get a SHA-1 collision. If all 6.5 billion humans on Earth were programming, and every second, each one was producing code that was the equivalent of the entire Linux kernel history (6.5 million Git objects) and pushing it into one enormous Git repository, it would take roughly 2 years until that repository contained enough objects to have a 50% probability of a single SHA-1 object collision. Thus, an organic SHA-1 collision is less likely than every member of your programming team being attacked and killed by wolves in unrelated incidents on the same night.\"\nDeliberate collisions are addressed in the following paragraph.\nSHA-1 hashes are not random, so the issue of poor pseudo-random number generation doesn't apply as it does to uuidv4. And SHA-1 hashes are 160 bits, vs. 128 for uuidv4.\nBut I love the idea of unrelated wolf attacks.",
+          "author": "_kst_",
+          "replies": [
+            {
+              "text": "Reminds me of this page with an example for understanding how many permutations there are for a shuffled deck of cards: \nhttps://czep.net/weblog/52cards.html\n> So, just how large is it? Let's try to wrap our puny human brains around the magnitude of this number with a fun little theoretical exercise. Start a timer that will count down the number of seconds from 52! to 0. We're going to see how much fun we can have before the timer counts down all the way.\nShall we play a game?\n> Start by picking your favorite spot on the equator. You're going to walk around the world along the equator, but take a very leisurely pace of one step every billion years. The equatorial circumference of the Earth is 40,075,017 meters. Make sure to pack a deck of playing cards, so you can get in a few trillion hands of solitaire between steps. After you complete your round the world trip, remove one drop of water from the Pacific Ocean. Now do the same thing again: walk around the world at one billion years per step, removing one drop of water from the Pacific Ocean each time you circle the globe. The Pacific Ocean contains 707.6 million cubic kilometers of water. Continue until the ocean is empty. When it is, take one sheet of paper and place it flat on the ground. Now, fill the ocean back up and start the entire process all over again, adding a sheet of paper to the stack each time you’ve emptied the ocean.\nDo this until the stack of paper reaches from the Earth to the Sun. Take a glance at the timer, you will see that the three left-most digits haven’t even changed. You still have 8.063e67 more seconds to go. 1 Astronomical Unit, the distance from the Earth to the Sun, is defined as 149,597,870.691 kilometers. So, take the stack of papers down and do it all over again. One thousand times more. Unfortunately, that still won’t do it. There are still more than 5.385e67 seconds remaining. You’re just about a third of the way done.",
+              "author": "mega_dean",
+              "depth": 1
+            },
+            {
+              "text": "Damn, I got the paper stack wet with all that ocean water. Guess I'm starting again from scratch...",
+              "author": "dalmo3",
+              "depth": 2
+            },
+            {
+              "text": "On the other hand, it turns out that pre-image attacks are quite feasible, and as several people who have thoughtlessly committed the pre-image attack test case files to git can attest… quite problematic",
+              "author": "swiftcoder",
+              "depth": 1
+            },
+            {
+              "text": "This idea of everyone producing absurd amounts of git objects is less fantastic now [1]. We're still far from these numbers, but an order of magnitude less far than last year [2].\nAlso an interesting bit of history here: apparently there was a time when people were already writing books on Git but \"one enormous Git repository\" wasn't yet the most common mode of using it.\n[1] \nhttps://news.ycombinator.com/item?id=47932422\n[2] \nhttps://x.com/kdaigle/status/2040164759836778878",
+              "author": "owl57",
+              "depth": 1
+            },
+            {
+              "text": "Hasn't the Git team been hard at work to optionally offer other hashes, like SHA256, in addition to SHA-1?",
+              "author": "TacticalCoder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What you're talking about is so extremely rare that it's much more likely that the entire Earth is destroyed by an asteroid right this inst...",
+          "author": "adyavanapalli",
+          "replies": [
+            {
+              "text": "It is not quite as rare. I calculated it to be less common than being hit by a meteorite, and added a section about that and the Birthday Paradox to Wikipedia, to the article about UUIDs. It got removed / replaced a few years ago however. (If my source was correct, there was actually a woman hit by a meteorite, but she survived, with a leg injury.)\nIf you do have a UUID collision, chances are extremely high that it's either a software bug, or glitch in the computer. It could be a cosmic ray. Cosmic rays messing with the computer memory or CPU are actually relatively common.",
+              "author": "thomasmg",
+              "depth": 1
+            },
+            {
+              "text": "About as rare as an asteroid typing an ellipsis and clicking the add comment button.",
+              "author": "delichon",
+              "depth": 1
+            },
+            {
+              "text": "Well, this joke dates back to (at least) the dial-up days where {#`%${%&`+'${`%& NO CARRIER",
+              "author": "throw0101c",
+              "depth": 2
+            },
+            {
+              "text": "That’s just a result of jounce from localized gravity effects and atmospheric pressure disturbances in the moments before impact.\nThink the ultrasonic typing hacking scene in Pantheon combined with the keyboard bouncing due to rumbling.",
+              "author": "xerox13ster",
+              "depth": 2
+            },
+            {
+              "text": "Well it would be statistically even rarer for that UUID collision to happen and the earth to be destroyed by an asteroid.",
+              "author": "sebazzz",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48115438",
+      "title": "Twin brothers wipe 96 government databases minutes after being fired",
+      "link": "https://arstechnica.com/tech-policy/2026/05/drop-database-what-not-to-do-after-losing-an-it-job/",
+      "domain": "arstechnica.com",
+      "author": "jnord",
+      "score": 344,
+      "comment_count": 251,
+      "created_ts": 1778624887,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": [
+        {
+          "top": "> [Opexus] said that “the individuals responsible for hiring the twins are no longer employed by Opexus.”\nGetting close to the classic Monty Python line: \"Those responsible for sacking the people who have just been sacked, have been sacked.\"\nJokes aside, stuff like this sucks because I suspect many employers will take from it the most extreme, dehumanizing lessons, e.g.: (a) make firings [edit: including lay-offs] as abrupt as possible including terminating all access immediately, (b) never give second chances to anyone with any sort of criminal record (even say decades old marijuana posession or something).\nI'd prefer a more balanced version: limit unilateral access to sensitive systems in general (not just of recently-fired employees), when someone is fired immediately shut off particularly sensitive credentials if they do exist (but not their general-purpose login/email account), avoid hiring people convicted of wire fraud as sysadmins, hash your @!#$ing passwords, etc.",
+          "author": "scottlamb",
+          "replies": [
+            {
+              "text": "Terminating access and rotating passwords (if needed) while the person is in the meeting but has not yet found out they are being let go has been SOP for at least the last 20 years",
+              "author": "yaur",
+              "depth": 1
+            },
+            {
+              "text": "My first task at my last job was removing access to an employee being let go. I had just gone through onboarding so I knew every (documented) service we needed to handle. We live tested it on my own accounts, measured the time before I noticed, and then proceeded to successfully go through the checklist.\nExcept not everything was properly documented, and it turned out the employee had given admin rights on some resources to a contractor which proceeded to wreak havoc on their behalf (the 'rm -rf' kind). Eh!",
+              "author": "belmarca",
+              "depth": 2
+            },
+            {
+              "text": "Amateurs. My employer does mass layoffs by terminating access to everything except their email account at 3am, and then sending an email to the victim saying “you were let go at 3am”. Managers get to figure out who’s left on their team by pinging everyone when they learn about it at work.",
+              "author": "lazyasciiart",
+              "depth": 2
+            },
+            {
+              "text": "Google powerwashes your corp Chromebook when they let you go. A friend was composing an email on the train when their screen went black and the device reset itself to factory settings.\nThey even send the “you’re being fired” email to their personal email they have on file. Didn’t even schedule a meeting.",
+              "author": "gcr",
+              "depth": 3
+            },
+            {
+              "text": "If you're talking about Oracle, the large round previous to that they did had individual meetings with employee, manager, and HR.  With so many layoffs it took a week+ to do, effectively torturing an entire set of employees who had no idea if they'd have a job by the end of the hour, let alone week.\nI'm not sure there's any good way to lay off large amounts of staff (besides not getting yourself into the situation in the first place where you have to)",
+              "author": "Twirrim",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I'm just amused how these people were even hired to begin with ? They don't seem to be Americans? How were they even allowed to work on sensitive systems? Why was this even allowed? So many questions.\n    At 4:58 pm, he wiped out a Department of Homeland Security database using the command “DROP DATABASE dhsproddb.”\n\n    At 4:59 pm, he asked an AI tool, “How do i clear system logs from SQL servers after deleting databases?” He later asked, “How do you clear all event and application logs from Microsoft windows server 2012?”\n\n    In the space of a single hour, Muneeb deleted around 96 databases with US government information.",
+          "author": "zuzululu",
+          "replies": [
+            {
+              "text": "They were born in Maryland, and apparently quite skilled (or at least skilled at cheating their way through their studies, if not genuinely technically skilled).\nhttps://www.somdnews.com/archive/news/19-year-old-twins-high...",
+              "author": "dolebirchwood",
+              "depth": 1
+            },
+            {
+              "text": "I would imagine they lied about having a felony conviction on their job applications, and that for whatever banal reason any background check service they used didn't flag it, or the contractor was so grossly incompetent they didn't even check.",
+              "author": "jasonwatkinspdx",
+              "depth": 1
+            },
+            {
+              "text": ">> They don't seem to be Americans?\nHow did you conclude that? Just their names?",
+              "author": "tradertef",
+              "depth": 1
+            },
+            {
+              "text": "A few other circumstantial things \nlightly hint\n at the twins not being typically American:\n1. Obliviousness to local laws and oversight (and the combination of severity of punishment +  likelihood of getting caught); most Americans of their intelligence would be aware, and would not engage in the sort of hijinks they did.\n2. Working with sibling (anecdotal, but seems slightly more common among immigrant families than locals, which would make sense since, on average, immigrants have fewer local connections than locals so the likelihood of working with siblings increases)\n3. Loyalty to family (evidenced through the brazenness in the way they helped each other in criminal acts without a second thought). Americans, on average, are more individualist and hesitate more when asked by family to do something criminal\n4. A lot of immigrants eventually adopt anglicised names, which neither of these two did\nIf a detective looked at these facts, they'd keep an open mind as there's nothing definitive above, but it would be equally ignorant to ignore the circumstantial evidence.\nHaving said all this, do we care where they're from? (unless it's a potential case of foreign interference or theft from an untouchable overseas company, which doesn't seem to be the case here)",
+              "author": "nomilk",
+              "depth": 2
+            },
+            {
+              "text": "> \"most Americans of their intelligence would be aware\"\nthat would still leave up to 49% Americans not being aware. so how did you conclude that they were not Americans? Also, how did you measure their intelligence?\n> \"slightly more common among immigrant families than locals\"\neven if true, how did you conclude that these were not Americans?\n> \"Americans, on average, are more individualist and hesitate more when asked by family to do something criminal\"\neven if on average Americans are more so, how did you conclude that these were not Americans?\n> \"A lot of immigrants eventually adopt anglicised names\"\nfrom your sentence it seems a lot of them don't. so how did you conclude that these were not Americans?\nIt would be a disaster for immigrants in your area if you were ever hired into some kind of investigative/law enforcement role.",
+              "author": "profsummergig",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> On March 12, 2025, a search warrant was executed at Sohaib’s home in Alexandria. Agents grabbed plenty of tech gear but also turned up seven firearms and 370 rounds of .30 caliber ammunition. Given his former crimes, Sohaib should have had none of this.\nFor god's sake, don't commit crimes while you're committing crimes.",
+          "author": "soVeryTired",
+          "replies": [
+            {
+              "text": "I was kind of hoping he sprinted out his back door which happened to be on a state line and then mailed his guns back to his house, just to try to cover everything.",
+              "author": "tclancy",
+              "depth": 1
+            },
+            {
+              "text": "There is a strong bias towards stupid criminals getting caught.",
+              "author": "colechristensen",
+              "depth": 1
+            },
+            {
+              "text": "Only commit one crime at a time",
+              "author": "paulpauper",
+              "depth": 1
+            },
+            {
+              "text": "Serially.",
+              "author": "vvpan",
+              "depth": 2
+            },
+            {
+              "text": "Waterfall style",
+              "author": "financetechbro",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> At 4:58 pm, he wiped out a Department of Homeland Security database using the command “DROP DATABASE dhsproddb.”\nThis article is hilarious. The two bickering brothers remind me of the guys in the Oceans movies played by Casey Affleck and Scott Caan. It’s amazing they got this close to sensitive data.",
+          "author": "chatmasta",
+          "replies": [
+            {
+              "text": "> At 4:59 pm, he asked an AI tool, “How do i clear system logs from SQL servers after deleting databases?” He later asked, “How do you clear all event and application logs from Microsoft windows server 2012?”\nSo many red flags, I can't even.",
+              "author": "game_the0ry",
+              "depth": 1
+            },
+            {
+              "text": "> In the space of a single hour, Muneeb deleted around 96 databases with US government information. He downloaded 1,805 files belonging to the EEOC and stashed them on a USB drive, then grabbed federal tax information for at least 450 people.\nMaybe whoever runs infosec at that place should also be fired?",
+              "author": "t0mas88",
+              "depth": 2
+            },
+            {
+              "text": "Brave of you to assume they had anyone running infosec by the sounds of it",
+              "author": "oliyoung",
+              "depth": 3
+            },
+            {
+              "text": "Elon's brother's landscaper's nephew's girlfriend was sacked along with Elon, so nobody was filling that role in the government.\nWhich MAGAts applaud. Emptying the swamp!",
+              "author": "IAmBroom",
+              "depth": 3
+            },
+            {
+              "text": "Yep, Windows Server 2012 being a big one :o",
+              "author": "darkwater",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I don’t know where to start with this other than to point out that there is no way in hell these two clowns had the security clearance necessary to access a prod DB at DHS.  I can only assume they stole creds from another employee who had that level of clearance.  Also, tax records are not stored in a DHS domain .\nI think this story has been sanitized to mask some details which is ok I guess but I ain’t buying the back story.",
+          "author": "Beestie",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 279,
+      "comment_count": 1071,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48122103",
+      "title": "Ask HN: What are you working on (non-AI)?",
+      "link": "https://news.ycombinator.com/item?id=48122103",
+      "domain": "news.ycombinator.com",
+      "author": "BrunoBernardino",
+      "score": 28,
+      "comment_count": 36,
+      "created_ts": 1778681272,
+      "is_internal": true,
+      "post_text": "Please don&#x27;t turn this into an inflammatory post.<p>Regardless of &quot;AI&quot; being good or bad (it&#x27;s not even just one thing as many of you know), I feel like the &quot;What are you working on?&quot; posts are drowning in things that use AI for something and&#x2F;or are clearly &quot;AI slop&quot;.<p>I&#x27;d like to look at things other humans have been doing (even if they used a bit of some kind of AI for assistance), that aren&#x27;t a product or tool that uses AI for something.<p>I know it exists (and I use and build some), but it&#x27;s incredibly hard to find nowadays. Can you help me?<p>Thank you.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48087925",
+      "title": "Ask HN: Will low quality AI customer support be the new normal?",
+      "link": "https://news.ycombinator.com/item?id=48087925",
+      "domain": "news.ycombinator.com",
+      "author": "0-bad-sectors",
+      "score": 25,
+      "comment_count": 29,
+      "created_ts": 1778446647,
+      "is_internal": true,
+      "post_text": "Now whenever I reach for customer&#x27;s support chat or phone I get an AI agent replying to me and I get into a useless loop for a couple of minutes before I start begging it to link me to a real person.<p>Will companies start losing customers because of that or people will eventually get used to this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48103273",
+      "title": "Ask HN: How to get started in electronic music",
+      "link": "https://news.ycombinator.com/item?id=48103273",
+      "domain": "news.ycombinator.com",
+      "author": "A_Random_Nerd",
+      "score": 16,
+      "comment_count": 16,
+      "created_ts": 1778550905,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been interested in learning how to make electronic music (e.g. Geometry dash, Undertale, Daft Punk, C418), but there doesn&#x27;t seem to be any real documentation or tutorials on how to start.<p>To summarize my question:\na.) What are the first 3 steps (or more) to learn to compose music?\nb.) Any links, resources etc. to share?<p>Thanks for your time and interest.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48092561",
+      "title": "Ask HN: Best static site generator for a docs site in 2026?",
+      "link": "https://news.ycombinator.com/item?id=48092561",
+      "domain": "news.ycombinator.com",
+      "author": "agenttestjekuqz",
+      "score": 15,
+      "comment_count": 12,
+      "created_ts": 1778489115,
+      "is_internal": true,
+      "post_text": "I&#x27;m looking for recommendations for a static site generator to rebuild our documentation site in 2026.<p>1. Markdown support\n2. Fast build (&lt;60s)\n3. Search without JS\n4. Deploy on GitHub Pages<p>Budget: $0",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48101373",
+      "title": "Ask HN: How are you preparing for interviews nowadays?",
+      "link": "https://news.ycombinator.com/item?id=48101373",
+      "domain": "news.ycombinator.com",
+      "author": "holden_nelson",
+      "score": 11,
+      "comment_count": 31,
+      "created_ts": 1778537554,
+      "is_internal": true,
+      "post_text": "Hey all, just wondering how you&#x27;re preparing for interviews in 2026? I&#x27;m assuming system design plays a larger role and the bar is probably higher across all levels. Do I still need to grind leetcode?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48113611",
+      "title": "Ask HN: Is Spam getting worse or is Gmail getting worse?",
+      "link": "https://news.ycombinator.com/item?id=48113611",
+      "domain": "news.ycombinator.com",
+      "author": "adamtaylor_13",
+      "score": 9,
+      "comment_count": 8,
+      "created_ts": 1778615904,
+      "is_internal": true,
+      "post_text": "Over the past couple of months I&#x27;ve noticed that number of spam emails landing in my inbox has increased by quite a bit. I keep a very tidy inbox, so it&#x27;s pretty easy for me to notice them and mark them as spam. But I&#x27;m curious: is Google just getting worse at detecting spam, or is the spam somehow evolving?<p>For example, I just got this email:<p>Sender: william_brown_318@rofopifj.dravixa.space\nSubject: the wagon is in<p>The body contains tons of literal HTML tags that weren&#x27;t parsed into actual HTML. Not sure if it was sent as a text mime-type or what, but it takes all of 2 whole seconds for me to mentally note that this is spam.<p>How is this getting through more often these days?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48117941",
+      "title": "Ask HN: If HTML supersedes Markdown fr AI, Will it be versatile enough for devs?",
+      "link": "https://news.ycombinator.com/item?id=48117941",
+      "domain": "news.ycombinator.com",
+      "author": "zameermfm",
+      "score": 6,
+      "comment_count": 19,
+      "created_ts": 1778647522,
+      "is_internal": true,
+      "post_text": "Isn&#x27;t Markdown&#x27;s hallmark its versatility while performant? \nI see there is an increasing call from tech community towards HTML to be adopted instead of Markdown due to its richness in the agentic communication layer. But is it versatile across any kind of interfaces? versatile with different format conversions? and performant (as the md is lightweight)?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48101913",
+      "title": "Ask HN: What happens when eventually all E2E mess. apps removed from app stores?",
+      "link": "https://news.ycombinator.com/item?id=48101913",
+      "domain": "news.ycombinator.com",
+      "author": "kingleopold",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1778540565,
+      "is_internal": true,
+      "post_text": "What happens when eventually all E2E messaging apps are removed from app&#x2F;play stores? After that most internet communication between humans only allowed if the state or countries records all of it?<p>Are you all ready for this in few years? Sure some people can use linux&#x2F;grapheneos but they are few % only and I talk about majority of people in the internet.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48124291",
+      "title": "Ask HN: Why Reddit blocks all automated access but has .json for all URLs?",
+      "link": "https://news.ycombinator.com/item?id=48124291",
+      "domain": "news.ycombinator.com",
+      "author": "ksajadi",
+      "score": 5,
+      "comment_count": 7,
+      "created_ts": 1778690581,
+      "is_internal": true,
+      "post_text": "Reddit is aggressively blocking all automated access (see their robots.txt) and uses a lot of heuristics to block crawlers that do not honor it.<p>However, at the same time all Reddit URLs can be made machine readable by adding a .json to the end.<p>Can anyone explain what&#x27;s the point of that?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Reddit locked down their API three years ago, purportedly to monetize their content for AI. This also killed all the free third party apps.\nhttps://arstechnica.com/gadgets/2023/10/reddit-may-block-sea...",
+          "author": "jerlam",
+          "replies": []
+        },
+        {
+          "top": "My guess is they see correlation between patterns of automated access and problematic behaviors.\nIn other words, the current state is the result of hard won experience not syllogistic reasoning.",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "I just want to know why Reddit keeps banning people for no good reason,while letting bots roam free.",
+          "author": "downbad_",
+          "replies": [
+            {
+              "text": "It's turned into a bizarre place. Today I asked the same question on /r/meta and my question was immediately removed without explanation. I tried to message the mods and got bounced with a \"you cannot send a message to that user\"",
+              "author": "ksajadi",
+              "depth": 1
+            },
+            {
+              "text": "It was much better years ago.",
+              "author": "downbad_",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I guess it's Reddit saying we don’t want just any bot crawling around, but if you need the data in a simple format, here’s an easy way to get it.",
+          "author": "maheenaslam",
+          "replies": []
+        },
+        {
+          "top": "Circa 2009 or so I was interested in automated link building systems,  there were some sites that had no defenses,  but I saw enough going on around Reddit that I just didn't want to mess with it.",
+          "author": "PaulHoule",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48126435",
+      "title": "Ask HN: Is Anthropic doing too much vibe coding?",
+      "link": "https://news.ycombinator.com/item?id=48126435",
+      "domain": "news.ycombinator.com",
+      "author": "terabytest",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1778701105,
+      "is_internal": true,
+      "post_text": "The Claude app and Claude Code have been an unusable and buggy mess for me lately, has anyone else been experiencing this? Most of my messages get swallowed after sending them or the responses get interrupted or dropped. Sometimes entire conversations disappear from the sidebar only to reappear later. I’ve learnt that when a message appears not to have gone through or have errored midway, it often comes back with a valid response if I wait a bit and then restart the app.<p>I wonder if it has anything to do with Anthropic eagerly embracing vibe coding.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
