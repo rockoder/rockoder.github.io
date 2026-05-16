@@ -1,0 +1,503 @@
+{
+  "scraped_date": "2026-05-16",
+  "source": "hacker_news",
+  "total_scraped": 75,
+  "nontech_count": 12,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 473,
+      "comment_count": 341,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 285,
+      "comment_count": 1094,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48155690",
+      "title": "'No way to prevent this,' says only package manager where this regularly happens",
+      "link": "https://kevinpatel.xyz/posts/no-way-to-prevent-this/",
+      "domain": "kevinpatel.xyz",
+      "author": "alligatorplum",
+      "score": 218,
+      "comment_count": 85,
+      "created_ts": 1778891762,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "For those unfamiliar with the context: \nhttps://en.wikipedia.org/wiki/%27No_Way_to_Prevent_This,%27_...",
+          "author": "btown",
+          "replies": [
+            {
+              "text": "Same vibe: \nhttps://www.youtube.com/watch?v=lOTyUfOHgas",
+              "author": "Modified3019",
+              "depth": 1
+            },
+            {
+              "text": "the onion article is still up could link that",
+              "author": "yieldcrv",
+              "depth": 1
+            },
+            {
+              "text": "https://theonion.com/no-way-to-prevent-this-says-only-nation...",
+              "author": "fragmede",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Sorry for hijacking threads like this again, and I know people have opinions about cooldowns etc. but cooldowns would save you from axios, tanstack, and many other recent npm supply chain attacks. If you work in a large company, you already likely have cooldowns via Artifactory / Nexus, and if you don't, it's easy to set up.\nWhy cooldowns? Most npm (or pypi) compromises were taken down within hours, cooldowns simply mean - ignore any package with release date younger than N days (1 day can work, 3 days is ok, 7 days is a bit of an overkill but works too)\nHow to set them up?\n- use latest pnpm, they added 1 day cooldown by default \nhttps://pnpm.io/supply-chain-security\n- or if you want a one click fix, use \nhttps://depsguard.com\n (cli that adds cooldowns + other recommended settings to npm, pnpm, yarn, bun, uv, dependabot and renovabot)\n- or use \nhttps://cooldowns.dev\n which is more focused on, well, cooldowns, with also a script to help set it up locally\nAll are open source / free.\nIf you know how to edit your ~/.npmrc etc, you don't really need any of them, but if you have a loved one who just needs a one click fix, these can likely save them from the next attack.\nCaveat - if you need to patch a new critical CVE, you need to bypass the cooldown, but each of them have a way to do so. In the past few weeks, while I don't have hard numbers, it seems more risk has come from Software Supply Chain attacks (malicious versions pushed) than from new zero day CVEs (even in the age of Mythos driven vulnerability discovery)\nDisclaimer - I maintain depsguard.",
+          "author": "eranation",
+          "replies": [
+            {
+              "text": "yes, props to pnpm for adding 1 day cooldown by default in v11.",
+              "author": "tkel",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What are the actual guarantees that go/Rust make that Python/npm don’t? It seems like it might just be that Python/npm are juicier targets? I’m starting to try and avoid all third party packages",
+          "author": "aselimov3",
+          "replies": [
+            {
+              "text": "It is 100% up to the package manager's steward to control how ownership of packages and namespaces are granted.\nMaven Central exists for decades the amount of incidents of people stealing namespaces is minimal.\nOne can't simply publish a package under the groupId \"com.ycombinator\" without having some way to verify that they own the domain ycombinator.com. Then, once a package is published, it is 100% immutable, even if it has malicious code in it. Certainly, that library is flagged everywhere as vulnerable.\nIt baffles me that NPM for so long couldn't replicate the same guardrails as Maven Central.",
+              "author": "brunoborges",
+              "depth": 1
+            },
+            {
+              "text": "How does that protect against credential theft? MFA required to sign published releases?",
+              "author": "cluckindan",
+              "depth": 2
+            },
+            {
+              "text": "That is another important layer. Maven Central is not immune to credential theft. If a publisher token is stolen, an attacker may still be able to publish a malicious new version until the token is revoked or the account is suspended after reporting the problem to Sonatype.\nBut in the Maven/Gradle ecosystem, most projects pin exact dependency versions. Support for version ranges and dynamic versions exist, but they are generally avoided because they hurt reproducible builds. That means a malicious new release does not automatically flow into most consumers’ builds just because it was published.\nI'd go as far to say that NPM should:\n1. Enforce scope (namespace) requirement, and require external verification (reverse DNS for example).\n2. Disable version range support out of the box. User must --enable this setting from the command line at all times.\n3. Remove support for install scripts completely. If someone wants to publish a ready-to-run software, there are plenty of other mechanisms.",
+              "author": "brunoborges",
+              "depth": 3
+            },
+            {
+              "text": "> Enforce scope (namespace) requirement, and require external verification (reverse DNS for example).\nWho the heck says everyone who publishes a library has a domain? That seems absurd.",
+              "author": "com2kid",
+              "depth": 4
+            },
+            {
+              "text": "Sonatype allows \"io.github.<username>\" as a valid groupId and has a process to verify ownership. I am sure other providers like GitLab can work on this.",
+              "author": "brunoborges",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "There has been a lot of pain at my various jobs installing a safe global npm config on every developer machine, asking people not to disable it, checking it with mdm tools. A safer out-of-the-box configuration is long overdue.",
+          "author": "joeblubaugh",
+          "replies": [
+            {
+              "text": "Just dont use npm. Use a package manager which doesn't execute postinstall by default. The switch is incredibly simple.",
+              "author": "tkel",
+              "depth": 1
+            },
+            {
+              "text": "Which package manager is that, and what caveats does it offer?",
+              "author": "cluckindan",
+              "depth": 2
+            },
+            {
+              "text": "Pnpm - installs are faster to boot. We haven’t missed anything",
+              "author": "timfsu",
+              "depth": 3
+            },
+            {
+              "text": "pnpm",
+              "author": "ricardo_lien",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Kudos to the author : this article read like something out of The Onion.",
+          "author": "dh2022",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48153183",
+      "title": "Palantir has hired more than 30 senior UK Government officials",
+      "link": "https://www.thenational.scot/news/26055524.palantir-hired-30-senior-uk-government-officials/",
+      "domain": "www.thenational.scot",
+      "author": "Symbiote",
+      "score": 189,
+      "comment_count": 54,
+      "created_ts": 1778875611,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "The \"revolving door\" spoken of here isn't quite as simple as it looks. Granted there are problems at \"senior government level\" but that is \nrare\n.\nI worked for UK government for a few years. Then I went to the private sector. This happens a lot. Most of people who do, me included, it's because the public sector is so deep in incompetence and stupid politics that it is soul-crushing. Also to get anywhere you tend to have to take placement roles andmove around a lot and resort to a lot of arse licking and back-stabbing. Having a family or any stability is \nreally\n difficult.\nSo you leave. And then they attempt to get you back with \"enhanced pay\" over your initial mediocre salary because there is suddenly a skills vacuum and everything is falling apart. They know who to reach out to because they want people who can slide back in and clean up the mess. All with redundancy again waved around constantly due to government reshuffles.",
+          "author": "cryo32",
+          "replies": [
+            {
+              "text": "The boring reality doesn’t get as many clicks",
+              "author": "basket_horse",
+              "depth": 1
+            },
+            {
+              "text": "The boring reality is that you can bribe a civil servant with £5k in the UK. They are remarkably cheap.\nWhether the civil service is a shit place to work or not (it is), there should be a recognition of the fact that the government still controls a large budget. Whilst MPs are scrutinised quite heavily, that same scrutiny is generally not extended to civil servants (because they make the rules). The number of senior civil servants who have been bent beyond belief is long (Heywood, Sedwill is still being put forward jobs even though he has been selling access to the government...it is incredible).",
+              "author": "skippyboxedhero",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Lol, this is SOP for the British state. There has been a revolving door between the civil service and the private sector for decades. You cannot conceive of how many billions have been wasted on \"consultancy\" contracts with the big four, IT projects that lasted for years and delivered nothing, etc.",
+          "author": "nayroclade",
+          "replies": [
+            {
+              "text": "It is far bigger than this. I would look more closely into who is behind the article and who has been quoted for comment here/why. And you think it is just some expensive IT projects...UK media has been bought and sold, just not by who you think.",
+              "author": "skippyboxedhero",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I really do love the American \"but the veterans!\" script, despite only them being a minority of the people involved:\n> Of [the 32], 14 no longer work for, or with, us, some of whom stopped as long as five years ago. Six are ex-armed forces veterans whose public sector experience involved serving and protecting their country.\n> Not only do we entirely reject claims of an alleged ‘revolving door’ strategy, but we also believe it is inappropriate to include veterans in a report alleging such a strategy. Aside from the immense value of their experience, there is rightly an undertaking by government and society to ensure they are afforded the opportunity to build a career outside the armed forces when the time is right for them.",
+          "author": "nxobject",
+          "replies": [
+            {
+              "text": "Hi Iraq war veteran and former 17 year US civil servant here…\nNo.\nBeing a veteran at this point shouldn’t shield you from criticism from being part of the MIC/Revolving door\nThe owners are doing their absolute best to make military members become hardcore MIC capitalists to give companies trying to get into defense, credibility like a token.\nThe whole thing is fucking gross and there’s a whole miltary to corporate leadership pipeline.\nEveryone should read war is a racket:\n\nhttps://archive.org/details/WarIsARacket",
+              "author": "AndrewKemendo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "A friend of mine recently got headhunted by a \"defense\" company called, and I won't even post the link, it's a website which sounds a bit like Van Helsing with some AI thrown in as a twist. He got an offer of 50k EUR more than his current already ridiculous salary.\nI had to say that it's up to you, but don't expect me to still be your friend and still talk to you if you go for that.\n\"defense\"",
+          "author": "karim79",
+          "replies": [
+            {
+              "text": "Out of curiosity, would you do this to family members accepting a job you don’t approve of too, or just friends?",
+              "author": "fooker",
+              "depth": 1
+            },
+            {
+              "text": "Yes I would and without question. If by \"do\" you mean remove myself from the absolute evil that these establishments are, and shame them for it then yes.\nI can approve of just about any job unless it's about murdering people because some politician(s) want it.",
+              "author": "karim79",
+              "depth": 2
+            },
+            {
+              "text": "How many steps removed do you draw the line?\nObviously, it's one thing to be a commander ordering an attack, vs a soldier firing the weapon, vs starting the company to make the weapon, vs being a supplier to the weapons company, vs being an employee at the manufacturer, etc.\nWhat about working for a president who is going to inevitably order hundreds if not thousands murdered? Or voting for said president?\nWhat about paying taxes, knowing those tax dollars will go to missiles and guns used to murder?\n(This isn't a criticism of your worldview, by the way. I'm just genuinely curious about how others draw these lines.)",
+              "author": "csallen",
+              "depth": 3
+            },
+            {
+              "text": "I'm not GP but I could've written a similar comment. Personally I don't draw the line based on \"proximity to war\", but on the choices being made. I think poorly of someone who freely chooses \"job directly contributing to war\" over \"job mostly unrelated to war\".",
+              "author": "Retr0id",
+              "depth": 4
+            },
+            {
+              "text": "Working on \"killy\" stuff is bad. That's my whole point. I is l stupid and counterproductive to what we as humanity are supposed to be doing.",
+              "author": "karim79",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "“Not only do we entirely reject claims of an alleged ‘revolving door’ strategy, but we also believe it is inappropriate to include veterans in a report alleging such a strategy. Aside from the immense value of their experience, there is rightly an undertaking by government and society to ensure they are afforded the opportunity to build a career outside the armed forces when the time is right for them. Characterising this as part of a ‘revolving door strategy’ does them, and all veterans, a disservice.”\nWhy should people who been in the army be exempt when talking about a company in defence ?",
+          "author": "stuaxo",
+          "replies": [
+            {
+              "text": "Because it’s devastating to their defense.\nNotice they think it’s inappropriate to include them for negative conclusions but its appropriate to talk about the positive conclusions.",
+              "author": "lovich",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48147665",
+      "title": "Power Tools Got Worse on Purpose. Who Owns DeWalt, Craftsman, and Milwaukee?",
+      "link": "https://www.worseonpurpose.com/p/your-power-tools-got-worse-on-purpose",
+      "domain": "www.worseonpurpose.com",
+      "author": "prawn",
+      "score": 134,
+      "comment_count": 127,
+      "created_ts": 1778847316,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 131,
+      "comment_count": 114,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "Don't. You are exactly the wrong kind of firm to be pursuing SOC2.\nSOC2 is like the corporate GPL of security. It's an infectious secret handshake company security teams swap in lieu of filling out security questionnaires. Nobody savvy takes it seriously.\nThere will come a time where your business will grow to the point where it makes sense to pay for the secret handshake. The overwhelming most likely scenario in which that happens is a purchase order made contingent on your SOC2 Type I attestation, where the revenue from that purchase order more than pays for the attestation.\nDo not ever do a SOC2 speculatively, in the hopes that it will improve your sales prospects. Plenty of successful firms don't have SOC2s. If you're losing sales where SOC2 is a factor, you didn't have those sales to begin with.",
+          "author": "tptacek",
+          "replies": [
+            {
+              "text": "I will add a few more things to this:\n- Document your data and security and share that with customers instead. You can say \"We don't have SOC2 at the moment but here is all our security and data policy\". It works 99% of the time for me.\n- Very few companies truly have policy to reject a vendor if they don't have SOC2. Those are usually large enterprise or companies in sensitive areas such as Finance/Healthcare etc. Even then, SOC2 can be waived if you can demonstrate everything else.\nDisclaimer: I run a bootstrapped SAAS with low 7 figures in ARR and even though we have ISO27001, we don't have SOC2 yet. However, we take our security/data etc very seriously and have tons of documentation and best practices that we always shafre with a customer who asks. Honestly, we will get SOC2 at some point just for the checklist as I don't really care too much about them otherwise.",
+              "author": "codegeek",
+              "depth": 1
+            },
+            {
+              "text": "Fully agree, the only downside is without a SOC2 you will be asked to fill out an insane 200+ questionnaire. \nGood news is you have all these great LLM tools you can do this work for you, and just check it over.",
+              "author": "spydum",
+              "depth": 2
+            },
+            {
+              "text": "In my industry they still ask for the questionnaire even if you have a SOC2 report!",
+              "author": "mikeocool",
+              "depth": 3
+            },
+            {
+              "text": "I run a low 7 figures SaaS as well. This is the blurb I answer with when asked about SOC2 (yes, yes, AI generated):\n\"While we follow industry best practices that align closely with the requirements of SOC2 and similar frameworks, we have chosen not to pursue formal certification at this time. Maintaining multiple certifications and undergoing recurring audits across the various regions in which we operate would significantly increase our operational costs and, consequently, the price of our service.\"",
+              "author": "speleding",
+              "depth": 2
+            },
+            {
+              "text": "> It works 99% of the time\nI would add the caveat \"...as long as you have no competition.\" If you're in a market where alternatives exist, and they have the certification, you're definitely transparently losing sales.\nFrom the enterprise side, I can tell you vendor certification takes an order of magnitude more time/money/effort when the vendor says \"we don't have cert X but here's a mountain of drivel you can paw through to try to assess risk.\" And not just once, but every single year during vendor reviews. It's just not worth it unless you're legitimately bringing something irreplaceable to the table -- to the point where even our executives know to google \"companyname SOC2\" before even engaging in a conversation.",
+              "author": "parliament32",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am a solo entrepreneur. Don't.\nI learned that my business is unable to pass pretty much ANY certification or corporate IT security audit. Many of the questions simply do not apply to my business (\"do you have documented procedures for revoking employee access\") and the default answer is NO. Get even a single NO and you're done.\nI gave up and these days actively discourage enterprises from even trying to sign up — these kinds of discussions can take a \nlot\n of your time and the expected value is negative, because sooner or later those kinds of questionnaires \nwill\n be required (quite often the engineer talking to you doesn't even know this).\nSOC2 falls into that category: you are unlikely to pass, and even if you do, enterprise customers will pull out their own questionnaires out of, well, let's just call it their store backrooms, and you will fail those. Waste of time.",
+          "author": "jwr",
+          "replies": [
+            {
+              "text": "> Get even a single NO and you're done.\nWhy do you think that's true?  SOC2 isn't pass/fail, you receive a report on your business.  You can have gaping security holes and be SOC2 \"certified.\"  It's just that your SOC2 audit will reflect that.",
+              "author": "Nelkins",
+              "depth": 1
+            },
+            {
+              "text": "It won't even be that. You're not going to have any gaps in your Type I if your auditor is at all competent; your Type I documents what you were doing, aspirationally, at the time of your audit.",
+              "author": "tptacek",
+              "depth": 2
+            },
+            {
+              "text": "Same. For my business, the enterprises that want to use my software wouldn't actually be worth the hassle as their usage is not more than my normal business customers (SMB). Just more work and costs on my end.\nEarly on, I had a potential enterprise account (well known online store) that wanted everything that enterprises wanted in addition to multiple meetings (with all the stakeholders) for a $50/month account (my mistake for not getting that information upfront).\nAnother time, a large Canadian media company wanted me to agree to an uncapped liability provision. Respectfully turned them down.\nAll in all, I lost some prestige business but if I took them on, it wouldn't move my profit levels much.",
+              "author": "tortilla",
+              "depth": 1
+            },
+            {
+              "text": "Your getting that interest because it looks like a steal. Ultimately those businesses couldn't care less about $50/m (except to chance it) but they want - or even need - the enterprise terms.\nThey will pay $50 for your product... And probably $950 for the terms.\n(Not saying that would have been the right thing for you but my advice to folks who find themselves in this position is always 20x or 40x the price - if that is enough to make it worth your bother, then go for it. Good chance theyll pay)",
+              "author": "ErrantX",
+              "depth": 2
+            },
+            {
+              "text": "My plans start at $50. Top out at $10k a month.",
+              "author": "tortilla",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I'm currently at a small startup trying to do ISO 27001. A big issue we run into is that there simply \naren't enough people\n. For example, the processes are built around having one person who writes code, and another person who reviews the written code. That's obviously impossible as a solo dev. You also need an internal auditor, who obviously needs to be separate from the operations team.\nIf I recall correctly the minimum in a standard setup is 9 roles which cannot overlap. You're going to have a \nvery\n hard time doing that as a solo entrepreneur, so you'll probably need to find someone who is experienced in making unusual setups like these compliant - which isn't going to be cheap. Even after that there's a pretty decent chance you'll end up needing to hire 3rd-party services in order to be compliant: our \"internal\" auditor is just some big firm doing it for us.",
+          "author": "crote",
+          "replies": [
+            {
+              "text": "We've been ISO 27k certified for years now. ISO 27001 relies heavily on risk documentation and mitigation; you can get around the separation-of-roles by calling them out as individual risks and making sure the appropriate authority signs off on them (ie: have an email from the CEO saying \"I delegate Bob to create policies and sign off on them, and also perform our internal audits. I recognize the risks this creates but due to our size we accept them at this time.\")",
+              "author": "maximilianburke",
+              "depth": 1
+            },
+            {
+              "text": "Right but at n=1 you are writing the policies, reviewing them, signing off on them yourself, raising risks, then ducking out the back and running out again with a fake mustache so you can accept the risks you raised... regarding yourself... lol.\nAudits rely on a _certain_ amount of ceremony and theatre.\nHowever, since you typically pay for audits / certifications yourself you \nmight\n find someone who is willing to entertain the charade if you shop around enough. Probably a solo auditing firm :)",
+              "author": "xyzzy123",
+              "depth": 2
+            },
+            {
+              "text": "I offered self-hosting to bypass this.  It did the trick and I was able to convert the enterprise customers where compliance was a red line.",
+              "author": "ownagefool",
+              "depth": 1
+            },
+            {
+              "text": "We are a team of 1 developer and 1 sales/marketing and are fully certified. You can hire an external auditor for the internal audit. We have AI code reviews, so we don’t need an extra developer.",
+              "author": "frenkel",
+              "depth": 1
+            },
+            {
+              "text": "Anyone who certified you with AI code reviews is a moron.",
+              "author": "_se",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It's easier than you might think. Not easy! But I've done it. Have Fortune <100 customers.\nAs others point out if you don't show your audit you have to affirm that you basically do everything an audit would check. So, do it.\nI found Thoropass to be offer a deal that was affordable. You're not too small for them. Check them out.\nYou can form your processes any way you want! Use AI to construct your policies. Just document what you do.\nI spent a probably 5 hours a month the first year. Learning curve and I felt I needed the hand holding from Thoropass... they were generous with time and explanations. Subsequent years, it's all set up, very little until audit time.",
+          "author": "hughw",
+          "replies": []
+        },
+        {
+          "top": "I was part of several third party risk management audits from a corporate perspective.\nWe regularly audited and questioned SMBs (and big corps) with regards to their security posture. We knew that small shops wouldn’t be able to be fully compliant to SOC2 Type 2 or have an ISO27001 certified environment. If it was clear that our business wanted the product, we either tried to help the company with the questionnaire or created a risk report that was then signed by the business. In other words: even if your customer asks you to be compliant, you don’t have to be if they care enough about your product.\nIf you seem intent on getting things right, that’s a big plus. Most of your competitors don’t even know what SOC 2 is.",
+          "author": "_tk_",
+          "replies": [
+            {
+              "text": "Can this also be done for HIPAA and FERPA, or for those compliance requirements is the process the way to go and just filling out the questionnaire would not be sufficient?",
+              "author": "whitefang",
+              "depth": 1
+            },
+            {
+              "text": "SOC2 is, at the end of the day, a voluntary compliance standard. HIPAA and FERPA requirements are federal law. Waiving those requirements would not just mean accepting additional liability, but would normally make your customer ineligible to receive federal funds, which are typically a substantial chunk of revenue.",
+              "author": "blochist",
+              "depth": 2
+            },
+            {
+              "text": "Compliance with HIPAA for small firms is generally straightforward and there isn't a standard audit. It's not the same animal as SOC2, which is a CPA standard and is administered by certified auditors.",
+              "author": "tptacek",
+              "depth": 3
+            },
+            {
+              "text": "Thank you for your comment!",
+              "author": "sochix",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48122103",
+      "title": "Ask HN: What are you working on (non-AI)?",
+      "link": "https://news.ycombinator.com/item?id=48122103",
+      "domain": "news.ycombinator.com",
+      "author": "BrunoBernardino",
+      "score": 37,
+      "comment_count": 48,
+      "created_ts": 1778681272,
+      "is_internal": true,
+      "post_text": "Please don&#x27;t turn this into an inflammatory post.<p>Regardless of &quot;AI&quot; being good or bad (it&#x27;s not even just one thing as many of you know), I feel like the &quot;What are you working on?&quot; posts are drowning in things that use AI for something and&#x2F;or are clearly &quot;AI slop&quot;.<p>I&#x27;d like to look at things other humans have been doing (even if they used a bit of some kind of AI for assistance), that aren&#x27;t a product or tool that uses AI for something.<p>I know it exists (and I use and build some), but it&#x27;s incredibly hard to find nowadays. Can you help me?<p>Thank you.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48143615",
+      "title": "Ask HN: When will you be concerned on layoffs?",
+      "link": "https://news.ycombinator.com/item?id=48143615",
+      "domain": "news.ycombinator.com",
+      "author": "piratesAndSons",
+      "score": 10,
+      "comment_count": 5,
+      "created_ts": 1778810151,
+      "is_internal": true,
+      "post_text": "In recent weeks, I have noticed a lot of tech companies announcing layoffs due to AI. As this continues, when will you be concerned?<p>Microsoft laying off 10% of their workforce, 15%, 20%, 30%?\nGoogle laying off 10%, 15%, 20%, or more?<p>HN readers like to use the cope of &quot;it&#x27;s just pandemic over-hiring&quot; — when do you think that explanation will no longer hold?<p>When will you say: &quot;Now it has nothing to do with Covid-era over-hiring; the industry has fundamentally changed.&quot;<p>If this happens and a significant number of white-collar jobs are eliminated, who would buy things to keep the economy funded?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48151496",
+      "title": "Ask HN: Can I take Meta to court for banning business Insta or FB account?",
+      "link": "https://news.ycombinator.com/item?id=48151496",
+      "domain": "news.ycombinator.com",
+      "author": "milanspeaks",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1778866569,
+      "is_internal": true,
+      "post_text": "Let&#x27;s say I spend a considerable amount of money in Meta ads.<p>I have followed all ruled but some automated system assume that I have done something wrong and automatically banned me.<p>Now I understand that such systems exist to prevent bad actors. But outright banning a business that is spending money on your platform is a violation of customer service rules.<p>There has to be a proper customer service channel.<p>In real world, I don&#x27;t know of any other business that bans the account and there is no customer support available.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48143205",
+      "title": "XS Programming Language",
+      "link": "https://news.ycombinator.com/item?id=48143205",
+      "domain": "news.ycombinator.com",
+      "author": "xs-lang",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1778806709,
+      "is_internal": true,
+      "post_text": "Made my language called XS. It&#x27;s a general-purpose language, currently at v1.2.15 as of this writing. Would like feedback and how I can improve it! Website it at https:&#x2F;&#x2F;xslang.org. There is a playground to try XS out in, and fully complete docs as well. Enjoy!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48151051",
+      "title": "Ask HN: What happened to the movie \"Pirates of the Silicon Valley\"",
+      "link": "https://news.ycombinator.com/item?id=48151051",
+      "domain": "news.ycombinator.com",
+      "author": "acossta",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1778864575,
+      "is_internal": true,
+      "post_text": "It seems that it disappeared from the internet. As if there was an active effort to take it down.<p>Anyone know what happened?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48156006",
+      "title": "Ask HN: What happened to ssh-audit.com?",
+      "link": "https://news.ycombinator.com/item?id=48156006",
+      "domain": "news.ycombinator.com",
+      "author": "Bender",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1778895501,
+      "is_internal": true,
+      "post_text": "The are still glue records in the root servers and the name is still registered but one name server no longer responds and the other gives SERVFAIL.  Is their admin on HN?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
