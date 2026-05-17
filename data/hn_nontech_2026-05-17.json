@@ -1,0 +1,486 @@
+{
+  "scraped_date": "2026-05-17",
+  "source": "hacker_news",
+  "total_scraped": 46,
+  "nontech_count": 13,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 474,
+      "comment_count": 342,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48155690",
+      "title": "'No way to prevent this,' says only package manager where this regularly happens",
+      "link": "https://kevinpatel.xyz/posts/no-way-to-prevent-this/",
+      "domain": "kevinpatel.xyz",
+      "author": "alligatorplum",
+      "score": 418,
+      "comment_count": 204,
+      "created_ts": 1778891762,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "I know people have opinions about cooldowns, but they would have saved you from axios, tanstack, and many other recent npm supply chain attacks. If you have Artifactory / Nexus, you probably already have cooldowns, but it's easy to set up if you don't.\nWhy cooldowns? Most npm (or pypi) compromises were taken down within hours, cooldowns simply mean - ignore any package with release date younger than N days (1 day can work, 3 days is ok, 7 days is a bit of an overkill but works too)\nHow to set them up?\n- use latest pnpm, they added 1 day cooldown by default \nhttps://pnpm.io/supply-chain-security\n- or if you want a one click fix, use \nhttps://depsguard.com\n (cli that adds cooldowns + other recommended settings to npm, pnpm, yarn, bun, uv, dependabot and, I’m the maintainer)\n- or use \nhttps://cooldowns.dev\n which is more focused on, well, cooldowns, with also a script to help set it up locally\nAll are open source / free.\nIf you know how to edit your ~/.npmrc etc, you don't really need any of them, but if you have a loved one who just needs a one click fix, these can likely save them from the next attack.\nCaveat - if you need to patch a new critical CVE, you need to bypass the cooldown, but each of them have a way to do so. In the past few weeks, while I don't have hard numbers, it seems more risk has come from Software Supply Chain attacks (malicious versions pushed) than from new zero day CVEs (even in the age of Mythos driven vulnerability discovery)",
+          "author": "eranation",
+          "replies": [
+            {
+              "text": "The idea that 7 days is overkill is crazy to me. Unless you need a specific new feature, you should usually be fine with a dependency version that was released \nmonths\n ago when starting a new project. Ditto for doing regular dep upgrades.\nThe only issue I see is responding to vulnerabilities, where you want to upgrade immediately. But I think in that case it's fine to require the developer to be explicit in the new version they want.",
+              "author": "kelnos",
+              "depth": 1
+            },
+            {
+              "text": "I agree, but in most recent cases a 1 day cooldown would have been enough.\nI added a “how to bypass if you have to patch a zero day CVE” section to depsguard for all supported package managers.",
+              "author": "eranation",
+              "depth": 2
+            },
+            {
+              "text": "Doesn’t that just move the problem 7 days down the road? I always assumed these kinds of things just burn themselves because someone gets infected and realizes, not that there is an army of people auditing the changes. If everyone cooldowns for 7 days, it just happens later?",
+              "author": "justsid",
+              "depth": 1
+            },
+            {
+              "text": "A large portion of the time, the maintainer notices what happened a few hours later. Maybe they were asleep or off doing other things for a while, but they eventually come back. And these kinds of takeovers frequently aren't complete enough to cover their tracks.\nSo at the very least, adding a cooldown raises the difficulty of these attacks above that threshold.",
+              "author": "chowells",
+              "depth": 2
+            },
+            {
+              "text": ">  large portion of the time, the maintainer notices what happened a few hours later.\nSo add it at the package manager level instead of the user level then?",
+              "author": "nullhole",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "What are the actual guarantees that go/Rust make that Python/npm don’t? It seems like it might just be that Python/npm are juicier targets? I’m starting to try and avoid all third party packages",
+          "author": "aselimov3",
+          "replies": [
+            {
+              "text": "It is 100% up to the package manager's steward to control how ownership of packages and namespaces are granted.\nMaven Central exists for decades the amount of incidents of people stealing namespaces is minimal.\nOne can't simply publish a package under the groupId \"com.ycombinator\" without having some way to verify that they own the domain ycombinator.com. Then, once a package is published, it is 100% immutable, even if it has malicious code in it. Certainly, that library is flagged everywhere as vulnerable.\nIt baffles me that NPM for so long couldn't replicate the same guardrails as Maven Central.",
+              "author": "brunoborges",
+              "depth": 1
+            },
+            {
+              "text": "Also....\nMaven doesn't have \"preinstall, install, post install\", or \" build.rs\" for rust, executing arbitrary code during the installation.\nThe code that's executing with Maven is in your pom.xml, not some hidden code from a transient dependency.\nThat alone is a major design flaw in both npm and cargo.\nJava is boring, because it works. People don't like boring stuff. It's more exciting to play the Russian roulette on each install!",
+              "author": "SupLockDef",
+              "depth": 2
+            },
+            {
+              "text": "As a heavy user of Java I can assure you that Java is very very far from boring, especially when building it with maven or gradle. There are millions ways something can screw up the build. Rust (and Go too) in comparison is much more boring actually - it maybe I was just lucky, but the majority of stuff just builds with zero issues.\nEspecially the number of times I had to clean all the caches in order for maven and gradle to build the project is just far too high for me. It shouldn’t ever be needed if an ecosystem is meant to be considered boring. I feel like Java doesn’t build when I look at it wrong.",
+              "author": "pkolaczk",
+              "depth": 3
+            },
+            {
+              "text": "> I feel like Java doesn’t build when I look at it wrong.\nHah, too true! I guess it is boring in the fact that it is not as... move fast and break things... as NPM. But Java build systems are still certainly fun and challenging in their own ways.",
+              "author": "robotnikman",
+              "depth": 4
+            },
+            {
+              "text": "Yep, sounds boring!",
+              "author": "MattPalmer1086",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "There has been a lot of pain at my various jobs installing a safe global npm config on every developer machine, asking people not to disable it, checking it with mdm tools. A safer out-of-the-box configuration is long overdue.",
+          "author": "joeblubaugh",
+          "replies": [
+            {
+              "text": "Just dont use npm. Use a package manager which doesn't execute postinstall by default. The switch is incredibly simple.",
+              "author": "tkel",
+              "depth": 1
+            },
+            {
+              "text": "Which package manager is that, and what caveats does it offer?",
+              "author": "cluckindan",
+              "depth": 2
+            },
+            {
+              "text": "Pnpm - installs are faster to boot. We haven’t missed anything",
+              "author": "timfsu",
+              "depth": 3
+            },
+            {
+              "text": "pnpm",
+              "author": "ricardo_lien",
+              "depth": 3
+            },
+            {
+              "text": "What do you mean by safe config? If you're trying to mandate a cooldown period or a whitelist/blacklist of packages, the correct approach is to configure a company-controlled registry that pulls from the upstream npm registry while enforcing your desired policies.",
+              "author": "10000truths",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thoughts and Prayers to those affected",
+          "author": "brooksc",
+          "replies": [
+            {
+              "text": "We wish them well.",
+              "author": "themafia",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "There is no legitimate reason why postinstall scripts need to exist. The npm team needs to grow up and declare \"starting with npm version whatever, npm will only run postinstall scripts for versions of packages published before ${today}\".",
+          "author": "827a",
+          "replies": [
+            {
+              "text": "I audited several postinstall scripts recently in popular packages. They seem to be mostly around using native binaries, downloading them, detecting if the platform is compatible, linking to it directly instead of having it bootstrapped by node, working around issues in older versions of npm, etc. Since dev toolchains (e.g. esbuild) are now being built in compiled languages and distributed as binaries via npm registry. If you are on a recent version of node/npm and a common/recent OS/platform, you should be able to disable all the postinstall scripts without legitimate issue.",
+              "author": "tkel",
+              "depth": 1
+            },
+            {
+              "text": "install scripts are a distraction, just like package signatures are a distraction. adding/removing either feature has no significant impact on the wormability of this package ecosystem. installed npm code is run, with nearly zero exceptions.",
+              "author": "raggi",
+              "depth": 1
+            },
+            {
+              "text": "The installed code may be run in different settings, under a different user, with different privileges. Say, it may not run in CI/CD at all, or run only with the test user's privileges.\nPostinstall scripts run at install time, with installer's privileges.",
+              "author": "nine_k",
+              "depth": 2
+            },
+            {
+              "text": "A lot of it ends up bundled to run in a browser though, and doesn't end up running in Node.js",
+              "author": "piperswe",
+              "depth": 2
+            },
+            {
+              "text": "> There's a huge difference, because postinstall scripts are almost guaranteed to run in your CI pipeline. Compromised code probably won't (maybe it will if your test cases test a compromised package). Different attack profile. Worse in some ways (your CI likely has NPM push tokens, which is how this single-package worm become a multi-package self-replicating worm) (your CI pipeline also likely has some level of privileged access to your cloud environment; deployed services are more likely to be highly scoped). But, better in some ways.",
+              "author": "827a",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48158494",
+      "title": "Fecal transplants for autism deliver success in clinical trials (2019)",
+      "link": "https://refractor.io/adhd-autism/fecal-transplants-for-autism-delivers-success-in-clinical-trials/",
+      "domain": "refractor.io",
+      "author": "breve",
+      "score": 294,
+      "comment_count": 206,
+      "created_ts": 1778923679,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "Many autistic children have extremely limited diets. For example, a geneticist friend of mine saw a case where an autistic child had been referred for genetic testing because of horrific, chronic, spontaneous wounds on gums and skin. Turned out to be scurvy, because he had exclusively eaten Wheat Thins for the last 3-4 years, which aren’t fortified with vitamin C.\nI would fully expect that a monotonous diet leads to a heavy skew in the gut microbiome as specific bacterial species that thrive on that diet are selected for, others against. It makes some sense that a fecal transplant could repair the damage. If the diet has shifted or expanded, the transplant could lead to long term benefits by restoring newly-viable bacterial species, perhaps by facilitating digestion of the new types of food.\nI’d be curious to see a factoring out of the diet composition, gut microbiome, genetics, and severity of autism symptoms.",
+          "author": "directevolve",
+          "replies": [
+            {
+              "text": "A little factoid that lodged permanently in my brain the first time I stumbled onto it on Wikipedia:\n> About two-thirds of all scurvy is found in autistic people.",
+              "author": "munificent",
+              "depth": 1
+            },
+            {
+              "text": "Just to play devil’s advocate, isn’t it also possible that the preference for a monotonous diet is driven by gut makeup?",
+              "author": "dimes",
+              "depth": 1
+            },
+            {
+              "text": "The microbiome might have some modulating effect, but the fidelity of gut-brain axis communication isn’t so strong that our gut microbiome is driving us around with highly specific inputs.\nThe theories for how gut-brain axis modulation works include altering the balance of nutrients that get absorbed and modulating the vagus nerve, primarily. For someone with autism it might be possible that altering some of these balances could make the condition better or worse, but that’s all theory without much foundation.\nWhat is known, however, is that diet has a massive impact on the microbiome. Even the mechanism for that is obvious: Bacteria thrive on different foods, so if you eat more of one class of nutrients and less of another then the microbiome proportions will adjust based on which ones thrive on that diet.",
+              "author": "Aurornis",
+              "depth": 2
+            },
+            {
+              "text": "I’m not going to pretend to be an expert here, but I remember a study that found gut bacteria composition predicted whether or not an individual was chocolate-craving or not in individuals eating identical diets: \nhttps://pubmed.ncbi.nlm.nih.gov/17929959",
+              "author": "dimes",
+              "depth": 3
+            },
+            {
+              "text": "putting aside what others have commented about the truastability of studies and similar\n- what all studies show is some vague \"craving\" for something generic, e.g. the link between iron deficiency and craving for ice\n- but what you see in autists is often a far stronger effect and not just for eating something, but also against eating most other food. A craving for chocolate does not remove appetite and willingness to eat other food. It just makes you really want to eat chocolate.\n- more important the way autistic people get fixated on a monotonous diet is far more specific then any effects we have observed from gut bacteria or other similar sources AFIK. Like lets say your gut bacteria might make you crave fish. You autism on the other hand might make you crave dino formed fish sticks with a specific texture. And there is just no way gut bacteria care about your fish sticks being dino formed or the specific texture of them... But a autistic person often does care, quite a bit even.",
+              "author": "dathinab",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": ">Editor's note: Readers often ask us for follow-ups on memorable stories. What has happened to this story over the years? This article was originally published in 2019 but it has been re-edited and updated with new information current as of April 7, 2025. Enjoy!\nNow that is something that should be done more often - especially in science journalism, but not only. We cruelly lack long-term vision - not only forward but backwards too.",
+          "author": "Arodex",
+          "replies": [
+            {
+              "text": "I agree about the updates. However, news sites like this one aren’t combing through research to find things to update. They’re responding to PR outreach from companies. Did you notice there isn’t actually a link to a new publication? It’s only quotes from the company. They’re repeating PR material, not updates on the research.\nThere’s a subtext here that isn’t immediately obvious without reading more from the company trying to commercialize this formula: Their small phase 2 trial is underway but results haven’t fully been released as far as I can tell. It appears they’re trying to do a PR push based on their early claims of positive results, before publishing everything. If anyone can find more details please correct me if I’m wrong.\nThis can be a little suspicious when companies do this because before the full results are available because it’s usually associated with a rushed push to drive investor interest at the time they think it’s most optimal. When the optimal PR push timing is before full results are released, it’s not a good signal that the results are on track to be great.",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "They aren't the only company doing this exact therapy.\nIt isn't a good one.\nWhen I looked at preclinical for one of their competitors, that was the exact same thing, the issue was study design. Specifically, you are shoving something up an autistic kid's butt once a day or twice a day. They only did this to the placebo arm for 3 days, and only to healthy kids, whereas the treatment arm did this for 8 weeks.\nIf I punched you in the chest as hard as I could once or twice a day, do you think you'd have a behavioral change? That's their endpoint. If I called it a \"medical\" punch, does that change anything?\nCan an autistic kid learn how to answer a test to get the thing to stop being shoved up their butt? I think so. By all means though, I encourage people to make this risky investment if they think this treatment pathway is real. It sort of is! If you want a behavioral change, we have a good idea of a way to get that from defenseless kids. But not for a good reason.",
+              "author": "doctorpangloss",
+              "depth": 2
+            },
+            {
+              "text": "Given there are cases of sudden onset autism being resolved with antifungals, it’s at least not implausible that fecal transplants could be effective too.",
+              "author": "jtc331",
+              "depth": 3
+            },
+            {
+              "text": "There are so many claims of autism being cured in a couple people with different drugs or supplements out there.\nThey’re always followed by thousands of self-experimenters where nobody can reproduce the result.\nThe explanation is almost always placebo effect. A parent or doctor is so convinced that they’ve found a cure that they change assume it worked, change their behavior toward the autistic person, and believe that a dramatic change has occurred.\nThis is also why the placebo arm of every autism study also shows improvement.",
+              "author": "Aurornis",
+              "depth": 4
+            },
+            {
+              "text": "No. No chance. It's completely implausible. This is reflected in their actual Phase II trial - NCT06503978 - whose primary endpoint is relieving GI symptoms. It's far from curing autism. It is idiosyncratic to target this population. They could do the same trial with healthy adults, but of course, twice daily massive laxatives is not something very marketable. The reason this product is the way it is is because ASD kids cannot really say no.",
+              "author": "doctorpangloss",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I think this is the clinical trial registration: \nhttps://clinicaltrials.gov/study/NCT03408886?tab=results\nIt is marked as having results submitted but quality review has not been completed.\nN=60 and a placebo group, which is better than the N=18 and no placebo group of the first study.\nThere have been so many small scale trials showing amazing autism improvements that failed to replicate in larger, better controlled trials. I wouldn’t get excited yet.\nThe typical pattern is to show unbelievably good results in the first open-label trial with a small number of patients (their n=18 trial that claims to have cured severe autism in many children), squeak by with some marginal improvement in the next trial over placebo, then the third trial becomes a game of trying to keep the study small enough that they can hope to p-hack a result that the FDA might accept.",
+          "author": "Aurornis",
+          "replies": [
+            {
+              "text": "> I think this is the clinical trial registration: \nhttps://clinicaltrials.gov/study/NCT03408886?tab=results\nThat's a slightly different clinical trial on adults, not children like the posted article. I think this is the clinical trial registration: \nhttps://clinicaltrials.gov/study/NCT02504554\n. Here's the followup report in 2019: \nhttps://www.nature.com/articles/s41598-019-42183-0\nThat said, your reasoning is probably still correct. There's no placebo group, and a lot can change over a 2-year follow-up, with participants aged 7-17. Maybe they went to speech therapy or just matured and learned more coping behaviors. The 2019 followup also notes that 12 of the 18 participants made other diet and medication adjustments. They claim the adjustments were minor but that's still more noise, and it doesn't account for unreported social/environmental changes.\n> There have been so many small scale trials showing amazing autism improvements that failed to replicate in larger, better controlled trials. I wouldn’t get excited yet.\nUnfortunately yeah, it's unlikely anything exciting will replicate in a larger RCT other than maybe the gut biome improvement since that seems directly mechanistic, but that's just a gut feeling.",
+              "author": "vimbtw",
+              "depth": 1
+            },
+            {
+              "text": "Study completed in 2022, but still no results posted or study published.",
+              "author": "cpncrunch",
+              "depth": 1
+            },
+            {
+              "text": "I've never really thought about this but, could it be because they don't want people to \"try this at home\"? Either because of safety issues, or my actual hypothesis, because they want to keep their possible pool of candidates as big as possible?",
+              "author": "Sverigevader",
+              "depth": 2
+            },
+            {
+              "text": "No, they have a patent so they would be in a hurry to publish if the results were good.\nFrom the comments in the article above, it sounds like it may have failed it's primary outcome (autism symptoms). They only say there was significant benefit for \"average of all symptoms\", but it isn't clear if that is the same thing.",
+              "author": "cpncrunch",
+              "depth": 3
+            },
+            {
+              "text": "A lot of studies take time to release results.",
+              "author": "dmix",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Grate example of how misleading just reading headlines can be, even if the headline isn't intentional misleading/click bait.\n> reduce autism symptoms\n> chronic gastrointestinal issues are a harsh reality\n> boosting microbial diversity\n> when [...] treat those gastrointestinal problems, their behavior improves\nThrough my opinionated take is:\n- gastrointestinal issue are a common comorbidity of autism\n- fixing that help autistic people to mask better/easier\n- which makes a lot of sense as gastrointestinal issue are very stressful and so is masking. It's quite common that autistic people under stress have a harder time masking\n- and masking is removing many of the \"symptoms\" of autism at cost of stress and other risks (e.g. depression), and society(^1) is conditioning(^2) children to mask autism subconsciously all the time\n(^1): Pretty much any society out there.\n(^2): Both intentional and accidental. For most autistic people masking isn't a conscious choice, but something through live so strongly reinforced that it's done unconsciously even if they don't want to in any situation except a private one with at most some very trusted people around.\n---\nThrough a much more disturbing implication from this article is that at least in US/Arizona children with gastrointestinal issues commonly do not get appropriate treatment... Or else they couldn't have done the test as they wouldn't have found a non highly selection biased sample of autistic children.\nLike treating of gastrointestinal issues shouldn't be a thing you do to reduce autistic symptoms, but something you do anyway. Even if not for quality of live, then for the reason of such issues often causing much more server long term issues if they stay untreated for years.",
+          "author": "dathinab",
+          "replies": []
+        },
+        {
+          "top": ">> In early 2022 Krajmalnik-Brown and colleagues patented a specific bacterial formulation and spun-off a commercial company called Gut-Brain Axis Therapeutics.\nI was a little surprised to see this.\nSo the university researchers use time and money from the university to make a discovery, extending on previous published research, and then patent it and start their own for-profit?\nExcuse my ignorance, but is that how it's done generally? Where's the upside for all those who are potentially affected?\nIt kinda makes sense - Presumably the university is involved somewhere still, and it needs to be commercialised somehow, but..",
+          "author": "_puk",
+          "replies": [
+            {
+              "text": "Often universities do this, they may own the patent and license it to the company or take a cut etc.  Arizona State University appear to do this through Skysong Innovations:\nhttps://skysonginnovations.com/startups/list/\nIt's interesting they got a lot of funding from over 100 families with autism children:\nhttps://skysonginnovations.com/startups/list/",
+              "author": "helsinkiandrew",
+              "depth": 1
+            },
+            {
+              "text": "This is how it works. Universities are doing research, they aren't doing products. If a commercially viable product comes out of their research it is far outside the scope of universities.\nAlso keep in mind that most sciences usually don't produce commercially viable research (think social sciences, archeology, geography etc.)\nAnd as others said: how the universities gets a cut from the spin offs differs from university to university.",
+              "author": "jcattle",
+              "depth": 1
+            },
+            {
+              "text": "“Universities” aren’t doing anything. Without the people that drive this they would just be admin people looking at each other and professors teaching to empty desks. Let’s not forget that often if a research was ran by X little group of people, once they move on, the people that come in have their own interests and it’s unlikely they’ll continue the project. How many unpublished papers sit because the student doing the research got a job, a life, doesn’t have time to continue and the PI can’t have some other student relearn the whole thing to finish it?\nI understand the researchers lean on the infrastructure of the university, but I’m sure they paid their dues both in money payments to the university, depraved sleep and sweat. \nPeople need to eat, so I see nothing wrong with them putting their effort to work if that means the research continues and gets to the people, the university likely gets a cut as others mentioned.",
+              "author": "culopatin",
+              "depth": 2
+            },
+            {
+              "text": "Yep. The alternative is usually that the product doesn't get manuactured. And the public funds loads of research which starts within private companies and stays there anyway...",
+              "author": "notahacker",
+              "depth": 2
+            },
+            {
+              "text": "As others have said, very common.  A famous example is Lyrica, which made an enormous amount of money for Northwestern, probably around $1 billion dollars.  It played a not-insignificant role in the university's rise in the last 10-20 years.\nUniversities love this and encourage it.  Any big place will have an office of \"technology transfer\" or similar to help researchers make this happen.",
+              "author": "markgall",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 285,
+      "comment_count": 1098,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 153,
+      "comment_count": 129,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48164173",
+      "title": "Ask HN: When did computers stop being fun?",
+      "link": "https://news.ycombinator.com/item?id=48164173",
+      "domain": "news.ycombinator.com",
+      "author": "klez",
+      "score": 49,
+      "comment_count": 63,
+      "created_ts": 1778968971,
+      "is_internal": true,
+      "post_text": "Of course I don&#x27;t mean they stopped being fun for everyone. My impression is that they&#x27;ve been on one side &quot;corporatized&quot;, and on the other became a vehicle for mindless entertainment.<p>I don&#x27;t care for coding new stuff. Everything I may need either already exists or is too complex to do on my own (and no, I won&#x27;t vibe-code it, what&#x27;s the fun in that?)<p>I don&#x27;t even code for work anymore since I moved to a project&#x2F;service management role.<p>Basically, the spark I felt some 25 years ago seems to be completely gone.<p>Any suggestion on getting it back?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48122103",
+      "title": "Ask HN: What are you working on (non-AI)?",
+      "link": "https://news.ycombinator.com/item?id=48122103",
+      "domain": "news.ycombinator.com",
+      "author": "BrunoBernardino",
+      "score": 39,
+      "comment_count": 50,
+      "created_ts": 1778681272,
+      "is_internal": true,
+      "post_text": "Please don&#x27;t turn this into an inflammatory post.<p>Regardless of &quot;AI&quot; being good or bad (it&#x27;s not even just one thing as many of you know), I feel like the &quot;What are you working on?&quot; posts are drowning in things that use AI for something and&#x2F;or are clearly &quot;AI slop&quot;.<p>I&#x27;d like to look at things other humans have been doing (even if they used a bit of some kind of AI for assistance), that aren&#x27;t a product or tool that uses AI for something.<p>I know it exists (and I use and build some), but it&#x27;s incredibly hard to find nowadays. Can you help me?<p>Thank you.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48151496",
+      "title": "Ask HN: Can I take Meta to court for banning business Insta or FB account?",
+      "link": "https://news.ycombinator.com/item?id=48151496",
+      "domain": "news.ycombinator.com",
+      "author": "milanspeaks",
+      "score": 10,
+      "comment_count": 5,
+      "created_ts": 1778866569,
+      "is_internal": true,
+      "post_text": "Let&#x27;s say I spend a considerable amount of money in Meta ads.<p>I have followed all ruled but some automated system assume that I have done something wrong and automatically banned me.<p>Now I understand that such systems exist to prevent bad actors. But outright banning a business that is spending money on your platform is a violation of customer service rules.<p>There has to be a proper customer service channel.<p>In real world, I don&#x27;t know of any other business that bans the account and there is no customer support available.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48151051",
+      "title": "Ask HN: What happened to the movie \"Pirates of the Silicon Valley\"",
+      "link": "https://news.ycombinator.com/item?id=48151051",
+      "domain": "news.ycombinator.com",
+      "author": "acossta",
+      "score": 9,
+      "comment_count": 4,
+      "created_ts": 1778864575,
+      "is_internal": true,
+      "post_text": "It seems that it disappeared from the internet. As if there was an active effort to take it down.<p>Anyone know what happened?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48143205",
+      "title": "XS Programming Language",
+      "link": "https://news.ycombinator.com/item?id=48143205",
+      "domain": "news.ycombinator.com",
+      "author": "xs-lang",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1778806709,
+      "is_internal": true,
+      "post_text": "Made my language called XS. It&#x27;s a general-purpose language, currently at v1.2.15 as of this writing. Would like feedback and how I can improve it! Website it at https:&#x2F;&#x2F;xslang.org. There is a playground to try XS out in, and fully complete docs as well. Enjoy!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48165211",
+      "title": "Tell HN: Mindie.dev is scraping emails from profiles to send spam",
+      "link": "https://news.ycombinator.com/item?id=48165211",
+      "domain": "news.ycombinator.com",
+      "author": "stackghost",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1778979997,
+      "is_internal": true,
+      "post_text": "Got the following from hello@mindie.dev<p>----<p>Hey Stackghost —<p>Saw your HN comment about freelance time tracking &#x2F; invoicing. TimeChat is a Telegram bot: type &quot;1.5 acme bug fix&quot; after work, end of month it auto-generates the PDF invoice for your client. Side-by-side vs Toggl: mindie.dev&#x2F;vs&#x2F;toggl.<p>For HN readers I&#x27;m running EARLY10: $1&#x2F;mo (was $7). One-click checkout: timechat pro 2-mo trial<p>If it&#x27;s useful, I&#x27;d love your feedback. Free tier covers solo testing if you want to start there: https:&#x2F;&#x2F;timechat.mindie.dev<p>Not relevant? Reply STOP and I&#x27;ll never email again.<p>— the Mindie team\nmindie.dev<p>----<p>I went back through my comment history and I don&#x27;t believe that I have ever mentioned freelancing, time tracking, or invoicing in a comment except once when I mentioned an invoice peripherally a year ago.<p>Thus, mindie.dev is scraping emails from profiles and hallucinating relevant reasons to try to grease their sales funnel.<p>Attempting to unsubscribe via their &quot;reply stop and I&#x27;ll never email again&quot; resulted in a bounced email.<p>I find this behavior to be ultra scummy and dishonest.  I enjoy the communal feel from people having open emails on their profiles but it seems the taboo has been broken.  I will be removing my email from my profile and suggest you do the same.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "freelance",
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48156006",
+      "title": "Ask HN: What happened to ssh-audit.com?",
+      "link": "https://news.ycombinator.com/item?id=48156006",
+      "domain": "news.ycombinator.com",
+      "author": "Bender",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1778895501,
+      "is_internal": true,
+      "post_text": "The are still glue records in the root servers and the name is still registered but one name server no longer responds and the other gives SERVFAIL.  Is their admin on HN?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48152960",
+      "title": "Load testing in your infra, not cloud",
+      "link": "https://news.ycombinator.com/item?id=48152960",
+      "domain": "news.ycombinator.com",
+      "author": "vitalicset",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1778874368,
+      "is_internal": true,
+      "post_text": "Im tired to use cloud based load testing tools, the coding is also overcomplicated and my manager wants to see how load testing is going, so I create perfscale - runs inside your infra as agent and shows the metrics for runs. Supports migration from k6 and locust. Git integration included!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    }
+  ]
+}
