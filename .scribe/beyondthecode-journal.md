@@ -53,3 +53,11 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-23 – The Persuasion of "Almost Right"
+
+**Learning:** AI models are not just failing by missing information; they are failing by providing plausible narratives for their failures. This "rationalization slop" is more dangerous than a simple error because it co-opts the user's expertise to approve the failure. The model's ability to map an anomaly to a nearby legitimate concept (e.g., mapping a backdoor to a "debug script") creates a "handshake" where both the tool and the human agree to move on.
+
+**Implication:** Future writing should focus on the psychological and organizational "handshake" between the tool and the human. The danger isn't in the tool's hallucination, but in the human's willingness to be persuaded by a technically-adjacent narrative that preserves velocity. The "rationalization" is a feature of the tool, not a bug, as it serves the organizational incentive for speed.
