@@ -1,0 +1,703 @@
+{
+  "scraped_date": "2026-05-18",
+  "source": "hacker_news",
+  "total_scraped": 114,
+  "nontech_count": 17,
+  "posts": [
+    {
+      "id": "48060054",
+      "title": "Ask HN: We just had an actual UUID v4 collision...",
+      "link": "https://news.ycombinator.com/item?id=48060054",
+      "domain": "news.ycombinator.com",
+      "author": "mittermayr",
+      "score": 475,
+      "comment_count": 342,
+      "created_ts": 1778227034,
+      "is_internal": true,
+      "post_text": "I know what you&#x27;re thinking... and I still can&#x27;t believe it, but...<p>This morning, our database flagged a duplicate UUID (v4). I checked, thinking it may have been a double-insert bug or something, but no.<p>The original UUID was from a record added in 2025 (about a year ago), and today the system inserted a new document with a fresh UUIDv4 and it came up with the exact same one:<p>b6133fd6-70fe-4fe3-bed6-8ca8fc9386cd<p>We&#x27;re using this:\nhttps:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;uuid<p>I thought this is technically impossible, and it will never happen, and since we&#x27;re not modifying the UUIDs in any way, I really wonder how that.... is possible!? We&#x27;re literally only calling:<p>import { v4 as uuidv4 } from &quot;uuid&quot;;<p>const document_id = uuidv4();<p>... and then insert into the database, that&#x27;s it.<p>Additionally, the database only has about 15.000 records, and now one collision. Statistically... impossible.<p>Has that ever happened to anyone?! What in the...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48168056",
+      "title": "AI subscriptions are a ticking time bomb for enterprise",
+      "link": "https://www.thestateofbrand.com/news/ai-subscription-time-bomb",
+      "domain": "www.thestateofbrand.com",
+      "author": "mooreds",
+      "score": 380,
+      "comment_count": 378,
+      "created_ts": 1779018571,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "Every AI subscription is a ticking time bomb for the frontier provider; within a few years we will be running local models as good as today’s frontier models with almost no cost burden. The floor will fall out of the enterprise market for all the frontier companies.",
+          "author": "evo_9",
+          "replies": [
+            {
+              "text": "> \nwithin a few years we will be running local models as good as today’s frontier models with almost no cost burden\nBased on what? The RAM requirements alone are extraordinary.\nNo, running large models on shared, dedicated hosted hardware at full utilization is going to be vastly more cost-efficient for the foreseeable future.",
+              "author": "crazygringo",
+              "depth": 1
+            },
+            {
+              "text": "> Based on what?\nI take it you haven’t actually run any of the current gen local models?\nThey all fit on fairly accessibility hardware, and their performance is at least on par with what I was paying for last year.\nI have one of my agents running entirely from a local model running on a MBP and it has repeatedly shown it’s capable of non-trivial tasks.\nPlaying around with another, uncensored, local model on my 4090 desktop has me finally thinking about canceling my personal Anthropic subscription. Fully private, uncensored chat is a game changer.\nFor work it’s still all private models but largely because, at this stage, it’s worth paying a premium just to be sure you’re using the best and it saves the time of managing out own physical servers. But if we got news tomorrow that Anthropic and OpenAI were shutting down, a reasonable setup could be figured out pretty quickly.",
+              "author": "crystal_revenge",
+              "depth": 2
+            },
+            {
+              "text": "What kind of useful context window are you getting on a 4090, out of curiosity?",
+              "author": "Leynos",
+              "depth": 3
+            },
+            {
+              "text": "256k tokens for both the MBP and the 4090",
+              "author": "crystal_revenge",
+              "depth": 4
+            },
+            {
+              "text": "Can you share more about your setup please? Like which models and other specs on the machines?\nEdit: ah I see the models mentioned in another comment of yours",
+              "author": "thiisguy",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Although I agree with the sentiment in the article, it smells very LLM~y. Especially the sections and punchlines. Such as: `That is not a rounding error. That is a line item that needs its own budget code.`",
+          "author": "pvtmert",
+          "replies": [
+            {
+              "text": "> That is not a rounding error. That is a line item that needs its own budget code.\nClaude produces this kind of prose SO much. It's pretty annoying. I don't notice it happening on Gemini for the same prompts.",
+              "author": "okdood64",
+              "depth": 1
+            },
+            {
+              "text": "I was working at Amazon until recently. Number of internal documents (PRFAQs, 1-pagers, etc) having these sort of proses boomed since 2024.\nPunchy titles are also part of the marketing speak. Before Claude or ChatGPT, it would be a delicious read, understanding how they come up with the initial idea for an internal system. Since then, most of reads like \"It's not just X, ...\" every other paragraph, making it dull...",
+              "author": "pvtmert",
+              "depth": 2
+            },
+            {
+              "text": "It's called \"constrastive negation\", and both GPT and Claude tend towards it.",
+              "author": "metadat",
+              "depth": 2
+            },
+            {
+              "text": ">The Math Your Finance Team Has Not Done\n>Pull out the napkin. This matters.\nNobody writes like this.",
+              "author": "itsmek",
+              "depth": 1
+            },
+            {
+              "text": "Who is it written by anyway? The author's name is not given in the article",
+              "author": "lefty2",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Brad Gerstner confirmed that tokens aren't being sold at a loss. Whatever the formula, API + Subscription split, the companies are making a profit on net token sale.\nThey maybe running at loss after all the salaries and stock comp, but tokens are in profit now.",
+          "author": "returnInfinity",
+          "replies": [
+            {
+              "text": "It's like witnessing a rocket using the most powerful engine on Earth then once it escaped orbit turn off the engine and said \"It is flying without power!\".\nYes, sure, right now it is ... but that's NOT how it got here.\nThere are trillions invested to recoup and at most billions in sales. It doesn't add up to tokens making a profit any time soon.",
+              "author": "utopiah",
+              "depth": 1
+            },
+            {
+              "text": "The problem is, people see \"they're not profitable once you account for training\" and equate that to \"AI will go away soon\"\nBut if all the AI companies stopped training new models, they would all instantly become profitable (and stick around)\nThe thing that makes them unprofitable, is having to compete (which means training models). If / when enough companies exit the market, the cost to compete goes down and you end up in an equilibrium",
+              "author": "StevenWaterman",
+              "depth": 2
+            },
+            {
+              "text": "Sure, but if companies don't exit the market and FOSS alternatives don't end up being unable to get near them in quality, they have to keep spending on training. And conversely, if the market becomes uncompetitive and FOSS sucks, the winners of the AI arms race are very strongly incentivised to stick their prices up anyway...",
+              "author": "notahacker",
+              "depth": 3
+            },
+            {
+              "text": "> \nif companies don't exit the market and FOSS alternatives don't end up being unable to get near them in quality, they have to keep spending on training\nEh, the AI companies still have lots of datacentres. For the guys who funded with equity, they could collapse down to just running those as utilities. (For the guys who funded with debt, they'd have to restructure.)\nFrom the customer's perspective, this situation shouldn't result in a cost spike. (Consolidation, on the other hand, would. But that's a separate argument from the one the article attemptes to make.)",
+              "author": "JumpCrisscross",
+              "depth": 4
+            },
+            {
+              "text": "How often do VC funded unicorns collectively decide to stop scaling up, shut down all their departments targeting growth and reach breakeven point by becoming low margin utilities that will never justify their valuation?",
+              "author": "notahacker",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "The hyperbolic nature of the articles in both AI camps is very exhausting to me.\nI'd like to get in front of a whiteboard with someone who knows economics and the token providers businesses well enough to answer my \"explain to me like I'm five\" questions. But I'll start with these in here:\nIs my observation correct that for the token providers this is a margins game, while for the consumers this is a quality of service/product game?\nIf the quality:margin lines will cross at some point on the x-axis, is the race is to reach this point before running out of money?\nIf yes: What historical examples are there where the delta between these two is huge?\nI'm guessing LLM's are unique in a sense, since there's really no limit to how good a consumer of the product expects it to get? (Compared to for example email which is much easier to scale in regards to compute.)\nAlso extreme noob at life question:\nWhy would you want to IPO before having a sustainable business model? What's the upside?",
+          "author": "rakel_rakel",
+          "replies": [
+            {
+              "text": "You can ask an AI what it costs to produce an Opus token. The answer I got was $0.216/M Token. That takes into account hardware cost, power, cooling and hosting.\nOthers have posted links here saying inference is about 30% of Anthropic's spend, the other 70% is R&D - things like developing the next model. If you take that into account, add a profit margin, and round to make the figures easy you end up with them selling tokens at $1 / M Token to make money.\nTheir API cost is currently $25 / M Token. There is no question that's profitable. Someone really pushing their $200/mo Max plan can use 10B Tokens per month, which works out at $0.02 / M Token, so they are eating a huge loss there. That is clearly going to go away at some stage. For the rest of us: look at your average monthly token usage. If you are using 100M Tokens a month with the Anthropic $100/mo plan, they are making money out of you.\nYou have to be working very long hours, and be really, really proficient at using AI to achieve 10B Tokens a month. The only way to be that proficient is to have been using it for a long time, years in fact, so it was useful to you long before Opus came along. You would be very disappointed to lose Opus, of course - but you are just the sort of person who can make a less capable model sing. It's not so difficult to see those users moving to an in-house-hosted, open-source model in a few years, and it will cost them what they are paying now - $0.02 / M Token.\nAll that means I'm not convinced by the gloom and doom vibe of the article. Things will change, but it won't mean the end of AI usage.",
+              "author": "rstuart4133",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The entire problem with \"AI\" is that it's easy to do without. The AI companies know it, the users know it - even the most pro AI agent manager knows it. Thought experiment: remove AI from the world right now, all of it - what do you have? Business as usual. This article doesn't do enough to underscore that - dreaded be the day I need to get an actual engineer to review a PR, right?",
+          "author": "ben8bit",
+          "replies": [
+            {
+              "text": "Isn't that always the case in the early stages of new technology adoption? It becomes less and less true as the new technology becomes more and more integrated.\nIn the first few years after electric motors became a thing, one could have said the same thing. We would have just gone back to steam. If you tried to \"do without them\" now, society would collapse.\nSo the question is not if we can do without them now, it's if we can do without them in 5 to 10 years (or however long it takes for them to be fully integrated)",
+              "author": "MostlyStable",
+              "depth": 1
+            },
+            {
+              "text": "The current LLM hype started, what, 5 years ago? It's an industry throwing billions of dollars (and teasing at the word trillions) around. It's had super bowl ads. It's a technology that's being mandated in corporate offices. It's basically the only thing the tech world ever talks about anymore. It's sucked all the air out of the room and occupies the whole stage.\nJust how \"early stage\" is that, and how much more integration does this \"new technology\" need to be?",
+              "author": "48terry",
+              "depth": 2
+            },
+            {
+              "text": "The first electric motors in factories just replaced the previously existing steam engine. Power was still distributed throughout the factory through a central shaft and pullies to all the places that needed it. It took decades for the possibilities to get figured out and, more importantly, entirely new factories designed from the ground up around the idea that every machine could have it's own motor and power could be distributed via wires.\nAI won't be \"integrated\" until something similar happens, and new businesses etc. are formed that take advantage of it in a way that can't simply be reversed to the old, pre-AI paradigm. I don't know what that will look like, but someone is going to figure it out and make successful companies with entirely new paradigms that are only made possible by AI.\nAt some point, every single factory was designed for electric motors, and going back became unthinkable.\n-edit- also, the idea that a 5 year old tech that is still rapidly changing and developing deserves quotation marks around \"new technology\" is hilarious to me.",
+              "author": "MostlyStable",
+              "depth": 3
+            },
+            {
+              "text": "> Just how \"early stage\" is that, and how much more integration does this \"new technology\" need to be?\nBased on the way Claude has felt the last few weeks, I'd say we're about 3-6 months away from full AGI. At that point we can start truly replacing white collar workers in earnest and begin deep integration.",
+              "author": "new_account_100",
+              "depth": 3
+            },
+            {
+              "text": "AGI is a myth that these AI companies perpetuate as a convenient marketing tactic.\n> \nAt that point we can start truly replacing white collar workers in earnest and begin deep integration.\nThis is why AI is so deeply unpopular. Even in the \"good\" scenario proselytized by true believers, you still paint a bleak near-future where everyone loses their jobs.",
+              "author": "nozzlegear",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48158494",
+      "title": "Fecal transplants for autism deliver success in clinical trials (2019)",
+      "link": "https://refractor.io/adhd-autism/fecal-transplants-for-autism-delivers-success-in-clinical-trials/",
+      "domain": "refractor.io",
+      "author": "breve",
+      "score": 318,
+      "comment_count": 225,
+      "created_ts": 1778923679,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48085993",
+      "title": "Ask HN: What are you working on? (May 2026)",
+      "link": "https://news.ycombinator.com/item?id=48085993",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 288,
+      "comment_count": 1101,
+      "created_ts": 1778434481,
+      "is_internal": true,
+      "post_text": "What are you working on?  Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48169874",
+      "title": "Show HN: Semble – Code search for agents that uses 98% fewer tokens than grep",
+      "link": "https://github.com/MinishLab/semble",
+      "domain": "github.com",
+      "author": "Bibabomas",
+      "score": 213,
+      "comment_count": 61,
+      "created_ts": 1779032227,
+      "is_internal": false,
+      "post_text": "Hey HN! We (Stephan and Thomas) recently open-sourced Semble. We kept running into the same problem while using Claude Code on large codebases: when the agent can&#x27;t find something directly, it falls back to grep, reading full files or launching subagents. This uses a lot of tokens, and often still misses the relevant code. There are existing tools for this, but they were either too slow to index on demand, needed API keys, or had poor retrieval quality.<p>Semble is our solution for this. It combines static Model2Vec embeddings (using our latest static model: potion-code-16M) with BM25, fused via RRF and reranked with code-aware signals. Everything runs on CPU since there&#x27;s no transformers involved. On our benchmark of ~1250 query&#x2F;document pairs across 63 repos and 19 languages, it uses 98% fewer tokens than grep+read and reaches 99% of the retrieval quality of a 137M-parameter code-trained transformer, while being ~200x faster.<p>Main features:<p>- Token-efficient: 98% fewer tokens than grep+read<p>- Fast: ~250ms to index a typical repo on our benchmark, ~1.5ms per query on CPU (very large repos may take longer)<p>- Accurate: 0.854 NDCG@10, 99% of the best transformer setup we tested<p>- MCP server: drop-in for Claude Code, Cursor, Codex, OpenCode<p>- Zero config: no API keys, no GPU, no external services<p>Install in Claude Code with:\nclaude mcp add semble -s user -- uvx --from &quot;semble[mcp]&quot; semble<p>Or check our README for other installation instructions, benchmarks, and methodology:<p>Semble: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble</a><p>Benchmarks: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble&#x2F;tree&#x2F;main&#x2F;benchmarks\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble&#x2F;tree&#x2F;main&#x2F;benchmarks</a><p>Model: <a href=\"https:&#x2F;&#x2F;huggingface.co&#x2F;minishlab&#x2F;potion-code-16M\" rel=\"nofollow\">https:&#x2F;&#x2F;huggingface.co&#x2F;minishlab&#x2F;potion-code-16M</a><p>Let us know if you have any feedback or questions!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "What I have personally observed with such tools is that they make the AI's dumb, similar to how it makes coders dumb when relying more on AI tools.\nThese agentic AI's are already smart enough to figure out a highly optimized path to code exploration or search. But, with these tools, they just go very aggressive, partly because the search results from these tools almost in 100% of the cases do not furnish full details, but, just the pointers.\nTo confirm this behaviour, I did a small test run. This is in no way conclusive, but, the results do align with what I been observing:\n---\nTask: trace full ingestion and search paths in some okayish complex project. Harness is Pi.\n1. With \"codebase-memory-mcp\": 85k/4.4k (input/output tokens).\n2. With my own regular setup: 67k/3.2k.\n3. Without any of these: 80k/3.2k.\nAs we see, such a tool made it worse (not by much, but, still). The outputs were same in quality and informational content.\n---\nNow, what my \"regular setup\" mentioned above is?:\nJust one line in AGENTS.md and CLAUDE.md: \"Start by reading PROJECT.md\" .\nAnd PROJECT.md contains just following: 2-3 line description of the project, all relevant files and their one-line description, any nuiances, and finally, ends with this line:\n    ## To LLM\n    Update this file if the changes you have done are worth updating here. The intent of this file is to give you a rough idea of the project, from where you can explore further, if needed.",
+          "author": "freakynit",
+          "replies": []
+        },
+        {
+          "top": "Interesting. I too have been working in this space, though I took a different approach. Rather than building an index, I worked on making a \"smarter grep\" by offering search over codebases (and any text content really) with ranking and some structural awareness of the code. Most of my time was spend dealing with performance, and as a result it runs extremely quickly.\nI will have to add this as a comparison to \nhttps://github.com/boyter/cs\n and see what my LLMs prefer for the sort of questions I ask. It too ships with MCP, but does NOT build an index for its search. I am very curious to see how it would rank seeing as it does not do basic BM25 but a code semantic variant of it.\nThis seems to work better for the \"how does auth work\" style of queries, while cs does \"authenticate --only-declarations\" and then weighs results based on content of the files, IE where matches are, in code, comments and the overall complexity of the file.\nHave starred and will be watching.",
+          "author": "boyter",
+          "replies": []
+        },
+        {
+          "top": "I did some evals with pi and GPT 5.5. I tested RTK on / headroom on / both on / both off (all with the standard pi system instructions and no AGENTS.md).\nI forget the exact tests I used (a couple of the standard agent evals that people use, one python and one typescript because those are what I use).\nI don't claim it was an exhaustive test, or even a good one. It's possible I could have spent a day or so tuning my AGENTS.md and the pi system prompt/tool instructions and gotten better results, because if there's one thing running evals taught me it's that subtle differences there can change the results a lot.\nHowever, I got clearly better results with both off, enough to convince me to stop the tests immediately after 3 rounds.\nThe problem was that while context use did go down (sometimes), the number of turns to complete went up so the overall cost of the conversation was higher.\nIt's made me very aware of one thing: so many people are sharing these kind of tools, but either with zero evals (or suspiciously hard to reproduce), or in the case of this one, extensive benchmarks testing the wrong thing.\nI'm sure this tool does use fewer tokens than grep, and the benchmarks prove it, but that's not what matters here. What matters is, does an agent using it get the same quality of work done more quickly and for lower cost?",
+          "author": "esperent",
+          "replies": [
+            {
+              "text": "with AI the \"they could so they never wondered if they should\" will be a very frequent thing.",
+              "author": "zobzu",
+              "depth": 1
+            },
+            {
+              "text": "yeah I think I'm prone to do the same, it is so easy to create and we get too excited by it instead of first doing the research necessary which is much more boring than actually producing something.",
+              "author": "jack_pp",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'd be interested in seeing actual agent benchmarks (eg CC or Copilot CLI with grep removed and this tool instead).\nFor example, I have explored RTK and various LSP implementations and find that the models are so heavily RL'd with grep that they do not trust results in other forms and will continually retry or reread, and all token savings are lost because the model does not trust the results of the other tools.",
+          "author": "jerezzprime",
+          "replies": [
+            {
+              "text": "I just put something in my global CLAUDE.md (under ~/.Claude) asking it to use the LSP instead of grep and have never had this issue since.",
+              "author": "AussieWog93",
+              "depth": 1
+            },
+            {
+              "text": "can you share that prompt?",
+              "author": "yakbarber",
+              "depth": 2
+            },
+            {
+              "text": "My q would have been this. Lsp solved this no?",
+              "author": "gigatexal",
+              "depth": 2
+            },
+            {
+              "text": "Codex CLI is quite happy running RTK. Well with GPT 5.5 xhigh anyway\nOne thing that irks me is that when it doesn't support eg. a cli flag of find, it gives an error message rather than sending the full output of the command instead. Then the agent wastes tokens retrying, or worse, doesn't even try because the prompting may make them afraid to not run commands without rtk",
+              "author": "nextaccountic",
+              "depth": 1
+            },
+            {
+              "text": "how effective is RTK for you? worth using?",
+              "author": "aleksiy123",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Nice, this sounds great. I want to mention a related issue here, which is that on small codebases, Claude spends a lot of time looking for stuff when it could have just dumped the whole codebase into the context in one go and used very little tokens.\nI found a nice workaround which is that you can just dump the whole directory into context, as a startup hook. So then Claude skips the \"fumble around blindly in the dark\" portion of every task. (I've also seen a great project that worked on bigger repos where it'll give the model an outline with stubs, though I forget what it was called.)",
+          "author": "andai",
+          "replies": [
+            {
+              "text": "This is true, agents just don't know a lot about the things they're looking at, e.g., the number of files, file sizes, etc.\nAlthough for small codebases it also holds that whatever you would like to find it easy to find, so search still might help you with cost",
+              "author": "stephantul",
+              "depth": 1
+            },
+            {
+              "text": "Maybe aider? \nhttps://aider.chat/2023/10/22/repomap.html",
+              "author": "mackenney",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 159,
+      "comment_count": 132,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48164173",
+      "title": "Ask HN: When did computers stop being fun?",
+      "link": "https://news.ycombinator.com/item?id=48164173",
+      "domain": "news.ycombinator.com",
+      "author": "klez",
+      "score": 64,
+      "comment_count": 85,
+      "created_ts": 1778968971,
+      "is_internal": true,
+      "post_text": "Of course I don&#x27;t mean they stopped being fun for everyone. My impression is that they&#x27;ve been on one side &quot;corporatized&quot;, and on the other became a vehicle for mindless entertainment.<p>I don&#x27;t care for coding new stuff. Everything I may need either already exists or is too complex to do on my own (and no, I won&#x27;t vibe-code it, what&#x27;s the fun in that?)<p>I don&#x27;t even code for work anymore since I moved to a project&#x2F;service management role.<p>Basically, the spark I felt some 25 years ago seems to be completely gone.<p>Any suggestion on getting it back?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "> The software industry has shifted its entire value proposition from “we make tools that help you make or save money” to using political clout and the dollar hegemony to capture, control, and loot entire sectors of the various economies of the world.\nhttps://news.ycombinator.com/item?id=48147793",
+          "author": "isolay",
+          "replies": []
+        },
+        {
+          "top": "Microcontrollers are fun. The specs of modern MCs are similar to home computers 30 years ago. The community aspect is there. They’re cheap, too.",
+          "author": "teamonkey",
+          "replies": [
+            {
+              "text": "Esp32s are amazing fun. I designed boards in the 80s and I still love tinkering with microcontrollers. The reflux control for my still currently uses a brushed motor controlled by PWM and I am upgrading it to a second hand pump with a brushless motor so I am looking at driving it. I just set up an old drone ESC and am controlling the motor with dshot and it works ok. There is a little pre built board Simple FOC that is also esp32 I just ordered for 20 bucks to give a try.\nI've been a developer for 45 years and I still actually like it most days.",
+              "author": "mianos",
+              "depth": 1
+            },
+            {
+              "text": "I recently learned of ESP32-P4 that has graphics compositing optimizations.\nA couple of years ago, I used an RP2040 to build a graphics card with 2D triangle filling and other pretty nice abstractions.\nNext time... It'll be the ESP32-P4. Somewhat looking forward to that project, but there are prerequisites that need to be dealt with first. Yes, I'm very grown up. It sucks. :)",
+              "author": "flowerthoughts",
+              "depth": 2
+            },
+            {
+              "text": "Interesting — why does this post get penalized from any top HN page even after 40+ points in two hours?",
+              "author": "stripefan",
+              "depth": 1
+            },
+            {
+              "text": "No one knows. Don’t worry about it. Just because it resolves to a number doesn’t make it matter.",
+              "author": "hyperhello",
+              "depth": 2
+            },
+            {
+              "text": "agreed, I think much of the appeal for me is the physical element of wiring things up and seeing it do something more than changing a few pixels on my screen.\nSoldering is very relaxing as well.",
+              "author": "forsalebypwner",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Over the last 30 years the culture and power has made a gradual shift from 100% pure hobbyists to 4% hobbyists, 48% scammers/predators, and 48% commercial.\nYou can't pinpoint when the fun stopped and it's subjective. I personally became conscious that the party was fully over around 2023, after a few years of feeling it subconsciously.\n2023 was when Twitter and Reddit changed their respective APIs and became openly user hostile, which was the symbolic turning point for me.",
+          "author": "gdulli",
+          "replies": [
+            {
+              "text": "The world is full of people who get excited about things, but never, ever help. The Internet brings these kinds of people right to your door. They’re exhausting and toxic in a way you don’t truly appreciate until you really notice. Eject them from your life and computers become nice and fun again.",
+              "author": "hyperhello",
+              "depth": 1
+            },
+            {
+              "text": "I feel 2023 is when we entered the decrepit stage, but ~2015 is when it began: Theranos, Musk's charlatanry and cult, \"unicorns\", Cambridge Analytica, the raise of social media addiction, etc.\nNot that things were amazing before that... it's just that mid 10s had simply too many bad actors showing up at the same time with a lot of money and power.",
+              "author": "pera",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It’s hard for me to know if it’s the computers that changed or my stage of life.\nI think they become less fun sometimes during the later stage Web 2.0 era as everything shifted toward services. For most, computers became a thin client to access services on the Internet. To me, this isn’t very fun. The computer becomes an appliance to access services rather than one used to run programs that can be customized and tailored to the user. Of course that local experience can still exist, but only for users who are very intentional. For shared experiences, it’s only for users whose friends are also intentional. This intentionality usually means doing a lot of extra work. This work was not an issue when the pay off of new functionality was there, but is harder to justify when it’s often less functionality for more work… the main upside being freedom and agency over the experience.\nSeemingly every service being a front to collect and sell data also makes things less fun. There is a certain level of trust that needs to exist when running software and that trust relationship has been broken, even by real companies. It makes it hard to trust anything, which pushes me away from trying new things that might be fun.\nThis change coincided with my transition to adulthood, where priorities shift. It’s impossible to say if I’d still find computers fun in 2026 if I was 19 again, but my gut tells me I’d be a lot less interested.\nIf there is a path back, I think it might be along the lines of Pewdiepie’s newfound love of Linux. He seems to be having a ball.",
+          "author": "al_borland",
+          "replies": [
+            {
+              "text": "Given that enshittification is such a common term today, that didn't exist a few decades ago, suggests the decay is real not just a stage of life perception.\nEarlier computers, and particularly the early Internet, were all about personal freedom. The computer served you and the Internet was there to connect you with peers. So that was fun and the possibilities were literally infinite.\nAs the giant corporations and particularly the advertising industry (which destroys everything it touches) have slowly taken control, computers and the Internet no longer serve us, the people. We are now the product, to be fully monetized at every stage. Monetization alone is bad but not terrible, but in order to maximize monetization the corporations \nalso\n need to exert control, thus all the increasingly restrictive technology where we are very clearly only a paying consumer kept within a box, not a participant.\nWhile the technology world has been almost entirely enshittified, it's good to keep some optimism though. The fun parts still exist, they're just more effort to find.\nOn the Internet, support your hobby email lists (open participation, no corporate control), support enthusiast-driven forums and websites (independently run, no social media giants monetizing every message!). There are fewer of these but they do exist, support them. Or start your own! Don't let the megacorporations own your hobby interactions.\nOn the programming side, work on something hands-on fun if you like. When I want to geek out programming like it's 1995, I have a BSD box and work on a hobby project which is all in C. No vibe coding, no thousands of unknown npm dependencies, none of that junk. Just me and emacs and the kernel and the compiler. I don't work on it often but every now and then a weekend of real programming is very relaxing and reminds me how much fun it is.",
+              "author": "jjav",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I don't care for coding new stuff. Everything I may need either already exists or is too complex to do on my own\n> Any suggestion on getting it back?\n1. Take a break. I don't mean stop working, just fill your free time with other stuff, but if you don't code at work, it is a bonus. Try other things. I was in a position you describe, and I took a break, dived into studying psychology, you can choose anything you like, like keeping stray cat population in your neighborhood fed and sufficiently stroked behind their ears. Or can you play a harp? You can learn it, you know. (Speaking about psychology: your condition is a middle age crisis. Self-realization is done, all immediate goals are reached, you've got more freedom to choose next goals, and everything is increasingly becoming a routine. Nothing bad is happening, you just need to adapt. You will adapt, you don't need to do anything special, it will happen all by itself. Just exercise your new freedom a little, and in a couple of years new goals will find you.)\n2. Stop thinking of important things. Had you read \"Surely you are joking, Mr. Feynman!\"? If not, I suggest to read just for fun of it, but among all the jokes Feynman describes a period in his life when he felt like you. He couldn't find any good ideas what he could do in physics. At some point he took a seemingly silly problem, and solved it. And he came back to physics with it, later he discovered the differential equations from that silly problem in another \"serious\" problem and eventually got a Nobel Prize.\nThe moral is: you are overthinking it. You are looking for ideas for programs but you use too narrow filters. Like the problem should match your skills. Or the problem should be important enough to work on it.\nSo just take a break and look for some interesting problem. If you find any, you find some other way to entertain yourself, so not a big deal. Just stop obsessing about it and I'm sure it will come naturally.",
+          "author": "ordu",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48172847",
+      "title": "Fired Atlassian engineer posts breakdown of every system he built",
+      "link": "https://twitter.com/polydao/status/2055197994635424038",
+      "domain": "twitter.com",
+      "author": "DeusExMachina",
+      "score": 29,
+      "comment_count": 12,
+      "created_ts": 1779049202,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": [
+        {
+          "top": "So basically anything anyone who is building at that scale would have some rendition of? I hate these LinkedIn wannabe “I got the latest expert scoop for you” style tweets.\nIts like someone at Discord being fired then telling the world they worked with Erlang and Rust to scale Discord and some rando on Twitter saying “anyone can now rebuild Discord!!!”",
+          "author": "giancarlostoro",
+          "replies": []
+        },
+        {
+          "top": "Pardon my ignorance, but is Atlassian a \ngood\n example to follow?",
+          "author": "password4321",
+          "replies": [
+            {
+              "text": "Please not, they lost the plot round about 2015 already.",
+              "author": "sscaryterry",
+              "depth": 1
+            },
+            {
+              "text": "yea, totally lost the plot…\nhttps://www.macrotrends.net/stocks/charts/TEAM/atlassian/rev...",
+              "author": "bdangubic",
+              "depth": 2
+            },
+            {
+              "text": "Surely not. Atlassian is horrible, slow, and nothing I would copy.",
+              "author": "Mave83",
+              "depth": 1
+            },
+            {
+              "text": "A friend of a friend works/worked at Atlassian and was apparently slogging through legacy JSP when working on Jira.",
+              "author": "jamesfinlayson",
+              "depth": 2
+            },
+            {
+              "text": "They have had a complete turn around the last 2-3 years. It's snappy and seems like they actually listen to the feedback forms I fill out.\nGitHub and GCloud are now the painful platforms for me. Jira/Bitbucket are nice by comparison now (imo). I use all of these daily. I suspect that Google and Microsoft are suffering from internal push to do everything with Ai. It shows when they are shipping slop and having uptime issues.",
+              "author": "verdverm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Please god, no. The last thing we need is slopcoded atlassian clones.\nAlthough they couldn’t possibly be worse so maybe flooding the market with free knockoffs will finally kill the beast.",
+          "author": "tim-tday",
+          "replies": []
+        },
+        {
+          "top": "I mean... Is the really valuable? I don't think what atlassian built is particularly technically challenging. There are a lot of products and it would take a lot of work, but no individual bit is hard.\nI think the only hard part is getting 350k customers to use it.",
+          "author": "dgrin91",
+          "replies": []
+        },
+        {
+          "top": "Non-x source link: \nhttps://www.youtube.com/watch?v=55pTFVoclvE",
+          "author": "ChrisArchitect",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48160837",
+      "title": "Mode collapse has a name, and he's selling cancer treatment advice on Amazon",
+      "link": "https://danielmay.co.uk/posts/cheap-agents-alumni-shirts-and-elias-thorne/",
+      "domain": "danielmay.co.uk",
+      "author": "danielrmay",
+      "score": 26,
+      "comment_count": 13,
+      "created_ts": 1778943670,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48158597",
+      "title": "Reading code instead of writing code: The underestimated senior discipline",
+      "link": "https://www.heise.de/en/blog/Reading-code-instead-of-writing-code-The-underestimated-senior-discipline-11295136.html",
+      "domain": "www.heise.de",
+      "author": "goloroden",
+      "score": 23,
+      "comment_count": 3,
+      "created_ts": 1778924899,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48173356",
+      "title": "Japan Team Successfully Test Engine for Mach 5 Aircraft, Eyeing 2HR Trip to US",
+      "link": "https://mainichi.jp/english/articles/20260511/p2a/00m/0sc/015000c",
+      "domain": "mainichi.jp",
+      "author": "karakoram",
+      "score": 22,
+      "comment_count": 11,
+      "created_ts": 1779053299,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "(did anyone else think of speed racer?)",
+          "author": "m463",
+          "replies": []
+        },
+        {
+          "top": "Great sounds like something that should be built. Sounds like a job for a country Japan, South Korea, or China that's willing to execute a project over the long-term.",
+          "author": "Danox",
+          "replies": []
+        },
+        {
+          "top": "20 years. At least they're realistic. Seems Boom is thinking 2029-2030 for their operation (\nhttps://flightplan.forecastinternational.com/2025/08/25/boom...\n). Only time will tell",
+          "author": "Neywiny",
+          "replies": [
+            {
+              "text": "If you believe Boom, let me know if you'd be interested in a bet. I'll take the \"not gonna happen\" side of that for any amount.",
+              "author": "dmitrygr",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Casually mentioning space travel along with passenger service makes me think this isn’t a serious project.",
+          "author": "ungreased0675",
+          "replies": [
+            {
+              "text": "Why? That is exactly what concepts like the \nhttps://en.wikipedia.org/wiki/Silbervogel\n , \nhttps://en.wikipedia.org/wiki/Saenger_(spacecraft)\n and later \nhttps://en.wikipedia.org/wiki/British_Aerospace_HOTOL\n and its follow-up \nhttps://en.wikipedia.org/wiki/LAPCAT#Mach_five_vehicle\n by the now defunct \nhttps://en.wikipedia.org/wiki/Reaction_Engines\n envisioned?\nRemember Space Odyssey 2001? Got something for you:\nhttps://duckduckgo.com/?q=Pan+American+Space+Odyssey+2001&ia...",
+              "author": "LargoLasskhyfv",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Building supersonic passenger planes was never a technical problem (see Concorde), the problem is: they are too expensive to operate to be profitable. I bet this thing will never see any commercial use.",
+          "author": "Detrytus",
+          "replies": [
+            {
+              "text": "Being \"too expensive to operate to be profitable\" \nis\n a technical problem.",
+              "author": "credit_guy",
+              "depth": 1
+            },
+            {
+              "text": "Yep, TV's were said to be too expensive to produce to have one in every home.\nNow every home has multiple TVs, with decent TVs being available for like $200",
+              "author": "HDBaseT",
+              "depth": 2
+            },
+            {
+              "text": "Airplane cost to operate is fuel consumption, and, by the laws of physic, aerodynamic resistance scales as a square of speed, so you can’t really work around it unless you invent some new laws of physics.",
+              "author": "Detrytus",
+              "depth": 2
+            },
+            {
+              "text": "...at an altitude of 25 kilometers, where atmospheric pressure is one-hundredth that at sea level.",
+              "author": "LargoLasskhyfv",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48160313",
+      "title": "I spent my whole career building passive income. Here's what I got wrong",
+      "link": "https://dariusforoux.com/i-spent-my-whole-career-building-passive-income-heres-what-i-got-wrong/",
+      "domain": "dariusforoux.com",
+      "author": "speckx",
+      "score": 21,
+      "comment_count": 16,
+      "created_ts": 1778939779,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48165211",
+      "title": "Tell HN: Mindie.dev is scraping emails from profiles to send spam",
+      "link": "https://news.ycombinator.com/item?id=48165211",
+      "domain": "news.ycombinator.com",
+      "author": "stackghost",
+      "score": 20,
+      "comment_count": 2,
+      "created_ts": 1778979997,
+      "is_internal": true,
+      "post_text": "Got the following from hello@mindie.dev<p>----<p>Hey Stackghost —<p>Saw your HN comment about freelance time tracking &#x2F; invoicing. TimeChat is a Telegram bot: type &quot;1.5 acme bug fix&quot; after work, end of month it auto-generates the PDF invoice for your client. Side-by-side vs Toggl: mindie.dev&#x2F;vs&#x2F;toggl.<p>For HN readers I&#x27;m running EARLY10: $1&#x2F;mo (was $7). One-click checkout: timechat pro 2-mo trial<p>If it&#x27;s useful, I&#x27;d love your feedback. Free tier covers solo testing if you want to start there: https:&#x2F;&#x2F;timechat.mindie.dev<p>Not relevant? Reply STOP and I&#x27;ll never email again.<p>— the Mindie team\nmindie.dev<p>----<p>I went back through my comment history and I don&#x27;t believe that I have ever mentioned freelancing, time tracking, or invoicing in a comment except once when I mentioned an invoice peripherally a year ago.<p>Thus, mindie.dev is scraping emails from profiles and hallucinating relevant reasons to try to grease their sales funnel.<p>Attempting to unsubscribe via their &quot;reply stop and I&#x27;ll never email again&quot; resulted in a bounced email.<p>I find this behavior to be ultra scummy and dishonest.  I enjoy the communal feel from people having open emails on their profiles but it seems the taboo has been broken.  I will be removing my email from my profile and suggest you do the same.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "freelance",
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48151496",
+      "title": "Ask HN: Can I take Meta to court for banning business Insta or FB account?",
+      "link": "https://news.ycombinator.com/item?id=48151496",
+      "domain": "news.ycombinator.com",
+      "author": "milanspeaks",
+      "score": 13,
+      "comment_count": 7,
+      "created_ts": 1778866569,
+      "is_internal": true,
+      "post_text": "Let&#x27;s say I spend a considerable amount of money in Meta ads.<p>I have followed all ruled but some automated system assume that I have done something wrong and automatically banned me.<p>Now I understand that such systems exist to prevent bad actors. But outright banning a business that is spending money on your platform is a violation of customer service rules.<p>There has to be a proper customer service channel.<p>In real world, I don&#x27;t know of any other business that bans the account and there is no customer support available.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48151051",
+      "title": "Ask HN: What happened to the movie \"Pirates of the Silicon Valley\"",
+      "link": "https://news.ycombinator.com/item?id=48151051",
+      "domain": "news.ycombinator.com",
+      "author": "acossta",
+      "score": 12,
+      "comment_count": 4,
+      "created_ts": 1778864575,
+      "is_internal": true,
+      "post_text": "It seems that it disappeared from the internet. As if there was an active effort to take it down.<p>Anyone know what happened?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48160604",
+      "title": "Ask HN: Do you still spend time maintaining Claude.md / AGENTS.md files?",
+      "link": "https://news.ycombinator.com/item?id=48160604",
+      "domain": "news.ycombinator.com",
+      "author": "david_d8912",
+      "score": 9,
+      "comment_count": 10,
+      "created_ts": 1778941998,
+      "is_internal": true,
+      "post_text": "For people using coding agents regularly: do you still invest time in user-level and repo-level instruction files like CLAUDE.md, AGENTS.md, etc.?<p>It&#x27;s not a surprise that you don&#x27;t expect the rules there to be followed even with less than 100 lines of changes. Yet still see folks like Karpathy post rules around with hundreds of stars.<p>Tell me if you&#x27;re still spending the effort of trying claude.md, and are they effective, what&#x27;re you writing in it.<p>Update: I&#x27;m more of talking about behavior rules here (coding standard, comment style, Do this and Don&#x27;t do that, etc.). For facts like project directories, important doc ref, commands, sure that always helps.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48166147",
+      "title": "Ask HN: What LLM models are you using and why?",
+      "link": "https://news.ycombinator.com/item?id=48166147",
+      "domain": "news.ycombinator.com",
+      "author": "rubyn00bie",
+      "score": 8,
+      "comment_count": 11,
+      "created_ts": 1778993841,
+      "is_internal": true,
+      "post_text": "Hello, HN!<p>I&#x27;m wondering what y&#x27;all are using for your daily driver these days and <i>why</i>?<p>I&#x27;ve found myself using GPT-5.5 more than Opus 4.7 for work; which, has been a pretty big reversal. Previously, I was using Opus 4.6 for everything, and GPT-5.4 was only ever in the picture to provide a second opinion (with Grok a distant 3rd only when I wanted to throw some &quot;chaos&quot; into the mix). The reason I&#x27;ve personally pivoted, is I&#x27;ve found GPT-5.5 to be a bit more consistent, predictable, and tends to write in a way I find less tiresome (even if the code isn&#x27;t quite as good as Opus 4.7).<p>For personal projects, I&#x27;ve started experimenting with DeepSeek V4 and have been pretty blown away by it because of it&#x27;s cost to quality and I&#x27;ve found the 1M token window to be incredibly helpful for long-running tasks. Though I may also have an over abundance of fear of compaction during tasks. DeepSeek isn&#x27;t quite as good at one-shotting things as either GPT-5.5 or Opus-4.7, but with sufficient linter&#x2F;static-analysis guardrails I&#x27;ve found it&#x27;s really hard to complain or find faults (especially at the price).<p>Finally, if you&#x27;re also making use of reranking and&#x2F;or embedding models, or anything else, to augment or perform specific tasks please share those too!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "1. gpt-5.5-medium for most demanding coding tasks.\n2. gpt-5.3-codex-medium for genrally most of the other coding tasks.\n3. deepseek-v4-flash for heavy agentic research/loops (non-coding related).\n4. mimo-v2.5-pro for crunching/summarizing large texts.\n5. gemini-3.1-flash-lite for image understanding.\n6. opus-4.7 very occasionally when gpt-5.5 fails, or vice-versa, and sonnet-4.6 when codex-5.3 fails.\n7. deepseek-v4-pro when I need to do a long agentic session, and want higher quality, for cheap (non-coding).\n8. perplexity/pplx-embed-v1-0.6b for embeddings, via openrouter.",
+          "author": "freakynit",
+          "replies": []
+        },
+        {
+          "top": "I use Opus 4.7 for personal stuff (basically for everything), but have been considering gpt-5.5 given all I hear about it.\nAt work I use 4.6 because we don't have 4.7 yet...zzz...\nI also do a LOT of personal/portfolio work with self-hosted models.\nMinistral-3-14B-Reasoning for validating concepts, MVPs, etc and some prod systems (punches above its weight class).\nQwen3.6-35B-A3B for self-hosted coding (custom harness).\nGPT-OSS-120B for self-hosted coding or more reasoning-intensive agentic flows.\nQwen3.5-122B-A10B currently in evals for agentic coding.",
+          "author": "zambelli",
+          "replies": []
+        },
+        {
+          "top": "By default, I use Sonnet 4.6, and if Sonnet 4.6 fails, I use Opus 4.7.",
+          "author": "teppeik",
+          "replies": []
+        },
+        {
+          "top": "GPT 5.5 main\nopus 4.7 frontend and when i need something different\nkimi 2.6 and GLM 5.1 when i don't have to pay on the task (using the opencode go subscription)",
+          "author": "yossuf2000",
+          "replies": []
+        },
+        {
+          "top": "GPT-5.5 + Opus-4.7 here. Codex for pure coding task with clear goal, claude code for the rest. Also combined with opencode to experiment new models.\nfyi: I didn't have much lock on Deepseek v4 pro, with opencode + openrouter it's incredibly slow. How did op did it?",
+          "author": "david_d8912",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
