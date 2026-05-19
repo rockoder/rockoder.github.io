@@ -1,0 +1,479 @@
+{
+  "scraped_date": "2026-05-19",
+  "source": "hacker_news",
+  "total_scraped": 76,
+  "nontech_count": 13,
+  "posts": [
+    {
+      "id": "48169874",
+      "title": "Show HN: Semble – Code search for agents that uses 98% fewer tokens than grep",
+      "link": "https://github.com/MinishLab/semble",
+      "domain": "github.com",
+      "author": "Bibabomas",
+      "score": 429,
+      "comment_count": 139,
+      "created_ts": 1779032227,
+      "is_internal": false,
+      "post_text": "Hey HN! We (Stephan and Thomas) recently open-sourced Semble. We kept running into the same problem while using Claude Code on large codebases: when the agent can&#x27;t find something directly, it falls back to grep, reading full files or launching subagents. This uses a lot of tokens, and often still misses the relevant code. There are existing tools for this, but they were either too slow to index on demand, needed API keys, or had poor retrieval quality.<p>Semble is our solution for this. It combines static Model2Vec embeddings (using our latest static model: potion-code-16M) with BM25, fused via RRF and reranked with code-aware signals. Everything runs on CPU since there&#x27;s no transformers involved. On our benchmark of ~1250 query&#x2F;document pairs across 63 repos and 19 languages, it uses 98% fewer tokens than grep+read and reaches 99% of the retrieval quality of a 137M-parameter code-trained transformer, while being ~200x faster.<p>Main features:<p>- Token-efficient: 98% fewer tokens than grep+read<p>- Fast: ~250ms to index a typical repo on our benchmark, ~1.5ms per query on CPU (very large repos may take longer)<p>- Accurate: 0.854 NDCG@10, 99% of the best transformer setup we tested<p>- MCP server: drop-in for Claude Code, Cursor, Codex, OpenCode<p>- Zero config: no API keys, no GPU, no external services<p>Install in Claude Code with:\nclaude mcp add semble -s user -- uvx --from &quot;semble[mcp]&quot; semble<p>Or check our README for other installation instructions, benchmarks, and methodology:<p>Semble: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble</a><p>Benchmarks: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble&#x2F;tree&#x2F;main&#x2F;benchmarks\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;MinishLab&#x2F;semble&#x2F;tree&#x2F;main&#x2F;benchmarks</a><p>Model: <a href=\"https:&#x2F;&#x2F;huggingface.co&#x2F;minishlab&#x2F;potion-code-16M\" rel=\"nofollow\">https:&#x2F;&#x2F;huggingface.co&#x2F;minishlab&#x2F;potion-code-16M</a><p>Let us know if you have any feedback or questions!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "What I have personally observed with such tools is that they make the AI's dumb, similar to how it makes coders dumb when relying more on AI tools.\nThese agentic AI's are already smart enough to figure out a highly optimized path to code exploration or search. But, with these tools, they just go very aggressive, partly because the search results from these tools almost in 100% of the cases do not furnish full details, but, just the pointers.\nTo confirm this behaviour, I did a small test run. This is in no way conclusive, but, the results do align with what I been observing:\n---\nTask: trace full ingestion and search paths in some okayish complex project. Harness is Pi.\n1. With \"codebase-memory-mcp\": 85k/4.4k (input/output tokens).\n2. With my own regular setup: 67k/3.2k.\n3. Without any of these: 80k/3.2k.\nAs we see, such a tool made it worse (not by much, but, still). The outputs were same in quality and informational content.\n---\nNow, what my \"regular setup\" mentioned above is?:\nJust one line in AGENTS.md and CLAUDE.md: \"Start by reading PROJECT.md\" .\nAnd PROJECT.md contains just following: 2-3 line description of the project, all relevant files and their one-line description, any nuiances, and finally, ends with this line:\n    ## To LLM\n    Update this file if the changes you have done are worth updating here. The intent of this file is to give you a rough idea of the project, from where you can explore further, if needed.",
+          "author": "freakynit",
+          "replies": [
+            {
+              "text": "> These agentic AI's are already smart enough to figure out a highly optimized path to code exploration or search.\nHasn't been my experience. We used to use Augment Code at work which has a thing called Context Engine - basically an MCP that can answer natural language queries about pre-indexed code. Then we switched to Claude Code, which for some reason prefers to use sed to read from files using line ranges from its own memory (this despite having a range-capable read tool). I don't know, does that really mean that sed is the highly optimized path?",
+              "author": "parasti",
+              "depth": 1
+            },
+            {
+              "text": "Lol... I noticed it does weird stuff sometimes. I'll see it generate a python script inline on the CLI to edit files. Like... Yo what the fuck? It literally used the edit tool until 5 turn ago.\nAlso, it'll run a formatter, read, edit to undo auto formatting and then continue on its merry way. What is the point of that??? Lol",
+              "author": "spoiler",
+              "depth": 2
+            },
+            {
+              "text": "I’ve seen Claude write a one line Perl script to pull items from a json file.",
+              "author": "vorticalbox",
+              "depth": 3
+            },
+            {
+              "text": "Hey, codebase-memory-mcp and semble are not exactly the same, but it's an interesting comparison, I'll put it on the todolist to check that out and add it to our benchmarks if feasible. If you ever get a chance to do this same comparison with semble it would be super useful feedback since these \"real\" scenarios are hard to benchmark/replicate.",
+              "author": "Bibabomas",
+              "depth": 1
+            },
+            {
+              "text": "So, I just tested with semble. Your MCP integration did not work, and kept throwing error (Failed to connect to \"semble\": MCP error -32000: Connection closed) though I installed using documented manner (tried both: pip and ux methods).\nAnyways, I made it work by making it generate relevant doc (using semble init), and then copying this into AGENTS.md, and then prompting it with this line:\n\"\"\"\nStart by reading AGENTS.md in current folder. Now, the task::: `Explore the ingestion and search paths. Do not read README.md at all`. Prefer to use `semble` search for code search. Do not do new installation. semble is already available at `/Users/nitinbansal/.local/bin/semble` .\n\"\"\"\nThe results are much better. Even better than my own setup, but, vary a lot. I did 4 runs:\n95k/2.9k\n25k/2.7k\n71k/2.9k\n37k/4.0k",
+              "author": "freakynit",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Interesting. I too have been working in this space, though I took a different approach. Rather than building an index, I worked on making a \"smarter grep\" by offering search over codebases (and any text content really) with ranking and some structural awareness of the code. Most of my time was spend dealing with performance, and as a result it runs extremely quickly.\nI will have to add this as a comparison to \nhttps://github.com/boyter/cs\n and see what my LLMs prefer for the sort of questions I ask. It too ships with MCP, but does NOT build an index for its search. I am very curious to see how it would rank seeing as it does not do basic BM25 but a code semantic variant of it.\nThis seems to work better for the \"how does auth work\" style of queries, while cs does \"authenticate --only-declarations\" and then weighs results based on content of the files, IE where matches are, in code, comments and the overall complexity of the file.\nHave starred and will be watching.",
+          "author": "boyter",
+          "replies": [
+            {
+              "text": "I was going to share a link to this. Thank you for making `cs`, I use it both with LLMs and directly in the terminal, despite not performing indexing it's pretty fast for my needs. Also definitely planning to try out semble.",
+              "author": "zikani_03",
+              "depth": 1
+            },
+            {
+              "text": "You are welcome. Glad to hear its working for you. I have a few ideas I am working on to improve its relevance too that I hope pan out.",
+              "author": "boyter",
+              "depth": 2
+            },
+            {
+              "text": "Nice! Let us know if you have any feedback or results to share, would be happy to do the same.",
+              "author": "Bibabomas",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I did some evals with pi and GPT 5.5. I tested RTK on / headroom on / both on / both off (all with the standard pi system instructions and no AGENTS.md).\nI forget the exact tests I used (a couple of the standard agent evals that people use, one python and one typescript because those are what I use).\nI don't claim it was an exhaustive test, or even a good one. It's possible I could have spent a day or so tuning my AGENTS.md and the pi system prompt/tool instructions and gotten better results, because if there's one thing running evals taught me it's that subtle differences there can change the results a lot.\nHowever, I got clearly better results with both off, enough to convince me to stop the tests immediately after 3 rounds.\nThe problem was that while context use did go down (sometimes), the number of turns to complete went up so the overall cost of the conversation was higher.\nIt's made me very aware of one thing: so many people are sharing these kind of tools, but either with zero evals (or suspiciously hard to reproduce), or in the case of this one, extensive benchmarks testing the wrong thing.\nI'm sure this tool does use fewer tokens than grep, and the benchmarks prove it, but that's not what matters here. What matters is, does an agent using it get the same quality of work done more quickly and for lower cost?",
+          "author": "esperent",
+          "replies": [
+            {
+              "text": "There's an industry wide deficit of tests for AI right now. It's not just this tool, it's everything you add to your code base or your development flow that uses AI. Nobody had tests for \"how fast/well was this developed\" before AI and they haven't added them now.",
+              "author": "forgotusername6",
+              "depth": 1
+            },
+            {
+              "text": "with AI the \"they could so they never wondered if they should\" will be a very frequent thing.",
+              "author": "zobzu",
+              "depth": 1
+            },
+            {
+              "text": "This is a bit rude.\nWe didn't generate this project, we wrote it, a lot of it manually, and trained custom models. We'd been working in the real-time retrieval space for a while, and we thought coding was a good fit for this specific technology.",
+              "author": "stephantul",
+              "depth": 2
+            },
+            {
+              "text": "My comment above wasn't meant to be rude. And you do have extensive benchmarks against grep etc so it's clear you understand the importance of that.\nBut I still think you're missing the harder but more important proof which is agent evals. Have you done any of that?\nI would personally love to find tools in this space which can make agents more efficient and I do believe there's a scope for massive improvements compared to default workflows. But my evals with RTK and Headroom have made me wary that a tool can look like it should work, conceptually make sense, pass non-agentic benchmarks, and still make an actual agentic workflow worse.",
+              "author": "esperent",
+              "depth": 3
+            },
+            {
+              "text": "It was directed at the parent who implied that we didn’t think about this.\nI agree with your point about the evals and how you can get discontinuities: good search can be worse than bad search when agents can do many searches. We’re working on it",
+              "author": "stephantul",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I'd be interested in seeing actual agent benchmarks (eg CC or Copilot CLI with grep removed and this tool instead).\nFor example, I have explored RTK and various LSP implementations and find that the models are so heavily RL'd with grep that they do not trust results in other forms and will continually retry or reread, and all token savings are lost because the model does not trust the results of the other tools.",
+          "author": "jerezzprime",
+          "replies": [
+            {
+              "text": "I just put something in my global CLAUDE.md (under ~/.Claude) asking it to use the LSP instead of grep and have never had this issue since.",
+              "author": "AussieWog93",
+              "depth": 1
+            },
+            {
+              "text": "I've tried all sorts of tricks with Copilot CLI to get it to use LSP; project instructions, file extension instructions, but it just keeps forgetting. And says \"yea you're right I should have used it\" but then doesn't.",
+              "author": "turbine401",
+              "depth": 2
+            },
+            {
+              "text": "My q would have been this. Lsp solved this no?",
+              "author": "gigatexal",
+              "depth": 2
+            },
+            {
+              "text": "can you share that prompt?",
+              "author": "yakbarber",
+              "depth": 2
+            },
+            {
+              "text": "Full output below.  There's other stuff in there, the \"working with unfamiliar data or systems\" is maybe slightly risky but (seemingly, after a week or two) much more token efficient and effective.\nI also added the plugins directly to Claude Code:\n    ty Plugin · claude-code-lsps ·  enabled\n    vscode-langservers Plugin · claude-code-lsps ·  enabled\n    vtsls Plugin · claude-code-lsps ·  enabled\n  ~ cat ~/.claude/CLAUDE.md \n\n# Python Environment\n- ALWAYS use uv — never use pip, pip install, python, or python3 directly\n- Activate venv: `source .venv/bin/activate`\n- Install deps: `uv sync`\n- Add a dep: `uv add <package>`\n- Run scripts: `uv run <script.py>`\n- Run tools: `uvx <tool>`\n# Long-running scripts\n- Any script, command, migration, data job, or test run that may take more than 2-3 seconds should emit regular status updates while it runs.\n- Prefer progress that is useful for diagnosing where time is going: current phase, item counts, batch numbers, elapsed time, retry/backoff state, or the external service being waited on.\n- For loops or batch jobs, log progress periodically rather than only at start/end; keep the cadence readable and avoid flooding output.\n# Code Intelligence\n- LSP servers available: ty (Python), vtsls (JS/TS), vscode-langservers (HTML/CSS/JSON)\n- Use LSP for:\n  - findReferences before any refactor\n  - goToDefinition when navigating unfamiliar code\n  - diagnostics after edits to catch type errors\n- grep/search is fine for simple lookups in small files\n- NEVER refactor without findReferences impact analysis first\n- After every edit, check LSP diagnostics before moving on\n# Documentation\n- Context7 is available for up-to-date library docs\n- Use `ctx7 docs <libraryId> <query>` to fetch current documentation\n- Use `ctx7 library <name> <query>` to find a library ID first\n# Working with unfamiliar data or systems\n- Prefer experimenting on real data over reasoning about it in the abstract. Your outputs are noticeably better when grounded in a concrete sample than when derived from minutes of speculation.\n- When a task involves parsing/processing/integrating with some external artifact (a report, an API response, a file format, a third-party tool's output), the FIRST step is to fetch or generate a real example and inspect it. Do not write code against an imagined shape.\n- Experiments must be non-destructive: read-only fetches, copies into a scratch dir, dry-run flags. Never mutate the user's real data to learn about it.\n- Before assuming you lack credentials, check the current working directory's `.env` file (and `.env.example` for hints about which keys exist) — API keys, tokens, and connection strings for the relevant service are very often already there.\n- If you cannot obtain real data on your own (auth genuinely missing, lives on another machine, behind a paywall, etc.), STOP and ask the user to provide a sample rather than guessing.\n- Example: asked to process an Amazon sales report, the first action is to fetch (or have the user paste) one actual report and look at its columns — not to draft a parser based on what such a report \"probably\" contains.",
+              "author": "AussieWog93",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Seems like a cool idea so I decided to play with it a bit. The test I ran was in the browsercode (\nhttps://github.com/browser-use/browsercode\n) repo with the following prompt:\n\"Answer this question by only using the `semble` CLI (docs below):\n> What tools does Browsercode provide to the agent other than the base OpenCode tools? Provide the exact schema for tool input and tool output and briefly summarize what they do and how they work\n---\n[the AGENTS.md snippet provided from \nhttps://github.com/MinishLab/semble#bash-integration\n]\"\nAnd the equivalent for the non-Semble test:\n\"Answer this question by only using the `rg` and `fd` CLIs:\n> What tools does Browsercode provide to the agent other than the base OpenCode tools? Provide the exact schema for tool input and tool output and briefly summarize what they do and how they work\"\nIn both cases, I used Pi with gpt-5.4 medium and a very minimal setup otherwise. (And yes, I did verify that either instance only used rg & fd, or only used semble.)\nWithout Semble, it used 10.9% of the model context and used $0.144 of API credits (or, at least, that's what Pi reported - I used this with a Codex sub so cannot be sure). With Semble, it used 9.8% of the model context and $0.172 of API credits. The resulting responses were also about the same. Very close!\nI tried one more test in the OpenCode repo. The question was\n> Trace the path from 1) the OPENCODE_EXPERIMENTAL_EXA env var being set to to 1 to 2) the resulting effects in the system prompt or tool provided to the OpenCode agent.\nAnd I included the same instructions/docs as above. The non-Semble version was a bit more detailed -- it went into whether the tool call path invoked Exa based on whether Exa or Parallel was enabled for the web search provider -- but w.r.t. actually answering the question, both versions were accurate. The Semble version used 14.7% context / $0.282 API cost, while the non-Semble version used 19.0% / $0.352. Clearly a win for Semble for context efficiency, but note that the non-Semble version finished about twice as fast as the Semble version.\nOf course this is just me messing around. ymmv.",
+          "author": "aadishv",
+          "replies": [
+            {
+              "text": "Wow awesome, thanks for sharing! This is really useful and very much like the experiments we want to be doing in the near future",
+              "author": "stephantul",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48168056",
+      "title": "AI subscriptions are a ticking time bomb for enterprise",
+      "link": "https://www.thestateofbrand.com/news/ai-subscription-time-bomb",
+      "domain": "www.thestateofbrand.com",
+      "author": "mooreds",
+      "score": 409,
+      "comment_count": 396,
+      "created_ts": 1779018571,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 168,
+      "comment_count": 135,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48164173",
+      "title": "Ask HN: When did computers stop being fun?",
+      "link": "https://news.ycombinator.com/item?id=48164173",
+      "domain": "news.ycombinator.com",
+      "author": "klez",
+      "score": 68,
+      "comment_count": 99,
+      "created_ts": 1778968971,
+      "is_internal": true,
+      "post_text": "Of course I don&#x27;t mean they stopped being fun for everyone. My impression is that they&#x27;ve been on one side &quot;corporatized&quot;, and on the other became a vehicle for mindless entertainment.<p>I don&#x27;t care for coding new stuff. Everything I may need either already exists or is too complex to do on my own (and no, I won&#x27;t vibe-code it, what&#x27;s the fun in that?)<p>I don&#x27;t even code for work anymore since I moved to a project&#x2F;service management role.<p>Basically, the spark I felt some 25 years ago seems to be completely gone.<p>Any suggestion on getting it back?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "It seems to be strongly correlated with (and perhaps caused by) the iphone / smartphone / tablet boom of the 2010s. That's when lots of mass market things slowly shifted from being on \"computers\" or \"the internet\" into being apps, which are inherently geared towards consumption and not creation, and encourage storing all the data in \"the cloud\" instead of on the device.\nThat left \"desktop\" computing as no longer where the action was, but just a legacy platform for people doing their day jobs, and most things being dumbed down into single-purpose apps that cannot be modified, customized, combined, or anything fun/interesting/not intended by the vendor.",
+          "author": "tacostakohashi",
+          "replies": []
+        },
+        {
+          "top": "Microcontrollers are fun. The specs of modern MCs are similar to home computers 30 years ago. The community aspect is there. They’re cheap, too.",
+          "author": "teamonkey",
+          "replies": [
+            {
+              "text": "Esp32s are amazing fun. I designed boards in the 80s and I still love tinkering with microcontrollers. The reflux control for my still currently uses a brushed motor controlled by PWM and I am upgrading it to a second hand pump with a brushless motor so I am looking at driving it. I just set up an old drone ESC and am controlling the motor with dshot and it works ok. There is a little pre built board Simple FOC that is also esp32 I just ordered for 20 bucks to give a try.\nI've been a developer for 45 years and I still actually like it most days.",
+              "author": "mianos",
+              "depth": 1
+            },
+            {
+              "text": "I recently learned of ESP32-P4 that has graphics compositing optimizations.\nA couple of years ago, I used an RP2040 to build a graphics card with 2D triangle filling and other pretty nice abstractions.\nNext time... It'll be the ESP32-P4. Somewhat looking forward to that project, but there are prerequisites that need to be dealt with first. Yes, I'm very grown up. It sucks. :)",
+              "author": "flowerthoughts",
+              "depth": 2
+            },
+            {
+              "text": "agreed, I think much of the appeal for me is the physical element of wiring things up and seeing it do something more than changing a few pixels on my screen.\nSoldering is very relaxing as well.",
+              "author": "forsalebypwner",
+              "depth": 1
+            },
+            {
+              "text": "How you know me so well. I also like how cheap all of the parts and pieces are. It's like the next step after Legos. Although, they have way more interesting Legos today than what I had as a kid. I've bought components with an a specific project in mind, but once it's built I find myself taking them apart and making a new something with it combined with other parts I have lying around. Things are cheap enough that I don't mind so much if I got something wrong and release a little magic smoke.",
+              "author": "dylan604",
+              "depth": 2
+            },
+            {
+              "text": "Yes exactly! I still can't believe how cheap an ESP32 is - a device with bluetooth, WiFi, and ample processing power and RAM for most tasks you'd use an MCU for. And yeah I love finding out I already have all the parts I need. Now, keeping them organized, that can be a struggle. I have a couple of these double sided tool organizers [1] and a tackle box, but sometimes I'm still digging through bins to find a part I \nknow\n I have but can't find\n[1] \nhttps://i.imgur.com/4KpnFZJ.png",
+              "author": "forsalebypwner",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Over the last 30 years the culture and power has made a gradual shift from 100% pure hobbyists to 4% hobbyists, 48% scammers/predators, and 48% commercial.\nYou can't pinpoint when the fun stopped and it's subjective. I personally became conscious that the party was fully over around 2023, after a few years of feeling it subconsciously.\n2023 was when Twitter and Reddit changed their respective APIs and became openly user hostile, which was the symbolic turning point for me.",
+          "author": "gdulli",
+          "replies": [
+            {
+              "text": "The world is full of people who get excited about things, but never, ever help. The Internet brings these kinds of people right to your door. They’re exhausting and toxic in a way you don’t truly appreciate until you really notice. Eject them from your life and computers become nice and fun again.",
+              "author": "hyperhello",
+              "depth": 1
+            },
+            {
+              "text": "I feel 2023 is when we entered the decrepit stage, but ~2015 is when it began: Theranos, Musk's charlatanry and cult, \"unicorns\", Cambridge Analytica, the raise of social media addiction, etc.\nNot that things were amazing before that... it's just that mid 10s had simply too many bad actors showing up at the same time with a lot of money and power.",
+              "author": "pera",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It’s hard for me to know if it’s the computers that changed or my stage of life.\nI think they become less fun sometimes during the later stage Web 2.0 era as everything shifted toward services. For most, computers became a thin client to access services on the Internet. To me, this isn’t very fun. The computer becomes an appliance to access services rather than one used to run programs that can be customized and tailored to the user. Of course that local experience can still exist, but only for users who are very intentional. For shared experiences, it’s only for users whose friends are also intentional. This intentionality usually means doing a lot of extra work. This work was not an issue when the pay off of new functionality was there, but is harder to justify when it’s often less functionality for more work… the main upside being freedom and agency over the experience.\nSeemingly every service being a front to collect and sell data also makes things less fun. There is a certain level of trust that needs to exist when running software and that trust relationship has been broken, even by real companies. It makes it hard to trust anything, which pushes me away from trying new things that might be fun.\nThis change coincided with my transition to adulthood, where priorities shift. It’s impossible to say if I’d still find computers fun in 2026 if I was 19 again, but my gut tells me I’d be a lot less interested.\nIf there is a path back, I think it might be along the lines of Pewdiepie’s newfound love of Linux. He seems to be having a ball.",
+          "author": "al_borland",
+          "replies": [
+            {
+              "text": "Given that enshittification is such a common term today, that didn't exist a few decades ago, suggests the decay is real not just a stage of life perception.\nEarlier computers, and particularly the early Internet, were all about personal freedom. The computer served you and the Internet was there to connect you with peers. So that was fun and the possibilities were literally infinite.\nAs the giant corporations and particularly the advertising industry (which destroys everything it touches) have slowly taken control, computers and the Internet no longer serve us, the people. We are now the product, to be fully monetized at every stage. Monetization alone is bad but not terrible, but in order to maximize monetization the corporations \nalso\n need to exert control, thus all the increasingly restrictive technology where we are very clearly only a paying consumer kept within a box, not a participant.\nWhile the technology world has been almost entirely enshittified, it's good to keep some optimism though. The fun parts still exist, they're just more effort to find.\nOn the Internet, support your hobby email lists (open participation, no corporate control), support enthusiast-driven forums and websites (independently run, no social media giants monetizing every message!). There are fewer of these but they do exist, support them. Or start your own! Don't let the megacorporations own your hobby interactions.\nOn the programming side, work on something hands-on fun if you like. When I want to geek out programming like it's 1995, I have a BSD box and work on a hobby project which is all in C. No vibe coding, no thousands of unknown npm dependencies, none of that junk. Just me and emacs and the kernel and the compiler. I don't work on it often but every now and then a weekend of real programming is very relaxing and reminds me how much fun it is.",
+              "author": "jjav",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I don't care for coding new stuff. Everything I may need either already exists or is too complex to do on my own\n> Any suggestion on getting it back?\n1. Take a break. I don't mean stop working, just fill your free time with other stuff, but if you don't code at work, it is a bonus. Try other things. I was in a position you describe, and I took a break, dived into studying psychology, you can choose anything you like, like keeping stray cat population in your neighborhood fed and sufficiently stroked behind their ears. Or can you play a harp? You can learn it, you know. (Speaking about psychology: your condition is a middle age crisis. Self-realization is done, all immediate goals are reached, you've got more freedom to choose next goals, and everything is increasingly becoming a routine. Nothing bad is happening, you just need to adapt. You will adapt, you don't need to do anything special, it will happen all by itself. Just exercise your new freedom a little, and in a couple of years new goals will find you.)\n2. Stop thinking of important things. Had you read \"Surely you are joking, Mr. Feynman!\"? If not, I suggest to read just for fun of it, but among all the jokes Feynman describes a period in his life when he felt like you. He couldn't find any good ideas what he could do in physics. At some point he took a seemingly silly problem, and solved it. And he came back to physics with it, later he discovered the differential equations from that silly problem in another \"serious\" problem and eventually got a Nobel Prize.\nThe moral is: you are overthinking it. You are looking for ideas for programs but you use too narrow filters. Like the problem should match your skills. Or the problem should be important enough to work on it.\nSo just take a break and look for some interesting problem. If you find any, you find some other way to entertain yourself, so not a big deal. Just stop obsessing about it and I'm sure it will come naturally.",
+          "author": "ordu",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48122103",
+      "title": "Ask HN: What are you working on (non-AI)?",
+      "link": "https://news.ycombinator.com/item?id=48122103",
+      "domain": "news.ycombinator.com",
+      "author": "BrunoBernardino",
+      "score": 44,
+      "comment_count": 53,
+      "created_ts": 1778681272,
+      "is_internal": true,
+      "post_text": "Please don&#x27;t turn this into an inflammatory post.<p>Regardless of &quot;AI&quot; being good or bad (it&#x27;s not even just one thing as many of you know), I feel like the &quot;What are you working on?&quot; posts are drowning in things that use AI for something and&#x2F;or are clearly &quot;AI slop&quot;.<p>I&#x27;d like to look at things other humans have been doing (even if they used a bit of some kind of AI for assistance), that aren&#x27;t a product or tool that uses AI for something.<p>I know it exists (and I use and build some), but it&#x27;s incredibly hard to find nowadays. Can you help me?<p>Thank you.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48165211",
+      "title": "Tell HN: Mindie.dev is scraping emails from profiles to send spam",
+      "link": "https://news.ycombinator.com/item?id=48165211",
+      "domain": "news.ycombinator.com",
+      "author": "stackghost",
+      "score": 25,
+      "comment_count": 5,
+      "created_ts": 1778979997,
+      "is_internal": true,
+      "post_text": "Got the following from hello@mindie.dev<p>----<p>Hey Stackghost —<p>Saw your HN comment about freelance time tracking &#x2F; invoicing. TimeChat is a Telegram bot: type &quot;1.5 acme bug fix&quot; after work, end of month it auto-generates the PDF invoice for your client. Side-by-side vs Toggl: mindie.dev&#x2F;vs&#x2F;toggl.<p>For HN readers I&#x27;m running EARLY10: $1&#x2F;mo (was $7). One-click checkout: timechat pro 2-mo trial<p>If it&#x27;s useful, I&#x27;d love your feedback. Free tier covers solo testing if you want to start there: https:&#x2F;&#x2F;timechat.mindie.dev<p>Not relevant? Reply STOP and I&#x27;ll never email again.<p>— the Mindie team\nmindie.dev<p>----<p>I went back through my comment history and I don&#x27;t believe that I have ever mentioned freelancing, time tracking, or invoicing in a comment except once when I mentioned an invoice peripherally a year ago.<p>Thus, mindie.dev is scraping emails from profiles and hallucinating relevant reasons to try to grease their sales funnel.<p>Attempting to unsubscribe via their &quot;reply stop and I&#x27;ll never email again&quot; resulted in a bounced email.<p>I find this behavior to be ultra scummy and dishonest.  I enjoy the communal feel from people having open emails on their profiles but it seems the taboo has been broken.  I will be removing my email from my profile and suggest you do the same.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "feedback",
+        "freelance"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48151496",
+      "title": "Ask HN: Can I take Meta to court for banning business Insta or FB account?",
+      "link": "https://news.ycombinator.com/item?id=48151496",
+      "domain": "news.ycombinator.com",
+      "author": "milanspeaks",
+      "score": 13,
+      "comment_count": 7,
+      "created_ts": 1778866569,
+      "is_internal": true,
+      "post_text": "Let&#x27;s say I spend a considerable amount of money in Meta ads.<p>I have followed all ruled but some automated system assume that I have done something wrong and automatically banned me.<p>Now I understand that such systems exist to prevent bad actors. But outright banning a business that is spending money on your platform is a violation of customer service rules.<p>There has to be a proper customer service channel.<p>In real world, I don&#x27;t know of any other business that bans the account and there is no customer support available.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48151051",
+      "title": "Ask HN: What happened to the movie \"Pirates of the Silicon Valley\"",
+      "link": "https://news.ycombinator.com/item?id=48151051",
+      "domain": "news.ycombinator.com",
+      "author": "acossta",
+      "score": 12,
+      "comment_count": 4,
+      "created_ts": 1778864575,
+      "is_internal": true,
+      "post_text": "It seems that it disappeared from the internet. As if there was an active effort to take it down.<p>Anyone know what happened?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48160604",
+      "title": "Ask HN: Do you still spend time maintaining Claude.md / AGENTS.md files?",
+      "link": "https://news.ycombinator.com/item?id=48160604",
+      "domain": "news.ycombinator.com",
+      "author": "david_d8912",
+      "score": 9,
+      "comment_count": 10,
+      "created_ts": 1778941998,
+      "is_internal": true,
+      "post_text": "For people using coding agents regularly: do you still invest time in user-level and repo-level instruction files like CLAUDE.md, AGENTS.md, etc.?<p>It&#x27;s not a surprise that you don&#x27;t expect the rules there to be followed even with less than 100 lines of changes. Yet still see folks like Karpathy post rules around with hundreds of stars.<p>Tell me if you&#x27;re still spending the effort of trying claude.md, and are they effective, what&#x27;re you writing in it.<p>Update: I&#x27;m more of talking about behavior rules here (coding standard, comment style, Do this and Don&#x27;t do that, etc.). For facts like project directories, important doc ref, commands, sure that always helps.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48166147",
+      "title": "Ask HN: What LLM models are you using and why?",
+      "link": "https://news.ycombinator.com/item?id=48166147",
+      "domain": "news.ycombinator.com",
+      "author": "rubyn00bie",
+      "score": 8,
+      "comment_count": 13,
+      "created_ts": 1778993841,
+      "is_internal": true,
+      "post_text": "Hello, HN!<p>I&#x27;m wondering what y&#x27;all are using for your daily driver these days and <i>why</i>?<p>I&#x27;ve found myself using GPT-5.5 more than Opus 4.7 for work; which, has been a pretty big reversal. Previously, I was using Opus 4.6 for everything, and GPT-5.4 was only ever in the picture to provide a second opinion (with Grok a distant 3rd only when I wanted to throw some &quot;chaos&quot; into the mix). The reason I&#x27;ve personally pivoted, is I&#x27;ve found GPT-5.5 to be a bit more consistent, predictable, and tends to write in a way I find less tiresome (even if the code isn&#x27;t quite as good as Opus 4.7).<p>For personal projects, I&#x27;ve started experimenting with DeepSeek V4 and have been pretty blown away by it because of it&#x27;s cost to quality and I&#x27;ve found the 1M token window to be incredibly helpful for long-running tasks. Though I may also have an over abundance of fear of compaction during tasks. DeepSeek isn&#x27;t quite as good at one-shotting things as either GPT-5.5 or Opus-4.7, but with sufficient linter&#x2F;static-analysis guardrails I&#x27;ve found it&#x27;s really hard to complain or find faults (especially at the price).<p>Finally, if you&#x27;re also making use of reranking and&#x2F;or embedding models, or anything else, to augment or perform specific tasks please share those too!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48176542",
+      "title": "Ask HN: Could free/low cost LLMs be a momentary thing?",
+      "link": "https://news.ycombinator.com/item?id=48176542",
+      "domain": "news.ycombinator.com",
+      "author": "senda",
+      "score": 4,
+      "comment_count": 11,
+      "created_ts": 1779089803,
+      "is_internal": true,
+      "post_text": "Say they(OpenAi Etc)don’t find a way to reduce the cost of running these LLMs. Will we shift towards slower&#x2F;worse LLMs running locally? Or maybe enterprise ones only used by large corporations for specific tasks?<p>Will the era of using these to generate code end? Is the assume that the inference problem will be solved?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "Yes, I believe that will be the case. IBM already made the bet with granite models.\nPersonally, I've found that with guardrails, local 8-14B models can match frontier models on agentic tasks. The key is simple tasks with volume. For very complex things, the big models win. But a simple HR agent auditing 30,000 employee records to make sure all your info is filled out correctly, one at a time? You don't need frontier size for that.",
+          "author": "zambelli",
+          "replies": []
+        },
+        {
+          "top": "The best of the best will remain around the same price and potentially get more expensive as compute demand increases. However the intelligence/dollar ratio will increase over time due to a few factors (this is common in most tech)\n1. Quantization: bigger models can be compressed and retain most of their quality, but run with a far smaller compute footprint\n2. Moore's law: chips still are scaling so you can run more compute cheaper as it improves\n3. Open source competition: if models from Anthropic or OpenAI get too expensive people will opt to use open source Chinese models, which would reduce demand and thus reduce prices down to a more reasonable equilibrium",
+          "author": "atleastoptimal",
+          "replies": []
+        },
+        {
+          "top": "Yes. I believe that. It’s just matter of time they start charging us quite a bit. And we won’t complain as we are so used to using by then",
+          "author": "punyaatloomavi",
+          "replies": []
+        },
+        {
+          "top": "Yes. That’s my opinion. I think Apple will leverage their shared RAM and M architectures to sell their computers as local-LLM ready.\nThey for sure are testing LLMs and checking the performance of local models. Once they reach a performance and quality enough for some tasks they will announce Apple AI or some variation of the name.\nAll of this is speculation, but I think is obvious the right way.",
+          "author": "elnatro",
+          "replies": []
+        },
+        {
+          "top": "Very clearly, all free LLM chatbots will need to be supported by ads. There is no other way to make them free in a large scale.",
+          "author": "aurareturn",
+          "replies": [
+            {
+              "text": "Government funding is another way. In some countries people pay some sort of \"media\" tax. That can be redistributed. A new one can be added. If LLMs are becoming a standard way to interact and process the data and using them is a social necessity then it is absolutely the job of the state to provide means for it.",
+              "author": "xnickb",
+              "depth": 1
+            },
+            {
+              "text": "So basically minimum compute given to people like government health care?\nThat's what Sam Altman said we should do.",
+              "author": "aurareturn",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48179203",
+      "title": "Ask HN: Do you know what data your AI coding agent sends to the cloud?",
+      "link": "https://news.ycombinator.com/item?id=48179203",
+      "domain": "news.ycombinator.com",
+      "author": "lbrauer",
+      "score": 3,
+      "comment_count": 5,
+      "created_ts": 1779109371,
+      "is_internal": true,
+      "post_text": "Every session my AI coding agent reads files, runs commands, makes API calls. I have no idea exactly what ends up in the cloud. Is anyone actually tracking this at a granular level, or do we just trust the tool?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I trust the tool in that I don't send anything sensitive in there! Unless I built it, I assume it's going somewhere.\nWe have a policy at work around this where our most sensitive data can only be passed to on prem models.\nThat being said, I have no evidence of anything going to the cloud or frontier providers doing anything with chat history other than storing it for later.\nSelf-hosted + custom harness for anything I don't want getting out at all.",
+          "author": "zambelli",
+          "replies": [
+            {
+              "text": "Makes sense. Does your custom harness give you a record of what actually crossed the boundary, or is it mostly trust-based blocking?",
+              "author": "lbrauer",
+              "depth": 1
+            },
+            {
+              "text": "My harness is only being used with on prem models, so I don't have any checks in place. If the gguf is somehow calling home, I'm not catching it.",
+              "author": "zambelli",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You don't. Even if you read the policy, it would be jumbled in legalese. Instead, give it access to only the kind of data you are okay with being sent to the cloud. Also, the company reputation at stake matters more than their policies.",
+          "author": "aianisulislam",
+          "replies": []
+        },
+        {
+          "top": "I have started treating AI coding tools more like giving temporary contractor access to my machine than just using auto complete.",
+          "author": "SyntaxErrorist",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48180119",
+      "title": "Booking.com and Weaviate",
+      "link": "https://news.ycombinator.com/item?id=48180119",
+      "domain": "news.ycombinator.com",
+      "author": "CShorten",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1779113178,
+      "is_internal": true,
+      "post_text": "Vector search looks easy, until you hit production scale.<p>I&#x27;m super excited to share a new episode of the Weaviate Podcast with Başak from @bookingcom on production-scale vector search, RAG, and agentic AI with @weaviate_io!<p>The podcast begins by discussing Booking&#x27;s tipping point into adopting vector search and emerging use cases.<p>The scale of Partner-to-Guest messaging alone is insane! There are nearly 250,000 such exchanges <i>daily</i>, and Booking&#x27;s Agent is already helping with 10s of thousands of these!<p>Başak describes how the team navigated increasing scale and workload complexity. They ran an exhaustive evaluation of Weaviate with 100M embeddings and tests often left out of common ANN benchmarks. This includes Filtered Vector Search, Multi-Threaded Concurrency, and testing with simultaneous Reads and Writes.<p>The podcast concludes with Başak&#x27;s career journey to Booking and her thoughts on Travel Agents!<p>YouTube: https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=O9edM9ZS_FQ<p>Spotify: https:&#x2F;&#x2F;spotifycreators-web.app.link&#x2F;e&#x2F;8tc6Dyb7e3b",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "career"
+      ],
+      "comments": []
+    }
+  ]
+}
