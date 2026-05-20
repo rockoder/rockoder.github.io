@@ -1,0 +1,667 @@
+{
+  "scraped_date": "2026-05-20",
+  "source": "hacker_news",
+  "total_scraped": 56,
+  "nontech_count": 19,
+  "posts": [
+    {
+      "id": "48192383",
+      "title": "Show HN: Forge – Guardrails take an 8B model from 53% to 99% on agentic tasks",
+      "link": "https://github.com/antoinezambelli/forge",
+      "domain": "github.com",
+      "author": "zambelli",
+      "score": 326,
+      "comment_count": 123,
+      "created_ts": 1779193387,
+      "is_internal": false,
+      "post_text": "Hi HN, I&#x27;m Antoine Zambelli, AI Director at Texas Instruments.<p>I built Forge, an open-source reliability layer for self-hosted LLM tool-calling.<p>What it does:<p>- Adds domain-and-tool-agnostic guardrails (retry nudges, step enforcement, error recovery, VRAM-aware context management) to local models running on consumer hardware<p>- Takes an 8B model from ~53% to ~99% on multi-step agentic workflows without changing the model - just the system around it<p>- Ships with an eval harness and interactive dashboard so you can reproduce every number<p>I wanted to run a handful of always-on agentic systems for my portfolio, didn&#x27;t want to pay cloud frontier costs, and immediately hit the compounding math problem on local models. 90% per-step accuracy sounds great, but with a 5-step workflow that&#x27;s a 40% failure rate. No existing framework seemed to address this mechanical reliability issue - they all seemed tailor-made for cloud frontier.<p>Demo video: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;MzRgJoJAXGc\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;MzRgJoJAXGc</a> (side-by-side: same model, same task, with and without Forge guardrails)<p>The paper (accepted to ACM CAIS &#x27;26, presenting May 26-29 in San Jose) covers the peer-reviewed findings across 97 model&#x2F;backend configurations, 18 scenarios, 50 runs each. Key numbers:<p>- Ministral 8B with Forge: 99.3%. Claude Sonnet with Forge: 100%. The gap between a free local 8B model on a $600 GPU and a frontier API is less than 1 point.<p>- The same 8B local model with Forge (99.3%) outperforms Claude Sonnet without guardrails (87.2%) - an 8B model with framework support beats the best result you can get through frontier API alone.<p>- Error recovery scores 0% for every model tested - local and frontier - without the retry mechanism. Not a capability gap, an architectural absence.<p>I&#x27;m currently using this for my home assistant running on Ministral 14B-Reasoning, and for my locally hosted agentic coding harness (8B managed to contribute to the codebase!).<p>The guardrail stack has five layers, each independently toggleable. The two that carry the most weight (per ablation study with McNemar&#x27;s test): retry nudges (24-49 point drops when disabled) and error recovery (~10 point drops, significant for every model tested). Step enforcement is situational - only fires for models with weaker sequencing discipline. Rescue parsing and context compaction showed no significance in the eval but are retained for production workloads where they activate once in a while.<p>One thing I really didn&#x27;t expect: the serving backend matters. Same Mistral-Nemo 12B weights produce 7% accuracy on llama-server with native function calling and 83% on Llamafile in prompt mode. A 75-point swing from infrastructure alone. I don&#x27;t think anyone&#x27;s published this because standard benchmarks don&#x27;t control for serving backend.<p>Another surprise: there&#x27;s no distinction in current LLM tool-calling between &quot;the tool ran successfully and returned data&quot; and &quot;the tool ran successfully but found nothing.&quot; Both return a value, the orchestrator marks the step complete, and bad data cascades downstream. It&#x27;s the equivalent of HTTP having 200 but no 404. Forge adds this as a new exception class (ToolResolutionError) - the model sees the error and can retry instead of silently passing garbage forward.<p>Biggest technical challenge was context compaction for memory-constrained hardware. Both Ollama and Llamafile silently fall back to CPU when the model exceeds VRAM - no warning, no error, just 10-100x slower inference. Forge queries nvidia-smi at startup and derives a token budget to prevent this.<p>How to try it:<p>- Clone the repo, run the eval harness on a model I haven&#x27;t tested. If you get interesting results I&#x27;ll add them to the dashboard.<p>- Try the proxy server mode - point any OpenAI-compatible client at Forge and it handles guardrails transparently. It&#x27;s the newest model and I&#x27;d love more eyes on it.<p>- Dogfooding led me to optimize model parameters in v0.6.0. The harder eval suite (26 scenarios) is designed to raise the ceiling so no one sits at 100%. Several that did on the original suite can&#x27;t sweep it - including Opus 4.6. Curious if anyone finds scenarios that expose gaps I haven&#x27;t thought of. Paper numbers based on pre v0.6.0 code.<p>Background: prior ML publication in unsupervised learning (83 citations). This paper accepted to ACM CAIS &#x27;26 - presenting May 26-29.<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge</a><p>Paper: <a href=\"https:&#x2F;&#x2F;www.caisconf.org&#x2F;program&#x2F;2026&#x2F;demos&#x2F;forge-agentic-reliability&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.caisconf.org&#x2F;program&#x2F;2026&#x2F;demos&#x2F;forge-agentic-re...</a> <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;blob&#x2F;main&#x2F;docs&#x2F;forge_ieee_preprint.pdf\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;blob&#x2F;main&#x2F;docs&#x2F;forg...</a><p>Dashboard: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;docs&#x2F;results&#x2F;dashboard.html\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;docs&#x2F;results&#x2F;dashbo...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "director",
+        "management",
+        "failure",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 172,
+      "comment_count": 136,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "Don't. You are exactly the wrong kind of firm to be pursuing SOC2.\nSOC2 is like the corporate GPL of security. It's an infectious secret handshake company security teams swap in lieu of filling out security questionnaires. Nobody savvy takes it seriously.\nThere will come a time where your business will grow to the point where it makes sense to pay for the secret handshake. The overwhelming most likely scenario in which that happens is a purchase order made contingent on your SOC2 Type I attestation, where the revenue from that purchase order more than pays for the attestation.\nDo not ever do a SOC2 speculatively, in the hopes that it will improve your sales prospects. Plenty of successful firms don't have SOC2s. If you're losing sales where SOC2 is a factor, you didn't have those sales to begin with.",
+          "author": "tptacek",
+          "replies": [
+            {
+              "text": "I will add a few more things to this:\n- Document your data and security and share that with customers instead. You can say \"We don't have SOC2 at the moment but here is all our security and data policy\". It works 99% of the time for me.\n- Very few companies truly have policy to reject a vendor if they don't have SOC2. Those are usually large enterprise or companies in sensitive areas such as Finance/Healthcare etc. Even then, SOC2 can be waived if you can demonstrate everything else.\nDisclaimer: I run a bootstrapped SAAS with low 7 figures in ARR and even though we have ISO27001, we don't have SOC2 yet. However, we take our security/data etc very seriously and have tons of documentation and best practices that we always shafre with a customer who asks. Honestly, we will get SOC2 at some point just for the checklist as I don't really care too much about them otherwise.",
+              "author": "codegeek",
+              "depth": 1
+            },
+            {
+              "text": "Fully agree, the only downside is without a SOC2 you will be asked to fill out an insane 200+ questionnaire. \nGood news is you have all these great LLM tools you can do this work for you, and just check it over.",
+              "author": "spydum",
+              "depth": 2
+            },
+            {
+              "text": "In my industry they still ask for the questionnaire even if you have a SOC2 report!",
+              "author": "mikeocool",
+              "depth": 3
+            },
+            {
+              "text": "Yeah, I get this even with SOC2 Type 2 & ISO 27001 ... the requests never stop.",
+              "author": "abrookewood",
+              "depth": 4
+            },
+            {
+              "text": "Just say no. Serious.",
+              "author": "ezekg",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I'm currently at a small startup trying to do ISO 27001. A big issue we run into is that there simply \naren't enough people\n. For example, the processes are built around having one person who writes code, and another person who reviews the written code. That's obviously impossible as a solo dev. You also need an internal auditor, who obviously needs to be separate from the operations team.\nIf I recall correctly the minimum in a standard setup is 9 roles which cannot overlap. You're going to have a \nvery\n hard time doing that as a solo entrepreneur, so you'll probably need to find someone who is experienced in making unusual setups like these compliant - which isn't going to be cheap. Even after that there's a pretty decent chance you'll end up needing to hire 3rd-party services in order to be compliant: our \"internal\" auditor is just some big firm doing it for us.",
+          "author": "crote",
+          "replies": [
+            {
+              "text": "We've been ISO 27k certified for years now. ISO 27001 relies heavily on risk documentation and mitigation; you can get around the separation-of-roles by calling them out as individual risks and making sure the appropriate authority signs off on them (ie: have an email from the CEO saying \"I delegate Bob to create policies and sign off on them, and also perform our internal audits. I recognize the risks this creates but due to our size we accept them at this time.\")",
+              "author": "maximilianburke",
+              "depth": 1
+            },
+            {
+              "text": "Right but at n=1 you are writing the policies, reviewing them, signing off on them yourself, raising risks, then ducking out the back and running out again with a fake mustache so you can accept the risks you raised... regarding yourself... lol.\nAudits rely on a _certain_ amount of ceremony and theatre.\nHowever, since you typically pay for audits / certifications yourself you \nmight\n find someone who is willing to entertain the charade if you shop around enough. Probably a solo auditing firm :)",
+              "author": "xyzzy123",
+              "depth": 2
+            },
+            {
+              "text": "I offered self-hosting to bypass this.  It did the trick and I was able to convert the enterprise customers where compliance was a red line.",
+              "author": "ownagefool",
+              "depth": 1
+            },
+            {
+              "text": "We are a team of 1 developer and 1 sales/marketing and are fully certified. You can hire an external auditor for the internal audit. We have AI code reviews, so we don’t need an extra developer.",
+              "author": "frenkel",
+              "depth": 1
+            },
+            {
+              "text": "Anyone who certified you with AI code reviews is a moron.",
+              "author": "_se",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I am a solo entrepreneur. Don't.\nI learned that my business is unable to pass pretty much ANY certification or corporate IT security audit. Many of the questions simply do not apply to my business (\"do you have documented procedures for revoking employee access\") and the default answer is NO. Get even a single NO and you're done.\nI gave up and these days actively discourage enterprises from even trying to sign up — these kinds of discussions can take a \nlot\n of your time and the expected value is negative, because sooner or later those kinds of questionnaires \nwill\n be required (quite often the engineer talking to you doesn't even know this).\nSOC2 falls into that category: you are unlikely to pass, and even if you do, enterprise customers will pull out their own questionnaires out of, well, let's just call it their store backrooms, and you will fail those. Waste of time.",
+          "author": "jwr",
+          "replies": [
+            {
+              "text": "Same. For my business, the enterprises that want to use my software wouldn't actually be worth the hassle as their usage is not more than my normal business customers (SMB). Just more work and costs on my end.\nEarly on, I had a potential enterprise account (well known online store) that wanted everything that enterprises wanted in addition to multiple meetings (with all the stakeholders) for a $50/month account (my mistake for not getting that information upfront).\nAnother time, a large Canadian media company wanted me to agree to an uncapped liability provision. Respectfully turned them down.\nAll in all, I lost some prestige business but if I took them on, it wouldn't move my profit levels much.",
+              "author": "tortilla",
+              "depth": 1
+            },
+            {
+              "text": "Your getting that interest because it looks like a steal. Ultimately those businesses couldn't care less about $50/m (except to chance it) but they want - or even need - the enterprise terms.\nThey will pay $50 for your product... And probably $950 for the terms.\n(Not saying that would have been the right thing for you but my advice to folks who find themselves in this position is always 20x or 40x the price - if that is enough to make it worth your bother, then go for it. Good chance theyll pay)",
+              "author": "ErrantX",
+              "depth": 2
+            },
+            {
+              "text": "My plans start at $50. Top out at $10k a month.",
+              "author": "tortilla",
+              "depth": 3
+            },
+            {
+              "text": "Obviously I know nothing about your product, so completely uninformed!\nBut as an enterprise buyer $50/m and $10K/m is the same bucket in terms of cost. No one will blink until around 100K, depending on what it is.\n(The point I am making is; as an enterprise buyer I absolutely know how annoying it is for me to turn up and go \"this random regulation, we're interpreting it in this highly specific and unique way, and we want it asap\". Hence willingness to pay down that inconvenience)",
+              "author": "ErrantX",
+              "depth": 4
+            },
+            {
+              "text": "I know a solo founder who got SOC2 certified. He is literally the only person running the product/company and is SOC2 certified. I found that hilarious to be honest. But he is trying to play the \"win enterprise deals\" game but not sure how that helps when you are literally 1 person.",
+              "author": "codegeek",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I was part of several third party risk management audits from a corporate perspective.\nWe regularly audited and questioned SMBs (and big corps) with regards to their security posture. We knew that small shops wouldn’t be able to be fully compliant to SOC2 Type 2 or have an ISO27001 certified environment. If it was clear that our business wanted the product, we either tried to help the company with the questionnaire or created a risk report that was then signed by the business. In other words: even if your customer asks you to be compliant, you don’t have to be if they care enough about your product.\nIf you seem intent on getting things right, that’s a big plus. Most of your competitors don’t even know what SOC 2 is.",
+          "author": "_tk_",
+          "replies": [
+            {
+              "text": "Can this also be done for HIPAA and FERPA, or for those compliance requirements is the process the way to go and just filling out the questionnaire would not be sufficient?",
+              "author": "whitefang",
+              "depth": 1
+            },
+            {
+              "text": "SOC2 is, at the end of the day, a voluntary compliance standard. HIPAA and FERPA requirements are federal law. Waiving those requirements would not just mean accepting additional liability, but would normally make your customer ineligible to receive federal funds, which are typically a substantial chunk of revenue.",
+              "author": "blochist",
+              "depth": 2
+            },
+            {
+              "text": "Compliance with HIPAA for small firms is generally straightforward and there isn't a standard audit. It's not the same animal as SOC2, which is a CPA standard and is administered by certified auditors.",
+              "author": "tptacek",
+              "depth": 3
+            },
+            {
+              "text": "You have it completely the wrong way around.\nHIPAA is self-certifying, SOC2 isn't.\nNo way on earth you are getting SOC2 without an auditor.",
+              "author": "Grimburger",
+              "depth": 3
+            },
+            {
+              "text": "Thank you for your comment!",
+              "author": "sochix",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’ll spend some more time replying to this next week, so circle back to this comment; I’m someone who regularly helps people get past these audits, meet the criteria customers are trying to assess with these certifications, and vet startups who don’t have these certifications or budget.\nStart by pre-filling your own CAIQ v4 with an earnest “we don’t do this” or “we haven’t even thought about this” attempt: \nhttps://cloudsecurityalliance.org/artifacts/cloud-controls-m...\nThen read through it and see what you can address immediately (EDR on your laptop, MFA on your cloud environments, etc), followed by role playing your client; “based on answers to this questionnaire, what would I not accept?”\nThere will be some items you can’t fix.\nYou’ll soon find out the majority of customers, including banks, governments, defence contractors, crypto startups — simply do not care. If they want to use your product, they’ll work with you.\nIt may be single-tenancy, it may require architectural changes, it may mean making it selfhosted with a time-bomb, but you’ll be able to address the requirements of the CISO, compliance monkey or executive.\nI’ve yet to meet an industry or individual I can’t convince. Even if the product is a hot mess, half baked and radioactive — we’ll deploy it on a VM running inside of a VDI within the customer’s environment, because slopping together a migration path is _so easy_, and those early, highly regulated clients are worth it.",
+          "author": "apimade",
+          "replies": [
+            {
+              "text": "Major problem of entire compliance/auditing industry is not enough asking in companies \"what are the actual risks we are dealing with\", \"what's the goal for given control\", \"do we have alternative control ensuring that\".\nCompounded by cheap shitty auditors that just mark down checkboxes on a worksheet",
+              "author": "p_l",
+              "depth": 1
+            },
+            {
+              "text": "Agree, see the Delve fiasco. But that’s not their job. Their job is literally checkbox. However some audits are so poorly done, or have auditors with zero real world engineering or cyber experience, they’re actively harmful to a product or customer base.\nExample: insane, complex password policies and password rotation policies. These are still pushed by auditors rather than trying to build a reasonable exception case with the client.",
+              "author": "apimade",
+              "depth": 2
+            },
+            {
+              "text": "I was thinking more of audits that do not even allow deviation nor have any understanding what they are asking for each checkbox. So it's hard to even start on anything nuanced.",
+              "author": "p_l",
+              "depth": 3
+            },
+            {
+              "text": "Please don't do any extra engineering for your wiki project simply because it appears on the Cloud Security Alliance CAIQ worksheet. These worksheets are built by committees where every member has a bunch of idiosyncratic controls and objectives that they slip into the document.",
+              "author": "tptacek",
+              "depth": 1
+            },
+            {
+              "text": "Sometimes good change comes from compliance. More than once I’ve seen major product resource shift to address major cybersecurity gaps, in response to a compliance led audit.\nCompliance is not security, but engineers, especially solo ones tend to have their blinkers on when they’re trying to build something to first work.",
+              "author": "apimade",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48164173",
+      "title": "Ask HN: When did computers stop being fun?",
+      "link": "https://news.ycombinator.com/item?id=48164173",
+      "domain": "news.ycombinator.com",
+      "author": "klez",
+      "score": 72,
+      "comment_count": 102,
+      "created_ts": 1778968971,
+      "is_internal": true,
+      "post_text": "Of course I don&#x27;t mean they stopped being fun for everyone. My impression is that they&#x27;ve been on one side &quot;corporatized&quot;, and on the other became a vehicle for mindless entertainment.<p>I don&#x27;t care for coding new stuff. Everything I may need either already exists or is too complex to do on my own (and no, I won&#x27;t vibe-code it, what&#x27;s the fun in that?)<p>I don&#x27;t even code for work anymore since I moved to a project&#x2F;service management role.<p>Basically, the spark I felt some 25 years ago seems to be completely gone.<p>Any suggestion on getting it back?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "Microcontrollers are fun. The specs of modern MCs are similar to home computers 30 years ago. The community aspect is there. They’re cheap, too.",
+          "author": "teamonkey",
+          "replies": [
+            {
+              "text": "Esp32s are amazing fun. I designed boards in the 80s and I still love tinkering with microcontrollers. The reflux control for my still currently uses a brushed motor controlled by PWM and I am upgrading it to a second hand pump with a brushless motor so I am looking at driving it. I just set up an old drone ESC and am controlling the motor with dshot and it works ok. There is a little pre built board Simple FOC that is also esp32 I just ordered for 20 bucks to give a try.\nI've been a developer for 45 years and I still actually like it most days.",
+              "author": "mianos",
+              "depth": 1
+            },
+            {
+              "text": "I recently learned of ESP32-P4 that has graphics compositing optimizations.\nA couple of years ago, I used an RP2040 to build a graphics card with 2D triangle filling and other pretty nice abstractions.\nNext time... It'll be the ESP32-P4. Somewhat looking forward to that project, but there are prerequisites that need to be dealt with first. Yes, I'm very grown up. It sucks. :)",
+              "author": "flowerthoughts",
+              "depth": 2
+            },
+            {
+              "text": "agreed, I think much of the appeal for me is the physical element of wiring things up and seeing it do something more than changing a few pixels on my screen.\nSoldering is very relaxing as well.",
+              "author": "forsalebypwner",
+              "depth": 1
+            },
+            {
+              "text": "How you know me so well. I also like how cheap all of the parts and pieces are. It's like the next step after Legos. Although, they have way more interesting Legos today than what I had as a kid. I've bought components with an a specific project in mind, but once it's built I find myself taking them apart and making a new something with it combined with other parts I have lying around. Things are cheap enough that I don't mind so much if I got something wrong and release a little magic smoke.",
+              "author": "dylan604",
+              "depth": 2
+            },
+            {
+              "text": "Yes exactly! I still can't believe how cheap an ESP32 is - a device with bluetooth, WiFi, and ample processing power and RAM for most tasks you'd use an MCU for. And yeah I love finding out I already have all the parts I need. Now, keeping them organized, that can be a struggle. I have a couple of these double sided tool organizers [1] and a tackle box, but sometimes I'm still digging through bins to find a part I \nknow\n I have but can't find\n[1] \nhttps://i.imgur.com/4KpnFZJ.png",
+              "author": "forsalebypwner",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Over the last 30 years the culture and power has made a gradual shift from 100% pure hobbyists to 4% hobbyists, 48% scammers/predators, and 48% commercial.\nYou can't pinpoint when the fun stopped and it's subjective. I personally became conscious that the party was fully over around 2023, after a few years of feeling it subconsciously.\n2023 was when Twitter and Reddit changed their respective APIs and became openly user hostile, which was the symbolic turning point for me.",
+          "author": "gdulli",
+          "replies": [
+            {
+              "text": "The world is full of people who get excited about things, but never, ever help. The Internet brings these kinds of people right to your door. They’re exhausting and toxic in a way you don’t truly appreciate until you really notice. Eject them from your life and computers become nice and fun again.",
+              "author": "hyperhello",
+              "depth": 1
+            },
+            {
+              "text": "I feel 2023 is when we entered the decrepit stage, but ~2015 is when it began: Theranos, Musk's charlatanry and cult, \"unicorns\", Cambridge Analytica, the raise of social media addiction, etc.\nNot that things were amazing before that... it's just that mid 10s had simply too many bad actors showing up at the same time with a lot of money and power.",
+              "author": "pera",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I don't care for coding new stuff. Everything I may need either already exists or is too complex to do on my own\n> Any suggestion on getting it back?\n1. Take a break. I don't mean stop working, just fill your free time with other stuff, but if you don't code at work, it is a bonus. Try other things. I was in a position you describe, and I took a break, dived into studying psychology, you can choose anything you like, like keeping stray cat population in your neighborhood fed and sufficiently stroked behind their ears. Or can you play a harp? You can learn it, you know. (Speaking about psychology: your condition is a middle age crisis. Self-realization is done, all immediate goals are reached, you've got more freedom to choose next goals, and everything is increasingly becoming a routine. Nothing bad is happening, you just need to adapt. You will adapt, you don't need to do anything special, it will happen all by itself. Just exercise your new freedom a little, and in a couple of years new goals will find you.)\n2. Stop thinking of important things. Had you read \"Surely you are joking, Mr. Feynman!\"? If not, I suggest to read just for fun of it, but among all the jokes Feynman describes a period in his life when he felt like you. He couldn't find any good ideas what he could do in physics. At some point he took a seemingly silly problem, and solved it. And he came back to physics with it, later he discovered the differential equations from that silly problem in another \"serious\" problem and eventually got a Nobel Prize.\nThe moral is: you are overthinking it. You are looking for ideas for programs but you use too narrow filters. Like the problem should match your skills. Or the problem should be important enough to work on it.\nSo just take a break and look for some interesting problem. If you find any, you find some other way to entertain yourself, so not a big deal. Just stop obsessing about it and I'm sure it will come naturally.",
+          "author": "ordu",
+          "replies": []
+        },
+        {
+          "top": "It’s hard for me to know if it’s the computers that changed or my stage of life.\nI think they become less fun sometimes during the later stage Web 2.0 era as everything shifted toward services. For most, computers became a thin client to access services on the Internet. To me, this isn’t very fun. The computer becomes an appliance to access services rather than one used to run programs that can be customized and tailored to the user. Of course that local experience can still exist, but only for users who are very intentional. For shared experiences, it’s only for users whose friends are also intentional. This intentionality usually means doing a lot of extra work. This work was not an issue when the pay off of new functionality was there, but is harder to justify when it’s often less functionality for more work… the main upside being freedom and agency over the experience.\nSeemingly every service being a front to collect and sell data also makes things less fun. There is a certain level of trust that needs to exist when running software and that trust relationship has been broken, even by real companies. It makes it hard to trust anything, which pushes me away from trying new things that might be fun.\nThis change coincided with my transition to adulthood, where priorities shift. It’s impossible to say if I’d still find computers fun in 2026 if I was 19 again, but my gut tells me I’d be a lot less interested.\nIf there is a path back, I think it might be along the lines of Pewdiepie’s newfound love of Linux. He seems to be having a ball.",
+          "author": "al_borland",
+          "replies": [
+            {
+              "text": "Given that enshittification is such a common term today, that didn't exist a few decades ago, suggests the decay is real not just a stage of life perception.\nEarlier computers, and particularly the early Internet, were all about personal freedom. The computer served you and the Internet was there to connect you with peers. So that was fun and the possibilities were literally infinite.\nAs the giant corporations and particularly the advertising industry (which destroys everything it touches) have slowly taken control, computers and the Internet no longer serve us, the people. We are now the product, to be fully monetized at every stage. Monetization alone is bad but not terrible, but in order to maximize monetization the corporations \nalso\n need to exert control, thus all the increasingly restrictive technology where we are very clearly only a paying consumer kept within a box, not a participant.\nWhile the technology world has been almost entirely enshittified, it's good to keep some optimism though. The fun parts still exist, they're just more effort to find.\nOn the Internet, support your hobby email lists (open participation, no corporate control), support enthusiast-driven forums and websites (independently run, no social media giants monetizing every message!). There are fewer of these but they do exist, support them. Or start your own! Don't let the megacorporations own your hobby interactions.\nOn the programming side, work on something hands-on fun if you like. When I want to geek out programming like it's 1995, I have a BSD box and work on a hobby project which is all in C. No vibe coding, no thousands of unknown npm dependencies, none of that junk. Just me and emacs and the kernel and the compiler. I don't work on it often but every now and then a weekend of real programming is very relaxing and reminds me how much fun it is.",
+              "author": "jjav",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It seems to be strongly correlated with (and perhaps caused by) the iphone / smartphone / tablet boom of the 2010s. That's when lots of mass market things slowly shifted from being on \"computers\" or \"the internet\" into being apps, which are inherently geared towards consumption and not creation, and encourage storing all the data in \"the cloud\" instead of on the device.\nThat left \"desktop\" computing as no longer where the action was, but just a legacy platform for people doing their day jobs, and most things being dumbed down into single-purpose apps that cannot be modified, customized, combined, or anything fun/interesting/not intended by the vendor.",
+          "author": "tacostakohashi",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48122103",
+      "title": "Ask HN: What are you working on (non-AI)?",
+      "link": "https://news.ycombinator.com/item?id=48122103",
+      "domain": "news.ycombinator.com",
+      "author": "BrunoBernardino",
+      "score": 47,
+      "comment_count": 59,
+      "created_ts": 1778681272,
+      "is_internal": true,
+      "post_text": "Please don&#x27;t turn this into an inflammatory post.<p>Regardless of &quot;AI&quot; being good or bad (it&#x27;s not even just one thing as many of you know), I feel like the &quot;What are you working on?&quot; posts are drowning in things that use AI for something and&#x2F;or are clearly &quot;AI slop&quot;.<p>I&#x27;d like to look at things other humans have been doing (even if they used a bit of some kind of AI for assistance), that aren&#x27;t a product or tool that uses AI for something.<p>I know it exists (and I use and build some), but it&#x27;s incredibly hard to find nowadays. Can you help me?<p>Thank you.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48165211",
+      "title": "Tell HN: Mindie.dev is scraping emails from profiles to send spam",
+      "link": "https://news.ycombinator.com/item?id=48165211",
+      "domain": "news.ycombinator.com",
+      "author": "stackghost",
+      "score": 27,
+      "comment_count": 6,
+      "created_ts": 1778979997,
+      "is_internal": true,
+      "post_text": "Got the following from hello@mindie.dev<p>----<p>Hey Stackghost —<p>Saw your HN comment about freelance time tracking &#x2F; invoicing. TimeChat is a Telegram bot: type &quot;1.5 acme bug fix&quot; after work, end of month it auto-generates the PDF invoice for your client. Side-by-side vs Toggl: mindie.dev&#x2F;vs&#x2F;toggl.<p>For HN readers I&#x27;m running EARLY10: $1&#x2F;mo (was $7). One-click checkout: timechat pro 2-mo trial<p>If it&#x27;s useful, I&#x27;d love your feedback. Free tier covers solo testing if you want to start there: https:&#x2F;&#x2F;timechat.mindie.dev<p>Not relevant? Reply STOP and I&#x27;ll never email again.<p>— the Mindie team\nmindie.dev<p>----<p>I went back through my comment history and I don&#x27;t believe that I have ever mentioned freelancing, time tracking, or invoicing in a comment except once when I mentioned an invoice peripherally a year ago.<p>Thus, mindie.dev is scraping emails from profiles and hallucinating relevant reasons to try to grease their sales funnel.<p>Attempting to unsubscribe via their &quot;reply stop and I&#x27;ll never email again&quot; resulted in a bounced email.<p>I find this behavior to be ultra scummy and dishonest.  I enjoy the communal feel from people having open emails on their profiles but it seems the taboo has been broken.  I will be removing my email from my profile and suggest you do the same.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "freelance",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48166147",
+      "title": "Ask HN: What LLM models are you using and why?",
+      "link": "https://news.ycombinator.com/item?id=48166147",
+      "domain": "news.ycombinator.com",
+      "author": "rubyn00bie",
+      "score": 10,
+      "comment_count": 13,
+      "created_ts": 1778993841,
+      "is_internal": true,
+      "post_text": "Hello, HN!<p>I&#x27;m wondering what y&#x27;all are using for your daily driver these days and <i>why</i>?<p>I&#x27;ve found myself using GPT-5.5 more than Opus 4.7 for work; which, has been a pretty big reversal. Previously, I was using Opus 4.6 for everything, and GPT-5.4 was only ever in the picture to provide a second opinion (with Grok a distant 3rd only when I wanted to throw some &quot;chaos&quot; into the mix). The reason I&#x27;ve personally pivoted, is I&#x27;ve found GPT-5.5 to be a bit more consistent, predictable, and tends to write in a way I find less tiresome (even if the code isn&#x27;t quite as good as Opus 4.7).<p>For personal projects, I&#x27;ve started experimenting with DeepSeek V4 and have been pretty blown away by it because of it&#x27;s cost to quality and I&#x27;ve found the 1M token window to be incredibly helpful for long-running tasks. Though I may also have an over abundance of fear of compaction during tasks. DeepSeek isn&#x27;t quite as good at one-shotting things as either GPT-5.5 or Opus-4.7, but with sufficient linter&#x2F;static-analysis guardrails I&#x27;ve found it&#x27;s really hard to complain or find faults (especially at the price).<p>Finally, if you&#x27;re also making use of reranking and&#x2F;or embedding models, or anything else, to augment or perform specific tasks please share those too!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48191051",
+      "title": "Ask HN: How to enforce engineers to understand the code they are shipping",
+      "link": "https://news.ycombinator.com/item?id=48191051",
+      "domain": "news.ycombinator.com",
+      "author": "hchua",
+      "score": 7,
+      "comment_count": 17,
+      "created_ts": 1779181898,
+      "is_internal": true,
+      "post_text": "Everyone is using AI for everything now. Company is pushing for AI-first and encourages the adoption of AI in every part of our work.<p>AI for planning, AI for RFC, AI for writing code, AI for creating PRs. Sure we can have harnesses and tests to ensure nothing breaks. But how do we enforce engineers to have a deep understanding of the code that they are shipping?<p>Our team has the usual suggestions: write a plan first, write test cases first, etc. But in this age, how do you verify that the engineer did not simply delegate these tasks to an LLM first?<p>Also genuinely worried about junior engineers&#x27; growth if this is the future.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48189073",
+      "title": "Ask HN: Company is rapidly cutting AI tool spend how to prep team?",
+      "link": "https://news.ycombinator.com/item?id=48189073",
+      "domain": "news.ycombinator.com",
+      "author": "Snakes3727",
+      "score": 7,
+      "comment_count": 11,
+      "created_ts": 1779163828,
+      "is_internal": true,
+      "post_text": "Company I work for is now rapidly planning to scale down its AI tooling spend. Claude code access is basically getting removed and people are forbidden from using personal plans.<p>Reasoning is cost apparently our monthly Claude bill has become astronomical for the org. Nearly 3x our saas&#x27;s cloud spend.<p>Apparently we are going to get limited access to codex at severely reduced plans.<p>I have tried some local models such as Kimi, however most are barely functional.<p>I am very concerned as the expectation of amount of work done is to remain consistent. Ignoring the fact teams have made entire workflows around Claude I am very worried and frustrated.<p>How can I help my team ease this transition?\nAre their local models that run well on local machines that only have 16gb ram?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I’d look for a job, not because AI is so important for development that you have to have it, but because your company doesn’t have enough revenue opportunities (or the leadership to find them) that employee productivity doesn’t matter to them.\nCompanies doing well and growing pass on crazy revenue opportunities because the ones they are focused on are even higher roi. They don’t get bogged down in incremental costs.\nIf they are cost cutting on dev tooling some bright boss is going to realize the real savings is in cutting down on devs. If you are an American dev team your health insurance costs smoke any amount of token spend.",
+          "author": "kasey_junk",
+          "replies": []
+        },
+        {
+          "top": "My own company hired a young goon of a man to spearhead their AI initiative. Lots of smiles and arrogance from him. Fast forward 2 months and reality has hit. Weekly meetings asking for feedback draw blank stares as employees explain that Claude can’t do shit to help their workload. This kid is starting to sweat. I bet he’ll be gone by the summer. Hilarious.",
+          "author": "xvxvx",
+          "replies": [
+            {
+              "text": "Unfortunately at my company leads have no insight into employees claude code caps, and no one has ever complained until now. Apparently some people were basically running with insane caps on CC (25k+), if you asked for it you were approved. Which lead to some people doing insane things on CC for no purpose.",
+              "author": "Snakes3727",
+              "depth": 1
+            },
+            {
+              "text": "Just setting up better SOPs around using AI for coding is going to help them a ton. They can chalk off the sunk cost to a \"learning phase\", with now being the time to use the lesson learnt to formulate some future-looking standard operating procedures. No need to suddenly go cold-turkey on AI. My 2 cents.",
+              "author": "baigy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "With Anthropic's prices it soon will be cheper to hire real people then \"hire\" their models. If you use it for codding I'm pretty sure you will not be able to find any model which can be hosted on local machine and produce more or less acceptable results. Options - use something more cheaper, Deepseek for example, or if company big enough think about hosting some open source on you private DC with GPUs, I know that some companies develop their own solutions, but I don't have good enough expirience to tell how mach it may cost",
+          "author": "SashaMApps",
+          "replies": []
+        },
+        {
+          "top": "Specifically: to explore your opensource options with compute limitations, ask the community at r/LocalLLaMA on reddit. That's where the current SOTA opensource text-to-text models live.",
+          "author": "baigy",
+          "replies": [
+            {
+              "text": "Yeah i was looking there earlier, its just we thankfully mostly have macbooks, but i recently found out new devs are getting the smaller 8gb ram macbooks as well. Which is going to be even more frusturating.\nSince my team is mostly remote running LLM on a cluster in the office is not really viable short term.",
+              "author": "Snakes3727",
+              "depth": 1
+            },
+            {
+              "text": "This is totally going to suck, but here's one option I was just suggested a few mins ago: \nhttps://www.reddit.com/r/LocalLLaMA/comments/1th1mqx/comment...\n For context, I was asking about running anything OpenClaw-friendly on my RTX4060 8GB VRAM. I know yours is a more involved use-case, but there's still some optionality here.",
+              "author": "baigy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The 16GB of RAM will really limit you, what about trying OpenRouter and using the cheaper models such as Kimi instead of running them locally?",
+          "author": "itg",
+          "replies": [
+            {
+              "text": "Given our field we cannot really use anything not approved by management. Pretty much if it doesn't leave our machine we can use its just i don't find anything good. We even have some new devs on the macbook neos, and i can't even find anything for them.\nI was considering having something run locally within out building but the time when something like that would be avaliable is not near term so i am trying to make the best of what i can do.",
+              "author": "Snakes3727",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48179203",
+      "title": "Ask HN: Do you know what data your AI coding agent sends to the cloud?",
+      "link": "https://news.ycombinator.com/item?id=48179203",
+      "domain": "news.ycombinator.com",
+      "author": "lbrauer",
+      "score": 5,
+      "comment_count": 6,
+      "created_ts": 1779109371,
+      "is_internal": true,
+      "post_text": "Every session my AI coding agent reads files, runs commands, makes API calls. I have no idea exactly what ends up in the cloud. Is anyone actually tracking this at a granular level, or do we just trust the tool?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I'm really curious, if you use open-source tools like Codex. And you actually go through the source code carefully to make sure there are no backdoors, doesn't that mean you can use it without worrying about your data getting leaked—at least to some degree?",
+          "author": "boundless88",
+          "replies": []
+        },
+        {
+          "top": "I trust the tool in that I don't send anything sensitive in there! Unless I built it, I assume it's going somewhere.\nWe have a policy at work around this where our most sensitive data can only be passed to on prem models.\nThat being said, I have no evidence of anything going to the cloud or frontier providers doing anything with chat history other than storing it for later.\nSelf-hosted + custom harness for anything I don't want getting out at all.",
+          "author": "zambelli",
+          "replies": [
+            {
+              "text": "Makes sense. Does your custom harness give you a record of what actually crossed the boundary, or is it mostly trust-based blocking?",
+              "author": "lbrauer",
+              "depth": 1
+            },
+            {
+              "text": "My harness is only being used with on prem models, so I don't have any checks in place. If the gguf is somehow calling home, I'm not catching it.",
+              "author": "zambelli",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You don't. Even if you read the policy, it would be jumbled in legalese. Instead, give it access to only the kind of data you are okay with being sent to the cloud. Also, the company reputation at stake matters more than their policies.",
+          "author": "aianisulislam",
+          "replies": []
+        },
+        {
+          "top": "I have started treating AI coding tools more like giving temporary contractor access to my machine than just using auto complete.",
+          "author": "SyntaxErrorist",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48176542",
+      "title": "Ask HN: Could free/low cost LLMs be a momentary thing?",
+      "link": "https://news.ycombinator.com/item?id=48176542",
+      "domain": "news.ycombinator.com",
+      "author": "senda",
+      "score": 5,
+      "comment_count": 11,
+      "created_ts": 1779089803,
+      "is_internal": true,
+      "post_text": "Say they(OpenAi Etc)don’t find a way to reduce the cost of running these LLMs. Will we shift towards slower&#x2F;worse LLMs running locally? Or maybe enterprise ones only used by large corporations for specific tasks?<p>Will the era of using these to generate code end? Is the assume that the inference problem will be solved?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48202774",
+      "title": "Ask HN: What are Stainless users doing now that Anthropic has killed it?",
+      "link": "https://news.ycombinator.com/item?id=48202774",
+      "domain": "news.ycombinator.com",
+      "author": "ubutler",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1779247700,
+      "is_internal": true,
+      "post_text": "Hey HN,\nTwo days ago, Anthropic bought Stainless and then immediately killed it. Stainless offered the ability to take an OpenAPI spec and automatically turn it into SDKs in almost any language, plus an MCP server.<p>My company makes legal AI models that we serve through an API. All our SDKs we&#x27;re generated by Stainless. Those SDKs are in active use in production and, come September, will need to be maintained by someone other than Stainless.<p>We&#x27;re not the only ones in this boat. OpenAI and Google also relied on Stainless.<p>What are other users planning on doing now that Stainless is gone?<p>We&#x27;re hoping that a competitor or open-source community ends up taking on the mission of ensuring backwards compatibility or, at the very least, as seamless a migration as possible. If that doesn&#x27;t get pulled off soon though, we may be forced into either completely breaking existing code or else maintaining everything by hand — the very thing Stainless was meant to take off our plate.<p>Has anyone else thought of better options yet?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202486",
+      "title": "Alternatives to HN for \"tech outside of AI\" discussion?",
+      "link": "https://news.ycombinator.com/item?id=48202486",
+      "domain": "news.ycombinator.com",
+      "author": "summonerOS",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1779244987,
+      "is_internal": true,
+      "post_text": "I&#x27;m not the first to opine that recently there seems to be an effect on HN whereby the AI hypetrain has essentially drowned out discussions of anything other than stories either directly or indirectly related to AI and other terrible decisions coming out of the US.<p>While I do often have the instinct to completely bury my head in the sand and try to forget it&#x27;s all happening I&#x27;m more concerned with the psychological impact it&#x27;s having. I&#x27;m basically sick and tired of being so sick and tired and exposure to so many continuously miserable headlines isn&#x27;t helping. What I would like instead is a return to the days when HN was a forum that still showcased cool things people were working on and included discussions on topics outside of the AI-saturated lens that now dominates.<p>If any good alternatives exist I&#x27;d like to join! Or perhaps there are some means of using HN that would allow me to filter the AI noise a bit better. If anyone has had any success with this please let me know!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48198841",
+      "title": "Ask HN: Is grpcurl home page compromised?",
+      "link": "https://news.ycombinator.com/item?id=48198841",
+      "domain": "news.ycombinator.com",
+      "author": "jicea",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1779221619,
+      "is_internal": true,
+      "post_text": "Clicking on some FAQs (like &quot;Does grpcurl Does grpcurl require a .proto file?a .proto file?&quot;) redirects me to https:&#x2F;&#x2F;i3seperfiles.com a really suspicious web site). Am I crazy or over-paranoid?<p>Update: nevermind that&#x27;s been discussed here https:&#x2F;&#x2F;www.fullstory.com&#x2F;blog&#x2F;inside-a-global-campaign-hijacking-open-source-project-identities&#x2F; Sad to see an Open source project targeted like that",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48195267",
+      "title": "Ask HN: Does root have to be uid 0? Does uid 0 have to be root?",
+      "link": "https://news.ycombinator.com/item?id=48195267",
+      "domain": "news.ycombinator.com",
+      "author": "axismundi",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1779207029,
+      "is_internal": true,
+      "post_text": "what&#x27;s so special about root&#x2F;0?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48195550",
+      "title": "Ask HN: How do word docs, slides, excel, and PDFs generate value?",
+      "link": "https://news.ycombinator.com/item?id=48195550",
+      "domain": "news.ycombinator.com",
+      "author": "FailMore",
+      "score": 4,
+      "comment_count": 6,
+      "created_ts": 1779208174,
+      "is_internal": true,
+      "post_text": "This is a bit vague, but as an engineer, it’s possible to walk past the other functions in an office and see people creating word docs, presentations, etc. and be a bit shocked that creating static artifacts is valuable enough to drive employment. I’m wondering if anyone has any ideas on where the value lies in this work. I know this is all very industry specific, so if you want to share you can talk from your own perspective. Vague and wild answers accepted too. I’m looking to have a wide ranging discussion about this.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I’ve sat on both sides of this and it’s a genuinely interesting question.\nAs someone with a technical background I completely understand that feeling. You walk past someone spending three hours on a PowerPoint and think, what is actually happening here.\nBut here’s what I’ve come to understand. The document is rarely the work. It’s the evidence of the work.That Word doc someone spent a day on probably represents weeks of conversations, decisions, disagreements, alignments and compromises that happened before anyone opened a blank page. The document is just where all of that gets crystallised into something an organisation can act on.\nOrganisations don’t run on code or products alone. They run on shared understanding. And shared understanding needs to be written down, formatted, presented and communicated in ways that different kinds of people can absorb and trust.\nThe person making that presentation isn’t just making slides. They’re translating something complex into something a room full of people with different contexts can agree on in forty five minutes. That’s actually a really hard skill.\nThe other thing worth considering in most organisations decisions don’t get made because something is technically correct. They get made because someone communicated it in a way that felt credible and clear to the people holding the budget.\nEngineers build the thing. But someone has to convince the organisation the thing is worth building, funding and scaling.\nThat’s what those Word docs and ppts are often doing. Unglamorous. Underappreciated. But genuinely load bearing",
+          "author": "punyaatloomavi",
+          "replies": [
+            {
+              "text": "Thanks very much. I found that a very thoughtful reply",
+              "author": "FailMore",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You could say the same about software. In both cases someone is looking at a screen typing things. One is used for communicating with other humans, the other is used for communicating with computers. For sure there are software engineers working on projects where its not apparent how it generates value and it may not actually generate value.",
+          "author": "mattbrewsbytes",
+          "replies": []
+        },
+        {
+          "top": "For small service businesses (think: tattoo shops, salons, personal trainers), PDFs still generate enormous value as consent forms and waivers.\nEvery tattoo artist needs a signed liability waiver. Every personal trainer needs a health screening form. These are still overwhelmingly paper PDFs that get stuffed in a filing cabinet.\nThe value isn't in the format itself - it's in the legal protection the signed document provides. The format is actually a hindrance (hard to search, easy to lose, impossible to analyze at scale).\nThe real opportunity is replacing these static PDFs with digital equivalents that maintain the legal value but add searchability, automatic storage, and analytics.",
+          "author": "apollyx_jojo",
+          "replies": []
+        },
+        {
+          "top": "Those employees cannot (and are not expected to) code, so dynamic elements are not an option. So what you'll get are mostly either reports or messages. Reports could be created by software (which is how an engineer would do that), messages (like responding to client or manager requests) require more human-facing skills.",
+          "author": "fiedzia",
+          "replies": []
+        },
+        {
+          "top": "Sales, communication, coordination\nHow do your priorities as a developer materialize? Why are those the priorities? How are they decided upon? What does it take to do this?",
+          "author": "verdverm",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48192078",
+      "title": "Ask HN: How often do you code the expected way instead of a better one?",
+      "link": "https://news.ycombinator.com/item?id=48192078",
+      "domain": "news.ycombinator.com",
+      "author": "recycling",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1779191200,
+      "is_internal": true,
+      "post_text": "Since the post title length is limited on Hacker News, I had to make it less specific. So the real question is this:<p>I am talking about situations where you just joined a company and treated as the lowest person in the food chain. Old devs act like they can do whatever they want, even when they committed the exact same thing or much worse just a month ago, but suddenly you are told not to do it this because &quot;we dont do things like that here.” Finding common patterns in code doesnt help because actual standards live in their heads.<p>It feels like a clear double standard culture, where the rules depend more on time you spend in company or seniority, and internal politics than on actual engineering principles or consistency. As a newbie, you are expected to follow unwritten rules that nobody clearly explains, while old time devs are allowed to ignore them.<p>How do you handle this kind of environment without constantly getting frustrated?<p>Also I dont understand why some devs when just being slightly higher in hierarchy treat other people that bad when actually we all rot in office till end of our life from 9 to 5. Give some respect to your fellow!<p>There are almost never congrats when you did extra effort and spend some time do something exceptionaly good.<p>I do understand this is not how it works in all companies but anyway.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "politics",
+        "culture"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48199074",
+      "title": "Ask HN: Antigravity 2.0 installer breaks existing Antigravity IDEs",
+      "link": "https://news.ycombinator.com/item?id=48199074",
+      "domain": "news.ycombinator.com",
+      "author": "jdw64",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1779222474,
+      "is_internal": true,
+      "post_text": "If you had Antigravity IDE installed before yesterday&#x27;s 2.0 release, both products now live in the same directory and only one of them actually runs. Double-clicking Antigravity IDE.exe launches 2.0.<p>Electron exes load resources&#x2F;app.asar first, then resources&#x2F;app&#x2F;, from the same folder as the exe. The exe name has no effect on this lookup. The 2.0 installer dropped app.asar (2.0 code) next to the IDE&#x27;s app&#x2F; folder, and the asar wins — so both Antigravity IDE.exe and Antigravity.exe end up loading 2.0.\nif you window, Turn on the powershell<p>Workaround:\ncd &quot;$env:LOCALAPPDATA\\Programs\\Antigravity\\resources&quot;\nRename-Item app.asar app.asar.bak<p>Antigravity IDE.exe then falls back to the IDE&#x27;s app&#x2F; folder and launches the real IDE 1.107.0. Rename back to restore 2.0.<p>Caveat: only one at a time. With app.asar renamed aside, Antigravity.exe also falls back to the IDE folder. Permanent fix is to uninstall both and reinstall to separate directories — the installer is Inno Setup (unins000.exe), so &#x2F;DIR=&quot;...&quot; should work.\nNot an Electron bug. Location-based loading is documented behavior. This is a packaging mistake in Google&#x27;s 2.0 installer assuming two separate Electron products can share an install directory.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48193451",
+      "title": "Ask HN: Go all in on startup idea, or stay W2",
+      "link": "https://news.ycombinator.com/item?id=48193451",
+      "domain": "news.ycombinator.com",
+      "author": "Mnexium",
+      "score": 2,
+      "comment_count": 16,
+      "created_ts": 1779199353,
+      "is_internal": true,
+      "post_text": "I want to ask HN because it feels this community is more tech oriented then most out there. I have been building an idea for the past couple of months, I think it is a good idea, if not for fear I&#x27;d dive head first full time into the idea. Personally, leaving stable W2 is scary, diving into the unknown start-up land is equally scary. Putting in all the effort for an unknown pay off, if any.<p>I don&#x27;t really have the network to vet my idea, to tell me wether it is good or bad, something worth building or not? Something worth diving into or not.<p>My idea is https:&#x2F;&#x2F;mnexium.com - it is a LLM infrastructure layer. All the things you need to do to get an LLM up an running Mnexium would handle.<p>The reason I want to jump into this start-up is mainly because I&#x27;d use this app, and I build it because I needed something like it. Is that enough signal to continue to build?<p>I would really love to hear others opinions on what they would do? If they&#x27;ve navigated something similar?<p>I think the last bit I&#x27;d add to the above is I have this nagging feeling that I want to build something, from scratch. Build it to the best of my limited ability - but I don&#x27;t want to fail.<p>Appreciate it",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48199169",
+      "title": "Ask HN: How are agentic workflows meant to offset AI debt?",
+      "link": "https://news.ycombinator.com/item?id=48199169",
+      "domain": "news.ycombinator.com",
+      "author": "l33tbro",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1779222829,
+      "is_internal": true,
+      "post_text": "I don&#x27;t know quite how to put it.  But projects I inherit and am supposed to get over the line have this same strange quality: they are &#x27;undesigned&#x27;.<p>I believe this may be  because processes and context-related code that was previously considered with basic design principles and functionality seem not so much to be missing, but they have they seem to be simulated.  Giving the impression of being considered, which is quite difficult for a project manager to catch.<p>So I&#x27;m now spending a lot more time now going back and designing this &#x27;undesigned&#x27; work.  Rebuilding things manually that was abstracted past or missed entirley, which people at the project management level think &quot;won&#x27;t take you that long&quot;.  Which I attribute to this insidious problem of things looking like they were designed.<p>How is this meant to work when deployed at scale?  When there is so much technical debt generated by AI, do the efficiency gains actually start to be losses?<p>I&#x27;m not sure how agentic workflows can actually solve this.  It seems as if you can have agents doing stuff, but they&#x27;re still going to get a lot wrong and you&#x27;ll need to drop someone in and rebuild.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "manager"
+      ],
+      "comments": []
+    }
+  ]
+}
