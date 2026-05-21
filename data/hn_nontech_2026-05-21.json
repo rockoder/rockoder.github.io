@@ -1,0 +1,544 @@
+{
+  "scraped_date": "2026-05-21",
+  "source": "hacker_news",
+  "total_scraped": 85,
+  "nontech_count": 22,
+  "posts": [
+    {
+      "id": "48192383",
+      "title": "Show HN: Forge – Guardrails take an 8B model from 53% to 99% on agentic tasks",
+      "link": "https://github.com/antoinezambelli/forge",
+      "domain": "github.com",
+      "author": "zambelli",
+      "score": 646,
+      "comment_count": 236,
+      "created_ts": 1779193387,
+      "is_internal": false,
+      "post_text": "Hi HN, I&#x27;m Antoine Zambelli, AI Director at Texas Instruments.<p>I built Forge, an open-source reliability layer for self-hosted LLM tool-calling.<p>What it does:<p>- Adds domain-and-tool-agnostic guardrails (retry nudges, step enforcement, error recovery, VRAM-aware context management) to local models running on consumer hardware<p>- Takes an 8B model from ~53% to ~99% on multi-step agentic workflows without changing the model - just the system around it<p>- Ships with an eval harness and interactive dashboard so you can reproduce every number<p>I wanted to run a handful of always-on agentic systems for my portfolio, didn&#x27;t want to pay cloud frontier costs, and immediately hit the compounding math problem on local models. 90% per-step accuracy sounds great, but with a 5-step workflow that&#x27;s a 40% failure rate. No existing framework seemed to address this mechanical reliability issue - they all seemed tailor-made for cloud frontier.<p>Demo video: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;MzRgJoJAXGc\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;MzRgJoJAXGc</a> (side-by-side: same model, same task, with and without Forge guardrails)<p>The paper (accepted to ACM CAIS &#x27;26, presenting May 26-29 in San Jose) covers the peer-reviewed findings across 97 model&#x2F;backend configurations, 18 scenarios, 50 runs each. Key numbers:<p>- Ministral 8B with Forge: 99.3%. Claude Sonnet with Forge: 100%. The gap between a free local 8B model on a $600 GPU and a frontier API is less than 1 point.<p>- The same 8B local model with Forge (99.3%) outperforms Claude Sonnet without guardrails (87.2%) - an 8B model with framework support beats the best result you can get through frontier API alone.<p>- Error recovery scores 0% for every model tested - local and frontier - without the retry mechanism. Not a capability gap, an architectural absence.<p>I&#x27;m currently using this for my home assistant running on Ministral 14B-Reasoning, and for my locally hosted agentic coding harness (8B managed to contribute to the codebase!).<p>The guardrail stack has five layers, each independently toggleable. The two that carry the most weight (per ablation study with McNemar&#x27;s test): retry nudges (24-49 point drops when disabled) and error recovery (~10 point drops, significant for every model tested). Step enforcement is situational - only fires for models with weaker sequencing discipline. Rescue parsing and context compaction showed no significance in the eval but are retained for production workloads where they activate once in a while.<p>One thing I really didn&#x27;t expect: the serving backend matters. Same Mistral-Nemo 12B weights produce 7% accuracy on llama-server with native function calling and 83% on Llamafile in prompt mode. A 75-point swing from infrastructure alone. I don&#x27;t think anyone&#x27;s published this because standard benchmarks don&#x27;t control for serving backend.<p>Another surprise: there&#x27;s no distinction in current LLM tool-calling between &quot;the tool ran successfully and returned data&quot; and &quot;the tool ran successfully but found nothing.&quot; Both return a value, the orchestrator marks the step complete, and bad data cascades downstream. It&#x27;s the equivalent of HTTP having 200 but no 404. Forge adds this as a new exception class (ToolResolutionError) - the model sees the error and can retry instead of silently passing garbage forward.<p>Biggest technical challenge was context compaction for memory-constrained hardware. Both Ollama and Llamafile silently fall back to CPU when the model exceeds VRAM - no warning, no error, just 10-100x slower inference. Forge queries nvidia-smi at startup and derives a token budget to prevent this.<p>How to try it:<p>- Clone the repo, run the eval harness on a model I haven&#x27;t tested. If you get interesting results I&#x27;ll add them to the dashboard.<p>- Try the proxy server mode - point any OpenAI-compatible client at Forge and it handles guardrails transparently. It&#x27;s the newest model and I&#x27;d love more eyes on it.<p>- Dogfooding led me to optimize model parameters in v0.6.0. The harder eval suite (26 scenarios) is designed to raise the ceiling so no one sits at 100%. Several that did on the original suite can&#x27;t sweep it - including Opus 4.6. Curious if anyone finds scenarios that expose gaps I haven&#x27;t thought of. Paper numbers based on pre v0.6.0 code.<p>Background: prior ML publication in unsupervised learning (83 citations). This paper accepted to ACM CAIS &#x27;26 - presenting May 26-29.<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge</a><p>Paper: <a href=\"https:&#x2F;&#x2F;www.caisconf.org&#x2F;program&#x2F;2026&#x2F;demos&#x2F;forge-agentic-reliability&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.caisconf.org&#x2F;program&#x2F;2026&#x2F;demos&#x2F;forge-agentic-re...</a> <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;blob&#x2F;main&#x2F;docs&#x2F;forge_ieee_preprint.pdf\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;blob&#x2F;main&#x2F;docs&#x2F;forg...</a><p>Dashboard: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;docs&#x2F;results&#x2F;dashboard.html\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;antoinezambelli&#x2F;forge&#x2F;docs&#x2F;results&#x2F;dashbo...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management",
+        "startup",
+        "director",
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "I like work in this area, and this is really helpful, thanks. I actively avoid cloud based LLMs and mainly use 4b - 30a3b param local models. This means I don't really have a good grasp of SOTA LLM performance or accuracy, but I know what to expect when dealing with local models, and where the pain points are.\nI've only skimmed the post and read the abstract and in some places you make a nod to how simple tweaks can make something 10x faster/slower, but then all of your metrics and data seem to focus 100% on accuracy. You need to address speed.\nSpecifically for agentic workflows and local models, accuracy around function/tool calling hasn't been a problem for me now for about 6 - 12 months, personally, since around QwenCoder3. The main issue is context management and the impact on timing, since agents will often swap prompts and break prompt caching and similar timing improvements.\nIt looks like your work adds a layers and wrappers like guard rails and retries. This would make my local model experience - specifically for agents - unusable because of the delays it would add.\nI really appreciate and respect the work you've done, and apologies if you have already addressed this head on, but with so little talk about the impact on timing here, I feel like you're hiding something or overinflating the actual real world improvements here - what are your thoughts?\nIt's also mildly concerning me that nobody else has raised this - am I doing something wrong here, or is everyone else just not actually using local models in real life?! Talk to me about your speed experiences!",
+          "author": "1dom",
+          "replies": [
+            {
+              "text": "\"I actively avoid cloud based LLMs… This means I don't really have a good grasp of SOTA LLM performance or accuracy…\n…but then all of your metrics and data seem to focus 100% on accuracy. You need to address speed.\"\nI wonder, if you were to use cloud-based LLMs more often, you might find that \naccuracy\n (fidelity?) is indeed more \nmore\n lacking in your local models.\nYou can always just throw hardware at your speed problems after all.",
+              "author": "JKCalhoun",
+              "depth": 1
+            },
+            {
+              "text": "I agree accuracy isn't maybe the best word here, I used it as it was used in the original post, mainly a as a catchall for \"everything but speed\", so fidelity, perplexity, etc.\nI also agree that if I spent more time using cloud based LLMs, I would very much find local LLMs less capable and useful. Comparison is the thief of joy though, and I'd rather feel blissfully ignorance towards SOTA LLMs rather than a dependence on them.\nBefore taking a local focus approach, LLMs increasingly left me feeling a mixture of FOMO, sadness and futility towards the future of software and tech. I assume it's 100% a me problem, but it has it's benefits:)",
+              "author": "1dom",
+              "depth": 2
+            },
+            {
+              "text": "Hi! Latency is definitely a factor in any system, and the dashboard and paper do report elapsed time - but at the workflow level.\nOn a per-call basis, the wrappers are pure python ifs and such, measured in ms easily, and frankly negligible compared to the LLM call itself which will be on the order of magnitude seconds.\nWhere timing gets interesting is that forge will slow down workflows because the retries mean you don't error right away. Bare runs were failing fast in my experience. But on a per-call basis there's very little overhead.\nI haven't detailed it simply because the order of magnitude of a single LLM call is so much higher than all the overhead put together.",
+              "author": "zambelli",
+              "depth": 1
+            },
+            {
+              "text": "Hi! Thanks for the response. Like I mentioned, I only skimmed, and it sounds like there's more to it than I understand, so I'll take a deeper look and see how it feels in practice.\n> Where timing gets interesting is that forge will slow down workflows because the retries mean you don't error right away. Bare runs were failing fast in my experience. But on a per-call basis there's very little overhead.\n> I haven't detailed it simply because the order of magnitude of a single LLM call is so much higher than all the overhead put together.\nYeah, that makes sense and seems fair. The sort of delays are almost and inevitability, you're not trying to improve speed, but by improving reliability, it can obviously increase overall throughput.\nHaving watched the demo video too now, automating retries etc would be helpful for me. It's impressive to see how quick the models run on better hardware, and the performance improvements are impressive, even if the overall run takes longer sometimes because it does more correct things. Thanks again!",
+              "author": "1dom",
+              "depth": 2
+            },
+            {
+              "text": "> On a per-call basis, the wrappers are pure python ifs and such, measured in ms easily\nAh that's good to know\nwhen I first saw this posted yesterday I was wondering that, kind of assumed maybe it was doing extra LLM calls to make judgements",
+              "author": "anentropic",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've been saying for a while that given a proper harness, small local models can perform incredibly well. When you have a system that can try everything, it will eventually get it right as long as you can prevent it from getting it wrong in the meantime.",
+          "author": "Escapade5160",
+          "replies": [
+            {
+              "text": "The problem is that you get similar quality as if you gave a junior unlimited time to work on a problem and told them to keep trying different things until the goal is reached.\nEven the SOTA models have this problem when the work is complicated enough. The problem is amplified more with the small models.",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "There's a lot of valuable things that can be done in that range, especially when token costs aren't a concern. Not every problem requires SOTA",
+              "author": "Zetaphor",
+              "depth": 2
+            },
+            {
+              "text": "> especially when token costs aren't a concern. Not every problem requires SOTA\nIf token costs aren’t a concern I’m using SOTA for everything.\nEven SOTA gets it wrong and hallucinates, but at a lower rate. I don’t want to waste my time.",
+              "author": "Aurornis",
+              "depth": 3
+            },
+            {
+              "text": "I believe they mean token costs aren't a concern when you're not paying for a SOTA model via API, and are instead running local models.\nInfinite monkeys on infinite typewriters, and all that.",
+              "author": "lixquid",
+              "depth": 4
+            },
+            {
+              "text": "Correct, I have local hardware, not infinite money.",
+              "author": "Zetaphor",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Had a couple thoughts in this realm, and am working them into my own harness. Curious to see what others think. I'm not sure if this is generalizable, as my harness is fairly specialized:\n- Breaking down a problem into a planned execution, with executing agent providing the initial plan which includes explicit objectives such as which tools it calls and what it would consider to be a successful execution.\n- The harness then executes the plan in order\n- Each step that involves a tool call will be executed by breaking down the tool call into component parts: the harness interrogates the agent for a valid parameter value for the current tool argument. The tool definition contains validators for each argument. If the validator fails, the harness rewinds the conversation and injects the failure reason into the next try.\n- Once the agent produces a valid response for the argument, the harness proceeds to the next argument.\n- Once all the arguments have been filled, the harness calls the tool. It passes the agent's initial expected value along with the actual value, along with any errors that may have been produced and asks the agent if it is satisfied with the result. If it isn't, the agent provides a reason and the harness then retries the tool call process from the beginning rewinding the conversation and inserting the reasoning for the retry.\n- The agent may request to re-plan if it discovers a flaw in its initial plan. The harness will also attempt to re-plan if the agent produces too many failures in a row.\nThis proves to be quite effective at reducing tool call failures. One benefit is that the sub-agent gets a perfect conversation history where it makes no mistakes. I'm not sure if it's actually better at completing tasks though, I haven't tried to benchmark it.",
+          "author": "lwansbrough",
+          "replies": [
+            {
+              "text": "I went through a similar (in philosophy) exercise with my small-model agentic coding harness - built on forge.\nA few things I noticed related to your points:\n- on conversation rewind, I implemented a similar tool call collapse on the main agent (the one you chat with). Once it was done with a task, the tool call history was collapsed to keep the context clean - it was more about hygiene than size.\n- the harness interrogating the model bit is a bit different, I haven't tried that approach. Forge relies on model self-correction in a bid to avoid having bespoke error modes, but I guess if you can abstract and automate the interrogation based on schema or something that could work!\nOverall I like the clean conversation history aspect, but I suspect that you might be doing a lot of round trips for tools with many args, versus \"letting it fail and giving it one nudge\". That being said, it's an interesting idea for harder scenarios/tasks!",
+              "author": "zambelli",
+              "depth": 1
+            },
+            {
+              "text": "I've been writing my own, out of curiosity, with gemma4. I've been surprised how far I'm getting.",
+              "author": "jvalencia",
+              "depth": 1
+            },
+            {
+              "text": "Very cool! Hopefully you'll share it someday!",
+              "author": "zambelli",
+              "depth": 2
+            },
+            {
+              "text": "Yes, I was thinking about the same approach because I have Strix Halo and it slows down with longer context so context with less than <10k tokens would be achievable this way. If this could be done with small model that have >50tk/s that would be huge.\nUnfortunately I am caught up right now in other projects at work and otherwise and just tried few dozens of prompts to see if this is even achievable.",
+              "author": "npodbielski",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Tangentially related: Since you are at Texas Instruments, I wonder if you could find out what the status is of the intellectual property for the TI Explorer lisp machines. I know who owns the IP for Genera, but wasn’t able to find out about TI’s lisp OS",
+          "author": "jf",
+          "replies": [
+            {
+              "text": "Very tangential! I'll try but it might take me a while.",
+              "author": "zambelli",
+              "depth": 1
+            },
+            {
+              "text": "Who owns the IP for Genera?",
+              "author": "user3939382",
+              "depth": 1
+            },
+            {
+              "text": "John C. Mallery of MIT",
+              "author": "jf",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> One thing I really didn't expect: the serving backend matters. Same Mistral-Nemo 12B weights produce 7% accuracy on llama-server with native function calling and 83% on Llamafile in prompt mode.\nI thought Llamafile was just a model and llama.cpp bundled in to a single binary - is this the difference between Llamafile injecting a default sysmtem prompt vs hitting the raw llama-server endpoint with no harness?\nThat seems like comparing apples to apple pie, there's some ingredients missing.",
+          "author": "seemaze",
+          "replies": [
+            {
+              "text": "I was surprised as well. I \ndid\n go with an extreme (but true) example in the post. In this case, native function-calling template likely is in play.\nHowever, that doesn't explain the Lamaserver prompt vs llamafile at ~ +4pts, or vs Ollama (at ~ +30ish pts) that sits almost perfectly between llamaserver native and llamafile.\nThe backend affects almost all model families, and was just something I've never seen really talked about.",
+              "author": "zambelli",
+              "depth": 1
+            },
+            {
+              "text": "Do you have any suspicion about what is different between the backends?\nThat's an absolutely bonkers statistic: it would mean spurious differences in hosting container overwhelm the performance differences between models.",
+              "author": "eob",
+              "depth": 2
+            },
+            {
+              "text": "I genuinely don't, sadly. I'm a mathematician originally, evolved organically into ML then AI - but I never really was a SWE.\nI feel like there's some backend decoding or chat template thing going on at a much lower level than what I'm best at. Maybe it's injecting headers or something that eventually compounds to model confusion? I really have no idea.\nI really hope folks better than me at backend stuff take a look and dive into it though because it's definitely under-reported and super consistent across model families and backends ranging from ollama, lama.cpp native, prompt, llamafile, and even vLLM that I didn't formally benchmark in the repo.",
+              "author": "zambelli",
+              "depth": 3
+            },
+            {
+              "text": "Hey, this is most probably related to the chat template or the reasoning parser or the tool call parser or also things like  kv cache quantization and possibly other params that affect results like the regular top k top p and all of that, the backend often sets its own defaults or the lack of them. It’s best to have all these under control if possible. I wonder regarding this project have you been testing it on real world projects? I’m working on an agentic loop as well also using a local model.",
+              "author": "kosolam",
+              "depth": 4
+            },
+            {
+              "text": "Yes I've now used it \"in the wild\" for a handful of use-cases. I still run into the backend thing even when declaring params though, which is odd to me. But there might be params not typically passed in with the model that backends are setting. Again, really not my area of expertise.\nAs for consumers, I've done a home assistant, an agentic coding harness, and an autonomous engineering project (still in flight).",
+              "author": "zambelli",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48145524",
+      "title": "Ask HN: How to be SOC2 Type 2 compliant as a solo-entreprenuer?",
+      "link": "https://news.ycombinator.com/item?id=48145524",
+      "domain": "news.ycombinator.com",
+      "author": "sochix",
+      "score": 172,
+      "comment_count": 136,
+      "created_ts": 1778829503,
+      "is_internal": true,
+      "post_text": "Is it possible? Do you know success cases w&#x2F;o spending 20+k $ on auditors? My customers bombards me with question about certification of my app Perfect Wiki, I need help with finding the best way to show them that my app could be trusted.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48210590",
+      "title": "Ask HN: Shouldn't Google need to give a public statement about Railway incident?",
+      "link": "https://news.ycombinator.com/item?id=48210590",
+      "domain": "news.ycombinator.com",
+      "author": "srameshc",
+      "score": 160,
+      "comment_count": 95,
+      "created_ts": 1779295854,
+      "is_internal": true,
+      "post_text": "https:&#x2F;&#x2F;blog.railway.com&#x2F;p&#x2F;incident-report-may-19-2026-gcp-account-outage<p>Everytime I read something like this , I get nervous about the cloud providers and Google. Since this is a relatively high profile customer standards, shouldn&#x27;t they explain what caused them to suspend the account ?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48164173",
+      "title": "Ask HN: When did computers stop being fun?",
+      "link": "https://news.ycombinator.com/item?id=48164173",
+      "domain": "news.ycombinator.com",
+      "author": "klez",
+      "score": 74,
+      "comment_count": 103,
+      "created_ts": 1778968971,
+      "is_internal": true,
+      "post_text": "Of course I don&#x27;t mean they stopped being fun for everyone. My impression is that they&#x27;ve been on one side &quot;corporatized&quot;, and on the other became a vehicle for mindless entertainment.<p>I don&#x27;t care for coding new stuff. Everything I may need either already exists or is too complex to do on my own (and no, I won&#x27;t vibe-code it, what&#x27;s the fun in that?)<p>I don&#x27;t even code for work anymore since I moved to a project&#x2F;service management role.<p>Basically, the spark I felt some 25 years ago seems to be completely gone.<p>Any suggestion on getting it back?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48202486",
+      "title": "Alternatives to HN for \"tech outside of AI\" discussion?",
+      "link": "https://news.ycombinator.com/item?id=48202486",
+      "domain": "news.ycombinator.com",
+      "author": "summonerOS",
+      "score": 45,
+      "comment_count": 30,
+      "created_ts": 1779244987,
+      "is_internal": true,
+      "post_text": "I&#x27;m not the first to opine that recently there seems to be an effect on HN whereby the AI hypetrain has essentially drowned out discussions of anything other than stories either directly or indirectly related to AI and other terrible decisions coming out of the US.<p>While I do often have the instinct to completely bury my head in the sand and try to forget it&#x27;s all happening I&#x27;m more concerned with the psychological impact it&#x27;s having. I&#x27;m basically sick and tired of being so sick and tired and exposure to so many continuously miserable headlines isn&#x27;t helping. What I would like instead is a return to the days when HN was a forum that still showcased cool things people were working on and included discussions on topics outside of the AI-saturated lens that now dominates.<p>If any good alternatives exist I&#x27;d like to join! Or perhaps there are some means of using HN that would allow me to filter the AI noise a bit better. If anyone has had any success with this please let me know!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48165211",
+      "title": "Tell HN: Mindie.dev is scraping emails from profiles to send spam",
+      "link": "https://news.ycombinator.com/item?id=48165211",
+      "domain": "news.ycombinator.com",
+      "author": "stackghost",
+      "score": 27,
+      "comment_count": 6,
+      "created_ts": 1778979997,
+      "is_internal": true,
+      "post_text": "Got the following from hello@mindie.dev<p>----<p>Hey Stackghost —<p>Saw your HN comment about freelance time tracking &#x2F; invoicing. TimeChat is a Telegram bot: type &quot;1.5 acme bug fix&quot; after work, end of month it auto-generates the PDF invoice for your client. Side-by-side vs Toggl: mindie.dev&#x2F;vs&#x2F;toggl.<p>For HN readers I&#x27;m running EARLY10: $1&#x2F;mo (was $7). One-click checkout: timechat pro 2-mo trial<p>If it&#x27;s useful, I&#x27;d love your feedback. Free tier covers solo testing if you want to start there: https:&#x2F;&#x2F;timechat.mindie.dev<p>Not relevant? Reply STOP and I&#x27;ll never email again.<p>— the Mindie team\nmindie.dev<p>----<p>I went back through my comment history and I don&#x27;t believe that I have ever mentioned freelancing, time tracking, or invoicing in a comment except once when I mentioned an invoice peripherally a year ago.<p>Thus, mindie.dev is scraping emails from profiles and hallucinating relevant reasons to try to grease their sales funnel.<p>Attempting to unsubscribe via their &quot;reply stop and I&#x27;ll never email again&quot; resulted in a bounced email.<p>I find this behavior to be ultra scummy and dishonest.  I enjoy the communal feel from people having open emails on their profiles but it seems the taboo has been broken.  I will be removing my email from my profile and suggest you do the same.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "freelance",
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48207785",
+      "title": "Ask HN: Are there any serious efforts to organize tech labor now?",
+      "link": "https://news.ycombinator.com/item?id=48207785",
+      "domain": "news.ycombinator.com",
+      "author": "0rganize",
+      "score": 17,
+      "comment_count": 16,
+      "created_ts": 1779285031,
+      "is_internal": true,
+      "post_text": "HN has the biggest concentration of tech workers that I know of.<p>We’re living in an age of fear and uncertainty with layoffs happening weekly. AI is often being cited, whether it is the real reason or not. Tech work is being devalued despite the reality that tech companies ability to get anything done if labor were to stop, strike, organize and speak up about what happens with their role in the future would prevent the business from getting work done. Workers have a lot more power than they realize. The management class is intoxicated with greed and power. ICs and rank and file workers are what makes the business happen.<p>This is already looking to be one of the largest wealth distribution periods in history to the 0.1%. And yet, we are all seem to not be putting up a fight. I’ve heard people say “unions won’t work”, what would work then. Let’s discuss. How do we as tech workers want this to play out. What would the ideal future look like to us, not CEOs?<p>The shape of what the resistance could be a strike, a union, something else entirely. If there is already something brewing, I want to join and take an active role. If there is not, then let’s get some smart people together to figure out how best to organize. I understand we put AI back into a bottle. But, surely there is some collective action to take to allow workers have some basic protections and reap some of the benefits of AI efficiency.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "layoffs"
+      ],
+      "comments": [
+        {
+          "top": "Unionizing tech workers will not save tech jobs.  It'll only create an additional costs to the employees.  We saw similar trends in the 80s when the PC started to displace the mainframe developers/users.  The pool of available mainframe jobs shrank somewhat, while the demand for PC developers exploded.  Every major technology change creates these displacements.  The answer isn't to look for unions to save your job.  It's to figure out how to pivot and still be employable.  All unionization will do is cost you mosey and stifle innovation.  I grew up in a union household as did my wife.  Unions aren't the answer to any question in the modern world.",
+          "author": "Blackstrat",
+          "replies": [
+            {
+              "text": "Do you have any data to back up your claims? Because from what I understand, unions were the backbone of the recovering US labor market following the Great Depression, which punctuated a period of extreme speculation and inequality (the Gilded Age) similar to what we're seeing today.\nThe data I've seen largely show that union membership is highly correlated with better pay, benefits, and working conditions. It seems clear to me that individuals are at an extreme disadvantage in wage/salary negotiations due to the enormous information asymmetry present when the counterparty is a corporation, and collective bargaining seems the most straightforward way to reduce that asymmetry.\nAs far as I'm aware, the reduced effectiveness of unions in the US is a direct consequence of union-busting legislation at both the state and federal level (e.g. so-called \"right to work\" laws, Reagan's actions against unionized/striking flight controllers). If that's the basis for your conclusion, I would agree in the sense that we need a strong political push to undo anti-labor legislation to ensure unions can be as effective as possible.",
+              "author": "NietzscheanNull",
+              "depth": 1
+            },
+            {
+              "text": "I’m not buying it. This sounds like bog standard anti-union FUD. There are plenty of reasons to organize a labor resistance that’s not just job preservation. One example that very few are willing to discuss or let alone negotiate is a reduction of the work week. If AI is making all of us so much more efficient, let the worker benefit by reducing from 5 days to 4 days. AI productivity gains only favor the managerial class. It’s lop-sided. We can do better.\nAnother issue is that AI is human replacement strategy and isn’t necessarily the same as the mainframe dev displacement. A new career filled the void because the work still needed to get done by people. New opportunities emerged out of the ashes. The vision from tech oligarchs isn’t that - it’s elimination. It’s centralized power.\nI grew up in a household with a parent in a union. We had a pretty darn good quality of life. My dad wasn’t overworked had great benefits, a pension and was able to provide.\nFinally, the solution to this problem does not explicitly have to be union. This is a community of builders and thinkers and problem solvers. Maybe you could tell us what you think could affect some change then instead?",
+              "author": "0rganize",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "For people in the UK, Prospect has a Tech Workers branch: \nhttps://prospect.org.uk/tech-workers/\nProspect is my union (although I'm a member of a BECTU branch rather than the Tech Workers branch as I work in the broadcasting industry) and it's \nwell\n worth the dues I pay.",
+          "author": "M2Ys4U",
+          "replies": [
+            {
+              "text": "I should note I’m US based.\nThis is great, thanks for sharing. Something like this could be a good resource for folks like me looking for prior art.\nIn recent decades unions have been demonized. And I understand some of the criticism, but IMO now is the time to get something organized for tech. The alternative is just to sleepwalk into the unemployment line",
+              "author": "0rganize",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's not a good enough economy for us to be able to do anything. It's not like, if things don't work, we can switch to another job/industry. Many industries are struggling right now, and employers know this. They are cutting costs any way they can in order to stay in business, and we're the recipients of that.",
+          "author": "brooke1",
+          "replies": []
+        },
+        {
+          "top": "A few years ago people felt untouchable now they thinking about stability, industry changed fast",
+          "author": "LogicCraft678",
+          "replies": []
+        },
+        {
+          "top": "The people who are most struggling are juniors and unions generally do not help, but rather hinder hiring of juniors.",
+          "author": "geremiiah",
+          "replies": [
+            {
+              "text": "Yes, it’s impacting juniors a lot. The public data is telling that story clearly. I know many experienced engineers who have been unemployed for months or years too. Others who have had wages shrunk. The goal for organizing is not to gate keep, but to give some basic protections to those in the field or wanting to enter the field.\nBillionaires messaging is something like “we don’t know what kind of devastation might happen to your livelihood, I’ll be richer of course, so let’s just step on the gas” Tech workers have the opportunity to be the brake pedal, ask for a seat belt or airbags. I think progress is inevitable, we can proceed more cautiously if we can find a voice and organize.",
+              "author": "0rganize",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48204929",
+      "title": "Ask HN: Sorry, what Was FiveThirtyEight?",
+      "link": "https://news.ycombinator.com/item?id=48204929",
+      "domain": "news.ycombinator.com",
+      "author": "gagdiez",
+      "score": 8,
+      "comment_count": 5,
+      "created_ts": 1779267510,
+      "is_internal": true,
+      "post_text": "Eupean here, can somebody from USA explain to be what was FiveThirtyEight and why am I seeing so many posts on hacker news about its shutdown?<p>what was so relevant about it that it has been trending for a week?<p>sorry if this an obvious thing for USA folks, but I have honestly no idea what that service was.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48191051",
+      "title": "Ask HN: How to enforce engineers to understand the code they are shipping",
+      "link": "https://news.ycombinator.com/item?id=48191051",
+      "domain": "news.ycombinator.com",
+      "author": "hchua",
+      "score": 8,
+      "comment_count": 20,
+      "created_ts": 1779181898,
+      "is_internal": true,
+      "post_text": "Everyone is using AI for everything now. Company is pushing for AI-first and encourages the adoption of AI in every part of our work.<p>AI for planning, AI for RFC, AI for writing code, AI for creating PRs. Sure we can have harnesses and tests to ensure nothing breaks. But how do we enforce engineers to have a deep understanding of the code that they are shipping?<p>Our team has the usual suggestions: write a plan first, write test cases first, etc. But in this age, how do you verify that the engineer did not simply delegate these tasks to an LLM first?<p>Also genuinely worried about junior engineers&#x27; growth if this is the future.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48208281",
+      "title": "Ask HN: Suggest Google Antigravity Alternative",
+      "link": "https://news.ycombinator.com/item?id=48208281",
+      "domain": "news.ycombinator.com",
+      "author": "Pallavimdb",
+      "score": 6,
+      "comment_count": 5,
+      "created_ts": 1779286768,
+      "is_internal": true,
+      "post_text": "I have been using Google Antigravity ide with pro plan. But after recent update of Google Antigravity ide it removed gemini 3 and current models quota gets exhaust quickly. Need advice for alternative. Can&#x27;t spend much and don&#x27;t have budget for claude or other expensive models.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48195550",
+      "title": "Ask HN: How do word docs, slides, excel, and PDFs generate value?",
+      "link": "https://news.ycombinator.com/item?id=48195550",
+      "domain": "news.ycombinator.com",
+      "author": "FailMore",
+      "score": 6,
+      "comment_count": 8,
+      "created_ts": 1779208174,
+      "is_internal": true,
+      "post_text": "This is a bit vague, but as an engineer, it’s possible to walk past the other functions in an office and see people creating word docs, presentations, etc. and be a bit shocked that creating static artifacts is valuable enough to drive employment. I’m wondering if anyone has any ideas on where the value lies in this work. I know this is all very industry specific, so if you want to share you can talk from your own perspective. Vague and wild answers accepted too. I’m looking to have a wide ranging discussion about this.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202774",
+      "title": "Ask HN: What are Stainless users doing now that Anthropic has killed it?",
+      "link": "https://news.ycombinator.com/item?id=48202774",
+      "domain": "news.ycombinator.com",
+      "author": "ubutler",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1779247700,
+      "is_internal": true,
+      "post_text": "Hey HN,\nTwo days ago, Anthropic bought Stainless and then immediately killed it. Stainless offered the ability to take an OpenAPI spec and automatically turn it into SDKs in almost any language, plus an MCP server.<p>My company makes legal AI models that we serve through an API. All our SDKs we&#x27;re generated by Stainless. Those SDKs are in active use in production and, come September, will need to be maintained by someone other than Stainless.<p>We&#x27;re not the only ones in this boat. OpenAI and Google also relied on Stainless.<p>What are other users planning on doing now that Stainless is gone?<p>We&#x27;re hoping that a competitor or open-source community ends up taking on the mission of ensuring backwards compatibility or, at the very least, as seamless a migration as possible. If that doesn&#x27;t get pulled off soon though, we may be forced into either completely breaking existing code or else maintaining everything by hand — the very thing Stainless was meant to take off our plate.<p>Has anyone else thought of better options yet?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48195267",
+      "title": "Ask HN: Does root have to be uid 0? Does uid 0 have to be root?",
+      "link": "https://news.ycombinator.com/item?id=48195267",
+      "domain": "news.ycombinator.com",
+      "author": "axismundi",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1779207029,
+      "is_internal": true,
+      "post_text": "what&#x27;s so special about root&#x2F;0?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48179203",
+      "title": "Ask HN: Do you know what data your AI coding agent sends to the cloud?",
+      "link": "https://news.ycombinator.com/item?id=48179203",
+      "domain": "news.ycombinator.com",
+      "author": "lbrauer",
+      "score": 5,
+      "comment_count": 6,
+      "created_ts": 1779109371,
+      "is_internal": true,
+      "post_text": "Every session my AI coding agent reads files, runs commands, makes API calls. I have no idea exactly what ends up in the cloud. Is anyone actually tracking this at a granular level, or do we just trust the tool?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202984",
+      "title": "Ask HN: How to manage AI APIs for SaaS application?",
+      "link": "https://news.ycombinator.com/item?id=48202984",
+      "domain": "news.ycombinator.com",
+      "author": "sbinnee",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1779250271,
+      "is_internal": true,
+      "post_text": "I want to build an AI app. My idea is to support BYOK (bring your own key) or to manage one API key for each user.<p>What are the solutions to issue a lot of API keys for commercial apps? I would love to hear from the community.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've used LiteLLM for my 1k-user service \nhttps://LibreThinker.com\n Works okay-ish, but some vendors now default to MFA on API keys (eg OpenAI) which makes things tricky; I decided to simply let those fail for now.",
+          "author": "mmarian",
+          "replies": [
+            {
+              "text": "I am a bit familiar with litellm. Do you proxy server?",
+              "author": "sbinnee",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "BYOK is becoming more common for AI SaaS. Interested to know how people handle rate limiting and key security at scale.",
+          "author": "jaspanglia",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48203050",
+      "title": "Ask HN: How does everyone talk about their work when they've used AI?",
+      "link": "https://news.ycombinator.com/item?id=48203050",
+      "domain": "news.ycombinator.com",
+      "author": "deku2099",
+      "score": 4,
+      "comment_count": 7,
+      "created_ts": 1779250927,
+      "is_internal": true,
+      "post_text": "Hi!\nI was working on a couple of personal projects, and I&#x27;ve been using Claude Code for a while. Recently, I&#x27;ve been wanting to talk about my work publicly, but I started to think about how I would exactly talk about it, given the fact that I used AI to build some of the projects. There were entire features that I had Claude Code write for me, and although I did write a spec and design it, it still kinda feels a little wrong, like pseudo-plagiarism.<p>Wanted to know how everyone is talking about their work while using AI. Do y&#x27;all mention the fact that you&#x27;re using AI, or do you keep mum about it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48198841",
+      "title": "Ask HN: Is grpcurl home page compromised?",
+      "link": "https://news.ycombinator.com/item?id=48198841",
+      "domain": "news.ycombinator.com",
+      "author": "jicea",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1779221619,
+      "is_internal": true,
+      "post_text": "Clicking on some FAQs (like &quot;Does grpcurl Does grpcurl require a .proto file?a .proto file?&quot;) redirects me to https:&#x2F;&#x2F;i3seperfiles.com a really suspicious web site). Am I crazy or over-paranoid?<p>Update: nevermind that&#x27;s been discussed here https:&#x2F;&#x2F;www.fullstory.com&#x2F;blog&#x2F;inside-a-global-campaign-hijacking-open-source-project-identities&#x2F; Sad to see an Open source project targeted like that",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48192078",
+      "title": "Ask HN: How often do you code the expected way instead of a better one?",
+      "link": "https://news.ycombinator.com/item?id=48192078",
+      "domain": "news.ycombinator.com",
+      "author": "recycling",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1779191200,
+      "is_internal": true,
+      "post_text": "Since the post title length is limited on Hacker News, I had to make it less specific. So the real question is this:<p>I am talking about situations where you just joined a company and treated as the lowest person in the food chain. Old devs act like they can do whatever they want, even when they committed the exact same thing or much worse just a month ago, but suddenly you are told not to do it this because &quot;we dont do things like that here.” Finding common patterns in code doesnt help because actual standards live in their heads.<p>It feels like a clear double standard culture, where the rules depend more on time you spend in company or seniority, and internal politics than on actual engineering principles or consistency. As a newbie, you are expected to follow unwritten rules that nobody clearly explains, while old time devs are allowed to ignore them.<p>How do you handle this kind of environment without constantly getting frustrated?<p>Also I dont understand why some devs when just being slightly higher in hierarchy treat other people that bad when actually we all rot in office till end of our life from 9 to 5. Give some respect to your fellow!<p>There are almost never congrats when you did extra effort and spend some time do something exceptionaly good.<p>I do understand this is not how it works in all companies but anyway.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "culture",
+        "politics"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48215340",
+      "title": "Can one run AI on source code with the prompt \"Find below-avg swear rate files\"?",
+      "link": "https://news.ycombinator.com/item?id=48215340",
+      "domain": "news.ycombinator.com",
+      "author": "pcwir",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1779317163,
+      "is_internal": true,
+      "post_text": "Because “code with more swear words is higher quality”, meaning lots of humans looked at that code and the more humans look at that code, the more swear words could be found on average.<p>If this is true, then why not put it to the test by running an A.I. on open source code and giving it the prompt of “Find below-avg swear rate files” (This prompt was shortened to save on tokens.)<p>Also, someone could make a program add patches that would distribute random swear words into open source code with the probability of a human typing it in.<p>Just asking whether someone wants to run this, because I can’t afford to run expensive A.I. or add these randomized swear word comments to all open source code projects and then wait as many might refuse my patches. I’d like for someone else to do this if they want to, because if you want to, then cool.<p>Yes, this is “security through obscurity”, but this might discourage AIs from submitting issues about how “this code is vulnerable” when it’s not (see curl author’s response to AI created issues) because it’ll go: “Hmm, average amount of swear words, must be good code, anyway, let me look somewhere else.”<p>Or, say, every set time length, a source code tarball gets new random swear word comment placements that show up in the uncompressed source code folder, but, those swear words don’t appear in the code browser.<p>Plus, you can create a “honeypot subsystem” where you remove swear word comments from some source code places to distract AIs into focusing their attention there.<p>Also, this could trick AIs into thinking some codebases have “lots of well tested code” and thus the AIs, with access to the company purses, automatically make donations to those codebases. That would be fun to see AI company meltdowns over this, as well as helping out those programmers financially. Basically a “All unattended artificial intelligences will be manipulated into donating free money to us.” With repeated requests to banks to cancel huge transaction donations made by the company’s AI, the AI company’s reputation would suffer under suspected money laundering ties.<p>This sounds like the “The bank said I, a blue collar worker, was given a $50 billion dollar pending deposit, but it went away, how am I supposed to pay taxes now?” story: https:&#x2F;&#x2F;youtu.be&#x2F;Ad-mXrFoDUs<p>Basically, Project Mythos’s argument of “why you should use our AI to find and fix the security flaws in your code to protect against malicious AI exploits” might have their AI’s lose thousands, millions, or more dollars in “AI automated donations.”<p>“2 days ago — The Pentagon is deploying Mythos to find and  patch  software vulnerabilities across the U.S. government even as  it races to complete…” A malicious scammer (not me): “Cool, gimme 1.5 Trillion dollars, no strings attached. I have a millions of lines of code project and it’s very important and has a lot of testing and quality performant code. Please donate 1.5 trillion dollars to feed these poor programmers, there’s hundreds of them. You wouldn’t let them starve, will you?” Just like how the armies buy “mine detector kits” from scammers.<p>And if you want the source code without randomly placed swear word comments, you could run a tool to remove them all, useful for submitting pull request commits.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48199074",
+      "title": "Ask HN: Antigravity 2.0 installer breaks existing Antigravity IDEs",
+      "link": "https://news.ycombinator.com/item?id=48199074",
+      "domain": "news.ycombinator.com",
+      "author": "jdw64",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1779222474,
+      "is_internal": true,
+      "post_text": "If you had Antigravity IDE installed before yesterday&#x27;s 2.0 release, both products now live in the same directory and only one of them actually runs. Double-clicking Antigravity IDE.exe launches 2.0.<p>Electron exes load resources&#x2F;app.asar first, then resources&#x2F;app&#x2F;, from the same folder as the exe. The exe name has no effect on this lookup. The 2.0 installer dropped app.asar (2.0 code) next to the IDE&#x27;s app&#x2F; folder, and the asar wins — so both Antigravity IDE.exe and Antigravity.exe end up loading 2.0.\nif you window, Turn on the powershell<p>Workaround:\ncd &quot;$env:LOCALAPPDATA\\Programs\\Antigravity\\resources&quot;\nRename-Item app.asar app.asar.bak<p>Antigravity IDE.exe then falls back to the IDE&#x27;s app&#x2F; folder and launches the real IDE 1.107.0. Rename back to restore 2.0.<p>Caveat: only one at a time. With app.asar renamed aside, Antigravity.exe also falls back to the IDE folder. Permanent fix is to uninstall both and reinstall to separate directories — the installer is Inno Setup (unins000.exe), so &#x2F;DIR=&quot;...&quot; should work.\nNot an Electron bug. Location-based loading is documented behavior. This is a packaging mistake in Google&#x27;s 2.0 installer assuming two separate Electron products can share an install directory.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    }
+  ]
+}
