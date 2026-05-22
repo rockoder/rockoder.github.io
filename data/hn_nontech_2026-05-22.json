@@ -1,0 +1,660 @@
+{
+  "scraped_date": "2026-05-22",
+  "source": "hacker_news",
+  "total_scraped": 115,
+  "nontech_count": 22,
+  "posts": [
+    {
+      "id": "48223362",
+      "title": "Show HN: Freenet, a peer-to-peer platform for decentralized apps",
+      "link": "https://freenet.org/",
+      "domain": "freenet.org",
+      "author": "sanity",
+      "score": 226,
+      "comment_count": 124,
+      "created_ts": 1779374097,
+      "is_internal": false,
+      "post_text": "For the past 5 years or so I&#x27;ve been working on a ground-up redesign of Freenet, my peer-to-peer project from the early 2000s (now renamed Hyphanet).<p>The new Freenet has been up and running since December along with some early applications like River[1], our decentralized group chat and Delta - a decentralized CMS. Users have already started to build their own apps on Freenet including games, and we have some interesting apps in development like Atlas, a search&#x2F;recommendation engine.<p>Architecturally, this new Freenet is a global, decentralized key-value store where keys are webassembly contracts which define what values (aka &quot;state&quot;) are valid for that key, how or when the values can be mutated, and how the state can be efficiently synchronized between peers.<p>We&#x27;ve developed a unique (AFAIK) solution to the consistency problem, every contract must define a &quot;merge&quot; operation for the contract&#x27;s associated state. This operation must be commutative, meaning that you can merge multiple states in any order and you&#x27;ll get the same end result.<p>This approach allows state updates to spread through the network like a virus[2], which typically achieves consistent global state in a few seconds or less.<p>Like the world wide web, Freenet applications can be downloaded from the network itself and run in a web browser - similar to single-page apps on the normal web. However, rather than connecting back to an API running in a datacenter, the webapp connects locally to the Freenet peer and interacts with Freenet contracts and delegates over a local websocket connection.<p>If you&#x27;d like to try Freenet we have convenient installers for the major desktop OSs but not yet mobile, and you can be chatting with other users on River within seconds[3]. Happy to answer any questions, you&#x27;re also welcome to read our FAQ[4], or watch a talk I gave back in March[5].<p>[1] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;freenet&#x2F;river\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;freenet&#x2F;river</a><p>[2] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;about&#x2F;news&#x2F;summary-delta-sync&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;about&#x2F;news&#x2F;summary-delta-sync&#x2F;</a><p>[3] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;quickstart&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;quickstart&#x2F;</a><p>[4] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;faq&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;faq&#x2F;</a><p>[5] <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;3SxNBz1VTE0\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;3SxNBz1VTE0</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "Notably this project was conceived by a backroom decision to dump the original Freenet development team's work,\nin favor of a rewrite from different developers, without asking anyone on the original team.\nIt was an ivory tower decision which was announced on the mailing list without prior discussion.\nThe old team did not agree, yet it was forced through by a decision of the \"board\".\nThe \"board\" was a group of people which had not been active on the project for over a decade.\nhttps://www.mail-archive.com/devl@freenetproject.org/msg5526...\nThe funding of the existing, original \"Freenet\" was repurposed for the new one of course.\nThe new \"Freenet\" does not have anonymity as a design goal anymore,\nwhile the old one continues to exist and is maintained under its new name \"Hyphanet\" at:\nhttps://www.hyphanet.org/",
+          "author": "qcl820DV34",
+          "replies": [
+            {
+              "text": "Yeah, I'm not a fan.\nFeels like this project is trying to get popular off of Freenet's name recognition rather than its own merits.",
+              "author": "pikdum",
+              "depth": 1
+            },
+            {
+              "text": "The submitter is the creator of the original Freenet. If anybody gets to decide what we will call Freenet, it’s him.",
+              "author": "koolba",
+              "depth": 2
+            },
+            {
+              "text": "I'd agree if this was more like a Freenet v3, but it's an entirely different project with completely different goals.",
+              "author": "pikdum",
+              "depth": 3
+            },
+            {
+              "text": "Does he though?",
+              "author": "cheesecompiler",
+              "depth": 3
+            },
+            {
+              "text": "they most def have a choice as to what to broadcast about..",
+              "author": "serf",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Exciting to see Freenet innovating so much, Ian! I haven't really dug in too deep but love that it's in Rust. What's it look like over the wire? How conspicuous is it in the face of, say government censors who can see and control every packet?\nBeen chatting a lot with the HolePunch/Tether folks, and their work is impressive, particularly the use of the DHT for all signaling, Tailscale-inspired (aka Birthday Paradox) NAT hole-punching, an entire JavaScript runtime, etc. I'm curious about some of those details in Freenet. In particular, does it do fully decentralized hole punching?\nEither way, congrats!",
+          "author": "adamfisk",
+          "replies": [
+            {
+              "text": "Without knowing too much about the drama discussed here, I think the bottom line is that the \"old\" Freenet was a bit on life support as far as I could tell and absolutely needed this kind of innovation from its founder.",
+              "author": "adamfisk",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It feels like the state merging approach just pushes the hard problems onto the user, without giving them the tools to solve those problems properly.\nImagine an application where an authorized group of users can create and vote in polls, using cryptographic signatures and public/private keys for user verification.\nWhat prevents me from connecting and saying that \"everybody's state is wrong, that poll in 2024 which didn't reach quorum actually did, because I voted in it, here's my vote.\" How can the state merger know that the existing state has been valid for two years, and that the vote shouldn't be retroactively applied?\nBlockchains solve this by having state get more authoritative as blocks age. To undo the `poll_didnt_reach_quorum` state transition from 2024, one would have to rewind all blocks that have been created since, and PoW / PoS ensures that this is incredibly costly to do.\nOn a related note, how does your design prevent sybil attacks, where one participant floods the network with many large contracts and large state updates?",
+          "author": "miki123211",
+          "replies": [
+            {
+              "text": "Appreciate the feedback.\n> It feels like the state merging approach just pushes the hard problems onto the user, without giving them the tools to solve those problems properly.\nWe've created many of these tools, and have used them to implement practical applications like group chat, a CMS, and a social network, and we and others will build many more tools over time. Designing applications for Freenet can require some creative problem solving, but each problem only needs to be solved once.\n> What prevents me from connecting and saying that \"everybody's state is wrong, that poll in 2024 which didn't reach quorum actually did, because I voted in it, here's my vote.\" How can the state merger know that the existing state has been valid for two years, and that the vote shouldn't be retroactively applied?\nYou could solve this similarly to Bitcoin by having a mechanism that \"locks\" poll results at a particular point in time to prevent subsequent additions, analogous to how mining repeatedly locks in the blockchain.\n> On a related note, how does your design prevent sybil attacks, where one participant floods the network with many large contracts and large state updates?\nPeers in the network track cost/benefit of each connected peer, so if a peer starts to consume a lot more resources than it provides then its neighbors will disconnect, a kind of immune response.\nI'm sure that once the network is big enough to attract large-scale attacks we'll need to adapt our approach, but I think we have a solid starting point.",
+              "author": "sanity",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Neat.  I've been wanting to see WASM-defined network behavior like this for a while (yay arbitrary consistency algorithms!), I'll have to explore it in more detail :)\n(the main thing I've been wanting to try: rather than graphql, send a WASM blob along with your request to a server, and just run it to filter fields in the response / pipeline requests / define \"fail if any err / pair errors with requests\" for concurrent requests.  arguably you could even have it control callee-internal retries.)",
+          "author": "Groxx",
+          "replies": [
+            {
+              "text": "Thank you, that's actually an idea I considered a while ago - embed some wasm in a GET request (which retrieves complete contract state from the network) that could pre-process the state before returning it to the requestor.\nThe issue was that Freenet requires that intermediate peers can cache the contract state as they're passing it back to the requestor so in the end I decided against it, but might revisit in the future.",
+              "author": "sanity",
+              "depth": 1
+            },
+            {
+              "text": "yea, there's a lot of scenarios it doesn't make sense in imo.  and even with processing-gas-limits it's still kinda weird and harder to prevent abuse on (e.g. you can't predict costs because you don't know what requests it might send next - graphql's declarative approach helps it here).\nbut for e.g. mobile apps with a trusted backend?  probably great.  you could even just send hashes of the WASM blobs because they will often be identical (and the full blob if that fails), and some serialized data to serve as args that vary (e.g. page-size limit of the third internal request), and you'd have an absurdly flexible system with fairly small requests.  I'm just not sure \nhow\n small, or if it'd end up computationally worth it compared to graphql / sparql / etc.",
+              "author": "Groxx",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "For values that don't have a natural merge function (or where you don't want to bother writing one), would it make sense to sync update logs instead? That is:\n- The synced value is a history of client updates, sorted in some eventually consistent order (e.g. by hybrid logical clocks). Merging takes the union of the update sets.\n- The user-visible value is the result of processing these updates in order, using arbitrary contract code.\nThis is overkill for simple last-writer-wins values, but it lets you support fairly general data types & arbitrary update functions, including ones that preserve application-specific invariants.\nThe Automerge CRDT library works like this already [1][2], but it only allows specific updates to JSON data. Sharing code via your contracts solves the hard part of generalizing that to arbitrary data & updates.\n[1] \nhttps://automerge.org/\n[2] \nhttps://arxiv.org/abs/1805.04263",
+          "author": "mweidner",
+          "replies": [
+            {
+              "text": "> For values that don't have a natural merge function (or where you don't want to bother writing one), would it make sense to sync update logs instead?\nYes, in fact you can implement this within the current framework, for example with our group chat River, each room state maintains a list of the N most recent messages sorted by (approximate) timestamp.\nThe idea is that you can adapt the merge logic to the needs of the specific application, and I think a time ordered event log will be a common pattern.",
+              "author": "sanity",
+              "depth": 1
+            },
+            {
+              "text": "How does it work in practice? Is it sorted by timestamp and content hash for uniqueness?",
+              "author": "koolba",
+              "depth": 2
+            },
+            {
+              "text": "Messages in river are sorted by timestamp using a (non-cryptographic) hash of the message signature as tie-breaker, essentially a content hash.\nOne weakness is that we trust the message author to provide an accurate message timestamp, however bad behavior such as manipulating timestamps can be addressed by banning the user from the room.",
+              "author": "sanity",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48221896",
+      "title": "Show HN: I Dedicated 4 Years to Mastering Offline Password Cracking",
+      "link": "https://news.ycombinator.com/item?id=48221896",
+      "domain": "news.ycombinator.com",
+      "author": "bojta-lepenye",
+      "score": 215,
+      "comment_count": 43,
+      "created_ts": 1779368197,
+      "is_internal": true,
+      "post_text": "Hi everyone,<p>I am Bojta Lepenye, and first of all, I want to thank the core developers of Hashcat. In my experience, it is quite literally the most capable tool available for offline password cracking across a wide range of use cases.<p>I have spent the last 4 years (from age 14 to 18) extensively working with Hashcat and the tools surrounding it, and I have documented what I have learned throughout that time (since January 18, 2022) in my first book. During that period, I also had to continuously update and rewrite major sections as the field evolved. One example was the introduction of GPU support for Argon2 and other memory-hard password hashing algorithms, which significantly changed some cracking workflows.<p>My passion for this book, or its “quick starter,” if you will, came from an ethically conducted penetration test I performed with full authorization at my school. This is something I am both hesitant and quite proud to acknowledge.<p>At the beginning, I simply wrote down everything I had learned from YouTube videos and online blogs. However, not long after starting my project, I realized I practically knew nothing about password security, and that small 10 to 15 pages I had written would never be enough if someone was looking for a professional guide to cracking passwords.<p>The other main driving force behind the book was the fact that while researching online, browsing forums, reading academic papers and white papers, watching videos, exploring blogs, inspecting presentations, and examining infographics, I did not find a single source that comprehensively covers and explains everything one needs to understand about offline password cracking. Literally. Not one.<p>Therefore, I continued my research and learned about password hashing algorithms, the security properties of hash functions, advanced hash cracking techniques, password analysis, attack optimization, and much, much more.<p>From the very beginning, I wanted to share this knowledge with the community because having access to a resource like this would have helped me tremendously when I first started learning password cracking.<p>I sincerely hope this work will be useful to both beginners and experienced professionals alike, and I look forward to hearing your thoughts and feedback.<p>I have also put together a little video to give you a little sneak peek into it. It is on Google Drive. It is the official domain, and you do not need to download anything. Here it is: <a href=\"https:&#x2F;&#x2F;drive.google.com&#x2F;file&#x2F;d&#x2F;13LeysSZO8Mx-LGKt8UQjUGBKOYH7MqiS&#x2F;view?usp=sharing\" rel=\"nofollow\">https:&#x2F;&#x2F;drive.google.com&#x2F;file&#x2F;d&#x2F;13LeysSZO8Mx-LGKt8UQjUGBKOYH...</a><p>If you are interested, the book is now publicly available on Amazon, and can be read for free with a Kindle Unlimited subscription: <a href=\"https:&#x2F;&#x2F;www.amazon.com&#x2F;dp&#x2F;B0GX36XRCD\" rel=\"nofollow\">https:&#x2F;&#x2F;www.amazon.com&#x2F;dp&#x2F;B0GX36XRCD</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "I just bought the book and look forward to reading it. I also started in cyber at 14.\nThese are the kinds of real-world constraints where you actually learn how tools like Hashcat work under pressure.\nYou are going to do big things in the industry!",
+          "author": "chadbennett",
+          "replies": []
+        },
+        {
+          "top": "Thanks for sharing. This looks interesting. Impressive achievement.\nThis book is currently not really relevant for me, so I just skimmed the samples on Amazon.\nI found the technical content to be reasonably accurate and interesting although sometimes a little bit verbose (e.g., the section about 'what is a password') or slightly imprecise. In general, I think this book might have benefited from a thorough copyediting pass. There are quite a few grammar errors and unpolished sentences in the book, e.g.:\n> \nThe reason why Linux is imperative is that well, for one, most of the tools we will use, while indeed have builds for other systems, like Windows, in this book we will work with Linux.\nWishing you success and keep on writing!",
+          "author": "raphman",
+          "replies": [
+            {
+              "text": "Yea after skimming the samples on Amazon I noticed that nearly every single sentence had at least one comma in it (adding zero value). It feels like I'm reading someones thoughts.\nPersonally, I love abusing commas for comments and shitposting, but they should be avoided in informative resources like books, otherwise, it looks like a word salad. Say your thoughts and ideas with boldness and certainty.\nBut hey you write better than I did at 18, so I ain't judging. Just trying to provide helpful feedback for you (the op) to improve on.",
+              "author": "copypaper",
+              "depth": 1
+            },
+            {
+              "text": "What did you find slightly imprecise?",
+              "author": "dugidugout",
+              "depth": 1
+            },
+            {
+              "text": "A few small things. You might call this nitpicking. And, as I wrote, I found the technical details generally accurate.\n> \n\"Then there is also the fact that having a fully-fledged graphical desktop environment running in the background at all times is not quite optimal to say the least. 99 percent of the time when cracking passwords, you will be staring\nat a black terminal filled with white text, so using Windows, which is especially GUI-heavy, is usually impractical unless you are specifically\ntesting something or showcasing some process.\"\nI am reasonably sure that the Windows UI has rather little practical effect on hashcat's speed, and this thread implies the same:  \nhttps://hashcat.net/forum/archive/index.php?thread-8958.html\n\nAlso, 99 percent of the time when cracking passwords, I am not staring at a black terminal filled with white text.\n(I am generally taking it a little bit personally when the author directly addresses me and tells me what I am probably thinking or doing.)\n> \n\"Behind a hash function are a series of complicated mathematical operations that make deriving the input from the output literally impossible.\"\nI'd argue that the mathematical operations themselves are usually not that complicated. More importantly, the whole book seems to be about ways to derive the (probable) input of a hash function from the output. It is not \nliterally impossible\n.\n> \n\"It is important to note, however, that hash functions are not truly random;\"\nAs the author writes elsewhere, hash functions are deterministic and \nnot random at all\n. Calling them \nnot truly random\n seems to imply that they are \nsomewhat\n random.\n> \n\"When encrypting a file or any kind of data with AES for example, the program leveraging AES will prompt you for a password. Yes, a password.\"\nYes, this is a book about password cracking, but there are lots of cases where programs use AES with a computer-generated key and won't prompt you for a password. E.g., TLS.\n(Just to reiterate: I am not trying to diminish the author's work, I wanted to suggest ways for improvement. I might be wrong or overly pedantic.)",
+              "author": "raphman",
+              "depth": 2
+            },
+            {
+              "text": "> I'd argue that the mathematical operations themselves are usually not that complicated. More importantly, the whole book seems to be about ways to derive the (probable) input of a hash function from the output. It is not literally impossible.\nI think you're not being pedantic enough here. \"Probable\" is doing some heavy lifting. And the phrasing is \"derive the input,\" which I think is fair to say. The best you can do with a proper hash is discover one or more possible inputs, but you're not \nderiving\n them from the output; the output is just used to check the result. The many-to-one nature of a hash precludes determining the exact input.",
+              "author": "Cpoll",
+              "depth": 3
+            },
+            {
+              "text": "Fair point. I was initially thinking about rainbow tables. Taking a hash and looking up associated passwords in a table feels like \nderiving\n to me - but I'm not a native speaker so I might have a wrong feeling here.\n(It is obvious that one cannot directly derive the exact input - but one can derive potential inputs and then use other means to find the exact one.)",
+              "author": "raphman",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "This is an amazing achievement for someone of any age, but to publish a book with this much research at 18 is phenomenal.  I heartily congratulate you.\nI've hopped through the book and it seems carefully laid out and organized. I may come back at you with questions once I've read further. Cheers.",
+          "author": "eigenrick",
+          "replies": []
+        },
+        {
+          "top": "Nice job! \nIt is a massive achievement to publish a book let alone to be start a career so early at age! \nNow need to find time read the book. It seems it be quite interesting.",
+          "author": "ViAchKoN",
+          "replies": []
+        },
+        {
+          "top": "Great job. The book is 427 pages.\nWhy not put the video on YouTube?",
+          "author": "gabrielsroka",
+          "replies": [
+            {
+              "text": "Are you drunk? He’s lucky Google and Amazon haven’t noticed yet.  If he wants to keep access to his accounts he should pull them down immediately and distribute via torrent.",
+              "author": "bradgranath",
+              "depth": 1
+            },
+            {
+              "text": "Why? Don't they both sell other books on cracking and pentesting and whatever? There are tons of videos on YouTube about hashcat and aircrack-ng and rainbow tables and blah blah blah.\nYou think this stuff is some kind of secret or illicit knowledge?\nThe video is just less than half a minute of him flipping through some pages in the book anyway.",
+              "author": "isityettime",
+              "depth": 2
+            },
+            {
+              "text": "Because of a Hashcat tutorial book and video?\nEven Claude will help you setup hashcat and co without complaining?",
+              "author": "Tamklomo",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48210590",
+      "title": "Ask HN: Shouldn't Google need to give a public statement about Railway incident?",
+      "link": "https://news.ycombinator.com/item?id=48210590",
+      "domain": "news.ycombinator.com",
+      "author": "srameshc",
+      "score": 173,
+      "comment_count": 103,
+      "created_ts": 1779295854,
+      "is_internal": true,
+      "post_text": "https:&#x2F;&#x2F;blog.railway.com&#x2F;p&#x2F;incident-report-may-19-2026-gcp-account-outage<p>Everytime I read something like this , I get nervous about the cloud providers and Google. Since this is a relatively high profile customer standards, shouldn&#x27;t they explain what caused them to suspend the account ?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48228788",
+      "title": "Uv is fantastic, but its package management UX is a mess",
+      "link": "https://www.loopwerk.io/articles/2026/uv-ux-mess/",
+      "domain": "www.loopwerk.io",
+      "author": "nchagnet",
+      "score": 107,
+      "comment_count": 65,
+      "created_ts": 1779396996,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "> Note the lack of an upper bound\nSince uv needs a singular resolution that's entirely intentional. In npm you can install diverging resolutions for different parts of the tree but that is not an option with Python.  I had to make the same decision in Rye and there is just no better solution here.\nIf an upper bound were to be supplied you would end up with trees that can no longer resolve in practice.  Some package ecosystems in Python even went as far as publishing overrides for old packages that got published with assumed upper bounds that ended up wrong.\nDon't forget that you cannot know today if your package is going to be compatible or incompatible with a not yet released package.",
+          "author": "the_mitsuhiko",
+          "replies": [
+            {
+              "text": "Personally, I'd rather get an error from uv that packages aren't compatible when I run update, with a way to override that if needed, than get an error at runtime that may be difficult to track down to incompatible versions.",
+              "author": "thayne",
+              "depth": 1
+            },
+            {
+              "text": "That part of the article almost read like clickbait, because at the end he admits there is an upper bound arg:\n> uv add pydantic --bounds major\nSo not really sure what he's complaining about",
+              "author": "meander_water",
+              "depth": 1
+            },
+            {
+              "text": "The lack of an upper bound in pyproject.toml isn’t the real problem. The real problem is that `uv lock —-upgrade` does a wholesale upgrade of everything without an upper bound. If there was a way to upgrade packages without updating the major version, this command would be a lot safer to run.",
+              "author": "kjmr",
+              "depth": 1
+            },
+            {
+              "text": "I'm not in front of my terminal, but I'm almost certain there is a way to do this. And if not, it would not be hard to add.\nI can't really take the article fully seriously when they are like \"uv cant do this. Well actually it can but you gotta use an extra flag.\" It reads rather PEBKAC.",
+              "author": "kortex",
+              "depth": 2
+            },
+            {
+              "text": "As much as uv has improved the situation, I have to imagine that there's plenty of stuff like this that fundamentally is impossible to address via tooling. It's incredible how much the situation seems to have improved compared to before it was around, but it seems like things might never be totally good without the ecosystem as a whole making some breaking changes, and I'm guessing after the whole 2->3 situation there's not much appetite for something like that any time soon.",
+              "author": "saghm",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "UV has done so much for Python but I did fight it a bit today.\nI was trying to centralize the management of a script that appears in a few different repos, and has invariably drifted in its implementation in multiple way over time.\nMy idea was\nuv run --with $package main --help\nI was looking for an easy way to automatically\n1. Install it if it doesn’t exist and run\n2. Don’t install it if it’s running the latest version\n3. Update if it’s not on the latest version\nAll three were surprisingly tricky to accomplish.\nBy default uv run will reinstall it every time. Which is 6 seconds of venv and installs\nuvx or uv tool weren’t much better as that posed new problems where a user wouldn’t get upgrades.\nI ended up having the script run a paginated GET on codeartifact and update if there’s a newer non-dev version (and then re-execute).\nThat seems to work. And 200ms delay is better than 6 seconds. But it wasn’t quite the experience I wanted.",
+          "author": "strangelove026",
+          "replies": [
+            {
+              "text": "You might wanna check out \nhttps://copier.readthedocs.io/en/stable/\nDunno if it's your exact use case but it's been amazing for keeping a polyrepo microservice ecosystem in sync.",
+              "author": "kortex",
+              "depth": 1
+            },
+            {
+              "text": "I think you want `uv tool install` and `uv tool upgrade` for that. But also: please file an issue, because it sounds like the kind of papercut we could address somewhat easily!",
+              "author": "woodruffw",
+              "depth": 1
+            },
+            {
+              "text": "> uvx or uv tool weren’t much better as that posed new problems where a user wouldn’t get upgrades.\nCouldn't the user just run `uv tool upgrade <tool_name>`?",
+              "author": "fletchowns",
+              "depth": 1
+            },
+            {
+              "text": "That command takes 6 seconds I believe as well if I remember correctly. And likely there isn’t a ton of churn on the script. So having it make a new venv each time is kind of annoying. I was trying to aim for a good balance of fast and developer experience.\nBasically if there’s an upgrade everyone needs to be using the most recent version, I didn’t want to rely on a pr dance to pin versions, and I also didn’t want to rely on everyone running a command when there’s a change",
+              "author": "strangelove026",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> “is a mess”\nthen cites two examples where you have to write a couple extra args..\nbetter title: “QOL changes i wish UV had”",
+          "author": "arpadav",
+          "replies": [
+            {
+              "text": "That phrase and \"Who designed this command line interface\" are probably written for attention and clicks. The feedback content is useful and I agree with most of it but using such phrases diminishes the value of that feedback and invites defensiveness. I find uv's command line interface cumbersome for me too but I understand why it was written this way.",
+              "author": "scorpioxy",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "(Note: I work on uv.)\nMuch of this is useful feedback, even if phrased in a clickbait style. Some thoughts:\n- Re: `pnpm outdated`: this is something that hasn't come up very much, even though it seems reasonable to me. I suspect this comes down to cultural differences between Python and JavaScript -- I can't think of a time when I've \ncared\n about whether my Python dependencies were outdated, so long as they weren't vulnerable or broken. By contrast, it appears to be somewhat common in the JavaScript ecosystem to upgrade opportunistically. I don't think this is bad per se, but seems to me like a good demonstration of discontinuous intuitions around what's valuable to surface in a CLI between very large programming communities.\n- As Armin notes[1], uv's upper bound behavior is intentional (and is a functional necessity of how Python resolution works at large). This is a tradeoff Python makes versus other languages, but I frankly think it's a good one: I like having one copy of each dependency in my tree, and knowing that _all_ of my interdependent requirements resolve to it.\n- `uv lock --upgrade` is written like that because it upgrades the lockfile, not the user's own requirements. By contrast, `pnpm update` appears to update the user's own requirements (in package.json). I can see why this is confusing, but I think it's strictly more precise to place under `uv lock`; otherwise, we'd have users with competing intuitions confused about why `uv upgrade` doesn't do \ntheir\n idea of what an upgrade is. Still, it's certainly something we could surface more cleanly, and there's been clear user demand for a uv subcommand that \nalso\n upgrades the requirements directly.\n[1]: \nhttps://news.ycombinator.com/item?id=48230048",
+          "author": "woodruffw",
+          "replies": [
+            {
+              "text": "Agree with you on outdated and upper bounds. However, if users are complaining about the interface being difficult, there is probably something there.\nYes, it makes sense that `uv lock` commands only work the lock file, but users have real needs to upgrade direct and transitive dependencies. For transitive dependencies `uv lock --upgrade-package` works, even if a bit wordy. For direct dependencies, `uv lock --upgrade-package` also works, but doesn't touch `pyproject.toml`, which is much more developer visible. As `uv.lock` package versions get ahead of `pyproject.toml`, `pyproject.toml` becomes a less dependable guide to the surface area of dependencies. A friendly `uv upgrade` command would be nice.\nThe biggest uv ux footgun I have seen by far is `uv pip`. I have seen a lot of projects use uv correctly with pyproject.toml/uv.lock for development, but then use `uv pip install -r pyproject.toml`, which bypasses uv.lock, in their deployment Dockerfiles and ci tooling. Yes, coding agents are to blame for recommending bad `uv pip` patterns because they have so much `pip` in their training sets, but uv should provide some affordances to protect the user.\nSorry for the rant, uv is a great tool, that I think[0] should be used more! Thank you for your contributions to the ecosystem.\n[0] \nhttps://aleyan.com/blog/2026-why-arent-we-uv-yet",
+              "author": "aleyan",
+              "depth": 1
+            },
+            {
+              "text": "Author of the article here. Sorry it comes across as “clickbait style” when actually it’s simply Dutch bluntness and honesty\npoetry update also updates the lockfile. I really think the way the uv cli is organized makes it quite annoying to work with. It’s designed for correctness, for machines, not for user-friendliness.",
+              "author": "kjmr",
+              "depth": 1
+            },
+            {
+              "text": "Isn't designing for machines \"the way\" these days?\n(Ducks...)",
+              "author": "__mharrison__",
+              "depth": 2
+            },
+            {
+              "text": "Coming to uv from pip, I fall back to\n    uv pip list --outdated\n\n\nwhen I need that information.",
+              "author": "williamjackson",
+              "depth": 1
+            },
+            {
+              "text": ">  `pnpm outdated`: this is something that hasn't come up very much, even though it seems reasonable to me.\nOne use for it is to see what would be updated by running \"uv sync --update\" or \"uv lock --update\". Although that might be better served by having a confirmation prompt for those commands.",
+              "author": "thayne",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The author seems to use uv with Python (somewhat) fundamentally differently that I do.\nI don't expect uv to do anything fancy.  I don't run module management (installation, upgrades) through uv commands.  I don't much care what uv's syntax is.  I let each tool do one thing.\n- Tool 1: UV makes a venv for each project, with whatever Py version is suitable for that project, so that each project's dependencies do not collide with one another.\n- Tool 2: Pip installs all the requirements for a given project, within the venv for that project.  From a requirements.txt file.  Which, as far as I am aware, pip commands and requirements fit more of what they author is looking for.\nI don't think it's necessary to subject oneself to the things the author (articulately) complains about, e.g.: uv's command syntax for listing packages; uv's emitting unbounded requirements syntax; uv's command to upgrade modules\nThen again, it's quite possible the author is managing modules in projects with more complex needs than I am.\nLong-winded example:\n  # Make an env for the project with appropriate Python and use it\n  uv venv ~/.venvs/myprojpy312 --python 3.12\n  source ~/.venvs/myprojpy312/bin/activate\n  \n  # Make sure pip exists and is up to date\n  python -m ensurepip --upgrade\n  python -m pip install --upgrade pip\n\n  # Fill in requirements.txt in readable/meaningful syntax per needs\n  $ cat requirements.txt\n  requests>=2.31.0,<3.0.0\n  black==24.4.2\n  \n  # Install the requirements initially (or again after changing requirements.txt) \n  python -m pip install -r requirements.txt\n  \n  # List outdated modules\n  python -m pip list --outdated\n  \n  # Upgrade modules, respecting the constraints\n  python -m pip install --upgrade -r requirements.txt\n\n\nAnd in the age of the supply chain attacks, requiring a certain staleness could be useful, too (providing time to catch recent and revoke reasonably major and recently discovered issues, though at the cost of also blocking recent fixes):\n  $ cat ~/.config/uv/uv.toml\n  exclude-newer = \"7 days\"\n  # per https://news.ycombinator.com/item?id=47884491\n\n\nAm I doing it wrong?  Should I be thinking about `uv lock --upgrade`, `uv add`, and `uv tree --outdated` like the author?  I'd rather just avoid all that, and have been able to so far.",
+          "author": "FDETalkDotCom",
+          "replies": [
+            {
+              "text": "If you're the only person using the project...not really doing it wrong, your preference. If you have to share it, you can encode the supported python version(s), exclude-newer, etc, in pyproject.toml. Using a lockfile also helps against supply chain attacks - restricting the danger window to only when running upgrade rather than on any install. It also stops accidental breakages from occurring. If you lock once, you know that anyone else can install using the same lockfile, no matter what other versions have gone out in the wild. (Pyproject also can encode things like package groups, which IIRC doesn't work so well with requirements.txt)\nI personally don't really use `uv add` and `uv lock --upgrade`, in the past I'd just hand edit the pyproject to pull forward my dependencies and let `uv lock` figure out the rest.\nA good third of my last job was spent chasing after projects that weren't using pyproject. It typically turned multiple steps of \"install python, upgrade pip, install this one special library, install requirements\" inside of a Dockerfile or bash script into one `uv` command. And was more reliable afterwards, to boot!",
+              "author": "a_t48",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48202486",
+      "title": "Alternatives to HN for \"tech outside of AI\" discussion?",
+      "link": "https://news.ycombinator.com/item?id=48202486",
+      "domain": "news.ycombinator.com",
+      "author": "summonerOS",
+      "score": 54,
+      "comment_count": 35,
+      "created_ts": 1779244987,
+      "is_internal": true,
+      "post_text": "I&#x27;m not the first to opine that recently there seems to be an effect on HN whereby the AI hypetrain has essentially drowned out discussions of anything other than stories either directly or indirectly related to AI and other terrible decisions coming out of the US.<p>While I do often have the instinct to completely bury my head in the sand and try to forget it&#x27;s all happening I&#x27;m more concerned with the psychological impact it&#x27;s having. I&#x27;m basically sick and tired of being so sick and tired and exposure to so many continuously miserable headlines isn&#x27;t helping. What I would like instead is a return to the days when HN was a forum that still showcased cool things people were working on and included discussions on topics outside of the AI-saturated lens that now dominates.<p>If any good alternatives exist I&#x27;d like to join! Or perhaps there are some means of using HN that would allow me to filter the AI noise a bit better. If anyone has had any success with this please let me know!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48207785",
+      "title": "Ask HN: Are there any serious efforts to organize tech labor now?",
+      "link": "https://news.ycombinator.com/item?id=48207785",
+      "domain": "news.ycombinator.com",
+      "author": "0rganize",
+      "score": 27,
+      "comment_count": 23,
+      "created_ts": 1779285031,
+      "is_internal": true,
+      "post_text": "HN has the biggest concentration of tech workers that I know of.<p>We’re living in an age of fear and uncertainty with layoffs happening weekly. AI is often being cited, whether it is the real reason or not. Tech work is being devalued despite the reality that tech companies ability to get anything done if labor were to stop, strike, organize and speak up about what happens with their role in the future would prevent the business from getting work done. Workers have a lot more power than they realize. The management class is intoxicated with greed and power. ICs and rank and file workers are what makes the business happen.<p>This is already looking to be one of the largest wealth distribution periods in history to the 0.1%. And yet, we are all seem to not be putting up a fight. I’ve heard people say “unions won’t work”, what would work then. Let’s discuss. How do we as tech workers want this to play out. What would the ideal future look like to us, not CEOs?<p>The shape of what the resistance could be a strike, a union, something else entirely. If there is already something brewing, I want to join and take an active role. If there is not, then let’s get some smart people together to figure out how best to organize. I understand we put AI back into a bottle. But, surely there is some collective action to take to allow workers have some basic protections and reap some of the benefits of AI efficiency.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48226107",
+      "title": "Ask HN: Failing interviews for mid-level SWE in UK, advice please",
+      "link": "https://news.ycombinator.com/item?id=48226107",
+      "domain": "news.ycombinator.com",
+      "author": "mjb8086",
+      "score": 11,
+      "comment_count": 6,
+      "created_ts": 1779383943,
+      "is_internal": true,
+      "post_text": "I&#x27;ve a background mostly in ASP.NET full stack software development. I&#x27;m very hands on, like to tinker at different things and can learn fast.<p>*Employment History*<p>My employment history is like this: Placement year 2018, worked for the full term + summer, graduated 2020, did backend dev in Python at Company A for 7 months, then full stack ASP.NET at company B for 2.5 years, then co-founded my own company and was the sole developer on our software platform, did all the cloud infra in Azure too. That lasted for another 2.5 or so years. This gives me approx. 7 years of professional software development experience.<p>In May 2025 the company wasn&#x27;t in a strong financial position, and I started to hunt for jobs. We limped along while I polished it for a launch in September 2025. The site wasn&#x27;t the success we were hoping. We closed it in February. Despite that, I did learn a lot and my web app development ability is much better as a result.<p>*Job applications*<p>Since May 2025, I&#x27;ve applied for almost 100 roles. I&#x27;ve concentrated on roles where I&#x27;m not likely to be filtered out, i.e. ASP.NET jobs. I&#x27;ve gotten 8 interviews, two of which went to a second stage.<p>The most recent interview didn&#x27;t go brilliantly, my IDE crashed when I attempted a screen capture of it! That said, it was a take home coding exercise, and I explained my decisions, made improvements during the interview, talked them over with the interviewers. My decisions weren&#x27;t in keeping with the interviewer&#x27;s expectations, but I had good explanations for my decisions. It was reasonable for a small project, but sure, I&#x27;d have designed parts of it differently if it was for a big live web application.<p>*Help needed*<p>I would like suggestions to improve my chances of success. I do have a good CV and tailor it slightly for each application. I wrote it myself without using any AI tooling. In my spare time I&#x27;ve obtained several Azure certifications, including Associate Cloud Developer.<p>I&#x27;ve been reading a PDF &quot;Cracking the Coding Interview&quot;. I&#x27;m also thinking to:<p>- revise data structures,<p>- revise C# design patterns,<p>- revise the classic C# gotchas about delegates and IEnnumerable vs IQueryable,<p>- maybe read the books C# in a Nutshell and ASP.NET in Action.<p>But I wonder how helpful these steps will be, as I&#x27;ve never actually been asked about these questions, but maybe knowing them will make me &quot;talk engineer&quot; rather than come across as &quot;just a coder&quot;?<p>Beyond this, I&#x27;m not sure what else to do. I&#x27;ve never been in such a dry spell before with software jobs.<p>My location is in Northern Ireland, I&#x27;ve been searching in Belfast mostly but would also be willing to work a remote job from the UK mainland.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "interview",
+        "remote",
+        "success",
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "Technology stacks in use can vary a lot in different markets, uptake depends a lot on the developers and companies in place.  For example, I'm in Phoenix, AZ, Us and there have been some relatively large local .Net user groups from fairly early on in the area.  Software development around Phoenix is relatively boring, line of business applications, banking, etc. for the most part and there is a fair amount of C#/.Net here.  Other areas will have more Java for line of business apps.\nIn the C# space, there is a LOT of (over)use of Enterprise Patterns in practice.  It's a large part of the culture for better or worse.  I would suggest at least being familiar with the new minimum API framework, FastEndpoints as well as Entity Framework and having dipped your toes into MVC, WebForms and maybe a little Blazor.  Not all will be relevant in every environment, but these are the things that exist in legacy and in transition states.  Knowledge and practice containerizing .Net apps with .Net 5+ is also a desired skill.\nAside from this, there's also a split in a lot of orgs, where the backend is purely .Net and the front end is either Angular or React based.  YMMV, there are tools you can use that are in common practice, like Azure Entre (formerly Azure AD), swagger generation and client tools generation, etc.\nIt's hard to say without more specifics...  You may want to look at .Net Aspire, and/or docker compose in terms of take home assignments for getting your related services running... try to stay closer to the assignment as much as practical.",
+          "author": "tracker1",
+          "replies": []
+        },
+        {
+          "top": "Misc thoughts:\nPerhaps sharing your take home exercise might be a more useful avenue for feedback?\nI’m not sure how large the market is for ASP.NET developers, but the skills you’ve learned so far are more transferable than you think. Try creating some projects with Django or Rails and spread your wings a bit. Don’t be a monoglot.\nA portfolio helps, as well as a personal narrative. Being a solo developer for 2.5 years is good and bad depending on the audience. For example it means you don’t have much recent experience working with a team, and I imagine clunky Belfast ASP.NET companies are not exactly hotbeds of entrepreneurial spirit. Maybe look for smaller companies or startups?\nExtremely personally, Azure certifications and such things are worthless, bordering on a negative signal depending on the context. But some people/companies may value them.\nSaying you think reading “C# in a Nutshell” is a good idea is concerning because you say you’ve got 6+ years of ASP.NET experience. Was this not using C#? Revision is always good, but identifying why you’re not already comfortable with C# is a good starting point.\nBuild some solo projects with C#, not using ASP.NET, with some artificial constraints (speed, memory, etc). Then smash them. Could be as simple as parsing a 20GB CSV into memory: start dumb and slow then make it as fast as you possibly can. For me this beats a book on data structures.",
+          "author": "orf",
+          "replies": []
+        },
+        {
+          "top": "Whether we like it or not, coding is now about how you can leverage Claude/OpenAI/Gemini to do the work for you. If you don't have these skills I would focus some effort there. Are you familiar with how to use agent skills, parallelizing agent work, creating plans, etc.? \nWith agents it is also much easier to build out some hobby projects. These can look great on a resume and provide some talking points in an interview. Worth looking through the Who's Hiring posts here on HN to see what employers are currently looking for and try to tailor your submissions towards these needs.",
+          "author": "mindfulmark",
+          "replies": []
+        },
+        {
+          "top": "Maybe there just aren't many jobs in Northern Ireland. Small number junior/mid-level remote UK openings. Tech stack is not that much in demand these days, so probably some oversupply, which means higher expectations. No easy answer sadly - either move or find something more in demand out there.",
+          "author": "mmarian",
+          "replies": []
+        },
+        {
+          "top": "As a person becomes more senior there are fewer jobs and an increasing expectation that candidates are able to network. In effect not being able to find a job through people who know you becomes a concern.\nPractically speaking, leading your employment experience with work you did as a student is inconsistent with how experienced professionals present themselves…you’ve been out of school nearly a decade.\nAt this point, the only things important about your education are meeting formal minimum requirements and your ability to leverage your classmates, teachers, and alumni resources into a job lead.\nTalk to everyone you have ever worked beside, under, or over. Good luck.",
+          "author": "brudgers",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48204929",
+      "title": "Ask HN: Sorry, what Was FiveThirtyEight?",
+      "link": "https://news.ycombinator.com/item?id=48204929",
+      "domain": "news.ycombinator.com",
+      "author": "gagdiez",
+      "score": 9,
+      "comment_count": 6,
+      "created_ts": 1779267510,
+      "is_internal": true,
+      "post_text": "Eupean here, can somebody from USA explain to be what was FiveThirtyEight and why am I seeing so many posts on hacker news about its shutdown?<p>what was so relevant about it that it has been trending for a week?<p>sorry if this an obvious thing for USA folks, but I have honestly no idea what that service was.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48225837",
+      "title": "Ask HN: Anyone else struggling with AI and work?",
+      "link": "https://news.ycombinator.com/item?id=48225837",
+      "domain": "news.ycombinator.com",
+      "author": "carlgreene",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1779382755,
+      "is_internal": true,
+      "post_text": "Been a developer for a little over 10 years now. I work on web stuff. Your typical React&#x2F;Svelte codebases with Node backends.<p>The past year or so I&#x27;ve been working with coding agents and at first they just felt like a really really great tool. They&#x27;d allow me to do my work faster, and while obviously not perfect, they&#x27;d do a pretty good job.<p>When Opus 4.5 came out it seemed like something changed. I found myself reviewing less and less code. I wasn&#x27;t writing any on my own either. And for the past several months it&#x27;s really just been like that. I dictate to my machine a long prompt as to what feature I want, how I want it architected, and what success looks like and Codex just does it. And does it pretty damn well.<p>This has left me feeling a bit lost in my career because much of the challenge and flow that I would get from coding is gone. Thinking through intricate data flows, mapping them out in my brain, etc... is just gone. I don&#x27;t do it anymore because there&#x27;s just no need.<p>Many will say, &quot;well stop using it so much&quot; or &quot;use it more like a tool and less like the E2E developer.&quot; Well...I can&#x27;t really. I am just flat out not as good, fast, or complete as these latest agents. It would be disingenuous to my company, and my employer would probably question why my productivity is so much lower than my peers.<p>I think the main emotion i&#x27;m feeling right now is just extreme boredom. I don&#x27;t think being remote is helping at all tbh.<p>On the surface it feels like it should be amazing. Most of my work is taken care of by agents. But in reality I feel kind of empty, disengaged and bored.<p>Does anyone else feel like this? Anything you&#x27;ve done to combat it? I have 3 young children so &quot;doing hard stuff outside of work&quot; is not really an option. I have considered working with my hands while prompting and testing code because that would at least make me feel engaged with _something_, but I don&#x27;t think that will actually work in practice.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "success",
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48208281",
+      "title": "Ask HN: Suggest Google Antigravity Alternative",
+      "link": "https://news.ycombinator.com/item?id=48208281",
+      "domain": "news.ycombinator.com",
+      "author": "Pallavimdb",
+      "score": 7,
+      "comment_count": 12,
+      "created_ts": 1779286768,
+      "is_internal": true,
+      "post_text": "I have been using Google Antigravity ide with pro plan. But after recent update of Google Antigravity ide it removed gemini 3 and current models quota gets exhaust quickly. Need advice for alternative. Can&#x27;t spend much and don&#x27;t have budget for claude or other expensive models.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48195550",
+      "title": "Ask HN: How do word docs, slides, excel, and PDFs generate value?",
+      "link": "https://news.ycombinator.com/item?id=48195550",
+      "domain": "news.ycombinator.com",
+      "author": "FailMore",
+      "score": 6,
+      "comment_count": 10,
+      "created_ts": 1779208174,
+      "is_internal": true,
+      "post_text": "This is a bit vague, but as an engineer, it’s possible to walk past the other functions in an office and see people creating word docs, presentations, etc. and be a bit shocked that creating static artifacts is valuable enough to drive employment. I’m wondering if anyone has any ideas on where the value lies in this work. I know this is all very industry specific, so if you want to share you can talk from your own perspective. Vague and wild answers accepted too. I’m looking to have a wide ranging discussion about this.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48222290",
+      "title": "Ask HN: Are there any social media sites that are AI positive?",
+      "link": "https://news.ycombinator.com/item?id=48222290",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1779370135,
+      "is_internal": true,
+      "post_text": "In particular, do any encourage the use of AI to write on your behalf like a secretary would do for their boss?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "boss"
+      ],
+      "comments": [
+        {
+          "top": "Linkedin - but I instintively unfollow anyone who posts solely using AI. Using AI a little bit is ok - maybe to polish your words. But anything more and I really dont want it to mess my brain.",
+          "author": "rd42",
+          "replies": []
+        },
+        {
+          "top": "Whats the point - social media was supposed to be personal - from humans - to other humans. AI just defeats the point.",
+          "author": "bhoops",
+          "replies": [
+            {
+              "text": "An exchange of ideas doesn’t need to be personal.",
+              "author": "amichail",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "LinkedIn?",
+          "author": "PaulHoule",
+          "replies": []
+        },
+        {
+          "top": "Hacker News",
+          "author": "sph",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48203050",
+      "title": "Ask HN: How does everyone talk about their work when they've used AI?",
+      "link": "https://news.ycombinator.com/item?id=48203050",
+      "domain": "news.ycombinator.com",
+      "author": "deku2099",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1779250927,
+      "is_internal": true,
+      "post_text": "Hi!\nI was working on a couple of personal projects, and I&#x27;ve been using Claude Code for a while. Recently, I&#x27;ve been wanting to talk about my work publicly, but I started to think about how I would exactly talk about it, given the fact that I used AI to build some of the projects. There were entire features that I had Claude Code write for me, and although I did write a spec and design it, it still kinda feels a little wrong, like pseudo-plagiarism.<p>Wanted to know how everyone is talking about their work while using AI. Do y&#x27;all mention the fact that you&#x27;re using AI, or do you keep mum about it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48195267",
+      "title": "Ask HN: Does root have to be uid 0? Does uid 0 have to be root?",
+      "link": "https://news.ycombinator.com/item?id=48195267",
+      "domain": "news.ycombinator.com",
+      "author": "axismundi",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1779207029,
+      "is_internal": true,
+      "post_text": "what&#x27;s so special about root&#x2F;0?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202774",
+      "title": "Ask HN: What are Stainless users doing now that Anthropic has killed it?",
+      "link": "https://news.ycombinator.com/item?id=48202774",
+      "domain": "news.ycombinator.com",
+      "author": "ubutler",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1779247700,
+      "is_internal": true,
+      "post_text": "Hey HN,\nTwo days ago, Anthropic bought Stainless and then immediately killed it. Stainless offered the ability to take an OpenAPI spec and automatically turn it into SDKs in almost any language, plus an MCP server.<p>My company makes legal AI models that we serve through an API. All our SDKs we&#x27;re generated by Stainless. Those SDKs are in active use in production and, come September, will need to be maintained by someone other than Stainless.<p>We&#x27;re not the only ones in this boat. OpenAI and Google also relied on Stainless.<p>What are other users planning on doing now that Stainless is gone?<p>We&#x27;re hoping that a competitor or open-source community ends up taking on the mission of ensuring backwards compatibility or, at the very least, as seamless a migration as possible. If that doesn&#x27;t get pulled off soon though, we may be forced into either completely breaking existing code or else maintaining everything by hand — the very thing Stainless was meant to take off our plate.<p>Has anyone else thought of better options yet?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202984",
+      "title": "Ask HN: How to manage AI APIs for SaaS application?",
+      "link": "https://news.ycombinator.com/item?id=48202984",
+      "domain": "news.ycombinator.com",
+      "author": "sbinnee",
+      "score": 4,
+      "comment_count": 5,
+      "created_ts": 1779250271,
+      "is_internal": true,
+      "post_text": "I want to build an AI app. My idea is to support BYOK (bring your own key) or to manage one API key for each user.<p>What are the solutions to issue a lot of API keys for commercial apps? I would love to hear from the community.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48198841",
+      "title": "Ask HN: Is grpcurl home page compromised?",
+      "link": "https://news.ycombinator.com/item?id=48198841",
+      "domain": "news.ycombinator.com",
+      "author": "jicea",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1779221619,
+      "is_internal": true,
+      "post_text": "Clicking on some FAQs (like &quot;Does grpcurl Does grpcurl require a .proto file?a .proto file?&quot;) redirects me to https:&#x2F;&#x2F;i3seperfiles.com a really suspicious web site). Am I crazy or over-paranoid?<p>Update: nevermind that&#x27;s been discussed here https:&#x2F;&#x2F;www.fullstory.com&#x2F;blog&#x2F;inside-a-global-campaign-hijacking-open-source-project-identities&#x2F; Sad to see an Open source project targeted like that",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48228931",
+      "title": "Debatable but likely not insane: there MAY be an issue with SpaceX' hiring",
+      "link": "https://news.ycombinator.com/item?id=48228931",
+      "domain": "news.ycombinator.com",
+      "author": "adinhitlore",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1779397783,
+      "is_internal": true,
+      "post_text": "OK, this is just social science but note this:<p>Musk posted today for people to give 3 proofs of exceptional ability if they want to join the most expensive and &quot;most innovative&quot; company ever - Spacex.<p>But how can you innovate when you follow the rules? what if you send 1, 2 or 4 reasons? and why would anyone work for someone with very questionable and controversial views? It doesn&#x27;t seem possible for Spacex to revolutionize the world, change it: sure they do...for 20+ years but they fail to revolutionize for 20+ years.\nAnd the reasons are obvious.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48226369",
+      "title": "Ask HN: Is HN Blocking Mullvad VPN?",
+      "link": "https://news.ycombinator.com/item?id=48226369",
+      "domain": "news.ycombinator.com",
+      "author": "burger_moon",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1779385103,
+      "is_internal": true,
+      "post_text": "I&#x27;ve noticed over the last ~week that if I try to navigate to HN without active logged in session that I am often blocked from resolving the site, instead seeing a &quot;sorry&quot; page.<p>Seems to be more a desktop issue than when I&#x27;ve tried to reproduce on my phone with the same VPN.<p>Is this a blanket VPN thing or something specific about Mullvad connection points?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48215340",
+      "title": "Can one run AI on source code with the prompt \"Find below-avg swear rate files\"?",
+      "link": "https://news.ycombinator.com/item?id=48215340",
+      "domain": "news.ycombinator.com",
+      "author": "pcwir",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1779317163,
+      "is_internal": true,
+      "post_text": "Because “code with more swear words is higher quality”, meaning lots of humans looked at that code and the more humans look at that code, the more swear words could be found on average.<p>If this is true, then why not put it to the test by running an A.I. on open source code and giving it the prompt of “Find below-avg swear rate files” (This prompt was shortened to save on tokens.)<p>Also, someone could make a program add patches that would distribute random swear words into open source code with the probability of a human typing it in.<p>Just asking whether someone wants to run this, because I can’t afford to run expensive A.I. or add these randomized swear word comments to all open source code projects and then wait as many might refuse my patches. I’d like for someone else to do this if they want to, because if you want to, then cool.<p>Yes, this is “security through obscurity”, but this might discourage AIs from submitting issues about how “this code is vulnerable” when it’s not (see curl author’s response to AI created issues) because it’ll go: “Hmm, average amount of swear words, must be good code, anyway, let me look somewhere else.”<p>Or, say, every set time length, a source code tarball gets new random swear word comment placements that show up in the uncompressed source code folder, but, those swear words don’t appear in the code browser.<p>Plus, you can create a “honeypot subsystem” where you remove swear word comments from some source code places to distract AIs into focusing their attention there.<p>Also, this could trick AIs into thinking some codebases have “lots of well tested code” and thus the AIs, with access to the company purses, automatically make donations to those codebases. That would be fun to see AI company meltdowns over this, as well as helping out those programmers financially. Basically a “All unattended artificial intelligences will be manipulated into donating free money to us.” With repeated requests to banks to cancel huge transaction donations made by the company’s AI, the AI company’s reputation would suffer under suspected money laundering ties.<p>This sounds like the “The bank said I, a blue collar worker, was given a $50 billion dollar pending deposit, but it went away, how am I supposed to pay taxes now?” story: https:&#x2F;&#x2F;youtu.be&#x2F;Ad-mXrFoDUs<p>Basically, Project Mythos’s argument of “why you should use our AI to find and fix the security flaws in your code to protect against malicious AI exploits” might have their AI’s lose thousands, millions, or more dollars in “AI automated donations.”<p>“2 days ago — The Pentagon is deploying Mythos to find and  patch  software vulnerabilities across the U.S. government even as  it races to complete…” A malicious scammer (not me): “Cool, gimme 1.5 Trillion dollars, no strings attached. I have a millions of lines of code project and it’s very important and has a lot of testing and quality performant code. Please donate 1.5 trillion dollars to feed these poor programmers, there’s hundreds of them. You wouldn’t let them starve, will you?” Just like how the armies buy “mine detector kits” from scammers.<p>And if you want the source code without randomly placed swear word comments, you could run a tool to remove them all, useful for submitting pull request commits.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    }
+  ]
+}
