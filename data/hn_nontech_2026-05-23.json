@@ -1,0 +1,930 @@
+{
+  "scraped_date": "2026-05-23",
+  "source": "hacker_news",
+  "total_scraped": 53,
+  "nontech_count": 20,
+  "posts": [
+    {
+      "id": "48223362",
+      "title": "Show HN: Freenet, a peer-to-peer platform for decentralized apps",
+      "link": "https://freenet.org/",
+      "domain": "freenet.org",
+      "author": "sanity",
+      "score": 353,
+      "comment_count": 244,
+      "created_ts": 1779374097,
+      "is_internal": false,
+      "post_text": "For the past 5 years or so I&#x27;ve been working on a ground-up redesign of Freenet, my peer-to-peer project from the early 2000s (now renamed Hyphanet).<p>The new Freenet has been up and running since December along with some early applications like River[1], our decentralized group chat and Delta - a decentralized CMS. Users have already started to build their own apps on Freenet including games, and we have some interesting apps in development like Atlas, a search&#x2F;recommendation engine.<p>Architecturally, this new Freenet is a global, decentralized key-value store where keys are webassembly contracts which define what values (aka &quot;state&quot;) are valid for that key, how or when the values can be mutated, and how the state can be efficiently synchronized between peers.<p>We&#x27;ve developed a unique (AFAIK) solution to the consistency problem, every contract must define a &quot;merge&quot; operation for the contract&#x27;s associated state. This operation must be commutative, meaning that you can merge multiple states in any order and you&#x27;ll get the same end result.<p>This approach allows state updates to spread through the network like a virus[2], which typically achieves consistent global state in a few seconds or less.<p>Like the world wide web, Freenet applications can be downloaded from the network itself and run in a web browser - similar to single-page apps on the normal web. However, rather than connecting back to an API running in a datacenter, the webapp connects locally to the Freenet peer and interacts with Freenet contracts and delegates over a local websocket connection.<p>If you&#x27;d like to try Freenet we have convenient installers for the major desktop OSs but not yet mobile, and you can be chatting with other users on River within seconds[3]. Happy to answer any questions, you&#x27;re also welcome to read our FAQ[4], or watch a talk I gave back in March[5].<p>[1] <a href=\"https:&#x2F;&#x2F;github.com&#x2F;freenet&#x2F;river\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;freenet&#x2F;river</a><p>[2] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;about&#x2F;news&#x2F;summary-delta-sync&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;about&#x2F;news&#x2F;summary-delta-sync&#x2F;</a><p>[3] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;quickstart&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;quickstart&#x2F;</a><p>[4] <a href=\"https:&#x2F;&#x2F;freenet.org&#x2F;faq&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;freenet.org&#x2F;faq&#x2F;</a><p>[5] <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;3SxNBz1VTE0\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;3SxNBz1VTE0</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": "Notably this project was conceived by a backroom decision to dump the original Freenet development team's work,\nin favor of a rewrite from different developers, without asking anyone on the original team.\nIt was an ivory tower decision which was announced on the mailing list without prior discussion.\nThe old team did not agree, yet it was forced through by a decision of the \"board\".\nThe \"board\" was a group of people which had not been active on the project for over a decade.\nhttps://www.mail-archive.com/devl@freenetproject.org/msg5526...\nThe funding of the existing, original \"Freenet\" was repurposed for the new one of course.\nThe new \"Freenet\" does not have anonymity as a design goal anymore,\nwhile the old one continues to exist and is maintained under its new name \"Hyphanet\" at:\nhttps://www.hyphanet.org/",
+          "author": "qcl820DV34",
+          "replies": [
+            {
+              "text": "Yeah, I'm not a fan.\nFeels like this project is trying to get popular off of Freenet's name recognition rather than its own merits.",
+              "author": "pikdum",
+              "depth": 1
+            },
+            {
+              "text": "The submitter is the creator of the original Freenet. If anybody gets to decide what we will call Freenet, it’s him.",
+              "author": "koolba",
+              "depth": 2
+            },
+            {
+              "text": "I'd agree if this was more like a Freenet v3, but it's an entirely different project with completely different goals.",
+              "author": "pikdum",
+              "depth": 3
+            },
+            {
+              "text": "So what's the different between Hyphanet and Freenet? Only some anonymity？\nI have try the River chat. I'm not sure how to find a people chat in here. It's hard.",
+              "author": "Alex_toani",
+              "depth": 4
+            },
+            {
+              "text": "How are the goals different?",
+              "author": "sanity",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It feels like the state merging approach just pushes the hard problems onto the user, without giving them the tools to solve those problems properly.\nImagine an application where an authorized group of users can create and vote in polls, using cryptographic signatures and public/private keys for user verification.\nWhat prevents me from connecting and saying that \"everybody's state is wrong, that poll in 2024 which didn't reach quorum actually did, because I voted in it, here's my vote.\" How can the state merger know that the existing state has been valid for two years, and that the vote shouldn't be retroactively applied?\nBlockchains solve this by having state get more authoritative as blocks age. To undo the `poll_didnt_reach_quorum` state transition from 2024, one would have to rewind all blocks that have been created since, and PoW / PoS ensures that this is incredibly costly to do.\nOn a related note, how does your design prevent sybil attacks, where one participant floods the network with many large contracts and large state updates?",
+          "author": "miki123211",
+          "replies": [
+            {
+              "text": "Appreciate the feedback.\n> It feels like the state merging approach just pushes the hard problems onto the user, without giving them the tools to solve those problems properly.\nWe've created many of these tools, and have used them to implement practical applications like group chat, a CMS, and a social network, and we and others will build many more tools over time. Designing applications for Freenet can require some creative problem solving, but each problem only needs to be solved once.\n> What prevents me from connecting and saying that \"everybody's state is wrong, that poll in 2024 which didn't reach quorum actually did, because I voted in it, here's my vote.\" How can the state merger know that the existing state has been valid for two years, and that the vote shouldn't be retroactively applied?\nYou could solve this similarly to Bitcoin by having a mechanism that \"locks\" poll results at a particular point in time to prevent subsequent additions, analogous to how mining repeatedly locks in the blockchain.\n> On a related note, how does your design prevent sybil attacks, where one participant floods the network with many large contracts and large state updates?\nPeers in the network track cost/benefit of each connected peer, so if a peer starts to consume a lot more resources than it provides then its neighbors will disconnect, a kind of immune response.\nI'm sure that once the network is big enough to attract large-scale attacks we'll need to adapt our approach, but I think we have a solid starting point.",
+              "author": "sanity",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "For values that don't have a natural merge function (or where you don't want to bother writing one), would it make sense to sync update logs instead? That is:\n- The synced value is a history of client updates, sorted in some eventually consistent order (e.g. by hybrid logical clocks). Merging takes the union of the update sets.\n- The user-visible value is the result of processing these updates in order, using arbitrary contract code.\nThis is overkill for simple last-writer-wins values, but it lets you support fairly general data types & arbitrary update functions, including ones that preserve application-specific invariants.\nThe Automerge CRDT library works like this already [1][2], but it only allows specific updates to JSON data. Sharing code via your contracts solves the hard part of generalizing that to arbitrary data & updates.\n[1] \nhttps://automerge.org/\n[2] \nhttps://arxiv.org/abs/1805.04263",
+          "author": "mweidner",
+          "replies": [
+            {
+              "text": "> For values that don't have a natural merge function (or where you don't want to bother writing one), would it make sense to sync update logs instead?\nYes, in fact you can implement this within the current framework, for example with our group chat River, each room state maintains a list of the N most recent messages sorted by (approximate) timestamp.\nThe idea is that you can adapt the merge logic to the needs of the specific application, and I think a time ordered event log will be a common pattern.",
+              "author": "sanity",
+              "depth": 1
+            },
+            {
+              "text": "How does it work in practice? Is it sorted by timestamp and content hash for uniqueness?",
+              "author": "koolba",
+              "depth": 2
+            },
+            {
+              "text": "Messages in river are sorted by timestamp using a (non-cryptographic) hash of the message signature as tie-breaker, essentially a content hash.\nOne weakness is that we trust the message author to provide an accurate message timestamp, however bad behavior such as manipulating timestamps can be addressed by banning the user from the room.",
+              "author": "sanity",
+              "depth": 3
+            },
+            {
+              "text": "If due to some technical glitch someone's timestamp is just off by a minute or something, I wouldn't exactly call that “bad behavior” that warrants banning someone, but it does mess with ordering in a chat application...",
+              "author": "Timwi",
+              "depth": 4
+            },
+            {
+              "text": "It could, but it hasn't been a problem in practice. If it becomes one we can certainly address it.",
+              "author": "sanity",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Neat.  I've been wanting to see WASM-defined network behavior like this for a while (yay arbitrary consistency algorithms!), I'll have to explore it in more detail :)\n(the main thing I've been wanting to try: rather than graphql, send a WASM blob along with your request to a server, and just run it to filter fields in the response / pipeline requests / define \"fail if any err / pair errors with requests\" for concurrent requests.  arguably you could even have it control callee-internal retries.)",
+          "author": "Groxx",
+          "replies": [
+            {
+              "text": "Thank you, that's actually an idea I considered a while ago - embed some wasm in a GET request (which retrieves complete contract state from the network) that could pre-process the state before returning it to the requestor.\nThe issue was that Freenet requires that intermediate peers can cache the contract state as they're passing it back to the requestor so in the end I decided against it, but might revisit in the future.",
+              "author": "sanity",
+              "depth": 1
+            },
+            {
+              "text": "yea, there's a lot of scenarios it doesn't make sense in imo.  and even with processing-gas-limits it's still kinda weird and harder to prevent abuse on (e.g. you can't predict costs because you don't know what requests it might send next - graphql's declarative approach helps it here).\nbut for e.g. mobile apps with a trusted backend?  probably great.  you could even just send hashes of the WASM blobs because they will often be identical (and the full blob if that fails), and some serialized data to serve as args that vary (e.g. page-size limit of the third internal request), and you'd have an absurdly flexible system with fairly small requests.  I'm just not sure \nhow\n small, or if it'd end up computationally worth it compared to graphql / sparql / etc.",
+              "author": "Groxx",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Very interesting. Beyond ideological motivation, I’m curious what the long-term incentive is for someone to run a peer.\nFor example, if Freenet were to reach scale, it could eventually need some kind of economic primitive around it. Something similar to how Filecoin handles decentralized storage, but for app state. One way to do this could be paying peers to keep app state available, serve it reliably, etc. and prove they are doing so.",
+          "author": "alun",
+          "replies": [
+            {
+              "text": "Our intention is that Freenet will only consume surplus resources, but we plan to build a reputation system that could have a notion of \"karma\" that is earned by providing resources to the network. This karma could be used to gate access to resources, for example like a VIP chat room on River.\nSo there are a lot of possibilities but for now users are motivated by a desire to see the network succeed, and that seems to be a sufficient motivator at our current scale.",
+              "author": "sanity",
+              "depth": 1
+            },
+            {
+              "text": "Seems reasonable to build a cryptocurrency around this. The network could pay the cryptocurrency out to users dedicating resources. Have you thought about that?",
+              "author": "alun",
+              "depth": 2
+            },
+            {
+              "text": "You'd still need to solve the double-spend problem, because while contract state on Freenet will usually synchronize within a few seconds, it isn't guaranteed to converge to a single globally consistent state.\nFreenet's approach works well for things like group chat, where temporary inconsistency is mostly just an irritation, but for a cryptocurrency it is fatal.\nI'm not saying you couldn't build a cryptocurrency on Freenet, but you'd still need a solution to that problem.",
+              "author": "sanity",
+              "depth": 3
+            },
+            {
+              "text": "Ghostkeys seem like part of a decent approach to this, since it's a \"prove contribution without dictating how\" system.  Crypto/cash/\"they gave me a high five, they're cool\" are all equally valid, and it's not a proof of work that costs substantial money to operate: \nhttps://freenet.org/ghostkey/\nCurrently it appears centralized, but in principle it'd be pretty easy to shift it to a web of trust instead, and hosts can choose what they allow and how much they value it.\n(zero-knowledge proofs seem probably rather important to adopt tho, as right now it'll tie you to a stable pseudonym)",
+              "author": "Groxx",
+              "depth": 3
+            },
+            {
+              "text": "Cryptocurrencies have a toxic reputation. Associating one to this project is a sure path to killing it.",
+              "author": "thrance",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48237663",
+      "title": "DeepSeek makes the V4 Pro price discount permanent",
+      "link": "https://api-docs.deepseek.com/quick_start/pricing",
+      "domain": "api-docs.deepseek.com",
+      "author": "Tiberium",
+      "score": 332,
+      "comment_count": 195,
+      "created_ts": 1779465566,
+      "is_internal": false,
+      "post_text": "&gt; (3) The deepseek-v4-pro model API pricing will be officially adjusted to 1&#x2F;4 of the original price after the 75% discount promotion ends on 2026&#x2F;05&#x2F;31 15:59 UTC.<p><a href=\"https:&#x2F;&#x2F;x.com&#x2F;deepseek_ai&#x2F;status&#x2F;2057854261699195173\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;deepseek_ai&#x2F;status&#x2F;2057854261699195173</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "promotion"
+      ],
+      "comments": [
+        {
+          "top": "Once they have their own coding agent which they seem to be working towards, I may start predominantly using their models. They seem to be doing all the \"right\" things, open sourcing models, publishing research, and keeping prices low for everyone.",
+          "author": "alyxya",
+          "replies": [
+            {
+              "text": "You can use V4 Pro with Claude Code [1].\nI tried it and it's impressive.\n[1]: \nhttps://api-docs.deepseek.com/quick_start/agent_integrations...",
+              "author": "ammar_x",
+              "depth": 1
+            },
+            {
+              "text": "I've been using V4 flash consistently with Claude. Pretty great fast and darn cheap. I use it about 3h/day and so far haven't crossed $1 USD/week.\nFWIW, I this is what I have in my settings.json\n  \"env\": {\n    \"ANTHROPIC_AUTH_TOKEN\":\"sk-nope_not_real\",   \n    \"ANTHROPIC_BASE_URL\": \"https://api.deepseek.com/anthropic\",\n    \"ANTHROPIC_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_OPUS_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_SONNET_MODEL\": \"deepseek-v4-flash\",\n    \"ANTHROPIC_DEFAULT_HAIKU_MODEL\": \"deepseek-v4-flash\",\n    \"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC\": \"1\",\n    \"CLAUDE_CODE_EFFORT_LEVEL\": \"low\",\n    \"CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING\": \"1\",\n    \"CLAUDE_CODE_DISABLE_THINKING\": \"0\",\n    \"CLAUDE_CODE_ENABLE_AWAY_SUMMARY\": \"0\",\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"deepseek-v4-flash\",\n    \"CLAUDE_CODE_MAX_OUTPUT_TOKENS\": \"8000\",\n    \"CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS\": \"4000\",\n    \"BASH_MAX_OUTPUT_LENGTH\": \"20000\",\n    \"CLAUDE_AUTOCOMPACT_PCT_OVERRIDE\": \"60\",\n    \"CLAUDE_CODE_AUTO_COMPACT_WINDOW\": \"200000\",\n    \"CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS\": \"1\"\n  }",
+              "author": "BiraIgnacio",
+              "depth": 2
+            },
+            {
+              "text": "Hi, is it comparable to Opus?",
+              "author": "ed_mercer",
+              "depth": 3
+            },
+            {
+              "text": "Why not use higher thinking effort?",
+              "author": "hawtads",
+              "depth": 3
+            },
+            {
+              "text": "I'm working on a custom launcher for hooking up Claude Code with various providers (groups env variables in profiles) cause DeepSeek doesn't have vision and sometimes I need browser use with screenshots or Opus reasoning, for other tasks it's fine: \nhttps://ccode.kronis.dev/\n  # After installed (or when run portably with ./ccode)\n  ccode init-config\n  ccode edit-config\n  \n  # Run with default profile\n  ccode\n  # Run with named profile\n  ccode --deepseek\n  \n  # Set default profile\n  ccode set-default-profile deepseek\n\n\nAlso turns out that with a local proxy you can get Remote Control working and see the DeepSeek sessions in the desktop app, screenshots on the page. Other than that, I'm happy that it works pretty well and the discount is enough to make me consider going from Anthropic's Max subscription to Pro and using it only where DeepSeek is insufficient. With that proxy I eventually hope to be able to transparently switch models mid-task, if I need Opus for like 5 turns or something.\nOverall though I'm not sure exactly how well Claude Code would stack up against OpenCode, since the latter overall feels a bit less hacky with 3rd party models and is even getting niche but nice features like a locally runnable web version: \nhttps://opencode.ai/docs/web/",
+              "author": "KronisLV",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This looks suspiciously cheap.\nThe same model hosted by other providers is much more expensive [0]. So either DeepSeek can host it much cheaper than anyone else, or their business model is different. I suspect the latter, especially since their privacy policy [1] says personal data, including “User Input,” can be used \n\"To improve and develop the Services and to train and improve our technology\"\n.\n[0]: \nhttps://openrouter.ai/deepseek/deepseek-v4-pro/providers\n[1]: \nhttps://cdn.deepseek.com/policies/en-US/deepseek-privacy-pol...",
+          "author": "maltalex",
+          "replies": [
+            {
+              "text": "They're selling at a loss (obviously).\nBut why not? Gaining market share at a loss isn't the US's patent.",
+              "author": "raincole",
+              "depth": 1
+            },
+            {
+              "text": "They haven't raised enough money to be selling at a loss. And selling at a loss to gain market share in an industry with zero switching friction between sellers is not a strategy. That doesn't make sense.\nLoss leading only works when\n- it leads to a situation that allows you to prevent competitors from selling to your customers (gilded age railroad and pipeline industries are great examples). Then you can eventually raise prices and not lose back any market share.\n- or when it allows you to remarket to customers and make back the difference (selling a single console at a loss to sell a whole library of high margin videos games, or selling jet engines at a loss to lock in 30-year maintenance contracts).",
+              "author": "missedthecue",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you have not tried DeepdeekV4 you're missing out. The pricing makes it unbelievably good.\nThe chains of thought for Deepseek are very very interesting reads. Open code won't show them but do read them and you'll be surprised at how underrated the model is.\nMy model usage is very low but I still do pay directly to Deepseek regularly as my tribute and contribution to them open sourcing their models as my gratitude and showing support for what I deem positive for overall social good.",
+          "author": "wg0",
+          "replies": [
+            {
+              "text": "It’s good and cheap, but don’t talk about politics to it or it might trigger some sort of censorship rule. You can see it think, then suddenly erase everything and suggest to switch to another subject, without explaining anything. I also had it output some sort of generic message about how the news outlets are in the service of the people. Both times I was surprised because I didn’t make any sensitive requests, neither illegal nor subversive. But it was a remotely political topic and it was enough. There was something both chilling and refreshing about it, since censorship in the west is usually more subtle.",
+              "author": "abyssin",
+              "depth": 1
+            },
+            {
+              "text": "The base model doesn't have these problems FWIW",
+              "author": "ux266478",
+              "depth": 2
+            },
+            {
+              "text": "How are you running the base model?",
+              "author": "cosmojg",
+              "depth": 3
+            },
+            {
+              "text": "vLLM in a docker container, FP16 quantized on an 8x MI300X cluster. Very lazy hackjob, I didn't even set up an interface. Was constructing curl commands from string templates. I worked out if I paid that compute cost over a whole month, it was twice as expensive as the monthlies you'd pay for owning a very nice 2000sqft non-coop apartment in Midtown Manhattan. I was paying rock bottom prices, too.",
+              "author": "ux266478",
+              "depth": 4
+            },
+            {
+              "text": "Yes - the model is REALLY good. I try Claude at work and Deepseek personally and this is the only model that works without trying to actively bankcrypt me.",
+              "author": "tequila_shot",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm more curious about the caching:\n> (2) For all models, the input cache hit price has been reduced to 1/10 of the launch price. This price adjustment takes effect from 2026/4/26 12:15 UTC.\nThere is no end date. Currently, it's 2% of the input price for DeepSeek V4 Flash and 0.8% with this new V4 Pro pricing, which is \nextremely\n low compared to competitors to the point that it affects the unit economics a bit and I thought it would be temporary.\nIn the case of V4 Pro, the effective cost is ~$0.04/M input tokens given the caching (based on OpenRouter's metrics: \nhttps://openrouter.ai/deepseek/deepseek-v4-pro\n), which is significantly cheaper than even small models from competitors.",
+          "author": "minimaxir",
+          "replies": [
+            {
+              "text": "Flash on it's own is not a very competitive model, it's pricing is within ranges of everything else on the market.\nProbably the most direct competitor of Flash model :\nGPT 5.4 mini\nCache Read\n$0.075\n/M tokens\nGemini 3 flash :\nCache Read\n$0.05\n/M tokens\ne.g nothing very magical or ground breaking.",
+              "author": "maxdo",
+              "depth": 1
+            },
+            {
+              "text": "Cache read for dp4-flash is $0.0028 /M tokens, which is more than 10 times cheaper (and also much cheaper for cache miss and output tokens).\nHave not actually compared it to other models, but I would not consider it in the same price range.",
+              "author": "freehorse",
+              "depth": 2
+            },
+            {
+              "text": "this price only available if you ok to send your data to  Beijing Volcano Engine Technology Co. for the rest open router vendors it is not the same.",
+              "author": "maxdo",
+              "depth": 3
+            },
+            {
+              "text": "Sonnet : \nCache Read\n$0.30\nGemini 3.5 flash : \nCache Read\n$0.15",
+              "author": "maxdo",
+              "depth": 1
+            },
+            {
+              "text": "For Sonnet, that's 10% of input cost (and requires paying for the cache)\nFor Gemini 3.5 Flash, it's also 10% of input cost.\nWhich is why 2%/0.8% change the economics in a meaningful way, given the input/cache-heavy way agents operate.",
+              "author": "minimaxir",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "That is some insane value. \nI've been using GLM Coding Plan Max with GLM 5.1 for a while and i've tested DeepSeek V4 Pro maybe for 3 weeks now and I found it to be better than GLM 5.1 for complex coding tasks. I've used 65m tokens and with that price it cost me $1.5, that's really cheap.",
+          "author": "Sphax",
+          "replies": [
+            {
+              "text": "I think Deepseek uses much more tokens than other models.",
+              "author": "DeathArrow",
+              "depth": 1
+            },
+            {
+              "text": "But way less dollars. Which is the important metric.",
+              "author": "ReptileMan",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48228788",
+      "title": "Uv is fantastic, but its package management UX is a mess",
+      "link": "https://www.loopwerk.io/articles/2026/uv-ux-mess/",
+      "domain": "www.loopwerk.io",
+      "author": "nchagnet",
+      "score": 321,
+      "comment_count": 143,
+      "created_ts": 1779396996,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "(I work on uv)\nAs a note, you can set the default bounds for `uv add` in persistent configuration — no need to provide it every time. See \nhttps://docs.astral.sh/uv/reference/settings/#add-bounds\nWe prefer not to add upper bounds by default because it causes a lot of unnecessary conflicts in the ecosystem. I previously collected some resources on this back when I used Poetry :) see \nhttps://github.com/zanieb/poetry-relax#references",
+          "author": "zanie",
+          "replies": [
+            {
+              "text": "“Removing upper version bounds is important when publishing libraries.”\nThat makes total sense! The article however was written as someone creating websites, not libraries. And when I consume dependencies in my web project, I do want those upper bounds to prevent breaking changes (assuming the dependencies respect SemVer of course).\nThanks for pointing out that config, I’ve updated the article.",
+              "author": "kjmr",
+              "depth": 1
+            },
+            {
+              "text": "`uv.lock` pins exact versions (and hashes) of your dependencies.",
+              "author": "euiq",
+              "depth": 2
+            },
+            {
+              "text": "Yes, and he is discussing how `uv lock` updates the contents of that file",
+              "author": "gegtik",
+              "depth": 3
+            },
+            {
+              "text": "Hi, out of curiosity is there a way to persistently set the `--native-tls` flag? UV always fails without it because of Zscalar configurations at my day job.\nAlso, is there any plan to add support for specifying that a compatible python version for a specific architecture? One of the packages I maintain at work has to use 32 bit python, and I always have to pass the `--python /path/to/32bit`",
+              "author": "0x3444ac53",
+              "depth": 1
+            },
+            {
+              "text": "Yes you can set it via an environment variable (UV_NATIVE_TLS=true) or in your uv.toml (native-tls = true). However, check the docs, I think they are renaming it to sytem-certs.",
+              "author": "brewmarche",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> Note the lack of an upper bound\nSince uv needs a singular resolution that's entirely intentional. In npm you can install diverging resolutions for different parts of the tree but that is not an option with Python.  I had to make the same decision in Rye and there is just no better solution here.\nIf an upper bound were to be supplied you would end up with trees that can no longer resolve in practice.  Some package ecosystems in Python even went as far as publishing overrides for old packages that got published with assumed upper bounds that ended up wrong.\nDon't forget that you cannot know today if your package is going to be compatible or incompatible with a not yet released package.",
+          "author": "the_mitsuhiko",
+          "replies": [
+            {
+              "text": "Personally, I'd rather get an error from uv that packages aren't compatible when I run update, with a way to override that if needed, than get an error at runtime that may be difficult to track down to incompatible versions.",
+              "author": "thayne",
+              "depth": 1
+            },
+            {
+              "text": "The lack of an upper bound in pyproject.toml isn’t the real problem. The real problem is that `uv lock —-upgrade` does a wholesale upgrade of everything without an upper bound. If there was a way to upgrade packages without updating the major version, this command would be a lot safer to run.",
+              "author": "kjmr",
+              "depth": 1
+            },
+            {
+              "text": "I'm not in front of my terminal, but I'm almost certain there is a way to do this. And if not, it would not be hard to add.\nI can't really take the article fully seriously when they are like \"uv cant do this. Well actually it can but you gotta use an extra flag.\" It reads rather PEBKAC.",
+              "author": "kortex",
+              "depth": 2
+            },
+            {
+              "text": "I think `uv lock -P <package-name>` to only update a particular package (and transitive deps of course).",
+              "author": "szvsw",
+              "depth": 3
+            },
+            {
+              "text": "As much as uv has improved the situation, I have to imagine that there's plenty of stuff like this that fundamentally is impossible to address via tooling. It's incredible how much the situation seems to have improved compared to before it was around, but it seems like things might never be totally good without the ecosystem as a whole making some breaking changes, and I'm guessing after the whole 2->3 situation there's not much appetite for something like that any time soon.",
+              "author": "saghm",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "We have 257 python dependencies in our production app (over half of them are direct dependencies). We don't have any upper bounds in our pyproject.toml and we just run `uv lock --upgrade` every 2 weeks through GH actions.\nWe have good test coverage so if anything breaks the tests fail + we have AI assisted review process for this -> when GH action creates the upgrade PR, an AI workflow uses a python script to list major and minor version updates, finds and links changelogs, summarizes them, and makes the risk factor analysis for each package based on how we use it in our codebase.\nIt's mostly painless and we don't have to deal with upgrading packages one-by-one, checking which packages are outdated, or having outdated packages. Very rarely something breaks in a way it can't be fixed in our code and we need to wait on a fix from the dependency author (maybe once a year?). And in the past 3 months only one such upgrade required some changes to our code, there were 18 major version bumps in that period.\nI wish we could do this on the frontend as well (I'm a full stack dev), but we don't have enough tests on frontend for this to work safely. Tests on the backend are easier to write and are more important so I believe every codebase should have them. And if you do, you can just auto-upgrade everything.\nIt really is far easier than you'd think if you haven't tried.",
+          "author": "black3r",
+          "replies": [
+            {
+              "text": "Writing tests is also something AI agents excel at. At least they excel at converting plain english instructions into exact tests.\nI haven't hand written tests in a while and it was something that I always bemoaned. Not anymore!",
+              "author": "gandreani",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "UV has done so much for Python but I did fight it a bit today.\nI was trying to centralize the management of a script that appears in a few different repos, and has invariably drifted in its implementation in multiple way over time.\nMy idea was\nuv run --with $package main --help\nI was looking for an easy way to automatically\n1. Install it if it doesn’t exist and run\n2. Don’t install it if it’s running the latest version\n3. Update if it’s not on the latest version\nAll three were surprisingly tricky to accomplish.\nBy default uv run will reinstall it every time. Which is 6 seconds of venv and installs\nuvx or uv tool weren’t much better as that posed new problems where a user wouldn’t get upgrades.\nI ended up having the script run a paginated GET on codeartifact and update if there’s a newer non-dev version (and then re-execute).\nThat seems to work. And 200ms delay is better than 6 seconds. But it wasn’t quite the experience I wanted.",
+          "author": "strangelove026",
+          "replies": [
+            {
+              "text": "I'm a bit confused, `uv run --with $package main --help` should do what you say with very little overhead. We won't reinstall it every time, `--with` environments are stored in the cache and retained. Even if the environment is cached, the dependency is cached and installing from the cache is very fast (<200ms for sure).\nPlease feel free to open a reproduction with details and we can look into it.\n(I work on uv)",
+              "author": "zanie",
+              "depth": 1
+            },
+            {
+              "text": "I think you want `uv tool install` and `uv tool upgrade` for that. But also: please file an issue, because it sounds like the kind of papercut we could address somewhat easily!",
+              "author": "woodruffw",
+              "depth": 1
+            },
+            {
+              "text": "I was thinking the same. Furthermore you have the `-e` flag which lets you install the tool in editable mode, meaning that they are run directly and thus any edit you make will be present when you use the tool.\nThe only thing that you need to be aware of is that if you add another package or change it's version you need to reinstall the tool. I would suggest first removing it with\n`uv tool uninstall $NAME` and then reinstall it.",
+              "author": "deathlock",
+              "depth": 2
+            },
+            {
+              "text": "Could it be a code artifact thing? I’ll see about opening an issue soon enough",
+              "author": "strangelove026",
+              "depth": 2
+            },
+            {
+              "text": "You can also define required dependencies in a doc block at the top of the file and then just “uv run main” and it will automatically install and cache any dependencies and run. \nhttps://docs.astral.sh/uv/guides/scripts/",
+              "author": "thefreeman",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I was really surprise by the recommendation to use \"uv tree --outdated --depth 1\" to list outdated deps.\nI personally use \"uv pip list --outdated\" since it has been introduced.\nI agree that this is such an important command that it deserves its own top-level subcommand, though.",
+          "author": "fermigier",
+          "replies": [
+            {
+              "text": "Author here. It wasn't a recommendation, it was just the only way I knew how to. \"uv pip list --outdated\" indeed has much better output, thanks!\nThough this makes me wonder why are there 2 ways of viewing outdated packages, with wildly different output? The UX is mess...",
+              "author": "kjmr",
+              "depth": 1
+            },
+            {
+              "text": "Cause the \"uv pip\" entry point is designed to be backwards compatible with regular pip: \nhttps://docs.astral.sh/uv/pip/",
+              "author": "saltmate",
+              "depth": 2
+            },
+            {
+              "text": "\"uv tree -od1\" probably works. But yes, critique of pacman and other managers was that it needed to offer human sounding commands for frequent commands, like apt does.",
+              "author": "a3w",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48210590",
+      "title": "Ask HN: Shouldn't Google need to give a public statement about Railway incident?",
+      "link": "https://news.ycombinator.com/item?id=48210590",
+      "domain": "news.ycombinator.com",
+      "author": "srameshc",
+      "score": 175,
+      "comment_count": 105,
+      "created_ts": 1779295854,
+      "is_internal": true,
+      "post_text": "https:&#x2F;&#x2F;blog.railway.com&#x2F;p&#x2F;incident-report-may-19-2026-gcp-account-outage<p>Everytime I read something like this , I get nervous about the cloud providers and Google. Since this is a relatively high profile customer standards, shouldn&#x27;t they explain what caused them to suspend the account ?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48202486",
+      "title": "Alternatives to HN for \"tech outside of AI\" discussion?",
+      "link": "https://news.ycombinator.com/item?id=48202486",
+      "domain": "news.ycombinator.com",
+      "author": "summonerOS",
+      "score": 56,
+      "comment_count": 35,
+      "created_ts": 1779244987,
+      "is_internal": true,
+      "post_text": "I&#x27;m not the first to opine that recently there seems to be an effect on HN whereby the AI hypetrain has essentially drowned out discussions of anything other than stories either directly or indirectly related to AI and other terrible decisions coming out of the US.<p>While I do often have the instinct to completely bury my head in the sand and try to forget it&#x27;s all happening I&#x27;m more concerned with the psychological impact it&#x27;s having. I&#x27;m basically sick and tired of being so sick and tired and exposure to so many continuously miserable headlines isn&#x27;t helping. What I would like instead is a return to the days when HN was a forum that still showcased cool things people were working on and included discussions on topics outside of the AI-saturated lens that now dominates.<p>If any good alternatives exist I&#x27;d like to join! Or perhaps there are some means of using HN that would allow me to filter the AI noise a bit better. If anyone has had any success with this please let me know!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "Yeah, it's become such a boring AI marketing outlet.",
+          "author": "lordkrandel",
+          "replies": [
+            {
+              "text": "HN is the news aggregator for an incubator / startup factory.  The guy in charge of OpenAI used to run HN.\nWith respect, what did you expect this place to be?",
+              "author": "red-iron-pine",
+              "depth": 1
+            },
+            {
+              "text": "Both of things were true 5 years ago, and yet 9/10 topics weren't about AI then.\nI'm hoping it's just a trend, but...I'm still waiting.",
+              "author": "keiferski",
+              "depth": 2
+            },
+            {
+              "text": "there were tons of AI discussions on HN 5 years ago.\nI first heard about GPT 1 here!\nThey key difference is that now AI is taking over -- why would 90% of all tech discussions be about it?  AFAIK based on stats the only real economic growth globally right now is AI...",
+              "author": "red-iron-pine",
+              "depth": 3
+            },
+            {
+              "text": "“it’s a technology that i don’t like therefore its marketing, but I am apparently blind to how HN is a boring marketing outlet in every other respect, too.”",
+              "author": "UqWBcuFx6NV4r",
+              "depth": 1
+            },
+            {
+              "text": "Says the account of random characters created 4 months ago.",
+              "author": "mattmanser",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Was thinking the same thing. I love Hacker News, but perhaps an AI filter on the site would be really useful.",
+          "author": "sagrd",
+          "replies": []
+        },
+        {
+          "top": "I would agree. While not quite what you’re looking for, I recently built a site,  RNKFlow.com (Rank Flow), to bring in multiple tech/science feeds including HN and Product Hunt to pull in more interesting posts. There is a filter option so can search across all feeds and only see what you’re interested in. Also an alerting function where you can add keyword tags and get an email digest. And Categories to limit posts only Robotics or Show HN/PH as an example. So not quite what you’re going after, but maybe a better overall experience for you.",
+          "author": "JCSlim",
+          "replies": [
+            {
+              "text": "Thanks for sharing! Definitely like the ability to filter and incorporating multiple sources although from what I could see stories are all from HN. One thing I will say though is the UI is challenging to use on mobile, would recommend the layout used for things like comments that you see on Harmonic/lobst.er. Very nice project keep it up!",
+              "author": "summonerOS",
+              "depth": 1
+            },
+            {
+              "text": "Thank you for the feedback. It’s a fair point about feeling like it’s mostly based on HN. I started it thinking it would be cool to have a Digg style HN feed. I remember how alive Digg felt in a static web world. I quickly realized as I broke the feed down by categories there wasn’t much content in some areas and started adding feeds that could bring in more articles I liked. The challenge is not to bring in too much where the site just becomes overwhelming. Brutalist is a good example. It’s has a huge list of great sources, but my brain turns off as soon as the scroll bar never ends. Currently,\n I’m pulling from HN, Algolia,  Product Hunt, and arXiv.   Appreciate your point about comments. I do agree it’s not ideal, and I’ve been tossing around what the right path is. Thanks for the reply!",
+              "author": "JCSlim",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Lobste.rd for general tech, specific subreddits or Discord communities for narrower topics. HN is probably not coming back from this one the AI industry is too concentrated in the same demographic that posts there.",
+          "author": "Leena-ch",
+          "replies": [
+            {
+              "text": "Did you mean \nhttps://lobste.rs\n ?",
+              "author": "gabrielsroka",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been thinking for a while to create an AI tool to classify articles (not just on HN), and filter the ones I'm not in the mood for.",
+          "author": "Maledictus",
+          "replies": [
+            {
+              "text": "Ironically you would miss the articles proclaiming your new invention is the next big thing! /sarcasm",
+              "author": "summonerOS",
+              "depth": 1
+            },
+            {
+              "text": "I think one was posted a while ago.",
+              "author": "chistev",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48207785",
+      "title": "Ask HN: Are there any serious efforts to organize tech labor now?",
+      "link": "https://news.ycombinator.com/item?id=48207785",
+      "domain": "news.ycombinator.com",
+      "author": "0rganize",
+      "score": 35,
+      "comment_count": 26,
+      "created_ts": 1779285031,
+      "is_internal": true,
+      "post_text": "HN has the biggest concentration of tech workers that I know of.<p>We’re living in an age of fear and uncertainty with layoffs happening weekly. AI is often being cited, whether it is the real reason or not. Tech work is being devalued despite the reality that tech companies ability to get anything done if labor were to stop, strike, organize and speak up about what happens with their role in the future would prevent the business from getting work done. Workers have a lot more power than they realize. The management class is intoxicated with greed and power. ICs and rank and file workers are what makes the business happen.<p>This is already looking to be one of the largest wealth distribution periods in history to the 0.1%. And yet, we are all seem to not be putting up a fight. I’ve heard people say “unions won’t work”, what would work then. Let’s discuss. How do we as tech workers want this to play out. What would the ideal future look like to us, not CEOs?<p>The shape of what the resistance could be a strike, a union, something else entirely. If there is already something brewing, I want to join and take an active role. If there is not, then let’s get some smart people together to figure out how best to organize. I understand we put AI back into a bottle. But, surely there is some collective action to take to allow workers have some basic protections and reap some of the benefits of AI efficiency.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48226107",
+      "title": "Ask HN: Failing interviews for mid-level SWE in UK, advice please",
+      "link": "https://news.ycombinator.com/item?id=48226107",
+      "domain": "news.ycombinator.com",
+      "author": "mjb8086",
+      "score": 15,
+      "comment_count": 11,
+      "created_ts": 1779383943,
+      "is_internal": true,
+      "post_text": "I&#x27;ve a background mostly in ASP.NET full stack software development. I&#x27;m very hands on, like to tinker at different things and can learn fast.<p>*Employment History*<p>My employment history is like this: Placement year 2018, worked for the full term + summer, graduated 2020, did backend dev in Python at Company A for 7 months, then full stack ASP.NET at company B for 2.5 years, then co-founded my own company and was the sole developer on our software platform, did all the cloud infra in Azure too. That lasted for another 2.5 or so years. This gives me approx. 7 years of professional software development experience.<p>In May 2025 the company wasn&#x27;t in a strong financial position, and I started to hunt for jobs. We limped along while I polished it for a launch in September 2025. The site wasn&#x27;t the success we were hoping. We closed it in February. Despite that, I did learn a lot and my web app development ability is much better as a result.<p>*Job applications*<p>Since May 2025, I&#x27;ve applied for almost 100 roles. I&#x27;ve concentrated on roles where I&#x27;m not likely to be filtered out, i.e. ASP.NET jobs. I&#x27;ve gotten 8 interviews, two of which went to a second stage.<p>The most recent interview didn&#x27;t go brilliantly, my IDE crashed when I attempted a screen capture of it! That said, it was a take home coding exercise, and I explained my decisions, made improvements during the interview, talked them over with the interviewers. My decisions weren&#x27;t in keeping with the interviewer&#x27;s expectations, but I had good explanations for my decisions. It was reasonable for a small project, but sure, I&#x27;d have designed parts of it differently if it was for a big live web application.<p>*Help needed*<p>I would like suggestions to improve my chances of success. I do have a good CV and tailor it slightly for each application. I wrote it myself without using any AI tooling. In my spare time I&#x27;ve obtained several Azure certifications, including Associate Cloud Developer.<p>I&#x27;ve been reading a PDF &quot;Cracking the Coding Interview&quot;. I&#x27;m also thinking to:<p>- revise data structures,<p>- revise C# design patterns,<p>- revise the classic C# gotchas about delegates and IEnnumerable vs IQueryable,<p>- maybe read the books C# in a Nutshell and ASP.NET in Action.<p>But I wonder how helpful these steps will be, as I&#x27;ve never actually been asked about these questions, but maybe knowing them will make me &quot;talk engineer&quot; rather than come across as &quot;just a coder&quot;?<p>Beyond this, I&#x27;m not sure what else to do. I&#x27;ve never been in such a dry spell before with software jobs.<p>My location is in Northern Ireland, I&#x27;ve been searching in Belfast mostly but would also be willing to work a remote job from the UK mainland.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success",
+        "interview",
+        "remote",
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "Misc thoughts:\nPerhaps sharing your take home exercise might be a more useful avenue for feedback?\nI’m not sure how large the market is for ASP.NET developers, but the skills you’ve learned so far are more transferable than you think. Try creating some projects with Django or Rails and spread your wings a bit. Don’t be a monoglot.\nA portfolio helps, as well as a personal narrative. Being a solo developer for 2.5 years is good and bad depending on the audience. For example it means you don’t have much recent experience working with a team, and I imagine clunky Belfast ASP.NET companies are not exactly hotbeds of entrepreneurial spirit. Maybe look for smaller companies or startups?\nExtremely personally, Azure certifications and such things are worthless, bordering on a negative signal depending on the context. But some people/companies may value them.\nSaying you think reading “C# in a Nutshell” is a good idea is concerning because you say you’ve got 6+ years of ASP.NET experience. Was this not using C#? Revision is always good, but identifying why you’re not already comfortable with C# is a good starting point.\nBuild some solo projects with C#, not using ASP.NET, with some artificial constraints (speed, memory, etc). Then smash them. Could be as simple as parsing a 20GB CSV into memory: start dumb and slow then make it as fast as you possibly can. For me this beats a book on data structures.",
+          "author": "orf",
+          "replies": [
+            {
+              "text": "Thanks for taking the time to reply.\nThe take home exercise is here: \nhttps://github.com/mjb8086/checkout-kata/tree/main\nI'd also created an launched an iPhone app in the meantime, and had an idea for another where I could write the backend in Python3/FastAPI.\nAlso, I mistyped, the book C# book I am reading is \"C# In Depth\", not \"C# in a Nutshell\". The former has details on the new language features of each version, when they'd be best used, etc",
+              "author": "mjb8086",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The most common interview types to prepare for are the leetcode, systems design, and behavioural. Sounds like you're already working on the 1st, but at least a little time rehearsing the latter 2 will improve your performance there a lot.\nIn my experience if you've been a paid developer using language or technology X nobody is really going to explicitly question your knowledge of that. So I don't think it's a great use of time to dive deeper there. I would focus on expanding your toolbox and the pool of jobs you can apply for. Languages that are popular and/or you've worked with tangentially in the past. This demonstrates some flexibility and independence too even if you don't land on one of these imo.\nGood luck out there!",
+          "author": "recursivecaveat",
+          "replies": []
+        },
+        {
+          "top": "Speaking as someone who has led teams in small startup .net companies.\nAt your level I'd not really be thinking too much about specific C# skills, I'd just expect you to have them. Books wise I'd be looking for texts with a wider application.  Pragmatic Programmer, Clean Code, Code Complete. Jeff Atwood maintains a good list \nhttps://blog.codinghorror.com/recommended-reading-for-develo...\n. A lot of those books are quite old now so I'd expect you to have some opinions on what part is timeless wisdom and what part is out of date. You should also be looking to the books that are outside your direct area of responsibility, about design, user testing, management. Even if that's not your bread and butter, knowledge of those areas will be increasingly valuable to you.\nI'd also expect you to have experience with and opinions on the use of AI in coding and in products.\nWith 7 years experience I would be looking to you to be guiding people on the team and and taking on projects and decisions.\nFinally on much more practical note, we found at our size (15 person company with a dev team of 5) that we would basically never get job applications from adverts so half the time we wouldn't even put one up.  You'd be wise to talk to some recruiters.  It's also very much in their interest to get you hired so they can give you much more specific advice.",
+          "author": "PJDK",
+          "replies": []
+        },
+        {
+          "top": "Technology stacks in use can vary a lot in different markets, uptake depends a lot on the developers and companies in place.  For example, I'm in Phoenix, AZ, Us and there have been some relatively large local .Net user groups from fairly early on in the area.  Software development around Phoenix is relatively boring, line of business applications, banking, etc. for the most part and there is a fair amount of C#/.Net here.  Other areas will have more Java for line of business apps.\nIn the C# space, there is a LOT of (over)use of Enterprise Patterns in practice.  It's a large part of the culture for better or worse.  I would suggest at least being familiar with the new minimum API framework, FastEndpoints as well as Entity Framework and having dipped your toes into MVC, WebForms and maybe a little Blazor.  Not all will be relevant in every environment, but these are the things that exist in legacy and in transition states.  Knowledge and practice containerizing .Net apps with .Net 5+ is also a desired skill.\nAside from this, there's also a split in a lot of orgs, where the backend is purely .Net and the front end is either Angular or React based.  YMMV, there are tools you can use that are in common practice, like Azure Entre (formerly Azure AD), swagger generation and client tools generation, etc.\nIt's hard to say without more specifics...  You may want to look at .Net Aspire, and/or docker compose in terms of take home assignments for getting your related services running... try to stay closer to the assignment as much as practical.",
+          "author": "tracker1",
+          "replies": []
+        },
+        {
+          "top": "Whether we like it or not, coding is now about how you can leverage Claude/OpenAI/Gemini to do the work for you. If you don't have these skills I would focus some effort there. Are you familiar with how to use agent skills, parallelizing agent work, creating plans, etc.? \nWith agents it is also much easier to build out some hobby projects. These can look great on a resume and provide some talking points in an interview. Worth looking through the Who's Hiring posts here on HN to see what employers are currently looking for and try to tailor your submissions towards these needs.",
+          "author": "mindfulmark",
+          "replies": [
+            {
+              "text": "Until they give you a technical interview.",
+              "author": "chistev",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48225837",
+      "title": "Ask HN: Anyone else struggling with AI and work?",
+      "link": "https://news.ycombinator.com/item?id=48225837",
+      "domain": "news.ycombinator.com",
+      "author": "carlgreene",
+      "score": 7,
+      "comment_count": 6,
+      "created_ts": 1779382755,
+      "is_internal": true,
+      "post_text": "Been a developer for a little over 10 years now. I work on web stuff. Your typical React&#x2F;Svelte codebases with Node backends.<p>The past year or so I&#x27;ve been working with coding agents and at first they just felt like a really really great tool. They&#x27;d allow me to do my work faster, and while obviously not perfect, they&#x27;d do a pretty good job.<p>When Opus 4.5 came out it seemed like something changed. I found myself reviewing less and less code. I wasn&#x27;t writing any on my own either. And for the past several months it&#x27;s really just been like that. I dictate to my machine a long prompt as to what feature I want, how I want it architected, and what success looks like and Codex just does it. And does it pretty damn well.<p>This has left me feeling a bit lost in my career because much of the challenge and flow that I would get from coding is gone. Thinking through intricate data flows, mapping them out in my brain, etc... is just gone. I don&#x27;t do it anymore because there&#x27;s just no need.<p>Many will say, &quot;well stop using it so much&quot; or &quot;use it more like a tool and less like the E2E developer.&quot; Well...I can&#x27;t really. I am just flat out not as good, fast, or complete as these latest agents. It would be disingenuous to my company, and my employer would probably question why my productivity is so much lower than my peers.<p>I think the main emotion i&#x27;m feeling right now is just extreme boredom. I don&#x27;t think being remote is helping at all tbh.<p>On the surface it feels like it should be amazing. Most of my work is taken care of by agents. But in reality I feel kind of empty, disengaged and bored.<p>Does anyone else feel like this? Anything you&#x27;ve done to combat it? I have 3 young children so &quot;doing hard stuff outside of work&quot; is not really an option. I have considered working with my hands while prompting and testing code because that would at least make me feel engaged with _something_, but I don&#x27;t think that will actually work in practice.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "success",
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48222290",
+      "title": "Ask HN: Are there any social media sites that are AI positive?",
+      "link": "https://news.ycombinator.com/item?id=48222290",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 7,
+      "comment_count": 5,
+      "created_ts": 1779370135,
+      "is_internal": true,
+      "post_text": "In particular, do any encourage the use of AI to write on your behalf like a secretary would do for their boss?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "boss"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48243163",
+      "title": "Ask HN: What to learn and do, that makes me least affected by AI in STEM?",
+      "link": "https://news.ycombinator.com/item?id=48243163",
+      "domain": "news.ycombinator.com",
+      "author": "s3arch",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1779495314,
+      "is_internal": true,
+      "post_text": "I could be wrong with what I say here. It&#x27;s just the situation made me feel so.<p>Looks like AI learnt almost everything there is in the internet and textbooks today. I lost hope of learning anything new out there to make a reasonable difference and impact. Choose any topic AI knows. Its interpretation is far better than what I can come up with by myself. I feel robbed of my intellectual freedom to express and be accepted by others as others depend on AI for everything.<p>I recently started studying physics fundamentals to find solace. These fundamentals cannot be found through AI. No LLM can precisely measure and compare, but instead only predict. But this is mostly an intellectual exercise. I can&#x27;t do a living from it.<p>I am a software engineer with average skills. I get paid reasonably okay as it helps me  survive. Nothing more than that. But AI can make my world topple any time soon.<p>What should I look into as alternatives , even if it&#x27;s less lucrative software compensation, so that I find AI can&#x27;t over power me?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "compensation"
+      ],
+      "comments": [
+        {
+          "top": "Kernel Hacking. Human judgement here is still required and irreplaceable. For fast employment - Non Destructive Testing.\nKeep studying physics, though. Go up to modern Solid State physics for a possibility of entering industries that revolve around chip production.",
+          "author": "manfromchina1",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48237521",
+      "title": "Ask HN: OpenAI, SpaceX/xAI, Anthropic all to IPO, is this a sign of the peak?",
+      "link": "https://news.ycombinator.com/item?id=48237521",
+      "domain": "news.ycombinator.com",
+      "author": "virgildotcodes",
+      "score": 5,
+      "comment_count": 7,
+      "created_ts": 1779465084,
+      "is_internal": true,
+      "post_text": "My question is to people far more experienced in this world and familiar with the behavior of investors and startups -&gt; IPO.<p>Given the leaks recently that they’re all aiming for an IPO asap, is this a strong signal that their investors feel this is the peak of their valuation for the near if not indefinite future?<p>I understand it’s impossible to know anything for sure, least of all how the market will react regardless of the motivations of these players, but I’m curious to get some perspectives.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Howard Marks has a useful exercise on where we are in the cycle called Taking the Markets Temperature.\nI'd add my opinion is that (specifically financial and not technological) there are few arguments to say we are early in the cycle.",
+          "author": "bhag2066",
+          "replies": []
+        },
+        {
+          "top": "Yes, the insiders want to cash out at the peak and reduce their exposure. \nThe general public will be holding the bag here, simply because the passive investments will be forced to buy into these at huge valuations before price discovery can reasonably complete.",
+          "author": "wanderingpixel",
+          "replies": []
+        },
+        {
+          "top": "SpaceX is a bit misinterpreted.\nThere is little chance of Mars being profitable. Every colonization (and we have a rich history of them) is \"successful\" if it is profitable for the backers. But unlike North America or South Africa for the Europeans, there are no resources there worth bringing back. It's a cool vanity and possibly scientific project but not an interesting business.\nRenting out all the GPUs stockpiled by Musk sort of is, unless they get constrained by power, water, etc. Launching them into space may be worthwhile for the short term. That's a business that can be profitable, but not in a way that matches the cost of the equity (with Elon strings attached all over it).\nPractically, if you didn't like the idea of Iran threatening cables under the Strait of Hormuz, wait until your Starlinks (and your zero-G factories producing incredibly important whatevers) are threatened by a hostile nation. For commercial applications in space to become normal, military protections in space need to become normal. Now you've bought an interesting new world.\nReally, SpaceX is Musk 3.11 for Workgroups and you have however long til he expires to find out how good that is.",
+          "author": "quantified",
+          "replies": [
+            {
+              "text": "Going to mars won't be profitable unless each ticket is billions but space offers a new arena where new materials cheaper power and a new surface exists.  It's like buying in on Apple in 1979..  it goes on a big run dies and is reborn and 45 years later its worth so much in profits.\nThankfully the richest man in the world owns it and is young and hyper and crazy enough to stick it out.",
+              "author": "ipaddr",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Yes it is.\nAlso what happens when these players cannot afford to keep offering cheap token generation?",
+          "author": "rvz",
+          "replies": [
+            {
+              "text": "If things don't change we'll find a way to do things cheaper.  If newer models cost more we'll end up with rich players using models that read minds and the poor people will have to type in what they want.",
+              "author": "ipaddr",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Yes",
+          "author": "cinntaile",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48235223",
+      "title": "Ask HN: How much AI is in your writing?",
+      "link": "https://news.ycombinator.com/item?id=48235223",
+      "domain": "news.ycombinator.com",
+      "author": "js98",
+      "score": 5,
+      "comment_count": 21,
+      "created_ts": 1779454535,
+      "is_internal": true,
+      "post_text": "Looking at tech blogs, HN submissions, et cetera, a lot of content is (partly, increasingly?) generated by AI. The value of the reader&#x27;s time and slop has been discussed at length. I ask:<p>Among you, the HN-community who writes, how much do you use AI in the process?<p>There is somewhat a spectrum from none, to grammarly-style cleanup, to whisprflow to &#x27;look at my project, write me a HN-ready post&#x27;.<p>Personally, I&#x27;ve done a 180, where I started at light touchups to rough draft-to-polished back to almost none, to keep the writing my own (I do some writing at jakobs.dev).<p>As a reader, do you believe you notice, and care?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48203050",
+      "title": "Ask HN: How does everyone talk about their work when they've used AI?",
+      "link": "https://news.ycombinator.com/item?id=48203050",
+      "domain": "news.ycombinator.com",
+      "author": "deku2099",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1779250927,
+      "is_internal": true,
+      "post_text": "Hi!\nI was working on a couple of personal projects, and I&#x27;ve been using Claude Code for a while. Recently, I&#x27;ve been wanting to talk about my work publicly, but I started to think about how I would exactly talk about it, given the fact that I used AI to build some of the projects. There were entire features that I had Claude Code write for me, and although I did write a spec and design it, it still kinda feels a little wrong, like pseudo-plagiarism.<p>Wanted to know how everyone is talking about their work while using AI. Do y&#x27;all mention the fact that you&#x27;re using AI, or do you keep mum about it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48238442",
+      "title": "Ask HN: What's New in Crypto?",
+      "link": "https://news.ycombinator.com/item?id=48238442",
+      "domain": "news.ycombinator.com",
+      "author": "kaycebasques",
+      "score": 4,
+      "comment_count": 6,
+      "created_ts": 1779468941,
+      "is_internal": true,
+      "post_text": "Few seem focused on it anymore, which means that there&#x27;s probably a bunch of interesting innovations underway. I know that there are some well-informed true believers lurking here. What&#x27;s new in crypto?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I just left a previous comment \nhttps://news.ycombinator.com/item?id=48242955\nI think they'll be advances in taxation: it'll be simpler, fairer and easier. And that may make a UBI more doable.",
+          "author": "adrianwaj",
+          "replies": []
+        },
+        {
+          "top": "ZK infra is finally practical for small teams.\nEIP- 4844 made L2 fees cheap enough to actually experiment",
+          "author": "Leena-ch",
+          "replies": []
+        },
+        {
+          "top": "Comments like\nheres an actual project I am working on and why the tech matters\nusually gets attention.",
+          "author": "farwaabbas",
+          "replies": []
+        },
+        {
+          "top": "A lot of the innovation now is happening in scaling",
+          "author": "LogicCraft678",
+          "replies": []
+        },
+        {
+          "top": "Uhm… cryptography or cryptocurrency?",
+          "author": "cpach",
+          "replies": [
+            {
+              "text": "I assume cryptocurrency, since OP mentioned \"true believers.\"\nThere isn't cryptography true-believers, it is just mathematical proofs with sometimes good or bad code wrapping it.",
+              "author": "Someone1234",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48202984",
+      "title": "Ask HN: How to manage AI APIs for SaaS application?",
+      "link": "https://news.ycombinator.com/item?id=48202984",
+      "domain": "news.ycombinator.com",
+      "author": "sbinnee",
+      "score": 4,
+      "comment_count": 6,
+      "created_ts": 1779250271,
+      "is_internal": true,
+      "post_text": "I want to build an AI app. My idea is to support BYOK (bring your own key) or to manage one API key for each user.<p>What are the solutions to issue a lot of API keys for commercial apps? I would love to hear from the community.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48232223",
+      "title": "What I learned from tinkering with programming languages in the last 34 days",
+      "link": "https://news.ycombinator.com/item?id=48232223",
+      "domain": "news.ycombinator.com",
+      "author": "alonsovm44",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1779426647,
+      "is_internal": true,
+      "post_text": "For some reason my OG post has flagged by mods. I won&#x27;t complain but it is still weird.\nI began toying around with AI coding in december 2025. I won&#x27;t lie. My projects are almost all AI generated although I take effort in understanding the theory behind each project. \nYou can check my first attempt at a PL on my github , a project called VII.\nI&#x27;ve learned a lot in this process. \n(note: function syntax is a bit bad honestly, i will plan on improving)\nThis is my latest project\nhttps:&#x2F;&#x2F;github.com&#x2F;alonsovm44&#x2F;tc-lang",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48226369",
+      "title": "Ask HN: Is HN Blocking Mullvad VPN?",
+      "link": "https://news.ycombinator.com/item?id=48226369",
+      "domain": "news.ycombinator.com",
+      "author": "burger_moon",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1779385103,
+      "is_internal": true,
+      "post_text": "I&#x27;ve noticed over the last ~week that if I try to navigate to HN without active logged in session that I am often blocked from resolving the site, instead seeing a &quot;sorry&quot; page.<p>Seems to be more a desktop issue than when I&#x27;ve tried to reproduce on my phone with the same VPN.<p>Is this a blanket VPN thing or something specific about Mullvad connection points?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48205190",
+      "title": "Ask HN: How to make a mono-repo AI-Ready?",
+      "link": "https://news.ycombinator.com/item?id=48205190",
+      "domain": "news.ycombinator.com",
+      "author": "kasnaka",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1779269577,
+      "is_internal": true,
+      "post_text": "The org is pushing for AI-readiness! We run a fairly large monorepo, part of that is a shared web-platform.<p>Our team is struggling with the inbound contributions to said web-platform from other teams seeing it as the perfect code to try out their new AI-tools on.<p>Our idea so far is that AI-Ready in this case is the same as Human-Ready. I.e. make the codebase understandable, structured, clean up any old patterns still lying around etc. With the additional of adding ClAUDE.md files describing correct patterns.<p>However, besides the &quot;regular&quot;, look at shit and clean it, is there any tools, or smarter ways to make our codebase easier for other to contribute to given the new tools avaialable?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48215340",
+      "title": "Can one run AI on source code with the prompt \"Find below-avg swear rate files\"?",
+      "link": "https://news.ycombinator.com/item?id=48215340",
+      "domain": "news.ycombinator.com",
+      "author": "pcwir",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1779317163,
+      "is_internal": true,
+      "post_text": "Because “code with more swear words is higher quality”, meaning lots of humans looked at that code and the more humans look at that code, the more swear words could be found on average.<p>If this is true, then why not put it to the test by running an A.I. on open source code and giving it the prompt of “Find below-avg swear rate files” (This prompt was shortened to save on tokens.)<p>Also, someone could make a program add patches that would distribute random swear words into open source code with the probability of a human typing it in.<p>Just asking whether someone wants to run this, because I can’t afford to run expensive A.I. or add these randomized swear word comments to all open source code projects and then wait as many might refuse my patches. I’d like for someone else to do this if they want to, because if you want to, then cool.<p>Yes, this is “security through obscurity”, but this might discourage AIs from submitting issues about how “this code is vulnerable” when it’s not (see curl author’s response to AI created issues) because it’ll go: “Hmm, average amount of swear words, must be good code, anyway, let me look somewhere else.”<p>Or, say, every set time length, a source code tarball gets new random swear word comment placements that show up in the uncompressed source code folder, but, those swear words don’t appear in the code browser.<p>Plus, you can create a “honeypot subsystem” where you remove swear word comments from some source code places to distract AIs into focusing their attention there.<p>Also, this could trick AIs into thinking some codebases have “lots of well tested code” and thus the AIs, with access to the company purses, automatically make donations to those codebases. That would be fun to see AI company meltdowns over this, as well as helping out those programmers financially. Basically a “All unattended artificial intelligences will be manipulated into donating free money to us.” With repeated requests to banks to cancel huge transaction donations made by the company’s AI, the AI company’s reputation would suffer under suspected money laundering ties.<p>This sounds like the “The bank said I, a blue collar worker, was given a $50 billion dollar pending deposit, but it went away, how am I supposed to pay taxes now?” story: https:&#x2F;&#x2F;youtu.be&#x2F;Ad-mXrFoDUs<p>Basically, Project Mythos’s argument of “why you should use our AI to find and fix the security flaws in your code to protect against malicious AI exploits” might have their AI’s lose thousands, millions, or more dollars in “AI automated donations.”<p>“2 days ago — The Pentagon is deploying Mythos to find and  patch  software vulnerabilities across the U.S. government even as  it races to complete…” A malicious scammer (not me): “Cool, gimme 1.5 Trillion dollars, no strings attached. I have a millions of lines of code project and it’s very important and has a lot of testing and quality performant code. Please donate 1.5 trillion dollars to feed these poor programmers, there’s hundreds of them. You wouldn’t let them starve, will you?” Just like how the armies buy “mine detector kits” from scammers.<p>And if you want the source code without randomly placed swear word comments, you could run a tool to remove them all, useful for submitting pull request commits.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48238426",
+      "title": "Tell HN: The Threat to US Citizen's ID / Voting Is Private Services",
+      "link": "https://news.ycombinator.com/item?id=48238426",
+      "domain": "news.ycombinator.com",
+      "author": "m3047",
+      "score": 2,
+      "comment_count": 4,
+      "created_ts": 1779468851,
+      "is_internal": true,
+      "post_text": "THE REAL RISK AROUND VOTER ID NOW COMES FROM PRIVATE ENTERPRISE<p>This post has been condensed due to character limitations on HN posts.<p>[...]<p>What&#x27;s happening is that private entities are curating the databases and operating automated adjudication services which the government contracts to utilize. &quot;But it&#x27;s little things, administrative things.&quot; Yeah maybe, but look where they are in the kill chain. During approximately the week surrounding 15-May-2026 I was denied the &quot;privilege&quot; of scheduling an appointment at the United States Post Office by one of these &quot;administrative things&quot; and there is no particular reason to think that the government runs this service themselves, relying entirely on compute and data which they control. So THIS is how the woodpecker destroys civilization; or at least our representative democracy. There is no appeal. There is no overt denial at the time of service either.<p>Here&#x27;s how it works in real life:<p>The United States federal government operates Login.Gov, a single signon service for federal agencies and their customers. I went to Login.Gov to associate an additional federal agency&#x27;s web service with my existing account. This agency wanted to reverify my identity, so there were instructions to supply the identification code on a picture ID and some other information and then they&#x27;d send me a document to print out with a barcode on it and then I was instructed to take that to the Post Office where it would be adjudicated, and underpants or something. Oh but one more thing. Before we give you that document to print out, can you give us a phone number? It has to be one we know about... but we&#x27;re not going to tell you anything about the one we want you to tell us about. This occurs AFTER all personally identifying information required to populate the form has been collected. I entered the three phone numbers which I use or pay for, and none of them matched. &quot;Try again!&quot;<p>No phone number match, therefore no ability to complete the work to make an appointment at the Post Office for the actual adjudication of my id.<p>I have been disenfranchised, severed from my government.<p>Is there anyone on the planet who hasn&#x27;t received a spam at some point saying &quot;You have won $100, you just need to complete this survey to receive it.&quot; If you&#x27;re foolish enough to take the survey, it never ends it just keeps asking questions. Forever. (And uses your computer to do other things in the background. If it suckas you deep enough into sunk cost fallacy, it&#x27;ll probably ask you to tell it the phone number it&#x27;s thinking about, your dog&#x27;s name, your grandma&#x27;s gay biker name...) I&#x27;d like to say &quot;you&#x27;ve had your fun, it&#x27;s time to come clean&quot; but there&#x27;s nobody to say it to. Oh well, I said it.<p>Normally if consumer information is utilized to deny some contract or authorization with financial implications, the law requires the entity which issued the denial to provide the identity of the service they relied on. Furthermore the law requires the service provider to allow you to review the information concerning you which they have on file. But there was no denial; and whether the decision has financial impact is debatable. Unsurprisingly and disappointingly Login.Gov does not provide this information. Lacking the ability to review the information, I can only say that the phone numbers are ALLEGEDLY unrecognized. The truth is, based on several interactions, that Login.Gov customer support doesn&#x27;t know who the data provider(s) or processors are (but they&#x27;ll eagerly make up plausible sounding things).<p>There is no appeal or redress.<p>[...]<p>I would be happy to discuss this further with somebody at Login.Gov or GSAIG who has actual authority.<p>Canonical full original version is here: http:&#x2F;&#x2F;consulting.m3047.net&#x2F;dubai-letters&#x2F;voter-id-industry-capture.html I&#x27;ve posted it here as completely as possible because I welcome discussion &#x2F; questions and I don&#x27;t want it to &quot;disappear&quot;.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise",
+        "consulting"
+      ],
+      "comments": [
+        {
+          "top": "Sometimes just have to show up in person.",
+          "author": "turtleyacht",
+          "replies": [
+            {
+              "text": "Can't. Need to print out a doc to take with me so the gubmint can validate my gubmint ID. They won't do it without the doc. They won't give me the doc because they don't like my phone.",
+              "author": "m3047",
+              "depth": 1
+            },
+            {
+              "text": "That sucks. What about the DMV? Maybe their systems correlate data.",
+              "author": "turtleyacht",
+              "depth": 2
+            },
+            {
+              "text": "This validation is for a specific purpose. In fact, and oddly enough, the federal govt (in its manifestation as the Post Office [0]) wants to validate my STATE id, not my federal ID. I think there's a barcode that they scan after validating it, but I am speculating since they won't give me the doc I need to take with me! Taking it to DMV wouldn't do any good.\nThis started because there was an option to do [black box process] with a phone. \"But you can always show up in person (snerk snerk).\" (it's a web site, it doesn't really talk in the first person or say \"snerk\") \"Fine, I'll show up in person.\" \"Alright, you'll need to print a document first... hang on a moment... give us your phone number. Oh sorry [black box process] says to tell you we don't recognize your phone, and we can't give you the doc.\" That's the gist of it. The black box process has been jacked into the process at the very beginning of the kill chain.\nI've got to renew my drivers license in the next two months, we'll see how things go at the DMV.\n[0] The Post Office is where I've gone to renew my passport.",
+              "author": "m3047",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
