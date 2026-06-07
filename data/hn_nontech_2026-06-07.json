@@ -1,0 +1,1070 @@
+{
+  "scraped_date": "2026-06-07",
+  "source": "hacker_news",
+  "total_scraped": 118,
+  "nontech_count": 28,
+  "posts": [
+    {
+      "id": "48406174",
+      "title": "Ask HN: What was your \"oh shit\" moment with GenAI?",
+      "link": "https://news.ycombinator.com/item?id=48406174",
+      "domain": "news.ycombinator.com",
+      "author": "andrehacker",
+      "score": 576,
+      "comment_count": 970,
+      "created_ts": 1780616540,
+      "is_internal": true,
+      "post_text": "Most of us were amused when DALL-E and its peers went mainstream, and we were quick to point out the obvious flaws.<p>Then ChatGPT hit the scene and again, many of us dismissed it as a parlor trick that would never amount to much.<p>Using LLMs for coding initially was a only small step up from basic code completion, and a welcome farewell to Stack Overflow.<p>I am curious: what was the specific moment that you went from those quaint, dismissive observations to a slightly panicked,\n&quot;Uh Oh&quot; realization of what these models can do?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Right after gpt4 came out I asked it to derive a new optimization technique.  It ended up using Einstein sum notation to define what I thought was a totally novel optimization setup.  It then implemented it in PyTorch and it ran with no bugs.  This was the moment that I realized that novel intellectual work might be done by these models and I was shook. I had an oh shit moment with gpt3 too since it was so surprising how well next token prediction works, and at the time I really didn’t think it would pan out so well. I also had a jarring experience discussing computational theory of mind with gpt4, when it applied a rubric we came up with to itself and it claimed its level of consciousness was between an ant and a mouse.",
+          "author": "jablongo",
+          "replies": [
+            {
+              "text": ">  realized that novel intellectual work might be done by these models and I was shook.\nI suspected it was more likely that the intellectual work had already been done in a similar way by a number of other people, and GPT-4 picked up that work.",
+              "author": "hintymad",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I bought an Alesis QS8.1 super cheap in perfect condition (was a top grade digital piano/synth in the 90s).\nand then i realized that ALL of the software (which i collected from defunct websites and archived on github) related to it was ancient and after a while of getting tired of using WINE every single time i decided i wanted a cross platform modern equivalent that did everything that several of these different programs did (plus break out some stuff that was now potentially possible with modern computer)\ni thought it would be extremely hard because the computer to synth communication is pretty much only via sysex commands (of which the actual wave file encoding protocol was undocumented)\nClaude walked me through examining the some of the original software in GHIDRA, and I had a working demo that night.....now im just playing with adding new features to it.",
+          "author": "jzemeocala",
+          "replies": [
+            {
+              "text": "Related story, while applying a firmware update to my Kawai CA49 piano, I bricked it due to flashing the wrong file (The process was broken, and I got desperate and tried something stupid, which bricked the piano). Claude walked me through looking for signs of life, and since OTA from the phone app wasn't working for me, it downloaded the Kawai Android APK, decompiled the Java, figured out the hardcoded key used for encrypting the firmware update. Extracted the piano firmware update, decrypted it, and then wrote a flashing script to program the piano from my laptop via bluetooth. My piano was back to working within an hour.",
+              "author": "jsharf",
+              "depth": 1
+            },
+            {
+              "text": "I can't imagine where we are headed. \nYou\n understand every step of what it did and can appreciate the complexity but it'll only take a few generations for this to become something like magic to the tech priests beseeching the machine spirits for blessings",
+              "author": "idiotsecant",
+              "depth": 2
+            },
+            {
+              "text": "I think you're overestimating how much the average person knows about how technology operates today, or 30 years ago, or 1000. In some sense, we have been living with magic and tech priests since the Romans built the aqueducts. I wouldn't be surprised if widespread, cheap AI makes it \neasier\n for the average person to learn how things around them work, if they are so inclined.",
+              "author": "fasterik",
+              "depth": 3
+            },
+            {
+              "text": "I meet kids today who haven’t heard of Microsoft, who regularly play GTA and hand in assignments made in Powerpoint. 20 years ago I discovered that a friend didn’t know Xbox and Word were both from Microsoft. It’s really hard to understand what is common knowledge in different parts of society.",
+              "author": "lazyasciiart",
+              "depth": 4
+            },
+            {
+              "text": "Kids today don’t even know where the files are stored or anything about partitions, drives, directory structure or even how much disk space is available.\nThey have some files, synced to OneDrive and do everything else fully online (Canva, etc.)\nMost of them have never seen a computer with a drive other than C:",
+              "author": "BobbyTables2",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I could go on and on, but Claude recently decompiled the firmware of my camper van, documented all the CAN interfaces, then programmed an ESP32 module to talk to the van’s integrated systems (power, HVAC, lighting, tanks). That sort of embedded systems integration is completely out of my wheelhouse.\nI honestly don’t understand AI naysayers. I use Claude every day both professionally as a Solution Architect and personally in a variety of projects I simply could not have ever approached alone.",
+          "author": "shreddude",
+          "replies": [
+            {
+              "text": "> projects I simply could not have ever approached alone.\nI think that's part of the divide between enthusiasts and naysayers. If you use GenAI on things that you couldn't approach alone, it's an incredible tool. If you use it on stuff that you're pretty good at, it's not a gamechanger (and if you're an expert, it's a minor boost at best). Many people's job are about doing what they're an expert at.",
+              "author": "williamdclt",
+              "depth": 1
+            },
+            {
+              "text": "I'm about to complete a new non trivial functionality in a project of a costumer of mine. I spent an hour writing the spec. Then I asked Claude (Sonnet 4.6) to check if I missed something. I did, the sort of minor issues one notice after starting writing code, edge cases etc. That made me think about more issues and after a few iterations we settled down on a spec. I asked Claude to make an implementation plan and we ended up with 9 steps. It wrote the code for a step with new automatic tests and I performed some manual QA, which found further issues we didn't think about. We are at step 8 of 9 in about 12 hours of work. I would have needed a week to be there alone, with time spent researching and fixing bugs I created along the way, an inevitable part of our job but not exactly the most pleasant one.\nThis speedup is great. It improves the overall quality of the product (as perceived by the users) because I can ask Claude to add features that my customers and I would have dismissed because they take too long to implement. We would have settled down with a more basic UX.\nSo is it a game changer? It is in the same way those HTML / CSS framework like Bootstrap were game changers: suddenly every developer could create a decent and consistent UI in a fraction of the time with a few bells and whistles that we wouldn't have bothered coding. As a side effect a lot of web apps felt look alike mass products and web designers had to reinvent themselves, but the economics leaded inevitably in that direction. Would I spend again one of two weeks doing alone what I could write in a day or two with a LLM? Not anymore, not at this cost ($20 per month.)",
+              "author": "pmontra",
+              "depth": 2
+            },
+            {
+              "text": "I'd love to read a full transcript of someone going through this kind of collaborative programming. I see this kind of process mentioned a lot but can't quite figure out the details in my head.\nIf anyone has a link to a blog post or similar showing this process in depth, I'd love to give it a read :)",
+              "author": "jowsie",
+              "depth": 3
+            },
+            {
+              "text": "I think it will click once you actually sit down with the AI agent, toggle Plan mode, and just tell it what you want to do in couple of sentences. It will immediately start building up the plan, presenting it to you what it thinks is the right approach , with the steps to take, with open questions that you can look at and answers. Then send them back to the AI. Repeat. That process along would give you a progress way further than you try to do it by yourself.\nYou can tell it to start implementing step 1. And you pick it up from there. Very natural how you would approach an expert for help, but you can always audit.",
+              "author": "sntran",
+              "depth": 4
+            },
+            {
+              "text": "I did not use plan mode but I'll give it a try.\nI can't provide a transcript because it's work I made for a customer and I'm bound to a clause of confidentiality.\nWhat I did is what I use to do while starting to work on a major feature: make a list of changes, new and modified functionality, think which code and db tables I will touch and how, set constraints on the edits (eg: that API must not change, that one must be retro compatible) etc. I've been a bit pedantic because this time I had to tell it to someone else. I wrote it into a md file and asked Claude to check the code and find out if my plan was consistent with the code we were starting from. It made a list of things that I needed to detail more, added some questions and we iterated on it. Basically it's what I do myself but it happened faster.",
+              "author": "pmontra",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "My furnace went out during the 2025 holiday and I couldn't get an appointment with a repair person for 2 days. It was getting very cold in my house so I went into my attic and made several videos of the furnace attempting to start and gave it to gemini. It diagnosed the issue immediately and had me spin one of the components (a small exhaust fan) while the furnace tried to fire. It came on immediately. I had to do that several times, but it worked until the HVAC service showed up.",
+          "author": "andrewthornton",
+          "replies": [
+            {
+              "text": "Very similar thing this week, and an interesting story to go along with it!\nI called my normal HVAC company for my rental home because the tenant reported the AC wasn't cooling the house. When I called, I got one of the latest AI voice assistants to help me, and it was an awful experience and I ended up not hearing back after the assistant told me the office would call me back.\nSo, I went over to the house and used ChatGPT to help me diagnose the issue by taking some photos of the compressor panel outside. It walked me through what to check, I provided some diagnostic codes I witnessed... and it walked me through the very simple repair of replacing the $25 capacitor. It was going to cost me almost 4x that just for the service call to diagnose what was wrong in the first place.\nSo, the weird experience was: Gen AI made me lose trust in my normal HVAC company, and more Gen AI basically allowed me to replace my HVAC company and do the repair myself all in one day.",
+              "author": "jodacola",
+              "depth": 1
+            },
+            {
+              "text": "With AI you just don't get the full service of a professional HVAC guy though.\nLike the time I had one of the bigger shops in town come by to get a quote for replacing a dual stage fan motor on an AC.  The tech asked me if I'd like them to replace the contactor while they were in there because it is a part that often fails.  I asked what a contactor was and he explained it.  \"Oh, like a relay?\" I asked.  I told him to quote the cost for \"replacing the contactor, while they're already in there.\"\nHe quoted me $400 for the contactor, $750 for the fan.  The contactor itself I later found out was was $7.  I literally laughed in his face when he said that.\nSo, like I said, you just aren't going to get professional level assistance from an AI.  Thankfully.\nTo end the story: one of the other guys I called for a quote on fixing this unit repaired it for free; the unit was still under warranty and it was fully covered.  The original installer of this $12K unit was refusing to return my calls.  Another \"Not gonna get pro level service from an AI\" story.",
+              "author": "linsomniac",
+              "depth": 2
+            },
+            {
+              "text": "Even before AI, YouTube was full of videos on these topics.",
+              "author": "userbinator",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, and with 95% of those videos, there'll be something they gloss over which I don't understand; or I'll have a concern which they don't address; or, conversely, they'll assume that their target audience was born in the 15th century, and spend 20 minutes building up the context, when what I really needed was about 12 seconds.\nWith an AI, I can say \"I don't understand that part, can you explain more?\" Or \"what about this concern I just thought of\", or \"I already know almost enough about this, I just need this one gap filled in.\" It's an objectively better experience.",
+              "author": "nkoren",
+              "depth": 3
+            },
+            {
+              "text": "That is a very good point I had not considered: AI to level-match the material to my \"learning speed\". I'll give it a try at the next opportunity.",
+              "author": "studog",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I have had many, but the last one was quite funny:\nIt fixed my printer after dist-upgrade and separate chrome upgrade, the printer worked everywhere but not in chrome.\nAfter 30 years of using linux I didn't even want to know what is wrong, is it colord again? dbus + cups issue? I completely accepted that I wont be able to print from chrome for a couple of months until next update.\nI just ran it in dangerously-skip-permissions mode and said 'my printer doesnt work in chrome' few minutes later I heard the printer printing \"This is test\" and it said 'I think its fixed, do you see a page coming out of the printer now?'",
+          "author": "jackdoe",
+          "replies": [
+            {
+              "text": "My entire computer setup has been done via English via Nix, and it's spectacular.\nI had been dabbling with NixOS for a year or more and liked it but without deep knowledge it's fairly hard to approach.  I've gotten partially working setups in the past, but a couple weeks ago I decided to go all or nothing.\nNow I have a workstation setup that I can reproduce by just grabbing my home directory and /etc/nixos and doing a rebuild.\nAnd it's a somewhat complicated setup.  It entirely configures vim (2500 lines of nix config for that, but it's in one file rather than sprayed all over like astrovim), builds gitbutler CLI, has all my secrets encrypted with SOPS, manages my git configs and my ~/bin directory, has sway set up, finally has audio and ability to screenshot (something that had been broken on my 22.04 Ubuntu and I just didn't want to bother with).\nNixOS + Claude Code to manage it is really, really good.",
+              "author": "linsomniac",
+              "depth": 1
+            },
+            {
+              "text": "Don't leave us hanging, what was the issue?",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "I will never know.",
+              "author": "jackdoe",
+              "depth": 2
+            },
+            {
+              "text": "I realize you're being witty for comedic effect but aren't you genuinely curious whether this was something trivial or a complex systems interaction? The few times an LLM debugged something for me, it only took 10s to ask for a summary, and I learned something new and interesting every time, even useful at times.\nI don't understand not wanting to understand.",
+              "author": "Zopieux",
+              "depth": 3
+            },
+            {
+              "text": "I have seriously dealt with this for 30 years, from before cups existed, and as I said I have forgotten more about lpd and cups than most people know.\nYou have no idea how much I don't want to understand.\nI am not being witty for comedic effect.",
+              "author": "jackdoe",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48420827",
+      "title": "Ask HN: Why is the HN crowd so anti-AI?",
+      "link": "https://news.ycombinator.com/item?id=48420827",
+      "domain": "news.ycombinator.com",
+      "author": "Ekami",
+      "score": 402,
+      "comment_count": 668,
+      "created_ts": 1780713111,
+      "is_internal": true,
+      "post_text": "Genuine question.<p>Over the past six months, there hasn’t been a single day where I’ve checked the HN Best RSS feed without seeing a post about how AI “writes bad code,” “introduces bugs,” “creates technical debt,” or something along those lines.<p>I’ll probably make a lot of enemies by saying this, but do people realize that code is just a means to an end?<p>Users don’t care whether the code was written by AI or by hand, or which framework you used. They care that the product works.<p>I say this as someone who has spent more than 20 years honing their craft as a software engineer.<p>Let’s face it: by the time I manually ship version 1.0 of a product, the AI-assisted version could have been deployed 10x faster. By then, enough real-world feedback would have surfaced to identify the major issues, and tools like Claude Code would make it possible to fix and ship version 2.0 at an incredible pace.<p>At some point, execution speed starts to matter more than the elegance of the code.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "It's simply divided. With every such division A vs. B, the A team thinks HN is anti-A and the B team thinks it's anti-B. This is an invariant.\nYou can see from this megathread, currently on the front page, that HN is by no means anti-AI:\nAsk HN: What was your \"oh shit\" moment with GenAI?\n - \nhttps://news.ycombinator.com/item?id=48406174\n.\nSometimes it just takes the right initial condition (e.g. title) to bring out one side or other.\nAs for why the community is divided, there's always a temptation to come up with HN-specific explanations, but society as a whole is divided about AI. Surely that is the only explanation one needs. As I've been saying for years, HN can't be immune from macro trends: \nhttps://hn.algolia.com/?dateRange=all&page=0&prefix=true&que...",
+          "author": "dang",
+          "replies": [
+            {
+              "text": "Thoughtful comment, and I'd like to add another angle: However meaningful it is to say the community is divided, I also think that individuals are \"divided\" on the question as well.\nI can speak from myself as an example (although n=1): I am incredibly open to machine learning and the advances it brings. On the other hand I am extremely conscious of the fact that the current LLMs do often write bad code, which becomes especially obvious once projects go much beyond \"private toy\" size. For me personally the consequence is that I try to make my projects even more modular, and the modules even more clearly delineated. With proper guidance, current LLMs work mostly fine when working on isolated modules. That doesn't mean they don't sometimes fail even there, but they also on rare occasions come up with surprisingly clever solutions when you let them loose on a code base, as long as the problem you want them to fix is mostly isolated in a couple of modules.\nSo long story short, you can be all for LLMs and still be conscious of their shortcomings, and that just vibe coding applications you intend to let loose on unsuspecting customers is probably a bad idea, and possibly outright immoral. We have already seen more than enough examples of vibe coded applications dumping sensitive user data into the lap of anyone who is inclined to pick up a stick and prod them a little bit.",
+              "author": "_0ffh",
+              "depth": 1
+            },
+            {
+              "text": "There’s also the uncomfortable reality that a lot of people spent a lot of time learning how to do things that anyone can prompt now…\nWe tend to ignore that reality but it hangs above all these discussions like a dirty cloud",
+              "author": "thierrydamiba",
+              "depth": 2
+            },
+            {
+              "text": "That does not seem like it should be controversial.  I have known for quite a long time that a motivated high school kid could learn to code well enough to be perfectly useful.  Especially with popular languages like Python.\nThis is just an object lesson for everyone who thought all that software guys did was write code that there is just a little bit more to the job than that.  Actual developers should already have known.",
+              "author": "rootusrootus",
+              "depth": 3
+            },
+            {
+              "text": "Yep, I use it every day. IMO it's a bigger long-term productivity lever for someone who knows good code than it is for someone who doesn't look at the code (at least for systems that are expected to have lots of users).\nFor those sorts of systems, comments like this just remind me of people pitching UML + codegen-or-outsourcing 20 years ago.\n> Users don’t care whether the code was written by AI or by hand, or which framework you used. They care that the product works.\n> I say this as someone who has spent more than 20 years honing their craft as a software engineer.\nI've worked with outsourced code, and I've worked with similarly-messy/not-forward-thinking first-iteration startup-MVP code that found success and now needs to do more and be more reliable while being cheaper to operate. It ain't pretty.\nOnce you start modifying working code that people rely on you quickly start to see that the code itself matters. There aren't enough tests in the world to get around this from a quality POV. And piles of copypasta turn into either inconsistent behaviors (bad from a user satisfaction POV) or a continual drag on velocity (bad from a product goals/competitivness POV). And I've run the tools \non\n those sorts of \"found MVP, now need to iterate fast\" codebases, both on the messy parts and the better parts.\nSure, Claude can chew through the pain points of \"let me find the ten copypasta versions of this and try to update them all\" and chase down all the weird stupid bugs/janky things that that requires because each of them evolved separately much faster than a human can. But it's not gonna be as fast as it was at writing the first version, and it's gonna get more and more annoying. You hit the point where your agent is churning for hours and running more and more tests and inadvertently breaking more things trying to make the change in all those places, and making MORE code changes to fix those (and those are just the caught broken things the tests cover!).\nIt's wayyyyy faster and less potentially painful to have it make updates to a well-factored module. \"You don't have to read the code\" is all well and good until you have a 10k+ line PR that's 10x larger than it needs to be because nobody read the code in the past, and you realize that most of the relevant test files \nalso\n changed substantially and you don't have that much known-unchanged permutation coverage of the actual things users do... how comfortable are you pushing the \"ship it\" button then?",
+              "author": "majormajor",
+              "depth": 2
+            },
+            {
+              "text": "I read an article not long ago which I \ncannot\n find for the life of me now, but the thing in it that stuck with me was the idea that people (in the context, career software developers) were not either AI-pilled or anti-AI, but rather that people are both excited and afraid at the same time.",
+              "author": "wlonkly",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Because I enjoy writing code. I enjoy being paid for writing code. And I don't enjoy writing prompts for AI.\nCode is not just a means to an end. Code is a means to my happiness. Users might not care, but I do care. I love good code. I feel great when I can write good code.\nI won't say that I don't care about users. I do. But I care about me, first and foremost. And AI threatens to remove my lifestyle and workstyle. That's why I'm bullish against it. And at the same time I use it, because I feel forced to use it. This is rat race.\nAt the same time I can say that I don't care about delivering product 10x faster. Actually I'd prefer to deliver product 0.1x faster.\nYes, I understand that contradicts to the business side of view. Well, I don't care. I'm not getting paid percentage of product sales. I'm getting paid flat salary and I care about keeping it and live good life in the process.\nI'm being completely honest about it. Maybe it'll help someone to understand that point of view.",
+          "author": "vbezhenar",
+          "replies": [
+            {
+              "text": "I am sympathetic to this point of view. But also: I love reading books. But I'm aware that nobody will pay me to read books.\nIn much the same way, like you, I love writing code. And there was a time when \"writing code\" was a close enough approximation to what people wanted to pay me for that I could get paid for doing this thing that I love.\nUnfortunately, this is no longer true. This thing that I love is now no longer the thing that people pay me for. It never \nreally\n was. People paid me for solving problems using software. It's just that the thing I liked to do, the act of writing code, was the only way to accomplish that.\nBut now it just isn't. Now I can create useful software more quickly and better without actually writing much code. And that does suck, I do experience it as a loss. But I also experience it as a great opportunity.",
+              "author": "sanderjd",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for the honesty. I think this is a very useful point of view precisely because it is explicit about being based on personal motivations, and that is completely fair.\nThat said, as a minor wording point, I'm not sure \"I'm bullish against it\" is the right framing here. \"Bullish\" usually implies a positive expectation based on some thesis or evidence. In this case, something like \"I'm resistant to it\" seems more accurate.\nI agree this is a change that affects every software engineer's lifestyle and workstyle. But I think it is important to separate personal motivations from critical, objective analysis when discussing new technologies (e.g. whether for or against AI) so the discussion remains valuable instead of becoming emotionally polarized.",
+              "author": "tcgv",
+              "depth": 1
+            },
+            {
+              "text": "I'm not sure what you're asking for is possible. We're humans, so if something affects us, how we feel becomes relevant to critical, objective analysis. This is a common mistake engineers make: It is not valueless or irrational to discuss practical reality or personal experiences or even emotions.\nIn other words: You can discuss the implementation details and pricing structures and capabilities of an LLM; and you can discuss the positive/negative effects genAI has on humans. They're both valuable topics. It's impossible to separate them \ncompletely\n.",
+              "author": "happytoexplain",
+              "depth": 2
+            },
+            {
+              "text": "Also, code expresses understanding and intent, quite precisely.\nCode generators that do not have understanding or intent are limited in their ability to express them precisely.",
+              "author": "andrei_says_",
+              "depth": 1
+            },
+            {
+              "text": "> Actually I'd prefer to deliver product 0.1x faster\nIdeas being expensive was a good thing.",
+              "author": "vips7L",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I call these AI tools \"proprietary non-determenistic database of the free internet\". They belong to american companies which can cut off your access if american government doesn't like your country's government. They fed from the free internet that many of us grew up in, store it in humans unreadable form and sell you access to it. If some day claude starts to spit out compiled binaries instead of code nobody will notice, and we'll essentially get proprietary cloud-hosted compiler that most in the world depends on to build software. With built-in telemetry and backdoors and clause in license that allow full overtake of your business if provider wants it ofc. It's a great shift from the internet we all know and love towards the new subscription-based access to world's propriatary knowledge base. It's a perfect \"mind control\" tool as well - you don't need USAID, \"free media\" and stuff like that in other countries when all people there including politicians ask chatgpt everything from meaning of life to recipies of pancakes. Once you see these political and philosophical dimensions it's hard to unsee how claudecode running on my PC won't turn into a weapon some day. But in blissful ignorance it's fun to use, and companies love it for the promise of replacing people. Amen",
+          "author": "oleg_antonyan",
+          "replies": [
+            {
+              "text": "> the free internet\nIt's so much worse than this, though. These companies have raped and pillaged every last store of human knowledge: art, transcripts of conversations, newspaper articles, etc., etc. Contrast that with what Aaron Schwartz did and wound up taking his life over. It's beyond shameful.\nDespite how the first few trial balloon lawsuits have played out, I think there are still a few shoes left to drop. For example, try asking Gemini (very nicely) to output an image containing your favorite comic book or Disney character and it will eventually do it -- despite the response you'll probably get on the first try saying it's not legally allowed to. In what rational universe did the companies training these models not violate either the T&C of their access to the source material (e.g. streamed content) or aren't they violating copyright/trademark by generating content containing this IP?",
+              "author": "ethagnawl",
+              "depth": 1
+            },
+            {
+              "text": "The argument that LLMs are \"feeding me back free and open internet\" seems to skip the most useful aspect of the tool.\nI could never, as an individual read, let alone synthesize and make decisions with, the amount of information on the internet. The LLM takes that free and open information and feeds me back novel information based on that free information. It gives me ideas, opinions, and hard data based on that information.\nIt's the most powerful information synthesizing tool in existence. I don't find the argument that \"it's built on free information and sold to you\" fair or plausible at all.\nIt's like saying you're free to make your own bottled water. Technically true, but in reality not.",
+              "author": "adamtaylor_13",
+              "depth": 1
+            },
+            {
+              "text": "I think you undervalue the contribution of internet-scale data to foundation modeling, and because LLMs can obsolete the content they required, I think its fair to characterize it as theft. Obviously RL contributes a lot to capabilities, but the judgement that an LLM uses to 'synthesize information' is born from the training data. The scale of the data really is beyond intuition. books3, for example, would 230 yrs of continuous reading\nI actually think the \"proprietary non-determenistic database of the free internet\" does a lot to characterize the capabilities and effects to a lot of people. Obviously coders are more in tune with how well agents can work, but that's also due more to the RL breakthroughs than foundation modeling.",
+              "author": "tpdly",
+              "depth": 2
+            },
+            {
+              "text": "It’s the solution to the second information problem. Hypertext arose from Bush’s Memex, and the information problem it offered to solve. Now, there is simply so much information available on the modern Memex that it is impossible to make any sense of it all. So, we now have LLMs. There are still some issues with them, but they’re good at what they do.\nI have mixed emotions about LLMs and AI more generally. I fear the dystopia, hope for some marginal improvement in human life, and I genuinely enjoy playing around with local models. But, I think there may be near term harms that outweigh the gains. We shall see.",
+              "author": "BirAdam",
+              "depth": 2
+            },
+            {
+              "text": "Nothing about the information it feeds you is novel. It's all stolen repetition of someone else's work.",
+              "author": "theappsecguy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The very premise of your question is very questionable.\n> Over the past six months, there hasn’t been a single day where I’ve checked the HN Best RSS feed without seeing a post about how AI “writes bad code,” “introduces bugs,” “creates technical debt,” or something along those lines.\nAt the same time, there hasn't been a single day without several AI hype posts. The notion that HN has turned into an outlet for anti-AI sentiments does not match my experience at all. In fact, many users are already tired of the constant influx of vibe coded \"Show HN\" posts, AI model discussions and prompting recipes.\nAlso, AI is not only about the ability to generate lots of code very quickly. The potential (and actual) negative effects in certain fields and in society as a whole are very real and it's reasonable that people want to discuss them.",
+          "author": "spacechild1",
+          "replies": []
+        },
+        {
+          "top": "I’m less anti-“anything AI” and more anti-“how AI seems to be used right now”.\nIt is:\nbeing used as smokescreen for massive layoffs industry wide.\na repeat of the business models of 1999-2000 (growth without profit, race to IPO, promises of infinite TAM).\nthe business execs are following the crowd, insisting on token maxxxing, not value-to-the-customer maxxxing. There are reports that many companies have already exhausted their annual AI budget by April.\nmost companies don’t know how to measure if it’s actually increasing value AT ALL.\nmy former coworkers say it’s empowering non-engineers to write bad code / features which are a net negative. Prior to AI, bad ideas needed an engineer to tacitly approve of it, but now the bad ideas can bypass the engineer at light speed. 10x development speed is VERY BAD if the average change is a net negative.\npeople are leaning on LLM inference instead of basic tasks such as keeping web bookmarks organized. It will cause cognitive atrophy.\nthe foundation model companies are heavily subsidizing my $20/mo plan, so I’m pretty sure it becomes unaffordable once they charge cost plus for inference.\nI’m personally experimenting with AI for all aspects of business (not just coding). I’m sometimes vibe coding prototypes and sometimes building a rigorous full-SDLC app.\nI watched an interview with Ed Zitron yesterday and I found myself agreeing vehemently with his appropriate level of cynicism about the AI industry and how business is using it right now.",
+          "author": "thephyber",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48409955",
+      "title": "Show HN: Lowfat – pluggable CLI filter that saved 91.8% of my LLM tokens",
+      "link": "https://github.com/zdk/lowfat",
+      "domain": "github.com",
+      "author": "zdkaster",
+      "score": 149,
+      "comment_count": 74,
+      "created_ts": 1780650642,
+      "is_internal": false,
+      "post_text": "Hi HN, not sure if anyone would be interested, but just wanted to share that I&#x27;ve been maintaining my small tool called &#x27;lowfat&#x27; that helps me filters some of my verbose CLI output. It&#x27;s a single binary, works as an agent hook or a shell wrapper. It has a plugin system to customize filters per command.<p>The idea is pretty simple: agents don&#x27;t need the full kubectl get -o yaml or any 10k-line dump to make decisions. \nSo that lowfat sits in between, strips the noise, and passes through what matters. Here&#x27;s my real report after 2 months of personal use:<p><pre><code>  lowfat history --all\n\n  lowfat plugin candidates\n  ─────────────────────────────────────────────────────────\n\n    #  command                    runs   avg raw      cost   savings  source    status  \n    1  kubectl get                101x     14.4K      1.5M     93.9%  plugin    good    \n    2  grep                       103x     13.5K      1.4M     96.2%  plugin    good    \n    3  git diff                    81x       995     80.6K     57.9%  built-in  good    \n    4  kubectl                     90x       485     43.6K     33.6%  plugin    good    \n    5  docker                     127x      5.5K    693.6K     96.1%  built-in  good    \n    6  ls                         489x       117     57.3K     56.2%  built-in  good    \n    7  find                        30x     16.5K    495.0K     95.5%  plugin    good    \n    8  git show                    63x       490     30.9K     38.0%  built-in  good    \n    9  git                        177x       368     65.2K     76.1%  built-in  good    \n   10  git log                     86x       556     47.8K     78.5%  built-in  good    \n   11  kubectl logs                 5x      3.6K     17.8K     43.0%  plugin    good    \n   12  git status                  86x       152     13.1K     58.0%  built-in  good    \n   13  docker ps                   20x       467      9.3K     52.8%  plugin    good    \n   14  kubectl describe             6x       656      3.9K      1.2%  plugin    weak    \n   15  docker images                9x       940      8.5K     61.8%  built-in  good    \n   16  k get                        2x      2.1K      4.2K     35.9%  plugin    good    \n   17  terraform                   10x       395      3.9K     32.1%  plugin    good    \n   18  git commit                  32x        77      2.5K      0.0%  built-in  weak    \n   19  docker build                 8x       487      3.9K     37.6%  built-in  good    \n   20  docker compose              22x       979     21.5K     89.4%  built-in  good    \n\n  total: 4.4M raw → 4.1M saved (91.8%)\n</code></pre>\nMy toolset above is kind limited, but it works pretty well for my usecase without any interruption\nKinda help me not reaching the token limit for my company Bedrock limit usage and keep optimizing the saving on the go for later usage.<p>But, why not alternatives (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;zdk&#x2F;lowfat#alternatives\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;zdk&#x2F;lowfat#alternatives</a>) ? \nThe answers are:\n  - My goal is to make the core lightweight but extensible via plugins i.e. not trying to bundle every command in the installed binary so that people own their output filters.\n  - Customizable per usecase via plugin or filter pipelines as I am using my own toolset.\n  - Customizable for non-public CLI tools, for example, some enterprise might have their interal CLI tools that public won&#x27;t have access.\n  - People should own their data. So the design is local-first, No telemetry forever.\n  - I kinda love UNIX-style composible pipes, so lowfat-filter has implemented this style.\n  - Be able to adjust aggressiveness of the filter, so we can control that we won&#x27;t strip something the agent needed.<p>GitHub: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;zdk&#x2F;lowfat\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;zdk&#x2F;lowfat</a><p>Anyway, if anyone is interested, feedbacks and questions are welcome!<p>Thanks!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48413629",
+      "title": "Ask HN: What is your (AI) dev tech stack / workflow?",
+      "link": "https://news.ycombinator.com/item?id=48413629",
+      "domain": "news.ycombinator.com",
+      "author": "dv35z",
+      "score": 147,
+      "comment_count": 128,
+      "created_ts": 1780672434,
+      "is_internal": true,
+      "post_text": "Hello, happy Friday!<p>I am looking to do some in-person &quot;developer boot-up&quot; workshops, and seek your suggestions for &quot;modern tooling&quot;.<p>The background of the participants range from motivated newbie (&quot;I heard you can make your own app with AI!&quot;) to existing software developers who want to get up to speed on modern development for the purposes of building stuff, and getting jobs where AI tools are being used.<p>For those who have been doing software development &amp; &quot;tech&quot; lately using AI tools, and feel they have a great setup &amp; flow - I would love to hear what your dev setup is, what tools you&#x27;re using and what workflow has been working best for you (and your team).<p>&#x2F;&#x2F; My Background<p>I have been programming &#x2F; building for 20+ years, but have not been using AI tools much (aside from hitting up LLM APIs on a few projects).<p>I value open-source, and aim for long-term quality and supportability. Techniques like test-driven development (TDD), using proven &#x2F; well documented tools, customer-centric development (often pairing with clients), make it easy to do the right thing. If you are familiar with Pivotal Labs, agile &amp; XP - that&#x27;s the style.<p>These are some of the Upcoming uses-cases for the workshop, and my own personal &quot;IT backlog&quot;:<p>- Create a static &quot;one pager&quot; personal&#x2F;professional website<p>- Setup a Blog &#x2F; Static site generator (Pelican), create a simple but stylish theme<p>- Create a simple web app &#x2F; backend API (FastAPI) tool - form-based calculator, convert X data to PDFs, etc.<p>- Figure out how to have SyncThing autosync the home folder of 3 Linux computers in the house<p>- Backup &amp; archive the photos &amp; video from my iPhone<p>&#x2F;&#x2F; Tech stack I am currently using:<p>- Operating system: Linux Mint Debian (LMDE)<p>- Editor: VSCodium<p>- Code: Python, HTML&#x2F;CSS<p>- Server platform: Amazon AWS<p>I am guessing that most workshop participants will be using MacBooks &amp; Windows computers - but a few are on Linux, as I recently did a &quot;Linux install party&quot;.<p>I haven&#x27;t used any &quot;AI harnesses&quot;, agents or anything like that - but curious what&#x27;s a good starting point to take best advantage of these tools.<p>Thanks for sharing the knowledge!<p>&#x2F;&#x2F; JRO",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I've shifted to a \"slow code\" approach with AI, treating it more like a design partner than a code generator.\nI mostly do TDD with TypeScript. I write the test, write the code myself (sometimes with the help of LLM), and then hand it to the LLM. Instead of asking it to write things for me, I use it to find edge cases, check if it's leak-proof, and verify efficiency.\nFor architecture questions, I debate with it for a while. I almost never ask for code without conversing 4-5 times first to push back on its assumptions. It's the best rubber-ducking partner I've had.\nPersonal plug: I wrote more about why/how I use AI to write slow, better code on my blog: \nhttps://nabraj.com/blog/ai-write-slow-better-code",
+          "author": "coffeecoders",
+          "replies": []
+        },
+        {
+          "top": "I am using Spec Driven Development approach implemented as a Claude Code plugin since Feb for all mid + size tasks. The idea is to write detailed specs first using agent help doing research and interviewing, decompose the task into smaller subtasks, write detailed spec for each task, implement each task separately. You can restart the session after every step in the workflow and after each subtask implementation since all requirements are materialized in specs. This helps to keep session context focused on a single task at time, improve adherence, reduce cost and allow to implement bigger tasks that are hard to implement with pure plan + code.\nDiscussion on hn: \nhttps://news.ycombinator.com/item?id=48231575\nRepo: \nhttps://github.com/sermakarevich/sddw\nSlides: \nhttps://docs.google.com/presentation/d/1SjKXF7hkoqyiN9-3tBGY...",
+          "author": "sermakarevich",
+          "replies": [
+            {
+              "text": "Imm overwhelmed with a variety of SDD tools out there.\nGithub spec kit, spec-kitty, symphony, GSD, this.\nHow do people decide on the framework other than try them all.\np.s. found this mind-boggling list of them all\n\nhttps://github.com/cameronsjo/spec-compare",
+              "author": "vladgur",
+              "depth": 1
+            },
+            {
+              "text": "I looked at most of those, including kiro and tessl. Was early user of GSD when it was suitable for mid+ size projects. Over time GSD grown into beast which is suitable for huge + size projects only producing gigantic specs and burning too many tokens for most of the tasks. So I decided to created my own, with set of steps I need and specs I want.\nAfter few presentations of sddw to different companies, most important conclusion was that the ssd plugin should be customizable. It should fit the typical size of tasks/features you are working on, specs should fit your requirements, set of steps can be different.\nSo I created claude code workflow (ccw) which allows to compile custom version of workflow on top of sdd approach:  \nhttps://github.com/sermakarevich/ccw\nAfter making few presentations of sddw to different companies,",
+              "author": "sermakarevich",
+              "depth": 2
+            },
+            {
+              "text": "Genuine question, I'm trying to adopt specs and AI DLC in my team so we can use it as an enhancement and improve our development and the biggest pain right now for us is managing all those md artifacts.\nI'm curious how do you manage them? Do you preserve them for the future or delete as soon as task was accomplished? If you're deleting those artifacts after job being done - do you summarize those specs into the Jira ticket or whatever system you use.",
+              "author": "bohdanstefaniuk",
+              "depth": 1
+            },
+            {
+              "text": "If you already use jira, maybe try putting the specs directly in the jira ticket?   And/or in a confluence page?\nI'm not sold on SDD yet, but part of that is because we already have decently detailed tickets and designs.",
+              "author": "johntash",
+              "depth": 2
+            },
+            {
+              "text": "I would love to see examples for various types of specs written, as in actual texts of the specs for various types of it.\nIt would also help to understand how are changes to specs handled?  Is the agent given both old and new versions to figure out the updates needed?\nThanks.",
+              "author": "alok-g",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "There's lots of ways. You have to upskill through the stages IMO. Write code, write w/ agent, write w/ multi agents, write w/orchestrators.\nMy way is to just run a giant AI agent factory engine and make the agents full flow do everything. (plan long term, write prd, task, review).\nHere's ~4000 commits in last month as an example, i have about ~10k ish including private/work stuff? \n\nhttps://github.com/portpowered/you-agent-factory/commits/mai...\nThe premise when you get to full automation generally is you go full industral engineering:\n1. watch overall flow, improve process via continuous improvement\n2. work via checklists and gates.\n3. replace process with mechanisms as much as possible (code > agents)\n4. optimal throughput is continual testing and iteration (CI, CD), coverage, full e2e tests, mock everything, general best practices really.\ndecent blog: \n\nhttps://openai.com/index/harness-engineering/\ngeneral points:\n- build lots of linters\n- document literally everything (arch, prd, best practices in repo)\n- too many agents at the same time makes lots of code conflicts, so need to consider architecture of code how to maximize concurrency.",
+          "author": "aabdi",
+          "replies": [
+            {
+              "text": "Genuinely curious - in your case, where do the requirements for what needs to be built come from?\nIn every project I've touched, business requirements are \nalways\n the bottleneck - so I've never been able to wrap my head around what kind of requirements can be fed into a setup like this at high enough volume to justify it.",
+              "author": "alex_c",
+              "depth": 1
+            },
+            {
+              "text": "myself? senior engineer role is basically figuring out the business problem and getting funding.\nIDK i've always been able to get senior managers/managers to give me lots of leeway to do wtv i want and figure out problems. \nAt least in most places i've worked at.\ni work on platform stuff mostly, so there's always a large need for stuff. \nthe backlog alone b4 all the agentic stuff was roughly 20-30x the capacity of any team (per year). 80% of requests were usually SVP goals and we'd just outright drop them due to lack of capacity or request HC transfer/away teams.\ni.e. internal improvements alone were always massive (not gonna talk about prod code/cross team organization).\n1. we need better test coverage for x,y,z\n2. we need to be able to eval the long term costs (XX growth YOY, how to reduce)\n3. the internal system streaming is inefficient, need to eval the alternative systems\n4. we need better ops handling/management automation for issues and sev3s/sev2s. i.e. scaling, anomaly analysis, bugs introduced, improved metrics, dashboards.\n5. DX stuff needs better handling, people keep confusing themselves on how to onboard. better docs on how to onboard, automation,\n6. teams x,y,z are fighting with each other bcz they don't have a good grasp on systems, improve internal docs on arch and interop\n7. we need automation to be able to more easily test our systems in an adhoc fashion\n8. there's no linters for API platform, leading to bad results and inconsistency.\n9. we're seeing bugs in the code, but aren't appropriately manualy testing after deployments. spawn 100 agents to do it, compile the results. do it every X days, feed the bugs back into the system.\ni could go on and on. and this is one service, usually you own quite a few, and each one has their unique set of challenges.",
+              "author": "aabdi",
+              "depth": 2
+            },
+            {
+              "text": "Have you been able to build anything substantial with AI factory itself? I have done some of these experiments myself on these sort of things and found they ended up often being less effective than using the latest tools in harnesses like claude code.\nBut curious if you've found it to be a big unlock. I have been doing some of this industrial engineering myself.",
+              "author": "ianm218",
+              "depth": 1
+            },
+            {
+              "text": "well work wise its usually for adjacent tooling. It unblocks other things, but like actual prod code, i'm always a little skeptical.\nFor example we had this problem where we had to take in customer inputs for requests and calculate out the projected downstream TPS. This is fairly complex since we run a query parser/orchestrator.\nThis is expensive to write myself or to have engi's do it, but the scaling algorithms are all there and we have excel sheets for spreading out overall costs.\nso then all was needed was basically write out a big spec of the reqs - give it the docs/parser code/excel sheets, then just have it span out the pieces as a sequential checklist. \n1. CI/OPS\n2. docs\n3. test infra\n4. incremental build out in phases to chain it all together.",
+              "author": "aabdi",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm biased (I'm the creator) but I use Conductor every day. I've recently switched to Opus 4.8 (fast mode always on) as my default model but swap in GPT-5.5 quite a bit for reviewing Opus's work.\nMy flow is something like:\n- Create a new workspace for a specific bug/feature\n- Ramble into the input box. I use a goose neck microphone and  Spokenly (with Parakeet as the model ) for local speech-to-text\n- Hit enter! I don't use plan mode. \n- Ask for a review from a different model (⌘⇧R) \n- Create a PR and run a /babysit loop\n- Run a local version of the app and click around, do a human review. If the LOC are negative we don't pay much attention to the code. If it's positive we do\n- Merge!\nI often have 3-5 workspaces running like this. There's lots of room for improvement but it's been working quite well for me.",
+          "author": "Charlieholtz",
+          "replies": [
+            {
+              "text": "Hey -- we've loved using Conductor here at Digits. I've been using it since February and only recently swapped to using Orca for Remote SSH and perf improvements. Looking forward to your general release of Conductor Cloud!\nI've been wondering, since you're building desktop software, how do you get AI to test your changes? Boot the whole app? Run the frontend/UI with a mock backend?",
+              "author": "phildenhoff",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm using VSCode with Github Copilot (Business) in Agent, and Ask mode with varying LLMs, depending on the complexity of the task. \nFor a specific task, i create a markdown file with the requirements in tandem with the Agent, manually edit it where convenient. And then i let the Agent implement one feature or work unit after another, while micro managing it and making sure that i understand what it has written (not for really trivial stuff, where i don't care). This gives me a huge productivity boost, while the level of being in the loop is still bearable for me.\nTBH, i'm wondering why i'm the only one saying he's using VSCode with GH Copilot. Isn't this the most frictionless tooling for an 'agentic engineer'? I get state-of-the-art LLMs while it's fully integrated into my IDE.\nI still don't fully get what Claude Code or GH Copilot CLI would bring beyond that, since the Copilot plugin does also have CLI access.",
+          "author": "lagrange77",
+          "replies": [
+            {
+              "text": "You aren't the only one.  There are many people using Github Copilot.\nGithub Copilot CLI is for automation. For example, in a Rust project, I use it to audit for security, documentation gaps, and test issues crate by crate.  This can take an hour and I look at the suggested stories it writes afterwards to triage for implementation.",
+              "author": "outside1234",
+              "depth": 1
+            },
+            {
+              "text": "And does Copilot CLI make that more convenient than letting the Copilot Plugin in Agent mode do it? Maybe because of swarms of agents?",
+              "author": "lagrange77",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48428356",
+      "title": "Home alone: Remote work, isolation, and mental health",
+      "link": "https://www.science.org/doi/10.1126/science.aec7671",
+      "domain": "www.science.org",
+      "author": "speckx",
+      "score": 144,
+      "comment_count": 134,
+      "created_ts": 1780775470,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "I don't understand how the research methodology used in the article supports this conclusion. How did they rule out the possibility that the post-pandemic economic situation has had a greater impact on these jobs, leading to greater stress? How did they we rule out that remote work has led to greater range of outsourcing, resulting in more intense competition for these jobs, rather than that caused by \n the lack of social contact? Or is it simply because the rapid development of AI in the research period has had a greater impact on these jobs, which is an obvious possibility?",
+          "author": "tianqi",
+          "replies": [
+            {
+              "text": "From the paper:\n>Undoubtedly, there are potential alternative explanations for the differential deterioration in mental health among those in remotable jobs, such as the introduction of generative artificial intelligence (AI), political shifts, or lingering effects of the pandemic. Workers in AI-exposed occupations—which also tend to be more remotable—might plausibly show rising distress owing to job security concerns rather than remote work. To test this, we leveraged an AI occupational exposure index (21, 22). We found that the mental health effects load on remotability rather than AI exposure (table S20). Additionally, the time series changes in mental health coincide with the pandemic and not the rapid diffusion of AI following ChatGPT’s release in late 2022. Furthermore, we might expect the mental health effects of AI to be particularly large among those who recently lost their jobs, but instead we found more muted effects for the unemployed (fig. S5). Together, these findings suggest that remote work is a more plausible explanation for deteriorating mental health than generative AI during our study period.\nnot sure if that answers your question, but your question also seems kind of bad faith perfect v good rather than merits and rigor.",
+              "author": "devindotcom",
+              "depth": 1
+            },
+            {
+              "text": "This is a psychology paper. It’s difficult to attribute anything in psychology easily to a certain factor.",
+              "author": "anukin",
+              "depth": 1
+            },
+            {
+              "text": "> How did they rule out the possibility that the post-pandemic economic situation has had a greater impact on these jobs, leading to greater stress?\nI only skimmed the paper, but I presume it is comparing remote workers to non-remote workers who also have gone through the same post-pandemic economic situation.",
+              "author": "munificent",
+              "depth": 1
+            },
+            {
+              "text": "They use different industries to represent remote workers and non-remote workers. However the same economic situation can have very different effects on different industries.",
+              "author": "tianqi",
+              "depth": 2
+            },
+            {
+              "text": "Unless the research is going to get funded to the tune of billions, they likely had to cut some corners",
+              "author": "sharts",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This reminds me of growing up as a homeschooled kid and hearing people ask my parents \"but how will they socialize?\", generally while we were at the youth soccer field or at the playground or somewhere else that the irony should have caught their attention.\nHomeschooled kids \ncan\n be isolated more because they don't have the forcing function of mandatory group settings, but often there are other opportunities available for socialization beyond just the one normally-compulsory (and,\noften miserable) environment.\nSimilarly, remote work for the last near-decade for me has given me a lot more time to be engaged socially with my family and other local communities – time that used to be entirely lost to a long commute. My mental health is drastically better than when I was working in-office, largely because I don't have over an hour of traffic each way to deal with, and especially because I get to be engaged with my family more and be much closer and more involved with my kid than I would otherwise.",
+          "author": "ubertaco",
+          "replies": [
+            {
+              "text": "I wasn’t homeschooled but I have been working from home for good part of last two decades. And I have not felt any negative effects of it.\nIn fact, it forced me to go out seek friends in local communities like meetups and various clubs. I have a feeling that people who feel isolated due to WFH would be same people who don’t interact with anyone in the offices as well.",
+              "author": "fdgfikgfv",
+              "depth": 1
+            },
+            {
+              "text": "I have a feeling that people who feel isolated due to WFH would be same people who don’t interact with anyone in the offices as well\ni am experiencing this from a different angle. i am shy in certain situations so i don't easily socialize. what helps me is forced/formalized socialization, like pair programming. forced in the sense that i don't have to ask someone to make it happen. (although asking gets easier as i get older)\nso what makes me feel isolated is working alone on a task. the fact that there are dozens of other people around me doesn't help much if i can't talk to them all day unless i need help.\nworking from home doesn't make things much worse. but, it allows me to avoid social isolation through other means. the advantage of going out to seek friends is that you can choose where to go, and you can go to places that are more open to interaction than the people at work. still i would prefer work where i have to cooperate with others, and not just work on my tasks alone.",
+              "author": "em-bee",
+              "depth": 2
+            },
+            {
+              "text": "Homeschooled people just assume others must be unhappy in those places where they dont go, but that is not the case and not shown in statistics.\nAlso, those people asking the question you find weird were asking about the experiences and kind of socialization that they consider big deal and was not going on in that place.",
+              "author": "watwut",
+              "depth": 1
+            },
+            {
+              "text": "As someone who was public schooled six years and homeschooled six years, public school definitely made me more unhappy, and was worse for me socially.\nOf course, I wouldn’t assume everyone in my shoes would have the same experience. But it definitely cemented my positive opinion about homeschooling generally.",
+              "author": "bentley",
+              "depth": 2
+            },
+            {
+              "text": "Prison?",
+              "author": "card_zero",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Haven't been in an office since the start of COVID. Between being lucky enough to have a great coliving setup with dope housemates, and now having access to co-working cafes in Taipei that have genuine communities, I feel more social than ever with more meaningful connections. I still commute to the cafes, for me remote working is about not having to be tied to a geographic spot in order to keep my source of income, not isolating at home.",
+          "author": "budududuroiu",
+          "replies": [
+            {
+              "text": "True, there's also another factor about not having to be tied to a geographic spot, housing costs.\nIn EU, even relatively good IT salaries are mediocre when you factor in monthly rental. A simple one-bed apartment can easily take 50% of your net income.\nHaving freedom to move, even within a particular country, allows reducing that 50% to something more sustainable.",
+              "author": "nextos",
+              "depth": 1
+            },
+            {
+              "text": "It never ends on HN, does it?  These wild claims about \"[i]n EU\".  I puke each time I see that phrase.  The EU is \nenormous\n.  There is no way that a \"simple one-bed apartment can easily take 50% of your net income\" in any mid-sized EU city, or an hour outside a large EU city.",
+              "author": "throwaway2037",
+              "depth": 2
+            },
+            {
+              "text": "The worst thing about office friends is they immediatley cease to be friends when you are laid off or change jobs, only maybe 2% do I actually stay in contact with, and frankly that is just because of the nostalgia I have of working with them and the networking benefits.  Work friends are not friends.  People you meet near your home and at your book club are more likely to stick around through the thick and thin.  That being said yes being in office can benefit some people's mental health",
+              "author": "stringfood",
+              "depth": 1
+            },
+            {
+              "text": "> Work friends are not friends.\nThis is reductive to the point of absurdity. Situational friends are still friends. How many of your elementary school friends are still your friends these days? High school? Summer camp? Heck college friends? Unless you're living in the same town with the same people, there's a good chance that most of them aren't anymore. Were these people also not your friends?  When you leave that book club, when you stop showing up at the corner cafe, when you move out of the neighborhood, how many of those people will you still be spending time with 5 years later. For the ones that you aren't, were they also not really friends?\nFriendship isn't a binary thing. Not every friend you make will help you bury a body, but not every friend or friendship needs to (or should) run that deep. And sure not everyone you're \"friendly\" with at work are friends, it's a spectrum. But situational friends are friends. People you bond with for a short while over a shared experience and then when life moves one or both of you on the friendship ends are still friends.",
+              "author": "tpmoney",
+              "depth": 2
+            },
+            {
+              "text": "> Work friends are not friends.\n\n\nAnother dumb thing about this statement: It is just so situationally and culturally dependent.  In many companies and cultures, it is quite normal to make good friends through work.  One generality that I find true across many different situations and cultures: If you work in a generally low competition job, you are much more likely to make friends from work.  The more competitive the job becomes, the less likely you are to make (and keep) friends from work.",
+              "author": "throwaway2037",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> Our results suggest that remote work substantially increases isolation and worsens mental health, particularly for those living alone.\nAnother angle - people don't know how to deal with isolation if not their work. Remote work has accelerated an aspect that we already knew existed. Social systems are tied ONLY around work which is not healthy.",
+          "author": "tchalla",
+          "replies": [
+            {
+              "text": "Yeah, although I suspect the study isn't taking account major economic factors involving ai and remote work jobs - the fact is society is built around jobs you commute to and it takes a little bit of time for society to change.\nPeople have understood suburbs are designed for commuters since they first started popping up, this isn't like some bizarre thing that needs careful understanding. It would be like if people stopped using boats, everyone in Venice would be like \"people who once used boats are now having trouble getting around town and the streets are too crowded. How curious.\"",
+              "author": "Morromist",
+              "depth": 1
+            },
+            {
+              "text": "In most cultures \"what do you do\" is the first question that people ask, but answered with their job position in most Western countries.\nIn most other places, people will respond with their current activity, or their hobby or even religion or believe.\nA lot of our culture revolves around work giving us meaning and satisfaction. And this is very obvious now due to recent layoffs and how people are affected in feeling/prospect because of this.",
+              "author": "gbraad",
+              "depth": 1
+            },
+            {
+              "text": "> but answered with their job position in most Western countries.\nI think that is mostly a US thing.\nAlso:\n\nhttps://www.youtube.com/watch?v=WabD6tGz-Dc",
+              "author": "prmoustache",
+              "depth": 2
+            },
+            {
+              "text": ">In most cultures \"what do you do\" is the first question that people will answer with their job position in most Western countries.\nNo, it's the opposite, in most places in the world, average people typically respond with their profession just as they always had in every coultre on the planet, from India to Bulgaria to North America from 2000 BC to 2026 AD. Are you a blacksmith, are you a priest, are you a teacher, are you a construction worker etc. In Europe many people's family names are literally the profession of their ancestors.\n>In most other places, people will respond with their current activity, or their hobby or even religion or believe.\nAgain, the opposite, People identifying with their \"current hobby\" are typically snobby western white collar hippies, who now think their identity transcended beyond their profession due to the privileges of the wealth of their profession, and the social pressures of their politically correct society that views certain professions that generate wealth (like tech bros) with a certain stigma that might be a negative to society, so they they shy away from it and choose another identity not related to their profession.",
+              "author": "joe_mamba",
+              "depth": 2
+            },
+            {
+              "text": "I am in Asia, and do not experience that 'snobby western white collar' attitude here.\nIt is seen as a polite form like \"how's the weather\", and answer like \"just going to grab a snack\", inviting others to join. Have worked with many people from different backgrounds due to an international/localization team and open source activities in Asia.\nAnd the name argument in a lot of places was a forced naming. In the Netherlands they were sometimes based on profession, but also their location, or their parents/relationship. The names where a Napoleonic side effect; in 1811 he mandated that everyone in the Netherlands must adopt a surname. Before that, it was very unusual. Note: look for 'van' and what follows, as often it is not a profession.",
+              "author": "gbraad",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> After the pandemic, workers in remote-capable jobs spent more time working alone and avoided social activities with their friends, remaining more isolated both during and after work. This pattern was most pronounced among remote workers living alone: They spent entire days without human contact and their mental distress, use of mental healthcare, and antidepressants increased acutely.\nOne of those results which is exactly what anyone paying attention would predict. I'm glad there's hard evidence.",
+          "author": "ajkjk",
+          "replies": [
+            {
+              "text": "I'm sure this is true. Also true is the mental distress I experience having to work in an crazy noisy open office space. Give me an actual office, and I'll go there.",
+              "author": "28304283409234",
+              "depth": 1
+            },
+            {
+              "text": "An actual office is not even that expensive. All they have to do is double the height of the cubicle walls and slap a door on there but they won’t do it.",
+              "author": "dyauspitr",
+              "depth": 2
+            },
+            {
+              "text": "It is all about control and bad leaders do not know how to lead without doing “drive bys.”",
+              "author": "cogogo",
+              "depth": 3
+            },
+            {
+              "text": "I'll settle if they double the height so my eyes don't get blasted by sun glare.\nThere's beautiful views from my current office..but my job is a screen all day and having dim interior lighting versus direct sun fighting it out across my retinas means the effect is entirely lost on me.",
+              "author": "XorNot",
+              "depth": 3
+            },
+            {
+              "text": ">This pattern was most pronounced among remote workers living alone: They spent entire days without human contact and their mental distress, use of mental healthcare, and antidepressants increased acutely.\nI guess there is a cultural component to it too, or maybe I'm just that much disconnected from humanity. It's just hard for me to imagine that spending time alone would, in general, affect someone so much that they would begin to rely on drugs and other means of mental care. Maybe it has little to do with isolation in particular and the source of distress is simply the abrupt change in lifestyle. For example, forcing a person to socialize every day when they aren't used to it would put them in a similar state. I've lived alone for over a decade (since I was 19), and by far the biggest source of mental distress to me are interactions with people. I have never seen a psychologist in my life nor ever taken any mind-altering drugs. Remote work came and, thankfully, hasn't fully left, but I barely even remember the pandemic. Of course, it's just a personal experience, not a generalization.",
+              "author": "ZpJuUuNaQ5",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48397731",
+      "title": "Ask HN: So what happened to Facebook \"localhost\" tracking?",
+      "link": "https://news.ycombinator.com/item?id=48397731",
+      "domain": "news.ycombinator.com",
+      "author": "juliusceasar",
+      "score": 103,
+      "comment_count": 101,
+      "created_ts": 1780576360,
+      "is_internal": true,
+      "post_text": "It was discussed a year ago.\n<a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "> Meta must face a lawsuit alleging that it secretly tracked Android users' browsing activity on mobile websites that embedded Meta's analytics pixel, and linked that activity to users' identities, a federal judge ruled Monday.\n> The decision, issued by U.S. District Court Judge Rita Lin in San Francisco, grew out of a class-action complaint initially brought last June by California resident Devin Rose (and later joined by other Android users).\n> Rose alleged that between September 2024 and June 2025, Meta exploited Android's localhost -- a feature that allows software developers to test applications -- to connect users’ mobile web browsing to their Facebook and Instagram profiles.\nMay 12, 2026",
+          "author": "applfanboysbgon",
+          "replies": [
+            {
+              "text": "Not at all to defend Meta but \"a feature that allows software developers to test applications\" is a dubious definition of localhost. I also can't come up with a better one.",
+              "author": "Retr0id",
+              "depth": 1
+            },
+            {
+              "text": "It's not a definition, but it is an accurate statement.",
+              "author": "furyofantares",
+              "depth": 2
+            },
+            {
+              "text": "It's a true statement but I'm not sure it gives a good impression of what localhost actually is.",
+              "author": "Retr0id",
+              "depth": 3
+            },
+            {
+              "text": "If the biggest issue you found in the article is the localhost gloss, Meta probably got off easy.",
+              "author": "rambojohnson",
+              "depth": 4
+            },
+            {
+              "text": "Here is the explicit definition of localhost.\nThe term \"localhost\" refers to the default entry in all modern operating system host files.  By default modern operating systems provide a \nhosts\n file that provides domain name resolution without reliance upon the Domain Name System (DNS) protocol.  By default these host files typically ship with one entry, a domain named \"localhost\" that points to IPv4 loopback interface 127.0.0.1.",
+              "author": "austin-cheney",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Looks like they stopped doing it\nhttps://localmess.github.io\n> UPDATE: As of June 3rd 7:45 CEST, Meta/Facebook Pixel script is no longer sending any packets or requests to localhost. The code responsible for sending the _fbp cookie has been almost completely removed. Yandex has also stopped the practice we describe below.",
+          "author": "KomoD",
+          "replies": [
+            {
+              "text": "> almost",
+              "author": "hulitu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Chrome and Firefox have deployed / are deploying local-network-access which prompts the user when apps try this.",
+          "author": "mozvalentin",
+          "replies": [
+            {
+              "text": "I guess that's why I am getting so many \"Allow to find devices on your network\" alerts. Good feature overall.",
+              "author": "pezgrande",
+              "depth": 1
+            },
+            {
+              "text": "Only a good feature if users have a clue what that question means. Most will click \"Yes\" because they want to get on with whatever they want to do.\nChange it to something like \"This website is trying to spy on your local devices, do you want to allow this?\"",
+              "author": "SoftTalker",
+              "depth": 2
+            },
+            {
+              "text": "Most of the time this prompt comes up it's actually for a genuine purpose, like spotify trying to find devices on the local network that can play audio, VLC looking for chromecasts, I saw my DJ app ask for local network and discovered it can discover my decks on the network and stream my library over the local network to it.\nThe problem is this prompt is new so the software doesn't show the user why it's just triggered the prompt and the user has no info to work with.",
+              "author": "SchemaLoad",
+              "depth": 3
+            },
+            {
+              "text": "Since I can see legitimate use case (complex web apps, one sharing data with another) - I would not use the word spying.\nBut still make it clear what can happen.\n\"Attention! This website wants to get access to other web apps running on this device, do you want to allow this?\"\nAnd then a link explaining some more. But better words are surely possible.",
+              "author": "lukan",
+              "depth": 3
+            },
+            {
+              "text": "I need to turn on location access for all software on my system globally to read the battery status of a device over Bluetooth. These \"could be used for\" warnings are nice and all, but usually goes beyond what makes sense. Proposing that we need to press \"be spied upon\" just to view photos stored on your NAS is way out there\nI'm sorry if people don't know what \"access local devices\" means but actively lying to them about the mechanisms is not going to inform anyone",
+              "author": "Aachen",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I've recently been exploring options for allowing web apps to access LAN services. For example, a WebDAV server so you can watch local videos in the app without streaming them through a server.\nYou can actually achieve a form of discovery if your service registers itself using mDNS for something like `service.local`. Browsers will allow direct navigation/redirection to `\nhttp://service.local\n`, but they'll block any fetch/XHR requests due to mixed content rules, even if you have CORS configured. And of course you can't get a cert for `.local` domains.\nNewer things like Chrome's LNA[0] are actually really helpful, because (for now at least) if the user grants the permission, fetch/XHR will go through, but you'll get a bunch of mixed content warnings in the console.\nIt seems like the only way to fully support this use case currently is with WebRTC, which is pretty sad.\n[0]: \nhttps://developer.chrome.com/blog/local-network-access",
+          "author": "apitman",
+          "replies": []
+        },
+        {
+          "top": "This actually inspired me recently to create Pal Pipe for Android- \nhttps://gitlab.com/not_john/palpipe",
+          "author": "0john",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48410602",
+      "title": "Communication on European Tech Sovereignty, and an EU Open-Source Strategy",
+      "link": "https://digital-strategy.ec.europa.eu/en/library/communication-european-tech-sovereignty-accompanied-eu-open-source-strategy",
+      "domain": "digital-strategy.ec.europa.eu",
+      "author": "jrepinc",
+      "score": 99,
+      "comment_count": 62,
+      "created_ts": 1780656288,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48397634",
+      "title": "Ask HN: How do you find deep technical content?",
+      "link": "https://news.ycombinator.com/item?id=48397634",
+      "domain": "news.ycombinator.com",
+      "author": "f311a",
+      "score": 36,
+      "comment_count": 28,
+      "created_ts": 1780575715,
+      "is_internal": true,
+      "post_text": "I&#x27;m pretty tired of seeing AI-related content everywhere.\nWhen I open Hacker News, close to half of the top submissions are AI-related. It&#x27;s the same on social networks as well.<p>I miss the times when there was a lot of technical content that took time and mental energy to understand.<p>Nowadays, it&#x27;s pretty hard to discover it. On HN, I see that a lot of technical articles don&#x27;t make it to the front page, so sometimes I just search for them in the submissions. Not only is there less content, but demand for it is also declining. I guess people would rather read another article about LLMs that teaches almost nothing and doesn&#x27;t exercise their curiosity. It feels sad for me, as a reader and as a writer.<p>So, are there any other places left where people still care about and share deep technical content? I want to keep exercising my thinking. I&#x27;ve had enough of brain-rotting.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48410589",
+      "title": "Ask HN: Is the web for machines (/llm.txt) the one we wished we had as humans?",
+      "link": "https://news.ycombinator.com/item?id=48410589",
+      "domain": "news.ycombinator.com",
+      "author": "sunshine-o",
+      "score": 36,
+      "comment_count": 55,
+      "created_ts": 1780656208,
+      "is_internal": true,
+      "post_text": "I got really tired, as a human, of parsing the standard marketing heavy web we have today.\nI&#x27;ve always loved the simplicity of gopher and gemini web.<p>Recently I found myself manually adding `&#x2F;llm.txt` to most websites I visit because I find the content for LLMs strait to the point and clear. \nThe only annoyance is web browsers like chrome do not render the markdown.<p>So could the AI revolution actually fix the web for humans as a side effect?<p>Do you find yourself doing the same?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We broke the web so badly for humans that we had to build a clean web for machines, and now humans will have to use machines to experience a clean web again.",
+          "author": "ahriad",
+          "replies": [
+            {
+              "text": "Yeah, when browsers have a \"reader mode\", it's pretty obvious the plot has been lost somewhere.",
+              "author": "tacostakohashi",
+              "depth": 1
+            },
+            {
+              "text": "We'll finally bring back Gopher.",
+              "author": "sunir",
+              "depth": 1
+            },
+            {
+              "text": "Always loved Gopher",
+              "author": "daniel-alexande",
+              "depth": 2
+            },
+            {
+              "text": "A man can dream.",
+              "author": "gopher_space",
+              "depth": 2
+            },
+            {
+              "text": "I wonder why we broke the web.",
+              "author": "dmos62",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I never thought about it before now but the llm era could be a form of renaissance for blind people on the Internet. An alternative web where functionality of every page is described in short but detailed text instead of extremely verbose and non-linear html tree structure.",
+          "author": "marand23",
+          "replies": []
+        },
+        {
+          "top": "Does any of the LLM providers actually use llms.txt?\nIf I remember correctly this \"standard\" was setup by someone but without involvement of any of the major AI players.",
+          "author": "rickette",
+          "replies": [
+            {
+              "text": "I can definitively say llms.txt is not used by any AI players. I run a blogging platform with around 80k blogs and /llms.txt is not requested by anything (other than humans checking to see if there's an llms.txt path).\nAll regular pages are aggressively scraped to the extent it's a problem I have to consistently manage, but not llms.txt.",
+              "author": "HermanMartinus",
+              "depth": 1
+            },
+            {
+              "text": "I'm seeing quite a bit of request for these on my work's GitBook documentation site.\nBut perhaps these are developers specifically targeting these pages to feed whatever LLM they are using.",
+              "author": "nickserv",
+              "depth": 2
+            },
+            {
+              "text": "How is a static blog being scraped a problem? Do you not use a CDN?",
+              "author": "isaachinman",
+              "depth": 2
+            },
+            {
+              "text": "> a blogging platform with around 80k blogs\nBut nah, I'm sure OP doesn't know about CDNs.",
+              "author": "nickserv",
+              "depth": 3
+            },
+            {
+              "text": "Are all blogs static though?",
+              "author": "the_real_cher",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Why didn't they place it in .well-known? Also, I couldn't find a website that has it.",
+          "author": "skywalqer",
+          "replies": [
+            {
+              "text": "Putting it in .well-known/ was immediately raised as an issue from the beginning; it’s issue #2 in fact:\nhttps://github.com/AnswerDotAI/llms-txt/issues/2\nIt’s been completely ignored ever since.",
+              "author": "JimDabell",
+              "depth": 1
+            },
+            {
+              "text": "https://searchtxt-web.fly.dev",
+              "author": "0123456789ABCDE",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What is an example of a site with a good llm.txt?",
+          "author": "realty_geek",
+          "replies": [
+            {
+              "text": "Anthropic's developer documentation: \nhttps://platform.claude.com/llms.txt\n. There's also \nhttps://platform.claude.com/llms-full.txt\n which is (WARNING) much bigger. Not sure where this second one fits into the standard.",
+              "author": "pramodbiligiri",
+              "depth": 1
+            },
+            {
+              "text": "Mintlify generates an llms.txt and llms-full.txt for all documentation sites. These work really well:\n- \nhttps://cloud.laravel.com/docs/llms.txt\n- \nhttps://cloud.laravel.com/docs/llms-full.txt",
+              "author": "jbrooksuk",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48398358",
+      "title": "Ask HN: Gin rummy strategies",
+      "link": "https://news.ycombinator.com/item?id=48398358",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 24,
+      "comment_count": 4,
+      "created_ts": 1780579739,
+      "is_internal": true,
+      "post_text": "Hi HN, I am having AI build me a local Gin Rummy trainer and it cannot figure out medium and hard bot strategies, they keep losing to easy! The point of this is to help me learn so I don&#x27;t really know how to advise it on strategies. Right now it&#x27;s just looping through tests and modifying but it keeps not improving. Does anyone have any recommendations or guidance for strategies I could suggest to it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "A bot that will minimize the expected number of (not yet seen) cards to draw to complete the hand the hand does reasonably well at deciding which card to draw or discard.  The number of potential melds in a hand is small enough for modern hardware to completely enumerate, and you start the game with only 42 possible cards in the draw pile, with the number going down almost every turn, so the calculation is very feasible.\nFor knocking, a heuristic for how many turns vs. amount of deadwood (which should vary based on the undercut bonus you use) does \"okay\"; adding a bit of randomness should be done to prevent stronger players from being able to place a lower-bounds on your count may be a good idea.",
+          "author": "aidenn0",
+          "replies": []
+        },
+        {
+          "top": "See if you can find a copy of Michael Sall's book, it's pricey but it's the definitive guide to the game",
+          "author": "pschw",
+          "replies": []
+        },
+        {
+          "top": "You could apply the AlphaZero algorithm. There are various GitHub repos designed to play games. One of them was connect four, and the model quickly surpassed my skill.\nOn the other hand that might not work for poker or other information hiding games. (Chess, checkers, and connect four have no hidden info.) I seem to remember an algorithm that can handle this case, but I forgot the name. You’d have to research it.",
+          "author": "sillysaurusx",
+          "replies": []
+        },
+        {
+          "top": "the biggest lever is discard strategy. medium and hard bots should track which cards you pick up from the discard pile and avoid feeding cards near those ranks or suits, while dumping high-value deadwood early. they should also judge each draw by how much deadwood it actually removes, and whether it sets up a knock, instead of just counting current melds. the hard bot can guess your hand from your pickups and discards to play defensively. if they're still losing to easy, the bug is probably in the scoring function itself. have it log win-rate per rule so you can see which one is dragging it down.",
+          "author": "SkiFreeWin3",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48396596",
+      "title": "Google killed my $1M ARR startup overnight",
+      "link": "https://news.ycombinator.com/item?id=48396596",
+      "domain": "news.ycombinator.com",
+      "author": "vadumo",
+      "score": 19,
+      "comment_count": 10,
+      "created_ts": 1780568775,
+      "is_internal": true,
+      "post_text": "Two days ago I had a working company. $1M ARR, 100k users, a product people actually pay for and depend on. Right now it&#x27;s dead in the water and I&#x27;m locked out of all of it, because Google decided to suspend my entire account.<p>Someone got hold of one of my API keys and ran up charges on Google&#x27;s AI services that I never touched. $4,200 hit my card for usage that wasn&#x27;t mine. Fine, happens I paid the bill. But Google suspended my whole project. Everything lived in there. The backend, and every single customer photo, over a million of them.<p>So now my users open the app and nothing loads. I can&#x27;t fix it because I can&#x27;t even get into the console anymore, they took that away too.<p>I&#x27;ve spent two days appealing, paying for support just to reach a real human, getting &quot;escalated,&quot; and mostly sitting in an automated queue while my business bleeds. No real answer. No timeline. Nothing.<p>I trusted Google Cloud to hold my customers&#x27; data and run my company. Two days of downtime over a charge I didn&#x27;t make, and all I can do is wait and hope someone over there decides to flip it back on. If you&#x27;re building anything real, think hard before you put all of it somewhere that can be switched off like this. I&#x27;m moving everything I can to AWS.<p>If anyone at Google sees this, I&#x27;ve got my project ID and case numbers ready. If anyone have any contact that could help, I would appreciate",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48410522",
+      "title": "Ask HN: Is Azure capacity this constraind or am I doing it wrong?",
+      "link": "https://news.ycombinator.com/item?id=48410522",
+      "domain": "news.ycombinator.com",
+      "author": "lanycrost",
+      "score": 11,
+      "comment_count": 14,
+      "created_ts": 1780655644,
+      "is_internal": true,
+      "post_text": "I&#x27;m working with AWS for many years, and currently I&#x27;m working in product with suppose to be cloud agnostic.<p>I started with AWS and now it&#x27;s time to spin up it into Azure (because many enterprises using azure for some reason).<p>I started in US EAST region in azure and at beginning I had an issue with Postgres Flexible, raised a support ticket, and in the result they recommended me to move to another region. The overall conversation to say this takes about 1 day.<p>I&#x27;ve moved to US EAST 2, and after AKS deployment I stuck with vCPU (Standard Dasv7 Family vCPUs) quote (100) and here we go again... They send me the same message template as they do for previous ticket...<p>&gt; ...\n&gt; Your ask for quota has been reviewed and backlogged at this time. It will be reviewed again when additional capacity becomes available. We do not have an ETA for when your request can be fulfilled but please be assured that we will continue working on it and update you as soon as we have more details to share and&#x2F;or process the request. \n&gt; ...<p>I&#x27;m already waiting for more then 1 day, and there is no responses from their support.<p>Long Story Short: Because I don&#x27;t want to wait for days, weeks and months to be able to test infrastructure on Azure. If it will be my decision I just stop and forget about this nightmare. Please suggest the regions and instance types with which I will not have issues.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48406829",
+      "title": "Ask HN: My competitors have flawed products but I can't get traction",
+      "link": "https://news.ycombinator.com/item?id=48406829",
+      "domain": "news.ycombinator.com",
+      "author": "saveitincork",
+      "score": 10,
+      "comment_count": 12,
+      "created_ts": 1780622195,
+      "is_internal": true,
+      "post_text": "Problem: I constantly save Instagram Reels&#x2F;TikToks about restaurants, events, pop-ups, and things to do, but I always forget about them because they get buried in my saves.<p>Solution: I built Cork. You can send a Reel or Tiktok directly to Cork without even needing to leave the app, and Cork will automatically extract the info in the reel and save it in a map + calendar.<p>However, I&#x27;ve been finding it hard to get traction while my competitors have gotten traction&#x2F;funding. I strongly believe my app outperforms all known competitors (their apps fail on reels of popular creators while mine succeeds).<p>I&#x27;m not here for pity or to advertise, but I&#x27;m curious why people ship products that don&#x27;t work for a pretty significant number of inputs when the teams are big enough (employees + funding) to pretty easily solve the problem in a cheap way (as I&#x27;ve done) or at least have a temporary high-performing solution with GPT.<p>TL;DR: imo my app outperforms competitors in raw performance. why is a team with manpower and funding failing to do something a 2 person team did in a month?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48413167",
+      "title": "Ask HN: How did you discover Hacker News?",
+      "link": "https://news.ycombinator.com/item?id=48413167",
+      "domain": "news.ycombinator.com",
+      "author": "chistev",
+      "score": 9,
+      "comment_count": 26,
+      "created_ts": 1780670305,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48378906",
+      "title": "Ask HN: A Brief History of LLMs",
+      "link": "https://news.ycombinator.com/item?id=48378906",
+      "domain": "news.ycombinator.com",
+      "author": "menomatter",
+      "score": 9,
+      "comment_count": 7,
+      "created_ts": 1780451865,
+      "is_internal": true,
+      "post_text": "Does anyone have suggestions for a book or an article that goes over the modern history of ML&#x2F;LLM and how the field reached the inflection point that paved the path to the current state.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48421508",
+      "title": "Ask HN: Does robotics capabilities research accelerate AGI timelines?",
+      "link": "https://news.ycombinator.com/item?id=48421508",
+      "domain": "news.ycombinator.com",
+      "author": "themasterchief",
+      "score": 8,
+      "comment_count": 1,
+      "created_ts": 1780721494,
+      "is_internal": true,
+      "post_text": "For context, I am a final-year math + CS undergraduate considering pursuing a career in theoretical robotics, particularly in continual learning and the development of robots that can learn from and adapt to &#x2F; navigate their environments in a human-like manner. One concern I have, however, is that such research might advance AGI timelines. Specficially, it seems possible that architectures developed for continual learning in robots could transfer to general AGI systems (even if the AGI systems are non-embodied, since capabilities such as continual adaptation and long-term objective pursuit may generalize beyond physical tasks.)\nIs this a valid concern, and is it a common view within the AI safety community? I.e. would mainstream AI safety researchers view either of these directions as meaningfully contributing to AGI capabilities? Or are there strong reasons to believe that work on continual learning in robotics would not significantly accelerate AGI timelines? Would appreciate honest perspectives.<p>TLDR: Is it very likely that robotics capabilities research meaningfully accelerates AGI timelines? If so, why?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48404963",
+      "title": "Being privacy-conscious comes with some downsides",
+      "link": "https://news.ycombinator.com/item?id=48404963",
+      "domain": "news.ycombinator.com",
+      "author": "wqtz",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1780609006,
+      "is_internal": true,
+      "post_text": "I just uninstalled Pi-hole. It kind of ruined a little bit of my life.<p>I had a very time-sensitive and bureaucratic thing to do. It involved making an appointment. I&#x27;ve been trying to find an available slot multiple times a day for months. I was frustrated and desperate.<p>It&#x27;s one of those highly bureaucratic, annoying processes. The support team is horrible, and I was completely stuck.<p>After trying every combination of browsers, turning off extensions and devices I could think of, I eventually missed the deadline. Then I randomly checked the site on my phone yesterday, and it was working. There were appointment slots available (even though it didn&#x27;t help me anymore).<p>I tore my hair out trying to figure out what had happened.<p>Apparently, the site relied on some trackers, and data from those trackers was used to send the visitor&#x27;s location as part of the form request. Bad engineering, for sure. But whatever the reason, I never figured it out because I disabled browser extensions, switched browsers, and tested different devices but I was always using the pihole DNS.<p>The whole architecture of Pi-hole is &quot;set it and forget it&quot;—and I forgot it was even there.<p>The modern web relies on countless systems that interfere with your privacy. The more privacy-conscious you become, the more you end up hurting your own internet experience. Some people block JavaScript, block everything, or use Tor exclusively. I sometimes feel like those folks end up with a more miserable life at a cost of a secure one.<p>I think drawing the line at an ad blocker extension is enough. We&#x27;re cooked when it comes to privacy. The framework of the modern web is basically: consent or exit. There isn&#x27;t much room for anything else.<p>Maybe I&#x27;m stupid. Maybe I should have figured this out sooner. But I think being part of the mainstream internet probably gives you a slightly more frictionless experience than being highly privacy-conscious ever will.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48406239",
+      "title": "Ask HN: Is Everyone an Engineer Now?",
+      "link": "https://news.ycombinator.com/item?id=48406239",
+      "domain": "news.ycombinator.com",
+      "author": "piratesAndSons",
+      "score": 7,
+      "comment_count": 9,
+      "created_ts": 1780617004,
+      "is_internal": true,
+      "post_text": "Marketing engineer for marketing people, design engineer for designers, sanitation engineer for janitors — so by that logic, cashier engineer would be next for the people who ring you up at checkout.\nWhat is up with this title inflation? Why call yourself an engineer just because you write software? To me, engineers are people who build things and take full responsibility for them — designing a bridge where thousands of lives are in your hands, building an airplane engine, filtering a city&#x27;s water supply. Not pressing keys on a machine.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Same as it ever was...\nIn the 1700's, \"executive\" referred to a person or group holding supreme legal power\nIn the 1900's, \"executive\" described high ranking business people.\nIn the 2000's, a junior sales rep, 3 months out of high school, will be given the title of account executive.",
+          "author": "appreciatorBus",
+          "replies": [
+            {
+              "text": "\"Executioner... Execute!\"\n—The Grand Turk",
+              "author": "_wire_",
+              "depth": 1
+            },
+            {
+              "text": "has a big difference though\n...\nexecutioner is NOT a \"human\" anymore",
+              "author": "good1790",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "No.\nTwo common key points about engineering is \nunderstanding\n and \nresponsibility\n when issues happen. Knowing what to change and why and diagnosing the problem and confidently fixing it when the system goes wrong.\nAnyone can play Microsoft Flight simulator.\nDoes that mean everyone is a qualified captain to fly a commercial plane \nfull of passengers?",
+          "author": "rvz",
+          "replies": []
+        },
+        {
+          "top": "Yes, well no, but yes.\nSoftware developers call themselves all kinds of incorrect bullshit because nobody tells them otherwise.\nIn the real world, though, engineers measure things.  If a given developer calls themselves \nengineer\n but cannot measure things they probably aren't what they claim.  This runs deeper than just job titles.",
+          "author": "austin-cheney",
+          "replies": []
+        },
+        {
+          "top": "my VA friend is a call center agent and switches to software engineering in a blink of an eye\nhe is now being paid thru vibe coding as his client doesn't care about the code behind and care only on the \"current\" outcome",
+          "author": "good1790",
+          "replies": []
+        },
+        {
+          "top": "the ai writes the software, i don't",
+          "author": "frwrfwrfeefwf",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48405221",
+      "title": "I'm tired of LLM skill slop, so I built mine with regression tests",
+      "link": "https://news.ycombinator.com/item?id=48405221",
+      "domain": "news.ycombinator.com",
+      "author": "iliaov",
+      "score": 6,
+      "comment_count": 0,
+      "created_ts": 1780610545,
+      "is_internal": true,
+      "post_text": "I&#x27;ve recently tried skills like Garry Tan&#x27;s GStack, spent a week with it, and realized it has some flaws (I&#x27;ll post separately about that).<p>Here&#x27;s my problem: how do I know if a skill or prompt is any good (e.g. GStack&#x27;s &#x2F;office-hours)?<p>How do I compare similar skills (e.g. different &quot;deep research&quot; skills)?<p>Spotting broken software is (relatively) easy — it crashes, prints errors. Broken skills don&#x27;t. Perfectly polished, confident-sounding skills routinely mislead me and waste my time, to the point where I wish I weren&#x27;t using an LLM at all.<p>AI skills are software — and they should come with regression tests.<p>LLM teams have tons of prompt regression tests. LLM-wrapper SaaS companies have tons of prompt regression tests. But when it comes to open-source skills, SKILL.md reads reasonable, yet ships with zero tests (e.g. GStack&#x27;s &#x2F;office-hours has none at the time of writing).<p>Garry Tan, if you hear me — please consider shipping regression tests for your &#x2F;office-hours, &#x2F;plan-ceo-review, &#x2F;plan-eng-review, and so on.<p>Regression tests should:<p>1. Prove the skill works correctly<p>2. Demonstrate correct and incorrect usage<p>3. Prove the skill&#x27;s value<p>4. Come with a scoring rubric to allow skill benchmarking<p>5. The last one is the most valuable, because it lets you benchmark similar skills against each other.<p>So I started doing this myself.<p>Here&#x27;s a work-in-progress example: plan-cmo-review, a skill to complement GStack since GStack is missing a marketing review at the time of writing. I&#x27;m not a marketing guy; the point of sharing this skill is to outline its regression setup.<p>Briefly, here&#x27;s how my exploration progressed:<p>- I used GStack on a couple of products and realized the resulting design_document.md was leading me to failure, mainly marketing-wise.<p>- I dug into the skill&#x27;s failures manually with Claude Opus 4.8&#x27;s help and ended up finding the correct solution.<p>- I asked Claude to build a plan-cmo-review skill, ran it, and it arrived at a flawed solution (similar to GStack&#x27;s output).<p>- I gave Claude the correct (manual) solution to analyze and add as a regression fixture with a scoring rubric.<p>- Claude ran the (blind) regression — it failed. We iterated several times and found the key problem: Claude was trusting my prompts implicitly as the ultimate truth. Claude believed GStack knew what it was doing. GStack believed I knew what I was doing. But I was doing product&#x2F;startup research — and by definition, &quot;research&quot; is what you do when you don&#x27;t know what you&#x27;re doing. That trust chain is what broke the skills.<p>- We fixed the trust problem and the regression test passed. We added a few more. They passed.<p>- I had Claude run the regressions multiple times — cracks appeared. Claude iterated the skill. Now they pass.<p>- This methodology is still flawed. I&#x27;d like to try running different LLMs, cross-model judging, and a lot more regression tests.<p>Skill github.com&#x2F;remakeai&#x2F;plan-cmo-review . Notes at iliaov.substack.com .",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48429285",
+      "title": "Ask HN: How to get my contact info off US political party's list",
+      "link": "https://news.ycombinator.com/item?id=48429285",
+      "domain": "news.ycombinator.com",
+      "author": "kaycebasques",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1780782170,
+      "is_internal": true,
+      "post_text": "I donated to one of the main political parties in the USA a few years back. I must have left my email and phone number, or they found it. Big mistake. Now I get hundreds of emails and texts from random political candidates, none of whom I have ever said I explicitly support, or really have any context about whatsoever. So it seems like the political party has my email and number in some central list, and they distribute it to all of their candidates to use. Is that correct? Is there anything I can do to get my contact info off this terrible, terrible list?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": [
+        {
+          "top": "For SMS, you can block text messages that match keywords via apps like VeroSMS on the iPhone. There may be similar apps on Android.\nI personally don't think it is possible to get yourself off all of the lists so I do that and mark as spam in gmail.",
+          "author": "jaredsohn",
+          "replies": []
+        },
+        {
+          "top": "If they do not have unsubscribe links or headers that allow your email client to unsubscribe then email rules matching their keywords that either reject their emails with \"Invalid User\" or put the emails in a folder and mark them as read then check the folder once in a while to ensure friends did not end up in it.  Options depend on the rule limitations of your mail provider.\nIf they are selling your address \ncross-marketing\n into dirty lists then report every email as spam to your email provider.  If that does not help register on SpamCop [1], configure the hosts you send and receive email on and then paste the email headers into their interface.  SpamCop's database is used by a number of providers as one of the factors to determine spam score.\n[1] - \nhttps://www.spamcop.net/anonsignup.shtml",
+          "author": "Bender",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
