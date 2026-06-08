@@ -1,0 +1,1003 @@
+{
+  "scraped_date": "2026-06-08",
+  "source": "hacker_news",
+  "total_scraped": 119,
+  "nontech_count": 28,
+  "posts": [
+    {
+      "id": "48434312",
+      "title": "LLMs are eroding my software engineering career and I don't know what to do",
+      "link": "https://human-in-the-loop.bearblog.dev/llms-are-eroding-my-software-engineering-career-and-i-dont-know-what-to-do/",
+      "domain": "human-in-the-loop.bearblog.dev",
+      "author": "poisonfountain",
+      "score": 858,
+      "comment_count": 851,
+      "created_ts": 1780836569,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "Wut? I pilot LLMs \nall day\n but there's no way in hell I'd agree to be at the helm of a finance product. That first pillar is still there. Maybe the author isn't aware of the impact they have, but I know, with the evidence of reverted PRs, that when I step outside my area of deep knowledge I can no longer call BS on the agents. Our most capable agent, with access to the same kind of distributed systems the author talks about, is regularly wrong, frequently myopic, and just outright dumb constantly. It's the expertise of engineers on the team that push it back on track.",
+          "author": "iandanforth",
+          "replies": [
+            {
+              "text": "Posting this under a burner so I don't dox myself: I work in FinTech on a regulated product. We have access to Mythos. Mythos identified part of our codebase that it confidently asserted was not complaint with a particular regulation and we were at grave risk by allowing it to operate the way it was.\nExcept this was not the case, it had of course hallucinated what the regulation actually required (I know this because the code in question had already been reviewed by human counsel). This is (supposedly) the most bleeding-edge model available.\nWe use a lot of genAI to help us write code, but there is no way in the mid-term we could ever rely on these tools to actually build compliant financial products. We'd have to be totally mad. Yes, lots of Fintech companies are using these agents to accelerate, but anyone who's using them to actually ship product without a human actually digging into it is opening themselves up to a world of risk.",
+              "author": "t34t34r43",
+              "depth": 1
+            },
+            {
+              "text": "I have worked on highly regulated areas in finance (risk). Compliance is a highly creative art, often requiring lots of out-of-the-box thinking and non-obvious solutions. The people I found \nworst\n at this were IT. They tend to over-interpret regulation, and super-restrict beyond what is needed for actual de-facto compliance.\nMy guess is the model makes the same mistakes as the programmers: taking 'rules' literally, unaware of sectoral joint understanding, validated interpretations  and habits. (btw. this is often on the non-tech side also a difference between regulatory and legal. The former are much more result oriented while the latter are primarily risk averse.",
+              "author": "PeterStuer",
+              "depth": 2
+            },
+            {
+              "text": "Ha. I've worked in a fairly strongly regulated sector (energy, in the Netherlands), where I collaborated closely with our head of compliance, and she heavily over-interpreted the regulations while I often tried to find more pragmatic solutions.\nI think adherence to regulation and compliance is nothing to do with whether you're a SWE, a risk officer, or C-level, and everything to do with your own principles, ethics, professional attitude, and pragmatism.",
+              "author": "davedx",
+              "depth": 3
+            },
+            {
+              "text": "> IT. They tend to over-interpret regulation, and super-restrict beyond what is needed for actual de-facto compliance.\nIME this is less the fault of IT and more so bad auditors that won't consider, or just don't understand, what compensating controls are. If it doesn't meet their little checklist exactly, they fail the audit.",
+              "author": "thewebguyd",
+              "depth": 3
+            },
+            {
+              "text": "> compensating controls\nHow to say you deal with PCI compliance without saying you steal with PCi compliance.",
+              "author": "fragmede",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I see many comments saying, \"AI can't do X with 80-100% accuracy; therefore our professions are in good hands.\"\nWhile I don't want to sound overly pessimistic, the models are improving at a rapid rate. If asked ~3 years ago where the state of the models are today, it would sound like sci-fi if answered, \"the models are creating full MVP apps in ~30 minutes with one prompt\".\nThe hurdles the models are facing now, like reducing hallucination rates, ensuring compliance, and keeping a clean codebase, do not seem far away from being resolved IMO. Fetching specific information is already partially done with various MCP servers / RAG.\nI am, of course, a bit worried about the future of software engineers. If these quirks are resolved, where do their professions fit in the industry? Delegating tasks to the AI model? Unfortunately, this does not require years of expertise, which is a double-edged sword. Reviewing AI's output? Ask it to explain each line not understood.\nI think we will see more waves of larger layoffs, similar to how human computers were replaced by digital computers. To some, doing complex mathematical calculations mentally is a fun task / challenge, but it is ultimately significantly slower and more error-prone than calculating with a computer. In the same way, I think hand-crafting code will be seen as a fun \"challenge\" and AI will be seen as the \"modern-day calculator\".",
+          "author": "george_max",
+          "replies": [
+            {
+              "text": ">  the models are improving at a rapid rate. If asked ~3 years ago where the state of the models are today, it would sound like sci-fi\nAbsolutely true, many things will continue to improve in significant ways. However, if we look at the modern history of rapid disruptions driven by technology (a side interest of mine), persistent patterns emerge. Similar to avalanches or flash floods, such periods of very rapid disruption are often triggered by one or more significant breakthroughs in certain technologies. Early rates of change tend to be fast and furious but eventually begin to taper as recently unlocked low-hanging fruit is harvested and those racing through newly found terrain encounter all-new significant barriers and points of friction. Early in such periods, extrapolating the recent extraordinary rates of change forward has poor predictive power. Sudden extreme bursts tend to regress back toward the long-term trend line.\nArguably, the current disruption in LLMs can be traced to post ~2010 research slowly building to the 2017 transformer paper and the adjacent work it quickly inspired. So today is, arguably, mid or late-ish in the LLM rapid burst phase. The rate of fundamental, broad-based breakthroughs lifting all LLM applications has clearly slowed with many of the most impactful recent discoveries being in scaling, optimization, tuning and productization toward specific domains. That doesn't mean there \ncan't\n be another transformer breakthrough tomorrow but, historically, black swans rarely travel in flocks.",
+              "author": "mrandish",
+              "depth": 1
+            },
+            {
+              "text": "This is of course true in general. But the question is not \"how with this evolve\" but how will \nwe\n deal with the rapid changes in the industry?  I suspect a long term k-shape salary curve, even worse than today, with the lower 80-90pctile salaries bottoming out such that many have to exit the industry to make ends meet. You can laugh and blame them for not saving as much as they should, but that's still a fairly horrifying prospect for most of us.\nI think a _lot_ about stock trading a profession vs algorithmic trading. It was brutal - suicides, many pivoting out to doing car dealership-style work. Probably a 1/10 or 1/20 survivor rate every couple years, with almost all of it a very painful five year period.",
+              "author": "jvanderbot",
+              "depth": 2
+            },
+            {
+              "text": "And it was the dumbest and least valuable stock traders that exited the industry. The industry is alive and well today.",
+              "author": "darkerside",
+              "depth": 3
+            },
+            {
+              "text": "That really depends on how you define alive and well. There are still stocks and there are still traders, but the market valuations are obscene and it sure appears that there must be collusion or corruption driving the industry to jam massive IPOs into every index and 401k they can find as fast as possible to fasciliste and exit.",
+              "author": "_heimdall",
+              "depth": 4
+            },
+            {
+              "text": "Phew, for a second there I felt bad for them!",
+              "author": "willempienaar",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "My career path is suprisingly similar to the author's. Weirdly enough, what he takes as the first pillar to fall is the one I see most undamaged currently.\nLLMs routinely fail at our business specifics: Local tax regulations, particularities of the accounting process, specifics of our ledger implementations. They're great at refactoring, translating between languages, tracing bugs on existing code even, but there is always many things subtly wrong iterating and expanding our domain.\nThis might be because the companies I worked for happen to be tackling complex domains precisely for moat-building reasons. They stay in business explicitly because there's not a book out there you can read to build a clone, the knowhow stays inside.\nAlso, a fintech whose managers recommend speeding up design docs with AI sounds way too careless to be in the money handling business. It's way, way too easy to end up with millions incorrectly allocated, particularly if you deal with high volumes of small transactions. These bugs are always a bitch to deal with because correcting the logic is just step one, you then have to correct all the wrongly calculated data in immutable DBs, move around the red tape and client comms, and your fix is bound to become a gotcha that new features and observability have to take into account (\"remember that there's a bump in the data in february 2 because we had incident X\".)",
+          "author": "torben-friis",
+          "replies": [
+            {
+              "text": "This. Once you're building something that genuinely hasn't been built before, LLMs cannot be trusted with any architectural decisions. I'm building a product based around various physics simulations, so it's purely first principles, but without active research, thinking, and challenging, it produces computational code literally hundreds of orders of magnitude slower WHILE implementing absurd fallbacks and shortcuts that effectively result in a useless calculation.\nThis is the case perhaps 95% of the time.\nOversight is very important, and architectural thinking cannot yet be outsourced, only execution.",
+              "author": "odeono",
+              "depth": 1
+            },
+            {
+              "text": "How many of us here are building something genuinely new, though?",
+              "author": "throw-the-towel",
+              "depth": 2
+            },
+            {
+              "text": "Hopefully everyone? Else your job could have been outsourced or replaced by a junior with access to Google and StackOverflow way before LLMs (it just wasn’t due to zero interest rates and proliferation of bullshit jobs in tech companies).",
+              "author": "batshit_beaver",
+              "depth": 3
+            },
+            {
+              "text": "That's not been my experience. Most professional software is just a CRUD app in one form or another.",
+              "author": "jckahn",
+              "depth": 4
+            },
+            {
+              "text": "Yes and it’s probably better for society as a whole that all of those can now be vibe coded by someone who is not a full time developer.",
+              "author": "jimbokun",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I always remember of the infamous Steve Jobs quote \"Ideas are cheap\". If execution is everything, and frontier LLMs solve execution, then ideas are the gateway to abundance now, but abundance alone does not guarantee \"stickiness\".\nWhat I think is often overlooked is the human \"Willingness\" and \"Care\" of staying with the thing for the lack of a better term. What I mean by that is that a lot of people just don't care enough, or don't want to, build, maintain, and own things. Sure you can ship V1 faster, but will you remain on the grind?\nI think a great example of what probably will happen is found in Suno, the AI Music thing. I don't know if y'all have tried it, but it now produces really good stuff. What's happening there? A lot of people play with their own little universe and get tired quickly, move away from it, and only a few prolific creators stay and turn it into a \"job like\" environment.\nWe may have shifted the scale and the economics of \"delegation\" and \"execution\" but I think there are still a lot of other factors to consider.",
+          "author": "hmokiguess",
+          "replies": [
+            {
+              "text": "> Suno, the AI Music thing. I don't know if y'all have tried it, but it now produces really good stuff\nI played with it a bit, and no, it doesn't! And I am talking as someone with limited music culture, musicians are likely to be even more critical.\nFor the first few tries, it sounds impressive and the tunes are catchy. It used to sound wrong in the background but they mostly (but not completely) fixed that. However, after a few dozen songs, it starts to always sound the same. It is all generic stuff, the songs tell no story, it is a bit like the kind of music that accompany corporate advertisement. You can try to be more precise in your prompt, but I never had any success, it will just ignore most of the details that could make your song interesting.\nThe most interesting result I had was actually when I managed to get it off rails, a bug more or less. I asked it to mix two very different genres together, and it made something unsettling in a way I don't remember hearing before. But as always, further working on it proved extremely difficult, as it always tried to go back to making generic stuff, ignoring the details you give it.\nSuno can do remixes though. And it is a bit like with code. LLMs are very good at porting, when you already have something that works, it can make it work in another language. But if you just have an idea, it will screw up at anything original. If you want a LLM to implement your idea properly, you have to give it so much guidance that it amounts to writing the code yourself, while struggling with the ambiguousness of natural languages.",
+              "author": "GuB-42",
+              "depth": 1
+            },
+            {
+              "text": "re: SUNO\ni actually was discussing that with a guy i met the other day, an old school producer, did succesful stuff 30 years ago. He used SUNO to reinterpret old and ideas of his, in his judgement it did an excellent job and lets him create many songs daily if he want.\nSounds familliar? the good old \"let AI be steered by experienced X and boost productivity\".\nAll in all, gun to the head, i think i am so critical because to use these tools is surrendering to big corpos. It is not a democratic tool. If it was i would probably be using it. I have finally given up and started messing with local models (well, i did already with images) but general local models are useless.\nOR maybe it's me? i cannot for one moment let go and converse with the machine. I can give order to the machine.\nThe tech is fantastic, but the fact that it's in the hand of corpos with all interests in never letting us be able to do shit without them, makes me one hundred and one percent against it.",
+              "author": "monegator",
+              "depth": 2
+            },
+            {
+              "text": "Have you tried the open weight models, but not locally? Like, using it from a provider. That way, you get access to better models while still not using private closed models, anyone with enough compute can host them, not just the big AI corps.",
+              "author": "hootz",
+              "depth": 3
+            },
+            {
+              "text": "I think the general local models are better than you are giving them credit for--I have heard/read good things, at least.",
+              "author": "newaccountman2",
+              "depth": 3
+            },
+            {
+              "text": "A local model that's as good at music composition as Qwen 3.6 27B is at almost everything else would be absolutely transformational.\nIt'll happen, eventually.  How could it not?",
+              "author": "CamperBob2",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "> I don't know what to do.\nRide the wave. You rode it when websites/webapps were the wave. I came into software industry before internet, kept changing my horse. You are never too old to learn new tricks. The new wave create new kind of work and workers. Be one of them. Ride the beast, master the tools. It's the same game again.",
+          "author": "zkmon",
+          "replies": [
+            {
+              "text": "Seconded.\nIf there is any skill in consistent demand it is the ability to wrap your head around the new work, new processes, new people, whatever it all may be.\nFor me, understanding and development of this skill into a keen tool happened while I worked as a prototype mechamic.  For those unfamiliar, a prototype mechanic does what it takes to make often demanding parts on consistently short timelines week after week.\nMetals, plastics, you name it.\nOne gets good at ramping up on processes, machine tools, materials.  And after doing that for a while, you end up able to very rapidly absorb new info and understand work far more quickly and accurately than many.\nAnyone can start this.\nJust get curious and build things.  Then build more things.\nShare your builds and build things other people want made!",
+              "author": "ddingus",
+              "depth": 1
+            },
+            {
+              "text": "I tell my boys ( age 16 and 14 ), get good at learning and you don't have to get good at anything else!",
+              "author": "chasd00",
+              "depth": 2
+            },
+            {
+              "text": "Question:  How do you find work?  Reputation?  (That is, people know you by now?)\nIf so, how did you get to that point?  How did you publicize that you can do this?",
+              "author": "AnimalMuppet",
+              "depth": 2
+            },
+            {
+              "text": "This here.\nOverall society feels more turbulent, but this is otherwise all the same song and dance all over again.\nThe 90s and 00s had this wave of \"object oriented programming changes everything\".  Hey we're doing this thing that's been done successfully 100s of times before, but now it's OO.  Writing some code in involving an airplane?  Just purchase this omni-airplane object that does everything for airplanes (an actual thing I was told in college).\nThat's weird OO isn't the be all end all?  Code gen, get this Ruby on rails running.  Look at me building this website in two seconds.  Code gen everywhere.\nHuh, that's going to a funny place... TDD.  If you aren't TDDing then you're such a bad engineer that you should be locked in prison (real conversation I observed).  Oh wait, not TDD, BDD.  That fixes it.\nLean, no Agile, no agile like with a small a ... but it was first, no scrum, no xml wait that was last decade, json, and finally SAFe.\nHey, have you seen this chat bot thingy?\nEvery iteration brings good stuff if you're paying attention.  But it also brings a lot of hype and anxiety.  Experiment and learn.\nThe one thing that's remained constant for me is that nearly everyone would rather die than to think carefully about the consequences of their dreams coming true.  And as long as that remains true they'll continue to pay for someone else to ride the hype dragon on their behalf.",
+              "author": "Verdex",
+              "depth": 1
+            },
+            {
+              "text": "> Overall society feels more turbulent, but this is otherwise all the same song and dance all over again.\nThe thing is... everything you mentioned had only brought the need to retrain.\nThis new hotness AI? It's bringing actual layoffs, and not just of the boom bust cycle kind, but permanent, industrial-revolution kind that lasts for decades.",
+              "author": "mschuster91",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48406174",
+      "title": "Ask HN: What was your \"oh shit\" moment with GenAI?",
+      "link": "https://news.ycombinator.com/item?id=48406174",
+      "domain": "news.ycombinator.com",
+      "author": "andrehacker",
+      "score": 691,
+      "comment_count": 1075,
+      "created_ts": 1780616540,
+      "is_internal": true,
+      "post_text": "Most of us were amused when DALL-E and its peers went mainstream, and we were quick to point out the obvious flaws.<p>Then ChatGPT hit the scene and again, many of us dismissed it as a parlor trick that would never amount to much.<p>Using LLMs for coding initially was a only small step up from basic code completion, and a welcome farewell to Stack Overflow.<p>I am curious: what was the specific moment that you went from those quaint, dismissive observations to a slightly panicked,\n&quot;Uh Oh&quot; realization of what these models can do?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I bought an Alesis QS8.1 super cheap in perfect condition (was a top grade digital piano/synth in the 90s).\nand then i realized that ALL of the software (which i collected from defunct websites and archived on github) related to it was ancient and after a while of getting tired of using WINE every single time i decided i wanted a cross platform modern equivalent that did everything that several of these different programs did (plus break out some stuff that was now potentially possible with modern computer)\ni thought it would be extremely hard because the computer to synth communication is pretty much only via sysex commands (of which the actual wave file encoding protocol was undocumented)\nClaude walked me through examining the some of the original software in GHIDRA, and I had a working demo that night.....now im just playing with adding new features to it.",
+          "author": "jzemeocala",
+          "replies": [
+            {
+              "text": "Related story, while applying a firmware update to my Kawai CA49 piano, I bricked it due to flashing the wrong file (The process was broken, and I got desperate and tried something stupid, which bricked the piano). Claude walked me through looking for signs of life, and since OTA from the phone app wasn't working for me, it downloaded the Kawai Android APK, decompiled the Java, figured out the hardcoded key used for encrypting the firmware update. Extracted the piano firmware update, decrypted it, and then wrote a flashing script to program the piano from my laptop via bluetooth. My piano was back to working within an hour.",
+              "author": "jsharf",
+              "depth": 1
+            },
+            {
+              "text": "I can't imagine where we are headed. \nYou\n understand every step of what it did and can appreciate the complexity but it'll only take a few generations for this to become something like magic to the tech priests beseeching the machine spirits for blessings",
+              "author": "idiotsecant",
+              "depth": 2
+            },
+            {
+              "text": "I think you're overestimating how much the average person knows about how technology operates today, or 30 years ago, or 1000. In some sense, we have been living with magic and tech priests since the Romans built the aqueducts. I wouldn't be surprised if widespread, cheap AI makes it \neasier\n for the average person to learn how things around them work, if they are so inclined.",
+              "author": "fasterik",
+              "depth": 3
+            },
+            {
+              "text": "I meet kids today who haven’t heard of Microsoft, who regularly play GTA and hand in assignments made in Powerpoint. 20 years ago I discovered that a friend didn’t know Xbox and Word were both from Microsoft. It’s really hard to understand what is common knowledge in different parts of society.",
+              "author": "lazyasciiart",
+              "depth": 4
+            },
+            {
+              "text": "Those are just products who cares?\nI think the GP is alluding to understanding the fundamental way a thing works.",
+              "author": "2muchcoffeeman",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I could go on and on, but Claude recently decompiled the firmware of my camper van, documented all the CAN interfaces, then programmed an ESP32 module to talk to the van’s integrated systems (power, HVAC, lighting, tanks). That sort of embedded systems integration is completely out of my wheelhouse.\nI honestly don’t understand AI naysayers. I use Claude every day both professionally as a Solution Architect and personally in a variety of projects I simply could not have ever approached alone.",
+          "author": "shreddude",
+          "replies": [
+            {
+              "text": "> projects I simply could not have ever approached alone.\nI think that's part of the divide between enthusiasts and naysayers. If you use GenAI on things that you couldn't approach alone, it's an incredible tool. If you use it on stuff that you're pretty good at, it's not a gamechanger (and if you're an expert, it's a minor boost at best). Many people's job are about doing what they're an expert at.",
+              "author": "williamdclt",
+              "depth": 1
+            },
+            {
+              "text": "I'm about to complete a new non trivial functionality in a project of a costumer of mine. I spent an hour writing the spec. Then I asked Claude (Sonnet 4.6) to check if I missed something. I did, the sort of minor issues one notice after starting writing code, edge cases etc. That made me think about more issues and after a few iterations we settled down on a spec. I asked Claude to make an implementation plan and we ended up with 9 steps. It wrote the code for a step with new automatic tests and I performed some manual QA, which found further issues we didn't think about. We are at step 8 of 9 in about 12 hours of work. I would have needed a week to be there alone, with time spent researching and fixing bugs I created along the way, an inevitable part of our job but not exactly the most pleasant one.\nThis speedup is great. It improves the overall quality of the product (as perceived by the users) because I can ask Claude to add features that my customers and I would have dismissed because they take too long to implement. We would have settled down with a more basic UX.\nSo is it a game changer? It is in the same way those HTML / CSS framework like Bootstrap were game changers: suddenly every developer could create a decent and consistent UI in a fraction of the time with a few bells and whistles that we wouldn't have bothered coding. As a side effect a lot of web apps felt look alike mass products and web designers had to reinvent themselves, but the economics leaded inevitably in that direction. Would I spend again one of two weeks doing alone what I could write in a day or two with a LLM? Not anymore, not at this cost ($20 per month.)",
+              "author": "pmontra",
+              "depth": 2
+            },
+            {
+              "text": "I'd love to read a full transcript of someone going through this kind of collaborative programming. I see this kind of process mentioned a lot but can't quite figure out the details in my head.\nIf anyone has a link to a blog post or similar showing this process in depth, I'd love to give it a read :)",
+              "author": "jowsie",
+              "depth": 3
+            },
+            {
+              "text": "I've been using superpowers [1] for this purpose, and have really appreciated how it guides the model to use careful, methodical approaches to answering my prompts. It's great for multi-step planning, design, and implementation, but also has guidance for debugging, accepting a code review, etc.\n[1] \nhttps://github.com/obra/superpowers",
+              "author": "tkocmathla",
+              "depth": 4
+            },
+            {
+              "text": "Yeah I feel like I’ve learned a lot from superpowers. It’s such a thoughtfully developed skillset.",
+              "author": "burnto",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "My furnace went out during the 2025 holiday and I couldn't get an appointment with a repair person for 2 days. It was getting very cold in my house so I went into my attic and made several videos of the furnace attempting to start and gave it to gemini. It diagnosed the issue immediately and had me spin one of the components (a small exhaust fan) while the furnace tried to fire. It came on immediately. I had to do that several times, but it worked until the HVAC service showed up.",
+          "author": "andrewthornton",
+          "replies": [
+            {
+              "text": "Very similar thing this week, and an interesting story to go along with it!\nI called my normal HVAC company for my rental home because the tenant reported the AC wasn't cooling the house. When I called, I got one of the latest AI voice assistants to help me, and it was an awful experience and I ended up not hearing back after the assistant told me the office would call me back.\nSo, I went over to the house and used ChatGPT to help me diagnose the issue by taking some photos of the compressor panel outside. It walked me through what to check, I provided some diagnostic codes I witnessed... and it walked me through the very simple repair of replacing the $25 capacitor. It was going to cost me almost 4x that just for the service call to diagnose what was wrong in the first place.\nSo, the weird experience was: Gen AI made me lose trust in my normal HVAC company, and more Gen AI basically allowed me to replace my HVAC company and do the repair myself all in one day.",
+              "author": "jodacola",
+              "depth": 1
+            },
+            {
+              "text": "With AI you just don't get the full service of a professional HVAC guy though.\nLike the time I had one of the bigger shops in town come by to get a quote for replacing a dual stage fan motor on an AC.  The tech asked me if I'd like them to replace the contactor while they were in there because it is a part that often fails.  I asked what a contactor was and he explained it.  \"Oh, like a relay?\" I asked.  I told him to quote the cost for \"replacing the contactor, while they're already in there.\"\nHe quoted me $400 for the contactor, $750 for the fan.  The contactor itself I later found out was was $7.  I literally laughed in his face when he said that.\nSo, like I said, you just aren't going to get professional level assistance from an AI.  Thankfully.\nTo end the story: one of the other guys I called for a quote on fixing this unit repaired it for free; the unit was still under warranty and it was fully covered.  The original installer of this $12K unit was refusing to return my calls.  Another \"Not gonna get pro level service from an AI\" story.",
+              "author": "linsomniac",
+              "depth": 2
+            },
+            {
+              "text": "Becoming increasingly convinced that the pattern that will stick is not AI \"integrated\" into everything but personal agents.  As in I will have one personal assistant that helps me in all of my tasks instead of using the little ones bolted on to every product.",
+              "author": "dgemm",
+              "depth": 2
+            },
+            {
+              "text": "Even before AI, YouTube was full of videos on these topics.",
+              "author": "userbinator",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, and with 95% of those videos, there'll be something they gloss over which I don't understand; or I'll have a concern which they don't address; or, conversely, they'll assume that their target audience was born in the 15th century, and spend 20 minutes building up the context, when what I really needed was about 12 seconds.\nWith an AI, I can say \"I don't understand that part, can you explain more?\" Or \"what about this concern I just thought of\", or \"I already know almost enough about this, I just need this one gap filled in.\" It's an objectively better experience.",
+              "author": "nkoren",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I have had many, but the last one was quite funny:\nIt fixed my printer after dist-upgrade and separate chrome upgrade, the printer worked everywhere but not in chrome.\nAfter 30 years of using linux I didn't even want to know what is wrong, is it colord again? dbus + cups issue? I completely accepted that I wont be able to print from chrome for a couple of months until next update.\nI just ran it in dangerously-skip-permissions mode and said 'my printer doesnt work in chrome' few minutes later I heard the printer printing \"This is test\" and it said 'I think its fixed, do you see a page coming out of the printer now?'",
+          "author": "jackdoe",
+          "replies": [
+            {
+              "text": "My entire computer setup has been done via English via Nix, and it's spectacular.\nI had been dabbling with NixOS for a year or more and liked it but without deep knowledge it's fairly hard to approach.  I've gotten partially working setups in the past, but a couple weeks ago I decided to go all or nothing.\nNow I have a workstation setup that I can reproduce by just grabbing my home directory and /etc/nixos and doing a rebuild.\nAnd it's a somewhat complicated setup.  It entirely configures vim (2500 lines of nix config for that, but it's in one file rather than sprayed all over like astrovim), builds gitbutler CLI, has all my secrets encrypted with SOPS, manages my git configs and my ~/bin directory, has sway set up, finally has audio and ability to screenshot (something that had been broken on my 22.04 Ubuntu and I just didn't want to bother with).\nNixOS + Claude Code to manage it is really, really good.",
+              "author": "linsomniac",
+              "depth": 1
+            },
+            {
+              "text": "Don't leave us hanging, what was the issue?",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "I will never know.",
+              "author": "jackdoe",
+              "depth": 2
+            },
+            {
+              "text": "I realize you're being witty for comedic effect but aren't you genuinely curious whether this was something trivial or a complex systems interaction? The few times an LLM debugged something for me, it only took 10s to ask for a summary, and I learned something new and interesting every time, even useful at times.\nI don't understand not wanting to understand.",
+              "author": "Zopieux",
+              "depth": 3
+            },
+            {
+              "text": "I have seriously dealt with this for 30 years, from before cups existed, and as I said I have forgotten more about lpd and cups than most people know.\nYou have no idea how much I don't want to understand.\nI am not being witty for comedic effect.",
+              "author": "jackdoe",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Actually seems absurdly simple now, but sometime last year I was trying to figure out what I'd need to tow my daughter's car cross country with my truck: what are the trailer/dolly options, what do they cost, can my truck actually tow the combined weight, etc.\nI started out prompting ChatGPT kinda how I would with Google, one small prompt at a time, asking about various details.  But after one or two of those I just tried \"I want to tow a car of make A with my truck model B, from point C to point D, what are my options?\"   And it wrote me a report with comparison tables and computed towing weights and other details for different options.\nAt that point, I was like \"Oh. This is different.  And it's just the beginning.\"",
+          "author": "jp57",
+          "replies": [
+            {
+              "text": "It very plausibly might have been totally wrong.\nOut of laziness I several times asked Claude and ChatGPT each some torque figures and other simple, hard data related to my dirt bike. They often got it completely wrong, but full of confidence every time. I never trust LLMs with hard data, unless you RAG the PDF into the context and even then it's sketchy.",
+              "author": "flyinglizard",
+              "depth": 1
+            },
+            {
+              "text": "Use the latest models, set effort a bit higher, and try again. It probably won't be wrong.",
+              "author": "Schiendelman",
+              "depth": 2
+            },
+            {
+              "text": "Dates matters. Questions I asked about my Mazda a year ago that were total hucillunations were answered very well this year. To me it feel like the early days of computing. What was not possible one year became possible when a new generation CPU or GPU came out and you have to consistently re-evaluate your expectations or else you'll miss the things that others are discovering with fresh eyes.\nI made this personal 'benchmark' of odd and strange questions a few years back when this took off and I would keep re-running these questions whenever some big news came out about a new model and also going back and fourth between the different companies to see where they all stood. (Obvioulsy with clean cache/new accounts)\n10 questions: In 2023 it could only get past question 3-4 to reaching the last question and still hacillunating(last year) to providing sources pulled from really obscure books(this year).\nFor example, one of the harder questions was about the transition of a particular 30 second portion of a background song used in a 30+ year old Bond film that was only played once in the entire film. Went from totally making up nonsense to accurately describing the music theory defintiion of the transition(called a 'stinger') to also explaining why it was done in that particular scene of the film and also providing sources from a snippet of a unrelated interview with the composer explaining his mindset at the time.\nMaybe this isn't considered a real benchmark as its not reproducable but for a 'personal benchmark' I came away impressed. I would consider everyone to define their own benchmarks and 'tests' and to consistantly challenge the models to see if there are any meaningful improvements. Now I treat the AI as something to keep skeptical but to also to always consider what it proposes as an answer(ie. dont ever dismiss it outright). I sometimes wonder if this is slowly messing up my biases and maybe thats what Altman, Amodei and others want.",
+              "author": "saturn8601",
+              "depth": 2
+            },
+            {
+              "text": "It wasn’t wrong, though, in my case.",
+              "author": "jp57",
+              "depth": 2
+            },
+            {
+              "text": "Hard numbers, no. Even high level concepts and theory you need to triangulate and prompt in different angles, across different models, and figure out what overlaps to build a mental mode that’s - even then - roughly 80% correct. It’s better than google, but the information isn’t free",
+              "author": "glouwbug",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48420827",
+      "title": "Ask HN: Why is the HN crowd so anti-AI?",
+      "link": "https://news.ycombinator.com/item?id=48420827",
+      "domain": "news.ycombinator.com",
+      "author": "Ekami",
+      "score": 444,
+      "comment_count": 737,
+      "created_ts": 1780713111,
+      "is_internal": true,
+      "post_text": "Genuine question.<p>Over the past six months, there hasn’t been a single day where I’ve checked the HN Best RSS feed without seeing a post about how AI “writes bad code,” “introduces bugs,” “creates technical debt,” or something along those lines.<p>I’ll probably make a lot of enemies by saying this, but do people realize that code is just a means to an end?<p>Users don’t care whether the code was written by AI or by hand, or which framework you used. They care that the product works.<p>I say this as someone who has spent more than 20 years honing their craft as a software engineer.<p>Let’s face it: by the time I manually ship version 1.0 of a product, the AI-assisted version could have been deployed 10x faster. By then, enough real-world feedback would have surfaced to identify the major issues, and tools like Claude Code would make it possible to fix and ship version 2.0 at an incredible pace.<p>At some point, execution speed starts to matter more than the elegance of the code.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "It's simply divided. With every such division A vs. B, the A team thinks HN is anti-A and the B team thinks it's anti-B. This is an invariant.\nYou can see from the following megathread, currently on the front page, that HN is by no means anti-AI:\nAsk HN: What was your \"oh shit\" moment with GenAI?\n - \nhttps://news.ycombinator.com/item?id=48406174\n.\nSometimes it just takes the right initial condition (e.g. title) to bring out one side or other.\nAs for why the community is divided, there's always a temptation to come up with HN-specific explanations, but society as a whole is divided about AI. Surely that is the only explanation one needs. As I've been saying for years, HN can't be immune from macro trends: \nhttps://hn.algolia.com/?dateRange=all&page=0&prefix=true&que...",
+          "author": "dang",
+          "replies": [
+            {
+              "text": "Thoughtful comment, and I'd like to add another angle: However meaningful it is to say the community is divided, I also think that individuals are \"divided\" on the question as well.\nI can speak from myself as an example (although n=1): I am incredibly open to machine learning and the advances it brings. On the other hand I am extremely conscious of the fact that the current LLMs do often write bad code, which becomes especially obvious once projects go much beyond \"private toy\" size. For me personally the consequence is that I try to make my projects even more modular, and the modules even more clearly delineated. With proper guidance, current LLMs work mostly fine when working on isolated modules. That doesn't mean they don't sometimes fail even there, but they also on rare occasions come up with surprisingly clever solutions when you let them loose on a code base, as long as the problem you want them to fix is mostly isolated in a couple of modules.\nSo long story short, you can be all for LLMs and still be conscious of their shortcomings, and that just vibe coding applications you intend to let loose on unsuspecting customers is probably a bad idea, and possibly outright immoral. We have already seen more than enough examples of vibe coded applications dumping sensitive user data into the lap of anyone who is inclined to pick up a stick and prod them a little bit.",
+              "author": "_0ffh",
+              "depth": 1
+            },
+            {
+              "text": "There’s also the uncomfortable reality that a lot of people spent a lot of time learning how to do things that anyone can prompt now…\nWe tend to ignore that reality but it hangs above all these discussions like a dirty cloud",
+              "author": "thierrydamiba",
+              "depth": 2
+            },
+            {
+              "text": "That does not seem like it should be controversial.  I have known for quite a long time that a motivated high school kid could learn to code well enough to be perfectly useful.  Especially with popular languages like Python.\nThis is just an object lesson for everyone who thought all that software guys did was write code that there is just a little bit more to the job than that.  Actual developers should already have known.",
+              "author": "rootusrootus",
+              "depth": 3
+            },
+            {
+              "text": "Hard disagree. That’s like saying just because you can type 200 words per minute you’re a better writer than Shakespeare.",
+              "author": "supertroop",
+              "depth": 4
+            },
+            {
+              "text": "I took that as exactly his point. Learning the syntax of Python or C++ or whatever isn't particularly hard. If reading the manual or being the one guy in the company who knew how the yamls worked was your \"moat\" then your career was built on sand. The challenge has always been leveraging that use of the tool into actually doing something useful with it.",
+              "author": "Tanjreeve",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I call these AI tools \"proprietary non-determenistic database of the free internet\". They belong to american companies which can cut off your access if american government doesn't like your country's government. They fed from the free internet that many of us grew up in, store it in humans unreadable form and sell you access to it. If some day claude starts to spit out compiled binaries instead of code nobody will notice, and we'll essentially get proprietary cloud-hosted compiler that most in the world depends on to build software. With built-in telemetry and backdoors and clause in license that allow full overtake of your business if provider wants it ofc. It's a great shift from the internet we all know and love towards the new subscription-based access to world's propriatary knowledge base. It's a perfect \"mind control\" tool as well - you don't need USAID, \"free media\" and stuff like that in other countries when all people there including politicians ask chatgpt everything from meaning of life to recipies of pancakes. Once you see these political and philosophical dimensions it's hard to unsee how claudecode running on my PC won't turn into a weapon some day. But in blissful ignorance it's fun to use, and companies love it for the promise of replacing people. Amen",
+          "author": "oleg_antonyan",
+          "replies": [
+            {
+              "text": "The argument that LLMs are \"feeding me back free and open internet\" seems to skip the most useful aspect of the tool.\nI could never, as an individual read, let alone synthesize and make decisions with, the amount of information on the internet. The LLM takes that free and open information and feeds me back novel information based on that free information. It gives me ideas, opinions, and hard data based on that information.\nIt's the most powerful information synthesizing tool in existence. I don't find the argument that \"it's built on free information and sold to you\" fair or plausible at all.\nIt's like saying you're free to make your own bottled water. Technically true, but in reality not.",
+              "author": "adamtaylor_13",
+              "depth": 1
+            },
+            {
+              "text": "I think you undervalue the contribution of internet-scale data to foundation modeling, and because LLMs can obsolete the content they required, I think its fair to characterize it as theft. Obviously RL contributes a lot to capabilities, but the judgement that an LLM uses to 'synthesize information' is born from the training data. The scale of the data really is beyond intuition. books3, for example, would 230 yrs of continuous reading\nI actually think the \"proprietary non-determenistic database of the free internet\" does a lot to characterize the capabilities and effects to a lot of people. Obviously coders are more in tune with how well agents can work, but that's also due more to the RL breakthroughs than foundation modeling.",
+              "author": "tpdly",
+              "depth": 2
+            },
+            {
+              "text": "As I understand RL makes foundation models stupider (\nless capable\n, not more) but better at following instructions.",
+              "author": "d0mine",
+              "depth": 3
+            },
+            {
+              "text": "Can you steal something that is free and openly available?\nI just don't understand this argument. \"Theft\" feels like a nice, heavy, moral accusation to toss at those you're debating with, but the actual prerequisites for theft don't even exist in this situation.",
+              "author": "adamtaylor_13",
+              "depth": 3
+            },
+            {
+              "text": "It is a lot more complicated than that. Your content is not simply used, copied, or even just simply distributed. The very terrain that you produce, distribute, represent your content has shifted due to the mechanics of it. Anything you produce is grabbed into AI summaries. They're grabbed into the training data. Humans produce free/open materials for many reasons. A lot of them don't have room to breathe and gain structure due to AI siphoning the entire atmosphere of web; eg communities",
+              "author": "mclightning",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Because I enjoy writing code. I enjoy being paid for writing code. And I don't enjoy writing prompts for AI.\nCode is not just a means to an end. Code is a means to my happiness. Users might not care, but I do care. I love good code. I feel great when I can write good code.\nI won't say that I don't care about users. I do. But I care about me, first and foremost. And AI threatens to remove my lifestyle and workstyle. That's why I'm bullish against it. And at the same time I use it, because I feel forced to use it. This is rat race.\nAt the same time I can say that I don't care about delivering product 10x faster. Actually I'd prefer to deliver product 0.1x faster.\nYes, I understand that contradicts to the business side of view. Well, I don't care. I'm not getting paid percentage of product sales. I'm getting paid flat salary and I care about keeping it and live good life in the process.\nI'm being completely honest about it. Maybe it'll help someone to understand that point of view.",
+          "author": "vbezhenar",
+          "replies": [
+            {
+              "text": "I am sympathetic to this point of view. But also: I love reading books. But I'm aware that nobody will pay me to read books.\nIn much the same way, like you, I love writing code. And there was a time when \"writing code\" was a close enough approximation to what people wanted to pay me for that I could get paid for doing this thing that I love.\nUnfortunately, this is no longer true. This thing that I love is now no longer the thing that people pay me for. It never \nreally\n was. People paid me for solving problems using software. It's just that the thing I liked to do, the act of writing code, was the only way to accomplish that.\nBut now it just isn't. Now I can create useful software more quickly and better without actually writing much code. And that does suck, I do experience it as a loss. But I also experience it as a great opportunity.",
+              "author": "sanderjd",
+              "depth": 1
+            },
+            {
+              "text": "This is an example of a perspective that is solely lacking: I was a professional programmer for 40 years. I loved writing code in my youth. But then I started to love something more: making bigger things. I’ve grown out of the infatuation with my own self satisfaction with writing code. Now I’m addicted to architectures. There’s a point when you realize coding gets in the way and needs to be delegated. That’s why AI is appealing to me. I can put aside the wrench turning and focus on the bigger construct. It’s a game changer and it accelerates my ideas. I feel like I just got a second wind even though I’m close to retiring thanks to AI.",
+              "author": "supertroop",
+              "depth": 1
+            },
+            {
+              "text": ">Now I’m addicted to architectures\nBut architecture creation can also be delegated to ai if you give agent enough context about functional/non-functional requirements, certain business side restrictions etc. Your work is to be feedback loop mechanism between people and llm, no?\nPlease, give me encouraging examples of technical tasks that cant be delegated to ai with accurate prompting",
+              "author": "bah9",
+              "depth": 2
+            },
+            {
+              "text": "I have a feeling that a prompt accurate enough to cover all the important stuff (functional/non-functional requirements, certain business side restrictions etc) would be close in its volume and complexity to the actual software code and configuration (given the proper tools, frameworks and infrastructure in place)...",
+              "author": "x1n13y84issmd42",
+              "depth": 3
+            },
+            {
+              "text": "You might be thinking too near-term. If a sufficiently advanced coding agent has read all the language specs, all the code, all the software engineering/architecture books, and all of human knowledge along with it, why would it need any longer prompt than \"create complete video streaming infrastructure to compete with Netflix\"?",
+              "author": "xnx",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "You are assuming arguments and argue against them which is called \"strawman\".\nYou are also mixing up \"AI writes the code\" and \"AI assisted coding\"\nI don't think that's a good ground to start a productive debate.",
+          "author": "bulbar",
+          "replies": []
+        },
+        {
+          "top": "> Over the past six months, there hasn’t been a single day where I’ve checked the HN Best RSS feed without seeing a post about how AI “writes bad code,” “introduces bugs,” “creates technical debt,” or something along those lines.\nbecause it's true\n> Users don’t care whether the code was written by AI or by hand, or which framework you used. They care that the product works.\nHow can you guarantee that it works though? You can verify, but it would be at the same speed as before the AI, or even slower.\n> By then, enough real-world feedback would have surfaced to identify the major issues, and tools like Claude Code would make it possible to fix and ship version 2.0 at an incredible pace.\nBy then you have a blackbox of a codebase which is unmaintainable, or in a worst case scenario you end up losing your data or get hacked or both.",
+          "author": "knivets",
+          "replies": [
+            {
+              "text": "Boggles the mind that people can't see this. You gotta keep the guardrails pretty tight to succeed with LLMs and code in my experience.",
+              "author": "cmoski",
+              "depth": 1
+            },
+            {
+              "text": ">because it's true\nI mean, it's \njust as true\n that most teams “write bad code,” “introduce bugs,” “create technical debt,” or something along those lines. There is this amazing thing that happens where when we talk about AI code, it's always compared against some idealized infinitely capable professional following every best practice, purposefully and carefully crafting every line.\nWhich is fantasy. Most of you are creating absolute slop. That's just truth. Clutch your pearls and say it ain't true, but there's this weird reality that when people inherit other people's code, it's declared 100% slop, almost all of the time. It's the reason we are constantly tossing projects in the bin and starting anew.\nAI is absolutely imperfect, just like teams of human developers.\n>By then you have a blackbox of a codebase which is unmaintainable\nHave you ever used Claude Code to work on a project? In what reality is the code unmaintainable? How is it a \"blackbox\"? Are you getting it to write LLVM IR or something?\nIn my experience, and with careful guidance and oversight, it makes spectacularly maintainable code. Better code than any human developer I have ever worked with. It helps to occasionally do cycles of refactoring as you've built out the foundation and the core becomes more evident and clear.\n>or in a worst case scenario you end up losing your data or get hacked or both\nThis one is amazing. The industry is \nawash\n with garbage, insecure, exploited code. We were making that garbage code by the data centre full long before LLMs joined the scene.",
+              "author": "llm_nerd",
+              "depth": 1
+            },
+            {
+              "text": "Yes, there have always been bad programmers. The only difference is that now thanks to AI anybody can be a bad programmer. You've got people out there contributing sloppy code like only a bad \"10x engineer\" could do before. Good code is still hard to write, and from what I have seen in 3 companies so far, the people who write good code with AI are pretty much the same ones that were writing good code before AI.",
+              "author": "dandellion",
+              "depth": 2
+            },
+            {
+              "text": "> AI is absolutely imperfect, just like teams of human developers.\nThe old \"nothing's perfect therefore everything is equally imperfect\" fallacy. It's not a binary. While everything is flawed, somethings are more flawed than others. Welcome to the world, it's complex.\n> when we talk about AI code, it's always compared against some idealized\nHave you ever seen a development mailing list? Seems like when human code is scrutinized it's held to a high idealized standard. \"Technical debt\" is a concept that originated from looking at human code. How then can it be true that applying it to AI code is setting a higher standard? It's setting the same standard. These things existed and were applied to human code before AI exploded.\nThe whole \"many eyes\" thing can be quite brutal. \nWe don't always get the many eyes\n but when we do... wars are waged. It's brutal out there for anything getting scrutiny. Currently, AI code getting a lot of eyeballs. That's a good thing. Don't wish it away just because you're butthurt about your new pet tech being held to a standard. That's how it gets better.\nThe \"problem\" of AI being held to a supposed higher standard isn't a problem. It's a free pony.",
+              "author": "li2uR3ce",
+              "depth": 2
+            },
+            {
+              "text": "What this looks like it practice: enterprise SaaS vendor introduces bug, I report the bug, get a canned AI response because literally nobody cares, and it never gets fixed. The product continues to deteriorate.\nNo, it’s not just one vendor.",
+              "author": "coffeefirst",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48433756",
+      "title": "Show HN: Lathe – Use LLMs to learn a new domain, not skip past it",
+      "link": "https://github.com/devenjarvis/lathe",
+      "domain": "github.com",
+      "author": "devenjarvis",
+      "score": 272,
+      "comment_count": 51,
+      "created_ts": 1780831006,
+      "is_internal": false,
+      "post_text": "Hey HN!<p>Lathe is an experiment in using LLMs to teach me something new, instead of doing the work for me. It generates a hands-on, source-backed tutorial for any technical topic you want to learn. Then you work through it yourself by reading and typing the code by hand (<i>gasp</i>) in a local UI built for exactly that.<p>It&#x27;s a Go CLI plus LLM agent skills (Claude Code &#x2F; Cursor &#x2F; Codex). You prompt something like &quot;&#x2F;lathe build a 3D slicer in Erlang&quot;, run `lathe serve` to spin up a local webapp, and read it in your browser. Every tutorial comes with the things that have made self-learning a pleasant experience for me in the past:<p>- table of contents that follows along as you scroll\n- side-notes that nudge you to think\n- exercises for the reader\n- sources backing up the content that you can use to take you deeper<p>To help make up for the lack of human brainpower behind the tutorial, you can also ask questions about the content, have another LLM verify the tutorial actually compiles and runs, or extend it with another part (no more &quot;Part 4 of 6&quot; that hasn&#x27;t seen an update since 2021).<p>I didn&#x27;t build lathe to replace human-written tutorials. I built lathe because I _love_ human-written tutorials, but wanted to learn technical domains where no good human-written tutorial exists yet (building a 3D slicer from scratch, making embedded Zig approachable, etc). There&#x27;s a longer story in the README about how I got started with programming through PSP homebrew tutorials, and why losing that to LLMs bugged me enough to build this.<p>I&#x27;m not here to sell you anything (there&#x27;s nothing close to a VC-backed startup here :D). It&#x27;s an LLM, and its output is usually good but not perfect by any means. So far, my experience is that because you&#x27;re the one typing and actually engaged, you catch the weird stuff (and I&#x27;m finding that pushing back on it is its own kind of learning). And yes, it&#x27;s vibecoded, because it&#x27;s low scope, low risk, and scratching a personal itch. I run it on Claude Code + macOS personally, other setups should work but I haven&#x27;t been able to verify them yet.<p>If you can find resources to learn something that was written by a human, read that first. But Lathe is here to fill in the gaps when that isn&#x27;t the case, and I hope it serves as an example where LLMs can help us think better, rather than less.<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;devenjarvis&#x2F;lathe\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;devenjarvis&#x2F;lathe</a><p>Would love your feedback if you decide to check it out!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "A related idea is to have the LLM quiz you, Socratic-style about a topic of interest. It persists in asking questions at deeper levels until you arrive at the answer yourself. This forces you to think hard about a problem, and this effort helps with understanding, learning and retention. Of course I made a Socratic-quiz skill for this, to use with any coding agent or similar:\nhttps://pchalasani.github.io/claude-code-tools/plugins-detai...\nFor example I’ve used this to better understand counter-intuitive things about diabetes/insulin, dopamine and motivation, Claude’s implementations, etc (to combat so-called cognitive debt).\nStrong LLMs are surprisingly good at this type of quizzing, they display a semblance of “theory of mind”.",
+          "author": "d4rkp4ttern",
+          "replies": [
+            {
+              "text": "I think this might be useful if you are supplementing your learning from actual sources. Like you casually said you understood counter-intuitive things about diabetes/insulin, dopamin and motivation etc but these are very complex topics and require a lot of study to fully \"understand\". Its okay if you just see it as curiosity-driven learning but I dont see this as a way to learn anything that is actually important or serious.\nTraditional method of looking up stuff, going through guided lessons etc are just more streamlined and faster than this method.",
+              "author": "altmanaltman",
+              "depth": 1
+            },
+            {
+              "text": "How do you deal with context length degradation here?\nThe harder questions will only arrive when the context is getting full.",
+              "author": "OtherShrezzing",
+              "depth": 1
+            },
+            {
+              "text": "If you have it question you for 1M tokens (aka the full length of the Wheel of Time series), I think your own context might get full before the LLMs.",
+              "author": "danieljacksonno",
+              "depth": 2
+            },
+            {
+              "text": "Right, even a conservative 200k context length is on the order of 200 pages, which is more than enough context to arrive at an answer.",
+              "author": "d4rkp4ttern",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I think there's going to be the \nexact and precise\n range of people there has always been: some people are curious, and want/need to understand what they're doing, some people are not and just want to do. That want/need is a fundamental \npersonality trait\n what \nmakes\n an expert.\nLLM are a \ndream come true\n for these curious types. They'll only be accelerated by them. I don't think there's any real \"loss\" out there, just a bunch of people that \ndon't care\n boing things easier. Good for them, good for the curious people. Net win.",
+          "author": "nomel",
+          "replies": [
+            {
+              "text": "I guess I'm both people, depends on what it is and what other things I'm doing. Sometimes it's fun and interesting to delve deeply (oh no he didn't) into something for long periods of time, just for the sake of exploring and understanding. Sometimes I'm not curious about why something specifically doesn't work, I just need it to work so I'll hack around it any way possible so I can move on with what I really wanted to do.\nI find that LLMs are useful for both cases in the end.",
+              "author": "embedding-shape",
+              "depth": 1
+            },
+            {
+              "text": "Some people will probably be curious regardless of their environment but I think there are others who could be swayed into developing curiosity (or not) by life experiences. And an ever-present \"just gimme the answer now\" button could be a powerful force pulling them toward the \"incurious\" side.",
+              "author": "FeteCommuniste",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’ve been using this general pattern - a custom cli app for deterministic tasks, skills for the agent harness, run the skills in the agent and it produces artifacts for you by using the cli and its own agentic reasoning - a lot lately for work. Things like “give me an executive brief of the activity in these teams backlogs over the last month” and in 5-10 minutes I have a few page doc I can read that is cited with the tickets it analyzed and I don’t have to go bug people or ask them to do yet another task for me, just make sure your backlog is updated and detailed like normal practice. It’s awesome and really fits a useful spot between pure agent usage (which is hard to get consistent results from on repeat tasks) and not having to build/buy a full blown app for every random thing.",
+          "author": "dchuk",
+          "replies": [
+            {
+              "text": "This approach works well, I agree. But I keep wishing that I could invert it. The architecture I feel like I keep yearning for, is a traditional CLI program that encodes most workflow knowledge/decisions as real code; but which does \"just a little bit of coding agent invocation\" during one specific workflow step.\nNot sure how to accomplish this. Anyone have any suggestions? Are there libraries for this yet? (And how would they even work? It feels like, to do this \nright\n, there would have to be some background service that CLI software could expect to interact with via a well-known local IPC socket — similar to how e.g. the docker daemon works. But I'm unaware of any coding agent software/frameworks that \nexpose\n such an IPC capability...)",
+              "author": "derefr",
+              "depth": 1
+            },
+            {
+              "text": "I’m building this! It was originally designed for human accessibility for interactive CLIs, but it turned out to be really useful for giving agents the ability to follow structured workflows.\nIt runs as a background terminal that the agent can observe, and then exposes all interaction options as structured commands that can be run from the foreground CLI which then update the state of the background terminal via IPC. My hope is to establish a sort of “ARIA for terminals” standard to improve accessibility for both humans and agents. Email in profile, ping me if you’re interested in giving it a spin (just have plugins for Inquirer + Commander right now, hoping to broaden to other frameworks & TUIs soon).",
+              "author": "didgeoridoo",
+              "depth": 2
+            },
+            {
+              "text": "I reverted this due to impending billing changes, but Claude and most LLM providers to my knowledge do offer a way to directly fire a prompt to the LLM in a \"headless\" or non-interactive mode. Specifically \"claude -p <your_prompt_here>\" is the way to do it with Claude Code. It allows for using the agent to do a one-off command with a given structured prompt. Originally Lathe would use this from the Go application to allow you to extend a tutorial directly from the UI without directly interacting with the LLM.\nYou'd have to exec out, so it's alittle clunkier than an IPC, but I think you could achieve what you want with it.",
+              "author": "devenjarvis",
+              "depth": 2
+            },
+            {
+              "text": "That's \nalmost\n it, yes.\nBut in my experience, to actually get where they're going quickly (as opposed to spending hours and hundreds of dollars stumbling around in the dark), coding agents generally need more interactive hand-holding than that. If you just fire off one non-interactive session and wait for it to come to a stop, the problem usually \nisn't\n fully+correctly solved at the point at the LLM decides to \"finish.\" And if you then start \nanother\n non-interactive session to continue the work, the new session will have lost the old session's state/memory/context, and so will stumble through many of the same mistakes / misapprehensions.\nWhat you really want, for a CLI program with a \"use coding agent to do X\" workflow-step, is for the CLI program to \nplay the role of a human\n in a temporary durable coding-agent conversation session: prompting the agent; then waiting for it to finish responding (and side-effecting); then either asking the agent itself to evaluate an \"am I done yet\" predicate with a constrained output syntax; or having the CLI program do its own out-of-band validation of the changes made to the shared state by the agent; where, in either case, if the agent isn't \"done yet\", then the workflow step must continue poking it — or prompt the human to make a decision on how to proceed (possibly involving providing direct input to the LLM, but this is not ideal; ideally the CLI \"abstracts away\" the need for the end-user to understand the intricacies of the conversation the program is having with the LLM. Even more ideally, the conversation just whizzes by and the human doesn't have to think about an LLM being involved at all.)\nBasically, think of this not as the CLI program saying to an agent \"answer me this question\" or \"edit this file for me\", but rather, the CLI program popping open a mini \"guided + 99%-of-the-time automated\" TUI coding-agent micro-IDE \"inside\" the workflow, in about the same way that git pops open your EDITOR inside `git commit`.",
+              "author": "derefr",
+              "depth": 3
+            },
+            {
+              "text": "I agree! I want to say I first saw this pattern in some work Simon Willison did (Rodney and Showboat). For certain workflows the pair of Skills + CLI give me a nice balance between the flexibility of LLMs and the consistency of a CLI.",
+              "author": "devenjarvis",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have updated the popular /grill-me skill for this exact purpose! I had a very insightful grilling session yesterday on what exactly happens when you try to load an extremely large dataset in pandas, covering everything down to the last detail !",
+          "author": "rdksu",
+          "replies": [
+            {
+              "text": "Do you have that version published anywhere?",
+              "author": "smallerize",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Hey this is neat!\nI was telling my friend the other day. The way you learn programming is by typing code out by hand. And I suggested using LLMs to generate minimal educational examples aligned with his interests and needs.\nI've tried the Zed Shaw method to learning programming (just typing out code examples by hand -- doing \"studies\", the same way you would with music or art). I tested it on a programming language I had been learning for a while and was struggling with. After just a few hours of typing my fluency had skyrocketed.\nI realized that in several hours of typing I had written more code than in weeks of study. Because when you don't know a language yet, producing code is extremely slow and error prone. But typing out correct code is relatively straightforward.\nSo due to changing my approach to \"just blindly typing\", I got more practice (at least as far as reading and muscle memory goes) in a few hours than the previous few weeks.\nNow of course understanding is important too, but it's a separate dimension, and largely comes after memory and fluency in my experience. (Understanding something theoretically and being able to use it are two very different things!)\nThe general principle here is Stephen Krashen's Input Hypothesis of language acquisition (\nhttps://en.wikipedia.org/wiki/Input_hypothesis\n) which says a baby learns language by just hearing stuff -- just being exposed to inputs -- and that adults can learn the same way too.\nAnd I heard it on the excellent website (now defunct?) All Japanese All The Time, where the author tested the hypothesis on himself by mostly listening to a lot of Japanese and gained fluency in a year.\nhttps://web.archive.org/web/20080705194055/http://www.alljap...",
+          "author": "andai",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48428356",
+      "title": "Home alone: Remote work, isolation, and mental health",
+      "link": "https://www.science.org/doi/10.1126/science.aec7671",
+      "domain": "www.science.org",
+      "author": "speckx",
+      "score": 191,
+      "comment_count": 189,
+      "created_ts": 1780775470,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48413629",
+      "title": "Ask HN: What is your (AI) dev tech stack / workflow?",
+      "link": "https://news.ycombinator.com/item?id=48413629",
+      "domain": "news.ycombinator.com",
+      "author": "dv35z",
+      "score": 159,
+      "comment_count": 130,
+      "created_ts": 1780672434,
+      "is_internal": true,
+      "post_text": "Hello, happy Friday!<p>I am looking to do some in-person &quot;developer boot-up&quot; workshops, and seek your suggestions for &quot;modern tooling&quot;.<p>The background of the participants range from motivated newbie (&quot;I heard you can make your own app with AI!&quot;) to existing software developers who want to get up to speed on modern development for the purposes of building stuff, and getting jobs where AI tools are being used.<p>For those who have been doing software development &amp; &quot;tech&quot; lately using AI tools, and feel they have a great setup &amp; flow - I would love to hear what your dev setup is, what tools you&#x27;re using and what workflow has been working best for you (and your team).<p>&#x2F;&#x2F; My Background<p>I have been programming &#x2F; building for 20+ years, but have not been using AI tools much (aside from hitting up LLM APIs on a few projects).<p>I value open-source, and aim for long-term quality and supportability. Techniques like test-driven development (TDD), using proven &#x2F; well documented tools, customer-centric development (often pairing with clients), make it easy to do the right thing. If you are familiar with Pivotal Labs, agile &amp; XP - that&#x27;s the style.<p>These are some of the Upcoming uses-cases for the workshop, and my own personal &quot;IT backlog&quot;:<p>- Create a static &quot;one pager&quot; personal&#x2F;professional website<p>- Setup a Blog &#x2F; Static site generator (Pelican), create a simple but stylish theme<p>- Create a simple web app &#x2F; backend API (FastAPI) tool - form-based calculator, convert X data to PDFs, etc.<p>- Figure out how to have SyncThing autosync the home folder of 3 Linux computers in the house<p>- Backup &amp; archive the photos &amp; video from my iPhone<p>&#x2F;&#x2F; Tech stack I am currently using:<p>- Operating system: Linux Mint Debian (LMDE)<p>- Editor: VSCodium<p>- Code: Python, HTML&#x2F;CSS<p>- Server platform: Amazon AWS<p>I am guessing that most workshop participants will be using MacBooks &amp; Windows computers - but a few are on Linux, as I recently did a &quot;Linux install party&quot;.<p>I haven&#x27;t used any &quot;AI harnesses&quot;, agents or anything like that - but curious what&#x27;s a good starting point to take best advantage of these tools.<p>Thanks for sharing the knowledge!<p>&#x2F;&#x2F; JRO",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48397731",
+      "title": "Ask HN: So what happened to Facebook \"localhost\" tracking?",
+      "link": "https://news.ycombinator.com/item?id=48397731",
+      "domain": "news.ycombinator.com",
+      "author": "juliusceasar",
+      "score": 106,
+      "comment_count": 102,
+      "created_ts": 1780576360,
+      "is_internal": true,
+      "post_text": "It was discussed a year ago.\n<a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "> Meta must face a lawsuit alleging that it secretly tracked Android users' browsing activity on mobile websites that embedded Meta's analytics pixel, and linked that activity to users' identities, a federal judge ruled Monday.\n> The decision, issued by U.S. District Court Judge Rita Lin in San Francisco, grew out of a class-action complaint initially brought last June by California resident Devin Rose (and later joined by other Android users).\n> Rose alleged that between September 2024 and June 2025, Meta exploited Android's localhost -- a feature that allows software developers to test applications -- to connect users’ mobile web browsing to their Facebook and Instagram profiles.\nMay 12, 2026",
+          "author": "applfanboysbgon",
+          "replies": [
+            {
+              "text": "Not at all to defend Meta but \"a feature that allows software developers to test applications\" is a dubious definition of localhost. I also can't come up with a better one.",
+              "author": "Retr0id",
+              "depth": 1
+            },
+            {
+              "text": "It's not a definition, but it is an accurate statement.",
+              "author": "furyofantares",
+              "depth": 2
+            },
+            {
+              "text": "It's a true statement but I'm not sure it gives a good impression of what localhost actually is.",
+              "author": "Retr0id",
+              "depth": 3
+            },
+            {
+              "text": "If the biggest issue you found in the article is the localhost gloss, Meta probably got off easy.",
+              "author": "rambojohnson",
+              "depth": 4
+            },
+            {
+              "text": "I never said that.",
+              "author": "Retr0id",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Looks like they stopped doing it\nhttps://localmess.github.io\n> UPDATE: As of June 3rd 7:45 CEST, Meta/Facebook Pixel script is no longer sending any packets or requests to localhost. The code responsible for sending the _fbp cookie has been almost completely removed. Yandex has also stopped the practice we describe below.",
+          "author": "KomoD",
+          "replies": [
+            {
+              "text": "> almost",
+              "author": "hulitu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Chrome and Firefox have deployed / are deploying local-network-access which prompts the user when apps try this.",
+          "author": "mozvalentin",
+          "replies": [
+            {
+              "text": "I guess that's why I am getting so many \"Allow to find devices on your network\" alerts. Good feature overall.",
+              "author": "pezgrande",
+              "depth": 1
+            },
+            {
+              "text": "Only a good feature if users have a clue what that question means. Most will click \"Yes\" because they want to get on with whatever they want to do.\nChange it to something like \"This website is trying to spy on your local devices, do you want to allow this?\"",
+              "author": "SoftTalker",
+              "depth": 2
+            },
+            {
+              "text": "Most of the time this prompt comes up it's actually for a genuine purpose, like spotify trying to find devices on the local network that can play audio, VLC looking for chromecasts, I saw my DJ app ask for local network and discovered it can discover my decks on the network and stream my library over the local network to it.\nThe problem is this prompt is new so the software doesn't show the user why it's just triggered the prompt and the user has no info to work with.",
+              "author": "SchemaLoad",
+              "depth": 3
+            },
+            {
+              "text": "Since I can see legitimate use case (complex web apps, one sharing data with another) - I would not use the word spying.\nBut still make it clear what can happen.\n\"Attention! This website wants to get access to other web apps running on this device, do you want to allow this?\"\nAnd then a link explaining some more. But better words are surely possible.",
+              "author": "lukan",
+              "depth": 3
+            },
+            {
+              "text": "I need to turn on location access for all software on my system globally to read the battery status of a device over Bluetooth. These \"could be used for\" warnings are nice and all, but usually goes beyond what makes sense. Proposing that we need to press \"be spied upon\" just to view photos stored on your NAS is way out there\nI'm sorry if people don't know what \"access local devices\" means but actively lying to them about the mechanisms is not going to inform anyone",
+              "author": "Aachen",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I've recently been exploring options for allowing web apps to access LAN services. For example, a WebDAV server so you can watch local videos in the app without streaming them through a server.\nYou can actually achieve a form of discovery if your service registers itself using mDNS for something like `service.local`. Browsers will allow direct navigation/redirection to `\nhttp://service.local\n`, but they'll block any fetch/XHR requests due to mixed content rules, even if you have CORS configured. And of course you can't get a cert for `.local` domains.\nNewer things like Chrome's LNA[0] are actually really helpful, because (for now at least) if the user grants the permission, fetch/XHR will go through, but you'll get a bunch of mixed content warnings in the console.\nIt seems like the only way to fully support this use case currently is with WebRTC, which is pretty sad.\n[0]: \nhttps://developer.chrome.com/blog/local-network-access",
+          "author": "apitman",
+          "replies": []
+        },
+        {
+          "top": "This actually inspired me recently to create Pal Pipe for Android- \nhttps://gitlab.com/not_john/palpipe",
+          "author": "0john",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48427629",
+      "title": "Corrupting a ZFS File on Purpose",
+      "link": "https://oshogbo.com/blog/90/",
+      "domain": "oshogbo.com",
+      "author": "zdw",
+      "score": 40,
+      "comment_count": 5,
+      "created_ts": 1780770843,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48440549",
+      "title": "Algorithmic Monocultures in Hiring",
+      "link": "https://algorithmichiring.github.io/",
+      "domain": "algorithmichiring.github.io",
+      "author": "drchiu",
+      "score": 40,
+      "comment_count": 5,
+      "created_ts": 1780883694,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "It seems like this is measuring algorithms against the disparate impact standard of all demographic groups needing to have the same aggregate results.\nWhich is extra weird because the samples to this are applications, not humans, so this is subject to bias in how people \napply\n to these positions. So if a demographic group is more likely to apply to some jobs they are not qualified for, this paper would say they are being discriminated against.\nOn top of all this, there isn't even really a claim that the algorithms are picking up on anything demographic related. One of the vendors they look at pymetrics, which makes players play abstract games and uses that to pre-screen people.\nIn the abstract, it makes sense that monocultures are problematic since ML bias alone (in the bias vs variance sense) would just randomly harm folks in a fairly persistent way. But it's also not immediately clear that this even applies to the pymetrics example where I think they have a large assortment of games they make people play for different positions?\nIt's also not clear that these systems breed monocultures if the inputs into them are firm/position-specific, e.g. job descriptions.\nThough honestly I would be far more interested in the validity of these measures at predicting actual on the job measures like performance reviews, etc.",
+          "author": "Eridrus",
+          "replies": [
+            {
+              "text": "A few years ago the same professor did an analysis of racism in police traffic stops. Compared to this current study on job applications, the conclusions from the police study were more convincing because they actually observed the words spoken by the cops in each interaction.\nhttps://www.pnas.org/doi/10.1073/pnas.1702413114",
+              "author": "changoplatanero",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is just one of many reasons why my current job is likely to be my last. I feel like so much of modern life is just irredeemably broken right now.",
+          "author": "dhosek",
+          "replies": []
+        },
+        {
+          "top": "This sort of thing needs to be illegal. We saw a similar thing wtih RealPage. So many corporate landlords use it that it essentially becomes anticompetitive price-fixing.\nI've heard a claim that an issue with these ATS AI Systems is that your CV gets scored and that score is cached for some period from 3 to 12 months. So any application with a completely different company with your name will just yield the exact same score. If true, it means that if you score badly for whatever reason, you're going to get auto-rejected by every company that uses that system before ever being seen by a human.\nThis seems to fit anecdotal data where people have applied for hundresd of jobs and never gotten anything other than an automated rejection. But obviously that's not proof or confirmation. But if it is, it's almost like being a voncicted felon. It greatly limits your ability to find a job and that's a huge problem.\nI don't know what the solution is but I hope these companies get sued for states for issueslike this where actual discrimination occurs.",
+          "author": "jmyeet",
+          "replies": []
+        },
+        {
+          "top": "Lots of monocultures exist in hiring even without an algorithmic scoring system.  That's roughly how every stupid hiring fad works, and how it's always worked, because most employers have no idea how to identify great potential employees.\nHiring managers and companies choose algorithms and hiring fads because they don't know how to be \nreally\n certain of who to hire, so they'll settle for either assuming someone else's expertise will save them, or for some rubric that \"everyone is doing\" so it \"can't be that bad\".\nWhen I first became a hiring manager, I was working for a public university.  Our salaries were limited, being staff rather than faculty and being public servants, to between 1/3 and 1/2 the going salary for equivalent cybersecurity professionals in the private sector.  I did not have the option to hire the people everyone else was trying to hire.  I also faced one of the key risks of working in a public institution: once you keep someone past their probationary period, it is very, very hard to fire them.  So, it's important not to get it wrong.  I learned some things that I have carried forward into every hiring manager or senior leadership role since:\n1. I base hiring practices on Manager Tools behavioral interviewing systems (\nhttps://manager-tools.com\n).  No affiliation, they've just made my work life better.\n2. I became \nreally\n good at understanding what my team or organization really needs.  Most hirers focus way too much on \"years of experience\" and specific technologies than is usually wise.  As my favorite former supervisor said, \"I can teach a smart person cybersecurity, but I can't teach a dumb [or unmotivated] cybersecurity person to be smart.\"\n3. I became really good at developing people, and ensuring that the managers under me were as well.  We couldn't lay someone off just because their technical specialty became irrelevant, so we couldn't afford to hire people who weren't lifelong learners, or to fail as coaches to ensure that learning was always taking place.\n4. I cast as wide a net as my HR and regulatory overlords would let me (and now, as a business leader, I cast a \nhuge\n net).  I look for things that aren't just useful at the moment, but are useful long term, in my candidates.  I don't care about pedigree.\nI end up paying less for good employees due to simple supply and demand: I often go for the diamonds in the rough that don't have 10 competing offers.\nI end up having \nreally\n good employees who generally stay with me long term, because I apply long-term thinking in hiring, and structure my teams around constant learning and development.\nI dodge a LOT of bullets... people who have just the right pedigree to look like great hires worth a lot of money, but who'll disappoint me until the day they leave.\nWhen it's a tight labor market -- too few candidates for roles I care about -- I'm tapping a hiring market that other managers aren't aware enough of, and still finding talent while they have roles that sit open for months.",
+          "author": "HedgeMage",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48397634",
+      "title": "Ask HN: How do you find deep technical content?",
+      "link": "https://news.ycombinator.com/item?id=48397634",
+      "domain": "news.ycombinator.com",
+      "author": "f311a",
+      "score": 37,
+      "comment_count": 28,
+      "created_ts": 1780575715,
+      "is_internal": true,
+      "post_text": "I&#x27;m pretty tired of seeing AI-related content everywhere.\nWhen I open Hacker News, close to half of the top submissions are AI-related. It&#x27;s the same on social networks as well.<p>I miss the times when there was a lot of technical content that took time and mental energy to understand.<p>Nowadays, it&#x27;s pretty hard to discover it. On HN, I see that a lot of technical articles don&#x27;t make it to the front page, so sometimes I just search for them in the submissions. Not only is there less content, but demand for it is also declining. I guess people would rather read another article about LLMs that teaches almost nothing and doesn&#x27;t exercise their curiosity. It feels sad for me, as a reader and as a writer.<p>So, are there any other places left where people still care about and share deep technical content? I want to keep exercising my thinking. I&#x27;ve had enough of brain-rotting.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "[random comment on the internet]\nSome content on the subject of AI is deeply technical, just as is some content on the subject of blockchain, lisp, retro-computing, etc.\nBut most of what is written about most things (including C, reverse engineering, systems programming, etc.) is not deeply technical.\nOne problem unique to AI is that “AI” doesn’t mean anything specific…I mean even your question doesn’t distinguish between articles about specific AI technologies, articles generated using LLM’s, “AI” as a marketing feature, AI as an industry, AI as an ideology etc.",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "Textbooks, white papers and research publications if I understand what you mean by \"deep technical\". I like lectures and stuff too but find it difficult to refer back to later and search around.",
+          "author": "dieselgate",
+          "replies": []
+        },
+        {
+          "top": "At least part of the problem is that deep technical content doesn't get upvotes. The next time you see a link to such, note the vote count. It will be small. Note the vote count on some \"AI\" boosting link. It will be large. Is this Anthropic, Google and OpenAI  bots for is it genuine interest?",
+          "author": "bediger4000",
+          "replies": []
+        },
+        {
+          "top": "There is probably still a lot out there but with the current state of the ('free') search engines you won't find much. I am painfully reminded of that every time I have to look for a datasheet that is not in my own archive yet.",
+          "author": "iefbr14",
+          "replies": []
+        },
+        {
+          "top": "https://aosabook.org/en/",
+          "author": "vismit2000",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48410589",
+      "title": "Ask HN: Is the web for machines (/llm.txt) the one we wished we had as humans?",
+      "link": "https://news.ycombinator.com/item?id=48410589",
+      "domain": "news.ycombinator.com",
+      "author": "sunshine-o",
+      "score": 36,
+      "comment_count": 57,
+      "created_ts": 1780656208,
+      "is_internal": true,
+      "post_text": "I got really tired, as a human, of parsing the standard marketing heavy web we have today.\nI&#x27;ve always loved the simplicity of gopher and gemini web.<p>Recently I found myself manually adding `&#x2F;llm.txt` to most websites I visit because I find the content for LLMs strait to the point and clear. \nThe only annoyance is web browsers like chrome do not render the markdown.<p>So could the AI revolution actually fix the web for humans as a side effect?<p>Do you find yourself doing the same?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48398358",
+      "title": "Ask HN: Gin rummy strategies",
+      "link": "https://news.ycombinator.com/item?id=48398358",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 24,
+      "comment_count": 4,
+      "created_ts": 1780579739,
+      "is_internal": true,
+      "post_text": "Hi HN, I am having AI build me a local Gin Rummy trainer and it cannot figure out medium and hard bot strategies, they keep losing to easy! The point of this is to help me learn so I don&#x27;t really know how to advise it on strategies. Right now it&#x27;s just looping through tests and modifying but it keeps not improving. Does anyone have any recommendations or guidance for strategies I could suggest to it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48396596",
+      "title": "Google killed my $1M ARR startup overnight",
+      "link": "https://news.ycombinator.com/item?id=48396596",
+      "domain": "news.ycombinator.com",
+      "author": "vadumo",
+      "score": 23,
+      "comment_count": 13,
+      "created_ts": 1780568775,
+      "is_internal": true,
+      "post_text": "Two days ago I had a working company. $1M ARR, 100k users, a product people actually pay for and depend on. Right now it&#x27;s dead in the water and I&#x27;m locked out of all of it, because Google decided to suspend my entire account.<p>Someone got hold of one of my API keys and ran up charges on Google&#x27;s AI services that I never touched. $4,200 hit my card for usage that wasn&#x27;t mine. Fine, happens I paid the bill. But Google suspended my whole project. Everything lived in there. The backend, and every single customer photo, over a million of them.<p>So now my users open the app and nothing loads. I can&#x27;t fix it because I can&#x27;t even get into the console anymore, they took that away too.<p>I&#x27;ve spent two days appealing, paying for support just to reach a real human, getting &quot;escalated,&quot; and mostly sitting in an automated queue while my business bleeds. No real answer. No timeline. Nothing.<p>I trusted Google Cloud to hold my customers&#x27; data and run my company. Two days of downtime over a charge I didn&#x27;t make, and all I can do is wait and hope someone over there decides to flip it back on. If you&#x27;re building anything real, think hard before you put all of it somewhere that can be switched off like this. I&#x27;m moving everything I can to AWS.<p>If anyone at Google sees this, I&#x27;ve got my project ID and case numbers ready. If anyone have any contact that could help, I would appreciate",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48434240",
+      "title": "Ask HN: How are thinking efforts implemented?",
+      "link": "https://news.ycombinator.com/item?id=48434240",
+      "domain": "news.ycombinator.com",
+      "author": "simianwords",
+      "score": 21,
+      "comment_count": 13,
+      "created_ts": 1780835924,
+      "is_internal": true,
+      "post_text": "Claude and ChatGPT have thinking efforts where you can tune the amount of thinking allowed.<p>Like low, medium, high, xhigh and so on.<p>But are they different models underneath? Or same model with different parameter?<p>The reason I ask is because, if I change the effort param mid conversation in Claude code, I get a warning suggesting I’m breaking the cache.<p>I don’t think this happens in Codex because when I change the effort, the responses are still quick.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48406829",
+      "title": "Ask HN: My competitors have flawed products but I can't get traction",
+      "link": "https://news.ycombinator.com/item?id=48406829",
+      "domain": "news.ycombinator.com",
+      "author": "saveitincork",
+      "score": 11,
+      "comment_count": 17,
+      "created_ts": 1780622195,
+      "is_internal": true,
+      "post_text": "Problem: I constantly save Instagram Reels&#x2F;TikToks about restaurants, events, pop-ups, and things to do, but I always forget about them because they get buried in my saves.<p>Solution: I built Cork. You can send a Reel or Tiktok directly to Cork without even needing to leave the app, and Cork will automatically extract the info in the reel and save it in a map + calendar.<p>However, I&#x27;ve been finding it hard to get traction while my competitors have gotten traction&#x2F;funding. I strongly believe my app outperforms all known competitors (their apps fail on reels of popular creators while mine succeeds).<p>I&#x27;m not here for pity or to advertise, but I&#x27;m curious why people ship products that don&#x27;t work for a pretty significant number of inputs when the teams are big enough (employees + funding) to pretty easily solve the problem in a cheap way (as I&#x27;ve done) or at least have a temporary high-performing solution with GPT.<p>TL;DR: imo my app outperforms competitors in raw performance. why is a team with manpower and funding failing to do something a 2 person team did in a month?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48410522",
+      "title": "Ask HN: Is Azure capacity this constraind or am I doing it wrong?",
+      "link": "https://news.ycombinator.com/item?id=48410522",
+      "domain": "news.ycombinator.com",
+      "author": "lanycrost",
+      "score": 11,
+      "comment_count": 15,
+      "created_ts": 1780655644,
+      "is_internal": true,
+      "post_text": "I&#x27;m working with AWS for many years, and currently I&#x27;m working in product with suppose to be cloud agnostic.<p>I started with AWS and now it&#x27;s time to spin up it into Azure (because many enterprises using azure for some reason).<p>I started in US EAST region in azure and at beginning I had an issue with Postgres Flexible, raised a support ticket, and in the result they recommended me to move to another region. The overall conversation to say this takes about 1 day.<p>I&#x27;ve moved to US EAST 2, and after AKS deployment I stuck with vCPU (Standard Dasv7 Family vCPUs) quote (100) and here we go again... They send me the same message template as they do for previous ticket...<p>&gt; ...\n&gt; Your ask for quota has been reviewed and backlogged at this time. It will be reviewed again when additional capacity becomes available. We do not have an ETA for when your request can be fulfilled but please be assured that we will continue working on it and update you as soon as we have more details to share and&#x2F;or process the request. \n&gt; ...<p>I&#x27;m already waiting for more then 1 day, and there is no responses from their support.<p>Long Story Short: Because I don&#x27;t want to wait for days, weeks and months to be able to test infrastructure on Azure. If it will be my decision I just stop and forget about this nightmare. Please suggest the regions and instance types with which I will not have issues.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48413167",
+      "title": "Ask HN: How did you discover Hacker News?",
+      "link": "https://news.ycombinator.com/item?id=48413167",
+      "domain": "news.ycombinator.com",
+      "author": "chistev",
+      "score": 10,
+      "comment_count": 30,
+      "created_ts": 1780670305,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48429285",
+      "title": "Ask HN: How to get my contact info off US political party's list",
+      "link": "https://news.ycombinator.com/item?id=48429285",
+      "domain": "news.ycombinator.com",
+      "author": "kaycebasques",
+      "score": 9,
+      "comment_count": 3,
+      "created_ts": 1780782170,
+      "is_internal": true,
+      "post_text": "I donated to one of the main political parties in the USA a few years back. I must have left my email and phone number, or they found it. Big mistake. Now I get hundreds of emails and texts from random political candidates, none of whom I have ever said I explicitly support, or really have any context about whatsoever. So it seems like the political party has my email and number in some central list, and they distribute it to all of their candidates to use. Is that correct? Is there anything I can do to get my contact info off this terrible, terrible list?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48421508",
+      "title": "Ask HN: Does robotics capabilities research accelerate AGI timelines?",
+      "link": "https://news.ycombinator.com/item?id=48421508",
+      "domain": "news.ycombinator.com",
+      "author": "themasterchief",
+      "score": 8,
+      "comment_count": 1,
+      "created_ts": 1780721494,
+      "is_internal": true,
+      "post_text": "For context, I am a final-year math + CS undergraduate considering pursuing a career in theoretical robotics, particularly in continual learning and the development of robots that can learn from and adapt to &#x2F; navigate their environments in a human-like manner. One concern I have, however, is that such research might advance AGI timelines. Specficially, it seems possible that architectures developed for continual learning in robots could transfer to general AGI systems (even if the AGI systems are non-embodied, since capabilities such as continual adaptation and long-term objective pursuit may generalize beyond physical tasks.)\nIs this a valid concern, and is it a common view within the AI safety community? I.e. would mainstream AI safety researchers view either of these directions as meaningfully contributing to AGI capabilities? Or are there strong reasons to believe that work on continual learning in robotics would not significantly accelerate AGI timelines? Would appreciate honest perspectives.<p>TLDR: Is it very likely that robotics capabilities research meaningfully accelerates AGI timelines? If so, why?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48405221",
+      "title": "I'm tired of LLM skill slop, so I built mine with regression tests",
+      "link": "https://news.ycombinator.com/item?id=48405221",
+      "domain": "news.ycombinator.com",
+      "author": "iliaov",
+      "score": 7,
+      "comment_count": 0,
+      "created_ts": 1780610545,
+      "is_internal": true,
+      "post_text": "I&#x27;ve recently tried skills like Garry Tan&#x27;s GStack, spent a week with it, and realized it has some flaws (I&#x27;ll post separately about that).<p>Here&#x27;s my problem: how do I know if a skill or prompt is any good (e.g. GStack&#x27;s &#x2F;office-hours)?<p>How do I compare similar skills (e.g. different &quot;deep research&quot; skills)?<p>Spotting broken software is (relatively) easy — it crashes, prints errors. Broken skills don&#x27;t. Perfectly polished, confident-sounding skills routinely mislead me and waste my time, to the point where I wish I weren&#x27;t using an LLM at all.<p>AI skills are software — and they should come with regression tests.<p>LLM teams have tons of prompt regression tests. LLM-wrapper SaaS companies have tons of prompt regression tests. But when it comes to open-source skills, SKILL.md reads reasonable, yet ships with zero tests (e.g. GStack&#x27;s &#x2F;office-hours has none at the time of writing).<p>Garry Tan, if you hear me — please consider shipping regression tests for your &#x2F;office-hours, &#x2F;plan-ceo-review, &#x2F;plan-eng-review, and so on.<p>Regression tests should:<p>1. Prove the skill works correctly<p>2. Demonstrate correct and incorrect usage<p>3. Prove the skill&#x27;s value<p>4. Come with a scoring rubric to allow skill benchmarking<p>5. The last one is the most valuable, because it lets you benchmark similar skills against each other.<p>So I started doing this myself.<p>Here&#x27;s a work-in-progress example: plan-cmo-review, a skill to complement GStack since GStack is missing a marketing review at the time of writing. I&#x27;m not a marketing guy; the point of sharing this skill is to outline its regression setup.<p>Briefly, here&#x27;s how my exploration progressed:<p>- I used GStack on a couple of products and realized the resulting design_document.md was leading me to failure, mainly marketing-wise.<p>- I dug into the skill&#x27;s failures manually with Claude Opus 4.8&#x27;s help and ended up finding the correct solution.<p>- I asked Claude to build a plan-cmo-review skill, ran it, and it arrived at a flawed solution (similar to GStack&#x27;s output).<p>- I gave Claude the correct (manual) solution to analyze and add as a regression fixture with a scoring rubric.<p>- Claude ran the (blind) regression — it failed. We iterated several times and found the key problem: Claude was trusting my prompts implicitly as the ultimate truth. Claude believed GStack knew what it was doing. GStack believed I knew what I was doing. But I was doing product&#x2F;startup research — and by definition, &quot;research&quot; is what you do when you don&#x27;t know what you&#x27;re doing. That trust chain is what broke the skills.<p>- We fixed the trust problem and the regression test passed. We added a few more. They passed.<p>- I had Claude run the regressions multiple times — cracks appeared. Claude iterated the skill. Now they pass.<p>- This methodology is still flawed. I&#x27;d like to try running different LLMs, cross-model judging, and a lot more regression tests.<p>Skill github.com&#x2F;remakeai&#x2F;plan-cmo-review . Notes at iliaov.substack.com .",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure",
+        "startup"
+      ],
+      "comments": []
+    }
+  ]
+}
