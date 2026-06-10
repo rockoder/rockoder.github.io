@@ -1,0 +1,958 @@
+{
+  "scraped_date": "2026-06-10",
+  "source": "hacker_news",
+  "total_scraped": 59,
+  "nontech_count": 28,
+  "posts": [
+    {
+      "id": "48406174",
+      "title": "Ask HN: What was your \"oh shit\" moment with GenAI?",
+      "link": "https://news.ycombinator.com/item?id=48406174",
+      "domain": "news.ycombinator.com",
+      "author": "andrehacker",
+      "score": 731,
+      "comment_count": 1106,
+      "created_ts": 1780616540,
+      "is_internal": true,
+      "post_text": "Most of us were amused when DALL-E and its peers went mainstream, and we were quick to point out the obvious flaws.<p>Then ChatGPT hit the scene and again, many of us dismissed it as a parlor trick that would never amount to much.<p>Using LLMs for coding initially was a only small step up from basic code completion, and a welcome farewell to Stack Overflow.<p>I am curious: what was the specific moment that you went from those quaint, dismissive observations to a slightly panicked,\n&quot;Uh Oh&quot; realization of what these models can do?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I bought an Alesis QS8.1 super cheap in perfect condition (was a top grade digital piano/synth in the 90s).\nand then i realized that ALL of the software (which i collected from defunct websites and archived on github) related to it was ancient and after a while of getting tired of using WINE every single time i decided i wanted a cross platform modern equivalent that did everything that several of these different programs did (plus break out some stuff that was now potentially possible with modern computer)\ni thought it would be extremely hard because the computer to synth communication is pretty much only via sysex commands (of which the actual wave file encoding protocol was undocumented)\nClaude walked me through examining the some of the original software in GHIDRA, and I had a working demo that night.....now im just playing with adding new features to it.",
+          "author": "jzemeocala",
+          "replies": [
+            {
+              "text": "Related story, while applying a firmware update to my Kawai CA49 piano, I bricked it due to flashing the wrong file (The process was broken, and I got desperate and tried something stupid, which bricked the piano). Claude walked me through looking for signs of life, and since OTA from the phone app wasn't working for me, it downloaded the Kawai Android APK, decompiled the Java, figured out the hardcoded key used for encrypting the firmware update. Extracted the piano firmware update, decrypted it, and then wrote a flashing script to program the piano from my laptop via bluetooth. My piano was back to working within an hour.",
+              "author": "jsharf",
+              "depth": 1
+            },
+            {
+              "text": "I can't imagine where we are headed. \nYou\n understand every step of what it did and can appreciate the complexity but it'll only take a few generations for this to become something like magic to the tech priests beseeching the machine spirits for blessings",
+              "author": "idiotsecant",
+              "depth": 2
+            },
+            {
+              "text": "I think you're overestimating how much the average person knows about how technology operates today, or 30 years ago, or 1000. In some sense, we have been living with magic and tech priests since the Romans built the aqueducts. I wouldn't be surprised if widespread, cheap AI makes it \neasier\n for the average person to learn how things around them work, if they are so inclined.",
+              "author": "fasterik",
+              "depth": 3
+            },
+            {
+              "text": "I meet kids today who haven’t heard of Microsoft, who regularly play GTA and hand in assignments made in Powerpoint. 20 years ago I discovered that a friend didn’t know Xbox and Word were both from Microsoft. It’s really hard to understand what is common knowledge in different parts of society.",
+              "author": "lazyasciiart",
+              "depth": 4
+            },
+            {
+              "text": "Indeed. You'd be shocked how few people on Hacker News even know the difference between cross stitch and blackwork.",
+              "author": "ForHackernews",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I could go on and on, but Claude recently decompiled the firmware of my camper van, documented all the CAN interfaces, then programmed an ESP32 module to talk to the van’s integrated systems (power, HVAC, lighting, tanks). That sort of embedded systems integration is completely out of my wheelhouse.\nI honestly don’t understand AI naysayers. I use Claude every day both professionally as a Solution Architect and personally in a variety of projects I simply could not have ever approached alone.",
+          "author": "shreddude",
+          "replies": [
+            {
+              "text": "> projects I simply could not have ever approached alone.\nI think that's part of the divide between enthusiasts and naysayers. If you use GenAI on things that you couldn't approach alone, it's an incredible tool. If you use it on stuff that you're pretty good at, it's not a gamechanger (and if you're an expert, it's a minor boost at best). Many people's job are about doing what they're an expert at.",
+              "author": "williamdclt",
+              "depth": 1
+            },
+            {
+              "text": "I'm about to complete a new non trivial functionality in a project of a costumer of mine. I spent an hour writing the spec. Then I asked Claude (Sonnet 4.6) to check if I missed something. I did, the sort of minor issues one notice after starting writing code, edge cases etc. That made me think about more issues and after a few iterations we settled down on a spec. I asked Claude to make an implementation plan and we ended up with 9 steps. It wrote the code for a step with new automatic tests and I performed some manual QA, which found further issues we didn't think about. We are at step 8 of 9 in about 12 hours of work. I would have needed a week to be there alone, with time spent researching and fixing bugs I created along the way, an inevitable part of our job but not exactly the most pleasant one.\nThis speedup is great. It improves the overall quality of the product (as perceived by the users) because I can ask Claude to add features that my customers and I would have dismissed because they take too long to implement. We would have settled down with a more basic UX.\nSo is it a game changer? It is in the same way those HTML / CSS framework like Bootstrap were game changers: suddenly every developer could create a decent and consistent UI in a fraction of the time with a few bells and whistles that we wouldn't have bothered coding. As a side effect a lot of web apps felt look alike mass products and web designers had to reinvent themselves, but the economics leaded inevitably in that direction. Would I spend again one of two weeks doing alone what I could write in a day or two with a LLM? Not anymore, not at this cost ($20 per month.)",
+              "author": "pmontra",
+              "depth": 2
+            },
+            {
+              "text": "I'd love to read a full transcript of someone going through this kind of collaborative programming. I see this kind of process mentioned a lot but can't quite figure out the details in my head.\nIf anyone has a link to a blog post or similar showing this process in depth, I'd love to give it a read :)",
+              "author": "jowsie",
+              "depth": 3
+            },
+            {
+              "text": "I've been using superpowers [1] for this purpose, and have really appreciated how it guides the model to use careful, methodical approaches to answering my prompts. It's great for multi-step planning, design, and implementation, but also has guidance for debugging, accepting a code review, etc.\n[1] \nhttps://github.com/obra/superpowers",
+              "author": "tkocmathla",
+              "depth": 4
+            },
+            {
+              "text": "Yeah I feel like I’ve learned a lot from superpowers. It’s such a thoughtfully developed skillset.",
+              "author": "burnto",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "My furnace went out during the 2025 holiday and I couldn't get an appointment with a repair person for 2 days. It was getting very cold in my house so I went into my attic and made several videos of the furnace attempting to start and gave it to gemini. It diagnosed the issue immediately and had me spin one of the components (a small exhaust fan) while the furnace tried to fire. It came on immediately. I had to do that several times, but it worked until the HVAC service showed up.",
+          "author": "andrewthornton",
+          "replies": [
+            {
+              "text": "Very similar thing this week, and an interesting story to go along with it!\nI called my normal HVAC company for my rental home because the tenant reported the AC wasn't cooling the house. When I called, I got one of the latest AI voice assistants to help me, and it was an awful experience and I ended up not hearing back after the assistant told me the office would call me back.\nSo, I went over to the house and used ChatGPT to help me diagnose the issue by taking some photos of the compressor panel outside. It walked me through what to check, I provided some diagnostic codes I witnessed... and it walked me through the very simple repair of replacing the $25 capacitor. It was going to cost me almost 4x that just for the service call to diagnose what was wrong in the first place.\nSo, the weird experience was: Gen AI made me lose trust in my normal HVAC company, and more Gen AI basically allowed me to replace my HVAC company and do the repair myself all in one day.",
+              "author": "jodacola",
+              "depth": 1
+            },
+            {
+              "text": "With AI you just don't get the full service of a professional HVAC guy though.\nLike the time I had one of the bigger shops in town come by to get a quote for replacing a dual stage fan motor on an AC.  The tech asked me if I'd like them to replace the contactor while they were in there because it is a part that often fails.  I asked what a contactor was and he explained it.  \"Oh, like a relay?\" I asked.  I told him to quote the cost for \"replacing the contactor, while they're already in there.\"\nHe quoted me $400 for the contactor, $750 for the fan.  The contactor itself I later found out was was $7.  I literally laughed in his face when he said that.\nSo, like I said, you just aren't going to get professional level assistance from an AI.  Thankfully.\nTo end the story: one of the other guys I called for a quote on fixing this unit repaired it for free; the unit was still under warranty and it was fully covered.  The original installer of this $12K unit was refusing to return my calls.  Another \"Not gonna get pro level service from an AI\" story.",
+              "author": "linsomniac",
+              "depth": 2
+            },
+            {
+              "text": "Becoming increasingly convinced that the pattern that will stick is not AI \"integrated\" into everything but personal agents.  As in I will have one personal assistant that helps me in all of my tasks instead of using the little ones bolted on to every product.",
+              "author": "dgemm",
+              "depth": 2
+            },
+            {
+              "text": "Even before AI, YouTube was full of videos on these topics.",
+              "author": "userbinator",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, and with 95% of those videos, there'll be something they gloss over which I don't understand; or I'll have a concern which they don't address; or, conversely, they'll assume that their target audience was born in the 15th century, and spend 20 minutes building up the context, when what I really needed was about 12 seconds.\nWith an AI, I can say \"I don't understand that part, can you explain more?\" Or \"what about this concern I just thought of\", or \"I already know almost enough about this, I just need this one gap filled in.\" It's an objectively better experience.",
+              "author": "nkoren",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I have had many, but the last one was quite funny:\nIt fixed my printer after dist-upgrade and separate chrome upgrade, the printer worked everywhere but not in chrome.\nAfter 30 years of using linux I didn't even want to know what is wrong, is it colord again? dbus + cups issue? I completely accepted that I wont be able to print from chrome for a couple of months until next update.\nI just ran it in dangerously-skip-permissions mode and said 'my printer doesnt work in chrome' few minutes later I heard the printer printing \"This is test\" and it said 'I think its fixed, do you see a page coming out of the printer now?'",
+          "author": "jackdoe",
+          "replies": [
+            {
+              "text": "My entire computer setup has been done via English via Nix, and it's spectacular.\nI had been dabbling with NixOS for a year or more and liked it but without deep knowledge it's fairly hard to approach.  I've gotten partially working setups in the past, but a couple weeks ago I decided to go all or nothing.\nNow I have a workstation setup that I can reproduce by just grabbing my home directory and /etc/nixos and doing a rebuild.\nAnd it's a somewhat complicated setup.  It entirely configures vim (2500 lines of nix config for that, but it's in one file rather than sprayed all over like astrovim), builds gitbutler CLI, has all my secrets encrypted with SOPS, manages my git configs and my ~/bin directory, has sway set up, finally has audio and ability to screenshot (something that had been broken on my 22.04 Ubuntu and I just didn't want to bother with).\nNixOS + Claude Code to manage it is really, really good.",
+              "author": "linsomniac",
+              "depth": 1
+            },
+            {
+              "text": "Don't leave us hanging, what was the issue?",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "I will never know.",
+              "author": "jackdoe",
+              "depth": 2
+            },
+            {
+              "text": "I realize you're being witty for comedic effect but aren't you genuinely curious whether this was something trivial or a complex systems interaction? The few times an LLM debugged something for me, it only took 10s to ask for a summary, and I learned something new and interesting every time, even useful at times.\nI don't understand not wanting to understand.",
+              "author": "Zopieux",
+              "depth": 3
+            },
+            {
+              "text": "I have seriously dealt with this for 30 years, from before cups existed, and as I said I have forgotten more about lpd and cups than most people know.\nYou have no idea how much I don't want to understand.\nI am not being witty for comedic effect.",
+              "author": "jackdoe",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Actually seems absurdly simple now, but sometime last year I was trying to figure out what I'd need to tow my daughter's car cross country with my truck: what are the trailer/dolly options, what do they cost, can my truck actually tow the combined weight, etc.\nI started out prompting ChatGPT kinda how I would with Google, one small prompt at a time, asking about various details.  But after one or two of those I just tried \"I want to tow a car of make A with my truck model B, from point C to point D, what are my options?\"   And it wrote me a report with comparison tables and computed towing weights and other details for different options.\nAt that point, I was like \"Oh. This is different.  And it's just the beginning.\"",
+          "author": "jp57",
+          "replies": [
+            {
+              "text": "It very plausibly might have been totally wrong.\nOut of laziness I several times asked Claude and ChatGPT each some torque figures and other simple, hard data related to my dirt bike. They often got it completely wrong, but full of confidence every time. I never trust LLMs with hard data, unless you RAG the PDF into the context and even then it's sketchy.",
+              "author": "flyinglizard",
+              "depth": 1
+            },
+            {
+              "text": "Dates matters. Questions I asked about my Mazda a year ago that were total hucillunations were answered very well this year. To me it feel like the early days of computing. What was not possible one year became possible when a new generation CPU or GPU came out and you have to consistently re-evaluate your expectations or else you'll miss the things that others are discovering with fresh eyes.\nI made this personal 'benchmark' of odd and strange questions a few years back when this took off and I would keep re-running these questions whenever some big news came out about a new model and also going back and fourth between the different companies to see where they all stood. (Obvioulsy with clean cache/new accounts)\n10 questions: In 2023 it could only get past question 3-4 to reaching the last question and still hacillunating(last year) to providing sources pulled from really obscure books(this year).\nFor example, one of the harder questions was about the transition of a particular 30 second portion of a background song used in a 30+ year old Bond film that was only played once in the entire film. Went from totally making up nonsense to accurately describing the music theory defintiion of the transition(called a 'stinger') to also explaining why it was done in that particular scene of the film and also providing sources from a snippet of a unrelated interview with the composer explaining his mindset at the time.\nMaybe this isn't considered a real benchmark as its not reproducable but for a 'personal benchmark' I came away impressed. I would consider everyone to define their own benchmarks and 'tests' and to consistantly challenge the models to see if there are any meaningful improvements. Now I treat the AI as something to keep skeptical but to also to always consider what it proposes as an answer(ie. dont ever dismiss it outright). I sometimes wonder if this is slowly messing up my biases and maybe thats what Altman, Amodei and others want.",
+              "author": "saturn8601",
+              "depth": 2
+            },
+            {
+              "text": "Use the latest models, set effort a bit higher, and try again. It probably won't be wrong.",
+              "author": "Schiendelman",
+              "depth": 2
+            },
+            {
+              "text": "It wasn’t wrong, though, in my case.",
+              "author": "jp57",
+              "depth": 2
+            },
+            {
+              "text": "Hard numbers, no. Even high level concepts and theory you need to triangulate and prompt in different angles, across different models, and figure out what overlaps to build a mental mode that’s - even then - roughly 80% correct. It’s better than google, but the information isn’t free",
+              "author": "glouwbug",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48420827",
+      "title": "Ask HN: Why is the HN crowd so anti-AI?",
+      "link": "https://news.ycombinator.com/item?id=48420827",
+      "domain": "news.ycombinator.com",
+      "author": "Ekami",
+      "score": 457,
+      "comment_count": 756,
+      "created_ts": 1780713111,
+      "is_internal": true,
+      "post_text": "Genuine question.<p>Over the past six months, there hasn’t been a single day where I’ve checked the HN Best RSS feed without seeing a post about how AI “writes bad code,” “introduces bugs,” “creates technical debt,” or something along those lines.<p>I’ll probably make a lot of enemies by saying this, but do people realize that code is just a means to an end?<p>Users don’t care whether the code was written by AI or by hand, or which framework you used. They care that the product works.<p>I say this as someone who has spent more than 20 years honing their craft as a software engineer.<p>Let’s face it: by the time I manually ship version 1.0 of a product, the AI-assisted version could have been deployed 10x faster. By then, enough real-world feedback would have surfaced to identify the major issues, and tools like Claude Code would make it possible to fix and ship version 2.0 at an incredible pace.<p>At some point, execution speed starts to matter more than the elegance of the code.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48449187",
+      "title": "Ask HN: What are tools you have made for yourself since the advent of AI?",
+      "link": "https://news.ycombinator.com/item?id=48449187",
+      "domain": "news.ycombinator.com",
+      "author": "aryamaan",
+      "score": 414,
+      "comment_count": 707,
+      "created_ts": 1780942959,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been making a lot of audio experiments for my own amusement. They all have some potential to drain your cpu, sorry!\nhttps://www.noisetable.xyz/\n - a collection of chance-based audio 'channels' in a VCR inspired interface\nhttps://concrete95.net/\n - a musique concrète web app that's made to look like windows 95. Pulls random audio from freesound.org and loops a small section, you can also layer synth pads or melodic synth loops. I'm often able to get some really pleasant background ambience.\nhttps://windso.me\n - a sample-based step sequencer that doesn't let you choose the sample that's loaded, kinda fun, still needs a lot of work!",
+          "author": "yungbeto",
+          "replies": [
+            {
+              "text": "These are lovely",
+              "author": "burnto",
+              "depth": 1
+            },
+            {
+              "text": "Thank you :)",
+              "author": "yungbeto",
+              "depth": 2
+            },
+            {
+              "text": "I get a security warning on firefox when visiting noisetable.xyz",
+              "author": "BrokenCogs",
+              "depth": 1
+            },
+            {
+              "text": "Whoah, I checked that \nhttps://concrete95.net/\n sooooo coool! What the heck :D",
+              "author": "kokkis",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The funniest thing I've made is a free utility called \"Moniker\" that contextually renames files based on their contents.\nUses local AI models and I was able to snag this great domain name.\nhttps://finalfinalreallyfinaluntitleddocumentv3.com/\nBut hands down the most useful thing I've made is HutchDB, which is a MCP service that you can call from any AI chat or Agent setup to store data for you.\nLiterally from your AI you just say \"save that to Hutch\" and then it figures out:\n- The schema + fields\n- Builds nice webviews (Kanban, Timeline, Grid, Calendar)\n- Lets you share the output with people\nSo people use it for all kinds of things like time tracking (\"every hour save a summary of my activities to Hutch\"), for Agent to Human handoff (\"Every day check social media for mentions of my company and save them to Hutch\").\nI use it for things like recording all of our marketing activities and then having my AI compare those to signups for rough attribution, etc.\nDead useful and at \nhttps://hutchdb.com",
+          "author": "michaelbuckbee",
+          "replies": [
+            {
+              "text": "I love it! A few questions that made me think:\n- how do you know that \"people use it for all kinds of things\"? I just read your privacy policy and I'm concerned about my AI agent possibly leaking some API key to Hutch and then you can read it.\n- how is this free? You're hosting on Vercel, one of the most expensive hosting providers. What happens when this goes semi-viral? How do I know you won't just pull the plug to cut costs or start charging $500/month? I don't want to sign up, invest my time, and then lose access.\n- I signed up and now I can't access privacy policy nor terms of service pages, because when I go to \nhttps://hutchdb.com/\n I get redirected to \nhttps://hutchdb.com/dashboard",
+              "author": "Mystery-Machine",
+              "depth": 1
+            },
+            {
+              "text": "This is all very fair criticisms. This thread asked: \"What are tools you have made for yourself?\" and that's genuinely what this is. I wanted it so I made it and then AI makes it so easy to just throw up a marketing page.\nI've a a handful of dev friends that have started to use it as well and give their feedback and it's been slowly growing as I've added sharing/invites.\nI would absolutely not recommend putting big production data into it currently.\nMy vision for it was something more like how the #1 use of spreadsheets is actually people making lists and not actually people doing lots of calculations.\nGiven the uptake today (thanks everybody!) and your feedback (thanks Mystery-Machine) I'm going to work at addressing your concerns.",
+              "author": "michaelbuckbee",
+              "depth": 2
+            },
+            {
+              "text": "You completely ignored every question related to costs/privacy.",
+              "author": "jazzpush2",
+              "depth": 3
+            },
+            {
+              "text": "I thought it was more implied, but let me be more explicit:\n- This is something I made for myself without a lot of commercial thought, so I still haven't thought through pricing + usage + limits + operational limits. In it's current wildly unoptimized state it's still very cheap to run.\n- For the specific concern about API Key leakage there's not a lot I can do about that (that I'm aware of) as the logic of what gets sent is handled by the client AI. It is possible to pull down and audit both the tools + instructions that are published by the MCP server if there are concerns on that side.",
+              "author": "michaelbuckbee",
+              "depth": 4
+            },
+            {
+              "text": "dope!",
+              "author": "modelcroissant",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Gemini has been indispensable for helping me move from Windows to Linux. I'm reasonably proficient, but moving to a brand-new OS brought so many random questions and weird edge cases that I never would have had the confidence, patience, or time to tackle it alone, even with pretty strong Google fu. It's been so nice to have instant access to answers for my specific problems, without judgment or having to wait on a reply.\nAt the same time, I moved from Chrome back to Firefox, and Gemini was great at finding equivalents for my most-used extensions -- and, when none existed, to write my own. It's also been really useful for customization/\"ricing\".\nMore recently, I got into Quod Libet as a primary music library manager, and both Gemini and Claude have been fantastic at helping me build custom plugins that make it do exactly what I want it to. Scripts to automagically download tracks with metadata and synced lyrics, a lyrics sidebar that highlights lines as you listen and lets you click to jump to a specific line, a bookmark button that lets you mark your favorite section of a track for easy browsing later. Next chance I get is something that enables lyrics search across the entire library (a feature I was already able to build for the Stremio desktop player -- it's so cool to be able to search for a line in a TV episode or movie and jump straight to it).",
+          "author": "Jordan-117",
+          "replies": [
+            {
+              "text": "I similarly used it to finally facilitate a switch to Arch to a couple months ago. Not technically a tool, but it was very convenient to take the Arch wiki, and personalize it by saying \"My hardware is X and my use case is Y, can you filter out the 90% of things from here that aren't relevant to me?\"",
+              "author": "sufficientsoup",
+              "depth": 1
+            },
+            {
+              "text": "instant access to answers for my specific problems, without judgment\nFor me that’s killer feature, even if we don’t achieve AGI at least we got good enough „something that will google it for me”.\nIt is great both ways as an expert in my niche I don’t have to waste time on reading through entry level fluff. As non expert in other fields I don’t get to be scolded for asking entry level questions so RTFM and LMGTFY will sink in history fortunately.",
+              "author": "ozim",
+              "depth": 1
+            },
+            {
+              "text": "ChatGPT has helped me with innumerable little technical things and feels indispensable at this point.\nI can't help thinking that this is a combination of Google sucking more and more and various problems of daily getting so hard need something like a script to solve them. (Recent challenge - \"what affordable campgrounds are near the Pacific Create trail and open now\").",
+              "author": "joe_the_user",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Tools I’ve built for myself:\n- sandvault \nhttps://www.codeofhonor.com/projects/sandvault/\n  runs agents in a separate macOS user account, hardened with sandbox-exec. It also supports headless browsing and iOS Simulator from inside the sandbox for testing web and iOS apps.\n- clodpod \nhttps://www.codeofhonor.com/projects/clodpod/\n agents run inside a macOS VM.\n- git-multi-hook \nhttps://www.codeofhonor.com/projects/git-multi-hook/\n git only allows one script per hook event; this is a dispatcher that discovers and runs every script in a hooks dir, in parallel, for both global and repo hooks.\n- TubeGate \nhttps://www.codeofhonor.com/projects/tubegate/\n Chrome extension to block YouTube videos based on keywords (like “sponsored”).\n- push10k \nhttps://www.codeofhonor.com/projects/push10k/\n iOS app to track my progress toward 10,000 push-ups.\nMy blog is AI-coded: Zola static site, Sveltia CMS, Cloudflare Pages/Workers, with GitHub Actions handling builds and syndication. \nhttps://www.codeofhonor.com",
+          "author": "netcoyote",
+          "replies": [
+            {
+              "text": "Wait. You worked on Guild Wars, Starcraft, Warcraft, and Diablo?\nThis place is incredible.",
+              "author": "ElFitz",
+              "depth": 1
+            },
+            {
+              "text": "Guild Wars was one of the most fun games ever. The crazy combinations of skills you could try in the random arena were so much fun.\nGuild Wars 2 and most other games are pure slop.",
+              "author": "Traubenfuchs",
+              "depth": 2
+            },
+            {
+              "text": "They did announce Guild Wars 3 last Friday btw. Not set to release until 2027.\nAlso Guild Wars 1 has been receiving new content updates this year.",
+              "author": "mschild",
+              "depth": 3
+            },
+            {
+              "text": "I just found your blog yesterday reading up on the stories of how Warcraft and Starcraft were made!! Have been hacking on small games and a tool to build 3d environments for a while and get very inspired by hearing stories from back in the day. Thanks for making everything public. I really enjoy your writing.",
+              "author": "bdickason",
+              "depth": 1
+            },
+            {
+              "text": "Thank you, glad you enjoyed the articles. I wish I had the motivation to write more!",
+              "author": "netcoyote",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It's dumb, but....\nI made a scraper that searches through all the news and finds anything 'war' related. It then summarizes it and give me that new in the Star Wars crawl with music.",
+          "author": "Balgair",
+          "replies": [
+            {
+              "text": "If you upload those to YouTube, you might find yourself an audience.",
+              "author": "userbinator",
+              "depth": 1
+            },
+            {
+              "text": "Can... Can I have this as well?",
+              "author": "properbrew",
+              "depth": 1
+            },
+            {
+              "text": "How soon until we can just share a prompt://make-me-a-react-app-showing-a-summary-of-war-news-as-a-star-wars-crawl ? :-D",
+              "author": "foobarian",
+              "depth": 2
+            },
+            {
+              "text": "You can already share Claude artifacts this way.",
+              "author": "AlecSchueler",
+              "depth": 3
+            },
+            {
+              "text": "Please, please share this. I want to see this so badly.",
+              "author": "crazygringo",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48448313",
+      "title": "Ask HN: Why hasn't there been a real competitor to Ticketmaster yet?",
+      "link": "https://news.ycombinator.com/item?id=48448313",
+      "domain": "news.ycombinator.com",
+      "author": "mdni007",
+      "score": 244,
+      "comment_count": 224,
+      "created_ts": 1780939709,
+      "is_internal": true,
+      "post_text": "It feels like every event&#x2F;venue is selling tickets exclusively through Ticketmaster.  Every other ticketing platform seems to only hold resale tickets in their inventory which just transfers the tickets to your Ticketmaster account when bought. With all the hate Ticketmaster has gotten and all the other ticketing platforms out there, I&#x27;m surprised Ticketmaster still has a hold of pretty much the entire market. How are they doing this? Why haven&#x27;t the other platforms been able to compete?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Many of the other commenters have explained how the ownership structure of Ticketmaster gives them near monopoly control because they also own the radio stations and the venues and the promoters. (I'm using \"they\" and \"own\" very liberally in this paragraph.)\nThe simple fact that there's an ownership link between Ticketmaster and the scalper I mean totally legit resale sites is so wildly corrupt that, well, it's textbook stuff.\nWhat I haven't really seen discussed in the comments is that the role and objective of Ticketmaster is poorly understood. They seem like the people who sell tickets, but in reality they are \"blast shield for consumer rage\" as a service. Their role is to industrialize the conversion of anger into waste heat while leaving the musicians looking like neutral parties.\nThey also do a lot of catch-and-kill; once competitors get too big, they use bully tactics to starve them until they can acquire them cheaply.\nThere's an app called DICE. I like it a lot. I'm rooting for them.",
+          "author": "peteforde",
+          "replies": [
+            {
+              "text": "Go to a lot of smaller shows, been using DICE for a long time - I think they dominate the smaller venues (in the UK at least). They've made tickets as easy as Amazon made ecom.\nAlerts when for when tickets go on sale, (almost one click!) buy for friends and share, bans if you sell over face value, and (for a lot of places) you can return tickets to the pool to resell if you can't go (so there's often last minute waitlist tickets). It's all super smooth and a genuinely delightful experience.\nRooting for them too!",
+              "author": "iamben",
+              "depth": 1
+            },
+            {
+              "text": "Awesome.\nEverything you're stating sounds alot like Tixel in Australia.\nTho I'm not sure they manage the venue / original ticket sale.  More of a scalp free marketplace.\nOnly place I will buy or sell tickets.",
+              "author": "RileyJames",
+              "depth": 2
+            },
+            {
+              "text": "DICE is a great experience, but I hate that they have no option to buy tickets without installing and using their app. It should at least be possible from a website, come on...",
+              "author": "FireInsight",
+              "depth": 2
+            },
+            {
+              "text": "DICE are owned by Fever as of 2025.",
+              "author": "philipwhiuk",
+              "depth": 2
+            },
+            {
+              "text": "DICE is awesome. I'm bummed when I need to use anything else. I rarely ever need to use Ticketmaster.",
+              "author": "maleldil",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "From the point of view of the promoters, concerts are a two-sided marketplace. Two-sided marketplaces are notoriously difficult for small players to compete in. You need to attract good acts so people will buy tickets, but to attract the top acts you need to show that you can sell lots of tickets.\nTicketmaster avoided the two-sided market problem until they reached scale. They were just a website where you buy tickets, an IT appliance for promoters.\nBut then Ticketmaster started buying out promoters, and that short circuited the entire system. Fans can't buy tickets from a different storefront because their favorite artists are only booking performances with ticketmaster-controlled venues. Top talent can't book high-grossing venues that aren't owned by ticketmaster, because Ticketmaster owns the promoters.\nScalpers are a symptom, the disease is consolidation of competitive markets by corporations. This kind of situation is precisely why antitrust law exists.",
+          "author": "ryukoposting",
+          "replies": [
+            {
+              "text": "Just tried searching for a long-form article I read in recent years. Wish I could find it, but obviously the facts are not a secret. It explained in depth all the problems with the monopoly, but it also pointed out something very surprising to me. A few artists have spoken out angrily on behalf of their fans. However, the fact is, the artists in general do financially benefit from Ticketmaster's way of doing things. Part of Ticketmaster's business model is taking the heat from the fans who don't like paying all the extra fees so that the anger is not directed at the artists. If an artist wants to set the floor at $150 but knows fans might be upset, they can drop the price 30% and TicketMaster can help them make up the difference in fees, and Ticketmaster has nothing to lose. The artists get to keep their reputation intact instead of appearing greedy to fans.",
+              "author": "stephenhuey",
+              "depth": 1
+            },
+            {
+              "text": "If an artist wants to set the floor at $150 but knows fans might be upset, they can drop the price 30% and TicketMaster can help them make up the difference in fees, and Ticketmaster has nothing to lose. The artists get to keep their reputation intact instead of appearing greedy to fans\nThis myth keeps getting promulgated and it's just that: a myth. The podcast was wrong about how the music industry actually works.\nVenues and promoters set the ticket prices, not the artists. The artists get a fixed fee for their performances, and may get a bonus if a certain % of tickets are sold. Even artists on tours don't get to choose the ticket prices. They can ask nicely, but ultimately the promoter decides.",
+              "author": "gamblor956",
+              "depth": 2
+            },
+            {
+              "text": "Do you have evidence for your claims?",
+              "author": "pxx",
+              "depth": 3
+            },
+            {
+              "text": "Was it possibly actually a podcast? \nhttps://www.npr.org/2025/10/23/nx-s1-5582775/are-concert-tic...",
+              "author": "manwe150",
+              "depth": 2
+            },
+            {
+              "text": "You know what? Might have been Freakonomics:\nhttps://freakonomics.com/podcast/why-is-the-live-event-ticke...",
+              "author": "stephenhuey",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Here's a fascinating clip that's stuck with me of Louis CK talking about trying to circumvent ticketmaster: \nhttps://youtu.be/UtoyMpR-mWY?si=LHfmofSERrQZLEj9&t=3015\nSpecifically the part where he'd play at a non LiveNation/Ticketmaster venue, and right after, TM would find out and would make a deal with the venue to be their exclusive promoter. Insanity.",
+          "author": "anon277748931",
+          "replies": [
+            {
+              "text": "That was a good watch. From your comment, it seemed like this was a low-medium level issue with low-medium venues doing exclusive deals with LN/TM but Madison Square Garden is arguably the most prestigious venue in the world.",
+              "author": "jimbob45",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Trent Reznor (Nine Inch Nails) gave a good explanation many years ago already:\nhttps://stereogum.com/58831/trent_reznor_blasts_ticketmaster...",
+          "author": "nemoniac",
+          "replies": [
+            {
+              "text": "He also predicted the future for after the merger.\nIts funny - of all the stuff people make up that was Obama's fault, no one ever mentions his admin allowing Ticketmaster and Live Nation to merge.  Now they need to be broken up, probably like the Bell System back in the day.  But I'll keep on dreaming about that.",
+              "author": "jmuguy",
+              "depth": 1
+            },
+            {
+              "text": "My dad told tales of lining up outside a venue to buy a ticket from them directly. By the time I was old enough to be going to concerts, I had to camp out at a TicketMaster location. It made going to the show that much more memorable with the effort put into it. Screw the Baby Bell break up, break it up past the point of just ticket sales. Also break up who can own the venues in town.",
+              "author": "dylan604",
+              "depth": 2
+            },
+            {
+              "text": "My college job was at a record store that had a Ticketmaster machine. If you didn't want to pay the $2.50 fee[1] (we got only like 15 cents or something) you could go to the venue and buy tickets directly.\nBut since they became a monopoly that option is unavailable. Their contracts with the venues include that they get their full fee, even when bought in person.\n[1] Which paid for the custom ticket printer, the ticket stock, the CRT terminal, and the central computer. We paid for the data line and donated the counter space.",
+              "author": "chiph",
+              "depth": 3
+            },
+            {
+              "text": "Worse, they are all owned by the same company now. It’s all a multi-headed hydra of suck. Live Music has been completely monopolized.",
+              "author": "reactordev",
+              "depth": 1
+            },
+            {
+              "text": "If you like specific acts, sure. Or maybe some cities take independent venues more seriously than others. Growing up, ok I missed out on getting Metallica tickets because I didn't want to support clear channel (or Live Nation, or TM, etc...), but I still was able to see plenty of amazing metal bands in indie venues.\nAnother interesting note: Weird Al is playing three venues within driving distance from me. Only one of them is selling tickets through TM.",
+              "author": "dfxm12",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Ticketmaster obviously sucks, and their monopolistic business practices deserve a close look by regulators.\nBut the core of it is that an unregulated ticket market actually supports these prices.  Fans keep showing that they're willing to dig deep and outbid each other to attend these events in person.  Ticketmaster realizes this, and have set up a business model that extracts accordingly.\nI think this is where us Americans get turned around. We tend to believe that it’s fair to charge the full market value for a thing, but we also have a sense that cultural experiences are \"meant\" to be shared equitably.  But until we actually put a value on the latter, we're only ever going to have the former.",
+          "author": "alexose",
+          "replies": [
+            {
+              "text": "Looking at the world cup ticket prices gives me a mini heart attack. I don't know who is responsible for such high prices (maybe a combination of FIFA and Ticketmaster?), but goddamn these prices are insane. It is going to price out most people. Either that, or people are going to get into debt, just to see a couple of matches to see their favorite teams play.",
+              "author": "akudha",
+              "depth": 1
+            },
+            {
+              "text": "There are very limited seats (a few teens of thousands). Free market logic dictates that the 100000 richest fans get the tickets.\nIf you don't like it, you are not a true believer in a free market. There's a reason social democrat countries heavily subsidize culture.",
+              "author": "alphager",
+              "depth": 2
+            },
+            {
+              "text": "Stadiums are still going to be full, that’s why it will keep happening.\nPeople voting with their wallets goes both ways.",
+              "author": "loloquwowndueo",
+              "depth": 2
+            },
+            {
+              "text": "The real crime is that FIFA is allowed to interfere with mass transit schedules for venues already equipped to handle large events. Non-spectators are being unfairly disenfranchised if they need to use public services they, and not FIFA, are paying for with taxes.",
+              "author": "kevin_thibedeau",
+              "depth": 3
+            },
+            {
+              "text": "It's not clear they will be. Or maybe not with the fans that wanted to see their teams.\nhttps://www.bbc.com/sport/football/articles/ckgpv7v4p9lo",
+              "author": "conradfr",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48413629",
+      "title": "Ask HN: What is your (AI) dev tech stack / workflow?",
+      "link": "https://news.ycombinator.com/item?id=48413629",
+      "domain": "news.ycombinator.com",
+      "author": "dv35z",
+      "score": 165,
+      "comment_count": 134,
+      "created_ts": 1780672434,
+      "is_internal": true,
+      "post_text": "Hello, happy Friday!<p>I am looking to do some in-person &quot;developer boot-up&quot; workshops, and seek your suggestions for &quot;modern tooling&quot;.<p>The background of the participants range from motivated newbie (&quot;I heard you can make your own app with AI!&quot;) to existing software developers who want to get up to speed on modern development for the purposes of building stuff, and getting jobs where AI tools are being used.<p>For those who have been doing software development &amp; &quot;tech&quot; lately using AI tools, and feel they have a great setup &amp; flow - I would love to hear what your dev setup is, what tools you&#x27;re using and what workflow has been working best for you (and your team).<p>&#x2F;&#x2F; My Background<p>I have been programming &#x2F; building for 20+ years, but have not been using AI tools much (aside from hitting up LLM APIs on a few projects).<p>I value open-source, and aim for long-term quality and supportability. Techniques like test-driven development (TDD), using proven &#x2F; well documented tools, customer-centric development (often pairing with clients), make it easy to do the right thing. If you are familiar with Pivotal Labs, agile &amp; XP - that&#x27;s the style.<p>These are some of the Upcoming uses-cases for the workshop, and my own personal &quot;IT backlog&quot;:<p>- Create a static &quot;one pager&quot; personal&#x2F;professional website<p>- Setup a Blog &#x2F; Static site generator (Pelican), create a simple but stylish theme<p>- Create a simple web app &#x2F; backend API (FastAPI) tool - form-based calculator, convert X data to PDFs, etc.<p>- Figure out how to have SyncThing autosync the home folder of 3 Linux computers in the house<p>- Backup &amp; archive the photos &amp; video from my iPhone<p>&#x2F;&#x2F; Tech stack I am currently using:<p>- Operating system: Linux Mint Debian (LMDE)<p>- Editor: VSCodium<p>- Code: Python, HTML&#x2F;CSS<p>- Server platform: Amazon AWS<p>I am guessing that most workshop participants will be using MacBooks &amp; Windows computers - but a few are on Linux, as I recently did a &quot;Linux install party&quot;.<p>I haven&#x27;t used any &quot;AI harnesses&quot;, agents or anything like that - but curious what&#x27;s a good starting point to take best advantage of these tools.<p>Thanks for sharing the knowledge!<p>&#x2F;&#x2F; JRO",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48465702",
+      "title": "Ask HN: Are you still using a Vision Pro?",
+      "link": "https://news.ycombinator.com/item?id=48465702",
+      "domain": "news.ycombinator.com",
+      "author": "y1n0",
+      "score": 143,
+      "comment_count": 172,
+      "created_ts": 1781030872,
+      "is_internal": true,
+      "post_text": "Almost two years ago there was a thread on this (https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=40872102).  I&#x27;m curious now that more time has passed what people think?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I use it every day, approx ~95% of the days since it launched over 2 years ago. Many hours a day. Far and away my biggest use-case is connecting it to my laptop for gigantic (private) movie theater-sized screen.\nGetting it comfortable was the most important step. The 6-months-old DualKnit band is really great for making it a lot more comfortable. An open face mod (eg $10 Macally on amazon) helps a lot with eye breathability, and restoring peripheral vision.\nAlso really great for being able to work well from anywhere.\nSad that so many people are sleeping on it, but what can you do? Check out r/VisionPro for tons of people that love theirs and use them constantly.",
+          "author": "dsernst",
+          "replies": [
+            {
+              "text": "I see some deeply enthusiastic comments like this whenever it’s mentioned. I wonder how much lack of adoption is simply lack of awareness. Apple needs to find ways to make experimenting with it, and experiencing specific use cases, more approachable. I’m not going to go to the Apple Store to try it — I don’t care enough. Maybe one day I’ll happen to do that, but I’ve got enough social anxiety (which is a low amount!) to not want to ask someone in a busy Apple Store to let me strap the VR goggles to my face for 30 minutes of experimenting with a code editor.\nIdk if there’s an easy solution to this — maybe shared setups distributed to WeWork type spaces or something… but I suspect it’s the main barrier to adoption, assuming even just 10% of developers would share the same experience as you when they try it for the first time. (Or maybe there’s also a learning curve where it sucks on first experience, and your body gets used to it only after some prolonged usage?)",
+              "author": "chatmasta",
+              "depth": 1
+            },
+            {
+              "text": "The biggest barrier to adoption is of course the price. To pay $3,500+ I'd better be damn sure I will use it every day, and even though I did the 30 min demo I still have no idea if it would be tolerable for longer periods.\nI've said before and I'll say it again, Apple/Meta need to have rental stands in major airports so I can rent a Vision Pro or Meta Quest for my cross-country flights. That would be a huge way to \"try before you buy\" !",
+              "author": "pants2",
+              "depth": 2
+            },
+            {
+              "text": "I wanted to use mine for movies, but cant. The internal reflections or lens flare or whatever ruin it.\nAnytime part of the screen is dark and part is bright I get annoying reflections that I can't tolerate. Takes me right out of the film. That said the few 3d movies they have in 4k are amazing during the scenes that arent all dorked up due to the reflections.\nMaybe its because I use the prescription inserts, but they're the official ones and it's blurry without them.\nAlso the battery stopped holding enough charge to get through a full film within a month or two and the replacement was two hundred dollars. I wouldn't resent it if I ever needed a battery, but I had to spring for it even though it stays plugged in the entire time I use. The stupid useless brick is required for it to turn on and it won't even allow pass-through when the cells go.",
+              "author": "mapontosevenths",
+              "depth": 1
+            },
+            {
+              "text": "Do you wear glasses and do you have the prescription inserts for the AVP? I have a very mild prescription, no inserts, and I find text in the AVP to be distractingly blurry. Enough so that I’ve never been able to use the virtual monitor for more than a few minutes at a time.\nFor context, I have no problem using external monitors without my glasses. The only downside is very tired eyes at the end of a workday, but I can read text just fine.",
+              "author": "jkubicek",
+              "depth": 1
+            },
+            {
+              "text": "I have the inserts, they work great. I find using the Vision Pro as a monitor less fatiguing than using a regular monitor with glasses. I think it’s because the Vision Pro Display is optically several feet away due to lens trickery, and focusing on further away things is better for eye fatigue.",
+              "author": "pfannkuchen",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Stopped using it after about a week or two of usage. The only interesting use case was screen mirroring from my Mac, but that wasn't compelling enough to endure the weight of it on my face. I expected watching a movie would be a good use case, but in reality the brightness of the screen would reflect (I guess?) off my face and create a glare... so it ultimately wasn't a good movie device. Gave it to a friend who was excited about it, and he also stopped using it after about a week or two.",
+          "author": "Me1000",
+          "replies": [
+            {
+              "text": "Wow, if you can't get a buddy to use it for free... this really is not the same league as the iPhone.",
+              "author": "racl101",
+              "depth": 1
+            },
+            {
+              "text": "This is the most common scenario. That’s why can’t compare Vision Pro with the iPhone. First iPhone was limited yeah but those who bought it loved and used it all the time. Word of mouth setup the success of later versions.",
+              "author": "dmarcos",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "having developed multiple apps on it and tried every which way to use it (as an XR enthusiast in general), I have never been so happy to put a headset up on the shelf and never pull it out again.\nusing as a spatial monitor was cool. for about 10min until my neck got tired of the added weight. but I’ll give credit that those 10min were pretty cool.",
+          "author": "curiouscavalier",
+          "replies": [
+            {
+              "text": "Unless materials science advances to the point where a display like the Vision Pro weighs as much as a pair of glasses, I don’t think there’ll ever be mass adoption of wearable VR beyond anything more than a novelty, for exactly the reason you stated.\nWearing something heavy on the front of your face is simply not a pleasant experience.",
+              "author": "nkrisc",
+              "depth": 1
+            },
+            {
+              "text": "The weight is important but it's only a part of what's wrong with those kind of devices. Wearing something that hides their face is something that people do at Carnival or because they must. It's antisocial. It creates a barrier. It isolates from other people. There is no chance it will become something people will do together with other people not wearing the same device.",
+              "author": "pmontra",
+              "depth": 2
+            },
+            {
+              "text": "Agreed, that’s the other big reason I didn’t mention: most people don’t \nwant\n a screen on their face. They don’t want their face covered, they want to see out the window or just what’s around them.\nI have never seen someone wear a VR headset in public that wasn’t part of a mall VR novelty attraction.",
+              "author": "nkrisc",
+              "depth": 3
+            },
+            {
+              "text": "Beyond 2 is 107 grams. The new M5 Vision Pro is 750 grams. It's easily doable, but Apple deliberately makes them heavy for some reason.",
+              "author": "Geee",
+              "depth": 2
+            },
+            {
+              "text": "107 grams is still pretty heavy. Regular glasses are 35 grams or less. My sunglasses are below 20 grams.",
+              "author": "layer8",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Not regularly, but I do watch movies on it once in a while (in those beautiful environments), especially when I'm on a flight.\nWWDC also just rolled out some quite exciting features to RealityKit: \nhttps://developer.apple.com/videos/play/wwdc2026/279/\n as well as visionOS itself (\nhttps://developer.apple.com/videos/play/wwdc2026/287/\n)\nIt makes me wonder if Apple is really giving it up as news have claimed.",
+          "author": "tracyhenry",
+          "replies": [
+            {
+              "text": "What are the logistics of wearing this on a flight?\nIt seems like it would take up a majority of your personal item space. As someone who only packs a personal item for most flights, that’s a hard sell.\nCan you reliably plug it in? It seems like the battery doesn’t last long enough for a long haul flight, and for shorter flights where the battery would hold up, the bulk doesn’t seem worth it. Of course, on the long flights, I’d hope to sleep, and having a cumbersome VR headset seems like it would be more trouble than it’s worth vs just watching the screen in the seat back.\nWhen you get to your destination, do you use it there, or does it just sit around like a neck pillow?",
+              "author": "al_borland",
+              "depth": 1
+            },
+            {
+              "text": "> It makes me wonder if Apple is really giving it up as news have claimed.\nI don't think anyone serious has claimed that.",
+              "author": "jeromegv",
+              "depth": 1
+            },
+            {
+              "text": "https://www.macrumors.com/2026/04/29/apple-vision-pro-m5-flo...\nhttps://www.pcmag.com/news/report-apples-incoming-ceo-cancel...\nhttps://lifehacker.com/tech/apple-reportedly-scraps-apple-vi...",
+              "author": "alt227",
+              "depth": 2
+            },
+            {
+              "text": "Vision Pro's top talent all moved with their boss, Mike Rockwell, to Siri where they have at least a prayer of promotions, not to mention the satisfaction of working on a product that's not a miserable failure in the market.\nApple shelved the follow up v2 over a year ago and signaled very clearly it was refocusing its XR efforts toward AR glasses.\nThere hasn't been a new Vision Pro component order since the late 2023, early 2024 original orders that were capped (by SSS's display capacity) at 500k units worth, so Apple hasn't sold even that tiny amount yet.\nIt was Tim Cook's baby, his last shot at a product legacy, and the guy that just inherited Cooks role put even the lesser Vision Air on ice, the last goggles product that was still on Apple's roadmap.\nSo, it's not dead, but it's clearly on life support with no goggles of any kind remaining on the roadmap and Apple's attention fully moved to glasses and AI.",
+              "author": "asadotzler",
+              "depth": 2
+            },
+            {
+              "text": "I don’t think Vision Pro was intended as a mass consumer product. There is so much cost reduction they could have done on the device that they didn’t do to hit a lower price point, and it’s obvious to everyone that $3500 wasn’t going to sell a lot of units (and it must have been obvious to Apple execs as well).\nMy guess is it is basically a real world survey of how people would use such a device, and what developers would do with it. Then they could later focus on a cheaper product that is only a display, or a product that is only a media viewer, or a product that focuses on VR/AR applications while deemphasizing other use cases.\nThis is the version of reality that doesn’t require anyone to be stupid. In my experience if a reality candidate requires that someone is just really really stupid to arrive at the outcome (in this case Apple execs), probably you are missing something about someone’s perspective.",
+              "author": "pfannkuchen",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Yes, it feels like the future every time I put it on. For work, the ultra wide has been wonderful when I'm not at my desk. I also get to have the NBA playoffs to the side on a 10ft screen while I work. For videos, it's a complete game changing experience. They're slowly but surely releasing more \"immersive\" features. Eg, I recently watched an immersive Lakers game and immediately thought I'd pay to watch games like this. It reminded me when HD became default and we finally realized what we were missing. I don't want to watch games where I'm not courtside anymore.\nThe two things that consistently delight me are AI and my AVP. I'm trying to combine the two.",
+          "author": "cglee",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48397731",
+      "title": "Ask HN: So what happened to Facebook \"localhost\" tracking?",
+      "link": "https://news.ycombinator.com/item?id=48397731",
+      "domain": "news.ycombinator.com",
+      "author": "juliusceasar",
+      "score": 106,
+      "comment_count": 102,
+      "created_ts": 1780576360,
+      "is_internal": true,
+      "post_text": "It was discussed a year ago.\n<a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=44235467</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48397634",
+      "title": "Ask HN: How do you find deep technical content?",
+      "link": "https://news.ycombinator.com/item?id=48397634",
+      "domain": "news.ycombinator.com",
+      "author": "f311a",
+      "score": 40,
+      "comment_count": 28,
+      "created_ts": 1780575715,
+      "is_internal": true,
+      "post_text": "I&#x27;m pretty tired of seeing AI-related content everywhere.\nWhen I open Hacker News, close to half of the top submissions are AI-related. It&#x27;s the same on social networks as well.<p>I miss the times when there was a lot of technical content that took time and mental energy to understand.<p>Nowadays, it&#x27;s pretty hard to discover it. On HN, I see that a lot of technical articles don&#x27;t make it to the front page, so sometimes I just search for them in the submissions. Not only is there less content, but demand for it is also declining. I guess people would rather read another article about LLMs that teaches almost nothing and doesn&#x27;t exercise their curiosity. It feels sad for me, as a reader and as a writer.<p>So, are there any other places left where people still care about and share deep technical content? I want to keep exercising my thinking. I&#x27;ve had enough of brain-rotting.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48434240",
+      "title": "Ask HN: How are thinking efforts implemented?",
+      "link": "https://news.ycombinator.com/item?id=48434240",
+      "domain": "news.ycombinator.com",
+      "author": "simianwords",
+      "score": 26,
+      "comment_count": 17,
+      "created_ts": 1780835924,
+      "is_internal": true,
+      "post_text": "Claude and ChatGPT have thinking efforts where you can tune the amount of thinking allowed.<p>Like low, medium, high, xhigh and so on.<p>But are they different models underneath? Or same model with different parameter?<p>The reason I ask is because, if I change the effort param mid conversation in Claude code, I get a warning suggesting I’m breaking the cache.<p>I don’t think this happens in Codex because when I change the effort, the responses are still quick.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48466488",
+      "title": "Ask HN: Favorite text heavy blogs the are a joy to read",
+      "link": "https://news.ycombinator.com/item?id=48466488",
+      "domain": "news.ycombinator.com",
+      "author": "joshmarinacci",
+      "score": 25,
+      "comment_count": 9,
+      "created_ts": 1781033700,
+      "is_internal": true,
+      "post_text": "After ten years I’m working on a redesign of my personal tech blog. I want to look at some other blogs with good modern design. Of course searching for ‘well designed blogs’ or ‘webdesign 2026’ brings up endless marketing listicles. Even after wading through the crap, the advice is focused on advertising and product centric sites, not prose heavy sites with good typography.<p>So my question to you is: <i>What are some of your favorite text heavy blogs that are a joy to read?</i><p>I don’t mean the content (though that helps too), but rather sites where the actual experience of reading is pleasant. Think: good fonts, sticky headers (or not), well formatted code snippets, and responsive images.  Slide in navbars vs inline table of contents.<p>Thanks,\n - j",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "Lesswrong for both sidebars: the heading based TOC on the left, and the margin notes on the right: \nhttps://www.lesswrong.com/posts/bJ2haLkcGeLtTWaD5/welcome-to...\nFor interactive / code snippets\nMaxime Heckel: \nhttps://blog.maximeheckel.com/posts/the-study-of-shaders-wit...\nHonorable mentions \nMaggie Applebaum \nhttps://maggieappleton.com/ai-enlightenment\n\nMarek Chotoborski \nhttps://zanlib.dev/blog/number-inputs-in-react/\nLine width, sane fonts, avoiding clever shit unless very polished, gets you a long way.",
+          "author": "RickS",
+          "replies": [
+            {
+              "text": "Wow. Maxime’s site is gorgeous.\nThank you",
+              "author": "joshmarinacci",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://gwern.net",
+          "author": "sammygutierrez",
+          "replies": []
+        },
+        {
+          "top": "Language Log: \nhttps://languagelog.ldc.upenn.edu/nll/\nThe simple layout/theme does not get in the way of the reading.",
+          "author": "realityfactchex",
+          "replies": []
+        },
+        {
+          "top": "I like the design of \nhttps://dbushell.com/blog/\nThough mainly I just like the general 50s aesthetics of it, rather than specific UI elements.",
+          "author": "deckplecksetter",
+          "replies": []
+        },
+        {
+          "top": "I like the formatting and readability of \nhttps://nesbitt.io/2026/05/28/protestware-for-coding-agents....\n though I wish it loaded faster.",
+          "author": "ktrnka",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48398358",
+      "title": "Ask HN: Gin rummy strategies",
+      "link": "https://news.ycombinator.com/item?id=48398358",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 24,
+      "comment_count": 4,
+      "created_ts": 1780579739,
+      "is_internal": true,
+      "post_text": "Hi HN, I am having AI build me a local Gin Rummy trainer and it cannot figure out medium and hard bot strategies, they keep losing to easy! The point of this is to help me learn so I don&#x27;t really know how to advise it on strategies. Right now it&#x27;s just looping through tests and modifying but it keeps not improving. Does anyone have any recommendations or guidance for strategies I could suggest to it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48447980",
+      "title": "Ask HN: How to escalate a rejected Google extension?",
+      "link": "https://news.ycombinator.com/item?id=48447980",
+      "domain": "news.ycombinator.com",
+      "author": "modzu",
+      "score": 23,
+      "comment_count": 13,
+      "created_ts": 1780938292,
+      "is_internal": true,
+      "post_text": "I submit an extension (an adblocker) to Google Chrome&#x27;s web store.<p>Google keeps rejecting it for dubious reasons. The first rejection was claim it was &quot;spam&quot;. When I appealed, the review came back that it contained &quot;additional functionality&quot; because it uses &quot;modifies network traffic&quot;. Well of course it does! When I asked the reviewer how I could achieve the stated functionality of blocking ads without the use of &quot;declarativeNetRequest&quot; I simply received the same canned response.<p>I submit a totally new update that simplified the code and included comments, and references to other open source projecs that use the exact same mechanisms. Again it was rejected. On this appeal I asked if it could be escalated to a senior reviewer who could possibly reply with more context. Same canned response and rejection.<p>I can&#x27;t help but think Google has some internal policy to give adblockers a runaround. It is obvious to me the stated rejections are not valid (Note that I&#x27;m also not new to this - I have several extensions that have been published for years with thousands of users) but have never encountered such gate-keeping before.<p>It&#x27;s a sad state of affairs even if not totally unpredictable. To be honest I&#x27;m surprised Google hasn&#x27;t made it an official policy to prohibit adblockers. But they haven&#x27;t - obviously there are other adblockers published to the store, and that&#x27;s what makes this so frustrating.<p>Anyway, fellow developers. Anyone run into a similar situation? And how did you resolve it? Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "senior"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48453224",
+      "title": "Ask HN: How do you cope when your startup contracts?",
+      "link": "https://news.ycombinator.com/item?id=48453224",
+      "domain": "news.ycombinator.com",
+      "author": "jasonephraim",
+      "score": 14,
+      "comment_count": 13,
+      "created_ts": 1780957697,
+      "is_internal": true,
+      "post_text": "The same general situation has happened to me twice now and I am wondering if it’s something I can break free from or if it’s just the nature of the Startup beast - or what. There seems to be some kind of bubble that starts drying up investment in a startup where I am a technical lead. Both times, things seem to be going well and then 2 years in there are rounds of layoffs due to factors outside my&#x2F;product’s control where the result is the same. I end up as the last tech generalist. It falls to me to write as much of the code as I can, manage (if any are left) engineers in my department, running support basically on my own, owning a large part of the product roadmap, working with the customers on support and implementations, working with integration partners, plus a slowly expanding list of responsibilities as new stuff falls on reduced teams. I pick up new domains pretty quick (finance, insurance, compliance), switch contexts well. I’ve always been the person who just figures it out - someone who takes ownership of something and just does it. But, instead of being rewarded, I just get to keep my job while absorbing the work of others less fortunate.<p>During these contractions, the work never shrinks. Same clients, same integrations, same support volume (for now). Something else I’ve noticed is the scrutiny goes up - not down. I think a big factor is you have founders and upper managers stepping in to be more engaged or attempting to cover gaps. This causes all sorts of issues.<p>After this last round of cuts, the company offered me a revised title and job description that focused on managing the department that now was essentially just me down from 6 a year ago. It was full of responsibilities like “leading team to meet targets”. I did kind of want to accept it since it is the sort of role I was hired for and would help in a job search later. Regardless, I couldn’t because I am basically the team. It felt like a trap (or at least, wishful thinking that has been proven as much time and time again due to factors beyond my control.)<p>I could just leave, but the job market and economy look scary as hell. It took me 8 months to find a role last time. This is primarily due to my experience and background. I’ve been involved in engineering, product, support, sales, customer success, integrations and user comms. I look like someone who could&#x2F;did do everything but that comes off as someone who owned nothing. The reality is I owned way way too much as things evolved.<p>Three things I am trying to think through and could use some help with:<p>1. Is it just the companies and bad luck? Am I picking startups in industries or with offerings that are just vulnerable to VC trends and hype? They both seemed like great opportunities, and I completely understand there is always risk - but the current&#x2F;former result as it pertains to my role and situation once cuts were made is surprisingly identical.<p>2. Should I stand my ground? I have a habit of trying to work things out and get scrappy. During the last contraction, I spoke out to the president of the company that I wanted to sit down and look at our team’s responsibilities and projects that were being used&#x2F;sold and see what was essential, could be covered, etc. That never happened - should I have been more firm and demanded it versus just absorbing it?<p>3. Ignoring the company, should I lean into the role and try to develop it? Should I accept I am an amazing generalist “jack of all trades, but master of none” and make it a more deliberate role&#x2F;career? I know these sort of people are needed, but no company can really put out a role description for them. I’m seeing AI helps cover a growing amount of the gaps that I can’t dedicate the time to developing. I also have enough experience and knowledge to know AI is a tool and needs to be closely guided and applied in focused&#x2F;appropriate areas. (Case in point - I’ve spent the last two hours fighting it from going off the rails in our Go golden test framework because it wants to ignore our test patterns).<p>I’m curious if others out there have found similar issues with Startups. Also, if there are other “Red Mage” technical folks that have a hard time in the job market because they’ve been asked to cover such wide areas?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "success",
+        "job market",
+        "job search",
+        "career",
+        "startup",
+        "layoffs",
+        "lead"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48450261",
+      "title": "Ask HN: Why won't you be replaced by AI?",
+      "link": "https://news.ycombinator.com/item?id=48450261",
+      "domain": "news.ycombinator.com",
+      "author": "atleastoptimal",
+      "score": 10,
+      "comment_count": 37,
+      "created_ts": 1780946505,
+      "is_internal": true,
+      "post_text": "AI models are rapidly getting better. The general public still hasn&#x27;t seen the capabilities of Anthropic&#x27;s Mythos model, which is already 4 months old at this point.<p>I&#x27;ve seen many arguments about why certain jobs will always need a &quot;human in the loop&quot;, or that certain skills aren&#x27;t replaceable by LLM&#x27;s, but I am skeptical of this notion. It seems that if the general intelligence of these models continues to increase, then every job is just a matter of feeding in the right context, designing the right structures for agents to collaborate, having the right verification loops, etc, all of which are difficult to create, but not impossible.<p>If the improvements in models continue at the pace they have over the next 3 years (reminder, 3 years ago the best model was GPT-4), do you really believe that what you do now will not be done better by a system of LLM-driven agentic harnesses?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48468724",
+      "title": "Ask HN: Is software engineering still a good career choice for new students?",
+      "link": "https://news.ycombinator.com/item?id=48468724",
+      "domain": "news.ycombinator.com",
+      "author": "iliashad",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1781044362,
+      "is_internal": true,
+      "post_text": "I asked 4 working engineers this exact question on my podcast: a Google Developer Advocate (Stockholm), a Senior Software Engineer&#x2F;consultant (Paris), an NVIDIA Deep Learning Institute Instructor (Morocco), and an Infrastructure Engineer at IBM (Dublin).<p>Here&#x27;s what they actually said:<p>- The Senior Software Engineer said: &quot;LLMs are babies. If you don&#x27;t understand the architecture behind everything, you won&#x27;t be able to follow.&quot;<p>- The Google advocate pushed back slightly: &quot;Writing code has become a commodity, like car manufacturing after automation. The question isn&#x27;t whether to learn to code, it&#x27;s why you want to.&quot;<p>- The IBM infrastructure engineer had the most actionable take: &quot;Don&#x27;t treat AI as a ghostwriter. Never commit code you can&#x27;t explain. Use it as a tutor, not a replacement for your own thinking.&quot;<p>And many more<p>We also reacted to a clip of a Silicon Valley exec telling university graduates that &quot;AI is the next industrial revolution&quot; and getting booed by the crowd.<p>One of the more sobering parts: at current usage levels, Anthropic is likely losing money on heavy Claude subscribers. No inference company is profitable today. The Google advocate, who works on LLM inference at scale, put it directly: if we don&#x27;t get significant inference efficiency improvements in the next five years, this entire ecosystem becomes unaffordable. And the NIVIDA have more details to talk about AI cost effectiveness",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career",
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "I am afraid the software engineering industry is increasingly becoming like the music industry, which was killed by being able to get any song for free. Open source, free, fremium apps, lower threshold of entry due to AI, all of that is killing the market. Soon, you will not be able to make any money out of it unless you're a big player.",
+          "author": "kentich",
+          "replies": []
+        },
+        {
+          "top": "According to the development trend of AI, the demand for software engineering may decrease, but it will not disappear. In any case, top engineers are always in demand. The demand for software engineers in ordinary positions will not be as great as it is now",
+          "author": "jsxyzb",
+          "replies": []
+        },
+        {
+          "top": "Full episode (YouTube): \nhttps://www.youtube.com/watch?v=oOt_0N1yQEw",
+          "author": "iliashad",
+          "replies": []
+        },
+        {
+          "top": "I think that's all correct what they're saying. It's not contradictory - writing code has become a commodity to a certain extent. But someone's still responsible for the production systems when it fails. AWS had a couple of big outages last year because of AI. Even with humans reviewing it, review is review. If you're not writing the code, you'll not have spent enough time thinking about edge cases. That's where the most expensive part of software engineering, not coding. Coding being a commodity is indeed analogous to robots in the production line, but those robots have huge teams of mechanical engineers to keep them running. The calibration, the servicing etc.\nWhat's most interesting is now that vibe coding is expensive, will the AI slop go away, gradually?",
+          "author": "zionsati",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48466373",
+      "title": "Authorization via Gmail and Apple ID Banned in Russia",
+      "link": "https://news.ycombinator.com/item?id=48466373",
+      "domain": "news.ycombinator.com",
+      "author": "levleontiev",
+      "score": 8,
+      "comment_count": 1,
+      "created_ts": 1781033205,
+      "is_internal": true,
+      "post_text": "The Russian State Duma adopted a bill in its second and third readings that introduces administrative fines for violating user authorization rules on local internet resources. The use of foreign services is now strictly restricted. Ixbt.com reports .<p>Under the new requirements, user registration must be carried out exclusively via a Russian phone number, the &quot;Gosuslugi&quot; portal, the Unified Biometric System, or other information systems owned by Russian citizens and companies. Using Gmail, Apple ID, and other foreign email services is considered a violation of the law.<p>Fines for legal entities violating the law have been set at up to 700,000 rubles. Liability is also being introduced for violating rules on the use of recommendation algorithms on internet platforms. Companies may face fines of up to 1.4 million rubles for repeated violations.<p>The document also strengthens penalties for communication operators violating cooperation rules with law enforcement agencies. In such cases, legal entities pay fines ranging from 3 million to 5 million rubles, and for repeated offenses, the fine may be calculated as a percentage of the company&#x27;s annual revenue.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48463576",
+      "title": "Ask HN: How are you preserving your skills while using AI?",
+      "link": "https://news.ycombinator.com/item?id=48463576",
+      "domain": "news.ycombinator.com",
+      "author": "rdrmc",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1781023554,
+      "is_internal": true,
+      "post_text": "I&#x27;m a senior engineer at [Big Company], and AI tools are ever-present. There&#x27;s no mandate that you need to use them, but they are so readily available that most people do anyways.<p>There&#x27;s a lot of society level concerns with AI, but on a personal level, I&#x27;m starting to slowly feel less skilled than I used to be. I can certainly do more, but I understand less. The &quot;Prompt-Then-Review&quot; loop of coding harnesses (Claude Code, Codex, Pi, OpenCode, Amp, etc.) just simply do not encourage mastery in the same way as shaping the code yourself. Sure, you can argue you&#x27;re &quot;thinking at a higher abstraction&quot;. But what happens when that abstraction fails? as abstractions often do.<p>It&#x27;s not a fast process this skill erasure. I&#x27;m not magically losing my ability to code overnight. However, it feels like rust. Slowly eroding the pillars until they give.<p>This tool (currently) needs a skilled hand to guide correctly. However using the tool feels like it degrades the skilled hand. This negative feedback loop I find truly concerning from both the ability to make a living in software and the ramifications on software quality writ large.<p>So, I ask HN. How is the community protecting their skills? especially when actively using AI.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback",
+        "senior"
+      ],
+      "comments": [
+        {
+          "top": "I'm facing the same problem. I'm spending a lot of time on side projects now precisely because my company is forcing our strongly encouraging everyone to use AI for coding. At some point I found myself complacent enough to accept AI code at face value which scared me. With my side projects, I still use AI, but only when I get stuck, to help me get the aha moment. But most of the time it's, hmm... That works but, I don't think we should do it this way. Very tempting to continue prompting and keep going from there though, I have to say.",
+          "author": "zionsati",
+          "replies": []
+        },
+        {
+          "top": "I’m in this exercise right now, and I’m thinking about, how do I stay in the drivers seat.  I think it’s a version of, bionics not robots.\nIm trying to go back in time to when AI was more autocomplete than agent and write my code with assistance.  Find the file, find where the code goes autocomplete the fix.  Rather than one shot multi file changes do one at a time.\nThe bosses probably don’t want people spending 4 hours figuring out why upgrading a package conflicted with another package in weird ways or changed the API or other obscure things, so like, give troubleshooting 10 minutes, try to grok the code context, then prompt for a fix. Or prompt “show me where I need to look to fix this” and fix it yourself.\nThe question to really ask is what time scales are we talking about.  Sitting down to do a task getting context and prompting code probably takes like what an hour, maybe 2 if you have to review it or fix something?  If you add another hour to that, and really understand it, I think you’re not hampering your productivity all that much if at all in the aggregate.\nThe other thing I’ve always done is let myself get nerdsniped easily.  Maybe multiple times a day if someone posts an error in chat I’ll give myself 5-10 minutes to look at logs/graphs/google.  Keeps the job interesting but also I think keeps my mind flexible and into the details across a broad swath of tech.",
+          "author": "techblueberry",
+          "replies": []
+        },
+        {
+          "top": "I just don’t use any AI tooling for my home projects. Work pays for results so AI is basically mandatory to meet the deadlines - but home is for fun so I can take longer to produce hand crafted code.",
+          "author": "variety8675",
+          "replies": []
+        },
+        {
+          "top": "> But what happens when that abstraction fails? as abstractions often do\nOne of the upsides to agents is that you can try out several abstractions instead of just one. You should absolutely be reading / spot checking the output (depending on context).\nWhile skill loss is often the focus, there is also skill gain. I have learned new coding patterns or framework features through these tools.\nOn you main question, effort. Like everything, you have to use it or you lose it. I never saw my skill as a developer being the part where I peck at keys. It's the thinking and designing process, which I get to do way more of now that I don't have to peck.\nRecommendation: build greenfield side projects, exercise building out all the parts. This will make you better at both being a developer and an agent manager.",
+          "author": "verdverm",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48449571",
+      "title": "Ask HN: Options for critical thinking and learning outside work?",
+      "link": "https://news.ycombinator.com/item?id=48449571",
+      "domain": "news.ycombinator.com",
+      "author": "hnthrow10282910",
+      "score": 6,
+      "comment_count": 5,
+      "created_ts": 1780944139,
+      "is_internal": true,
+      "post_text": "What options in today’s world exist to support critical thinking? I’m at FAANG basically trying to stay afloat as an expat in a foreign country and hate my job. Mostly forced to do AI LLM stuff. Security and quality out the window since management stopped caring about that.<p>I miss deep thinking and training my brain. Should I pursue a masters in math or something? I have a masters in general CS, but this was 10 years ago.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "faang",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48455779",
+      "title": "Ask HN: Where do you like to consume content anymore?",
+      "link": "https://news.ycombinator.com/item?id=48455779",
+      "domain": "news.ycombinator.com",
+      "author": "selectedambient",
+      "score": 6,
+      "comment_count": 9,
+      "created_ts": 1780974213,
+      "is_internal": true,
+      "post_text": "everything is the same regurgitated garbage i can get anywhere or from an llm myself. what are you reading&#x2F;watching&#x2F;following when it comes to programming or tech in general?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48425236",
+      "title": "Ask HN: Were CS profs right to look down on programming in light of modern AI?",
+      "link": "https://news.ycombinator.com/item?id=48425236",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1780754338,
+      "is_internal": true,
+      "post_text": "Given that modern AI can automate routine programming, maybe CS professors weren&#x27;t just being snobbish in the way they looked down on programming in their lectures even though most of their students were going to become programmers.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
