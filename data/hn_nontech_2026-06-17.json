@@ -1,0 +1,1073 @@
+{
+  "scraped_date": "2026-06-17",
+  "source": "hacker_news",
+  "total_scraped": 59,
+  "nontech_count": 25,
+  "posts": [
+    {
+      "id": "48542100",
+      "title": "Ask HN: Has anyone replaced Claude/GPT with a local model for daily coding?",
+      "link": "https://news.ycombinator.com/item?id=48542100",
+      "domain": "news.ycombinator.com",
+      "author": "cloudking",
+      "score": 1244,
+      "comment_count": 534,
+      "created_ts": 1781534813,
+      "is_internal": true,
+      "post_text": "Has anyone here fully swapped Claude&#x2F;GPT for a local model as their main coding tool, not just for side experiments? If so, please share your setup and performance (e.g tok&#x2F;s)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I have! I care about data privacy and LLMs being free. I'm using the Pi coding harness but containerized and sandboxed, to make sure it's running completely offline. On my Mac Studio with 128GB RAM (or MacBook with 36GB RAM) I'm using Qwen3.6 35b, with only 3b active parameters so that it runs really fast. I've done a complete redesign for my website's homepage and blog with Django + Wagtail. The latter is interesting, because Wagtail is a bit less well-known, so the agent, without giving it internet access, doesn't always know how to develop for Wagtail. I've used Qwen3.5 122b for when things get more complex. At 10b active parameters, it's significantly slower though.\nI've noticed a few things compared to large models like Claude. For starters, you really need to know what you're asking, and be precise; it doesn't do much thinking for you. Any assumptions left open, and it'll take the easiest route to reach the goal (e.g. CSS in HTML), often not the best in terms of architecture.\nIt gets into loops quite often, and surprisingly often gets the edit tool call wrong, after which it will spend lots of thinking tokens and re-read files instead of retrying (despite the system prompt suggesting so).\nComparing agentic Qwen3.6 35b to Claude Opus is like a junior with knowledge across the board, that you really need to guide, versus a senior that thinks with you on architecture. If Opus gives a 15x speedup, local and fully offline Qwen gives a 5x speedup. Which, given that it's completely free, is still mind-boggling to me :)",
+          "author": "Greenpants",
+          "replies": [
+            {
+              "text": "This is very similar to my setup. Pi in a container (I do let it have network access, just no access to creds or anything, only the one directory that I'm working on at the time and my ~/.pi directory), talking to llama.cpp in another container. I'm on a Strix Halo 128 GiB unified memory laptop.\nI've never used the frontier models in earnest, I don't believe in using proprietary tools for my programming, so I can't really compare.\nAnd I'm still a AI skeptic, so I'm doing more testing and kicking the tires than I am actually using it. That means I spend a lot of time trying to break various models, probe them for strengths and weaknesses, etc.\nBut I find that when I do try to use it for real for agentic coding, Qwen 3.6 35B-A3B is definitely the one I reach for the most often.\nFor other chat tasks and translation, I'll frequently use Gemma 4 31B.\nFor audio, I'll use Gemma 4 12B.\nI keep a bunch of other models around to try out every once in a while (Qwen 3.5 122B-A10B, Qwen 3.6 27B, Nemotron 3 Super 122B-A12B, Step 3.7 Flash and Minimax M2.7 both at somewhat more aggressive quants, and GPT-OSS 120B if I want super fast but not terribly smart), but so far Qwen 3.6 35B-A3B is really the sweet spot for coding on a setup like this.",
+              "author": "lambda",
+              "depth": 1
+            },
+            {
+              "text": "Hopefully this isn't off-topic, but your setup sounds just like mine, Strix Halo and (I'm assuming) llama.cpp on ROCm, and I'm finding that the Qwen hybrid models don't handle prompt caching and instead re-process the context in full on every turn. I'm wondering if you were able to solve this and how?",
+              "author": "chakspak",
+              "depth": 2
+            },
+            {
+              "text": "I use Vulkan mostly instead of ROCm. Vulkan is actually a bit faster, paradoxically. I do switch out and try them both out, and it's not a huge difference, but I've been mostly saying on Vulkan.\nThe re-processing context every turn problem is definitely something I've hit. Some of the causes have been solved upstream in llama.cpp; make sure you're up to date.\nBut another cause of the issue that has a big effect is that older Qwen models didn't support preserving thinking. This means that each time you have a long sequence of tool calls with interleaved thinkging, as soon as you had your next turn in the chat, it would have to re-process all of that as it would drop all of the reasoning.\nQwen 3.6, however, now supports preserving thinking. This can use a bit more context, becasue you're not dropping the thinking every turn, but it re-uses the cache better, not causing you to have to reprocess a whole turn at a time each time.\nIn my models.ini, I have this for the Qwen3.6 models:\n  chat-template-kwargs = {\"preserve_thinking\": true}\n\n\nThere are still occasional issues I hit where it will have to re-process, but getting up to date and enabling preserve_thinking has helped a ton.",
+              "author": "lambda",
+              "depth": 3
+            },
+            {
+              "text": "+1 using llama.cpp Vulkan releases with the Qwen models - runs much better than the ROCm releases.\nI'll have to give the preserve_thinking a shot.",
+              "author": "ndom91",
+              "depth": 4
+            },
+            {
+              "text": "Thanks for sharing have been running ROCm primarily with Qwen 3.6 and Qwen Coder, on the runs much better statement is that a stability, performance or other capability your experiencing?",
+              "author": "jderekw",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "For personal use, yes.\nI replaced a $100/m subscription to claude in favor of running pi harness pointed at unsloth studio, using both qwen (unsloth/Qwen3.6-35B-A3B-MTP-GGUF) and gemma (unsloth/gemma-4-26B-A4B-it-GGUF) models, depending on my mood.\nI have a machine I built about 5 years ago with dual RTX3090s in it (I was going to build a new gaming machine anyways, and the llama release had just dropped so I tacked another used 3090 onto the build), and I get ~150tok/s on either of those models (at UD-Q4_K_XL quant) and can use the entire 300k context length without having to exit VRAM.\nTo be very clear - it's not as good as claude.  But it's free and not so much worse that it matters significantly.\nFor my personal needs, free beats $100/m.\nI also have an openclaw instance pointed at the same inference server, and it's great for that (genuinely solid use-case for local models).\nSome example projects\n- Replacement launcher for android tvs (with usage monitoring and tracking for kids)\n- Custom admin portals for my k8s cluster services\n- Custom home assistant integrations/automations (recently some shelly devices for power monitoring and switching)\n- Grocery list management and meal planning (mostly via openclaw)\n- some custom workflows for 3d asset generation in comfyui.\n---\nLong story short, if you're trying to make money via software... I'd probably still recommend using a paid provider.  But the local models are very capable of cool stuff.",
+          "author": "horsawlarway",
+          "replies": [
+            {
+              "text": "2x RTX3090 are around $4400. Without any electricity costs or other parts, that's 3.6 years of $100/m claude.",
+              "author": "rootlocus",
+              "depth": 1
+            },
+            {
+              "text": "Assuming the $100/m claude subscription is still around in three years.",
+              "author": "overgard",
+              "depth": 2
+            },
+            {
+              "text": "we will be lucky if it's still around in 3 months..",
+              "author": "booi",
+              "depth": 3
+            },
+            {
+              "text": "I think there’s a reasonable argument that a burst bubble will cause prices to drop. Prices are very high because they’re trying to justify these trillion dollar valuations on IP alone. If that fantasy goes away then prices will fall down to just silicon and electricity, which looks more like Chinese model prices. Hard to say how it will play out but the direction isn’t obvious to me.",
+              "author": "oofbey",
+              "depth": 3
+            },
+            {
+              "text": "Yes, today is not a great time to purchase hardware.\nWhen I bought, I paid $850 a piece.  And I needed one anyways for the gaming I was going to do.\nMy guess is the next good time to buy is going to be 24-36 months from now, depending on how the AI bubble goes.\n---\nI'll add to this, I personally don't like Apple hardware (not so much related to the hardware as their company philosophy) but their machines with unified memory (or AMDs latest unified memory offerings) get pretty equivalent speeds to my 3090s, and are probably a much better modern entrypoint to local llms.\nThere's a reason the joke is that Silicon Valley software devs bought up all the Mac minis for OpenClaw.\nYou can get a 48gb unified RAM M4 pro mac mini for ~2k.  If you're not going to do much else with the machine, it's what I'd pick as my budget inference device right now.  Spend a year of claude now, get ~150tok/s for the next decade (plus) for ~free.\nIf you want more capable and are willing to spend a little more, go with the newer Ryzen AI Max+ 395 machines.\nYou'll spend less on power too.\nMy last suggestion would be to go buy an RTX3090 at this point.  You can do a lot better for a lot cheaper.",
+              "author": "horsawlarway",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "About 90% of my coding is on Qwen 3.6 27b and Open Code with some custom skills and Semble. It is NOT as smart as CC or Codex but its enough to get most of my work done. I didn't set out to replace CC and Codex (I have an RTX 6000 so the TPS is faster than I care about, but the RTX 6000 was originally for other work). I only tried this just to see how close you could get to a frontier model for coding as an experiment, but it was good enough that I stuck with it. I still fall back to Codex for really complicated stuff and to polish UI's as that seems to be the weakest element to working in Qwen.This isn't a recommendation because I don't think most people have an RTX 6000 laying around and the cost would be many years of MAX CC or Codex subscriptions, but at least this seems possible. Maybe in a few more years it will even be practical.\nOther Notes: I have had to set the compact target to 75% on a 256k context window as once the conversation length goes about 100k I start seeing a drop in the quality and speed. This becomes very problematic after about 150k. I tried Qwen 3.5 122b too but it actually seems much worse at coding than 3.6 27b even though its much larger. Maybe because I am using a 4bit quant or maybe I just don't have it configured correctly? I know 3.6 is newer but I didn't expect it to out perform a model that is much larger from the prior generation. Gemma 4 31b is a good model for other tasks but at least my personal experience is that Qwen outperforms in coding. Nemotron Super 120b is great at a lot of stuff but it also seems to be not as good at coding as Qwen. This was very surprising to me.",
+          "author": "bluejay2387",
+          "replies": [
+            {
+              "text": "Same here, I use Qwen 3.6 27b (Q6 quant) with llama.cpp on an RTX 5090 using the pi agent exclusively now. The fact that it's local means that I never have to think about token pricing, quotas, time of day, or data sensitivity. I have limited the GPU from 600W to 450W which means the system stays whisper quiet during inference.\nI have become so \"lazy\" (in a good way), so far that I've started using the model for lots of daily mundane things on top of just coding:\n  * \"commit this on a branch, push, create a PR and assign $nickname for review\"\n  * \"Use the Stripe CLI to download all open and overdue invoices and reconcile them with this CSV export from our bank account.\"\n  * \"Use these Elasticsearch credentials to summarise what kind of operations are causing load at the moment.\"\n  * \"Tell me if our codebase already supports X and where it's  implemented.\"",
+              "author": "heipei",
+              "depth": 1
+            },
+            {
+              "text": "What context length and kv cache quant (if any) are you using? And MTP?",
+              "author": "amarshall",
+              "depth": 2
+            },
+            {
+              "text": "No KV cache quant, context length 50% of original, MTP absolutely. These are the relevant cmdline attributes. Getting around 100t/s with this setup, even when watt-limited to 450W.\n  --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.00 --presence-penalty 0 --metrics --jinja --chat-template-file chat_template.jinja --chat-template-kwargs '{\"preserve_thinking\": true}' --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.75 -ngl 99 -c 131072 -fa on -np 1 -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K",
+              "author": "heipei",
+              "depth": 3
+            },
+            {
+              "text": "Not the person you asked, but I have a 9700 which has the same VRAM, and running Q6 on it with unquantized kv gives me 50k context. Putting -ctv q8_0 ups that to 70k. I normally run Q4 with unquantized kv @ 130k at 50 t/s (mtp 3), with the disclaimer that I'm running PCIe gen4x8, so I'm slightly slowed. I've found that quantizing k leads to broken json on tool calls, which is fairly unrecoverable, but YMMV.",
+              "author": "lloyd-christmas",
+              "depth": 3
+            },
+            {
+              "text": "Qwen3.5-122B is actually Qwen3.5-122B-A10B. The A10B means that this is a \"mixture of experts\" model where only 10B parameters are activated at a given time. Whereas Qwen3.6-27B is a \"dense\" model where all 27B parameters are activated all the time. So for many tasks, you'd expect the 27B dense model to be better than the 122B-A10B model.",
+              "author": "bo1024",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I don't think you're going to get many \"true\" answers to this. The opportunity cost of not using the latest and best models is just too much right now.\nEvery month I research this and come to the same conclusion: the time, effort, and cost required to get local models (and the coding tools around them) to perform even close to Claude Code with sonnet/opus just not worth it right now. If it was, it would be distributive enough to be in the news.\nNot that I'm discounting someone hasn't already solved this, just trying to Occam razor my way out of diving too deep down rabbit holes.",
+          "author": "codinhood",
+          "replies": [
+            {
+              "text": "At some point, there will come a saturation point for that \"Opportunity cost FOMO train ride\", and I think we are already past that point. Mythos class models are a whole different beasts and cutting edge on reasoning but not much use for the problem domains most developers are trying to solve.\nThe present Sonnet/Opus versions (~4.8) will likely be what everyone in the enterprise might end up using eventually. And even though local models aren't there yet, there are budget alternatives from the families of DeepSeek, Kimi, GPT, MiniMax, etc.  available through APIs of NVidida, OpenRouter, Groq, etc. which are very much Sonnet grade.",
+              "author": "pyeri",
+              "depth": 1
+            },
+            {
+              "text": "Yeah this is exactly what I'm waiting for.\nPersonally, I don't think we're at that point yet. While I do think model improvement is starting to plateau (reaching a local ceiling), I'm not convinced local models are as good as sonnet/opus yet. The gap is still too much. But I'm excited for those models to reach those levels.",
+              "author": "codinhood",
+              "depth": 2
+            },
+            {
+              "text": "I've got a machine in a corner collecting dust that cost me $12k to build 2 years ago. It runs fine but it's wildly impractical to use as a daily driver (loud/hot). I keep it as a reminder to not do this again.\nAt my current pace it would take me until sometime late 2030 to spend the same amount in gpt5.5 tokens.",
+              "author": "bob1029",
+              "depth": 1
+            },
+            {
+              "text": "You forget that, especially on HN, many people are scaremongering that prices will soon skyrocket. Then it will be another story... I easily run $4k+/mo on my claude sub; if I would have to pay that, I definitely would spend 12k on hardware instead and accept a dumber helper.",
+              "author": "anonzzzies",
+              "depth": 2
+            },
+            {
+              "text": "You are not stuck between public API pricing for frontier models via Claude and self hosted.\nRemember that there are other LLM providers, open models, and previous gen models, that are way cheaper that frontier Claude and still way better than what can realistically run locally",
+              "author": "jonfw",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Yes. Llama.cpp + Qwen3.6-35b (MTP) + OpenCode is quite capable and runs on a single RTX 3090 and is faster than most cloud models. Quality is like running edge models from 8-12 months ago. Setup details at  \nhttps://github.com/pierotofy/LocalCodingLLM/",
+          "author": "pierotofy",
+          "replies": [
+            {
+              "text": "\"Quality is like running edge models from 8-12 months ago.\"\nThat sounds great for hobbyists but IMHO it wasn't until Opus 4.6 was released six months go (Dec 25, 2025) that we had a model good enough for professionals to use as a primary driver of their coding agents. That seems to be the threshold worth aiming for.",
+              "author": "jacobgold",
+              "depth": 1
+            },
+            {
+              "text": "I strongly agree on that being the release where these tools got good enough to substantially speed up my professional work. I have to admit I was super skeptical of AI coding until then.",
+              "author": "sbrother",
+              "depth": 2
+            },
+            {
+              "text": "Your skepticism led you to underrate the usefulness until then. Those who have been using agentic coding for the last 2 years can tell you Opus 4.6 was not a step change in quality, it was mostly a step change in the Overton Window and narrative.",
+              "author": "deaux",
+              "depth": 3
+            },
+            {
+              "text": "for me (might be because  of the language im using) i had a substantial bump around september and a huge bump around January.\nin my stuff now i use an OT library that claude put finishing touches on in September.",
+              "author": "dnautics",
+              "depth": 3
+            },
+            {
+              "text": "You can already get Opus 4.6 level of performance on subtasks with some local models. So you need to pick a proper code writer, plan writer, code tester etc. model that matches your target expectations and use a coding tool that allows calling different LLMs for different subtasks. For example, people use StepFun 3.x or DeepSeek4-Flash for planning, Qwen3.6-27B for coding.",
+              "author": "storus",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48477135",
+      "title": "I'm Eric Ries, author of \"The Lean Startup\" and new book \"Incorruptible\" – AMA",
+      "link": "https://news.ycombinator.com/item?id=48477135",
+      "domain": "news.ycombinator.com",
+      "author": "eries",
+      "score": 804,
+      "comment_count": 577,
+      "created_ts": 1781102872,
+      "is_internal": true,
+      "post_text": "Hey gang, you may remember me from such books as _The Lean Startup_ and _The Startup Way_.<p>It&#x27;s been fifteen years since I wrote The Lean Startup, and in that time I&#x27;ve seen some things. In both big companies and tiny startups, NGOs and governments, in almost every industry you can name.<p>I&#x27;ve helped a lot of people create a lot of amazing companies, but I&#x27;ve also seen so many ways this can go wrong. There&#x27;s a darkness in our industry that we often don&#x27;t talk about.<p>I kept watching good companies drift away from the missions they were founded on. Not because anyone woke up one day and decided to be evil, but because the structure they were built on slowly pulled them there. I call that pull &quot;financial gravity.&quot;<p>We&#x27;ve all experienced watching a company we love or admire be warped and broken beyond recognition; until it&#x27;s a husk of its former self, or worse. I wanted to understand why. And I wanted to know what all of us can do to stop that from happening.<p>My new book _Incorruptible_ is my attempt to explain the invisible forces that shape organizations, and how a handful of companies (like Costco, Patagonia, and Novo Nordisk) have successfully been structured to resist gravity and thrive for decades -- or even centuries.<p>Along the way, I founded the Long-Term Stock Exchange, co-founded an AI R&amp;D lab called Answer.AI with Jeremy Howard, and helped a number of notable companies with their governance (yes, including Anthropic).<p>I won&#x27;t pretend I have this all figured out, but I&#x27;ve probably spent more time than is healthy on the &quot;why do good companies go bad&quot; question. Ask me anything!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48550693",
+      "title": "The time the x86 emulator team found code so bad they fixed it during emulation",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260615-00/?p=112419",
+      "domain": "devblogs.microsoft.com",
+      "author": "paulmooreparks",
+      "score": 481,
+      "comment_count": 159,
+      "created_ts": 1781585196,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "This reminds me of a story from 15 years ago, where I was developing a technology to download games on demand by hooking into the OS calls.\nThere was a particular game that was superslow when this tech was applied. Original game loading took around 15-20 seconds, whereas once the tech was applied it took easily 3-5 min, even with all data already downloaded.\nWhen I started digging into it, I realized the reason was the game was using something like\n   fread(data, 1, 65536, fptr);\n\n\ninstead of\n   fread(data, 65536, 1, fptr);\n\n\nWhich basically expanded back in the day to 65k reads of 1 byte for several MB file. Each fread translated to 65k reads of ReadFile Windows API. Since my code was hooking on ReadFile system call, and my call was heavier than ReadFile, the game loading felt really slow. Unusable. It would have not been fun for players.\nThe easy fix was to swap arguments for certain calls. The long fix required to use an internal cache to account for these cases so that the hooked ReadFile was faster when data was already in disk.\nFunny thing is that as we started rolling out the tech and applying it to more and more games we realized lots of games did this. We went for the cache fix and games ended up loading faster than before. Honestly, games could have load all the data in a couple of seconds by just swapping the args. I'm guessing developers did this on purpose so that games seemed like they were loading a lot of stuff, although you never know.",
+          "author": "psanchez",
+          "replies": [
+            {
+              "text": "I used to be a graphics card/chip architect for macs in the early/mid 90s - our chips were the fastest, but some programs were resistant because they did stupid stuff: pagemaker invalidated the font cache every time it went thru its main loop, quark with ATM did an n*2 thing every time it wrote text etc etc. We had special hardware to accelerate text drawing and it did nothing because the software pissed it away. We considered creating a plugin that fixed all these things, it would have been hard to maintain, in the end we travelled around to the people who made these apps and talked them through their problems\nTo be fair excel would erase places white that it wanted to write up to 9 times before it drew any black pixels, we made that very fast! we didn't tell them :-)\nAt the time 24-bit framebuffers were so slow that before we built graphics acceleration hardware people would switch back to 8-bit to get stuff done, making 24-bit/true colour your daily driver was a big step forward.",
+              "author": "Taniwha",
+              "depth": 1
+            },
+            {
+              "text": "Does that make you the first in a long tradition of GPU developers going to blockbuster app devs to say \"hey, you should be doing this instead?\"\nPS – I am looking through the NuBus cards that I have... did you work for SuperMac or RasterOps?",
+              "author": "nxobject",
+              "depth": 2
+            },
+            {
+              "text": "I was probably not the first to have to do that, we knew what apps our customers used, making them better was the whole point of the operation\nI did the architectural design for the SuperMac cards. I figured out what needed to be accelerated, dropping code into people's machines to see where the cycles were going. Others did the physical design for the first 2 cards, I did the design of the chip in the Thunder and later cards (designed the data paths and state machines and a full simulation, someone else actually laid the gates)\nIf your card has a SQD01 on it it's my work. It peaks at 1.5Gb/s on solid fills",
+              "author": "Taniwha",
+              "depth": 3
+            },
+            {
+              "text": "This is a horrible and yet not unexpected insight into the internals of Excel",
+              "author": "urbandw311er",
+              "depth": 2
+            },
+            {
+              "text": "To be fair this was Excell 25 years ago, may no longer be true.\nOne of the other bugs (the Quark/ATM one) was also because of the programmers were worried about writing over stuff that hadn't been completely erased, the Quark guys wrote a string with 2 spaces at the end through a box that masked the end of the string, the ATM font renderer saw it couldn't fit the text so it split it in half and tried again so it drew N/2 N/4 N/8 ... strings. It spent all it's time in the 68k's multiply instructions figuring out how wide the strings (and substrings) were, our fancy 24-bit character rendering hardware was an afterthought",
+              "author": "Taniwha",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "SimCity had a read-after-free bug that Microsoft patched in Windows 95.  That was a lot easier for customers than having Maxis fix it, which could have required exchanging copies of the game.",
+          "author": "dlcarrier",
+          "replies": [
+            {
+              "text": "There's also the opposite effect, a windows security update broke GTA San Andreas because it relied on undefined behavior.\nhttps://silentsblog.com/2025/04/23/gta-san-andreas-win11-24h...",
+              "author": "oceansky",
+              "depth": 1
+            },
+            {
+              "text": "in this dark age of agents writing code that gets debugged by other agents, i love reading stuff like this: stories of human intuition fixing human mistakes. thanks for a fascinating read.",
+              "author": "icase",
+              "depth": 2
+            },
+            {
+              "text": "It feels like graphics drivers do / did this a lot too. At the very least they make specific optimizations for specific games, probably by tweaking settings and features that the game developers didn't optimize properly themselves.",
+              "author": "Cthulhu_",
+              "depth": 1
+            },
+            {
+              "text": "Famously if you renamed Quake 3 to \"Quack\" 3, it would slow down on the ATI Radeon 8500 \nhttps://web.archive.org/web/20091016055550/https://hardocp.c...",
+              "author": "kalleboo",
+              "depth": 2
+            },
+            {
+              "text": "That's a case of the driver cheating but there are also lots of cases where the game is just full of bugs that the driver has to work around in order to not be blamed for them.",
+              "author": "account42",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I think we're starting to see more of this sort of thing happening now with Proton and Wine gaining prominence in the Linux community. Some games (Elden Ring comes to mind) have bad enough PC ports when they come out that the compatibility layer can incorporate a hotfix to improve performance, while users of the software on the original platform still had to suffer.",
+          "author": "hodgehog11",
+          "replies": [
+            {
+              "text": "Fairly sure GPU drivers do the same thing where they include a ton of per game tweaks to make them run faster. It does feel like a fragile way of doing things where an external component that should be agnostic to the software running ends up including a handful of junk trying to fix stuff that should have been fixed by the consumer of the driver.",
+              "author": "Gigachad",
+              "depth": 1
+            },
+            {
+              "text": "The big one I remember was many applications, not just games assuming the buffer swap was performed by a blit into the display buffer, not an framebuffer pointer update. They relied on the previous frames data still being in the back buffer. For those applications you were forced to blit the buffer, not swap the pointer and take a performance hit.\nI also remember a media player being called out by name in the code for doing invalid operations, needing a work around and code to detect it was running just to function.",
+              "author": "zoenolan",
+              "depth": 2
+            },
+            {
+              "text": "It goes the other way too, sometimes you trigger some optimization silliness in the driver and the game needs to adapt to avoid it.",
+              "author": "Guvante",
+              "depth": 2
+            },
+            {
+              "text": "then the driver gets updated and the game either continues to optimize (wrong) or branches out into code that was written before that driver came out and generally wasn't that well tested, and the circle continues...\nIt's the life of a (game) developer...",
+              "author": "rickdeckard",
+              "depth": 3
+            },
+            {
+              "text": "GPU driver packages are already a huge collection of workarounds for bad game engine coding.\nAn Nvidia employee once told me that one of the easiest ways to squeeze out a few extra frames on your old machine is to rename the game executable to hl2.exe.",
+              "author": "anilakar",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> \nAnyway, my colleague found that there was one program that needed to allocate around 64KB of memory on the stack and initialize it. The standard way of doing this is to perform a stack probe to ensure that 64KB of memory is available, then subtracting 65536 from the stack pointer, and then initializing the memory in a small, tight loop.\nActually, the standard way of allocating 64 kB of memory on the stack is to just assume you can do it, subtract 64k from the stack pointer, and hope for the best.\nMost stack allocations in the wild are not checked.",
+          "author": "kazinator",
+          "replies": [
+            {
+              "text": "IIRC you have to probe every page of the stack on Windows. You cannot just subtract a value from ESP/RSP. If you don't probe every page in order, you get a page fault or some other exception (I don't remember which one).",
+              "author": "i_don_t_know",
+              "depth": 1
+            },
+            {
+              "text": "The reason for this is to ensure stack overflows are detected. The OS places a guard page above the top of the stack, which will cause a segfault if accessed. That way stack overflows are guaranteed to crash rather than stomping on valid memory that belongs to something else. However, if a stack frame is larger than a page (say, because it includes a large buffer), then it is possible for the program to \"jump over\" the guard page and access memory beyond.\nIn order to protect against this, the compiler inserts some dummy reads or writes as needed to ensure every page is touched in order from bottom to top. This ensures the guard page is hit before the application has a chance to write to memory beyond it.\nHere's an example: \nhttps://godbolt.org/z/oTbzTczM6",
+              "author": "NobodyNada",
+              "depth": 2
+            },
+            {
+              "text": "How else would the OS know your read/write 16 pages away from the current stack pointer is in fact an attempt to increase the stack and not just really bad pointer arithmetic and a bug? How many pages should the runtime let you skip before its just a segfault?",
+              "author": "justsid",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "To be fair it is possible that the developer enabled a special \"unroll all loops, no matter what\" optimisation flag during compilation.\nI agree it would be stupid for a compiler to even support such a flag, but those were the 1980s/90s.",
+          "author": "selcuka",
+          "replies": [
+            {
+              "text": "Doesn't require any special flags, just hitting optimizer limits can do it with MSVC.\nhttps://www.reddit.com/r/cpp/comments/1i36ahd/is_this_an_msv...",
+              "author": "ack_complete",
+              "depth": 1
+            },
+            {
+              "text": "Ahh... Good old funrollloops...\nhttps://www.shlomifish.org/humour/by-others/funroll-loops/Ge...",
+              "author": "cyberax",
+              "depth": 1
+            },
+            {
+              "text": "Right up there with fun, safe math optimizations",
+              "author": "PhilipRoman",
+              "depth": 2
+            },
+            {
+              "text": "At least these actually make things faster usually.",
+              "author": "account42",
+              "depth": 3
+            },
+            {
+              "text": "Heh, \"funrollloops\" reminds me of recompiling FreeBSD 4 on my thinkpad back in the early aughts.  The word made me imagine some sort of processed breakfast cereal with too many additives.",
+              "author": "lozf",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48449187",
+      "title": "Ask HN: What are tools you have made for yourself since the advent of AI?",
+      "link": "https://news.ycombinator.com/item?id=48449187",
+      "domain": "news.ycombinator.com",
+      "author": "aryamaan",
+      "score": 443,
+      "comment_count": 780,
+      "created_ts": 1780942959,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been making a lot of audio experiments for my own amusement. They all have some potential to drain your cpu, sorry!\nhttps://www.noisetable.xyz/\n - a collection of chance-based audio 'channels' in a VCR inspired interface\nhttps://concrete95.net/\n - a musique concrète web app that's made to look like windows 95. Pulls random audio from freesound.org and loops a small section, you can also layer synth pads or melodic synth loops. I'm often able to get some really pleasant background ambience.\nhttps://windso.me\n - a sample-based step sequencer that doesn't let you choose the sample that's loaded, kinda fun, still needs a lot of work!",
+          "author": "yungbeto",
+          "replies": [
+            {
+              "text": "Nice, Noisetable is so relaxing. Reminds me a bit of those generative music apps from Brian Eno.",
+              "author": "mickelsen",
+              "depth": 1
+            },
+            {
+              "text": "Oh awesome, his work has always been an inspiration, I really appreciate that.",
+              "author": "yungbeto",
+              "depth": 2
+            },
+            {
+              "text": "These are lovely",
+              "author": "burnto",
+              "depth": 1
+            },
+            {
+              "text": "Thank you :)",
+              "author": "yungbeto",
+              "depth": 2
+            },
+            {
+              "text": "I get a security warning on firefox when visiting noisetable.xyz",
+              "author": "BrokenCogs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Tools I’ve built for myself:\n- sandvault \nhttps://www.codeofhonor.com/projects/sandvault/\n  runs agents in a separate macOS user account, hardened with sandbox-exec. It also supports headless browsing and iOS Simulator from inside the sandbox for testing web and iOS apps.\n- clodpod \nhttps://www.codeofhonor.com/projects/clodpod/\n agents run inside a macOS VM.\n- git-multi-hook \nhttps://www.codeofhonor.com/projects/git-multi-hook/\n git only allows one script per hook event; this is a dispatcher that discovers and runs every script in a hooks dir, in parallel, for both global and repo hooks.\n- TubeGate \nhttps://www.codeofhonor.com/projects/tubegate/\n Chrome extension to block YouTube videos based on keywords (like “sponsored”).\n- push10k \nhttps://www.codeofhonor.com/projects/push10k/\n iOS app to track my progress toward 10,000 push-ups.\nMy blog is AI-coded: Zola static site, Sveltia CMS, Cloudflare Pages/Workers, with GitHub Actions handling builds and syndication. \nhttps://www.codeofhonor.com",
+          "author": "netcoyote",
+          "replies": [
+            {
+              "text": "Wait. You worked on Guild Wars, Starcraft, Warcraft, and Diablo?\nThis place is incredible.",
+              "author": "ElFitz",
+              "depth": 1
+            },
+            {
+              "text": "Guild Wars was one of the most fun games ever. The crazy combinations of skills you could try in the random arena were so much fun.\nGuild Wars 2 and most other games are pure slop.",
+              "author": "Traubenfuchs",
+              "depth": 2
+            },
+            {
+              "text": "They did announce Guild Wars 3 last Friday btw. Not set to release until 2027.\nAlso Guild Wars 1 has been receiving new content updates this year.",
+              "author": "mschild",
+              "depth": 3
+            },
+            {
+              "text": "I just found your blog yesterday reading up on the stories of how Warcraft and Starcraft were made!! Have been hacking on small games and a tool to build 3d environments for a while and get very inspired by hearing stories from back in the day. Thanks for making everything public. I really enjoy your writing.",
+              "author": "bdickason",
+              "depth": 1
+            },
+            {
+              "text": "Thank you, glad you enjoyed the articles. I wish I had the motivation to write more!",
+              "author": "netcoyote",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The funniest thing I've made is a free utility called \"Moniker\" that contextually renames files based on their contents.\nUses local AI models and I was able to snag this great domain name.\nhttps://finalfinalreallyfinaluntitleddocumentv3.com/\nBut hands down the most useful thing I've made is HutchDB, which is a MCP service that you can call from any AI chat or Agent setup to store data for you.\nLiterally from your AI you just say \"save that to Hutch\" and then it figures out:\n- The schema + fields\n- Builds nice webviews (Kanban, Timeline, Grid, Calendar)\n- Lets you share the output with people\nSo people use it for all kinds of things like time tracking (\"every hour save a summary of my activities to Hutch\"), for Agent to Human handoff (\"Every day check social media for mentions of my company and save them to Hutch\").\nI use it for things like recording all of our marketing activities and then having my AI compare those to signups for rough attribution, etc.\nDead useful and at \nhttps://hutchdb.com",
+          "author": "michaelbuckbee",
+          "replies": [
+            {
+              "text": "I love it! A few questions that made me think:\n- how do you know that \"people use it for all kinds of things\"? I just read your privacy policy and I'm concerned about my AI agent possibly leaking some API key to Hutch and then you can read it.\n- how is this free? You're hosting on Vercel, one of the most expensive hosting providers. What happens when this goes semi-viral? How do I know you won't just pull the plug to cut costs or start charging $500/month? I don't want to sign up, invest my time, and then lose access.\n- I signed up and now I can't access privacy policy nor terms of service pages, because when I go to \nhttps://hutchdb.com/\n I get redirected to \nhttps://hutchdb.com/dashboard",
+              "author": "Mystery-Machine",
+              "depth": 1
+            },
+            {
+              "text": "This is all very fair criticisms. This thread asked: \"What are tools you have made for yourself?\" and that's genuinely what this is. I wanted it so I made it and then AI makes it so easy to just throw up a marketing page.\nI've a a handful of dev friends that have started to use it as well and give their feedback and it's been slowly growing as I've added sharing/invites.\nI would absolutely not recommend putting big production data into it currently.\nMy vision for it was something more like how the #1 use of spreadsheets is actually people making lists and not actually people doing lots of calculations.\nGiven the uptake today (thanks everybody!) and your feedback (thanks Mystery-Machine) I'm going to work at addressing your concerns.",
+              "author": "michaelbuckbee",
+              "depth": 2
+            },
+            {
+              "text": "You completely ignored every question related to costs/privacy.",
+              "author": "jazzpush2",
+              "depth": 3
+            },
+            {
+              "text": "I thought it was more implied, but let me be more explicit:\n- This is something I made for myself without a lot of commercial thought, so I still haven't thought through pricing + usage + limits + operational limits. In it's current wildly unoptimized state it's still very cheap to run.\n- For the specific concern about API Key leakage there's not a lot I can do about that (that I'm aware of) as the logic of what gets sent is handled by the client AI. It is possible to pull down and audit both the tools + instructions that are published by the MCP server if there are concerns on that side.",
+              "author": "michaelbuckbee",
+              "depth": 4
+            },
+            {
+              "text": "dope!",
+              "author": "modelcroissant",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Gemini has been indispensable for helping me move from Windows to Linux. I'm reasonably proficient, but moving to a brand-new OS brought so many random questions and weird edge cases that I never would have had the confidence, patience, or time to tackle it alone, even with pretty strong Google fu. It's been so nice to have instant access to answers for my specific problems, without judgment or having to wait on a reply.\nAt the same time, I moved from Chrome back to Firefox, and Gemini was great at finding equivalents for my most-used extensions -- and, when none existed, to write my own. It's also been really useful for customization/\"ricing\".\nMore recently, I got into Quod Libet as a primary music library manager, and both Gemini and Claude have been fantastic at helping me build custom plugins that make it do exactly what I want it to. Scripts to automagically download tracks with metadata and synced lyrics, a lyrics sidebar that highlights lines as you listen and lets you click to jump to a specific line, a bookmark button that lets you mark your favorite section of a track for easy browsing later. Next chance I get is something that enables lyrics search across the entire library (a feature I was already able to build for the Stremio desktop player -- it's so cool to be able to search for a line in a TV episode or movie and jump straight to it).",
+          "author": "Jordan-117",
+          "replies": [
+            {
+              "text": "ChatGPT has helped me with innumerable little technical things and feels indispensable at this point.\nI can't help thinking that this is a combination of Google sucking more and more and various problems of daily getting so hard need something like a script to solve them. (Recent challenge - \"what affordable campgrounds are near the Pacific Create trail and open now\").",
+              "author": "joe_the_user",
+              "depth": 1
+            },
+            {
+              "text": "I similarly used it to finally facilitate a switch to Arch to a couple months ago. Not technically a tool, but it was very convenient to take the Arch wiki, and personalize it by saying \"My hardware is X and my use case is Y, can you filter out the 90% of things from here that aren't relevant to me?\"",
+              "author": "sufficientsoup",
+              "depth": 1
+            },
+            {
+              "text": "instant access to answers for my specific problems, without judgment\nFor me that’s killer feature, even if we don’t achieve AGI at least we got good enough „something that will google it for me”.\nIt is great both ways as an expert in my niche I don’t have to waste time on reading through entry level fluff. As non expert in other fields I don’t get to be scolded for asking entry level questions so RTFM and LMGTFY will sink in history fortunately.",
+              "author": "ozim",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's dumb, but....\nI made a scraper that searches through all the news and finds anything 'war' related. It then summarizes it and give me that new in the Star Wars crawl with music.",
+          "author": "Balgair",
+          "replies": [
+            {
+              "text": "If you upload those to YouTube, you might find yourself an audience.",
+              "author": "userbinator",
+              "depth": 1
+            },
+            {
+              "text": "Can... Can I have this as well?",
+              "author": "properbrew",
+              "depth": 1
+            },
+            {
+              "text": "How soon until we can just share a prompt://make-me-a-react-app-showing-a-summary-of-war-news-as-a-star-wars-crawl ? :-D",
+              "author": "foobarian",
+              "depth": 2
+            },
+            {
+              "text": "You can already share Claude artifacts this way.",
+              "author": "AlecSchueler",
+              "depth": 3
+            },
+            {
+              "text": "Please, please share this. I want to see this so badly.",
+              "author": "crazygringo",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48542132",
+      "title": "Copper transport drug restores memory and clears toxic Alzheimer's proteins",
+      "link": "https://www.monash.edu/news/articles/copper-drug-restores-memory-and-clears-toxic-alzheimers-proteins",
+      "domain": "www.monash.edu",
+      "author": "bookofjoe",
+      "score": 349,
+      "comment_count": 140,
+      "created_ts": 1781534927,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "toxic"
+      ],
+      "comments": [
+        {
+          "top": "Alzheimer’s is driven by the buildup of toxic proteins called amyloid-beta.\nIn the words of Derek Lowe:\nAmyloid-directed therapies truly, truly do not appear to be the answer for Alzheimer’s treatment. When I started work in the field back in the early 1990s, I was convinced of the opposite - the evidence looked very strong that defects in amyloid processing were indeed the cause of the disease. But that was thirty-five years ago, thirty-five years in which therapy after therapy after therapy aimed at amyloid mechanisms has failed.\n[…] We’re way past persistence, way past focus, way past optimism and multiple shots on goal and old-college-tries. Do something else! For God's sake, do something else.\n— \nhttps://www.science.org/content/blog-post/anti-amyloid-antib...",
+          "author": "quadhome",
+          "replies": [
+            {
+              "text": "This is just one person's (informed I assume) opinion tough. It does sound like common sense but alas common sense is rarely a good guide when it comes down to how the body works.\nI don't have a dog in this fight and I don't remember that much but I read someone's \"in defense of the amyloid hypothesis\" with interest. So if you want an counterpoint, you can go read \nhttps://www.astralcodexten.com/p/in-defense-of-the-amyloid-h...",
+              "author": "cassepipe",
+              "depth": 1
+            },
+            {
+              "text": "If I had to choose between Derek Lowe (author of the anti-amyloid-research article who is also highly experienced and skilled in pharma) and Scott Alexander/David Schneider-Joseph (psychiatrist and AI engineer, respectively), all my priors suggest Lowe gives better advice.\n\"I am David Schneider-Joseph, an engineer formerly with SpaceX and Google, now working in AI safety. Alzheimer’s isn’t my field, but I got very interested in it, spent six months studying the literature, and came away believing the amyloid hypothesis was basically completely solid. I thought I’d share that understanding with current skeptics.\"\n6 months of reading literature when you don't know how to read biomedical literature isn't very confidence inducing.  I know this site really likes it when smart outsiders come in and disrupt the status quo, but... probably not in this case.",
+              "author": "dekhn",
+              "depth": 2
+            },
+            {
+              "text": "This frequently comes up as a critique of my article, but I don't claim to be disrupting the field as a smart outsider. Rather, I looked at the field and concluded that the experts seem to know what they're doing. Derek Lowe is very much in the minority on this matter.",
+              "author": "DavidSJ",
+              "depth": 3
+            },
+            {
+              "text": "No, he's not (I work in pharma at a company that does basic and applied research on Alz).  It's more correct to say there are several camps, but the camp promoting amyloid plaques as the causative/driver for Alz has struggled greatly to come up with evidence supporting its position.",
+              "author": "dekhn",
+              "depth": 4
+            },
+            {
+              "text": "Is your view that amyloid is actually a minority view among researchers? That seems completely wrong based on basically every conference proceeding I've viewed and the volume of papers and citations I've examined.\nIf your view is merely that there is a \"camp\" of experts that disagrees, then sure, but in that case, I do not think it is honest to frame this as a choice between believing in the authority of a single expert from that camp, vs. the (lack of) authority of me, a non-expert.\n(I also think your read of the evidence is wrong, but I won't restate the arguments in my article.)",
+              "author": "DavidSJ",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I think people are reacting to the press-release more than the work.\nI don't see why this is definitely doomed just because they discuss beta-amyloid plaques. Those exist and are real. They \nprobably\n don't cause it any more than tombstones cause graveyards; very related, but not in the directly mechanistic way we wish.\n> Alzheimer’s disease (AD) is a prevalent neurodegenerative disorder characterized by the accumulation of amyloid-beta (Aβ) peptides in the brain.\nThis can be true and still not be the specific mechanism.\nYou can treat a specific waste product or you can repair the waste stream. The issue may be waste, but not a specific product, or the issue may not be the waste stream at all.\nThis work appears to demonstrate evidence of waste stream repair via a well-known waste-product. That doesn't mean that any specific waste product is or is not the problem or that this particular stream is definitely going to remove enough of the waste (if that was the problem).\nMaybe there have been a lot of drugs which have similarly attempted waste-stream repair so there's good reason to doubt it on that alone. But I don't think that mentioning beta-amyloid plaque is enough to discard this out-of-hand.",
+          "author": "ebolyen",
+          "replies": [
+            {
+              "text": "It is also worth mentioning that many of the alternative explanations involve brain infection, and improving brain/blood barrier also apply to that.",
+              "author": "yxhuvud",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "A lot of people here in the comments saying 'this can't work because amyloid beta hypothesis was wrong' seem to be missing that this treatment is aimed at some of the primary mediators of general brain health (function of natural BBB/vascular waste clearance mechanisms, which seem to degenerate over time, and modulation of neuroinflammation), not just clearing AB proteins pharmacologically. This jibes well with the stated improvements in Parkinsons and ALS.\nI doubt there is one root cause of Alzheimers (except maybe in some genetic cases), and this is likely not a panacea, but sounds like it may assist some of the key processes involved in breakdown.\nRoot behaviors related to sleep quality and quantity, diet, exercise, infection, environmental exposure and stress, as well as genetics, likely all contribute.\nBut, waste clearing  and neuro-inflammation seem to be core processes involved in the progression of the pathology, and improving natural vascular waste clearance seems like a logical place to find at least a small improvement in progression and symptoms...\nAnalogy: if someone puts metal shavings in an engine, having a better oil filter won't prevent all damage caused by the person putting the metal shavings there (nor will it halt the process), but it will reduce the damage by getting those shavings out of circulation before they have a chance to make even more repeated passes through the engine and do even more more damage. Improved vascular waste clearance is likely only a small piece of the puzzle, like having good oil pressure and filtration, but that doesn't mean it's irrelevant just because it doesn't prevent the other upstream root causes!",
+          "author": "layla5alive",
+          "replies": []
+        },
+        {
+          "top": "Great news!  If you are a mouse.\nFor humans, not yet progressed to trials though safety has been evaluated for other diseases, so possible for trials to happen quickly?\n\" the compound has strong potential to quickly transition into human clinics because it has already undergone safety evaluations for other diseases.\"",
+          "author": "discretion22",
+          "replies": [
+            {
+              "text": "A genetically modified mouse with human amyloid-beta peptides. \nhttps://www.jax.org/strain/004462#",
+              "author": "smallerize",
+              "depth": 1
+            },
+            {
+              "text": "The Hitchhiker's Guide was right. We spend all our time inventing new cures for the mice!",
+              "author": "onraglanroad",
+              "depth": 1
+            },
+            {
+              "text": "It goes even further than that. since we don’t know what causes Alzheimer’s, what they’re doing is trying to cure their own laboratory-induced symptoms in mice. It’s like trying to fix a car’s ABS system by simulating tire slippage.\nThis is so obvious that the only thing I can think is that they simply don't care. They just want to find something that masks the symptoms (perhaps to keep patients dependent on the drug for life if they succeed).\nWhat causes Alzheimer gentlemen? very few people is really trying to solve this answer.\nIs it even known what causes the moments of lucidity in patients? Molecules should be mapped to identify the patterns (and therefore track possible sources).",
+              "author": "drtgh",
+              "depth": 2
+            },
+            {
+              "text": "mice are having a great year",
+              "author": "functionmouse",
+              "depth": 1
+            },
+            {
+              "text": "I mean why not allow right to try for people who are already so far gone. It can potentially help them and all of us.",
+              "author": "PrincepsZero",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Lithium, too! In mice. \n\nhttps://otd.harvard.edu/news/could-lithium-explain-and-treat...",
+          "author": "adamredwoods",
+          "replies": [
+            {
+              "text": "Interestingly, lithium does seem to protect telomeres and in fact lengthens them, which may affect Alzheimer's.",
+              "author": "helterskelter",
+              "depth": 1
+            },
+            {
+              "text": "interesting, I remember reading population of Beijing seem to have lithium in their water or air so their new born and mothers carrying seem to have 20x of lithium concentration of what's considered normal...",
+              "author": "alliao",
+              "depth": 2
+            },
+            {
+              "text": "The papers suggest a plausible mechanism by which lithium orotate could have an effect that would be not present with inorganic lithium salts.\nIIRC the hypothesis is that lithium orotate does not fully dissociate in water and thus can cross the blood brain barrier much more easily than plain Li+, and then the cells in your brain can take up the lithium orotate, metabolize the orotate part, and make the free Li+ available.",
+              "author": "amluto",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48528779",
+      "title": "Ask HN: What are you working on? (June 2026)",
+      "link": "https://news.ycombinator.com/item?id=48528779",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 305,
+      "comment_count": 1100,
+      "created_ts": 1781453128,
+      "is_internal": true,
+      "post_text": "What are you working on? Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48448313",
+      "title": "Ask HN: Why hasn't there been a real competitor to Ticketmaster yet?",
+      "link": "https://news.ycombinator.com/item?id=48448313",
+      "domain": "news.ycombinator.com",
+      "author": "mdni007",
+      "score": 263,
+      "comment_count": 239,
+      "created_ts": 1780939709,
+      "is_internal": true,
+      "post_text": "It feels like every event&#x2F;venue is selling tickets exclusively through Ticketmaster.  Every other ticketing platform seems to only hold resale tickets in their inventory which just transfers the tickets to your Ticketmaster account when bought. With all the hate Ticketmaster has gotten and all the other ticketing platforms out there, I&#x27;m surprised Ticketmaster still has a hold of pretty much the entire market. How are they doing this? Why haven&#x27;t the other platforms been able to compete?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Many of the other commenters have explained how the ownership structure of Ticketmaster gives them near monopoly control because they also own the radio stations and the venues and the promoters. (I'm using \"they\" and \"own\" very liberally in this paragraph.)\nThe simple fact that there's an ownership link between Ticketmaster and the scalper I mean totally legit resale sites is so wildly corrupt that, well, it's textbook stuff.\nWhat I haven't really seen discussed in the comments is that the role and objective of Ticketmaster is poorly understood. They seem like the people who sell tickets, but in reality they are \"blast shield for consumer rage\" as a service. Their role is to industrialize the conversion of anger into waste heat while leaving the musicians looking like neutral parties.\nThey also do a lot of catch-and-kill; once competitors get too big, they use bully tactics to starve them until they can acquire them cheaply.\nThere's an app called DICE. I like it a lot. I'm rooting for them.",
+          "author": "peteforde",
+          "replies": [
+            {
+              "text": "Go to a lot of smaller shows, been using DICE for a long time - I think they dominate the smaller venues (in the UK at least). They've made tickets as easy as Amazon made ecom.\nAlerts when for when tickets go on sale, (almost one click!) buy for friends and share, bans if you sell over face value, and (for a lot of places) you can return tickets to the pool to resell if you can't go (so there's often last minute waitlist tickets). It's all super smooth and a genuinely delightful experience.\nRooting for them too!",
+              "author": "iamben",
+              "depth": 1
+            },
+            {
+              "text": "DICE are owned by Fever as of 2025.",
+              "author": "philipwhiuk",
+              "depth": 2
+            },
+            {
+              "text": "DICE is a great experience, but I hate that they have no option to buy tickets without installing and using their app. It should at least be possible from a website, come on...",
+              "author": "FireInsight",
+              "depth": 2
+            },
+            {
+              "text": "Awesome.\nEverything you're stating sounds alot like Tixel in Australia.\nTho I'm not sure they manage the venue / original ticket sale.  More of a scalp free marketplace.\nOnly place I will buy or sell tickets.",
+              "author": "RileyJames",
+              "depth": 2
+            },
+            {
+              "text": "DICE is awesome. I'm bummed when I need to use anything else. I rarely ever need to use Ticketmaster.",
+              "author": "maleldil",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "From the point of view of the promoters, concerts are a two-sided marketplace. Two-sided marketplaces are notoriously difficult for small players to compete in. You need to attract good acts so people will buy tickets, but to attract the top acts you need to show that you can sell lots of tickets.\nTicketmaster avoided the two-sided market problem until they reached scale. They were just a website where you buy tickets, an IT appliance for promoters.\nBut then Ticketmaster started buying out promoters, and that short circuited the entire system. Fans can't buy tickets from a different storefront because their favorite artists are only booking performances with ticketmaster-controlled venues. Top talent can't book high-grossing venues that aren't owned by ticketmaster, because Ticketmaster owns the promoters.\nScalpers are a symptom, the disease is consolidation of competitive markets by corporations. This kind of situation is precisely why antitrust law exists.",
+          "author": "ryukoposting",
+          "replies": [
+            {
+              "text": "Just tried searching for a long-form article I read in recent years. Wish I could find it, but obviously the facts are not a secret. It explained in depth all the problems with the monopoly, but it also pointed out something very surprising to me. A few artists have spoken out angrily on behalf of their fans. However, the fact is, the artists in general do financially benefit from Ticketmaster's way of doing things. Part of Ticketmaster's business model is taking the heat from the fans who don't like paying all the extra fees so that the anger is not directed at the artists. If an artist wants to set the floor at $150 but knows fans might be upset, they can drop the price 30% and TicketMaster can help them make up the difference in fees, and Ticketmaster has nothing to lose. The artists get to keep their reputation intact instead of appearing greedy to fans.",
+              "author": "stephenhuey",
+              "depth": 1
+            },
+            {
+              "text": "If an artist wants to set the floor at $150 but knows fans might be upset, they can drop the price 30% and TicketMaster can help them make up the difference in fees, and Ticketmaster has nothing to lose. The artists get to keep their reputation intact instead of appearing greedy to fans\nThis myth keeps getting promulgated and it's just that: a myth. The podcast was wrong about how the music industry actually works.\nVenues and promoters set the ticket prices, not the artists. The artists get a fixed fee for their performances, and may get a bonus if a certain % of tickets are sold. Even artists on tours don't get to choose the ticket prices. They can ask nicely, but ultimately the promoter decides.",
+              "author": "gamblor956",
+              "depth": 2
+            },
+            {
+              "text": "As I said, I didn't find the article or podcast I was thinking of. You're right that it may not be the tacked-on fees. Artists generally do not have much leverage against the monopoly (some artists get more say). It might be some things like platinum pricing that I'm thinking of, and how people think Ticketmaster raised the prices but the artists benefit without having to take the heat. Artists and promoters have a lot of influence over what are called the fair-value prices, the number of tickets released, whether to opt into dynamic or premium pricing, whether they can officially be resold, and VIP package prices. Again, plenty of artists don't like working with the monopoly, but I had just remembered such an aha moment when I heard they frequently benefit financially from certain practices the fans don't like.",
+              "author": "stephenhuey",
+              "depth": 3
+            },
+            {
+              "text": "It really depends. Artists can book out the whole venue and handle the ticket selling themselves, either through ticketmaster or another distributor, they just usually don't. Whenever you hear of one of those random big artists promising low ticket prices that's how they do it.",
+              "author": "Suppafly",
+              "depth": 3
+            },
+            {
+              "text": "Do you have evidence for your claims?",
+              "author": "pxx",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Trent Reznor (Nine Inch Nails) gave a good explanation many years ago already:\nhttps://stereogum.com/58831/trent_reznor_blasts_ticketmaster...",
+          "author": "nemoniac",
+          "replies": [
+            {
+              "text": "He also predicted the future for after the merger.\nIts funny - of all the stuff people make up that was Obama's fault, no one ever mentions his admin allowing Ticketmaster and Live Nation to merge.  Now they need to be broken up, probably like the Bell System back in the day.  But I'll keep on dreaming about that.",
+              "author": "jmuguy",
+              "depth": 1
+            },
+            {
+              "text": "My dad told tales of lining up outside a venue to buy a ticket from them directly. By the time I was old enough to be going to concerts, I had to camp out at a TicketMaster location. It made going to the show that much more memorable with the effort put into it. Screw the Baby Bell break up, break it up past the point of just ticket sales. Also break up who can own the venues in town.",
+              "author": "dylan604",
+              "depth": 2
+            },
+            {
+              "text": "My college job was at a record store that had a Ticketmaster machine. If you didn't want to pay the $2.50 fee[1] (we got only like 15 cents or something) you could go to the venue and buy tickets directly.\nBut since they became a monopoly that option is unavailable. Their contracts with the venues include that they get their full fee, even when bought in person.\n[1] Which paid for the custom ticket printer, the ticket stock, the CRT terminal, and the central computer. We paid for the data line and donated the counter space.",
+              "author": "chiph",
+              "depth": 3
+            },
+            {
+              "text": "Worse, they are all owned by the same company now. It’s all a multi-headed hydra of suck. Live Music has been completely monopolized.",
+              "author": "reactordev",
+              "depth": 1
+            },
+            {
+              "text": "If you like specific acts, sure. Or maybe some cities take independent venues more seriously than others. Growing up, ok I missed out on getting Metallica tickets because I didn't want to support clear channel (or Live Nation, or TM, etc...), but I still was able to see plenty of amazing metal bands in indie venues.\nAnother interesting note: Weird Al is playing three venues within driving distance from me. Only one of them is selling tickets through TM.",
+              "author": "dfxm12",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Ticketmaster obviously sucks, and their monopolistic business practices deserve a close look by regulators.\nBut the core of it is that an unregulated ticket market actually supports these prices.  Fans keep showing that they're willing to dig deep and outbid each other to attend these events in person.  Ticketmaster realizes this, and have set up a business model that extracts accordingly.\nI think this is where us Americans get turned around. We tend to believe that it’s fair to charge the full market value for a thing, but we also have a sense that cultural experiences are \"meant\" to be shared equitably.  But until we actually put a value on the latter, we're only ever going to have the former.",
+          "author": "alexose",
+          "replies": [
+            {
+              "text": "Looking at the world cup ticket prices gives me a mini heart attack. I don't know who is responsible for such high prices (maybe a combination of FIFA and Ticketmaster?), but goddamn these prices are insane. It is going to price out most people. Either that, or people are going to get into debt, just to see a couple of matches to see their favorite teams play.",
+              "author": "akudha",
+              "depth": 1
+            },
+            {
+              "text": "There are very limited seats (a few teens of thousands). Free market logic dictates that the 100000 richest fans get the tickets.\nIf you don't like it, you are not a true believer in a free market. There's a reason social democrat countries heavily subsidize culture.",
+              "author": "alphager",
+              "depth": 2
+            },
+            {
+              "text": "Stadiums are still going to be full, that’s why it will keep happening.\nPeople voting with their wallets goes both ways.",
+              "author": "loloquwowndueo",
+              "depth": 2
+            },
+            {
+              "text": "> \"Every match is already sold out,\" Fifa president Gianni Infantino said in February. \"We keep some tickets back for some last-minute sales, of course, but every match is sold out.\"\n> Like most things about this World Cup, the reality appears to be different.\n> Fifa should not have a problem selling out the games featuring the marquee teams - Argentina, Brazil, England, Germany and Spain, to name a few.\n> We should be able to say the same about the host nations, but Fifa has priced these games so highly that only two of the nine matches featuring Canada, Mexico or the United States are officially sold out.\n> on Saturday there were close to 74,000 tickets available across 86 of the 104 matches.",
+              "author": "fakedang",
+              "depth": 3
+            },
+            {
+              "text": "74k tickets across all 86 matches? That’s less than 1k tickets per match. Azteca Stadium in Mexico has 87k capacity - 1k unsold tickets is nothing.",
+              "author": "loloquwowndueo",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Here's a fascinating clip that's stuck with me of Louis CK talking about trying to circumvent ticketmaster: \nhttps://youtu.be/UtoyMpR-mWY?si=LHfmofSERrQZLEj9&t=3015\nSpecifically the part where he'd play at a non LiveNation/Ticketmaster venue, and right after, TM would find out and would make a deal with the venue to be their exclusive promoter. Insanity.",
+          "author": "anon277748931",
+          "replies": [
+            {
+              "text": "That was a good watch. From your comment, it seemed like this was a low-medium level issue with low-medium venues doing exclusive deals with LN/TM but Madison Square Garden is arguably the most prestigious venue in the world.",
+              "author": "jimbob45",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48475871",
+      "title": "Ask HN: Are most corporate SWE jobs performative?",
+      "link": "https://news.ycombinator.com/item?id=48475871",
+      "domain": "news.ycombinator.com",
+      "author": "hnthrow10282910",
+      "score": 248,
+      "comment_count": 283,
+      "created_ts": 1781097514,
+      "is_internal": true,
+      "post_text": "The large companies I’ve worked at (including FAANG) seemed to thrive on kudos via performative actions. Like the majority of the team is doing useless stuff that management thinks is impressive while the couple all stars get the team closer to the goal.<p>Meanwhile, a lot of managers calendars are purely just 1:1s with devs on the team which clearly has very little value add to the team.<p>Anyone else notice this? Not sure if there’s a word for it, but it’s somewhat demoralising working with a bunch of corporate office workers cosplaying as engineers",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate",
+        "faang",
+        "team",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48465702",
+      "title": "Ask HN: Are you still using a Vision Pro?",
+      "link": "https://news.ycombinator.com/item?id=48465702",
+      "domain": "news.ycombinator.com",
+      "author": "y1n0",
+      "score": 171,
+      "comment_count": 215,
+      "created_ts": 1781030872,
+      "is_internal": true,
+      "post_text": "Almost two years ago there was a thread on this (https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=40872102).  I&#x27;m curious now that more time has passed what people think?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48466488",
+      "title": "Ask HN: Favorite text heavy blogs that are a joy to read?",
+      "link": "https://news.ycombinator.com/item?id=48466488",
+      "domain": "news.ycombinator.com",
+      "author": "joshmarinacci",
+      "score": 118,
+      "comment_count": 30,
+      "created_ts": 1781033700,
+      "is_internal": true,
+      "post_text": "After ten years I’m working on a redesign of my personal tech blog. I want to look at some other blogs with good modern design. Of course searching for ‘well designed blogs’ or ‘webdesign 2026’ brings up endless marketing listicles. Even after wading through the crap, the advice is focused on advertising and product centric sites, not prose heavy sites with good typography.<p>So my question to you is: <i>What are some of your favorite text heavy blogs that are a joy to read?</i><p>I don’t mean the content (though that helps too), but rather sites where the actual experience of reading is pleasant. Think: good fonts, sticky headers (or not), well formatted code snippets, and responsive images.  Slide in navbars vs inline table of contents.<p>Thanks,\n - j",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": [
+        {
+          "top": "Lesswrong for both sidebars: the heading based TOC on the left, and the margin notes on the right: \nhttps://www.lesswrong.com/posts/bJ2haLkcGeLtTWaD5/welcome-to...\nFor interactive / code snippets\nMaxime Heckel: \nhttps://blog.maximeheckel.com/posts/the-study-of-shaders-wit...\nHonorable mentions \nMaggie Applebaum \nhttps://maggieappleton.com/ai-enlightenment\n\nMarek Chotoborski \nhttps://zanlib.dev/blog/number-inputs-in-react/\nLine width, sane fonts, avoiding clever shit unless very polished, gets you a long way.",
+          "author": "RickS",
+          "replies": [
+            {
+              "text": "Less Wrong is wrong a lot lol.",
+              "author": "wrentopher",
+              "depth": 1
+            },
+            {
+              "text": "Is it sort of how stainless steel still rusts... it just rusts, less?",
+              "author": "dieselgate",
+              "depth": 2
+            },
+            {
+              "text": "Wow. Maxime’s site is gorgeous.\nThank you",
+              "author": "joshmarinacci",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I like reading Julia Evans blog. Aside from the good writings, I think the typography and the paragraph width fits nicely.\nhttps://jvns.ca/",
+          "author": "faizmokh",
+          "replies": []
+        },
+        {
+          "top": "https://gwern.net",
+          "author": "sammygutierrez",
+          "replies": [
+            {
+              "text": "Gwern's website changed my life at least 12 years ago by introducing me to spaced repetition, which solved my greatest bottleneck at the time: very smart and totally unable to remember anything in the moment to actually apply those smarts to. I'm glad I got the opportunity to finally remunerate him some very small amount after he set up a Patreon or what have you around the time of that Dwarkesh podcast. There are like at least a dozen other works on there that were formative for me too, very highly recommended.",
+              "author": "hiAndrewQuinn",
+              "depth": 1
+            },
+            {
+              "text": "Came here to say this, absolute best blog typography in the last 30 yrs",
+              "author": "genericacct",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I like the design of \nhttps://dbushell.com/blog/\nThough mainly I just like the general 50s aesthetics of it, rather than specific UI elements.",
+          "author": "deckplecksetter",
+          "replies": [
+            {
+              "text": "I definitely read that as D-Bus hell",
+              "author": "xref",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Here is a decent collection of some text heavy personal sites. Not affiliated in any way: \nhttps://mnmm.xyz/",
+          "author": "b00palicious",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48434240",
+      "title": "Ask HN: How are thinking efforts implemented?",
+      "link": "https://news.ycombinator.com/item?id=48434240",
+      "domain": "news.ycombinator.com",
+      "author": "simianwords",
+      "score": 101,
+      "comment_count": 30,
+      "created_ts": 1780835924,
+      "is_internal": true,
+      "post_text": "Claude and ChatGPT have thinking efforts where you can tune the amount of thinking allowed.<p>Like low, medium, high, xhigh and so on.<p>But are they different models underneath? Or same model with different parameter?<p>The reason I ask is because, if I change the effort param mid conversation in Claude code, I get a warning suggesting I’m breaking the cache.<p>I don’t think this happens in Codex because when I change the effort, the responses are still quick.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48492118",
+      "title": "Ask HN: How do you get into a flow state when using AI to code?",
+      "link": "https://news.ycombinator.com/item?id=48492118",
+      "domain": "news.ycombinator.com",
+      "author": "kilroy123",
+      "score": 96,
+      "comment_count": 122,
+      "created_ts": 1781193385,
+      "is_internal": true,
+      "post_text": "Before agentic coding, I always prided myself on how long I could work in a flow state. I was really good at working deeply.<p>Now, with slow agents like Claude, I find myself no longer working deeply.<p>What are you all doing to stay focused?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48486932",
+      "title": "Ask HN: Want to build something open source on nights and weekends together?",
+      "link": "https://news.ycombinator.com/item?id=48486932",
+      "domain": "news.ycombinator.com",
+      "author": "vira28",
+      "score": 39,
+      "comment_count": 18,
+      "created_ts": 1781159460,
+      "is_internal": true,
+      "post_text": "Not a hiring post. I have a 9-5 but also a lot of ideas I want to build. The core is just to show up and make small progress — but I find I&#x27;m missing accountability and partnership, so I thought it&#x27;d be nice to partner with someone. Mostly backend&#x2F;infra stuff. If you&#x27;re interested, email in my profile.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48481947",
+      "title": "Ask HN: Would it be useful to have a slop button in addition to flag?",
+      "link": "https://news.ycombinator.com/item?id=48481947",
+      "domain": "news.ycombinator.com",
+      "author": "BugsJustFindMe",
+      "score": 39,
+      "comment_count": 23,
+      "created_ts": 1781122251,
+      "is_internal": true,
+      "post_text": "In these modern harrowing times, more and more posts are proving to be AI slop, and many people are averse to that. Do you think it would it be useful to have a way to indicate that you believe a post is slop separate from the existing flag button? Maybe it&#x27;s just me but I feel like having a dedicated [AI slop] flag on a post would be useful because I feel differently about posts that have been flagged for other reasons than that. (or something friendlier if value is seen in the general idea but not in that language)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48486763",
+      "title": "Ask HN: Is anyone shorting the overspend in AI yet?",
+      "link": "https://news.ycombinator.com/item?id=48486763",
+      "domain": "news.ycombinator.com",
+      "author": "ggm",
+      "score": 19,
+      "comment_count": 16,
+      "created_ts": 1781157941,
+      "is_internal": true,
+      "post_text": "I and a small cohort of friends truly believe that the &quot;$1T&quot; floats are going to burn capital. We think this is a disaster of landgrab spend, and that the cost of a token cannot be recovered by future commercial use.<p>If this theory is correct, then following on from the housing debt crisis, this is a hollow shell and so somebody in finance should be shorting the floats, and betting on a crash to clean up.<p>Polymarket betting aside, is anyone able to confirm that there are funds looking at a short play in the AI space, or is everyone on-board with things and nobody is taking the other side of the bet?<p>I am not in fintech or investing, I am not seeking alpha to do this, I don&#x27;t invest directly. I am however interested in validating my theory that somebody smart out there sees a huge upside in the explosion when this attempt to buy market share in Unicorn juice explodes.<p>NVDA as an example has under 2% of its trade in shorts. I can&#x27;t tell if thats big or small TBH. Feels small.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48545230",
+      "title": "Newer macOS runs slower on Intel (undeniably) – on purpose or \"accident\"?",
+      "link": "https://news.ycombinator.com/item?id=48545230",
+      "domain": "news.ycombinator.com",
+      "author": "srevenant",
+      "score": 15,
+      "comment_count": 16,
+      "created_ts": 1781548301,
+      "is_internal": true,
+      "post_text": "FIRST: if you feel the urge to say &quot;get a PC&quot; or &quot;try linux&quot; please don&#x27;t. This is about apple&#x2F;mac&#x2F;macos hardware. suggestions to linux or other things isn&#x27;t helpful.<p>I have a macbook pro, 32G ram, lightning fast nvme drive. There is NO REASON to upgrade the hardware.<p>I&#x27;ve followed the upgrade path to their latest (Tahoe) and they announced this is the last.<p>But it has become UNBEARABLY slow and painful for some operations. Most notably screen sharing drives it into the ground.<p>I&#x27;ve tried all sorts of things from os settings to whatever--short of redoing the heat paste on the CPU itself. I even installed Fedora on a generation before mine without the security chip (the first gen touch bar). Fedora was &#x2F;lightning&#x2F; fast. (I even re-installed fresh from Tahoe, no difference).<p>It is undeniable: Apple has made the newer MacOS run slower on Intel.<p>I downgraded two steps to Sonoma. And it&#x27;s back to running in a bearable manner.<p>I&#x27;m absolutely confident Apple will have all sorts of plausible deniability around &quot;we didn&#x27;t nerf it on purpose&quot; but whether it was with intent or &quot;oooops did that little thing happen?&quot; doesn&#x27;t matter.<p>Just for context: prior to upgrading my mac would average around 74°c. If I started zoom it would spike up to 100°c and then start throttling, making everything unusable. But it wasn&#x27;t just zoom. Some other apps (especially those in the node world) also would be come dog slow over time.<p>Now that I&#x27;m on Sonoma, and what&#x27;s so frustrating about this situation, is how blatant it is. I started a screenshare in zoom, there was a small spike to the temperature, then it trended DOWN even lower than when I started. Why? No idea. This is entirely circumstantial, but the real key here is that it didn&#x27;t go UP.<p>What do I want? Maybe Apple just needs to stop trying to push people to an OS that is nerfed so they&#x27;ll feel like buying new hardware.<p>And I&#x27;m curious what others think about the whole situation, or your own experiences.<p>Steps off soapbox.<p>(Context: MacBook Pro16, 2019, 32G ram, AMD gpu). And again: i&#x27;ve tried all sorts of setting changes from enabling gpu&#x2F;disabling&#x2F;etc. The heart of it is the windowing system runs everything dog slow.<p>TL;DR: if on intel stop at Sonoma, do not go past that.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48548514",
+      "title": "Ask HN: How long have you been looking for a job?",
+      "link": "https://news.ycombinator.com/item?id=48548514",
+      "domain": "news.ycombinator.com",
+      "author": "baddash",
+      "score": 11,
+      "comment_count": 6,
+      "created_ts": 1781566145,
+      "is_internal": true,
+      "post_text": "For me personally, I was laid off around a year and 3 months ago. I&#x27;ve gotten many interviews but no success. Just wondering how it&#x27;s going for others. For context I&#x27;m a software engineer (unexpected, I know).",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48548293",
+      "title": "Ask HN: Do you remember when you gained consciousness? What was it like?",
+      "link": "https://news.ycombinator.com/item?id=48548293",
+      "domain": "news.ycombinator.com",
+      "author": "kelseyfrog",
+      "score": 11,
+      "comment_count": 11,
+      "created_ts": 1781564838,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48540840",
+      "title": "Ask HN: What agentic directory structure do you use?",
+      "link": "https://news.ycombinator.com/item?id=48540840",
+      "domain": "news.ycombinator.com",
+      "author": "dominiek",
+      "score": 7,
+      "comment_count": 1,
+      "created_ts": 1781529558,
+      "is_internal": true,
+      "post_text": "The more I use Claude Code to generate large swaths of systems, the more I feel like we are missing a lot of practices and tools.<p>The first bit that really annoyed me was the lack of tracking prompts. There are lot&#x27;s of little inputs that inform the what the system should do and it seems to be very ephemeral. I&#x27;ve since started tracking the prompts in the codebase.<p>Another observation is that if you want to have good agentic output, you need to provide lot&#x27;s of signal into the context window. It seems that being disciplined about what goes into the context window is key. Using AI to generate input files can be dangerous because it adds entropy&#x2F;noise to the human signal.<p>One practice I have started to do is organize my projects in a certain way:<p>- &#x2F;specs - Pure human signal such as product vision, requirements, designs, etc.\n- &#x2F;prompts - Agentic recipes such as skills, jobs, AI patterns.\n- &#x2F;references - References that can be used in the context window (brand assets, documents, figma exports, data sets, etc.)\n- &#x2F;plans - The agentic plans for a project. Ususually there are iterations on these plans.\n- &#x2F;build - The codebases and traditional mono repos that are built from plans and prompt interactions.<p>(I have the above with an AGENTS.md as a public GH repo at rekallai&#x2F;craft)<p>I&#x27;m not fully satisfied yet with this structure. I think &#x2F;plans is a bit of a misnomer the more I use it (e.g. I often have reports that I want to generate on top of the codebase or other data sets).<p>I am really curious how other developers (that embrace agentic coding) here organize their projects. My goal is to standardize this in my teams.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48558511",
+      "title": "Nanogram – Private social media from your Raspberry Pi",
+      "link": "https://news.ycombinator.com/item?id=48558511",
+      "domain": "news.ycombinator.com",
+      "author": "smalltorch",
+      "score": 6,
+      "comment_count": 0,
+      "created_ts": 1781629969,
+      "is_internal": true,
+      "post_text": "Hello, I have made nanogram as a privacy centered social media platform designed for users to maintain complete control of their data.<p>Using purely open source alternatives, nanogram provides a robust and small way to emulate the old days of Instagram where friends could share moments with each other without all the fluff.<p>Also included is the ability to play Scrabble, connect 4, and chess with your friends.<p>The platform is invite only meaning the server operator must generate a invite token to allow new users.<p>Because of the global power of Tor, hosting is completely free and E2EE encrypted as it operates as a onion service.<p>Find it here https:&#x2F;&#x2F;gitlab.com&#x2F;here_gorawhile&#x2F;nanogram-pi",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    }
+  ]
+}
