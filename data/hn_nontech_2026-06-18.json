@@ -1,0 +1,348 @@
+{
+  "scraped_date": "2026-06-18",
+  "source": "hacker_news",
+  "total_scraped": 60,
+  "nontech_count": 4,
+  "posts": [
+    {
+      "id": "48550693",
+      "title": "The time the x86 emulator team found code so bad they fixed it during emulation",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260615-00/?p=112419",
+      "domain": "devblogs.microsoft.com",
+      "author": "paulmooreparks",
+      "score": 496,
+      "comment_count": 171,
+      "created_ts": 1781585196,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "This reminds me of a story from 15 years ago, where I was developing a technology to download games on demand by hooking into the OS calls.\nThere was a particular game that was superslow when this tech was applied. Original game loading took around 15-20 seconds, whereas once the tech was applied it took easily 3-5 min, even with all data already downloaded.\nWhen I started digging into it, I realized the reason was the game was using something like\n   fread(data, 1, 65536, fptr);\n\n\ninstead of\n   fread(data, 65536, 1, fptr);\n\n\nWhich basically expanded back in the day to 65k reads of 1 byte for several MB file. Each fread translated to 65k reads of ReadFile Windows API. Since my code was hooking on ReadFile system call, and my call was heavier than ReadFile, the game loading felt really slow. Unusable. It would have not been fun for players.\nThe easy fix was to swap arguments for certain calls. The long fix required to use an internal cache to account for these cases so that the hooked ReadFile was faster when data was already in disk.\nFunny thing is that as we started rolling out the tech and applying it to more and more games we realized lots of games did this. We went for the cache fix and games ended up loading faster than before. Honestly, games could have load all the data in a couple of seconds by just swapping the args. I'm guessing developers did this on purpose so that games seemed like they were loading a lot of stuff, although you never know.",
+          "author": "psanchez",
+          "replies": [
+            {
+              "text": "I used to be a graphics card/chip architect for macs in the early/mid 90s - our chips were the fastest, but some programs were resistant because they did stupid stuff: pagemaker invalidated the font cache every time it went thru its main loop, quark with ATM did an n*2 thing every time it wrote text etc etc. We had special hardware to accelerate text drawing and it did nothing because the software pissed it away. We considered creating a plugin that fixed all these things, it would have been hard to maintain, in the end we travelled around to the people who made these apps and talked them through their problems\nTo be fair excel would erase places white that it wanted to write up to 9 times before it drew any black pixels, we made that very fast! we didn't tell them :-)\nAt the time 24-bit framebuffers were so slow that before we built graphics acceleration hardware people would switch back to 8-bit to get stuff done, making 24-bit/true colour your daily driver was a big step forward.",
+              "author": "Taniwha",
+              "depth": 1
+            },
+            {
+              "text": "Does that make you the first in a long tradition of GPU developers going to blockbuster app devs to say \"hey, you should be doing this instead?\"\nPS – I am looking through the NuBus cards that I have... did you work for SuperMac or RasterOps?",
+              "author": "nxobject",
+              "depth": 2
+            },
+            {
+              "text": "I was probably not the first to have to do that, we knew what apps our customers used, making them better was the whole point of the operation\nI did the architectural design for the SuperMac cards. I figured out what needed to be accelerated, dropping code into people's machines to see where the cycles were going. Others did the physical design for the first 2 cards, I did the design of the chip in the Thunder and later cards (designed the data paths and state machines and a full simulation, someone else actually laid the gates)\nIf your card has a SQD01 on it it's my work. It peaks at 1.5Gb/s on solid fills",
+              "author": "Taniwha",
+              "depth": 3
+            },
+            {
+              "text": "This is a horrible and yet not unexpected insight into the internals of Excel",
+              "author": "urbandw311er",
+              "depth": 2
+            },
+            {
+              "text": "To be fair this was Excell 25 years ago, may no longer be true.\nOne of the other bugs (the Quark/ATM one) was also because of the programmers were worried about writing over stuff that hadn't been completely erased, the Quark guys wrote a string with 2 spaces at the end through a box that masked the end of the string, the ATM font renderer saw it couldn't fit the text so it split it in half and tried again so it drew N/2 N/4 N/8 ... strings. It spent all it's time in the 68k's multiply instructions figuring out how wide the strings (and substrings) were, our fancy 24-bit character rendering hardware was an afterthought",
+              "author": "Taniwha",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "SimCity had a read-after-free bug that Microsoft patched in Windows 95.  That was a lot easier for customers than having Maxis fix it, which could have required exchanging copies of the game.",
+          "author": "dlcarrier",
+          "replies": [
+            {
+              "text": "There's also the opposite effect, a windows security update broke GTA San Andreas because it relied on undefined behavior.\nhttps://silentsblog.com/2025/04/23/gta-san-andreas-win11-24h...",
+              "author": "oceansky",
+              "depth": 1
+            },
+            {
+              "text": "in this dark age of agents writing code that gets debugged by other agents, i love reading stuff like this: stories of human intuition fixing human mistakes. thanks for a fascinating read.",
+              "author": "icase",
+              "depth": 2
+            },
+            {
+              "text": "It feels like graphics drivers do / did this a lot too. At the very least they make specific optimizations for specific games, probably by tweaking settings and features that the game developers didn't optimize properly themselves.",
+              "author": "Cthulhu_",
+              "depth": 1
+            },
+            {
+              "text": "Famously if you renamed Quake 3 to \"Quack\" 3, it would slow down on the ATI Radeon 8500 \nhttps://web.archive.org/web/20091016055550/https://hardocp.c...",
+              "author": "kalleboo",
+              "depth": 2
+            },
+            {
+              "text": "That's a case of the driver cheating but there are also lots of cases where the game is just full of bugs that the driver has to work around in order to not be blamed for them.",
+              "author": "account42",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I think we're starting to see more of this sort of thing happening now with Proton and Wine gaining prominence in the Linux community. Some games (Elden Ring comes to mind) have bad enough PC ports when they come out that the compatibility layer can incorporate a hotfix to improve performance, while users of the software on the original platform still had to suffer.",
+          "author": "hodgehog11",
+          "replies": [
+            {
+              "text": "Fairly sure GPU drivers do the same thing where they include a ton of per game tweaks to make them run faster. It does feel like a fragile way of doing things where an external component that should be agnostic to the software running ends up including a handful of junk trying to fix stuff that should have been fixed by the consumer of the driver.",
+              "author": "Gigachad",
+              "depth": 1
+            },
+            {
+              "text": "The big one I remember was many applications, not just games assuming the buffer swap was performed by a blit into the display buffer, not an framebuffer pointer update. They relied on the previous frames data still being in the back buffer. For those applications you were forced to blit the buffer, not swap the pointer and take a performance hit.\nI also remember a media player being called out by name in the code for doing invalid operations, needing a work around and code to detect it was running just to function.",
+              "author": "zoenolan",
+              "depth": 2
+            },
+            {
+              "text": "It goes the other way too, sometimes you trigger some optimization silliness in the driver and the game needs to adapt to avoid it.",
+              "author": "Guvante",
+              "depth": 2
+            },
+            {
+              "text": "then the driver gets updated and the game either continues to optimize (wrong) or branches out into code that was written before that driver came out and generally wasn't that well tested, and the circle continues...\nIt's the life of a (game) developer...",
+              "author": "rickdeckard",
+              "depth": 3
+            },
+            {
+              "text": "GPU driver packages are already a huge collection of workarounds for bad game engine coding.\nAn Nvidia employee once told me that one of the easiest ways to squeeze out a few extra frames on your old machine is to rename the game executable to hl2.exe.",
+              "author": "anilakar",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> \nAnyway, my colleague found that there was one program that needed to allocate around 64KB of memory on the stack and initialize it. The standard way of doing this is to perform a stack probe to ensure that 64KB of memory is available, then subtracting 65536 from the stack pointer, and then initializing the memory in a small, tight loop.\nActually, the standard way of allocating 64 kB of memory on the stack is to just assume you can do it, subtract 64k from the stack pointer, and hope for the best.\nMost stack allocations in the wild are not checked.",
+          "author": "kazinator",
+          "replies": [
+            {
+              "text": "IIRC you have to probe every page of the stack on Windows. You cannot just subtract a value from ESP/RSP. If you don't probe every page in order, you get a page fault or some other exception (I don't remember which one).",
+              "author": "i_don_t_know",
+              "depth": 1
+            },
+            {
+              "text": "The reason for this is to ensure stack overflows are detected. The OS places a guard page above the top of the stack, which will cause a segfault if accessed. That way stack overflows are guaranteed to crash rather than stomping on valid memory that belongs to something else. However, if a stack frame is larger than a page (say, because it includes a large buffer), then it is possible for the program to \"jump over\" the guard page and access memory beyond.\nIn order to protect against this, the compiler inserts some dummy reads or writes as needed to ensure every page is touched in order from bottom to top. This ensures the guard page is hit before the application has a chance to write to memory beyond it.\nHere's an example: \nhttps://godbolt.org/z/oTbzTczM6",
+              "author": "NobodyNada",
+              "depth": 2
+            },
+            {
+              "text": "How else would the OS know your read/write 16 pages away from the current stack pointer is in fact an attempt to increase the stack and not just really bad pointer arithmetic and a bug? How many pages should the runtime let you skip before its just a segfault?",
+              "author": "justsid",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "To be fair it is possible that the developer enabled a special \"unroll all loops, no matter what\" optimisation flag during compilation.\nI agree it would be stupid for a compiler to even support such a flag, but those were the 1980s/90s.",
+          "author": "selcuka",
+          "replies": [
+            {
+              "text": "Doesn't require any special flags, just hitting optimizer limits can do it with MSVC.\nhttps://www.reddit.com/r/cpp/comments/1i36ahd/is_this_an_msv...",
+              "author": "ack_complete",
+              "depth": 1
+            },
+            {
+              "text": "Ahh... Good old funrollloops...\nhttps://www.shlomifish.org/humour/by-others/funroll-loops/Ge...",
+              "author": "cyberax",
+              "depth": 1
+            },
+            {
+              "text": "Right up there with fun, safe math optimizations",
+              "author": "PhilipRoman",
+              "depth": 2
+            },
+            {
+              "text": "At least these actually make things faster usually.",
+              "author": "account42",
+              "depth": 3
+            },
+            {
+              "text": "Heh, \"funrollloops\" reminds me of recompiling FreeBSD 4 on my thinkpad back in the early aughts.  The word made me imagine some sort of processed breakfast cereal with too many additives.",
+              "author": "lozf",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48566832",
+      "title": "The founder's playbook: Building an AI-native startup",
+      "link": "https://claude.com/blog/the-founders-playbook",
+      "domain": "claude.com",
+      "author": "e2e4",
+      "score": 220,
+      "comment_count": 155,
+      "created_ts": 1781679882,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "This isn't about how to build an AI-native startup, it's how to use Anthropic tools to automate 2019 style app building.  An AI native startup would have AI infused into the product, and Anthropic doesn't want anyone but them to sell AI.",
+          "author": "mips_avatar",
+          "replies": [
+            {
+              "text": "And looks like most of the document writing has been done by Claude. And that too a stereotype one (yawn)",
+              "author": "samantp",
+              "depth": 1
+            },
+            {
+              "text": "...And that insight is what changes everything. But not in the way people expect...\nMy wife laughs when I sent texts in claude speak and requests it when she needs a quick giggle.",
+              "author": "digitaltrees",
+              "depth": 2
+            },
+            {
+              "text": "They don’t want you in the bake-off.",
+              "author": "david_shi",
+              "depth": 1
+            },
+            {
+              "text": "pretty apt actually. After skimming through it, it's mostly a big sales pitch on how to use Claude wrapped in AI slop with generic startup advice.",
+              "author": "volkk",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's nice to see an explanation of how they think you should use Claude for a host of different job functions / aspects of building a business, but the tone makes it seem like founding a startup is something you wake up one morning and just decide to do instead of, say, going to the park. Over coffee, you ask Claude about your idea and when it tells you \"you're a genius\" you're off. That's silly in so many ways. Statements like this \"Validation cycles that used to take months now take afternoons\" have an element of truth but ring with false promise.\nAnd that relates to the lack of timelines and focus on how long things took around  2020 BC, that is Before Claude. Building a startup isn't like having a lemonade stand as a kid where you just don't bother to do it if you forget to buy lemons or it's rainy or something more fun comes along. There's a significant compound interest element to startups that's easy to overlook. Your codebase grows over time and so does your feature set and that collection of features attracts customers in a way one thing might not. You learn as go, of course, too.\nThis seems particularly relevant to the GTM section, which I was particularly amused by since that's what I'm focused on right now. It's a long game. Your blog post doesn't get found by anyone in Google until you've built up your SEO mojo, your LinkedIn post isn't read without the followers you need to accumulate and your content has to get engagement for people to see it even then, you don't start off line with a million followers on X, etc.",
+          "author": "jreynar",
+          "replies": [
+            {
+              "text": "> 2020 BC, that is Before Claude\nTo avoid confusion and improve clarity, I propose 'BCC': Before Claude, Codex, et al.",
+              "author": "gurjeet",
+              "depth": 1
+            },
+            {
+              "text": "Before Covid",
+              "author": "fragmede",
+              "depth": 2
+            },
+            {
+              "text": "Hah! That'd be nice",
+              "author": "NetOpWibby",
+              "depth": 3
+            },
+            {
+              "text": "exactly. validation by _whom_ exactly? not your customers!",
+              "author": "nekooooo",
+              "depth": 1
+            },
+            {
+              "text": "> Your blog post doesn't get found by anyone in Google until you've built up your SEO mojo, your LinkedIn post isn't read without the followers you need to accumulate and your content has to get engagement for people to see it even then, you don't start off line with a million followers on X, etc.\nI hate that this is true. It's the worst part about selling stuff online IMO and I found that you have to spend so much time doing it. In many cases, selling something online can be optimized to the extreme such that spend on marketing should be as high as possible and spend on the product R&D, manufacturing, support, etc should be minimized as much as possible. This equation gives you the most profit, but also gives the customer the absolute worst product that is possible to sell.\nCapitalism doesn't really have a solution to this problem that I've seen yet.",
+              "author": "doctoboggan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Feels like a category error.\nIt's a slide deck telling people what a product can do (that's a normal thing to release for a company), but the thing it tries to sell you on is building your own business based on their tool.\nWhich makes no sense the way they sell it, because \"founding a business\" is no standard process that could be formalized in a way like that, nor does it make sense for society to have people founding businesses at a scale comparable with mowing your lawn or doing your taxes.\nAll of this feels just unreal because it is unreal. Founding cannot be a commodity. If it is, you have no moat or point, meaning you instantly collapse again, because you are an interchangeable commodity.",
+          "author": "hypfer",
+          "replies": [
+            {
+              "text": "It makes sense if you think of 'founder' as an identity like 'influencer', rather than 'someone actually seriously founding a business'; just as with influencers, some people will make a lot of money doing it for real, but many, many more will post enthusiastically on social media, living the aesthetic.\nA lot of people already treat being a founder/entrepreneur as who they are, not what they do--witness the endless tide of LinkedIn posting about hustle culture, divorced from reality. This is an extension of startup chic.",
+              "author": "Planktonne",
+              "depth": 1
+            },
+            {
+              "text": "this is well said. and to me this is crazy and sad at the same time.",
+              "author": "zero_",
+              "depth": 2
+            },
+            {
+              "text": "An enormous amount of LinkedIn appears to be more about gatekeeping what other people can do than doing anything yourself.",
+              "author": "kristianc",
+              "depth": 2
+            },
+            {
+              "text": "They sell decorations, refreshment, cakes, costumes, games, and invitations for Founder Cosplay Parties.",
+              "author": "DonHopkins",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, and these days it really isn't a big deal to build things; it's much bigger challenge to actually develop a distribution channels and cut through the noise. I think people are just overwhelmed with everything and attention span is shorter and shorter. And that's the real issue - what I am finding now is that again the thing that really works is good old actual human conversation with potential clients.",
+              "author": "dmujic",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This feels like a “sell the shovels” move. Social media is full of “this one prompt to get rich quick”. It’s the new “one weird trick”.",
+          "author": "rienbdj",
+          "replies": [
+            {
+              "text": "Build a $1B startup. Make no mistakes. /s",
+              "author": "edu",
+              "depth": 1
+            },
+            {
+              "text": "\"I will send you to jail if you fail\" really makes it work all of the time",
+              "author": "Lionga",
+              "depth": 2
+            },
+            {
+              "text": "I know in which DC you are hosted and will cut your electricity off.",
+              "author": "brohee",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I like how dates and copies are still the ultimate version control:\n\"<filename>-05062026_v3 (1).pdf\"\nSo there were 4 iterations on 5th of June alone for this document",
+          "author": "throwaw12",
+          "replies": [
+            {
+              "text": "A beautiful analogy for non-technical founders creating software products with AI. There are version control systems, but who needs them when you can name your pdf `n-final-updated-6-16-final-donottouch.pdf (1)(2)`",
+              "author": "y-curious",
+              "depth": 1
+            },
+            {
+              "text": "And a good file store and organiser is arranging all kinds of icons in different corners on your desktop.",
+              "author": "trollbridge",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48573012",
+      "title": "Show HN: An 8-bit live gamecast for baseball",
+      "link": "https://ribbie.tv/watch",
+      "domain": "ribbie.tv",
+      "author": "brownrout",
+      "score": 217,
+      "comment_count": 120,
+      "created_ts": 1781714655,
+      "is_internal": false,
+      "post_text": "Hey HN, I built a website to watch live baseball games in an 8-bit broadcast. It takes live MLB data streams and converts them into near real-time pixel art gamecasts.<p>Been waiting to share this for when there’s actually a good slate of games happening since the site is pretty bare otherwise.<p>Here is today&#x27;s schedule:<p>Mets @ Reds - 9:40am PDT\n<a href=\"https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;824503\" rel=\"nofollow\">https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;824503</a><p>Royals @ Nationals - 10:05am PDT\n<a href=\"https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;822721\" rel=\"nofollow\">https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;822721</a><p>Marlins @ Phillies - 10:05am PDT\n<a href=\"https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;823450\" rel=\"nofollow\">https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;823450</a><p>Tigers @ Astros - 11:10am PDT\n<a href=\"https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;824178\" rel=\"nofollow\">https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;824178</a><p>Padres @ Cardinals - 11:15am PDT\n<a href=\"https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;823044\" rel=\"nofollow\">https:&#x2F;&#x2F;ribbie.tv&#x2F;watch&#x2F;game&#x2F;823044</a><p>..and another 14 games throughout the later day.<p>I&#x27;m still early on in this project, but I&#x27;ve tried to add little details with actual stadiums, day and night modes, between inning graphics and interstitials, live scoreboards, etc.<p>Would love any feedback and ideas. Thanks for checking it out!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48555835",
+      "title": "I Fired Google",
+      "link": "https://www.theartofdoingstuff.com/i-fired-google/",
+      "domain": "www.theartofdoingstuff.com",
+      "author": "speckx",
+      "score": 154,
+      "comment_count": 133,
+      "created_ts": 1781619979,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": []
+    }
+  ]
+}
