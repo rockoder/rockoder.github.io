@@ -1,0 +1,866 @@
+{
+  "scraped_date": "2026-06-20",
+  "source": "hacker_news",
+  "total_scraped": 128,
+  "nontech_count": 32,
+  "posts": [
+    {
+      "id": "48542100",
+      "title": "Ask HN: Has anyone replaced Claude/GPT with a local model for daily coding?",
+      "link": "https://news.ycombinator.com/item?id=48542100",
+      "domain": "news.ycombinator.com",
+      "author": "cloudking",
+      "score": 1304,
+      "comment_count": 559,
+      "created_ts": 1781534813,
+      "is_internal": true,
+      "post_text": "Has anyone here fully swapped Claude&#x2F;GPT for a local model as their main coding tool, not just for side experiments? If so, please share your setup and performance (e.g tok&#x2F;s)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I have! I care about data privacy and LLMs being free. I'm using the Pi coding harness but containerized and sandboxed, to make sure it's running completely offline. On my Mac Studio with 128GB RAM (or MacBook with 36GB RAM) I'm using Qwen3.6 35b, with only 3b active parameters so that it runs really fast. I've done a complete redesign for my website's homepage and blog with Django + Wagtail. The latter is interesting, because Wagtail is a bit less well-known, so the agent, without giving it internet access, doesn't always know how to develop for Wagtail. I've used Qwen3.5 122b for when things get more complex. At 10b active parameters, it's significantly slower though.\nI've noticed a few things compared to large models like Claude. For starters, you really need to know what you're asking, and be precise; it doesn't do much thinking for you. Any assumptions left open, and it'll take the easiest route to reach the goal (e.g. CSS in HTML), often not the best in terms of architecture.\nIt gets into loops quite often, and surprisingly often gets the edit tool call wrong, after which it will spend lots of thinking tokens and re-read files instead of retrying (despite the system prompt suggesting so).\nComparing agentic Qwen3.6 35b to Claude Opus is like a junior with knowledge across the board, that you really need to guide, versus a senior that thinks with you on architecture. If Opus gives a 15x speedup, local and fully offline Qwen gives a 5x speedup. Which, given that it's completely free, is still mind-boggling to me :)",
+          "author": "Greenpants",
+          "replies": [
+            {
+              "text": "This is very similar to my setup. Pi in a container (I do let it have network access, just no access to creds or anything, only the one directory that I'm working on at the time and my ~/.pi directory), talking to llama.cpp in another container. I'm on a Strix Halo 128 GiB unified memory laptop.\nI've never used the frontier models in earnest, I don't believe in using proprietary tools for my programming, so I can't really compare.\nAnd I'm still a AI skeptic, so I'm doing more testing and kicking the tires than I am actually using it. That means I spend a lot of time trying to break various models, probe them for strengths and weaknesses, etc.\nBut I find that when I do try to use it for real for agentic coding, Qwen 3.6 35B-A3B is definitely the one I reach for the most often.\nFor other chat tasks and translation, I'll frequently use Gemma 4 31B.\nFor audio, I'll use Gemma 4 12B.\nI keep a bunch of other models around to try out every once in a while (Qwen 3.5 122B-A10B, Qwen 3.6 27B, Nemotron 3 Super 122B-A12B, Step 3.7 Flash and Minimax M2.7 both at somewhat more aggressive quants, and GPT-OSS 120B if I want super fast but not terribly smart), but so far Qwen 3.6 35B-A3B is really the sweet spot for coding on a setup like this.",
+              "author": "lambda",
+              "depth": 1
+            },
+            {
+              "text": "Hopefully this isn't off-topic, but your setup sounds just like mine, Strix Halo and (I'm assuming) llama.cpp on ROCm, and I'm finding that the Qwen hybrid models don't handle prompt caching and instead re-process the context in full on every turn. I'm wondering if you were able to solve this and how?",
+              "author": "chakspak",
+              "depth": 2
+            },
+            {
+              "text": "I use Vulkan mostly instead of ROCm. Vulkan is actually a bit faster, paradoxically. I do switch out and try them both out, and it's not a huge difference, but I've been mostly saying on Vulkan.\nThe re-processing context every turn problem is definitely something I've hit. Some of the causes have been solved upstream in llama.cpp; make sure you're up to date.\nBut another cause of the issue that has a big effect is that older Qwen models didn't support preserving thinking. This means that each time you have a long sequence of tool calls with interleaved thinkging, as soon as you had your next turn in the chat, it would have to re-process all of that as it would drop all of the reasoning.\nQwen 3.6, however, now supports preserving thinking. This can use a bit more context, becasue you're not dropping the thinking every turn, but it re-uses the cache better, not causing you to have to reprocess a whole turn at a time each time.\nIn my models.ini, I have this for the Qwen3.6 models:\n  chat-template-kwargs = {\"preserve_thinking\": true}\n\n\nThere are still occasional issues I hit where it will have to re-process, but getting up to date and enabling preserve_thinking has helped a ton.",
+              "author": "lambda",
+              "depth": 3
+            },
+            {
+              "text": "+1 using llama.cpp Vulkan releases with the Qwen models - runs much better than the ROCm releases.\nI'll have to give the preserve_thinking a shot.",
+              "author": "ndom91",
+              "depth": 4
+            },
+            {
+              "text": "Thanks for sharing have been running ROCm primarily with Qwen 3.6 and Qwen Coder, on the runs much better statement is that a stability, performance or other capability your experiencing?",
+              "author": "jderekw",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "For personal use, yes.\nI replaced a $100/m subscription to claude in favor of running pi harness pointed at unsloth studio, using both qwen (unsloth/Qwen3.6-35B-A3B-MTP-GGUF) and gemma (unsloth/gemma-4-26B-A4B-it-GGUF) models, depending on my mood.\nI have a machine I built about 5 years ago with dual RTX3090s in it (I was going to build a new gaming machine anyways, and the llama release had just dropped so I tacked another used 3090 onto the build), and I get ~150tok/s on either of those models (at UD-Q4_K_XL quant) and can use the entire 300k context length without having to exit VRAM.\nTo be very clear - it's not as good as claude.  But it's free and not so much worse that it matters significantly.\nFor my personal needs, free beats $100/m.\nI also have an openclaw instance pointed at the same inference server, and it's great for that (genuinely solid use-case for local models).\nSome example projects\n- Replacement launcher for android tvs (with usage monitoring and tracking for kids)\n- Custom admin portals for my k8s cluster services\n- Custom home assistant integrations/automations (recently some shelly devices for power monitoring and switching)\n- Grocery list management and meal planning (mostly via openclaw)\n- some custom workflows for 3d asset generation in comfyui.\n---\nLong story short, if you're trying to make money via software... I'd probably still recommend using a paid provider.  But the local models are very capable of cool stuff.",
+          "author": "horsawlarway",
+          "replies": [
+            {
+              "text": "2x RTX3090 are around $4400. Without any electricity costs or other parts, that's 3.6 years of $100/m claude.",
+              "author": "rootlocus",
+              "depth": 1
+            },
+            {
+              "text": "Assuming the $100/m claude subscription is still around in three years.",
+              "author": "overgard",
+              "depth": 2
+            },
+            {
+              "text": "we will be lucky if it's still around in 3 months..",
+              "author": "booi",
+              "depth": 3
+            },
+            {
+              "text": "I think there’s a reasonable argument that a burst bubble will cause prices to drop. Prices are very high because they’re trying to justify these trillion dollar valuations on IP alone. If that fantasy goes away then prices will fall down to just silicon and electricity, which looks more like Chinese model prices. Hard to say how it will play out but the direction isn’t obvious to me.",
+              "author": "oofbey",
+              "depth": 3
+            },
+            {
+              "text": "Yes, today is not a great time to purchase hardware.\nWhen I bought, I paid $850 a piece.  And I needed one anyways for the gaming I was going to do.\nMy guess is the next good time to buy is going to be 24-36 months from now, depending on how the AI bubble goes.\n---\nI'll add to this, I personally don't like Apple hardware (not so much related to the hardware as their company philosophy) but their machines with unified memory (or AMDs latest unified memory offerings) get pretty equivalent speeds to my 3090s, and are probably a much better modern entrypoint to local llms.\nThere's a reason the joke is that Silicon Valley software devs bought up all the Mac minis for OpenClaw.\nYou can get a 48gb unified RAM M4 pro mac mini for ~2k.  If you're not going to do much else with the machine, it's what I'd pick as my budget inference device right now.  Spend a year of claude now, get ~150tok/s for the next decade (plus) for ~free.\nIf you want more capable and are willing to spend a little more, go with the newer Ryzen AI Max+ 395 machines.\nYou'll spend less on power too.\nMy last suggestion would be to go buy an RTX3090 at this point.  You can do a lot better for a lot cheaper.",
+              "author": "horsawlarway",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "About 90% of my coding is on Qwen 3.6 27b and Open Code with some custom skills and Semble. It is NOT as smart as CC or Codex but its enough to get most of my work done. I didn't set out to replace CC and Codex (I have an RTX 6000 so the TPS is faster than I care about, but the RTX 6000 was originally for other work). I only tried this just to see how close you could get to a frontier model for coding as an experiment, but it was good enough that I stuck with it. I still fall back to Codex for really complicated stuff and to polish UI's as that seems to be the weakest element to working in Qwen.This isn't a recommendation because I don't think most people have an RTX 6000 laying around and the cost would be many years of MAX CC or Codex subscriptions, but at least this seems possible. Maybe in a few more years it will even be practical.\nOther Notes: I have had to set the compact target to 75% on a 256k context window as once the conversation length goes about 100k I start seeing a drop in the quality and speed. This becomes very problematic after about 150k. I tried Qwen 3.5 122b too but it actually seems much worse at coding than 3.6 27b even though its much larger. Maybe because I am using a 4bit quant or maybe I just don't have it configured correctly? I know 3.6 is newer but I didn't expect it to out perform a model that is much larger from the prior generation. Gemma 4 31b is a good model for other tasks but at least my personal experience is that Qwen outperforms in coding. Nemotron Super 120b is great at a lot of stuff but it also seems to be not as good at coding as Qwen. This was very surprising to me.",
+          "author": "bluejay2387",
+          "replies": [
+            {
+              "text": "Same here, I use Qwen 3.6 27b (Q6 quant) with llama.cpp on an RTX 5090 using the pi agent exclusively now. The fact that it's local means that I never have to think about token pricing, quotas, time of day, or data sensitivity. I have limited the GPU from 600W to 450W which means the system stays whisper quiet during inference.\nI have become so \"lazy\" (in a good way), so far that I've started using the model for lots of daily mundane things on top of just coding:\n  * \"commit this on a branch, push, create a PR and assign $nickname for review\"\n  * \"Use the Stripe CLI to download all open and overdue invoices and reconcile them with this CSV export from our bank account.\"\n  * \"Use these Elasticsearch credentials to summarise what kind of operations are causing load at the moment.\"\n  * \"Tell me if our codebase already supports X and where it's  implemented.\"",
+              "author": "heipei",
+              "depth": 1
+            },
+            {
+              "text": "What context length and kv cache quant (if any) are you using? And MTP?",
+              "author": "amarshall",
+              "depth": 2
+            },
+            {
+              "text": "No KV cache quant, context length 50% of original, MTP absolutely. These are the relevant cmdline attributes. Getting around 100t/s with this setup, even when watt-limited to 450W.\n  --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.00 --presence-penalty 0 --metrics --jinja --chat-template-file chat_template.jinja --chat-template-kwargs '{\"preserve_thinking\": true}' --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.75 -ngl 99 -c 131072 -fa on -np 1 -hf unsloth/Qwen3.6-27B-MTP-GGUF:Q6_K",
+              "author": "heipei",
+              "depth": 3
+            },
+            {
+              "text": "Not the person you asked, but I have a 9700 which has the same VRAM, and running Q6 on it with unquantized kv gives me 50k context. Putting -ctv q8_0 ups that to 70k. I normally run Q4 with unquantized kv @ 130k at 50 t/s (mtp 3), with the disclaimer that I'm running PCIe gen4x8, so I'm slightly slowed. I've found that quantizing k leads to broken json on tool calls, which is fairly unrecoverable, but YMMV.",
+              "author": "lloyd-christmas",
+              "depth": 3
+            },
+            {
+              "text": "Qwen3.5-122B is actually Qwen3.5-122B-A10B. The A10B means that this is a \"mixture of experts\" model where only 10B parameters are activated at a given time. Whereas Qwen3.6-27B is a \"dense\" model where all 27B parameters are activated all the time. So for many tasks, you'd expect the 27B dense model to be better than the 122B-A10B model.",
+              "author": "bo1024",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I don't think you're going to get many \"true\" answers to this. The opportunity cost of not using the latest and best models is just too much right now.\nEvery month I research this and come to the same conclusion: the time, effort, and cost required to get local models (and the coding tools around them) to perform even close to Claude Code with sonnet/opus just not worth it right now. If it was, it would be distributive enough to be in the news.\nNot that I'm discounting someone hasn't already solved this, just trying to Occam razor my way out of diving too deep down rabbit holes.",
+          "author": "codinhood",
+          "replies": [
+            {
+              "text": "At some point, there will come a saturation point for that \"Opportunity cost FOMO train ride\", and I think we are already past that point. Mythos class models are a whole different beasts and cutting edge on reasoning but not much use for the problem domains most developers are trying to solve.\nThe present Sonnet/Opus versions (~4.8) will likely be what everyone in the enterprise might end up using eventually. And even though local models aren't there yet, there are budget alternatives from the families of DeepSeek, Kimi, GPT, MiniMax, etc.  available through APIs of NVidida, OpenRouter, Groq, etc. which are very much Sonnet grade.",
+              "author": "pyeri",
+              "depth": 1
+            },
+            {
+              "text": "Yeah this is exactly what I'm waiting for.\nPersonally, I don't think we're at that point yet. While I do think model improvement is starting to plateau (reaching a local ceiling), I'm not convinced local models are as good as sonnet/opus yet. The gap is still too much. But I'm excited for those models to reach those levels.",
+              "author": "codinhood",
+              "depth": 2
+            },
+            {
+              "text": "But you're pretty much measuring opportunity cost in tokens per second, no?\nI think it strongly remains to be seen whether e.g. tokens per second (multiplied or whatever by percieved quality of private model) actually means \"better or more useful output.\"\nI strongly suspect it does not. (though I also strongly suspect this will be very difficult to measure because the incentive to lie about metrics here will be so strong.)",
+              "author": "jrm4",
+              "depth": 1
+            },
+            {
+              "text": "If you’re arguing that model metrics don’t necessarily translate into useful output, I agree. That’s not how I measure the success of a mode and not really the point I'm trying to make. I try to set things up and test it on my actual projects.\nWhat I’m saying is that if local models were actually comparable to Claude Code in practice, we wouldn’t be having threads like this. It would be obvious to the people using them, and it would be massively disruptive. Why would individuals and companies pay hundreds or thousands for Claude Code if they could run something locally and consistently get similar results?\nEvery month I revisit the local ecosystem hoping the answer has changed. So far, my experience has been that it hasn’t.",
+              "author": "codinhood",
+              "depth": 2
+            },
+            {
+              "text": "Having, e.g.  seen Microsoft maintain a monopoly for well over a decade, there's nothing in my experience that suggests that \"quality always beats hype\" is \nremotely\n true.\nIt's entirely possible Claude is just winning the hype game.",
+              "author": "jrm4",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Yes. Llama.cpp + Qwen3.6-35b (MTP) + OpenCode is quite capable and runs on a single RTX 3090 and is faster than most cloud models. Quality is like running edge models from 8-12 months ago. Setup details at  \nhttps://github.com/pierotofy/LocalCodingLLM/",
+          "author": "pierotofy",
+          "replies": [
+            {
+              "text": "\"Quality is like running edge models from 8-12 months ago.\"\nThat sounds great for hobbyists but IMHO it wasn't until Opus 4.6 was released six months go (Dec 25, 2025) that we had a model good enough for professionals to use as a primary driver of their coding agents. That seems to be the threshold worth aiming for.",
+              "author": "jacobgold",
+              "depth": 1
+            },
+            {
+              "text": "I strongly agree on that being the release where these tools got good enough to substantially speed up my professional work. I have to admit I was super skeptical of AI coding until then.",
+              "author": "sbrother",
+              "depth": 2
+            },
+            {
+              "text": "Your skepticism led you to underrate the usefulness until then. Those who have been using agentic coding for the last 2 years can tell you Opus 4.6 was not a step change in quality, it was mostly a step change in the Overton Window and narrative.",
+              "author": "deaux",
+              "depth": 3
+            },
+            {
+              "text": "for me (might be because  of the language im using) i had a substantial bump around september and a huge bump around January.\nin my stuff now i use an OT library that claude put finishing touches on in September.",
+              "author": "dnautics",
+              "depth": 3
+            },
+            {
+              "text": "You can already get Opus 4.6 level of performance on subtasks with some local models. So you need to pick a proper code writer, plan writer, code tester etc. model that matches your target expectations and use a coding tool that allows calling different LLMs for different subtasks. For example, people use StepFun 3.x or DeepSeek4-Flash for planning, Qwen3.6-27B for coding.",
+              "author": "storus",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48449187",
+      "title": "Ask HN: What are tools you have made for yourself since the advent of AI?",
+      "link": "https://news.ycombinator.com/item?id=48449187",
+      "domain": "news.ycombinator.com",
+      "author": "aryamaan",
+      "score": 445,
+      "comment_count": 788,
+      "created_ts": 1780942959,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been making a lot of audio experiments for my own amusement. They all have some potential to drain your cpu, sorry!\nhttps://www.noisetable.xyz/\n - a collection of chance-based audio 'channels' in a VCR inspired interface\nhttps://concrete95.net/\n - a musique concrète web app that's made to look like windows 95. Pulls random audio from freesound.org and loops a small section, you can also layer synth pads or melodic synth loops. I'm often able to get some really pleasant background ambience.\nhttps://windso.me\n - a sample-based step sequencer that doesn't let you choose the sample that's loaded, kinda fun, still needs a lot of work!",
+          "author": "yungbeto",
+          "replies": [
+            {
+              "text": "Nice, Noisetable is so relaxing. Reminds me a bit of those generative music apps from Brian Eno.",
+              "author": "mickelsen",
+              "depth": 1
+            },
+            {
+              "text": "Oh awesome, his work has always been an inspiration, I really appreciate that.",
+              "author": "yungbeto",
+              "depth": 2
+            },
+            {
+              "text": "These are lovely",
+              "author": "burnto",
+              "depth": 1
+            },
+            {
+              "text": "Thank you :)",
+              "author": "yungbeto",
+              "depth": 2
+            },
+            {
+              "text": "I get a security warning on firefox when visiting noisetable.xyz",
+              "author": "BrokenCogs",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Tools I’ve built for myself:\n- sandvault \nhttps://www.codeofhonor.com/projects/sandvault/\n  runs agents in a separate macOS user account, hardened with sandbox-exec. It also supports headless browsing and iOS Simulator from inside the sandbox for testing web and iOS apps.\n- clodpod \nhttps://www.codeofhonor.com/projects/clodpod/\n agents run inside a macOS VM.\n- git-multi-hook \nhttps://www.codeofhonor.com/projects/git-multi-hook/\n git only allows one script per hook event; this is a dispatcher that discovers and runs every script in a hooks dir, in parallel, for both global and repo hooks.\n- TubeGate \nhttps://www.codeofhonor.com/projects/tubegate/\n Chrome extension to block YouTube videos based on keywords (like “sponsored”).\n- push10k \nhttps://www.codeofhonor.com/projects/push10k/\n iOS app to track my progress toward 10,000 push-ups.\nMy blog is AI-coded: Zola static site, Sveltia CMS, Cloudflare Pages/Workers, with GitHub Actions handling builds and syndication. \nhttps://www.codeofhonor.com",
+          "author": "netcoyote",
+          "replies": [
+            {
+              "text": "Wait. You worked on Guild Wars, Starcraft, Warcraft, and Diablo?\nThis place is incredible.",
+              "author": "ElFitz",
+              "depth": 1
+            },
+            {
+              "text": "Guild Wars was one of the most fun games ever. The crazy combinations of skills you could try in the random arena were so much fun.\nGuild Wars 2 and most other games are pure slop.",
+              "author": "Traubenfuchs",
+              "depth": 2
+            },
+            {
+              "text": "They did announce Guild Wars 3 last Friday btw. Not set to release until 2027.\nAlso Guild Wars 1 has been receiving new content updates this year.",
+              "author": "mschild",
+              "depth": 3
+            },
+            {
+              "text": "I just found your blog yesterday reading up on the stories of how Warcraft and Starcraft were made!! Have been hacking on small games and a tool to build 3d environments for a while and get very inspired by hearing stories from back in the day. Thanks for making everything public. I really enjoy your writing.",
+              "author": "bdickason",
+              "depth": 1
+            },
+            {
+              "text": "Thank you, glad you enjoyed the articles. I wish I had the motivation to write more!",
+              "author": "netcoyote",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The funniest thing I've made is a free utility called \"Moniker\" that contextually renames files based on their contents.\nUses local AI models and I was able to snag this great domain name.\nhttps://finalfinalreallyfinaluntitleddocumentv3.com/\nBut hands down the most useful thing I've made is HutchDB, which is a MCP service that you can call from any AI chat or Agent setup to store data for you.\nLiterally from your AI you just say \"save that to Hutch\" and then it figures out:\n- The schema + fields\n- Builds nice webviews (Kanban, Timeline, Grid, Calendar)\n- Lets you share the output with people\nSo people use it for all kinds of things like time tracking (\"every hour save a summary of my activities to Hutch\"), for Agent to Human handoff (\"Every day check social media for mentions of my company and save them to Hutch\").\nI use it for things like recording all of our marketing activities and then having my AI compare those to signups for rough attribution, etc.\nDead useful and at \nhttps://hutchdb.com",
+          "author": "michaelbuckbee",
+          "replies": [
+            {
+              "text": "I love it! A few questions that made me think:\n- how do you know that \"people use it for all kinds of things\"? I just read your privacy policy and I'm concerned about my AI agent possibly leaking some API key to Hutch and then you can read it.\n- how is this free? You're hosting on Vercel, one of the most expensive hosting providers. What happens when this goes semi-viral? How do I know you won't just pull the plug to cut costs or start charging $500/month? I don't want to sign up, invest my time, and then lose access.\n- I signed up and now I can't access privacy policy nor terms of service pages, because when I go to \nhttps://hutchdb.com/\n I get redirected to \nhttps://hutchdb.com/dashboard",
+              "author": "Mystery-Machine",
+              "depth": 1
+            },
+            {
+              "text": "This is all very fair criticisms. This thread asked: \"What are tools you have made for yourself?\" and that's genuinely what this is. I wanted it so I made it and then AI makes it so easy to just throw up a marketing page.\nI've a a handful of dev friends that have started to use it as well and give their feedback and it's been slowly growing as I've added sharing/invites.\nI would absolutely not recommend putting big production data into it currently.\nMy vision for it was something more like how the #1 use of spreadsheets is actually people making lists and not actually people doing lots of calculations.\nGiven the uptake today (thanks everybody!) and your feedback (thanks Mystery-Machine) I'm going to work at addressing your concerns.",
+              "author": "michaelbuckbee",
+              "depth": 2
+            },
+            {
+              "text": "You completely ignored every question related to costs/privacy.",
+              "author": "jazzpush2",
+              "depth": 3
+            },
+            {
+              "text": "I thought it was more implied, but let me be more explicit:\n- This is something I made for myself without a lot of commercial thought, so I still haven't thought through pricing + usage + limits + operational limits. In it's current wildly unoptimized state it's still very cheap to run.\n- For the specific concern about API Key leakage there's not a lot I can do about that (that I'm aware of) as the logic of what gets sent is handled by the client AI. It is possible to pull down and audit both the tools + instructions that are published by the MCP server if there are concerns on that side.",
+              "author": "michaelbuckbee",
+              "depth": 4
+            },
+            {
+              "text": "dope!",
+              "author": "modelcroissant",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Gemini has been indispensable for helping me move from Windows to Linux. I'm reasonably proficient, but moving to a brand-new OS brought so many random questions and weird edge cases that I never would have had the confidence, patience, or time to tackle it alone, even with pretty strong Google fu. It's been so nice to have instant access to answers for my specific problems, without judgment or having to wait on a reply.\nAt the same time, I moved from Chrome back to Firefox, and Gemini was great at finding equivalents for my most-used extensions -- and, when none existed, to write my own. It's also been really useful for customization/\"ricing\".\nMore recently, I got into Quod Libet as a primary music library manager, and both Gemini and Claude have been fantastic at helping me build custom plugins that make it do exactly what I want it to. Scripts to automagically download tracks with metadata and synced lyrics, a lyrics sidebar that highlights lines as you listen and lets you click to jump to a specific line, a bookmark button that lets you mark your favorite section of a track for easy browsing later. Next chance I get is something that enables lyrics search across the entire library (a feature I was already able to build for the Stremio desktop player -- it's so cool to be able to search for a line in a TV episode or movie and jump straight to it).",
+          "author": "Jordan-117",
+          "replies": [
+            {
+              "text": "ChatGPT has helped me with innumerable little technical things and feels indispensable at this point.\nI can't help thinking that this is a combination of Google sucking more and more and various problems of daily getting so hard need something like a script to solve them. (Recent challenge - \"what affordable campgrounds are near the Pacific Create trail and open now\").",
+              "author": "joe_the_user",
+              "depth": 1
+            },
+            {
+              "text": "I similarly used it to finally facilitate a switch to Arch to a couple months ago. Not technically a tool, but it was very convenient to take the Arch wiki, and personalize it by saying \"My hardware is X and my use case is Y, can you filter out the 90% of things from here that aren't relevant to me?\"",
+              "author": "sufficientsoup",
+              "depth": 1
+            },
+            {
+              "text": "instant access to answers for my specific problems, without judgment\nFor me that’s killer feature, even if we don’t achieve AGI at least we got good enough „something that will google it for me”.\nIt is great both ways as an expert in my niche I don’t have to waste time on reading through entry level fluff. As non expert in other fields I don’t get to be scolded for asking entry level questions so RTFM and LMGTFY will sink in history fortunately.",
+              "author": "ozim",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's dumb, but....\nI made a scraper that searches through all the news and finds anything 'war' related. It then summarizes it and give me that new in the Star Wars crawl with music.",
+          "author": "Balgair",
+          "replies": [
+            {
+              "text": "If you upload those to YouTube, you might find yourself an audience.",
+              "author": "userbinator",
+              "depth": 1
+            },
+            {
+              "text": "Can... Can I have this as well?",
+              "author": "properbrew",
+              "depth": 1
+            },
+            {
+              "text": "How soon until we can just share a prompt://make-me-a-react-app-showing-a-summary-of-war-news-as-a-star-wars-crawl ? :-D",
+              "author": "foobarian",
+              "depth": 2
+            },
+            {
+              "text": "You can already share Claude artifacts this way.",
+              "author": "AlecSchueler",
+              "depth": 3
+            },
+            {
+              "text": "Please, please share this. I want to see this so badly.",
+              "author": "crazygringo",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48585866",
+      "title": "Ubiquiti: Enterprise NAS, Built on ZFS",
+      "link": "https://blog.ui.com/article/introducing-enterprise-nas",
+      "domain": "blog.ui.com",
+      "author": "ksec",
+      "score": 403,
+      "comment_count": 341,
+      "created_ts": 1781792670,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "I'm glad to see UBNT in this space.\nI've always used ZFS because it's vastly superior to other options.  When I see storage companies building without fault tolerance, or without a merkle tree (so that you can backup deltas efficiently without having to recompute them) it's a sign their marketing team has more influence over the company than their engineers.\nSadly, the few ZFS COTS options have been somewhat underpowered.  QNAP supports ZFS filesystems, but their backup configuration won't let you arrange for a nas to \npull\n from the source (instead of the source doing a push.) You can still pull it off by scheduling your own cron job, but this somewhat defeats the purpose of paying extra for a vendor solution.\nUBNT is still supporting my 15 year old edgerouters with security updates, and their interface is clean and usable for anyone with basic network experience.  And their video surveillance solutions are unusual in that they allow you to keep your footage entirely onsite and offline, an uncommon level of privacy.  If they can bring the same polish to their storage solutions, I'll be using these new products for a long time.",
+          "author": "elevation",
+          "replies": [
+            {
+              "text": "QNAP unforgivably uses a proprietary version of ZFS with their own extensions that are not compatible with mainline OpenZFS.\nIt can only zfs send/receive to other QNAP devices. While your data is protected like any other ZFS system, it is _NOT_ interoperable. You can not take a zpool out of a QNAP system and access it on another system with ZFS.\nI discovered this painfully the hard way, and won't buy from them again, unless I plan to wipe the software and run something open.",
+              "author": "throwaway240403",
+              "depth": 1
+            },
+            {
+              "text": "I think the ZFS changes were due to needing a way to allow qnap systems to expand zfs pools.  The raidz expansion features in openzfs probably took too long for qnap to wait.",
+              "author": "scheme271",
+              "depth": 2
+            },
+            {
+              "text": "OpenZFS released the zpool expansion as stable last year. Hopefully QNAP is charting a path to allow their users to migrate from their fork to OpenZFS, though of course these kinds of things take time to develop. I would be really worried if they are diverging further from OpenZFS rather than converging.",
+              "author": "infogulch",
+              "depth": 3
+            },
+            {
+              "text": "Last I looked at their releases of code, they had branched from ZFS before it became OpenZFS, and had a lot of proprietary extensions beyond just the reshaping (from memory, they implemented encryption differently, as one example, and I think they had one or two checksums that I assume were because something they shipped had hardware support for it?) so I wouldn't hold out hope that their goal is to rebase on OpenZFS unless they announce something to that effect.",
+              "author": "rincebrain",
+              "depth": 4
+            },
+            {
+              "text": "Nah, I doubt they're going to rebase to openzfs. There's too much divergence and I don't see them putting the time to write something that converts their zfs format to openzfs without an extremely good reason.-",
+              "author": "scheme271",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Ubiquiti's biggest feature is no monthly recurring cost. I really hope they continue the streak on products like this. Seems like anything else bought up these days is switched to an MRR model with no vision into the long term viability.",
+          "author": "exabrial",
+          "replies": [
+            {
+              "text": "The founders being the erstwhile Apple routers team, I believe they are playing the Apple game — sell good quality hardware; free the software that runs the hardware.",
+              "author": "Brajeshwar",
+              "depth": 1
+            },
+            {
+              "text": "I just wish they would put better processors in their stuff. Is this yet another NAS powered by an ARM Cortex?",
+              "author": "qurren",
+              "depth": 1
+            },
+            {
+              "text": "I have heard others say the same as you about Ubiquiti devices. I genuinely curious what bottlenecks you've hit.\nI've only been using Ubiquiti as a pro-sumer, but it has held up well for my use case of Plex and little game servers.\nI use a Synology NAS for my storage though, which is a slightly beefier mobile AMD chipset.\nI'd be very interested to know what I should and shouldn't expect from my ARM based network stack though!",
+              "author": "softfalcon",
+              "depth": 2
+            },
+            {
+              "text": "> I genuinely curious what bottlenecks you've hit.\n1. My UDM Pro absolutely chokes and stalls with intrusion detection enabled on the firewall and 8 cameras connected. Network goes down, cameras disconnect, devices disconnect from Wi-Fi every time a car drives past a camera due to AI features triggering, etc.\nFor something meant for small businesses I wish they would just shove an Intel i5 or something in it. They make great switches, great APs, great everything else, just too stingy on processors on the few pieces of central equipment that people would actually be willing to spend more on.\nAnd for a $3999 enterprise NAS with dual 25 Gbps SFP ports and 16 drives? It could surely use something more beefy than a Neoverse N2. I'd say an i7 or even i9 is warranted here.\n3. The UNAS 8 I don't own but I believe it would struggle with >1Gbps links and encryption enabled",
+              "author": "qurren",
+              "depth": 3
+            },
+            {
+              "text": "I have to agree. I only have a consumer UDM (four years old) and it's on its last legs. From day one it was using 90%+ of its RAM and hit the CPU ceiling during large file transfers. Successive updates have pushed it well beyond its limits. I have had to disable many features like VPN and IDS/IPS. I was considering upgrading to the newer Dream Router 7 but the processor is not much of an upgrade, and it only has 3GB of RAM vs my current 2GB. I don't have space for a Pro and I'm not even sure I want one. I already have an Unraid server running with more than enough compute and RAM, and I'm going to try using OPNsense. I would prefer dedicated hardware but for the cost, it's just not worth it.",
+              "author": "Gareth321",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "The biggest concern about Ubiquiti to me is still its software/infrastructure quality.\nOff top of my head, besides all the UI/UX glitches:\n- They once allowed a human employee to access static AWS root access key.\n- Their employee once claimed \"remote access\" was end to end encrypted, but later people figured out they probably just meant TLS in transit.\n- They had a configuration error that allowed some users to access other users' camera feeds. They corrected the error, but never explained how the hell was it even possible or if they made any architecture design change to prevent that from happening again.\nNow, ZFS is nice. But even after years of iterations, I still need to do 50% of my operations via SSH on my Truenas system. I can't imagine Ubiquiti to do any better",
+          "author": "zzyzxd",
+          "replies": [
+            {
+              "text": "Also a lot of vulnerabilities: \nhttps://app.opencve.io/cve/?vendor=ubiquiti",
+              "author": "fulafel",
+              "depth": 1
+            },
+            {
+              "text": "I sold my Unifi APs, they broke DHCP over wifi multiple times. If you can't QA/Test basic 101 features like that, I have zero trust in your security.",
+              "author": "pharos92",
+              "depth": 1
+            },
+            {
+              "text": "What did you replace them with? I am starting to look into alternatives my self as I can see the noose they have around their user's neck's slowly starting to close.",
+              "author": "MrDresden",
+              "depth": 2
+            },
+            {
+              "text": "If you are at home and want to do DIY you can put OpenWRT on quite a few of them in case you don't want to sell them or dump them as e-waste.",
+              "author": "consp",
+              "depth": 3
+            },
+            {
+              "text": "HPE Instant On is pretty nice. Zero problems over the last seven years. It literally just works, including seamless handoffs between multiple APs.",
+              "author": "dgroshev",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> \"Dual 25 Gigabit SFP28 ports and redundant power supplies for resilience\"\nCan you actually saturate the links with the spinning drives?\nI've had the hardest time making my TrueNAS ZFS server fast when it was filled with HDD spinning disks.  I initially also had 12 of them trying to get maximum speed.  I have 128GB RAM and a 10G ethernet connection.  I tried all types of optimizations like L2ARC via NVMe, etc, and it wasn't very effective and just too much time spent tweaking and testing.\nInstead I just threw up my hands and replaced all the spinning disks with NVMe drives for the data I actually shared (8x 4TB NVMe drives.)  And now it very usable and no need for LRArc, etc.  Random or streaming access is equally fast.\nBest choice I made.  Now I did do this over a year ago so I skipped the NVMe price inflation.\nI still keep 4 spinning disks but it is for archival data that I expect to never access unless something bad happens.  It is slow and I use it like a tape drive.",
+          "author": "bhouston",
+          "replies": [
+            {
+              "text": "It does have a dual NVMe cache; those in RAID-0 will saturate (e.g. I believe just one Samsung 990 Pro can write at just over 50Gbps).\nThe bigger risk is the CPU. This is an issue with the Ubiquiti UNAS Pro 8, their ~$800 USD 8 bay NAS. In theory it has 10gig networking. In practice the CPU physically cannot transfer bits fast enough, because its a dinky underpowered ARM CPU that they clearly chose to hit that quite affordable price point. Its a decent trade-off, because similar units from Synology are more like $1600, and you \ncan\n meaningfully hit somewhere between 2.5gig and 10gig; but saturating 10gig is out of the question.\nThe ENAS has a beefier CPU so it might keep up with 25gig (could this do 50gig bonded?). But only testing will tell.",
+              "author": "827a",
+              "depth": 1
+            },
+            {
+              "text": "https://www.storagereview.com/review/ubiquiti-unas-pro-8-rev...\nThis says the UNAS Pro 8 can saturate 20gbe with reads. It won't with just a single user, though, so for homelab enthusiasts it's less attractive even though the price is appealing. But for an actual small business using it to serve a handful of people? The 10gbe isn't a waste",
+              "author": "kllrnohj",
+              "depth": 2
+            },
+            {
+              "text": "You can hit 10 gig aggregate on an A57 quite easily, given standard memory bandwidth (I've done it). They must be doing something stupid on the software side, like too many copies. Or if you're trying to shove 10 gig in one flow at 1500 mtu yeah that might be painful.",
+              "author": "xxpor",
+              "depth": 2
+            },
+            {
+              "text": "As I recall there were some people on reddit who got the UNAS Pro 8 up to 10gig, but yeah it was only through some level of software tweaks or network stack config or something. From the factory my understanding is that it struggles.",
+              "author": "827a",
+              "depth": 3
+            },
+            {
+              "text": "I have a backup node with a 40G NIC & a ZFS pool of just 8x HDDs set up as a pool of two RAIDZ1 vdevs striped together (i.e. 4x drives in raidz1-0 & 4x drives in raidz1-1 make up the \"backup\" pool). Restoring full backup images to another server I usually get ~11-12 Gbps over NFS, no flash cache or anything involved.\nHonestly, outside of random access/small file access, my primary NVMe ZFS server isn't all that much faster in raw throughput - despite being 22x NVMe drives going direct to the CPU instead of 8 HDDs going through a SATA controller. I think it's easier to hit other bottlenecks with ZFS/network transfers well before the disk throughput itself. E.g., enabling jumbo frames for NFS did still give me a decent perf/efficiency bonus.",
+              "author": "zamadatix",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Mikrotik released ROSE with arm cpu and 20 u2 for around $1800 this year. My excitement was quickly cooled once I learn they only support their mikrotik router os, no Linux.",
+          "author": "altmind",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48528779",
+      "title": "Ask HN: What are you working on? (June 2026)",
+      "link": "https://news.ycombinator.com/item?id=48528779",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 310,
+      "comment_count": 1138,
+      "created_ts": 1781453128,
+      "is_internal": true,
+      "post_text": "What are you working on? Any new ideas that you&#x27;re thinking about?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48448313",
+      "title": "Ask HN: Why hasn't there been a real competitor to Ticketmaster yet?",
+      "link": "https://news.ycombinator.com/item?id=48448313",
+      "domain": "news.ycombinator.com",
+      "author": "mdni007",
+      "score": 265,
+      "comment_count": 240,
+      "created_ts": 1780939709,
+      "is_internal": true,
+      "post_text": "It feels like every event&#x2F;venue is selling tickets exclusively through Ticketmaster.  Every other ticketing platform seems to only hold resale tickets in their inventory which just transfers the tickets to your Ticketmaster account when bought. With all the hate Ticketmaster has gotten and all the other ticketing platforms out there, I&#x27;m surprised Ticketmaster still has a hold of pretty much the entire market. How are they doing this? Why haven&#x27;t the other platforms been able to compete?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48580466",
+      "title": "Apple boss Tim Cook says prices to rise due to memory chip costs",
+      "link": "https://www.bbc.com/news/articles/c3wyxvqdx1zo",
+      "domain": "www.bbc.com",
+      "author": "ilreb",
+      "score": 140,
+      "comment_count": 169,
+      "created_ts": 1781753694,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "boss"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48586329",
+      "title": "Building a robotics research setup that lives next to my desk",
+      "link": "https://dfdxlabs.com/research/2026/robotics-setup/",
+      "domain": "dfdxlabs.com",
+      "author": "mplappert",
+      "score": 125,
+      "comment_count": 43,
+      "created_ts": 1781794313,
+      "is_internal": false,
+      "post_text": "Quick framing, since the post is long: I did robotic manipulation research at OpenAI from 2017–2020, and the tabletop setup back then cost roughly 10x this one and took a team to run. This project is me testing whether a single person can now do meaningful work on the same class of problems: starting with physical and software setup.<p>A few decisions I&#x27;m least settled on, and would love some pushback&#x2F;feedback on:<p>- single arm vs. bimanual (I went single for cost&#x2F;space, knowing it rules out things like folding cloth)<p>- not calibrating camera extrinsics&#x2F;intrinsics for now<p>- RGB vs. RGB-D for from-scratch policies (ACT &#x2F; Diffusion Policy)<p>And one I&#x27;m more confident about but expect disagreement on: not building on ROS 2 &#x2F; LeRobot, and writing my own stack instead. Happy to get into the reasoning.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "This is so cool.",
+          "author": "gaolei8888",
+          "replies": []
+        },
+        {
+          "top": "> And one I'm more confident about but expect disagreement on: not building on ROS 2 / LeRobot,\nTell me more! I am slightly biased in that direction. But can’t fully justify it at this point.",
+          "author": "forrestthewoods",
+          "replies": []
+        },
+        {
+          "top": "Cool stuff. At my previous (startup / research) job I had to set up similar system (but with franka arm and multi view camera) alone because I was the only one with robotics background.\n>I do not intend to calibrate the camera’s extrinsics or intrinsics for now.\nSensible choice, although I suggest it's good in the long run to do at early stage in your setup, especially if you intend to collect data for policy learning.\nDebugging trained policies for visual manipulation task can be a headache and having as much context on variables that can change is a good practice.\nMy previous setup was in Japan, a earthquake prone place and I wasted some time after realizing the camera got misaligned due to earthquake. A simple solution is just to place an Aruco marker on the table that tracks the relative extrinsic position of camera, and add it as metadata to collected teleoperation dataset.",
+          "author": "NalNezumi",
+          "replies": [
+            {
+              "text": "Great points and I very much appreciate the input!\nRight now the static camera is probably really bad: It's mounted on my desk, so its very easy to bump into it and move it. So yeah, it's position for sure will change over time. I think I need a better solution, maybe a rail system that's more rigidly attached to the robot arm so that at least the camera stays fixed relative to that point of reference.",
+              "author": "mplappert",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Good move getting a nice robot! I'm doing something similar to you, but I went with a cheap robot, the \"HIWONDER 6DOF Robotic Arm Kit\". It was only $600, but wow is it bad. The precision and repeatability are both \"are you drunk?\" level. I can hear the gears grind when it moves. I suppose I should upgrade. But if my system can work with a terrible robot, I assume it would work even better with a nice one!\nMy project is \nhttps://github.com/colinator/Ariel\n - basically, no VLAs - instead, \"just write code\". Or have the agents do it.\nI don't have a writeup yet about applying Ariel to _this_ robot, but this is for a previous one: \nhttps://colinator.github.io/Ariel/post1.html\n.\nExcited to follow your progress!",
+          "author": "colinator",
+          "replies": [
+            {
+              "text": "Wow very cool project and thanks for the Ariel pointer! Added to my reading list.\nAnd yes, having a nice robot makes life so much easier. Very happy with my choice so far!",
+              "author": "mplappert",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Hey this is cool! I am doing something similar myself with the SO101 arm robot from Robot Studio using a patchwork of my own code and LeRobot. Would love to collaborate with you if you are open to it. You can find me on Discord as `.avilay`. \nhttps://www.linkedin.com/posts/avilay_lerobot-huggingface-ro...\nWould like to know your reasoning on not going with LeRobot.",
+          "author": "avilay",
+          "replies": [
+            {
+              "text": "Looks very cool! I’m not a huge discord user but how about you shoot me an email and we can figure out how to share notes? (I don’t want to post it directly here but it’s easy to find on my personal website, just google my name)\nRe why not SO-101: the article has a footnote about this; I actually bought the SO-101 as well! I want to integrate it into the same setup so I can switch depending on task.\nSomewhat surprisingly the xarm was actually much faster to arrive; I got it within 2 days of ordering. I don’t have a 3D printer and getting the SO-101 from the vendor I ordered it at took almost 4 weeks. So partially it just came down to what I had access to more quickly.\nSecond point is reliability: I think the SO-101 is cool but I’d be surprised if it doesn’t break more quickly than the xarm. I wanted something that’s going to last a long time without headaches. And these industrial arms are really mature hardware wise now.\nHope this helps!",
+              "author": "mplappert",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for your response! I totally get your point about the delay in getting the robot, I ordered mine from PartaBot and they did take a couple of weeks to get here. But when they did, they worked great out-of-the-box :-)\nWill email you to compare notes.",
+              "author": "avilay",
+              "depth": 2
+            },
+            {
+              "text": "I'm very interested in the SO101. I've never done any robotics and that seems a palatable entry level thing to try things out.\nHow have you found it?\n(The author does explain his reasons for not using LeRobot in the post - although \"I also use LeRobot for training and running baseline policies, and the vendor SDKs for the hardware.\")",
+              "author": "nl",
+              "depth": 1
+            },
+            {
+              "text": "> The author does explain his reasons for not using LeRobot in the post - although \"I also use LeRobot for training and running baseline policies, and the vendor SDKs for the hardware.\")\nAh! That is exactly what I use it for as well :-)\nI am liking the SO101 - teleop and robot both work great. For sure, it is very easy to get started with. I was able to collect around 50 demos with them and train my first ACT policy within days of setting up the robots. Happy to share more detailed learnings from this if/when you get started with it. \nhttps://github.com/avilay/learn-robotics",
+              "author": "avilay",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48586299",
+      "title": "Launch HN: TesterArmy (YC P26) – Agents that test web and mobile apps",
+      "link": "https://tester.army",
+      "domain": "tester.army",
+      "author": "okwasniewski",
+      "score": 124,
+      "comment_count": 65,
+      "created_ts": 1781794184,
+      "is_internal": false,
+      "post_text": "Hey HN - we’re Oskar, Szymon, and Piotr, and we’re building TesterArmy (<a href=\"https:&#x2F;&#x2F;tester.army\">https:&#x2F;&#x2F;tester.army</a>). TesterArmy is an agentic testing platform that runs end-to-end checks before deployment and in production. Instead of wasting hours on manual testing or maintaining static scripts, we let you specify your tests in natural language and handle everything in between. We&#x27;ve built the platform fully around agents. Our agent will reliably execute the tests, but your coding agent can manage everything in our platform, from defining tests in natural language to running them on your behalf.<p>Check out our demo video: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=291IkUbPrlk\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=291IkUbPrlk</a>.<p>We started TesterArmy because testing is still far too painful. AI coding tools have made it dramatically faster to write and ship code, but testing is still a bottleneck. Traditional E2E tests are slow to set up and expensive to maintain. Managing auth and test users is painful. Setting up staging environments is painful. Running tests reliably is painful.<p>We think most teams do not actually want to spend their time writing selectors or maintaining test infrastructure. They just want confidence that their core flows work. With TesterArmy, an engineer can sign up, give an agent our CLI, and let it handle creating tests and running them on schedule or on GitHub.<p>When something breaks, TesterArmy alerts your team through Slack or Discord.<p>Over the past few months, we scaled from 0 to 30+ teams using our product every day. We caught bugs in critical flows, including onboarding, checkout, and AI chat. We&#x27;ve got many of our customers migrating from already established competitors to us because of the quality and reliability of our agents.<p>Here are a few of the recent bugs that our agent found (there were quite a lot of them!):<p>1) Timezone bug that affected the booking flow in one of our clients&#x27; apps, the dashboard was very complex and hard to catch by a human. \n2) Regression in agent orchestration that caused a sandboxed environment to be stuck on loading, thanks to TesterArmy, the team was able to resolve it before it hit production.\n3) Incorrectly counting the order amount in a complex dashboard flow with checkout, thanks to TesterArmy, the team was able to resolve it before it affected revenue\n4) Catching a regression in an AI chat flow that would result in a user not being able to retrieve their data due to broken tool calling.<p>And many more, mostly related to some incorrect API calls, 404s, unhandled errors, etc.<p>If this sounds useful, we would love your feedback at <a href=\"https:&#x2F;&#x2F;tester.army\">https:&#x2F;&#x2F;tester.army</a>. We have a bunch of free test runs for you to try. And don’t worry, we won’t make you do sales calls, and we don’t have long onboarding or annoying setup. Our goal is an it-just-works experience.<p>If you&#x27;re looking for an end-to-end testing solution, we&#x27;d love to hear your feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48466488",
+      "title": "Ask HN: Favorite text heavy blogs that are a joy to read?",
+      "link": "https://news.ycombinator.com/item?id=48466488",
+      "domain": "news.ycombinator.com",
+      "author": "joshmarinacci",
+      "score": 120,
+      "comment_count": 31,
+      "created_ts": 1781033700,
+      "is_internal": true,
+      "post_text": "After ten years I’m working on a redesign of my personal tech blog. I want to look at some other blogs with good modern design. Of course searching for ‘well designed blogs’ or ‘webdesign 2026’ brings up endless marketing listicles. Even after wading through the crap, the advice is focused on advertising and product centric sites, not prose heavy sites with good typography.<p>So my question to you is: <i>What are some of your favorite text heavy blogs that are a joy to read?</i><p>I don’t mean the content (though that helps too), but rather sites where the actual experience of reading is pleasant. Think: good fonts, sticky headers (or not), well formatted code snippets, and responsive images.  Slide in navbars vs inline table of contents.<p>Thanks,\n - j",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48434240",
+      "title": "Ask HN: How are thinking efforts implemented?",
+      "link": "https://news.ycombinator.com/item?id=48434240",
+      "domain": "news.ycombinator.com",
+      "author": "simianwords",
+      "score": 104,
+      "comment_count": 31,
+      "created_ts": 1780835924,
+      "is_internal": true,
+      "post_text": "Claude and ChatGPT have thinking efforts where you can tune the amount of thinking allowed.<p>Like low, medium, high, xhigh and so on.<p>But are they different models underneath? Or same model with different parameter?<p>The reason I ask is because, if I change the effort param mid conversation in Claude code, I get a warning suggesting I’m breaking the cache.<p>I don’t think this happens in Codex because when I change the effort, the responses are still quick.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48584761",
+      "title": "Show HN: Talos – Open-source WASM interpreter for Lean",
+      "link": "https://github.com/cajal-technologies/talos",
+      "domain": "github.com",
+      "author": "mfornet",
+      "score": 92,
+      "comment_count": 25,
+      "created_ts": 1781788244,
+      "is_internal": false,
+      "post_text": "At Cajal (YC W26) we’re excited to share Talos (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;cajal-technologies&#x2F;talos\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;cajal-technologies&#x2F;talos</a>), an open source framework for formal verification of WebAssembly modules in Lean.<p>AI is now writing tons of the code that gets pushed to production. As code generation gets cheaper, verification becomes the bottleneck. We believe in a future where every piece of software comes with a mathematical proof that it does what its author intended - in doing so, eliminating many classes of exploits. Talos is part of the foundation for that.<p>Talos provides a Wasm interpreter optimized for reasoning at the binary level, together with a weakest-precondition calculus layer for proving properties about programs. Because we reason directly about WebAssembly, any language with a Wasm backend is in scope: Rust, C++, Go, C, Swift, Kotlin, Zig, C#, and many more.<p>To make this possible, we use Lean: a programming language and theorem prover that lets you both write software and mathematically prove that it&#x27;s correct - all in one system. That&#x27;s what lets Talos double as both an executable interpreter and the formal object Lean reasons about. Lean also integrates with modern AI proving tools, discharging goals automatically via both proof search and direct evaluation.<p>To see Talos in action check out a proof for Stein&#x27;s GCD algorithm, implemented in the popular Rust crate num-integer: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;cajal-technologies&#x2F;talos&#x2F;blob&#x2F;main&#x2F;programs&#x2F;lean&#x2F;Project&#x2F;NumInteger&#x2F;Spec.lean#L562-L588\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;cajal-technologies&#x2F;talos&#x2F;blob&#x2F;main&#x2F;progra...</a>.<p>Our roadmap:<p>- Full Wasm coverage by first passing the official W3C testsuite, then later verifying against SpecTec (formal Wasm spec)\n- Arbitrary crate verification - any Rust crate that compiles to Wasm should be in scope\n- Building our proof library codelib, to make verifying increasingly complex programs tractable<p>We would love to hear the community’s feedback on Talos and comments on the state of formal verification right now. Contributions are also welcome!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48582679",
+      "title": "Ask HN: Is anyone using the A2A protocol?",
+      "link": "https://news.ycombinator.com/item?id=48582679",
+      "domain": "news.ycombinator.com",
+      "author": "asim",
+      "score": 91,
+      "comment_count": 41,
+      "created_ts": 1781772765,
+      "is_internal": true,
+      "post_text": "The A2A protocol is an agent to agent protocol from Google. I was looking at it 6 months back but it didn&#x27;t feel like I really understood how to use it at that point. Probably because we were all still trying to figure out agents and then the MCP protocol became quite a big deal. But now I&#x27;m starting to think that once an agent has tools and services and data and then contacts. Actually, the point of interaction becomes the agent itself and then if you build other agents you would want them to interact because they have the most relevant context and ability to answer whatever queries. So I was just curious to know if anyone is using this yet?<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;a2aproject&#x2F;A2A\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;a2aproject&#x2F;A2A</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "AI infrastructure/tools developer here (www.hic-ai.com). I considered the A2A protocol carefully, but I decided a while ago that, from my perspective, the A2A protocol was not solving the correct problem. There is no distinction (from the perspective of an agent) between a communication from Agent A to Agent B, on the one hand, and a communication from Agent A to \"future Agent A\", on the other. In fact, agents have no inherent sense of identity at all, so there is no inherent notion of a unique Agent A. The notions like \"Agent A\" received a message or that \"Agent A\" is sending a message to a different agent (or to its future self) are all inextricably intertwined with the idea of an agentic identity existing and being well defined in the first place, which it is not. The A2A protocol assumes the existence of such a well-defined agent identity in its presumption that agent cards point to a specific agent that can be discovered and deployed. I also think gRPC adds a significant layer of indirection and obfuscation, plus it's painful to implement. The lack of widespread adoption suggests that A2A is not really solving a real-world problem, compared to MCP, for instance.",
+          "author": "simonreiff",
+          "replies": [
+            {
+              "text": "We wouldn't have identities either if we were all clones and our memories could be edited and shuffled at each conversation.\nFor an agent to have an identity we would have to intentionally make it hard to context engineering and limit it to append only messages that mimick human communication.\nI can  implant a thought into your head. If I say \"Don't think about a green elephant\" for a moment you'll think about a green elephant. There are more sophisticated examples of a person implanting thoughts in somobodies head (e.g. propaganda) but that's about it, I can't literally edit thoughts.\nWhy on earth do we want to limit our ability to do more powerful context engineering in a substrate that offers that ability natively?\nPresumably because for some use cases you want the context of an agent to belong to a different \"administrative domain\" and you so want to have control over what information reaches it and how can it affect it?",
+              "author": "ithkuil",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Not to great effect, AFAIK. Laurie Voss (creator of npm) had a good presentation a few months back on all the different agent interaction protocols, and was skeptical whether they (including A2A) added much value. \nhttps://youtu.be/kqB_xML1SfA?si=lxehX1-_z_dBoZtQ",
+          "author": "calny",
+          "replies": []
+        },
+        {
+          "top": "Yes! Although I've created a number of open-source A2A packages (\nhttps://github.com/a2anet\n) so I'm a little biased. For a more objective view, I keep an eye on the A2A SDK's monthly downloads (\nhttps://pypistats.org/packages/a2a-sdk\n). They're at ~10.9M compared to MCP's 257M, so MCP is downloaded about 24x more than A2A.\nA2A is much more popular in enterprise than startups. All of the cloud providers and enterprise orchestration platforms (e.g. Gemini Enterprise, AgentForce, watsonx Orchestrate, SAP Joule) support it. People in enterprise typically make their agents A2A compatible so they can use them on these platforms, share them with other teams, etc.\nThe startups that I have seen use A2A typically use it for at least one of the following reasons:\n1. To standardise their API endpoints. A2A specifies how to send and receive text, data, and files, so they can write client code once and reuse it with different agent frameworks.\n2. To standardise agent cataloging. A2A introduces the concept of an Agent Card which contains information about the agent like its name, description, skills, accepted input, etc.\n3. For long-running tasks. A2A was explicitly designed for long-running tasks and supports polling, streaming, and webhooks.\nConfusingly, none of the above use cases are necessarily agent-to-agent. Turns out to standardise agent-to-agent communication, discovery, and authentication, you need to standardise agent communication, discovery, and authentication.\nThe A2A protocol is a good (not perfect) solution for agent-to-agent communication and it will continue to grow. How much it grows depends on how agents evolve. At the moment companies are building MCP servers for coding agents and chatbots, but not agents themselves. I believe that companies will eventually start building agents to control and improve their customer's experience. If they do this, A2A is the natural choice because it solves all of the problems associated with discovering, connecting, and communicating with agents over the internet.",
+          "author": "benclarkeio",
+          "replies": []
+        },
+        {
+          "top": "I am using A2A at work. It's a bit like the \"microservices architecture\" for agents... Allows you or teams to develop agents independently and have them interact as and when they need to. No major hurdles so far.",
+          "author": "lazharichir",
+          "replies": [
+            {
+              "text": "This was my assumption. Agents will supersede services. There will be many companies way ahead of the curve and the rest of the industry will take 5-10 years to catch up.",
+              "author": "asim",
+              "depth": 1
+            },
+            {
+              "text": "Why would an agent supersede a service for a well-defined workflow contract that does not require an agentic loop? I assume both will need to exist.",
+              "author": "efromvt",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "All of this protocol crap is a distraction. What's important is allowing agents talk to each other in their current scope and ACLs, including for their ability to talk to and discover tools. When Anthropic decided MCP was a good idea and published what they did, I ranted for days. Ok, I'm still ranting.\nNow, discovery is important and there is a post right now on the front page about it. But what everyone is probably missing is that a) agents with tokens and services that honor those tokens is already handled well with HTTP. Fun fact, the original HTTP protocol (does anyone do RFCs anymore?) didn't support POSTs! So, most calls can be boiled down to doing a GET request somewhere with a token the remote end understands. Layer on SSL to hide the ? parameters, assuming it's easy to get certs mapped to your house network.\nDiscovery can be handled a bunch of different ways but given the nature of where the agents are running, it can be DIFFICULT to connect them (hole poking comes to mind). Of course you could run stuff in the cloud. But, if you care about sovereignty, you probably want to avoid anything that will \"lock\" you into a service (or a single agent/model for that matter).\nWhat's 100% missing is payments, of course. Meet the 402, PAYMENT REQUIRED. Cloudflare (grumble) has something for that, but they stole it from Lightning Lab's very own roasbeef's Aperture project a while back, which implements payments with the Lightning network.\nMake a bulk payment to a Bitcoin address. Stuff it in a Lightning invoice, send it to someone, they extract it and update the server to let you in. If you decided they ripped you off, close the invoice and the funds are refunded.\nNow, I know a lot of people are skeptical about Bitcoin, but I really do think micropayments are useful for agent-to-agent comms. That's why I threw down the idea on a page about two years ago...so I wouldn't' forget: \nhttps://ahp.nuts.services/",
+          "author": "kordlessagain",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48589357",
+      "title": "Ask HN: What is the job market like?",
+      "link": "https://news.ycombinator.com/item?id=48589357",
+      "domain": "news.ycombinator.com",
+      "author": "gardnr",
+      "score": 55,
+      "comment_count": 59,
+      "created_ts": 1781806822,
+      "is_internal": true,
+      "post_text": "We&#x27;ve all heard about layoffs; what are people&#x27;s actual lived experiences when it comes to the recent changes in the job market?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "job market",
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48604232",
+      "title": "Ask HN: Will programmers write more efficient code during the memory shortage?",
+      "link": "https://news.ycombinator.com/item?id=48604232",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 48,
+      "comment_count": 82,
+      "created_ts": 1781909469,
+      "is_internal": true,
+      "post_text": "Maybe there will even be more interest in the invention and use of more advanced algorithms and data structures that use less memory?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48481947",
+      "title": "Ask HN: Would it be useful to have a slop button in addition to flag?",
+      "link": "https://news.ycombinator.com/item?id=48481947",
+      "domain": "news.ycombinator.com",
+      "author": "BugsJustFindMe",
+      "score": 41,
+      "comment_count": 24,
+      "created_ts": 1781122251,
+      "is_internal": true,
+      "post_text": "In these modern harrowing times, more and more posts are proving to be AI slop, and many people are averse to that. Do you think it would it be useful to have a way to indicate that you believe a post is slop separate from the existing flag button? Maybe it&#x27;s just me but I feel like having a dedicated [AI slop] flag on a post would be useful because I feel differently about posts that have been flagged for other reasons than that. (or something friendlier if value is seen in the general idea but not in that language)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48486932",
+      "title": "Ask HN: Want to build something open source on nights and weekends together?",
+      "link": "https://news.ycombinator.com/item?id=48486932",
+      "domain": "news.ycombinator.com",
+      "author": "vira28",
+      "score": 39,
+      "comment_count": 18,
+      "created_ts": 1781159460,
+      "is_internal": true,
+      "post_text": "Not a hiring post. I have a 9-5 but also a lot of ideas I want to build. The core is just to show up and make small progress — but I find I&#x27;m missing accountability and partnership, so I thought it&#x27;d be nice to partner with someone. Mostly backend&#x2F;infra stuff. If you&#x27;re interested, email in my profile.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48587808",
+      "title": "Ask HN: What tools are you using for AI-assisted code review?",
+      "link": "https://news.ycombinator.com/item?id=48587808",
+      "domain": "news.ycombinator.com",
+      "author": "agos",
+      "score": 21,
+      "comment_count": 21,
+      "created_ts": 1781799927,
+      "is_internal": true,
+      "post_text": "My team (around 40 people who write code) is evaluating tools for AI-assisted code review. The market appears to be rife with options, so before starting a series of free trials, I’d like to ask a knowledgeable crowd.\nWhat tools or services are you using? Do you use them just for code review, or for other purposes as well, such as incident response or branch management? Why did you choose them, and what do you like or dislike about them?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48571124",
+      "title": "Ask HN: Are other people seeing a spike in IT problems with businesses?",
+      "link": "https://news.ycombinator.com/item?id=48571124",
+      "domain": "news.ycombinator.com",
+      "author": "PaulHoule",
+      "score": 14,
+      "comment_count": 11,
+      "created_ts": 1781706854,
+      "is_internal": true,
+      "post_text": "In the last month it seems like I&#x27;ve experienced a surge in businesses having IT screwups.  For instance my wife paid my homeowner&#x27;s insurance bill but they referred my bill to a lawyer for collections and canceled my policy.  (To her credit when my agent was notified she got my policy reinstated)  Now I have a UPS package that seems to have been stuck in Montana for a week but what I am seeing on the tracker doesn&#x27;t make complete sense.<p>Have I just had bad luck or are other people seeing this?  Can we blame vibe coding?  Are we living in Gas Town now?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48587539",
+      "title": "Ask HN: Is there a way to stop the animated Google Doodles?",
+      "link": "https://news.ycombinator.com/item?id=48587539",
+      "domain": "news.ycombinator.com",
+      "author": "arnejenssen",
+      "score": 11,
+      "comment_count": 12,
+      "created_ts": 1781798809,
+      "is_internal": true,
+      "post_text": "The animated Google doodles that appear when I open an new browser tab in Chrome is distracting. The Doodle is soccer&#x2F;World cup animation. I want it to not animate.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48579256",
+      "title": "Ask HN: Has anyone had success with SBIR grants and what is the process like?",
+      "link": "https://news.ycombinator.com/item?id=48579256",
+      "domain": "news.ycombinator.com",
+      "author": "lyfeninja",
+      "score": 11,
+      "comment_count": 8,
+      "created_ts": 1781744862,
+      "is_internal": true,
+      "post_text": "I&#x27;m considering applying to a phase I  topic that is a pretty good fit for our tech and we should meet all basic requirements (U S. Based, small business, etc.), but I&#x27;m unsure if the juice is worth the squeeze.<p>If anyone has any experience applying and going through the process I&#x27;d love to hear about it.<p>Things I&#x27;m curious about...\n- how competitive is it?\n- how detailed should proposals be?\n- am I guaranteed to hear back?\n- how long after closing is a decision made?<p>Thanks in advance.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    }
+  ]
+}
