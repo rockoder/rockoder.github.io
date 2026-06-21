@@ -1,0 +1,691 @@
+{
+  "scraped_date": "2026-06-21",
+  "source": "hacker_news",
+  "total_scraped": 60,
+  "nontech_count": 28,
+  "posts": [
+    {
+      "id": "48610224",
+      "title": "Show HN: StartupWiki – A Free Alternative to Crunchbase",
+      "link": "https://startupwiki.tech/",
+      "domain": "startupwiki.tech",
+      "author": "shpran",
+      "score": 176,
+      "comment_count": 57,
+      "created_ts": 1781971169,
+      "is_internal": false,
+      "post_text": "I&#x27;ve been building StartupWiki, a free startup database designed to make it easier to discover and research companies.<p>The original motivation was frustration with how difficult it can be to find information on early-stage startups. Most databases need accounts, or subscriptions, ro just feel too cluttered. I wanted a website that felt like Wikipedia, no accounts, no subscriptions, no weird metrics, just go in, the info is on the page.<p>The project is still very early, but currently includes:<p>Startup profiles\nSearch and filtering\nCompany categorization\nPublic API (in progress)<p>I&#x27;m especially interested in feedback on:<p>What information you look for when researching startups\nFeatures missing from existing startup databases\nAPI use cases<p>I&#x27;d love to hear feedback.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "motivation",
+        "feedback",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "0 for 10 on some startups (large and small, YC and not) that came to mind.\nIt's easy to scrape YC startups from \nhttps://www.ycombinator.com/companies\n. Scrape that and a dozen other investors' portfolio pages and you'll have a useful fraction of startups.",
+          "author": "tlb",
+          "replies": [
+            {
+              "text": "Sounds good! its just I used up most of my API key limits in development, and I'm keeping some so I can run improvement pipelines or fix errors, so il batch the YC companies day by day, there's  5000 companies, so il do  about 800 each day for 5-6 days.",
+              "author": "shpran",
+              "depth": 1
+            },
+            {
+              "text": "Wait, why would you use (tokens?) on a routine scrape job? Just make a generic parser (vibe-coded or by hand, I don’t think it'll be that hard), then run it across the company list.\nOr are you talking about some other API?",
+              "author": "notpushkin",
+              "depth": 2
+            },
+            {
+              "text": "no scraping the yc startups is easy, I've already done that, its just writing and researching the actual profiles uses an internal tool (built into the website,I can trigger it from an admin dashboard) which uses tokens.",
+              "author": "shpran",
+              "depth": 3
+            },
+            {
+              "text": "Same here.  I work with a lot of startups, some of them very prominent and none of them are listed.",
+              "author": "deepspace",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's a good idea. Why not ask startups to upload a startup.txt (as opposed to robots.txt) to their web root and collect from that? Pre-filled text forms can be downloaded. Also, as with CB, collect data on individuals through a similar opt-in. Enable users to ping your site when it's ready to collect.\nYou could have a \"traction\" stat and ask for a JS snippet be installed on homepages or a set of pages. Old school and unreliable. Registered users is also a good way to assess traction. Not sure how that information could be readily obtained.\nIn my previous comment I mentioned attaching a crypto address to domains - you could do that too. That'd be interesting. One feature you could add long-term is crowdfunding. Either for new features, code releases, media, documents - whatever.\nCrowdfunding activity on startups and individuals would be a great way to measure traction.",
+          "author": "adrianwaj",
+          "replies": [
+            {
+              "text": "Thanks, this is all really interesting feedback, I'm mostly free right now, so il definitely try to roll out these changes soon. probably will announce them on website blog.",
+              "author": "shpran",
+              "depth": 1
+            },
+            {
+              "text": "Good on you. Also, checkout \nhttps://news.ycombinator.com/item?id=47778306\n \"Every CEO and CFO change at US public companies, live from SEC\"\nI think it's important to attach a bunch of people to any given startup (you've already done it.) Going forward, I'd expect more startups to behave like bands. Any 1 person can be attached to a number of bands, but eventually one of these bands will make it big and the members will get locked-in. Staff also bring users, credibility and hence traction early on.\n\"If you want something done, ask a busy person.\"",
+              "author": "adrianwaj",
+              "depth": 2
+            },
+            {
+              "text": "THIS IS A GREAT IDEA!",
+              "author": "amir734jj",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I expected the VERIFIED badges to link to some sort of provenance information. That seems like a must, otherwise (given the \"assume everything's incorrect\" disclaimers) I'm not sure why one would take that badge seriously.",
+          "author": "CharlesW",
+          "replies": [
+            {
+              "text": "Yeah, the \"verified\" badges are useless if they don't link to sources or at least provide some indication of how they were verified and when.",
+              "author": "simonw",
+              "depth": 1
+            },
+            {
+              "text": "I got the agents to cite sources, there's a bug with fetching the urls from the DB, the way it should work is when you hit verified it leads you to the source, working on fixing it now. Also I will try to add an agent ledger tab soon, that shows exactly what the agents were doing.",
+              "author": "shpran",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It sounds like none of the data will be reliable? Ai and community seems like very little will be true and I will have no idea which part will be true.",
+          "author": "dgrin91",
+          "replies": [
+            {
+              "text": "Crunchbase is also not very reliable. It's community/self-reported data.",
+              "author": "lorecore",
+              "depth": 1
+            },
+            {
+              "text": "Crunchbase is generally self reported data",
+              "author": "debarshri",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Would you consider allowing people to login with OpenRouter?\nhttps://openrouter.ai/docs/guides/overview/auth/oauth\nWould be a good way to have others absorb some of your inference limits and fill in missing data that they need. A call to action on a blank search would be a great flow.",
+          "author": "wett",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48604232",
+      "title": "Ask HN: Will programmers write more efficient code during the memory shortage?",
+      "link": "https://news.ycombinator.com/item?id=48604232",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 144,
+      "comment_count": 236,
+      "created_ts": 1781909469,
+      "is_internal": true,
+      "post_text": "Maybe there will even be more interest in the invention and use of more advanced algorithms and data structures that use less memory?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I don't believe so do for two reasons:\n- everyone assumes their program / website is the only thing running at the machine at a given time, and dev machines are always more powerful than user machines\n- it's not really lack of advanced data structures and algorithms that result in the bloat most of the time but the fact that programs and websites are delivered by large teams, there are dozens of submodules that are often loaded even when not needed, and doing it properly is hard to architect to without getting into big complexity and gnarly bugs waiting to happen when someone from other team modifies something and does not know full picture. So it's cheaper to just keep things the way they are to reduce complexity of architecture and fragility.",
+          "author": "jakub_g",
+          "replies": [
+            {
+              "text": "It's a bit more subtle than bad assumptions.\nThe main place RAM usage is going to get optimized is on the server side, because the client's RAM is a tragedy of the commons. If you're reducing RAM usage while your competitor adds features then the extra RAM saved by your app will just be silently allocated to theirs, the device won't feel any different and the user will prefer your competitor. There is little incentive to optimize RAM usage on the client side because it only helps \nother\n companies, so nobody does it - except (ironically) browser devs, who tend to assume they have first dibs on all the RAM of the device.\nIf you really wanted people to care about it OS devs would need to surface memory usage of apps visibly in a way ordinary users can understand and translate to customer feedback forms, which is difficult.",
+              "author": "mike_hearn",
+              "depth": 1
+            },
+            {
+              "text": "If you're reducing RAM usage while your competitor...\nThis is true so long as client-side (desktop, mobile) memory management does not penalise high memory use.\nI'm \nalready\n taking the approach of killing off my largest browser processes regularly, and need to look at more targeted ways of managing memory.  I'd \nreally\n like to see the parent browser process as a lightweight manager over subprocesses such that it can persist (rather than leaking multiple GB of RAM over the course of days), to the point my entire user session falls over with stunning regularity.\nI have a shell script (currently triggered manually, hopefully subject to further refinement) which kills off the ten top browser processes.  I'll often run that in a shell loop of 10--20 iterations.  It \nbarely\n keeps things manageable, and system hangs/reboots are still far more common than I'd like.\nThe way to change behaviours is to change costs.  This is where OS devs have a choice before them, and application and remote service / SaaS devs and project managers might eventually start feeling the pain.\nOne reason I favour HN over numerous other options is that the site doesn't absolutely pig out my browser session(s).\nAnd that said, if anyone has tips on both revealing and managing memory usage in Firefox, I'm quite receptive.",
+              "author": "dredmorbius",
+              "depth": 2
+            },
+            {
+              "text": "> The main place RAM usage is going to get optimized is on the server side\nAgree, but it's going to be a long, hard, potentially ultimately unsuccessful uphill slog. I think the main obstacle is basically 2 decades of inertia. Approximately everyone believes that server side software needs to scale horizontally. So we optimize systems for this property--I can make it work better by just throwing more computers at it. This was a lot more important ca. 2004 (MapReduce) than it is ca. 2026. For resiliency and redundancy, how many nodes does your service actually need? If you're running more than that number, do you have some kind of justification as to why? This is the mindset we need to try to move towards, but it's very different from how we currently do it.\nEDIT: Another good question to ask, which we don't do enough: \"does it really need to be a separate service?\" Using data in RAM that's already been allocated is probably better than allocating more and shipping data over the network...",
+              "author": "jcgrillo",
+              "depth": 2
+            },
+            {
+              "text": "FWIW I work part time on projects that are all about reducing RAM usage server side! RAM has been a big expense in the cloud for a long time. AI makes the situation critical but there's a lot of work done already. Consider that functions-as-a-service are basically all about shutting down idle servers to reclaim their RAM.",
+              "author": "mike_hearn",
+              "depth": 3
+            },
+            {
+              "text": "FaaS are really interesting, because the tradeoffs seem \"jagged\" (to use a word I learned recently). Like, IIUC this is more or less what's happening when a cloud function is invoked:\n1. Some event triggers the function (HTTP request hits load balancer or whatever)\n2. A VM is loaded from NVMe (possibly on another computer, and transferred over the network) into RAM\n3. That VM boots up\n4. The function code runs\n5. The VM is terminated\nNaively, this probably takes a lot more RAM (not to mention all the other computing resources) than to just have another HTTP handler sitting idle on some computer somewhere.\nSo this is only a reasonable choice if doing this intensive computation for a short amount of time, and using a large amount of resources for that short amount of time, is somehow better than doing a much smaller amount (maybe none at all) of computing over a longer amount of time. It's kind of hard to tell what the actual conditions are that merit one solution over the other. The other layer is the cloud pricing model, but that's a whole other can of worms..\nI have yet to encounter a system that didn't have \nat least some\n computers (or cloud instances) that always need to be running. Those computers are almost always a bit overprovisioned (not using 100% of their CPU or RAM or IO all the time). So it has always seemed to me that instead of running a cloud function, it would be cheaper in terms of compute resources to execute the code from step 4 above on one of those machines.\nObviously we have cloud functions for a reason, people like them and find them useful. But is there ever a regime where they're \noptimal\n?\nEDIT: I guess I've implicitly assumed the code in step 4 is doing a \nsmall\n amount of work. Maybe there's a goldilocks zone of work-per-invocation where this model is more optimal? But then of course there's always the standard executor pool model, and that way you don't have to spin up a VM per task invocation...",
+              "author": "jcgrillo",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Some programmers will write more efficient code. At my $dayjob (one of the big tech companies) we're already planning a major goal next year of optimizing server code to reduce RAM requirements, and this is directly in response to the crunch.\nIn practice I expect most optimizations will come from \"stop doing stupid stuff\" and not \"use fancy advanced algorithms.\" But that's a cynical perspective so don't be cynical like me.",
+          "author": "cornstalks",
+          "replies": [
+            {
+              "text": "Real, there are so many low hanging fruits for optimization but no one has time to do them. And they don’t incentivize spending your time on it either.",
+              "author": "kapperchino",
+              "depth": 1
+            },
+            {
+              "text": "Exactly. Customer's RAM is free to the developer.",
+              "author": "pjc50",
+              "depth": 2
+            },
+            {
+              "text": "Especially when LLMs are used to generate most of the code anyways in bigcorps",
+              "author": "thewhitetulip",
+              "depth": 2
+            },
+            {
+              "text": "Is there a single example of a successful LLM project apart from Claude Code?",
+              "author": "inigyou",
+              "depth": 3
+            },
+            {
+              "text": "If the CEOs are to be believed, then 75% of all new code in Google is AI generated. 46% of GitHub internal code, and roughly 30% across all of Microsoft is AI. Meta expects at least 65%, and snap reported 65% is AI generated.\nIts how software is built now in these palces.",
+              "author": "thewebguyd",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It's definitely possible, but I agree with many other commenters it probably will not happen.\nI wrote an encrypted mesh networking library that runs on normal operating systems. A customer asked me if I could make it run on an ESP32 with 520 kiB of RAM. At first this seemed impossible, but it turned out that it was, and not even that hard. While the original library was not memory hungry at all for a desktop CPU, it still wasted space on unnecessarily large buffers. Cutting those out made the library run on an ESP32 while leaving plenty of room for an application.\nAlso, my first PC was a 200 MHz single-core 32-bit AMD k6 with 32 MiB of RAM. This ran a graphical OS with browsers, word processors, 3D games and so on. Nowadays you can get a CPU with more than that amount of RAM as just built-in cache.\nSo a good place to start optimizing code would be to actually get a \"severely resource constrained\" computer and start making your code work on it.",
+          "author": "gsliepen",
+          "replies": []
+        },
+        {
+          "top": "Programmers will write more efficient algorithms if their employers tell them to trade time-to-market for hardware cost. Previously, it was trade hardware cost for time-to-market.\n\"Programmers\" don't make this decision, the product owner does.",
+          "author": "jpollock",
+          "replies": [
+            {
+              "text": "The classic excuse for industry-wide incompetence. The average programmer today can't write good code even if told it's an explicit priority.\nThe manager wants the Submit button to submit the form, they rarely care how the programmer does it. It's the programmer that chose to install the 11,000 node_modules, to use React with 3 layers of state management on top with hybrid SSR/CSR and to do Kubernetes because that's what was on Hacker News that day or whatever. And guess what, somehow the Submit button does still not submit the form 10% of the time.\nGet rid of the junk and the program will be more efficient AND you'll ship quicker.",
+              "author": "nananana9",
+              "depth": 1
+            },
+            {
+              "text": "How much \"junk\" do you want to get rid of?\nI suspect you're imagining something like, just write some vanilla JS and maybe some tasteful but not bloated CSS.\nYou could do that. Then I'll come along with my old man Win32 skills and write a form with a submit button that sends the data by doing a memcpy into a UDP packet. It will take 300 kilobytes of RAM and start in 0.1 seconds. That'll make it approx 100x more RAM efficient than the baseline you can manage with Chrome, where an empty renderer process takes 23 MB of RAM to achieve nothing and starts so slowly the browser has to cache them in the background.\nOn the other hand, delivering features your users expect might be a bit harder. Shipping and updating that app will be painful for me, unless I use [plug] \nhttps://hydraulic.dev/\n to make it easy [/plug], and the styling options are limited to setting solid color backgrounds on things. Things the product manager views as basic, like adding a dark mode, will take a surprising amount of effort. The app is likely to be more crash prone than the web app due to all the manual memory management required. Text zoom won't work. I'll have to write in C or maybe C++ if I'm feeling extravagent.\nSo there's got to be a balance somewhere. Features do matter.",
+              "author": "mike_hearn",
+              "depth": 2
+            },
+            {
+              "text": "What is \"good code\"?\nIf you ask your boss, it will most likely be whatever spaghetti code which ensures the contract gets signed on time.\nThe boss doesn't care if the developer needs 10000 libraries for the submit button.",
+              "author": "lpapez",
+              "depth": 2
+            },
+            {
+              "text": "\"The boss\" is not who says what is good enough. Ultimately it's the customer. In many industries it seems good enough is not very good.\nThen there are industries where the customer complains if code is slow. They will actually hire expensive consultants to analyze and benchmark the code. And while the consultants likely are not more talented than inhouse staff, now you have both sides very interested at looking at the problem from engineering perspective.\nIn this case \"good\" includes performance.",
+              "author": "fsloth",
+              "depth": 3
+            },
+            {
+              "text": "> The average programmer today can't write good code even if told it's an explicit priority.\nBut what even is good code?\nAs an infrastructure guy i see my fellow software engineers endlessly debating and bikeshedding on anything but speed and memory consumption.\nI see them arguing about functional vs object oriented, immutable data structures, test driven development, agentic bs, this or that interpreted language… never about reducing memory consumption .",
+              "author": "znpy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If that happens, we will see it in triple-A games first. If some new titles have significant lower hardware specs than expected.\nIf buyers can't afford the hardware anymore, the studios need to adjust. It's definitively possible to scale games down a lot. There are a few AAA games that were \"dumbed down\" for the Switch 1 (Hogwarts, cyberpunk, ...). And that's a really low-spec device.\nThere are two factors: existing gamers not able to afford upgrading. But also new gamers, that might only be able to afford much lower spec PCs than people who bought 2 years earlier.\nWhy games? Because there is a clear point where people stop buying games. Minimum hw specs are known before buying.",
+          "author": "andix",
+          "replies": [
+            {
+              "text": "> If that happens, we will see it in triple-A games first. If some new titles have significant lower hardware specs than expected.\nRecently I booted up Insurgency: Sandstorm. With a 5800X and an Intel Arc B580 at 1080p and high graphics, the game runs at around 200 FPS. Meanwhile, pretty much any modern UE5 title (with the exception of Ready or Not and Split Fiction, from what I've seen) runs horribly - the interesting thing is that no matter how much you tweak the .ini files or change the graphics settings you can't get something like STALKER 2 or The Forever Winter or Borderlands 4 to run as well as UE4 with the graphics similar to those old games. Instead you get something that runs at like 10% of the render resolution and still doesn't get 60 FPS (I'm not exaggerating, literally the performance I got in The Forever Winter).\nThere's no good technical reason for things to be that way (Unity still exists, and the games made in it struggle less) other than the devs or the higher ups choosing higher fidelity but more expensive rendering technologies and using upscaling and framegen not as something that helps laptops or when you need the spare GPU capacity (e.g. encoding a video recording of the game), but rather as something that's supposed to be used to even get to 60 FPS in the first place.\nI don't know what needs to change for things to get better.\nI also don't see anyone particularly caring about regular software, Electron et al are just too convenient to develop in (having to create per-platform UIs sucks in already-overworked teams).",
+              "author": "KronisLV",
+              "depth": 1
+            },
+            {
+              "text": "> I don't know what needs to change for things to get better.\nStudios need to start creating custom engines again, for one. We'll get better games with less unsatisfying jank, some of the projects will actually cost \nless\n (which is paradoxical to some) and performance is likely to jump significantly. Off-the-shelf engines have as many costs as they have benefits, but like a lot of technology people refuse to look at the choice as a trade-off, and to the extent that they acknowledge it's a trade-off the implicit admission is always that it's a trade-off that the user/player is paying the most for, so it's OK.\nIf companies start creating custom engines en masse again it will also help solve part of the competency crisis in the industry, because they'll be forced to actually learn and educate people on how things work.",
+              "author": "59nadir",
+              "depth": 2
+            },
+            {
+              "text": "Do you actually believe in what you wrote above?",
+              "author": "tuna74",
+              "depth": 3
+            },
+            {
+              "text": "Game studios should choose CryEngine/Decima again over UE5",
+              "author": "Azantys",
+              "depth": 3
+            },
+            {
+              "text": ">There's no good technical reason for things to be that way\nOf course there is. What people gets presented is look how new graphics is shining. What devs get presented is look how much less manual work you need to get this graphics out of the door. Look at any UE5 presentation aiming at devs. You will be able to see a lot of 'just do this and technology will handle the rest of it'. There is no going back to manually making 3-5 replacements for each and every thing in the game. And the same goes for lights every few meters of a game world.\nAs a gamedev I don't really care about the regular software. You can see that the main problem for devs is to get paid for it. All kind of schemes with subscriptions and online services and such were tried. People just don't want to pay for the software. The mentality is 'we will get it for pennies on a sale' is the same like with the steam sales. Or even worse people will choose 'free' version with 'promotions' and data collection and whatever else that saves them pennies. Look at 'free to play games' steam category for the example of the horror show.\nOh and I don't think devs are the saints there. You can find a lots of examples that prey on gullible customers or trick people to buy 'digital goods' they don't need or outright bad things with gambling addictions and more.\nThe only thing consumer can do is to only vote with their wallet and push their representatives to regulate. The stop killing games is an example of the latter. The former is often deemed inefficient but Imho it is the only thing that will separate surviving studios and the shattered ones. As you may see in the press the names and past successes don't save studios from closing their doors now.",
+              "author": "SleepyMyroslav",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48582679",
+      "title": "Ask HN: Is anyone using the A2A protocol?",
+      "link": "https://news.ycombinator.com/item?id=48582679",
+      "domain": "news.ycombinator.com",
+      "author": "asim",
+      "score": 92,
+      "comment_count": 41,
+      "created_ts": 1781772765,
+      "is_internal": true,
+      "post_text": "The A2A protocol is an agent to agent protocol from Google. I was looking at it 6 months back but it didn&#x27;t feel like I really understood how to use it at that point. Probably because we were all still trying to figure out agents and then the MCP protocol became quite a big deal. But now I&#x27;m starting to think that once an agent has tools and services and data and then contacts. Actually, the point of interaction becomes the agent itself and then if you build other agents you would want them to interact because they have the most relevant context and ability to answer whatever queries. So I was just curious to know if anyone is using this yet?<p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;a2aproject&#x2F;A2A\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;a2aproject&#x2F;A2A</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "AI infrastructure/tools developer here (www.hic-ai.com). I considered the A2A protocol carefully, but I decided a while ago that, from my perspective, the A2A protocol was not solving the correct problem. There is no distinction (from the perspective of an agent) between a communication from Agent A to Agent B, on the one hand, and a communication from Agent A to \"future Agent A\", on the other. In fact, agents have no inherent sense of identity at all, so there is no inherent notion of a unique Agent A. The notions like \"Agent A\" received a message or that \"Agent A\" is sending a message to a different agent (or to its future self) are all inextricably intertwined with the idea of an agentic identity existing and being well defined in the first place, which it is not. The A2A protocol assumes the existence of such a well-defined agent identity in its presumption that agent cards point to a specific agent that can be discovered and deployed. I also think gRPC adds a significant layer of indirection and obfuscation, plus it's painful to implement. The lack of widespread adoption suggests that A2A is not really solving a real-world problem, compared to MCP, for instance.",
+          "author": "simonreiff",
+          "replies": [
+            {
+              "text": "We wouldn't have identities either if we were all clones and our memories could be edited and shuffled at each conversation.\nFor an agent to have an identity we would have to intentionally make it hard to context engineering and limit it to append only messages that mimick human communication.\nI can  implant a thought into your head. If I say \"Don't think about a green elephant\" for a moment you'll think about a green elephant. There are more sophisticated examples of a person implanting thoughts in somobodies head (e.g. propaganda) but that's about it, I can't literally edit thoughts.\nWhy on earth do we want to limit our ability to do more powerful context engineering in a substrate that offers that ability natively?\nPresumably because for some use cases you want the context of an agent to belong to a different \"administrative domain\" and you so want to have control over what information reaches it and how can it affect it?",
+              "author": "ithkuil",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Not to great effect, AFAIK. Laurie Voss (creator of npm) had a good presentation a few months back on all the different agent interaction protocols, and was skeptical whether they (including A2A) added much value. \nhttps://youtu.be/kqB_xML1SfA?si=lxehX1-_z_dBoZtQ",
+          "author": "calny",
+          "replies": []
+        },
+        {
+          "top": "Yes! Although I've created a number of open-source A2A packages (\nhttps://github.com/a2anet\n) so I'm a little biased. For a more objective view, I keep an eye on the A2A SDK's monthly downloads (\nhttps://pypistats.org/packages/a2a-sdk\n). They're at ~10.9M compared to MCP's 257M, so MCP is downloaded about 24x more than A2A.\nA2A is much more popular in enterprise than startups. All of the cloud providers and enterprise orchestration platforms (e.g. Gemini Enterprise, AgentForce, watsonx Orchestrate, SAP Joule) support it. People in enterprise typically make their agents A2A compatible so they can use them on these platforms, share them with other teams, etc.\nThe startups that I have seen use A2A typically use it for at least one of the following reasons:\n1. To standardise their API endpoints. A2A specifies how to send and receive text, data, and files, so they can write client code once and reuse it with different agent frameworks.\n2. To standardise agent cataloging. A2A introduces the concept of an Agent Card which contains information about the agent like its name, description, skills, accepted input, etc.\n3. For long-running tasks. A2A was explicitly designed for long-running tasks and supports polling, streaming, and webhooks.\nConfusingly, none of the above use cases are necessarily agent-to-agent. Turns out to standardise agent-to-agent communication, discovery, and authentication, you need to standardise agent communication, discovery, and authentication.\nThe A2A protocol is a good (not perfect) solution for agent-to-agent communication and it will continue to grow. How much it grows depends on how agents evolve. At the moment companies are building MCP servers for coding agents and chatbots, but not agents themselves. I believe that companies will eventually start building agents to control and improve their customer's experience. If they do this, A2A is the natural choice because it solves all of the problems associated with discovering, connecting, and communicating with agents over the internet.",
+          "author": "benclarkeio",
+          "replies": []
+        },
+        {
+          "top": "I am using A2A at work. It's a bit like the \"microservices architecture\" for agents... Allows you or teams to develop agents independently and have them interact as and when they need to. No major hurdles so far.",
+          "author": "lazharichir",
+          "replies": [
+            {
+              "text": "This was my assumption. Agents will supersede services. There will be many companies way ahead of the curve and the rest of the industry will take 5-10 years to catch up.",
+              "author": "asim",
+              "depth": 1
+            },
+            {
+              "text": "Why would an agent supersede a service for a well-defined workflow contract that does not require an agentic loop? I assume both will need to exist.",
+              "author": "efromvt",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "On the vscode team we're rebuilding our agent infrastructure on top of a new protocol, AHP: \nhttps://github.com/microsoft/agent-host-protocol\n.\nIt's a common protocol for talking to a host of multiple agents/harnesses.",
+          "author": "roblourens",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48611303",
+      "title": "Ask HN: Due to spam on GitHub, what platforms can I move my projects?",
+      "link": "https://news.ycombinator.com/item?id=48611303",
+      "domain": "news.ycombinator.com",
+      "author": "ciwolex",
+      "score": 55,
+      "comment_count": 58,
+      "created_ts": 1781977927,
+      "is_internal": true,
+      "post_text": "I have a few projects on Github. I am receiving a lot of spam PRs and requests from vibe coders and bots. Most of them to prop up their profiles. The stars are obviously exaggerated too.<p>What other platforms are you using for your projects?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is evidently not a popular opinion, but git repositories don’t need to be hosted on any platform. Your local repo is a complete copy and can be pulled and pushed from and to. If you really want a backup or “source of truth” copy, you can clone it anywhere you have shell access. We make so many simple things hard unnecessarily.",
+          "author": "ryandrake",
+          "replies": [
+            {
+              "text": "That only works if you are only using Github as a place to store your code. I'm not the OP, and maybe their situation is different, but I want to continue getting sincere human PRs and issue reports on my projects, but want to reduce or eliminate the amount of AI produced spam.",
+              "author": "thayne",
+              "depth": 1
+            },
+            {
+              "text": "Obligatory reminder that you can clone a git repo around your local filesystem and so on too. Same goes for other git operations as well.\nhttps://thehorrors.org.uk/snippets/git-local-filesystem-remo...",
+              "author": "aquariusDue",
+              "depth": 1
+            },
+            {
+              "text": "If this was a viable option, OP would just private his GitHub repos, but it's pretty obvious that he wants to make them available publicly.",
+              "author": "iLoveOncall",
+              "depth": 1
+            },
+            {
+              "text": "If they have a blog or use a static site generator they could host their github repos online and use a plugin or something to display them. Or even just post links to the repos. It might cause bandwidth issues for popular projects and you wouldn't have any of the \"social\" features like stars (which in this case would be a feature) but it should be possible. Depending on how the backend is set up you might not even need to put the repos in the web path at all.\nBut I'd still say just use Codeberg. And see if there's an option to turn off PRs wherever your projects are hosted.",
+              "author": "krapp",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are looking to get out of the next platform.\nFor me, I'm not interested in the social aspect of coding anymore, so I have a Synology NAS running a git server accessible via ssh and I push my code there.\nI use klaus (\nhttps://github.com/jonashaag/klaus\n) as a read only git web ui. My NAS is connected to my tailscale network so it's easy to view things on the go. It's a simple setup and works great.",
+          "author": "jasonriddle",
+          "replies": []
+        },
+        {
+          "top": "New repository settings for configuring pull request access [feb13-2026]\nhttps://github.blog/changelog/2026-02-13-new-repository-sett...",
+          "author": "rolph",
+          "replies": [
+            {
+              "text": "Limiting the number if PRs per person also just launched.\nhttps://github.blog/changelog/2026-06-17-limit-open-pull-req...",
+              "author": "abraham",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "sourcehut.org would be my choice.\nDrew is pretty adamant about stuff and his morales.\nYou will dislike somethings (UI and some policies) but will like majority of the things (tech like CI/CD etc).\nIt's OSS and can be self-hosted as well. \nBut I think drew fighting LLM scrappers on our behalf is good for us.\nIt's also cheap and should progressively improve going forward.\nIt's my long term plan. And the project and company is setup in a way to be here for the long game. So, I am progressively moving my projects (private and in small numbers, but still...) from gitlab to sourcehut over this year or next.\nLink - \nhttps://sourcehut.org/",
+          "author": "unsungNovelty",
+          "replies": [
+            {
+              "text": "I second this. Ive been using sourcehut for a few years for personal stuff. Worth every penny at twice the price.",
+              "author": "velebak",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I think one important factor would be still being able to interact with a community of people who care for software and would like to put genuine thoughts. Whether it be for submitting bug reports, issues, PRs or security reports. Of course other platforms are not diverse as GitHub, it would be nice to see which other platforms are attracting such people. This in turn has a higher chance of interacting with such people.",
+          "author": "ciwolex",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48587808",
+      "title": "Ask HN: What tools are you using for AI-assisted code review?",
+      "link": "https://news.ycombinator.com/item?id=48587808",
+      "domain": "news.ycombinator.com",
+      "author": "agos",
+      "score": 22,
+      "comment_count": 21,
+      "created_ts": 1781799927,
+      "is_internal": true,
+      "post_text": "My team (around 40 people who write code) is evaluating tools for AI-assisted code review. The market appears to be rife with options, so before starting a series of free trials, I’d like to ask a knowledgeable crowd.\nWhat tools or services are you using? Do you use them just for code review, or for other purposes as well, such as incident response or branch management? Why did you choose them, and what do you like or dislike about them?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48571124",
+      "title": "Ask HN: Are other people seeing a spike in IT problems with businesses?",
+      "link": "https://news.ycombinator.com/item?id=48571124",
+      "domain": "news.ycombinator.com",
+      "author": "PaulHoule",
+      "score": 14,
+      "comment_count": 11,
+      "created_ts": 1781706854,
+      "is_internal": true,
+      "post_text": "In the last month it seems like I&#x27;ve experienced a surge in businesses having IT screwups.  For instance my wife paid my homeowner&#x27;s insurance bill but they referred my bill to a lawyer for collections and canceled my policy.  (To her credit when my agent was notified she got my policy reinstated)  Now I have a UPS package that seems to have been stuck in Montana for a week but what I am seeing on the tracker doesn&#x27;t make complete sense.<p>Have I just had bad luck or are other people seeing this?  Can we blame vibe coding?  Are we living in Gas Town now?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48601097",
+      "title": "Ask HN: What is the coolest tech progress outside AI?",
+      "link": "https://news.ycombinator.com/item?id=48601097",
+      "domain": "news.ycombinator.com",
+      "author": "vantareed",
+      "score": 13,
+      "comment_count": 9,
+      "created_ts": 1781891225,
+      "is_internal": true,
+      "post_text": "AI and agents are taking up most of the oxygen lately.<p>What recent non-AI technology progress are you excited about, and why?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48587539",
+      "title": "Ask HN: Is there a way to stop the animated Google Doodles?",
+      "link": "https://news.ycombinator.com/item?id=48587539",
+      "domain": "news.ycombinator.com",
+      "author": "arnejenssen",
+      "score": 12,
+      "comment_count": 13,
+      "created_ts": 1781798809,
+      "is_internal": true,
+      "post_text": "The animated Google doodles that appear when I open an new browser tab in Chrome is distracting. The Doodle is soccer&#x2F;World cup animation. I want it to not animate.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48588648",
+      "title": "Ask HN: Do you find vibe coding / agentic engineering to be fulfilling?",
+      "link": "https://news.ycombinator.com/item?id=48588648",
+      "domain": "news.ycombinator.com",
+      "author": "uejfiweun",
+      "score": 11,
+      "comment_count": 13,
+      "created_ts": 1781803620,
+      "is_internal": true,
+      "post_text": "I&#x27;m having trouble reaching that golden &quot;builder&quot; zone when I use things like Claude Code. It&#x27;s cool to be able to conjure software from scratch using these tools, but the output... I don&#x27;t know, it just doesn&#x27;t really feel like something I myself did. Maybe it&#x27;s the lack of effort required, or maybe it&#x27;s the fact that I know in the back of my head that basically anyone could copy this with the right prompt, that software in general is no longer a special thing.<p>Has anyone been able to find that &quot;zone of fulfillment&quot; using these tools? Because I&#x27;d love to find it again.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "fulfillment"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48580995",
+      "title": "Ask HN: What's a prompt you've written that you're genuinely proud of?",
+      "link": "https://news.ycombinator.com/item?id=48580995",
+      "domain": "news.ycombinator.com",
+      "author": "akashwadhwani35",
+      "score": 11,
+      "comment_count": 7,
+      "created_ts": 1781758724,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48579256",
+      "title": "Ask HN: Has anyone had success with SBIR grants and what is the process like?",
+      "link": "https://news.ycombinator.com/item?id=48579256",
+      "domain": "news.ycombinator.com",
+      "author": "lyfeninja",
+      "score": 11,
+      "comment_count": 8,
+      "created_ts": 1781744862,
+      "is_internal": true,
+      "post_text": "I&#x27;m considering applying to a phase I  topic that is a pretty good fit for our tech and we should meet all basic requirements (U S. Based, small business, etc.), but I&#x27;m unsure if the juice is worth the squeeze.<p>If anyone has any experience applying and going through the process I&#x27;d love to hear about it.<p>Things I&#x27;m curious about...\n- how competitive is it?\n- how detailed should proposals be?\n- am I guaranteed to hear back?\n- how long after closing is a decision made?<p>Thanks in advance.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48589935",
+      "title": "Ask HN: How do you effectively communicate or present?",
+      "link": "https://news.ycombinator.com/item?id=48589935",
+      "domain": "news.ycombinator.com",
+      "author": "hnthrow10282910",
+      "score": 10,
+      "comment_count": 7,
+      "created_ts": 1781809413,
+      "is_internal": true,
+      "post_text": "I’m starting to realise it’s hard to find people who say useful things at work or speak concisely. (I’m also at fault here). I partly blame layoffs as people feel the need to constantly look very productive.<p>What’s the best way to improve my speech in such a way where I’m concise and the words I say are intentional? I want to keep people engaged when I speak. Trying to be a man of few words, but also still seem engaged despite being quiet.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "layoffs"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48609465",
+      "title": "Ask HN: What do you care about? What is your joy and purpose?",
+      "link": "https://news.ycombinator.com/item?id=48609465",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 9,
+      "comment_count": 18,
+      "created_ts": 1781965545,
+      "is_internal": true,
+      "post_text": "What do you care about these days? The world feels so misaligned directionally and work is all in service of some esoteric AI that just strips the beauty from various crafts. What are you finding joy and purpose in for your own life and wellbeing?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "Csikszentmihalyi did research around what gives people joy. From that, he introduced the concept of Flow in 1975, which is often misunderstood.\nFlow is my definition of joy. You do something that needs intense focus. The focus makes you lose sense of self and time. You're too focused to be self-conscious. You don't overthink. You move fluidly.\nI don't have fixed hobbies. I did boxing for half the year just because I love the feel of redirecting energy from my toes to my fists. But something like climbing or basketball works too.\nWork can give flow too, it's just programming and writing the way we're usually taught is quite bad for it. One hack is to write at the speed of thought and then edit it afterwards, instead of doing block by block.\nMeditation makes everything more pleasurable because you learn to silence all the internal voices and ambient thoughts. You learn to empty your mind and other emotions. You focus on the present. And once you can do this, you can apply the same to work or other less joyful activities.\nAs for purpose, it's the long term, the infinite game as described by Carse. Not just the afterlife, but what lies beyond death - family, community, country, humanity, ethics. Purpose has been solved many centuries ago, just RTFM.",
+          "author": "muzani",
+          "replies": []
+        },
+        {
+          "top": "I don't know how to answer this question.\nI derive joy from writing about things I care about. I derive joy from writing code. I derive joy from working out and seeing myself getting stronger. I derive joy from knowing I'm becoming a better person.\nMy purpose? I don't know. I just want to be financially successful and help people who have known me when I was a nobody, and also people who need assistance.\nI don't really know how to answer this.",
+          "author": "chistev",
+          "replies": [
+            {
+              "text": "and yet you have answered it beautifully",
+              "author": "malaiqa",
+              "depth": 1
+            },
+            {
+              "text": "Wow. Thanks!",
+              "author": "chistev",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Experiencing new things with people i enjoy being around. People tend to stay in their comfort zones, and miss out on things that could become their new favorite hobby, food, or destination. There's so much in this world to experience and learn from, and it does take courage sometimes to step out of the comfort zone. But I find that doing so with friends encourages me to take that step more easily, and results often become core memories.",
+          "author": "ibtheory",
+          "replies": []
+        },
+        {
+          "top": "I’ve been having a lot of trouble with the state of the world these days. Returning to the teachings of the stoics has really helped me (Epictetus and Marcus Aurelius)\n“Some things in this world are up to us, while others are not.\nUp to us are our faculties of judgment, motivation, desire, aversion —in short everything that is our own doing. Not up to us are our body and property, our reputations and our positions —in short everything that is not our own doing.”\nThe things you control are in you. Maximize those and find satisfaction in that. The things outside of your control are not your concern. Let them go.",
+          "author": "tim-tday",
+          "replies": []
+        },
+        {
+          "top": "I care about being at peace; my entire life has been \"the next thing\".  Started in my childhood and continues into my mid 40-s.  Nothing is sweet, nothing is savoured.  It's always \"what's next?\"\nMy joy and my purpose is to help those around me and to get the feedback that they appreciate it.  My purpose is to earn money so my wife can do the things she loves and not have to worry about working, so my mom's health is looked after and so, at some point, I can go do something that brings me peace.",
+          "author": "tinktank",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48588920",
+      "title": "Ask HN: Conflicted about founding engineer role",
+      "link": "https://news.ycombinator.com/item?id=48588920",
+      "domain": "news.ycombinator.com",
+      "author": "gondolin1683",
+      "score": 8,
+      "comment_count": 18,
+      "created_ts": 1781805035,
+      "is_internal": true,
+      "post_text": "Title says it all. I’m currently at 2.5 YOE at big tech making 250k. I love my work life balance and get to work on a lot of different side hustles.<p>Recently, I was offered the founding engineer (#1 employee) at a vertical SAAS company in the food industry. The comp is 160k for 3% equity. The caveat is that I would be the first technical employee, both co founders are non technical.<p>The 2 co founders are genuinely very impressive and seem very smart. One of them has a lot of connections in this space so they have a way to reach customers. The company is pre revenue and pre product and raised 3M seed against 10M.<p>If I came in, I’d essentially be doing the work of a technical co founder with a fraction of the upside.<p>I’m very conflicted on this. One part of me yearns to work in the startup space, I eventually want to start my own and this could be a stepping stone in terms of getting a better network (I feel my network is currently lacking) and if there’s any time in my life where risk is not an issue it would be now.<p>On the other side, I think I’m getting a really bad deal here, I’d build out the entire product and barely get anything in return. The financials only really make sense if this company gets a 100M exit within like 5-6 years, but with how AI is progressing I’m not even sure SAAS will be a viable business model in coming years.<p>Has anyone made these types of decisions before? Looking back are you glad you made that decision? Would you change anything?<p>TLDR; big tech employee conflicted about becoming the first technical employee at a startup with no product and would like advice from others who have gone down this path.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice",
+        "startup",
+        "equity",
+        "balance",
+        "big tech",
+        "comp"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48596176",
+      "title": "Trillions of dollars spent just to work on customer services?",
+      "link": "https://news.ycombinator.com/item?id=48596176",
+      "domain": "news.ycombinator.com",
+      "author": "YihaoZhang",
+      "score": 8,
+      "comment_count": 3,
+      "created_ts": 1781857269,
+      "is_internal": true,
+      "post_text": "I came across a couple of articles discussing the bigger opportunities for AI companies to make money. It turns out there are pretty much six different ways to make money if I&#x27;m a founder or an operator. I&#x27;m not sure if the consensus from the venture capital world is entirely lagging behind what&#x27;s actually going on, so that&#x27;s why I&#x27;m asking this question.<p>Here are a couple of ideas I saw recently:<p>1.  AI Roll-ups: This is a very hot, sometimes overhyped topic. It involves buying companies that are less integrated into AI but heavily need human services. Examples include accounting firms in small towns, IT managed services (sometimes outsourced), legal services (not necessarily top law firms, but local ones helping existing customers), and insurance. The reason this has gone viral is that some might figure out that buying and streamlining companies can be a better choice than selling software. Software nowadays might need to redirect to build its moat, and many tasks that can be automated surround the service sector, especially at the lower end of the value chain. Venture capital companies are also looking for new assets because traditional SaaS models no longer present high ROI.<p><pre><code>    On the surface, this makes sense. But then I thought, if that&#x27;s the case, why do we need venture capital? The existence of venture capital businesses seems a bit behind what&#x27;s currently going on, and the business model may not work that well. The best times for venture capital were during the mobile and cloud eras.\n</code></pre>\n2.  AI Autopilot &#x2F; AI-Native Service Companies: This involves working on AI autopilot, where everyone knows service as software, or building AI-native service companies. Companies are looking into areas like insurance brokerages, accounting, or tax audits, building companies based on a &quot;system of action.&quot; This means integrating products like SAP, Salesforce, or ServiceNow so users don&#x27;t need to use 20 different pages to manage procurement, onboarding, period closing, ticket escalation, etc.<p>3.  Company Brains: This path involves integrating Slack, email, tickets, meetings, and databases together into an agent that can become our company&#x27;s brain. This might be a way for organizations to restructure themselves, as agents would understand companies much better.<p>4.  Verifiable Work: Everyone knows about working on companies that do verifiable work, and coding was the first use case. But since 2024, when I first tried using Cursor, I haven&#x27;t seen another use case as viral as coding. This makes me think that companies and investors are trying to figure out the next coding use case, but we haven&#x27;t found it yet. We see attempts in areas like contract red lines, support resolutions, QAs, or IT incident summaries, and companies are already working on these.<p>My question is, can we say the trillions of dollars invested into AI since 2022 are aimed at the bigger topic of improving efficiency and saving costs? I know companies have many problems to solve, but if this is the biggest use case, where is the venture-scale return? From my perspective, many of these things can be done by private equity companies. A growth equity or private equity firm could use leveraged buyouts and invest in these use cases. A private equity company could use its portfolio companies to acquire a large number of these AI businesses that aim to streamline workflows. The returns, compared to currently hyped valuations, might be much slower, perhaps 3x or 4x would be very good news.<p>Am I missing something important? That&#x27;s why I&#x27;m asking here.<p>By the way, I&#x27;m not a professional and I don&#x27;t live in the Bay Area; I&#x27;m currently based in Shanghai, so there might be information I haven&#x27;t grasped. Thank you.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meetings",
+        "equity"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48613022",
+      "title": "Ask HN: What is your #1 practical lesson or \"aha\" moment from coding with AI?",
+      "link": "https://news.ycombinator.com/item?id=48613022",
+      "domain": "news.ycombinator.com",
+      "author": "johndavid9991",
+      "score": 7,
+      "comment_count": 9,
+      "created_ts": 1781989996,
+      "is_internal": true,
+      "post_text": "As a developer, my own workflow has shifted completely over the last few months, but I feel like I&#x27;m still uncovering the best patterns. I&#x27;m curious about the specific inflection points where things clicked for others. Was it a shift in how you prompt, a change in your tech stack, or learning when not to trust the output?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48595300",
+      "title": "Ask HN: Is anyone else leaving AUR?",
+      "link": "https://news.ycombinator.com/item?id=48595300",
+      "domain": "news.ycombinator.com",
+      "author": "lordkrandel",
+      "score": 7,
+      "comment_count": 6,
+      "created_ts": 1781848790,
+      "is_internal": true,
+      "post_text": "I&#x27;m spending a lot of my time removing AUR packages for alternatives in the official Archlinux repositories.<p>I&#x27;ve shifted from Dropbox to RClone, from acpilight to brightnessctl, from spotify to spotify-launcher and so on.<p>Has anyone else having the same trust problem? Also, how do you stay updated with the situation?<p>I work in a corporate environment and malware is a no-go.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48613999",
+      "title": "Ask HN: After you ship a feature, what happens to what you learned?",
+      "link": "https://news.ycombinator.com/item?id=48613999",
+      "domain": "news.ycombinator.com",
+      "author": "gaggle_dk",
+      "score": 5,
+      "comment_count": 4,
+      "created_ts": 1781997765,
+      "is_internal": true,
+      "post_text": "Closing in on my second decade of programming, and I keep noticing how often we step on the same rake. A change breaks something, and in hindsight we already had the information to prevent it, we just never surfaced it. Or we ship a feature and never circle back to check whether it&#x27;s used the way we intended, so we keep shipping more on the same untested assumptions.<p>Does this resonate? I&#x27;m fairly sure we all hit this, but I can&#x27;t tell how many people see it as a fixable pattern versus just part of the job.<p>- After you finish a feature or project, where does what you learned actually go? Is it your head, an issue comment, a doc or wiki, a retro, somewhere else?<p>- When you start something new, do you explicitly pull in past learnings, like copy, link, reference, discuss it? Or is it all from shared memory?<p>- Got an example where remembering something earlier would have saved you real time? What happened?<p>Trying to work out whether this is a shared pain or just mine. War stories very welcome.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48612758",
+      "title": "Ask HN: Do you use Claude Code, Codex, or something else?",
+      "link": "https://news.ycombinator.com/item?id=48612758",
+      "domain": "news.ycombinator.com",
+      "author": "JohnDSDev",
+      "score": 5,
+      "comment_count": 17,
+      "created_ts": 1781987696,
+      "is_internal": true,
+      "post_text": "Do you use Claude Code, Codex, or a different vibe coding&#x2F;agentic engineering tool for most of your work? Why?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48588831",
+      "title": "Ask HN: I'm lost. How can I define ICP (Ideal Customer Profile)?",
+      "link": "https://news.ycombinator.com/item?id=48588831",
+      "domain": "news.ycombinator.com",
+      "author": "snowhy",
+      "score": 5,
+      "comment_count": 6,
+      "created_ts": 1781804642,
+      "is_internal": true,
+      "post_text": "I successfully completed a pilot with a customer in niche industry. But it’s difficult for me to reach out to other customers.<p>In the meantime, we had inbound customers for our horizontal approach until we lost some SEO keywords.<p>Many mentors and investors recommended us to focus on narrow ICP, but it hasn’t worked for us yet while losing the organic traffic because of the tries.<p>What should I do? Should I rollback?<p>I’m lost and frustrated.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
