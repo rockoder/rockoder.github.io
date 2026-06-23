@@ -53,3 +53,15 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+2026-02-19 – The Supervisory Middle Loop and Judgment Capital
+Learning: AI acceleration is forcing a bifurcation of the Individual Contributor role. "Output Operators" prioritize visible velocity (output capital), while "Supervisory Engineers" focus on risk tiering and constraint management (judgment capital). The latter is a "middle loop" of work that is often invisible to traditional productivity metrics.
+Implication: future writing should focus on articulating the value of "negative work" (disasters prevented) and providing a vocabulary for supervisory maturity that goes beyond simple code auditing.
+
+---
+
+2026-02-19 – Architectural Inevitability as Maturity Signal
+Learning: Non-deterministic, long-running agents are exposing the limitations of stateless Request/Response frameworks. The "new" problems of agentic orchestration are identical to the "old" problems of telecom switches (isolation, preemptive scheduling, hot swapping). The current industry trend is a frantic, often flawed, reinvention of the Actor model in Python/JS.
+Implication: future writing should anchor contemporary "hype" problems in their historical, battle-tested solutions to clarify what "real" engineering looks like under acceleration.
