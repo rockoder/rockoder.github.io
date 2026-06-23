@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-20 – The Shift from Verification to Intervention
+
+**Learning:** Seniority in AI-assisted environments is decoupling from the act of verification. Experienced practitioners move away from approving individual actions toward monitoring system-level behavior and intervening when it deviates. This creates a new "invisible" skill: knowing when *not* to look, and having the intuition to spot the one moment in a thousand when the agent goes off the rails.
+
+**Implication:** When writing about seniority or Staff-level roles, focus on the shift from synchronous gatekeeping to asynchronous supervision. The value isn't in the "yes" or "no" on a PR, but in the "wait" when a pattern looks slightly wrong.
+
+---
+
+## 2026-02-20 – Efficiency Narratives as Expertise Erasure
+
+**Learning:** "Efficiency" is increasingly used as a rhetorical proxy for the removal of expensive institutional experts. By defining impact through throughput or crude keyword filters (as seen in recent federal grant reviews), organizations can justify discarding decades of specialized knowledge. The loss is not immediate; it manifests as a decline in organizational legibility, where the "why" behind decisions is replaced by the "what" of automated output.
+
+**Implication:** Essays should distinguish between operational efficiency (doing things faster) and institutional resilience (knowing which things are worth doing). The conflict is between those who manage the metrics and those who maintain the nuance.
