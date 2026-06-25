@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-25 – Reputation as the New Filter
+
+**Learning:** When production costs collapse, filtering moves from the artifact to the actor. In a low-trust, high-velocity environment, organizations naturally revert to reputation systems to manage cognitive load. "Who sent this?" becomes a more important question than "What does this do?" because the latter is too expensive to answer at scale.
+
+**Implication:** Future writing should explore how "trust capital" and "sender reputation" are being formalised (or shadow-implemented) in engineering organizations to survive AI-generated volume.
+
+---
+
+## 2026-06-25 – AI as Structural Justification (The Force Compressor)
+
+**Learning:** Executives are using AI as a rhetorical lever to justify long-standing desires for "leaner" (flatter) organizations. The technology doesn't need to be fully capable of replacing the labor for the structural change to be enacted. AI serves as a "Force Compressor" that legitimises removing management layers, even if the coordination friction is merely redistributed rather than eliminated.
+
+**Implication:** Look for where the "Force Compressor" narrative is being used to mask the creation of "Invisible Middle" dysfunction. The delta between the promise of AI coordination and the reality of human emotional limits is where future organizational crises will emerge.
