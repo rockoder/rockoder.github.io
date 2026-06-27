@@ -1,0 +1,728 @@
+{
+  "scraped_date": "2026-06-27",
+  "source": "hacker_news",
+  "total_scraped": 126,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "48675435",
+      "title": "Show HN: OpenKnowledge – open source AI-first alternative to Obsidian/Notion",
+      "link": "https://github.com/inkeep/open-knowledge",
+      "domain": "github.com",
+      "author": "engomez",
+      "score": 363,
+      "comment_count": 170,
+      "created_ts": 1782403486,
+      "is_internal": false,
+      "post_text": "Hi HN, Nick here. We’re launching OpenKnowledge (<a href=\"https:&#x2F;&#x2F;openknowledge.ai&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;openknowledge.ai&#x2F;</a>), a “what you see is what you get” markdown editor that has direct integrations with Claude, Codex, and other agents. Available as MacOS app or Web UI+CLI. Fully free&#x2F;local and OSS.<p>We built this because we wanted a Notion-like experience for writing and sharing markdown files across our team. Obsidian is the best alternative we tried, but found it doesn’t have a true WYSWIG UI and it didn’t integrate well with Claude&#x2F;Codex outside of community plugins.<p>So we built OpenKnowledge. It takes shape as:<p>1. A MacOS app with a file navigator, the WYSIWYG editor, and link explorer.<p>2. Integrations with the Claude, Codex, and Cursor desktop apps. The agents can open an OpenKnowledge editor within their embedded web browsers for a side-by-side experience.<p>3. Built-in mcps, skills, and RAG for LLM-wiki and “AI Second Brain” scenarios + spec writing<p>4. An embedded terminal and CLI for TUI-first users<p>OSS stack includes: Tiptap&#x2F;prosemirror, CodeMirror, yjs (CRDT), Electron (MacOS app), Orama, remark&#x2F;rehype&#x2F;micromark&#x2F;mdast, @pierre&#x2F;trees<p>On the architecture side, the interesting eng. challenges included:<p>1. A pipeline to convert ProseMirror to markdown in a bidirectional lossless way. ProseMirror uses ASTs, which are not designed to have byte-fidelity.<p>2. A dual-observer CRDT to keep the ProseMirror and markdown state in-sync.<p>The CRDT + git also power a collaborative experience that shows what Agents are doing in the markdown, have undo&#x2F;redo, and version history. The “Share” and cloud-sync functionality are geared for team collaboration. They feel “no-code” but leverage git&#x2F;GitHub under the hood, which also means data stays fully private.<p>In that spirit, we made OpenKnowledge open source for anybody who’s curious or who’d like to contribute.<p>We’re actively thinking about plugins&#x2F;extensibility and what’s next. If you have suggestions or feedback, would love to hear it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "team",
+        "collaboration"
+      ],
+      "comments": [
+        {
+          "top": "I really wanted to like this, but unfortunately couldn't see how it improves my experience over Obsidian or VS Code.\nThe fact that I have to juggle between OpenKnowledge and Codex to engage the AI, while also accepting a barebones Obsidian, is a real bummer. From what I can tell, you are saving me a few key strokes with moving prompts around. What I really want is the AI to live IN the app, like VS Code, and then move around the documents like it is Obsidian. I'll accept a plain terminal, but a pretty UI would feel like a better fit. My sense is that the new value add here is a set of skills and mcp servers, which probably already exist for Obsidian, or could more productively be spun up. I looked at the plugins again in Obsidian and found Claudian, which lets me bring my local models and Codex in the right pane. This is perfect, so sorry your app is not for me (yet), but thanks for getting me to look again at my tooling.\nI want to throw my vote in for local models. Gemma4-31b is working well for me on these types of tasks, and not having an easy way to plug that in is a deal breaker. Embeddings should certainly have a local option, as they are cheap to compute. For what it is worth, I use LMStudio which supports OpenAI and Anthropic compatible api endpoints, so it should be easy to wire in.\nA big caveat, I'm not trying to share my vault with other people, and I can see making that pain go away being worth switching. That said, I feel like you're targeting a weird market, where you want people technical enough to use LLMs and GitHub, but not so technical they can't customize a shared environment.\nI would switch if the whole experience was self contained and \"clean.\" Right now, it feels like a well dressed wrapper for pretty basic functionality.",
+          "author": "kylenessen",
+          "replies": [
+            {
+              "text": "Ack, thanks for feedback ! We're definitely looking at a more integrated experience.",
+              "author": "engomez",
+              "depth": 1
+            },
+            {
+              "text": "Thank you for this project - I am excited to check it out!\nMy current agentic workflow is having a github repo that is a workspace and essentially a single obsidian vault over it called agents.  I modify with Claude code (or other harness), check diffs in...VSCode and read it in...Obsidian.\nIt's separate from my actual personal Obsidian vault (that I don't send to any AI providers), and is only for agents.  It's been really nice on all sorts of varied projects and for performing web research.  I also have a bun monorepo setup in the root with varied tools for search, fetching individual websites, setting up folder structures - etc.\nBut essentially, in my experience, the moment you tell the model that it's in an Obsidian Vault - magic happens.\nI am so curious how this will play in with it all and am hoping this will improve my workflow!",
+              "author": "mikodin",
+              "depth": 2
+            },
+            {
+              "text": "Got it yup, sounds like similar to the setups our team runs. Give it a shot and feel free to share any feedback.",
+              "author": "engomez",
+              "depth": 3
+            },
+            {
+              "text": "To add one more thing: Codex/Claude/Cursor can open the OpenKnowledge web viewer within their own embedded web viewer. So you don't need the two apps open.\nAnd we embedded the Claude terminal within the OpenKnowledge app itself if you prefer that. We are working on embedding the AI (including local models) more deeply within the app itself as well, expect updates in next week.",
+              "author": "engomez",
+              "depth": 1
+            },
+            {
+              "text": "I have been trying to replace Obsidian with something for over 4 years now ever since I started using it. But I am just too comfortable now and I have it set up exactly the way I like and extended it with plugins etc.\nI tried other stuff but nothing imo can beat its utility to me. I also personally wouldn't want an AI or anyone else looking through my vault or want AI in it.",
+              "author": "altmanaltman",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Fully local, but can't integrate with any local LLM?\nI do think a fully OSS Obsidian-like that syncs natively is an impressive accomplishment, though the usefulness of this is limited with OSX being the only supported platform. If an Android app is in the works I'll definitely follow the project!",
+          "author": "pcthrowaway",
+          "replies": [
+            {
+              "text": "Got it. MCP Server and CLI is agent-agnostic, so should work with local models/harnesses, but we'll look into more explicit docs around this.\nWhat IDE or harness do you use? We'll take a look.",
+              "author": "engomez",
+              "depth": 1
+            },
+            {
+              "text": "Personally I just want to see more support for local LLMs. I haven't been doing much coding lately but am interested in setting up Qwen 3.6 if I can obtain the hardware",
+              "author": "pcthrowaway",
+              "depth": 2
+            },
+            {
+              "text": "Agree same. We'll look into explicit guides and integrations with Zed // OpenCode as a starting point, they let you choose your model.",
+              "author": "engomez",
+              "depth": 3
+            },
+            {
+              "text": "Amazing, thanks. I've decided to try daily driving this instead of Obsidian, but I'm a bit curious how the syncing works. I copied an Obsidian vault to a new folder, and when I start the import process in OpenKnowledge it asks me if I want it \"shared\" or \"local only\". If I select \"Shared\", where does the git repo live that other instances of OK sync from?\nedit: This seems to be \"team-oriented\" rather than geared towards individuals who might want to edit their notes from multiple devices?\nAnd only seems to be able to sync with github... In addition to my privacy concerns, I'm curious if there could be issues with lots of images and other attachments since git can choke on repos that contain lots of larger files without github's git-lfs extension.\nLast question I have is if any plugin system comparable to Obsidian's is planned (or already supported)? I realize this is probably a massive ask for an open-source project, and something Obsidian gets a lot of flack for as well, so I'm certainly not \nexpecting\n it, but I am curious if it's on the roadmap already",
+              "author": "pcthrowaway",
+              "depth": 4
+            },
+            {
+              "text": "To clarify, OpenKnowledge will never publish your project to GitHub automatically. When you init a new project, selecting \"Shared\" means that OK config files will not be gitignored. Selecting \"Local\" will add them to your gitignore. Other open knowledge instances can only sync if you have explicitly published your project to GitHub (which you can do from the app) and enabled auto-sync in OpenKnowledge. Some docs related to this can be found here \nhttps://openknowledge.ai/docs/features/github-sync\n and \nhttps://openknowledge.ai/docs/features/share\n.",
+              "author": "mkt123",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Congratulations on the launch. It looks neat!\nOn a side note, I find it interesting that a few recent projects are going for the Open Knowledge name. The Open Knowledge Foundation (\nhttps://okfn.org\n) is one of the first/largest proponents of the open data movement (think of it as a Free Software Foundation but for data, not software). They started in 2004 and developed many of the open data licenses and widely used infrastructure tools like CKAN (an open data portal platform).\nNothing to add, just found it interesting.\nDisclaimer: I worked there for a few years.",
+          "author": "vitorbaptistaa",
+          "replies": [
+            {
+              "text": "Biased but great name of course haha.\nOKF timing was coincidence, we'd started I take it around the same time they'd started internally.\nWhat's good is that everything is pretty open formats/source and complimentary.",
+              "author": "engomez",
+              "depth": 1
+            },
+            {
+              "text": "The Open Knowledge Foundation is an organisation that has been going since 2004. <\nhttps://okfn.org/en/\n>\nThis is different to the Open Knowledge Format announced by Google in June 2026.",
+              "author": "edjw",
+              "depth": 2
+            },
+            {
+              "text": "You had started your AI project before 2004?",
+              "author": "tuukkah",
+              "depth": 2
+            },
+            {
+              "text": "Talking about a few different things, OKFN and OKF.",
+              "author": "engomez",
+              "depth": 3
+            },
+            {
+              "text": "OKFN and OKF are the same thing: \"Open Knowledge Foundation (OKF) is a global, non-profit network that promotes and shares information at no charge, including both content and data [--] founded by Rufus Pollock on 20 May 2004 [--] Between May 2016 and May 2019 the organisation was named Open Knowledge International\"",
+              "author": "tuukkah",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "You should just integrate with pi.dev, like I did for \nhttps://github.com/rcarmo/piclaw\n (which has replaced Obsidian for me). I too integrated a terminal and a WYSIWYG Markdown editor (as well as plugins for a mindmap, kanban, etc.)",
+          "author": "rcarmo",
+          "replies": [
+            {
+              "text": "Looks very relevant, will take a look. Definitely looking at built-in-chat-ui, thinking about how to integrate with the harnesses.",
+              "author": "engomez",
+              "depth": 1
+            },
+            {
+              "text": "Ye built in AI is the only way this makes sense to me. Or otherwise could just add a terminal where you can run any TUI mapped to that notes/vaults dir or something.",
+              "author": "pylotlight",
+              "depth": 2
+            },
+            {
+              "text": "Great thought - we indeed added Claude/Codex terminal in there already. Was our quick win as we investigated this deeply.",
+              "author": "engomez",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "For ages I've been looking for a way to easily share & sync a simple knowledgebase (HTML/MD and other files in folders) with my team (= including non-technical people), using Git as the sync/versioning layer, without it being too technical, and without getting vendor lock-in with expensive & unnecessarily complex cloud-based platforms.\nHaving built-in AI integration without relying on sketchy plugins would be the cherry on top (although, seriously missing the option to connect with any openai-compatible LLM provider like someone else mentioned here).\nSeems like this might almost offer exactly that? I'll have to try it out...",
+          "author": "vekker",
+          "replies": [
+            {
+              "text": "That was our exact stated goal -- felt a lot of the same pain. Feel free to drop me any feedback here or @nickgomez on X.",
+              "author": "engomez",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48680370",
+      "title": "The Garbage Collection Handbook: The Art of Automatic Memory Management (2nd Ed) (2023)",
+      "link": "https://gchandbook.org/",
+      "domain": "gchandbook.org",
+      "author": "teleforce",
+      "score": 228,
+      "comment_count": 52,
+      "created_ts": 1782429030,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48668199",
+      "title": "Ask HN: Where is the programming profession going?",
+      "link": "https://news.ycombinator.com/item?id=48668199",
+      "domain": "news.ycombinator.com",
+      "author": "syntaxbush",
+      "score": 136,
+      "comment_count": 150,
+      "created_ts": 1782355307,
+      "is_internal": true,
+      "post_text": "I had been running a small (3 people) software company for about 4 years. Since closing down, I recently hung out at a friend&#x27;s company to see what they were working on (15 ppl). To preface: I&#x27;m a heavy user of Claude (rarely write code by hand), but what I&#x27;m seeing in person has been rather shocking to me, and I wanted to calibrate with others.<p>In particular:\n- the code is not the source of truth anymore; it&#x27;s ask claude to write, and ask claude to explain\n- LoC, abstractions, and all those &quot;software development principles&quot; does not seem to matter to people\n- Code review is not done by humans\n- Actually understanding the problem deeply seems to be offloaded to claude\n- Some developers are running like 5+ simultaneous claude sessions, and no code is being looked at\n- Explosion of llm-generated tests<p>First off, is this similar to what&#x27;s going on at your company?<p>If this company is representative, it feels like software development is going from a precise occupation that requires high degree of understanding to something probabilistic and offloaded understanding (to eventually not an occupation at all honestly).<p>I&#x27;m interested to hear other folks&#x27; perspectives.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "My personal experience: writing code has always been the easy part. AI does most of that now.\nUnderstanding the problem and the existing system well enough to design the right solution, even with AI assistance, is a higher cognitive load. I’m doing a lot more of that lately.\nI’m more productive, but also more tired. This may be due in part to the breadth of what my team owns, which makes my day a bit more context-switchy than other teams.\nAs others in this thread have noted, the situation is still evolving. However, I worry less each day about being replaced by AI. There has always been more work than available bandwidth in my experience.\nWhat seems clear to me is that expectations around velocity and throughput will increase (are increasing). AI use will be required to meet those expectations. Learning to use this new tool effectively will be essential for career progression (and preservation).",
+          "author": "fibonachos",
+          "replies": [
+            {
+              "text": "> My personal experience: writing code has always been the easy part. AI does most of that now.\nThe only reason dev jobs paid more (by a factor of two or more) than pure solution modeling was because \"writing code\" was the hard part.\nIf you wanted to get paid just modeling the solution and handing it off to a coding team, those jobs were available for decades, typically called Business Analysts but few devs moved from dev to BA.\n> Understanding the problem and the existing system well enough to design the right solution, even with AI assistance, is a higher cognitive load.\nI've found that the act of physically writing refines my understanding a lot more than simply reading.\nWe don't typically expect a person to read a trigonometry textbook and then perform well on an exam. They have to drill problems to surface their misunderstandings to themselves.\nMy fear is that, with developers adopting your approach, they're \"designing\" systems in much the same way that a read-the-book-only trigonometry student solves trigonometry problems.",
+              "author": "lelanthran",
+              "depth": 1
+            },
+            {
+              "text": "Perhaps solution was the wrong word for me to use here. It was intended to encompass the implementation details (abstractions, architecture, observability, etc)… All the decisions the engineers would normally make during planning and execution. Once I have that nailed down, the act of writing the code is largely mechanical.\nThat’s the source of my “easy” framing. It has always had the lower cognitive load in my experience. Now that I can offload the mechanical part to AI, I spend more time on the hard parts.\nI still read plenty of code along the way, maybe less of it now because it’s easier to surface which parts of the code I need to read.",
+              "author": "fibonachos",
+              "depth": 2
+            },
+            {
+              "text": "GP's \"design the right solution\" is a role between \"programmer\" and \"business analyst\" that got merged with \"programmer\" to become \"developer\" decades ago. That's where the high salary came from. It's been reemerging as \"architect\" now that \"developer\" has been watered down to include \"programmer\".",
+              "author": "Izkata",
+              "depth": 2
+            },
+            {
+              "text": "thank you for putting into words that which has been hard for me to describe — I’ve noticed the worse a dev was at their job the more high their opinions of AI seem to be. The subject textbook analogy (trig book in your ex.) is a perfect frame of reference for why that might be the case…\nto further that example, many people with the help of AI are ostensibly copy pasting trig problems from the book without understanding the mechanics running through them and labouring under the impressions they’ve become closer to skilled mathematicians",
+              "author": "dietcokeflowers",
+              "depth": 2
+            },
+            {
+              "text": "Who hires “pure solution modelers”? I don’t think I’ve ever encountered someone like that.",
+              "author": "titanomachy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I think a lot of developers probably FEEL like they are in super mode, but in reality they're just letting Claude drive the boat and they get to wear the captain's hat.\nMaybe I'm wrong. Maybe AI Natives will be faster in the end and can build / do more, or building software really is a dead field - but I noticed that I was losing my brain and had to get back into the seat.\nThere are definitely great use cases for agents - but I think a lot of us aren't flexing our brains anymore and, even worse, some devs believe they are. I urge every developer to put Claude down for a day/week... see how well you can do in the \"old\" ways. It'll still be here when you get back, but my guess is it'll be a rude awakening.",
+          "author": "NichoPaolucci",
+          "replies": [
+            {
+              "text": "i understand your concern about relaying too much on ai tools like claude. while they can enhance productivity, they shouldnt replace critical thinking and problem solving skills that define good software developer so yea taking break from ai and working on \"old\" way can help sharpen those skills. i think its important to strike balance between working on new/old way but i also have feeling that everyone is addicted and trying to develop 24/7 cos someone might \"steal\" their idea. like theres some kind of imaginary race and if u dont code for 1 day with claude (even if it is nonsense) u wont end up first...",
+              "author": "shinobi-apps",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm a Senior Freelance Programmer, I can see many of my past and present clients moving towards the exact path you described. I keep warning them during meetings that Claude model isn't sustainable for long, eventually the VCs will come for their revenues and Claude will be forced to close their access to all but the most enterprisey ones with deep pockets. The mere electricity cost for that kind of high level reasoning and abstraction can't be subsidized forever. However, there are other forces which pull them towards Claude and AI workflows. Most of the clients are in a \"wait and watch\" mode right now, using LLM assistance for code generation but not fully depending on them.\nBefore LLMs came, there used to be the \ntechnical debt\n to deal with in a project, now there is also the added \ncognitive debt\n which is way more subtle and impactful long-term. If your source of truth isn't source code but a prompt (or even a series of prompts with branches) and the executor of prompts is a non-deterministic agent, I think you've already lost the battle there.",
+          "author": "pyeri",
+          "replies": [
+            {
+              "text": "Using today's model prices as a rebuttal is a very weak argument.\nTwo years ago, SOTA was gpt-o1, and it was much more expensive than Fable. Now, for $4,699, you can easily run a much smarter Qwen3.6-35B locally with DGX Spark.\nThink about where we are. This is an era where a new SOTA arrives every two months. It took LLMs only about 18 months to go from chain-of-thought reasoning to disproving the unit-distance conjecture. chatGPT itself is only three and a half years old.\nDeepSeek V4, released two months ago, is almost as cheap as the electricity costed, has the ability to being absolutely a top-tier model in 2025 standards.",
+              "author": "linzhangrun",
+              "depth": 1
+            },
+            {
+              "text": "The electricity cost per unit of machine “reasoning” is vastly less than the cost of salary for human reasoning. That’s a weak argument.  You should focus on the second part… LLMs (at least today’s) don’t build simple solutions, and the complexity they introduce has a cost.",
+              "author": "titanomachy",
+              "depth": 1
+            },
+            {
+              "text": ">  LLMs (at least today’s) don’t build simple solutions ...\n... \nby default\n.",
+              "author": "tedmiston",
+              "depth": 2
+            },
+            {
+              "text": "Not sure why this is downvoted but you truly can get a lot of mileage out of asking Claude to simplify things.",
+              "author": "reverius42",
+              "depth": 3
+            },
+            {
+              "text": "Definitely.  One of my fav techniques is to ask an LLM to simplify something by 90% or 99% if it looks overly complicated.  Or asking the output to be critically reviewed by another agent too.",
+              "author": "tedmiston",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I have had some truly spectacular results that still kind of stagger me in the last few months using Claude in my hobby projects -- but even though Claude insists on trying to slip its name into the git history as credit it's not Claude -- it's me.  Someone who has studied CS and software engineering for decades will craft different prompts from someone without that background.  A suggested axiom: there is nothing I can build with Claude that I could not build myself with my current level of CS knowledge, assuming I had infinite focus and time.  In my hands it can go as far I could anyway, and no further.  (But it is faster!)  My experience bears that out so far.",
+          "author": "retrac",
+          "replies": [
+            {
+              "text": "Fair enough but speed, especially the kind that comes with LLMs, is fast enough to open new ways of working and doing things. We don't have infinite time and if there's something that can give me multiple, for example, UI suggestions in a minute which I can pick from, it's a different way of working than sitting with a UI designer for several hours have discussions. So, while I agree with you in theory, I don't fully agree with you in, what I think you're implying, when it comes to practice.",
+              "author": "noufalibrahim",
+              "depth": 1
+            },
+            {
+              "text": "> hobby projects\nUnfortunately despite being impressive for solo stuff, such results don’t scale to software you’d give to others.",
+              "author": "cadamsdotcom",
+              "depth": 1
+            },
+            {
+              "text": "Claude writes probably 95% of our code now, fintech, amongst top 5 in the world in what we do. I am 100% certain we're not even at the forefront of using agents for coding compared to some others.\nIt definitely can scale.",
+              "author": "munksbeer",
+              "depth": 2
+            },
+            {
+              "text": "Are there any code reviews? Or is AI reviewing code also?",
+              "author": "trafalgar_nah",
+              "depth": 3
+            },
+            {
+              "text": "We still review everything. And we guide by planning, prompting, speccing.\nSo we're not actually much faster at the core code, because reviews still take time. Ultimately, we're on the finance markets and we have regulatory pressures and I, as the human, am responsible for putting the code out there.\nBut we're freeing up a lot of time to get other things correct. We have n x more metrics now because plumbing in basic stuff is now trivial. We now have dozens more tools and skills to help analyse issues (e.g. why this price and not x), answer questions, etc.\nI now have skills to scrape logs, download unpack and scape our bus persistence, link to kdb, and so on, all in my claude prompt, joining it all together and the AI is figuring things out. I can diagnose things, I don't know, maybe 100 times faster?\nIt is revolutionary, and I am highly sceptical of the motivations of people who keep saying otherwise.",
+              "author": "munksbeer",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I think it’s becoming more and more performative. We’ve never been less focused on the actual product — the software — than we are now. The focus is increasingly on how someone generates code, despite that not having much to do with the product.\nThe software is not getting better. Generating code faster does not result in better software. Software continues to be slow, unreliable, complex, and counter-intuitive. AI has not improved on the metrics that matter.\nAI, as amazing as it is, has not actually changed the \nprocess\n of software development and as a consequence, the resulting software has not changed. The job hasn’t either, except insofar as you’re judged for tokenmaxxing.",
+          "author": "4lx87",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48671886",
+      "title": "Show HN: Turn native language audio into flashcards and shadowing practice",
+      "link": "https://lingochunk.com/try",
+      "domain": "lingochunk.com",
+      "author": "alder",
+      "score": 88,
+      "comment_count": 36,
+      "created_ts": 1782386953,
+      "is_internal": false,
+      "post_text": "Here is a tool I built initially for myself to help with my German and Greek language studies. It started as a hack for creating Anki cards from native language audio. It extracts the words, finds their base forms (lemmas) and groups the examples by the lemma. At some point I realised that I have a transcription with word level timestamps that opens a lot of other opportunities. So I added a mode to click the first and last word in the transcript and it starts looping with the right gap and repeat count.<p>Another feature I use a lot is selecting an audio fragment, sending a predefined prompt to an AI to &quot;explain grammar&quot; or &quot;explain nuances of meaning&quot; and I still experimenting with prompts.<p>And because shadowing is so easy I also use it as a player to improve my English pronunciation. (I am not a native English speaker.)<p>I made a quick video showing the workflow for creating Anki cards and shadowing: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;TaR58uuDBvU?si=o5aGLAi2S-BZ7Zy9\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;TaR58uuDBvU?si=o5aGLAi2S-BZ7Zy9</a><p>The app supports 15 input languages (Japanese and Chinese are the latest experimental additions), and more than 30 output languages.<p>I would really appreciate it if you could try it <a href=\"https:&#x2F;&#x2F;lingochunk.com&#x2F;try\" rel=\"nofollow\">https:&#x2F;&#x2F;lingochunk.com&#x2F;try</a>. I know there are other tools with similar functionality but I created something that fits my workflow and it is fun to build.<p>Also I struggled to find public domain audio for the try page. I&#x27;d be grateful if anyone could point me to public domain sources (I used LibriVox, Wikimedia and FSI courses), or if you&#x27;re a creator, let me feature some of your own recordings with credits and links.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48641160",
+      "title": "Ask HN: Anthropic banned me from using Claude Code and I don't know what to do",
+      "link": "https://news.ycombinator.com/item?id=48641160",
+      "domain": "news.ycombinator.com",
+      "author": "ayi",
+      "score": 81,
+      "comment_count": 93,
+      "created_ts": 1782196432,
+      "is_internal": true,
+      "post_text": "After using Claude Code at work for months I wanted to use it on my own projects too. Most probably because my vpn was on I got banned after 1 hour of usage. I got my 120$ back. 1 month later I signed up with vpn off. But this time probably because I used the same credit cart (and that&#x27;s the only card I can use) they banned me again.<p>Even after I contacted support I got a generic &quot;we have determined that we cannot reinstate your account at this time due to a violation of our Usage Policy&quot; answer.<p>I&#x27;m not using it for anything unusal. &quot;Summarize that markdown file&quot;, &quot;how can i refactor payment module&quot; kind of questions mostly. I couldn&#x27;t even move to real coding because 1 hour was only enough for investigation.<p>My last chance is HN to get some visibility on my case. My Boris sees it or some other Anthropic employee.<p>Do you guys have any tips on getting my account back?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48673801",
+      "title": "Ask HN: What surprised you about Estonia e-Residency and running an Estonian OÜ?",
+      "link": "https://news.ycombinator.com/item?id=48673801",
+      "domain": "news.ycombinator.com",
+      "author": "jvilalta",
+      "score": 80,
+      "comment_count": 70,
+      "created_ts": 1782397046,
+      "is_internal": true,
+      "post_text": "From the official information online, joining the e-Residency program and setting up an Estonian company seems relatively straightforward.<p>I&#x27;m considering using an Estonian OÜ for a SaaS business and would love to hear from people who have actually gone through the process.<p>What surprised you after becoming an e-resident and establishing your company? Were there recurring costs, compliance requirements, banking&#x2F;payment issues, tax complications, or other operational challenges you didn&#x27;t anticipate?<p>How easy has it been to run the company remotely? Have you ever needed to travel to Estonia to resolve an issue?<p>Looking back, would you do it again? What do you wish you had known before getting started?<p>I&#x27;d appreciate any lessons learned, gotchas, or advice from current or former e-residents.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned",
+        "advice",
+        "lessons"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48687769",
+      "title": "Ask HN: Is \"no source code was copied\" still a sufficient copyright defense?",
+      "link": "https://news.ycombinator.com/item?id=48687769",
+      "domain": "news.ycombinator.com",
+      "author": "oscgam1",
+      "score": 51,
+      "comment_count": 68,
+      "created_ts": 1782487480,
+      "is_internal": true,
+      "post_text": "We are all familiar with the Corgi event: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095</a><p>With the barrier to create new apps having dropped significantly thanks to LLMs, I am seeing more cases about copyright and unfair competition.<p>I&#x27;ve seen and participated in some of these cases. Usually expert witnesses are required.<p>Curious to hear the community stance on this one.<p>&quot;Now software developers are feeling what authors and artist felt&quot;. <a href=\"https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377</a><p>There are several claims of: Copying UI is Ok, your product is not undifferentiated enough.<p>Here is a legal assessment of the situation: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The Corgi event doesn't seem particularly notable. There are similar features implemented in the most bog standard way that those features can be implemented using the pattern that AFAIK Github pioneered with a 'Danger Zone'. Both parties are using the same upstream components so it ends up looking the same.\nI don't know when the extreme intellectual property viewpoint entered software engineering as a mainstream opinion because I have never before seen it expressed so strongly in this community (seeing as I wasn't around when Bill Gates famously asked for money first or whatever). To think that a past OpenOffice would have been considered unconscionably close to a copy of an old MS Office of the era twenty years ago.\nIn some way, The Corporations Won, because it turns out software engineers turned into IP maximalists. Thinking back to when I first installed Tux Kart decades ago I never could have imagined that we'd get to this stage. Really wild, man.",
+          "author": "arjie",
+          "replies": [
+            {
+              "text": "\"I don't know when the extreme intellectual property viewpoint entered software engineering as a mainstream opinion because I have never before seen it expressed so strongly in this community\"\nIt's not copyright maximalism, it's just bog-standard rationalization. I don't like what this company is doing, it looks like I can hit them with the \"copyright\" stick, so I will. One day later, I like playing abandonware games and that should be legal and copyright is stopping me so copyright bad, grrr argh.\nAt least, at the HN gestalt level. Individuals may say one or the other of those things from a principled perspective, but I perceive a lot of rationalization in these discussions overall.\nThere's not a lot people coming at this from any sort of principled position. I think one measure of that is that the modal principled position right now ought to be something fairly close to \"I don't know\". AI has kicked a lot of the foundation out from underneath copyright and I don't think anyone serious has more than a first draft of what the plan moving forward should be. Even if you can get two people to agree on the goals we should shoot for, which is already a tough ask even in a pre-AI era, getting them to agree on \nhow\n to achieve those goals will be a long shot... and that's entirely separate from the question of whether the actions would in fact end up accomplishing the goal, which I don't trust anyone to have a good bead on right now.\nNominally, the principle of copyright has been to preserve creativity. Ten years ago we all had a reasonably similar idea what that meant, but we don't even have that now.",
+              "author": "jerf",
+              "depth": 1
+            },
+            {
+              "text": "> Both parties are using the same upstream components so it ends up looking the same.\nI had a look at the 4 screenshots in the post, and definitively it's not just using the \"same upstream components\", it's a verbatim copy.\nDon't know about the rest of the app and the actual code, but I won't be surprised to find out it's basically the same.",
+              "author": "vb-8448",
+              "depth": 1
+            },
+            {
+              "text": "> The Corporations Won, because it turns out software engineers turned into IP maximalists\nYeah, it's always bothered me that developers are eager to get legal to patent something they were involved in at Company™ put their name on patents so they can include them in their promotion docs.\nIt's like we're slowly defrauding ourselves and ensuring companies have the maximum legal standing against individual makers. Almost like a prisoner's dilemma where we're building the things that will/have be used against it us and those that come after in exchange for a little personal gain.",
+              "author": "Xeoncross",
+              "depth": 1
+            },
+            {
+              "text": "Money always sprouts double standards out of everyone and anyone's ass",
+              "author": "gedy",
+              "depth": 2
+            },
+            {
+              "text": "Did you even look into the situation?\nCorgi was spending 10K/yr for DocSend. They decided to build their own and the LLM took UI from PaperMark, an open-source alternative. I’ve implemented features that exist in open-source and LLM has never blatantly ripped off the UI.\nCorgi has raised $106M but won’t pay for DocSend? Fine. Wants to build their own version based on Open-source? Fine. Keep it closed source and then try to monetize your version? That’s treacherous.\nHow is Microsoft Office vs Open Office a good parallel to this?",
+              "author": "theturtletalks",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "OpenAI/et al. selling an IP laundering service under the name 'max subscription' may force the world to accept the perspective that Intellectual Property isn't a thing.  The business model of extracting value from creators via rent seeking IP may not be viable in a world where LLMs can generate anything on demand.  We might be transitioning to the Lockean view that for something to be ownable as property, it must be a scarce resource, and information is not a scarce resource.\nFrom that property rights perspective, the property that's created when new information is created is not the information itself, rather, it's the act of creation (claim to authorship) that's the scarce resource.\nI don't know what a world looks like where the only form of IP is non-transferable and owned by the original creator.  Maybe that new form of IP creates less value over all, and maybe that's ok if the creator is getting 100% of the smaller pie instead of crumbs from media labels.  Companies like Red Hat could be an example of a viable business model if IP laws follow the current winds.\nCompanies like Corgi will need to rely on internal talent to ensure that their product is better than what someone looking at their product can vibe code a copy of, which from my perspective as a consumer, sounds like a better route than Corgi relying on an internal legal team to send a cease and desist letter.",
+          "author": "otekengineering",
+          "replies": []
+        },
+        {
+          "top": "\"Now software developers are feeling what authors and artist felt\".\nAs an artist who got repeatedly told to stop making buggy whips and get into the absolutely tedious-sounding new field of \"writing prompts\" every time I expressed dismay and displeasure about image generation around here, every story about this sort of thing here is the sweetest schadenfreude I have tasted in my life.\nEspecially when the general feeling in the markets \nI\n work in is that AI images are kinda tacky and empty and nasty, and people would rather pay another human to realize their ideas than try to refine image generation prompts for a couple hours and get something vaguely okay that makes people go \"ew, AI\".",
+          "author": "egypturnash",
+          "replies": [
+            {
+              "text": "I can’t imagine software engineers caring about this at all. The only people that care about UI theft are C suite IP clutchers. SWEs generally love being able to use each other’s work. Copying UI by eye has been SOP since the dawn of computing.",
+              "author": "teaearlgraycold",
+              "depth": 1
+            },
+            {
+              "text": "> Copying UI by eye has been SOP since the dawn of computing.\nCase in point, the very GUI operating systems we use today are arguably a \"stolen\" product from xerox parc.",
+              "author": "thewebguyd",
+              "depth": 2
+            },
+            {
+              "text": "As someone who has used multiple vibe coded internal tools: you will care when you use these tools and encounter strange bugs and missing features.\nThe human touch is visible in the way your features work just like in vibe coded art and games it lacks intention.",
+              "author": "faizshah",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Copyright doesn't cover instructions like recipes, protocols, or APIs; those require patents.\nNot looking at the source code has been used to make nuisance copyright lawsuits less likely (e.g. Phoenix and AMI implementations of IBM's BIOS) but it's still easy to prevail when a new work is created by rewriting some else's source code.  (\nhttps://en.wikipedia.org/wiki/UNIX_System_Laboratories,_Inc....\n.)\nNeither copyright nor patent cover a user interface (\nhttps://en.wikipedia.org/wiki/Apple_Computer,_Inc._v._Micros...\n.), so that can legally be copied outright.",
+          "author": "dlcarrier",
+          "replies": [
+            {
+              "text": "> Neither copyright nor patent cover a user interface\n*us only\n> You automatically get copyright protection when you create: ... original non-literary written work, such as software, web content and databases\nhttps://www.gov.uk/copyright\n> Registered designs provide protection for the visual appearance of a product. In the context of GUIs, this means that the unique visual elements of your digital interfaces (i.e. the lines, contours and shapes) can be safeguarded against unauthorised use by competitors.\nhttps://cms.law/en/media/local/cms-cmno/files/protection-for...",
+              "author": "dijksterhuis",
+              "depth": 1
+            },
+            {
+              "text": "It looks like a registered design is similar to a design patent in the US.  The automatic copyright is the same in the US as the UK, probably due to the Berne Convention.\nApple did file a claim against Samsung for multiple design patent infringements, including a design patent for using a grid of icons with rounded corners, but the US Supreme Court ruled that Apple would have to show financial loss from the infringement, which basically gives it no more power than a trademark.  That was after a jury trial that heavily favored Apple, so it's not likely that anyone will ever get anything meaningful out of trying to enforce a design patent on a user interface alone.\nHas anything like Apple's lawsuits against Microsoft or Samsung happened in the UK?  Outside of purposeful counterfeiting, case law over trademark and design patent clams seems to be pretty weak.  Then again, copyright is only powerful because of centuries of case law expanding its reach, and as written probably shouldn't cover fan fiction, shared universes, or possibly even translations.  Intellectual property in general seems to be more about common law than the actual statues creating it.",
+              "author": "dlcarrier",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "\"still\"? It never was. If you copy a (copyrighted) UI in bulk, that's a copyright violation just like copying code in bulk. The legal metric is generally \"sufficient height of creation\", the actual interpretation depends on where you are.",
+          "author": "eqvinox",
+          "replies": [
+            {
+              "text": "Copyrights on UIs are nebulous. You can't copyright the functional aspects of a UI, that's the domain of patents, yet the functional aspects are likely the parts you are most keen on protecting. Also you need to prove that they copied \nyou\n and didn't come up with it independently.",
+              "author": "zarzavat",
+              "depth": 1
+            },
+            {
+              "text": "I looked at those screen shots. The language is similar but it’s not verbatim. The is itself is just the usage of the same framework. Business logic can’t be copyrighted. Is it too close? I agree. Does it cross the legal test. I wouldn’t waste my money on a court battle.",
+              "author": "BikiniPrince",
+              "depth": 1
+            },
+            {
+              "text": "I wasn't talking about a specific case, and \"UI\" is more than a single page. To be specific, I'm referring to the sum of text (incl. translations), graphics and layout on the entire product/application/etc.\nI agree the screenshots in the specific linked case - if that's all there is - are nowhere near enough.",
+              "author": "eqvinox",
+              "depth": 2
+            },
+            {
+              "text": "It depends also what you mean with copy. The code has copyright but the rendered pixels don’t (other than if something like an image was created pixel by pixel). So if the code is different but the output looks the same it’s not copyright infringement (can still be trademark).",
+              "author": "victorbjorklund",
+              "depth": 1
+            },
+            {
+              "text": "I think that’s dependent on jurisdiction. This comes up with fonts where what you said applies in the US but in Europe, the actual visual result of the software also counts and is protected (afaik).",
+              "author": "echoangle",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48662310",
+      "title": "Ask HN: How much coding should beginners learn in the AI era?",
+      "link": "https://news.ycombinator.com/item?id=48662310",
+      "domain": "news.ycombinator.com",
+      "author": "JohnDSDev",
+      "score": 33,
+      "comment_count": 45,
+      "created_ts": 1782318673,
+      "is_internal": true,
+      "post_text": "As someone who wants to work in tech in the future, say 5-10 years from now, to what extent do you think coding will be a valuable skill? How much should I learn?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48651675",
+      "title": "How to find AI-conservative companies to work for?",
+      "link": "https://news.ycombinator.com/item?id=48651675",
+      "domain": "news.ycombinator.com",
+      "author": "tossitawayplz",
+      "score": 20,
+      "comment_count": 12,
+      "created_ts": 1782249904,
+      "is_internal": true,
+      "post_text": "Is it even possible?<p>I don&#x27;t completely hate AI, and leverage it to make things better but I don&#x27;t like to use it for EVERYTHING.<p>At my current job we have outsourced our thinking, our design, our documentation, our sanity to it and I just can&#x27;t do it anymore.<p>I&#x27;m considering getting out of tech entirely at this point I&#x27;ve been in it for almost two decades and I&#x27;ve reached my tipping point dealing with the way we&#x27;re using it but fear basically every company hiring software engineers is doing the same thing (or worse.)<p>I&#x27;m ready to just be poorer at this point.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48690591",
+      "title": "Roblox parental controls are a dystopian security disaster",
+      "link": "https://news.ycombinator.com/item?id=48690591",
+      "domain": "news.ycombinator.com",
+      "author": "notsure357",
+      "score": 19,
+      "comment_count": 3,
+      "created_ts": 1782500526,
+      "is_internal": true,
+      "post_text": "My 14 year old daughter got hacked by someone who was able to add themselves as a &quot;linked parent&quot; to her account. I&#x27;m not even sure that this person got ahold of her password in the first place. All this happened on Wednesday morning (6&#x2F;24&#x2F;26) but on the day it happened I did not recieve a single email about any of this even though the account is tied to my email address (verified). Usually if there is a new log in on an unrecognized device I would have gotten an email about it, but nothing was sent on 6&#x2F;24 to me. I suspect that even if two factor authentication was already added to her account it would have done nothing, because there was a two factor authentication passkey added to her account which was definitely not set up by her. But by using that newly created authentication passkey the &quot;linked parent&quot; was clearly able to log into her account (which I didn&#x27;t get any emails about), go into every game and transfer out every last collectable thing she had collected since 2020.<p>And wouldn&#x27;t you know it, Roblox says they aren&#x27;t responsible for those lost collectables. All the christmas and birthday roblox gift cards from the last 6 years which were used to buy those collectable items are completely wiped away for fun by this &quot;linked parent&quot;. My daughter is absolutely devastated by her loss of these collectables.<p>During the password reset process I had to disable two factor authentication to be able to log in to the account. Once in the account, the two factor passkey could not be removed from the account without having access to the passkey and I had to go through an AI chatbot to get that removed. The &quot;linked parent&quot; also changed the date of birth to make my daugter become 8 years old in Roblox and apparently for whatever reason you are only allowed to change the date of birth once, meaning I had to make request after request trying to get the date of birth changed. Every time I am making these support requests I have to prove I am a human (captcha), enter six digit email security codes, and then try to talk to an AI bot that only partially understands my issues. I can request to speak to a human which immediately ends the chat with the ai bot telling me a support request has been filed.<p>What is most baffling of all is that I had requested removing the &quot;linked parent&quot; in question and between both the AI and whatever support team is behind that AI, I could not get the &quot;liked parent&quot; removed. I even had one ticket closed out with an email response telling me &quot;We are unable to update or modify the parental settings on your child’s account due to security reasons. Parental controls can be managed on the account with parent privileges linked to your child’s account.&quot; When I was talking to an AI bot about this they explained that the &quot;linked parent&quot; was the only person who could remove themselves from my child&#x27;s account and trying to request anything beyond that answer was denied. I finally hit a wall in which I had made too many requests and they were no longer accepting form submissions from me. My wife is trying to work on this stuff now because I&#x27;m at a dead end. She was able to get the account moved to her email address because she had made payments to Roblox in the past to fund the account, but the &quot;linked parent&quot; is still there.<p>Why would I ever want to give money to Roblox again after all of this? Kids are more savvy than anyone else on that gaming system and will keep finding loopholes to do these sorts of things. No matter how many procedural layers of restricted communication are added this is only made worse because fundamentally Roblox assumes no liability for any lost items within a system where these collectables can be traded among friends or stolen from thieves. I don&#x27;t know that Roblox will be able to solve these problems ever when their solutions seem to be actually making things worse. If you have any stock in Roblox I would say they are a STRONG SELL!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication",
+        "team",
+        "meaning",
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "The truly ironic part about all this is that Roblox is a gaming system and for some kids there is probably nothing more fun than tying to \"game the system\" and make things worse for everyone else. The child exploitation issues are far more scarier and there is probably even less accountability trying to decipher that as a parent.",
+          "author": "notsure357",
+          "replies": []
+        },
+        {
+          "top": "My kid got his 5 year old account hacked in Feb. Roblox didn't give a shit. They kept saying to start a new account, and turn on multi-factor auth. That account already had all that. They hacked him via the multi-factor mechanism!  Gave them more details, not enough. They eventually just ignored me. Thousands of dollars over those 5 years. Either way, both my kids are done with the shit platform anyway. The new rules made them hate it anyway.\nIt's not just collectibles either. Premium was active on the account, and he had a few private server passes that had a pretty high one time fee. The worst.",
+          "author": "kgwxd",
+          "replies": [
+            {
+              "text": "I don't understand how a system is designed in which I am getting emails when I log in to Roblox on an unrecognized device but absolutely no email notifications of any kind when someone else is claiming to be a parent and the date of birth gets modified! How did these things happen without any email notification? But yeah it is definitely somehow my fault for not setting a higher security level on my account, not Roblox's fault.",
+              "author": "notsure357",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48651906",
+      "title": "Ask HN: What home printer do you use/recommend?",
+      "link": "https://news.ycombinator.com/item?id=48651906",
+      "domain": "news.ycombinator.com",
+      "author": "niyazpk",
+      "score": 18,
+      "comment_count": 22,
+      "created_ts": 1782251118,
+      "is_internal": true,
+      "post_text": "I am in the market for a new printer, and thought I&#x27;d check with the HN crowd for some recommendations.<p>I hate my HP inkjet printer with a passion. Feels like the ink lasts less than 100 pages of light printing. And the ink is expensive.<p>I was under the impression that Brother was a good brand, but it seems they are also following the HP playbook.<p>What printer do you actually use? Would you recommend it for regular home printing (mostly b&#x2F;w, occasional color printing. Scanning, copying, etc. would be ideal)?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Like any good linux user, I have the \"brother whatever-it-is\"\nhttps://www.theverge.com/23642073/best-printer-2023-brother-...",
+          "author": "panny",
+          "replies": []
+        },
+        {
+          "top": "Brother MFC-L3750CDW\nNo issues. I'm not sure the brand/model is super important - what's important is that you cough up for a laser printer and get the hell away from inkjet.",
+          "author": "kevinherron",
+          "replies": []
+        },
+        {
+          "top": "Can't say I've had an issue with my Brother. Works great with Linux and ink is available at the office supply store.",
+          "author": "helterskelter",
+          "replies": [
+            {
+              "text": "I used to have one Brother mode, sold it for $50 after long battle with ink drains. It will sneakily drain the ink cleaning the print head at midnight. I had to keep it off. Then they have chips inside the cartridge to prove authenticity of cartridge!! When the printer itself is cheaper than the cartridge, its almost always is a scam in my personal experience.\nGet an EPSON tank printer, or a laser..",
+              "author": "vpfaiz",
+              "depth": 1
+            },
+            {
+              "text": "Yeah I've got a Brother laser printer, never had an issue. Maybe it's just the inkjets?",
+              "author": "helterskelter",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Color laser printer. I've had a Canon image class model since the pandemic, and its worked great every time I've had to use it (about 10 pages per year). The ink can't dry out because it's already dried out: it's supposed to be dry.\nMost people are in for a bad time with inkjet printers. Can't say I've ever had a positive experience with one long term.\nNow that my day job is e-waste recycling, I sometimes list color laser printers on Facebook Marketplace. Maybe check there. Decent ones with a few hundred estimated pages worth of toner left should go for about $100, maybe more with a scanner.",
+          "author": "theandrewbailey",
+          "replies": []
+        },
+        {
+          "top": "Staples. I have a broken Canon now and before had a broken HP. Both were dirty cheap. I imagine how much the environment suffers from broken printers alone.\nI am not buying a new one. Only going to stores to print.",
+          "author": "aprdm",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48645072",
+      "title": "Ask HN: Am I missing something with AI",
+      "link": "https://news.ycombinator.com/item?id=48645072",
+      "domain": "news.ycombinator.com",
+      "author": "vasko",
+      "score": 18,
+      "comment_count": 23,
+      "created_ts": 1782223043,
+      "is_internal": true,
+      "post_text": "I constantly hear developers around me talk about how AI has completely changed their life and how they don&#x27;t even program anymore, they just prompt. But any time I&#x27;ve used it, the output has always been off. And when the output is off I have to go and read through everything, learn how it works and fix it, which at that point I might as well write it myself.<p>I just don&#x27;t understand what other people are seeing, I&#x27;ve mainly used Claude and ChatGPT, I got a free trial for premium but it&#x27;s just underwhelming, their only use so far for me has been as a search engine, but they&#x27;re a search engine that&#x27;s wrong 20% of the time so even that use is questionable.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48655248",
+      "title": "Ask HN: Yahoo deleted all my emails. Now what?",
+      "link": "https://news.ycombinator.com/item?id=48655248",
+      "domain": "news.ycombinator.com",
+      "author": "neya",
+      "score": 15,
+      "comment_count": 13,
+      "created_ts": 1782276283,
+      "is_internal": true,
+      "post_text": "Logged into my old email after a year - it has everything setup with recent details, so I know for a fact it isn&#x27;t more than a year. To my shock, all my data is now gone. Just a simple `fuck you` email at the top of my inbox. Is there any way to recover my old emails? Unfortunately I used to use this as my main account since the early 2000s. No shady stuff, just your average joe with an average email. Here&#x27;s the only email now in my account:<p>Dear Yahoo Mail Member,<p>We’re so glad to see you’re back! Due to inactivity, your mailbox entered an inactive state. This means we stopped accepting your incoming emails. If your period of inactivity was long enough, we also deleted all of your emails. Now that you’ve signed back in, your mailbox has been reactivated and you will start receiving new emails again shortly. For more information, please visit the Yahoo Mail policy page at: https:&#x2F;&#x2F;en-global.help.yahoo.com&#x2F;kb&#x2F;mail&#x2F;SLN2018.html<p>We’ve made some upgrades to your email experience since the last time you signed in. Now Yahoo Mail has a cleaner design and upgraded features to help you keep your inbox in order.\nFind whatever you need quickly without the clutter. Search by keyword, contact, date or any combination of these.\nWith themes, you can pick your favourite colour and the level of intensity. The choice is yours.\nStay on top of everything on the go. The top-rated Yahoo Mail app makes life easy to manage with features such as Subscriptions View. See all the mailing lists you’re subscribed to and easily unsubscribe with a single tap.\nYou can download it here: https:&#x2F;&#x2F;mail.onelink.me<p>We hope that you enjoy your new Yahoo Mail experience.<p>Thank you,<p>The Yahoo Mail team",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48680504",
+      "title": "Ask HN: Norway bans AI in elementary schools",
+      "link": "https://news.ycombinator.com/item?id=48680504",
+      "domain": "news.ycombinator.com",
+      "author": "mellosty",
+      "score": 14,
+      "comment_count": 14,
+      "created_ts": 1782429899,
+      "is_internal": true,
+      "post_text": "What is your opinion on this? Norway banned smart phones and now AI.<p>&gt; Prime Minister Jonas Gahr Støre argues that using AI could increase the risk that young children miss important steps in their education.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48683172",
+      "title": "Ask HN: Why does every AI demo sound perfect but real world deployment always",
+      "link": "https://news.ycombinator.com/item?id=48683172",
+      "domain": "news.ycombinator.com",
+      "author": "VaderAi",
+      "score": 7,
+      "comment_count": 9,
+      "created_ts": 1782456277,
+      "is_internal": true,
+      "post_text": "disappoints?\nWorking on AI voice for small \nbusinesses. The gap between what \nAI can do in a controlled demo vs \nmessy real world phone calls is \neye opening.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48675123",
+      "title": "Ask HN: Do you thank your agents when they did a good job?",
+      "link": "https://news.ycombinator.com/item?id=48675123",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 7,
+      "comment_count": 12,
+      "created_ts": 1782402193,
+      "is_internal": true,
+      "post_text": "Sometimes I catch myself doing this and it feels pretty silly in retrospect<p>Or sometimes they fix a bug and I instinctively go back to tell them the fix worked even though I could just close the session at that point.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48685368",
+      "title": "Ask HN: Who remembers Fry's Electronics – the \"church\" of IT people?",
+      "link": "https://news.ycombinator.com/item?id=48685368",
+      "domain": "news.ycombinator.com",
+      "author": "netfortius",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1782473289,
+      "is_internal": true,
+      "post_text": "For some reason I remembered today my first trip to San Jose, in the early 2000s, for a SANS Institute class, and discovering the Fry&#x27;s Electronics store. The amazing content of what one could use to build own computers, or tools for use with such, was like nothing else I have ever seen, anywhere else in the world where I&#x27;ve been, up until that point.<p>Some of the best related memories, though, come from the time when - as Chicagoan - I learned we will be getting our own Fry&#x27;s. The excitement in the geeks community was so great, at the time, that we were sharing pictures of the progress of the actual lot being worked on, then the building (walls by walls), in Downers Grove.<p>We used to call the place &quot;the church of IT people&quot;, simply because we would go there over the weekend, and stay over for the &quot;mass&quot; (equivalent time) and then some.<p>O tempora!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48667185",
+      "title": "Ask HN: What are the hardest problems AWS Lambda MicroVMs can solve now?",
+      "link": "https://news.ycombinator.com/item?id=48667185",
+      "domain": "news.ycombinator.com",
+      "author": "iaziz786",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1782346672,
+      "is_internal": true,
+      "post_text": "By introduction of Lambda MicroVMs, what are the most importance and challenging task we can solve with them now?<p>I’m looking for the answers which weren’t possible before on it.<p>My objective is to understand if this technology can solve really hard parts of a very common problem. Even if making it work on AWS would require a lot of work but it would be worth it.<p>Hence my goal is to understand what it unlocks?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48684938",
+      "title": "Ask HN: How is GPU power draw measured at scale?",
+      "link": "https://news.ycombinator.com/item?id=48684938",
+      "domain": "news.ycombinator.com",
+      "author": "anax32",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1782470110,
+      "is_internal": true,
+      "post_text": "How do people measure power usage of GPUs at large (32x) self-hosted setups or small multi-rack setups? I&#x27;ve seen some PDUs which collect and transmit data, but I&#x27;m unsure of the processes and if&#x2F;how people do this on small builds.<p>Currently, I collect NVML nvmlDeviceGetPowerUsage, polled at 100ms during inference, peak and mean per request, and get this type of data:<p>model                     mean-power range (W)   spread   stdev<p>qwen3-8b                  114.3-121.9             7.6W    1.17<p>llama-3.1-8b-instruct     104.7-122.1            17.4W    4.29<p>qwen2.5-1.5b-instruct      53.7-73.0             19.3W    5.23<p>mistral-7b-instruct-v0.3   96.2-120.0            23.8W    6.01<p>qwen2.5-7b-instruct        88.7-124.5            35.8W    7.73<p>gemma-3-1b-it              49.4-56.7              7.3W    2.13<p>this is per-GPU, single-card data - I don&#x27;t know whether anything like per-request attribution survives at rack scale, or whether monitoring there happens entirely at the PDU&#x2F;BMC level instead.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48677045",
+      "title": "Ask HN: Quickbooks Alternative?",
+      "link": "https://news.ycombinator.com/item?id=48677045",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1782410352,
+      "is_internal": true,
+      "post_text": "All businesses run on Quickbooks. And so the company keeps massively raising its prices each renewal cycle even though functionally nothing has changed. I am tired of this and looking to move to another provider. I am comfortable self hosting but my CPA and tax team will need access to all the files for my multiple businesses. Has anyone found an actual viable solution that doesn’t end in a complete dumpster fire for the accountants?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    }
+  ]
+}
