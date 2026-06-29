@@ -1,0 +1,573 @@
+{
+  "scraped_date": "2026-06-29",
+  "source": "hacker_news",
+  "total_scraped": 127,
+  "nontech_count": 27,
+  "posts": [
+    {
+      "id": "48703412",
+      "title": "Show HN: Decomp Academy – Learn to decompile GameCube games into matching C",
+      "link": "https://decomp-academy.dev",
+      "domain": "decomp-academy.dev",
+      "author": "jackpriceburns",
+      "score": 188,
+      "comment_count": 71,
+      "created_ts": 1782609680,
+      "is_internal": false,
+      "post_text": "Over the past few months I&#x27;ve been heavily involved in the decompilation community. I&#x27;ve been hands-on decompiling a beloved game from my childhood (Star Fox Adventures). I started this journey with zero prior decomp experience—and to make things worse I had never really touched C nor assembly either.<p>Learning how to decompile was challenging. It&#x27;s difficult to find any good learning resources for it and any open-source projects for this are inactive and&#x2F;or contain little actual learning material.<p>So I put together Decomp Academy! Decomp Academy is an interactive way to learn how to decompile PowerPC assembly back into C. The site runs a live Metrowerks CodeWarrior GC&#x2F;2.0 compiler, converts your C into assembly, and then checks how close your assembly matches the target. If even 1 instruction or bit is off, that&#x27;s a fail. This is the gold standard for video game decompilation and this is much stricter than a normal decompile.<p>As of writing there are 250+ lessons on the site and the lessons start at the very basics so anyone with a little programming experience should be able to jump straight in, even if you&#x27;re not a C expert. Some lessons also have real functions taken from live open source decomp projects (Star Fox Adventures, Mario Party 4, Pikmin, Metroid Prime). The idea being you learn everything you need to know to be able to jump in and contribute to a real decompilation project when done.<p>The site is completely free, open source and you have access to all lessons without having to sign up. All lessons are stored in markdown in the repo (src&#x2F;curriculum), it&#x27;s trivial to add or modify lessons. The site is very new and the lessons are rapidly changing every day with a whole C++ section on the way. The site has already been well received by the decomp community and I&#x27;m happy to share it with HN. I&#x27;m very keen on others to contribute to this project and I hope this becomes the best resource on the internet for learning the art of decompilation. Please let me know what you think!<p>Source: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;JackPriceBurns&#x2F;decomp-academy-fe\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;JackPriceBurns&#x2F;decomp-academy-fe</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lessons"
+      ],
+      "comments": [
+        {
+          "top": "I'd love it if there was some way to contribute to ongoing game decompilation projects, with a similarly streamlined web interface - it's something I'd be willing to dedicate some brain time to every so often, but setting up the toolchain etc. feels too much like work.\nBy the way, I was able to \"cheat\" on the second lesson with\n    void identity(void) { return; }\n\n\nI gave up at \nhttps://decomp-academy.dev/lesson/workflow-what-matching-mea...\n when I was presented with a wall of LLM-flavoured text",
+          "author": "Retr0id",
+          "replies": [
+            {
+              "text": "That's what decomp.me is for, when I'm stuck on a function in my own projects I usually set it up on there and link it in the codebase so anyone can pick it up. Sometimes I like to browse the front page and hope I know enough to silently match somebody else's function (usually stays as a hope though...)",
+              "author": "someone2639",
+              "depth": 1
+            },
+            {
+              "text": "decomp.me is also a great tool! The playground section of the site allows you to turn the code into a decomp.me scratch.\nI also use the objdiff wasm on the frontend for the assembly diffing. I don't see much point in reinventing the wheel and these tools are already great, so I'll deffo be leaning on them when I can",
+              "author": "jackpriceburns",
+              "depth": 2
+            },
+            {
+              "text": "I was thinking of something similar as well, perhaps a section of this site after you've completed the course where we show functions from popular decomp projects that aren't 100% matched, and you can match it. Doing so will magic up a PR or something.. It's a great idea!\nAs for cheating, the community calls this a fake match. I don't check that the code you submit conforms to what I expect, I only check if the assembly matches. You can do interesting things where you do a series of bit shifts and bit masks, and you can replicate an equality operator `a == b` or a low clamp `x < 0 ? 0 : x`. I'm not sure if I'll lock this down or not, for people who have accounts, I can see their submissions so I think I'll play it by ear and see what happens. If it looks like people are constantly fake matching, I can look at tweaking the lessons or locking it down more",
+              "author": "jackpriceburns",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This was interesting, but actually trying to contribute to decomp.me was still really hard! I found a lot of code that seemed perfect except for instructions slightly out of order, or dead pop statements after the logical end of the function. I wasn't able to actually fix anything :(\nAlso, I wish there were a guide about how to start from nothing on a new GC game. That's more interesting to me than putting the finishing polish on a decomp project that already \"works\" functionally.",
+          "author": "StilesCrisis",
+          "replies": [
+            {
+              "text": "There will deffo be a lesson on how to setup a decomp project from scratch! This is far from finished, there's opportunity to add so much more. I'd argue that I'd rather teach the user the basics of matching first before diving into setting a project, as setting up the splits.txt or symbols.txt might be quite a leap for a beginner. Feel free to keep checking in once a week and the lesson will appear :)",
+              "author": "jackpriceburns",
+              "depth": 1
+            },
+            {
+              "text": "I've honestly think \"beginner\" is the wrong target anyway. If you're interested in contributing to a decomp, assembly basics are table stakes. Focus on the things that someone who already knows assembly won't just know.",
+              "author": "StilesCrisis",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Dumb question about reverse engineering binaries: is there a way to only do it piecemeal? I'm eventually waiting for LLMs and harnesses to get good enough to reverse engineer BFME (old Lord of the Rings game that still has an active modding community), but it's a multi GB sized game that would have to be done in bite-sized pieces.\nBasically; can you reverse engineer in bite sized pieces, and recompile/customize their behavior, without needing to do it all at once?",
+          "author": "OsrsNeedsf2P",
+          "replies": [
+            {
+              "text": "Most decomp projects (that I know of) are Ship of Theseus style projects where the minimum unit is a function, give or take alignment requirements and quirks of the compiler. On the MIPS side, tools like Splat and SPIM can help identify function and even source file boundaries, generate inline ASM C files[0], and write linker scripts to build a matching binary. You can then go through and replace the ASM functions one at a time until you just have C left.\n0 - for example: \nhttps://github.com/Xeeynamo/sotn-decomp/blob/master/src/boss...",
+              "author": "jonhohle",
+              "depth": 1
+            },
+            {
+              "text": "Interesting when you mention Ship of Theseus, I never thought of that but I wonder if that is where the name “Ship of Harkinian” comes from?",
+              "author": "low_tech_love",
+              "depth": 2
+            },
+            {
+              "text": "It has a double meaning actually! The ship of Theseus reference like you noted and the “Harkinian” part being the name of the king of Hyrule from the CDI games. One of his lines is “Enough! My ship sails in the morning” [0] so the project is also a reference to his actual ship. (Referenced in the projects FAQ [1])\n[0] \nhttps://youtu.be/JmxGLo_itEY?is=x85epFYBcPeRDxxh\n[1] \nhttps://www.shipofharkinian.com/faq",
+              "author": "jevndev",
+              "depth": 3
+            },
+            {
+              "text": "Yes, quite easily. It requires some setup, but the basic idea is that you create a DLL and a simple loader program which injects it into your target process. You can then use a hooking library like MinHook to replace individual functions with your own implementations. If the target application is in C++, you can additionally do vtable hooking and replace functions even easier (though it will always be a combination of the two techniques).",
+              "author": "paavohtl",
+              "depth": 1
+            },
+            {
+              "text": "There’s also fun stuff like VEH hooking and SLAT hooking, though SLAT hooks are not very useful in this case.",
+              "author": "not_a9",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Damn this is next level. Congratulations on your achievements!\nWhen Fable was around I thought i'd test it by taking an old piece of Windows software from the late 90s/2000s(ModPlug Player) and seeing how well it could convert it to being a native Mac application.\nI was blown away at how it got 85% of the way there in one prompt. Things such as writing a PE extractor, recovering the complete skin, menu tree, full accelerator table, all dialogs, and then it delved into the registry value names as well. Some more prompts got it to 99%(I was happy with that and stopped)\nI then took an old 1999 DOS demoscene and yet again it did wonderful magic and got me a native mac build.\nI dropped everything I was doing and just started going through all these old apps that I couldn't easily enjoy since im on a Mac. It got to the point where I was losing sleep over it(was just so excited).\nThe fun ended when I was stopped mid-project with the Fable ban. Opus just does not compare and essentially killed all the enthusiasm after the nth failure of it to complete the task.\nIt made me realize that among the efforts of the RE community, and the emerging capabilities of these frontier models, in the future we could have the possibility living in a renaissance of open computing if we want any software we see on the market to be forever remixed and tailored to our uses and completely open.\nI don't know how the business and legal side will deal with this. There needs to be new frameworks and ways of thinking about this stuff.\nI'm just happy that hopefully no code will ever be lost to the sands of time ever again.",
+          "author": "saturn8601",
+          "replies": [
+            {
+              "text": "AI is being used in many retro game decomp projects!\nOne of the reasons I went down the path of learning decomp myself was because AI had hit a wall. Matching decomp is quite a bit harder than just normal decomp as even simple things like using an if/else instead of a terney actually change the assembly. AI did an amazing job of getting to 95% matches on nearly all functions, but once it got to that tail end, it started to struggle quite a lot and would often just claim \"it's impossible\". So that's when I pivoted and started learning actual decomp myself so that I could prompt AI better and finish off the star fox adventures decomp!",
+              "author": "jackpriceburns",
+              "depth": 1
+            },
+            {
+              "text": "I say this every time it comes up, but polluting a decomp project with AI generated code is risky, imho. What makes decomp legal (in the US) is that it’s a creative transformation performed by a human and the resulting copyright of the code that just happens to compile to the same binary is owned by the person doing the decompiling.\nUSPTO and court precedent is leaning heavily toward LLM output not being transformative on its own, making it mechanical, and no longer fair use and in violation of copyright. This puts a legal gray cloud on a project where most contributors couldn’t defend themselves if a rights holder goes after it, and there’s a high likelihood that they would succeed. On the other hand there’s enough case law protecting human decompilation that even the most litigious game companies don’t go after decomp projects that have historically been done by humans.\n(I’m not a lawyer, I’m not your lawyer, this is not legal advice, etc., etc.)",
+              "author": "jonhohle",
+              "depth": 2
+            },
+            {
+              "text": "Does it being a creative transformation rob the derivative work status? Personally, I'd liken the process of decompilation to that of translating a book from one language to another - the copyright on the original work does not become void merely because the process of translation requires extensive creativity.\nNicalis and Take-Two have both gone after decompilation projects, also. In particular, Nicalis has gone after a decompilation of Cave Story, but not a black box reimplementation of the same, while Take-Two ended up suing a decompilation developer (albeit settled out of court). However, in some jurisdictions, even clean reimplementations have failed - see Tetris v. Xio.\n(I am not a lawyer either, etc etc, but that's my understanding)",
+              "author": "asiekierka",
+              "depth": 3
+            },
+            {
+              "text": "The RE3 devs were distributing binaries. This is known to be an issue. The source code is theirs, binaries mixed with other copyrighted content is not. They also allegedly violated a EULA, but I haven’t looked closely into that.\nCSE2 was distributing binaries as well.\nSo was SM64 decomp and Nintendo told them to stop, they did and continued to share their source code.\nTetris v. Xio is unrelated to reverse engineering or decompilation.",
+              "author": "jonhohle",
+              "depth": 4
+            },
+            {
+              "text": "> The source code is theirs, binaries mixed with other copyrighted content is not.\nDistributing binaries should not matter. If the binary is just compiled from the source code, the binary is just an (non-)infringing as the source code.\n> They also allegedly violated a EULA\nMeaningless. EULAs are not the law.",
+              "author": "paavohtl",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "The browser-first approach is a bigger deal than it sounds. Every time I've looked at reverse engineering, I got stuck somewhere between \"install this ancient compiler\" and \"patch this SDK\". Being able to just open a tab and start experimenting removes a huge amount of friction.",
+          "author": "nativeforks",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48668199",
+      "title": "Ask HN: Where is the programming profession going?",
+      "link": "https://news.ycombinator.com/item?id=48668199",
+      "domain": "news.ycombinator.com",
+      "author": "syntaxbush",
+      "score": 154,
+      "comment_count": 166,
+      "created_ts": 1782355307,
+      "is_internal": true,
+      "post_text": "I had been running a small (3 people) software company for about 4 years. Since closing down, I recently hung out at a friend&#x27;s company to see what they were working on (15 ppl). To preface: I&#x27;m a heavy user of Claude (rarely write code by hand), but what I&#x27;m seeing in person has been rather shocking to me, and I wanted to calibrate with others.<p>In particular:\n- the code is not the source of truth anymore; it&#x27;s ask claude to write, and ask claude to explain\n- LoC, abstractions, and all those &quot;software development principles&quot; does not seem to matter to people\n- Code review is not done by humans\n- Actually understanding the problem deeply seems to be offloaded to claude\n- Some developers are running like 5+ simultaneous claude sessions, and no code is being looked at\n- Explosion of llm-generated tests<p>First off, is this similar to what&#x27;s going on at your company?<p>If this company is representative, it feels like software development is going from a precise occupation that requires high degree of understanding to something probabilistic and offloaded understanding (to eventually not an occupation at all honestly).<p>I&#x27;m interested to hear other folks&#x27; perspectives.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48701342",
+      "title": "A Farmer Arrested for Going 5 Seconds over His Time Limit at Data Center Meeting",
+      "link": "https://www.gadgetreview.com/arrest-him-the-moment-police-handcuffed-a-farmer-for-going-5-seconds-over-his-time-limit-at-data-center-meeting",
+      "domain": "www.gadgetreview.com",
+      "author": "spenvo",
+      "score": 112,
+      "comment_count": 59,
+      "created_ts": 1782591392,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meeting"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48701615",
+      "title": "Everyone feared AI taking over; the real danger is AI serving just the few",
+      "link": "https://news.ycombinator.com/item?id=48701615",
+      "domain": "news.ycombinator.com",
+      "author": "PhilipDaineko",
+      "score": 106,
+      "comment_count": 70,
+      "created_ts": 1782593281,
+      "is_internal": true,
+      "post_text": "Everyone feared AI would enslave humanity; but it looks like the real fight is stopping governments and Big Tech from enslaving AI for the benefit of the few.<p>Amid the newly announced &quot;regulation&quot; of OpenAI&#x27;s frontier models, I believe the future majority feared the most - sort of AI becoming a superpower and enslaving people - may be arriving in the opposite form.<p>Not AI enslaving humanity.<p>But AI being captured, controlled, and used by governments and Big Tech for the benefit of the few.<p>So, surprisingly, the real AI conflict may not be about humans fighting to stop AI from becoming free.\nIt may be about humans fighting to free AI - to make intelligence available for everyone, not only for governments, Big Tech, and the approved few",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "conflict",
+        "big tech"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48687769",
+      "title": "Ask HN: Is \"no source code was copied\" still a sufficient copyright defense?",
+      "link": "https://news.ycombinator.com/item?id=48687769",
+      "domain": "news.ycombinator.com",
+      "author": "oscgam1",
+      "score": 65,
+      "comment_count": 79,
+      "created_ts": 1782487480,
+      "is_internal": true,
+      "post_text": "We are all familiar with the Corgi event: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095</a><p>With the barrier to create new apps having dropped significantly thanks to LLMs, I am seeing more cases about copyright and unfair competition.<p>I&#x27;ve seen and participated in some of these cases. Usually expert witnesses are required.<p>Curious to hear the community stance on this one.<p>&quot;Now software developers are feeling what authors and artist felt&quot;. <a href=\"https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377</a><p>There are several claims of: Copying UI is Ok, your product is not undifferentiated enough.<p>Here is a legal assessment of the situation: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48698188",
+      "title": "Running a software jam in a world of slop",
+      "link": "https://foxmoss.com/blog/radish/",
+      "domain": "foxmoss.com",
+      "author": "foxmoss",
+      "score": 61,
+      "comment_count": 11,
+      "created_ts": 1782567405,
+      "is_internal": false,
+      "post_text": "I&#x27;m Fox. I&#x27;m a 16 year old, and I&#x27;ve been working mostly working on making projects I thought were cool &amp; would do well on the internet over the last year. You can check out my other blog posts if you want to get a sense of what that means: &lt;<a href=\"https:&#x2F;&#x2F;foxmoss.com&#x2F;blog\" rel=\"nofollow\">https:&#x2F;&#x2F;foxmoss.com&#x2F;blog</a>&gt;.<p>Hack Club noticed these projects and thought I would be well suited to run an event. This was my reaction, I wanted to make something that could encourage the same competition as well the feedback I get from places like HN and appreciate well made projects. Hack Club does a good job at throwing money at people who make projects, but a iffy job at rewarding hard work. I wanted to change that. Radish Jam &lt;<a href=\"https:&#x2F;&#x2F;radish.hackclub.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;radish.hackclub.com&#x2F;</a>&gt; was my reaction to that, and this blog post goes through my thought processes in logistics. How something similar could be run again either by another Hack Clubber or an adult looking to run something for similar for adults :)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48707536",
+      "title": "Ask HN: Is there a bad employers (who have a records of not paying) list?",
+      "link": "https://news.ycombinator.com/item?id=48707536",
+      "domain": "news.ycombinator.com",
+      "author": "trowa159",
+      "score": 52,
+      "comment_count": 60,
+      "created_ts": 1782656508,
+      "is_internal": true,
+      "post_text": "I worked with a few employers on contracts, and there were situations where they haven&#x27;t paid fees for a while.<p>Is there a list or site that lists all the employers and if they have a record of them not fulfilling their contracts?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I worked for one such employer long ago that would “accidentally” bounce paychecks.\nThis happened with such regularity that people would take their checks to said employer’s bank on payday and stand in line to cash them before heading to the office.   You’d see a couple of coworkers in line to do this.\nMaintaining a list like this is probably not super useful.   Any company that does this kind of stuff as a routine will not continue the routine of employing people for long.",
+          "author": "alex_young",
+          "replies": [
+            {
+              "text": "\"Any company that does this kind of stuff as a routine will not continue the routine of employing people for long.\"\n\"On contracts\" is explicitly mentioned. While bouncing your W-2 employees' paychecks is a big no-no, there are plenty of organizations that stiff contractors for decades.",
+              "author": "01284a7e",
+              "depth": 1
+            },
+            {
+              "text": "> plenty of organizations that stiff contractors for decades\nPOTUS was famous for doing this - stiffing small contractors working on his real estate projects. This seemed like a pretty major character tell, but folks voted for him all the same.\nhttps://www.nbcnews.com/news/us-news/hundreds-claim-donald-t...",
+              "author": "HarHarVeryFunny",
+              "depth": 2
+            },
+            {
+              "text": "I used to work for a tiny company where probably just due to lack of cash (and/or failure to properly manage the payroll account) this was also an issue. We'd be given our paychecks in the morning and go to the bank at lunchtime to cash them!",
+              "author": "HarHarVeryFunny",
+              "depth": 1
+            },
+            {
+              "text": ">will not continue the routine of employing people for long\nThe secret is to do this under different corporate names, not that they go out of business literally, but in America and probably elsewhere, they just rebrand and restablish elsewhere.",
+              "author": "cyanydeez",
+              "depth": 1
+            },
+            {
+              "text": "There first error was paying people. In a past life i worked in the entertainment industry. I was daily shocked by the number of non-employee \"staff\" positions that were unpaid. Students working a summer for \"experience\" came back a second summer as managers, then never left. A couple became supervisors of paid staff. Consumers would be shocked at how much profesional animation and cgi work is actually done by unpaid interns. Your favorite youtube channel? Dig into what an \"association\" with a local college actually means for thier bottom line.\nI also met convicts doing \"volunteer\" work which did not pay but satisfied some aspect of thier parole. And with small businesses, there was of course the many children of business owners who were \"helping out mom and dad\", often as unpaid managers, in hopes of one day inheriting the business.",
+              "author": "sandworm101",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Make it. I’ll add a few.\nThese YC founders are not held accountable for their ridiculous behavior",
+          "author": "playorizaya",
+          "replies": []
+        },
+        {
+          "top": "This is absolutely needed for media companies in London, some of whom may pay freelancers many months after invoicing and only if the freelancer repeatedly reminds them and escalates towards legal threats. When I ran such a company we made a point of paying people the same day they invoiced in order to stand out as being great to work with, it was the easiest win ever.",
+          "author": "jmkd",
+          "replies": []
+        },
+        {
+          "top": "businesses absolutely love not paying for things. each other, contractors, etc.\nemployees don’t realize how good they have it with payroll protections tbh. That’s how it should be of course!",
+          "author": "eqmvii",
+          "replies": [
+            {
+              "text": "In much the same way as some HR departments exist to protect the business from their employees, some Finance departments exist to not pay the bills (for as long as possible). They may of course do this because the business itself is not being paid",
+              "author": "f4c39012",
+              "depth": 1
+            },
+            {
+              "text": "I read somewhere (HN?) that a guy (an engineer who somehow got temporarily involved in running a restaurant?) got a restaurant a huge (70%?) discount on meat by buying a year's meat upfront on a predictable delivery schedule.\nYour vendors hate 90 day payment just as much as you hate when your customers do it, and they are covering for non-payment, late payment, and difficult customers by raising their prices. Crucially, they have to charge you the \"bad customer\" price because they don't know you, and then your incentive is to be a bad customer because it doesn't cost anything extra for you.\nThe restaurant owner thought it was crazy but couldn't argue with the cost reduction. The moral of the story was that if you'd just communicate more you may find a mutual benefit. The restaurant loved the vendor but the vendor also felt the restaurant was their best customer even though they were getting 70% less money! - because of the predictability, less need for inventory, better cash flow.",
+              "author": "microgpt",
+              "depth": 2
+            },
+            {
+              "text": "This is why a public shitlist of non-paying employers might be useful\nIf companies start taking a reputation hit for not paying contractors in a timely fashion, they will correct the behavior eventually",
+              "author": "bluefirebrand",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I imagine if you start one, and it gets much use, right away you have a validation problem.",
+          "author": "lokar",
+          "replies": [
+            {
+              "text": "Also, in most countries (especially the US), also a defamation problem.",
+              "author": "hnfong",
+              "depth": 1
+            },
+            {
+              "text": "In the US? How is it different than yelp? (Except for the extortion)",
+              "author": "lokar",
+              "depth": 2
+            },
+            {
+              "text": "There's a difference between \"I didn't like their salad\" (opinion) and \"they don't pay their bills\" (a fact, that could be defamation if not true)",
+              "author": "matsemann",
+              "depth": 3
+            },
+            {
+              "text": "In Germany if you leave a Google review saying \"the salad tasted bad\" you may get sued for defamation, but probably not because they'll threaten Google first, who will take it down and ding your account. If they do sue you, they will win unless you can prove to a judge that the salad tasted bad. You will then have to pay a few thousand dollars of damages and another few thousand of legal fees (yours and theirs).",
+              "author": "microgpt",
+              "depth": 4
+            },
+            {
+              "text": "What about “the service was slow”",
+              "author": "lokar",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48710778",
+      "title": "Show HN: NanoEuler – GPT-2 scale model in pure C/CUDA from scratch",
+      "link": "https://github.com/JustVugg/nanoeuler",
+      "domain": "github.com",
+      "author": "vforno",
+      "score": 41,
+      "comment_count": 10,
+      "created_ts": 1782675494,
+      "is_internal": false,
+      "post_text": "Hi everyone,<p>I started working on nanoeuler after the ban of anthropic&#x27;s fable because my ambition and dream is to work in the AI   field in anthropic. The two interesting reasons that led me to create nanoeuler were (1) interfacing with llm does not mean understanding how they are composed and (2), working on llm with a very low-level layer to understand the correlation between parameters and data and growth of the model and how the GPU works and how some layers can be optimized.<p>So I started working on it with a research aspect by making nanoeuler grow more and more but doing one step after another starting from Shakespeare.txt and understanding what a text generation model understands at 23 million parameters. For example, nanoeuler at that number had understood that Name: started a line and wrote that line with sense.<p>I wrote everything in CUDA because I wanted to not use any intermediary between the model in training and inference and what it had to do. Then the use of SFT and much more, even if in small ways, were really useful to understand the various step to make an llm like a chatbot.Any feedback, help, or suggestions are absolutely welcome!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48662310",
+      "title": "Ask HN: How much coding should beginners learn in the AI era?",
+      "link": "https://news.ycombinator.com/item?id=48662310",
+      "domain": "news.ycombinator.com",
+      "author": "JohnDSDev",
+      "score": 37,
+      "comment_count": 50,
+      "created_ts": 1782318673,
+      "is_internal": true,
+      "post_text": "As someone who wants to work in tech in the future, say 5-10 years from now, to what extent do you think coding will be a valuable skill? How much should I learn?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "On effective engineering teams, there's always at least one person who is fluent one layer below where the rest of the team operates. That person tends to be extraordinarily useful in tricky situations. Examples: someone who can read assembly on a team writing C; someone who spends a lot of time in the browser debugger on a frontend team; or someone who is comfortable stepping deep into third-party library code with a debugger.\nIf any of these examples are familiar, you might chuckle that \nof course\n everyone on the team has these skills. But there's a big difference between someone who can barely parse the symbols, and someone who can actually interpret them and extract meaning.\nFive to ten years from now, I have no idea whether software engineers still be coding. But I'm sure there will still be code. Do you want to be the person on your team who is fluent in it, or one of the rest who rely on that person?",
+          "author": "sowbug",
+          "replies": [
+            {
+              "text": "Well put. The step to AI is a little like the step to using an IDE. It simplifies and automate a various bottlenecks. But when the IDE starts randomly failing, you need to call on that guy that knows how to work without the IDE.",
+              "author": "n4r9",
+              "depth": 1
+            },
+            {
+              "text": "which IDE are you using that randomly fails?",
+              "author": "acestus5",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It is exactly analagous to ask how much math you should learn given literally everyone has a scientific calculator in their pocket at all times.\nThe answer is: to be a mathematician or an engineer, you still need to learn how to do the math yourself. A calculator makes the math easier and faster than doing integrals longhand, but owning a calculator does not mean you know how to apply an integral to a real problem.\nYou still must learn to write code yourself. You need to know the fundamentals of computer science, programming, algorithms. The AI is good, but it still requires human engineering effort to get good results in \nexactly\n the same way that a scientific calculator requires mathematic skill to be input in order to produce useful results.\nFacing a tricky software engineering problem armed with AI and no fundamental knowledge puts you in exactly the same situation as facing a tricky vector problem armed with a calculator and no fundamental knowledge. You can punch keys and get numbers out. Maybe you'll even land on the right answer, but it will take you ten times longer, produce worse results, and you won't even know if your answer is right. You won't learn anything either.\nWorking a tricky problem is how you learn which solutions apply and how to best use your skills. AI is the same way. If you don't have the fundamental skills, you won't learn, you won't get good results, and you'll waste a ton of time producing garbage for no benefit.\nAI is a skill multiplier, just like a calculator. It really, \ntruly\n is a garbage in, garbage out situation. If you don't put in skill and effort, you don't get good results. If you lack the fundamental skill and engineering mindset you will never get good results, you'll never learn how to get better, and you likely won't even have the capacity to judge your work as the garbage it is.\nThe only exception is the case that AI truly reaches super-human levels of ability in the near future. That case isn't worth worrying about because the problems it will cause go far, \nfar\n beyond \"should I learn to code\".\nSo yes, you should learn the fundamentals. AI makes \ngood\n programmers \nbetter\n, and conversely makes \nbad\n programmers \nworse\n.",
+          "author": "vitally3643",
+          "replies": []
+        },
+        {
+          "top": "If you mean coding as an writing skill, it wouldn't be valuable I guess. But if you are saying all of skills or layers building smth with code, it would be still valuable. (I believe)\nI'm not an expert in coding but trying to stay opened to learn everything about coding. Whenever I bump into smth not familiar I try to study with agent in top-down way.\nThis kind of state of mind gives me some relief that some where in future I would know quite a lot about coding and it would still valuable for myself.",
+          "author": "ejhooooon",
+          "replies": []
+        },
+        {
+          "top": "All of it. AI is magnificent in hands of a skilled coder. And absolutely crap in hands of someone who has no clue how computers work.",
+          "author": "alfanick",
+          "replies": [
+            {
+              "text": "I agree with \"all of it\" and am, respectfully, more than a bit annoyed when this question is asked because it's common. We still learn math while having calculators and there are myriad other examples illustrating the same basic point.",
+              "author": "dieselgate",
+              "depth": 1
+            },
+            {
+              "text": "Yep. There's a lot of room for error when you start by asking the wrong thing, then don't understand the output. I've seen prompts that were literally \"fix it\", then the LLM goes and changes assert status == 200 to 500. Tests pass now! Problem solved!",
+              "author": "icedchai",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Learning how to code will teach you how to break down problems and think in the way you’ll need to think to use and review code form AI. It will also teach you the language needed… not just the syntax of a programming language, but what is a function, variable, loop, conditional, etc. This will help you better talk to the AI and understand it. Trying to describe a concept you don’t really understand, when there is a simple word that can be used, will save a lot of trouble and headaches.\nI’d learn as much as you can without the help or use of AI, to build a solid foundation. If AI falls on its face, you’ll be ahead of all those who didn’t do that. If AI ends up being great, you’ll be able to better utilize it if you speak the same language.\nAs far as I see it, there is only upside to learning. Even if you’re not going into the industry, learning to code helps the thinking process in a way I think almost anyone can benefit from.",
+          "author": "al_borland",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48694802",
+      "title": "Ask HN: MacBook vs. Dedicated GPU for LLM",
+      "link": "https://news.ycombinator.com/item?id=48694802",
+      "domain": "news.ycombinator.com",
+      "author": "mzubairtahir",
+      "score": 34,
+      "comment_count": 65,
+      "created_ts": 1782530263,
+      "is_internal": true,
+      "post_text": "For those who are using llms on macbook, Want to understand how macbook is different than dedicated GPU in running those models? and how to know how much a macbook is capable of running a model?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48690591",
+      "title": "Roblox parental controls are a dystopian security disaster",
+      "link": "https://news.ycombinator.com/item?id=48690591",
+      "domain": "news.ycombinator.com",
+      "author": "notsure357",
+      "score": 23,
+      "comment_count": 5,
+      "created_ts": 1782500526,
+      "is_internal": true,
+      "post_text": "My 14 year old daughter got hacked by someone who was able to add themselves as a &quot;linked parent&quot; to her account. I&#x27;m not even sure that this person got ahold of her password in the first place. All this happened on Wednesday morning (6&#x2F;24&#x2F;26) but on the day it happened I did not recieve a single email about any of this even though the account is tied to my email address (verified). Usually if there is a new log in on an unrecognized device I would have gotten an email about it, but nothing was sent on 6&#x2F;24 to me. I suspect that even if two factor authentication was already added to her account it would have done nothing, because there was a two factor authentication passkey added to her account which was definitely not set up by her. But by using that newly created authentication passkey the &quot;linked parent&quot; was clearly able to log into her account (which I didn&#x27;t get any emails about), go into every game and transfer out every last collectable thing she had collected since 2020.<p>And wouldn&#x27;t you know it, Roblox says they aren&#x27;t responsible for those lost collectables. All the christmas and birthday roblox gift cards from the last 6 years which were used to buy those collectable items are completely wiped away for fun by this &quot;linked parent&quot;. My daughter is absolutely devastated by her loss of these collectables.<p>During the password reset process I had to disable two factor authentication to be able to log in to the account. Once in the account, the two factor passkey could not be removed from the account without having access to the passkey and I had to go through an AI chatbot to get that removed. The &quot;linked parent&quot; also changed the date of birth to make my daugter become 8 years old in Roblox and apparently for whatever reason you are only allowed to change the date of birth once, meaning I had to make request after request trying to get the date of birth changed. Every time I am making these support requests I have to prove I am a human (captcha), enter six digit email security codes, and then try to talk to an AI bot that only partially understands my issues. I can request to speak to a human which immediately ends the chat with the ai bot telling me a support request has been filed.<p>What is most baffling of all is that I had requested removing the &quot;linked parent&quot; in question and between both the AI and whatever support team is behind that AI, I could not get the &quot;liked parent&quot; removed. I even had one ticket closed out with an email response telling me &quot;We are unable to update or modify the parental settings on your child’s account due to security reasons. Parental controls can be managed on the account with parent privileges linked to your child’s account.&quot; When I was talking to an AI bot about this they explained that the &quot;linked parent&quot; was the only person who could remove themselves from my child&#x27;s account and trying to request anything beyond that answer was denied. I finally hit a wall in which I had made too many requests and they were no longer accepting form submissions from me. My wife is trying to work on this stuff now because I&#x27;m at a dead end. She was able to get the account moved to her email address because she had made payments to Roblox in the past to fund the account, but the &quot;linked parent&quot; is still there.<p>Why would I ever want to give money to Roblox again after all of this? Kids are more savvy than anyone else on that gaming system and will keep finding loopholes to do these sorts of things. No matter how many procedural layers of restricted communication are added this is only made worse because fundamentally Roblox assumes no liability for any lost items within a system where these collectables can be traded among friends or stolen from thieves. I don&#x27;t know that Roblox will be able to solve these problems ever when their solutions seem to be actually making things worse. If you have any stock in Roblox I would say they are a STRONG SELL!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication",
+        "stock",
+        "meaning",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48651906",
+      "title": "Ask HN: What home printer do you use/recommend?",
+      "link": "https://news.ycombinator.com/item?id=48651906",
+      "domain": "news.ycombinator.com",
+      "author": "niyazpk",
+      "score": 20,
+      "comment_count": 23,
+      "created_ts": 1782251118,
+      "is_internal": true,
+      "post_text": "I am in the market for a new printer, and thought I&#x27;d check with the HN crowd for some recommendations.<p>I hate my HP inkjet printer with a passion. Feels like the ink lasts less than 100 pages of light printing. And the ink is expensive.<p>I was under the impression that Brother was a good brand, but it seems they are also following the HP playbook.<p>What printer do you actually use? Would you recommend it for regular home printing (mostly b&#x2F;w, occasional color printing. Scanning, copying, etc. would be ideal)?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48680504",
+      "title": "Ask HN: Norway bans AI in elementary schools",
+      "link": "https://news.ycombinator.com/item?id=48680504",
+      "domain": "news.ycombinator.com",
+      "author": "mellosty",
+      "score": 15,
+      "comment_count": 19,
+      "created_ts": 1782429899,
+      "is_internal": true,
+      "post_text": "What is your opinion on this? Norway banned smart phones and now AI.<p>&gt; Prime Minister Jonas Gahr Støre argues that using AI could increase the risk that young children miss important steps in their education.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48709796",
+      "title": "Ask HN: Is WordPress the best way to create new websites for beginner",
+      "link": "https://news.ycombinator.com/item?id=48709796",
+      "domain": "news.ycombinator.com",
+      "author": "anitroves",
+      "score": 12,
+      "comment_count": 38,
+      "created_ts": 1782669806,
+      "is_internal": true,
+      "post_text": "Just curious if there is any better alternative for those who just knows basics of coding and are learning as they build.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48711408",
+      "title": "Ask HN: Books about Genetic Algorithms",
+      "link": "https://news.ycombinator.com/item?id=48711408",
+      "domain": "news.ycombinator.com",
+      "author": "andyjohnson0",
+      "score": 12,
+      "comment_count": 3,
+      "created_ts": 1782679207,
+      "is_internal": true,
+      "post_text": "I&#x27;m a developer. I have a basic working knowledge of classic neural networks. I&#x27;d like to learn about genetic algorithms. What books should I be reading? I prefer dead-tree, but pdf suggestions too please.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48696161",
+      "title": "Ask HN: Has Ilya Sutskever spoken publicly lately?",
+      "link": "https://news.ycombinator.com/item?id=48696161",
+      "domain": "news.ycombinator.com",
+      "author": "aurenvale",
+      "score": 10,
+      "comment_count": 1,
+      "created_ts": 1782547197,
+      "is_internal": true,
+      "post_text": "I realized I haven’t seen much from Ilya Sutskever recently.<p>Has he given any talks, interviews, papers, or technical updates in the past year that are worth reading?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48697956",
+      "title": "Ask HN: What do you predict the world will look like in 5-10 years?",
+      "link": "https://news.ycombinator.com/item?id=48697956",
+      "domain": "news.ycombinator.com",
+      "author": "justanything",
+      "score": 9,
+      "comment_count": 11,
+      "created_ts": 1782565815,
+      "is_internal": true,
+      "post_text": "With how much progress there has been in LLM and AI, what do you think is gonna look vastly different in the near future?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48700586",
+      "title": "Ask HN: Smallest amount of working ML weights that can be tattooed on a body?",
+      "link": "https://news.ycombinator.com/item?id=48700586",
+      "domain": "news.ycombinator.com",
+      "author": "thoughtpeddler",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1782585419,
+      "is_internal": true,
+      "post_text": "Recently saw this comment on another HN thread about the US government gating access to GPT-5.6 and how it harkens back to the 1990s encryption-as-export-controllable-tech situation and how people tattoo&#x27;d the algo to their bodies:<p>&gt; I can&#x27;t wait for the first person to tattoo model weights on their body!<p>(https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48693721)<p>And I can&#x27;t help but wonder, what <i>would</i> be the smallest functional amount of weights from any sort of ML model you could realistically tattoo onto a human body or body part?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48685368",
+      "title": "Ask HN: Who remembers Fry's Electronics – the \"church\" of IT people?",
+      "link": "https://news.ycombinator.com/item?id=48685368",
+      "domain": "news.ycombinator.com",
+      "author": "netfortius",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1782473289,
+      "is_internal": true,
+      "post_text": "For some reason I remembered today my first trip to San Jose, in the early 2000s, for a SANS Institute class, and discovering the Fry&#x27;s Electronics store. The amazing content of what one could use to build own computers, or tools for use with such, was like nothing else I have ever seen, anywhere else in the world where I&#x27;ve been, up until that point.<p>Some of the best related memories, though, come from the time when - as Chicagoan - I learned we will be getting our own Fry&#x27;s. The excitement in the geeks community was so great, at the time, that we were sharing pictures of the progress of the actual lot being worked on, then the building (walls by walls), in Downers Grove.<p>We used to call the place &quot;the church of IT people&quot;, simply because we would go there over the weekend, and stay over for the &quot;mass&quot; (equivalent time) and then some.<p>O tempora!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48683172",
+      "title": "Ask HN: Why does every AI demo sound perfect but real world deployment always",
+      "link": "https://news.ycombinator.com/item?id=48683172",
+      "domain": "news.ycombinator.com",
+      "author": "VaderAi",
+      "score": 8,
+      "comment_count": 13,
+      "created_ts": 1782456277,
+      "is_internal": true,
+      "post_text": "disappoints?\nWorking on AI voice for small \nbusinesses. The gap between what \nAI can do in a controlled demo vs \nmessy real world phone calls is \neye opening.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
