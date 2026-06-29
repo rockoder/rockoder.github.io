@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-24 – Impact as a Function of Organizational Legibility
+
+**Learning:** Viral engineering success is often reframed as a "wildcard risk" when it exists outside sanctioned planning cycles. In political organizations, impact is not a universal positive; it is a variable that must be made legible to hierarchy-driven measurement systems like QBRs and headcount planning. A tool that fixes a problem outside the roadmap also documents a failure in leadership's judgment capital.
+
+**Implication:** When writing about impact, distinguish between "utility impact" (solving problems) and "legible impact" (fitting the corporate narrative). The tension between the two is where the most significant career and organizational friction occurs.
+
+---
+
+## 2026-06-24 – Machine-Dependency and the Loss of Determinism
+
+**Learning:** The shift from "human-in-the-loop" to "harness-loop" automation turns codebases into organisms that assume machine participation for maintenance. This creates a new class of "cognitive dependency" where the cost of inference becomes a structural requirement for system stability. Engineering maturity is being outsourced to the orchestration layer, leading to a potential re-valuation of human-comprehensible "core" software.
+
+**Implication:** Move beyond "technical debt" as a metaphor for AI-generated code. Focus instead on "machine dependency" and the abdication of judgment. The real risk is not the quality of the code, but the loss of the ability to operate without the machine.
