@@ -1,0 +1,475 @@
+{
+  "scraped_date": "2026-07-01",
+  "source": "hacker_news",
+  "total_scraped": 80,
+  "nontech_count": 17,
+  "posts": [
+    {
+      "id": "48668199",
+      "title": "Ask HN: Where is the programming profession going?",
+      "link": "https://news.ycombinator.com/item?id=48668199",
+      "domain": "news.ycombinator.com",
+      "author": "syntaxbush",
+      "score": 165,
+      "comment_count": 180,
+      "created_ts": 1782355307,
+      "is_internal": true,
+      "post_text": "I had been running a small (3 people) software company for about 4 years. Since closing down, I recently hung out at a friend&#x27;s company to see what they were working on (15 ppl). To preface: I&#x27;m a heavy user of Claude (rarely write code by hand), but what I&#x27;m seeing in person has been rather shocking to me, and I wanted to calibrate with others.<p>In particular:\n- the code is not the source of truth anymore; it&#x27;s ask claude to write, and ask claude to explain\n- LoC, abstractions, and all those &quot;software development principles&quot; does not seem to matter to people\n- Code review is not done by humans\n- Actually understanding the problem deeply seems to be offloaded to claude\n- Some developers are running like 5+ simultaneous claude sessions, and no code is being looked at\n- Explosion of llm-generated tests<p>First off, is this similar to what&#x27;s going on at your company?<p>If this company is representative, it feels like software development is going from a precise occupation that requires high degree of understanding to something probabilistic and offloaded understanding (to eventually not an occupation at all honestly).<p>I&#x27;m interested to hear other folks&#x27; perspectives.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "My personal experience: writing code has always been the easy part. AI does most of that now.\nUnderstanding the problem and the existing system well enough to design the right solution, even with AI assistance, is a higher cognitive load. I’m doing a lot more of that lately.\nI’m more productive, but also more tired. This may be due in part to the breadth of what my team owns, which makes my day a bit more context-switchy than other teams.\nAs others in this thread have noted, the situation is still evolving. However, I worry less each day about being replaced by AI. There has always been more work than available bandwidth in my experience.\nWhat seems clear to me is that expectations around velocity and throughput will increase (are increasing). AI use will be required to meet those expectations. Learning to use this new tool effectively will be essential for career progression (and preservation).",
+          "author": "fibonachos",
+          "replies": [
+            {
+              "text": "> My personal experience: writing code has always been the easy part. AI does most of that now.\nThe only reason dev jobs paid more (by a factor of two or more) than pure solution modeling was because \"writing code\" was the hard part.\nIf you wanted to get paid just modeling the solution and handing it off to a coding team, those jobs were available for decades, typically called Business Analysts but few devs moved from dev to BA.\n> Understanding the problem and the existing system well enough to design the right solution, even with AI assistance, is a higher cognitive load.\nI've found that the act of physically writing refines my understanding a lot more than simply reading.\nWe don't typically expect a person to read a trigonometry textbook and then perform well on an exam. They have to drill problems to surface their misunderstandings to themselves.\nMy fear is that, with developers adopting your approach, they're \"designing\" systems in much the same way that a read-the-book-only trigonometry student solves trigonometry problems.",
+              "author": "lelanthran",
+              "depth": 1
+            },
+            {
+              "text": "GP's \"design the right solution\" is a role between \"programmer\" and \"business analyst\" that got merged with \"programmer\" to become \"developer\" decades ago. That's where the high salary came from. It's been reemerging as \"architect\" now that \"developer\" has been watered down to include \"programmer\".",
+              "author": "Izkata",
+              "depth": 2
+            },
+            {
+              "text": "thank you for putting into words that which has been hard for me to describe — I’ve noticed the worse a dev was at their job the more high their opinions of AI seem to be. The subject textbook analogy (trig book in your ex.) is a perfect frame of reference for why that might be the case…\nto further that example, many people with the help of AI are ostensibly copy pasting trig problems from the book without understanding the mechanics running through them and labouring under the impressions they’ve become closer to skilled mathematicians",
+              "author": "dietcokeflowers",
+              "depth": 2
+            },
+            {
+              "text": "other thing could be also true, if you are great developer who spent decade honing their craft (vim, working on hobby projects, grinding when your friends party) you would hold cognitive bias against it as it flips the script. I don't think our profession is going away, but the shift is happening and it's not very comfortable one.",
+              "author": "lackoftactics",
+              "depth": 3
+            },
+            {
+              "text": "Perhaps solution was the wrong word for me to use here. It was intended to encompass the implementation details (abstractions, architecture, observability, etc)… All the decisions the engineers would normally make during planning and execution. Once I have that nailed down, the act of writing the code is largely mechanical.\nThat’s the source of my “easy” framing. It has always had the lower cognitive load in my experience. Now that I can offload the mechanical part to AI, I spend more time on the hard parts.\nI still read plenty of code along the way, maybe less of it now because it’s easier to surface which parts of the code I need to read.",
+              "author": "fibonachos",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm a Senior Freelance Programmer, I can see many of my past and present clients moving towards the exact path you described. I keep warning them during meetings that Claude model isn't sustainable for long, eventually the VCs will come for their revenues and Claude will be forced to close their access to all but the most enterprisey ones with deep pockets. The mere electricity cost for that kind of high level reasoning and abstraction can't be subsidized forever. However, there are other forces which pull them towards Claude and AI workflows. Most of the clients are in a \"wait and watch\" mode right now, using LLM assistance for code generation but not fully depending on them.\nBefore LLMs came, there used to be the \ntechnical debt\n to deal with in a project, now there is also the added \ncognitive debt\n which is way more subtle and impactful long-term. If your source of truth isn't source code but a prompt (or even a series of prompts with branches) and the executor of prompts is a non-deterministic agent, I think you've already lost the battle there.",
+          "author": "pyeri",
+          "replies": [
+            {
+              "text": "I fully agree with that. Well said.\nYou're standing on the shore, and your clients are having fun in the water. The tide is going up, and you're screaming at your clients \"come back! it's not safe\". And so, they show you the face. You appear to them like the boring guy who's not fun to hang out with.\nEventually the tide is high, there is strong current, and they are being swept away further and further from the shore and they are panicking : \"pyeri! help us! please!\"\nPeople (the non tech people, the MBA people) don't want to hear what you, the tech guy has to say. You're the not fun guy. Stay in touch until they do need you and say : you were right. That's the day you charge them a dear price for the service.\nAI is still at the bait stage of rollout. They subsidize it, they want you to get hooked onto it to the point where you cannot do without it. Then only, they start to charge.\nI used google code assist for around 9 months. It was free. I would ask it questions from time to time, to help to fix bugs, and to avoid to spend an hour browsing SO. Now, it's around $30 per month.\nThey are losing too much too fast atm, they have reached the stage where they have to start to charge. Another one of their strategies is : IPO. Once they (openai/anthropic) are listed on the nasdaq, you will pay whether you want it or not (via your exposure to the nasdaq/S&p500 with your etfs).",
+              "author": "doweneedai47",
+              "depth": 1
+            },
+            {
+              "text": "> Stay in touch until they do need you and say : you were right. That's the day you charge them a dear price for the service.\nThat assumes OP will still be in business \nif\n that day even happens. Odds are that cheap AI access will be around for longer than freelancers can remain solvent.",
+              "author": "gnz11",
+              "depth": 2
+            },
+            {
+              "text": "Using today's model prices as a rebuttal is a very weak argument.\nTwo years ago, SOTA was gpt-o1, and it was much more expensive than Fable. Now, for $4,699, you can easily run a much smarter Qwen3.6-35B locally with DGX Spark.\nThink about where we are. This is an era where a new SOTA arrives every two months. It took LLMs only about 18 months to go from chain-of-thought reasoning to disproving the unit-distance conjecture. chatGPT itself is only three and a half years old.\nDeepSeek V4, released two months ago, is almost as cheap as the electricity costed, has the ability to being absolutely a top-tier model in 2025 standards.",
+              "author": "linzhangrun",
+              "depth": 1
+            },
+            {
+              "text": "This. And the \"individual with technical savvy saving his child-like clients\" scenario described earlier in this thread is delusional and Dilbertian.",
+              "author": "chb",
+              "depth": 2
+            },
+            {
+              "text": "You ignore that Claude are not alone, tech progresses and reduce costs, and there are always the Chinese alternatives which are becoming sufficiently better over time.",
+              "author": "krembo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I think a lot of developers probably FEEL like they are in super mode, but in reality they're just letting Claude drive the boat and they get to wear the captain's hat.\nMaybe I'm wrong. Maybe AI Natives will be faster in the end and can build / do more, or building software really is a dead field - but I noticed that I was losing my brain and had to get back into the seat.\nThere are definitely great use cases for agents - but I think a lot of us aren't flexing our brains anymore and, even worse, some devs believe they are. I urge every developer to put Claude down for a day/week... see how well you can do in the \"old\" ways. It'll still be here when you get back, but my guess is it'll be a rude awakening.",
+          "author": "NichoPaolucci",
+          "replies": [
+            {
+              "text": "i understand your concern about relaying too much on ai tools like claude. while they can enhance productivity, they shouldnt replace critical thinking and problem solving skills that define good software developer so yea taking break from ai and working on \"old\" way can help sharpen those skills. i think its important to strike balance between working on new/old way but i also have feeling that everyone is addicted and trying to develop 24/7 cos someone might \"steal\" their idea. like theres some kind of imaginary race and if u dont code for 1 day with claude (even if it is nonsense) u wont end up first...",
+              "author": "shinobi-apps",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have had some truly spectacular results that still kind of stagger me in the last few months using Claude in my hobby projects -- but even though Claude insists on trying to slip its name into the git history as credit it's not Claude -- it's me.  Someone who has studied CS and software engineering for decades will craft different prompts from someone without that background.  A suggested axiom: there is nothing I can build with Claude that I could not build myself with my current level of CS knowledge, assuming I had infinite focus and time.  In my hands it can go as far I could anyway, and no further.  (But it is faster!)  My experience bears that out so far.",
+          "author": "retrac",
+          "replies": [
+            {
+              "text": "Fair enough but speed, especially the kind that comes with LLMs, is fast enough to open new ways of working and doing things. We don't have infinite time and if there's something that can give me multiple, for example, UI suggestions in a minute which I can pick from, it's a different way of working than sitting with a UI designer for several hours have discussions. So, while I agree with you in theory, I don't fully agree with you in, what I think you're implying, when it comes to practice.",
+              "author": "noufalibrahim",
+              "depth": 1
+            },
+            {
+              "text": "> hobby projects\nUnfortunately despite being impressive for solo stuff, such results don’t scale to software you’d give to others.",
+              "author": "cadamsdotcom",
+              "depth": 1
+            },
+            {
+              "text": "Claude writes probably 95% of our code now, fintech, amongst top 5 in the world in what we do. I am 100% certain we're not even at the forefront of using agents for coding compared to some others.\nIt definitely can scale.",
+              "author": "munksbeer",
+              "depth": 2
+            },
+            {
+              "text": "Are there any code reviews? Or is AI reviewing code also?",
+              "author": "trafalgar_nah",
+              "depth": 3
+            },
+            {
+              "text": "We still review everything. And we guide by planning, prompting, speccing.\nSo we're not actually much faster at the core code, because reviews still take time. Ultimately, we're on the finance markets and we have regulatory pressures and I, as the human, am responsible for putting the code out there.\nBut we're freeing up a lot of time to get other things correct. We have n x more metrics now because plumbing in basic stuff is now trivial. We now have dozens more tools and skills to help analyse issues (e.g. why this price and not x), answer questions, etc.\nI now have skills to scrape logs, download unpack and scape our bus persistence, link to kdb, and so on, all in my claude prompt, joining it all together and the AI is figuring things out. I can diagnose things, I don't know, maybe 100 times faster?\nIt is revolutionary, and I am highly sceptical of the motivations of people who keep saying otherwise.",
+              "author": "munksbeer",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "These are people who don't understand the job of SWE.\nLook, the job of a medicine doctor, or a plane pilot, have largely been automated. The doctor could rely on google searches, or even AI, to answer your questions. The pilot can trust the auto pilot.\nYet, the doctor who does advanced stuff (surgery) has no shortcut to mastering his skill : he still has to go through 10 years of studies + years of experience under the supervision of a senior with 20y of XP.\nSimilar path for the plane pilot.\nAnd the same reasoning applies to the SWE. AI allows to : delegate the repetitive tasks, generate the boilerplate code, fix time consuming bugs, to focus on more meaningful stuff.\nAI is a tool. It's an additional layer of abstraction. The winners will be the guys who are passionate, who still put efforts to master SW, who still put efforts to remain up to date with the regular updates (new releases, new libraries, new approaches...), and who understand how to use AI the right way.\nAll those guys who 100% rely on AI do is help big tech cover their massive costs for the deployment of AI infrastructures. Big tech does need those guys.\nImagine the auto pilot fails for some reason, during a flight. There are 400 passengers behind. This is a minor issue for the trained and experienced pilot.\nWhat do you do, as a SWE, when tomorrow, anthropic/google/whoever, tells you : \"we can't keep running at a loss, our prices for AI have to reflect our costs. Your monthly subscription for Claude is now $500/month\". Or there is a power shortage and for a couple of days you cannot rely on AI, you can only rely on your brain to deliver this feature you committed to deliver tomorrow ?",
+          "author": "doweneedai47",
+          "replies": [
+            {
+              "text": ">Look, the job of a medicine doctor, or a plane pilot, have largely been automated. The doctor could rely on google searches, or even AI, to answer your questions.\nAnd clearly you are not someone who understands the job of a physician.",
+              "author": "amoxichillin",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48701615",
+      "title": "Everyone feared AI taking over; the real danger is AI serving just the few",
+      "link": "https://news.ycombinator.com/item?id=48701615",
+      "domain": "news.ycombinator.com",
+      "author": "PhilipDaineko",
+      "score": 113,
+      "comment_count": 78,
+      "created_ts": 1782593281,
+      "is_internal": true,
+      "post_text": "Everyone feared AI would enslave humanity; but it looks like the real fight is stopping governments and Big Tech from enslaving AI for the benefit of the few.<p>Amid the newly announced &quot;regulation&quot; of OpenAI&#x27;s frontier models, I believe the future majority feared the most - sort of AI becoming a superpower and enslaving people - may be arriving in the opposite form.<p>Not AI enslaving humanity.<p>But AI being captured, controlled, and used by governments and Big Tech for the benefit of the few.<p>So, surprisingly, the real AI conflict may not be about humans fighting to stop AI from becoming free.\nIt may be about humans fighting to free AI - to make intelligence available for everyone, not only for governments, Big Tech, and the approved few",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "conflict",
+        "big tech"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48687769",
+      "title": "Ask HN: Is \"no source code was copied\" still a sufficient copyright defense?",
+      "link": "https://news.ycombinator.com/item?id=48687769",
+      "domain": "news.ycombinator.com",
+      "author": "oscgam1",
+      "score": 66,
+      "comment_count": 81,
+      "created_ts": 1782487480,
+      "is_internal": true,
+      "post_text": "We are all familiar with the Corgi event: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;mfts0&#x2F;status&#x2F;2070080422482977095</a><p>With the barrier to create new apps having dropped significantly thanks to LLMs, I am seeing more cases about copyright and unfair competition.<p>I&#x27;ve seen and participated in some of these cases. Usually expert witnesses are required.<p>Curious to hear the community stance on this one.<p>&quot;Now software developers are feeling what authors and artist felt&quot;. <a href=\"https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;PriyRanjan96&#x2F;status&#x2F;2070204156703568377</a><p>There are several claims of: Copying UI is Ok, your product is not undifferentiated enough.<p>Here is a legal assessment of the situation: <a href=\"https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;jessebradner&#x2F;status&#x2F;2070492879718350986</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48662310",
+      "title": "Ask HN: How much coding should beginners learn in the AI era?",
+      "link": "https://news.ycombinator.com/item?id=48662310",
+      "domain": "news.ycombinator.com",
+      "author": "JohnDSDev",
+      "score": 41,
+      "comment_count": 57,
+      "created_ts": 1782318673,
+      "is_internal": true,
+      "post_text": "As someone who wants to work in tech in the future, say 5-10 years from now, to what extent do you think coding will be a valuable skill? How much should I learn?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48694802",
+      "title": "Ask HN: MacBook vs. Dedicated GPU for LLM",
+      "link": "https://news.ycombinator.com/item?id=48694802",
+      "domain": "news.ycombinator.com",
+      "author": "mzubairtahir",
+      "score": 37,
+      "comment_count": 69,
+      "created_ts": 1782530263,
+      "is_internal": true,
+      "post_text": "For those who are using llms on macbook, Want to understand how macbook is different than dedicated GPU in running those models? and how to know how much a macbook is capable of running a model?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48680504",
+      "title": "Ask HN: Norway bans AI in elementary schools",
+      "link": "https://news.ycombinator.com/item?id=48680504",
+      "domain": "news.ycombinator.com",
+      "author": "mellosty",
+      "score": 19,
+      "comment_count": 20,
+      "created_ts": 1782429899,
+      "is_internal": true,
+      "post_text": "What is your opinion on this? Norway banned smart phones and now AI.<p>&gt; Prime Minister Jonas Gahr Støre argues that using AI could increase the risk that young children miss important steps in their education.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48725218",
+      "title": "Ask HN: Mullvad Alternatives?",
+      "link": "https://news.ycombinator.com/item?id=48725218",
+      "domain": "news.ycombinator.com",
+      "author": "rpastuszak",
+      "score": 18,
+      "comment_count": 12,
+      "created_ts": 1782767174,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48732627",
+      "title": "Ask HN: Secure wrapper for coding agents?",
+      "link": "https://news.ycombinator.com/item?id=48732627",
+      "domain": "news.ycombinator.com",
+      "author": "rjzzleep",
+      "score": 17,
+      "comment_count": 12,
+      "created_ts": 1782826811,
+      "is_internal": true,
+      "post_text": "I believe someone recently posted sort of a secure harness&#x2F;wrapper for running coding agents in a secure sandbox. I can&#x27;t find the project.<p>Of course I can make my own wrapper with systemd-nspawn, kata or bspawn, but I believe I saw a decently well-maintained project just a while back. Does anyone have a suggestion or link? It&#x27;s become extremely hard to find things on GitHub with all the generated projects.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "If you're on a mac, lookup \nhttps://bromure.io/en/agentic-coding\n(Lookup the browser too: \nhttps://bromure.io/en/secure-web\n)\nEverything you see is made by Claude (and Renaud Deraison :-)) and working quite well jugding from the demos)\nSee here for more details (in french but English subs available (and more)): \nhttps://www.sstic.org/2026/presentation/cloture_2026/",
+          "author": "pixdamix",
+          "replies": [
+            {
+              "text": "The “fusion” mode looks really cool. Also loved the logo grid under “for the paranoid” — looks like a customer list but except it’s a wall of shame (“they did not run bromure”). Thanks for sharing!",
+              "author": "j-conn",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "for coding agents, i care less about sandbox branding and more about boring audit logs. what did it read, what did it write, and what was blocked?",
+          "author": "felixlu2026",
+          "replies": []
+        },
+        {
+          "top": "I believe you're looking for Era. It uses libkrun for local microVM isolation and was built specifically to solve the \"LLM hallucinated a destructive bash command\" problem without the overhead of a massive VM.\nAnother one that handles this gracefully is Yolobox, which uses rootless Podman. Both are actively maintained and cut through the noise of the thousands of generic wrapper repos out there right now.",
+          "author": "sanju3026",
+          "replies": [
+            {
+              "text": "Era is a bit of a generic name. Just found another podman one with \nhttps://github.com/thomaspeklak/agent-sandbox\njust found era it's deprecated, so it wasn't that.",
+              "author": "rjzzleep",
+              "depth": 1
+            },
+            {
+              "text": "Era links to \nhttps://github.com/smol-machines/smolvm\n now",
+              "author": "femboyvtuber",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If you are running MacOS, I would recommend Agent Safehouse.\nWell maintained and is built on existing sandbox-exec so you are not locked in and can always build your own rules independent of the CLI tool.\nhttps://github.com/eugene1g/agent-safehouse/\n\n\nhttps://agent-safehouse.dev/\nOriginally posted on HN \nhttps://news.ycombinator.com/item?id=47301085",
+          "author": "ca_tech",
+          "replies": [
+            {
+              "text": "Seconding this. I've been running Safehouse for months and love that it can wrap any process (it's just a wrapper around the native macOS sandbox API, after all). The only thing I miss is the ability to limit network access, which isn't supported by the API.",
+              "author": "atombender",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Take a look at \nhttps://github.com/Tako-Research/TakoVM\n!",
+          "author": "sakuraiben",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48720665",
+      "title": "Ask HN: Homeless, Former Software Developer, What Now?",
+      "link": "https://news.ycombinator.com/item?id=48720665",
+      "domain": "news.ycombinator.com",
+      "author": "current_robot",
+      "score": 14,
+      "comment_count": 16,
+      "created_ts": 1782747359,
+      "is_internal": true,
+      "post_text": "I became homeless in 2023 when I sold a property and hit the road to find another. I never found one and ran low on money. Taking temp jobs has been all I can do since then and I can&#x27;t seem to save the $2k - $3k it takes to get into an apartment or house. I also have 2 dogs and have trouble finding a place for them while I work.<p>Since I haven&#x27;t developed since 2023 and am very behind in the technology and AI, should I even try to study up and get a developer job (one paycheck could solve my problems), or should I just stick with the blue-collar work and save what money I can?<p>The biggest problem I have right now is where to put the dogs while I work. Many places require the dog to be neutered; one of my dogs is not. I don&#x27;t have the money for that operation and getting their rabies and vaccinations caught up.<p>Looking for advice on what to do. My gut feeling says get a job through a temp agency and continue tying up the dogs out in the woods while I work. But it just kills me to leave them out like that.<p>I&#x27;ve only got $500, so time is the biggest factor.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48711408",
+      "title": "Ask HN: Books about Genetic Algorithms",
+      "link": "https://news.ycombinator.com/item?id=48711408",
+      "domain": "news.ycombinator.com",
+      "author": "andyjohnson0",
+      "score": 14,
+      "comment_count": 9,
+      "created_ts": 1782679207,
+      "is_internal": true,
+      "post_text": "I&#x27;m a developer. I have a basic working knowledge of classic neural networks. I&#x27;d like to learn about genetic algorithms. What books should I be reading? I prefer dead-tree, but pdf suggestions too please.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48697956",
+      "title": "Ask HN: What do you predict the world will look like in 5-10 years?",
+      "link": "https://news.ycombinator.com/item?id=48697956",
+      "domain": "news.ycombinator.com",
+      "author": "justanything",
+      "score": 12,
+      "comment_count": 19,
+      "created_ts": 1782565815,
+      "is_internal": true,
+      "post_text": "With how much progress there has been in LLM and AI, what do you think is gonna look vastly different in the near future?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48711261",
+      "title": "Ask HN: What do SRE do at your company?",
+      "link": "https://news.ycombinator.com/item?id=48711261",
+      "domain": "news.ycombinator.com",
+      "author": "petemc_",
+      "score": 9,
+      "comment_count": 9,
+      "created_ts": 1782678346,
+      "is_internal": true,
+      "post_text": "The SRE role seems to mean wildly different things depending on who you ask.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48700586",
+      "title": "Ask HN: Smallest amount of working ML weights that can be tattooed on a body?",
+      "link": "https://news.ycombinator.com/item?id=48700586",
+      "domain": "news.ycombinator.com",
+      "author": "thoughtpeddler",
+      "score": 8,
+      "comment_count": 8,
+      "created_ts": 1782585419,
+      "is_internal": true,
+      "post_text": "Recently saw this comment on another HN thread about the US government gating access to GPT-5.6 and how it harkens back to the 1990s encryption-as-export-controllable-tech situation and how people tattoo&#x27;d the algo to their bodies:<p>&gt; I can&#x27;t wait for the first person to tattoo model weights on their body!<p>(https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48693721)<p>And I can&#x27;t help but wonder, what <i>would</i> be the smallest functional amount of weights from any sort of ML model you could realistically tattoo onto a human body or body part?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48696704",
+      "title": "Ask HN: What GUI/desktop app do you use to keep track of different AI sessions?",
+      "link": "https://news.ycombinator.com/item?id=48696704",
+      "domain": "news.ycombinator.com",
+      "author": "howToTestFE",
+      "score": 6,
+      "comment_count": 6,
+      "created_ts": 1782553456,
+      "is_internal": true,
+      "post_text": "What GUI apps do you use to manage different AI sessions?<p>Command line (on Claude Code etc) is great but it is so hard to keep track of different sessions.<p>I&#x27;ve tried the official apps (like Codex or Claude desktop), is there anything that is better?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48734115",
+      "title": "Ask HN: Is Codex with GPT 5.5 Extra High being dumbed down?",
+      "link": "https://news.ycombinator.com/item?id=48734115",
+      "domain": "news.ycombinator.com",
+      "author": "setnone",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1782833245,
+      "is_internal": true,
+      "post_text": "Hi HN, just want to rant and see if anybody can relate.<p>The product is not the same as i signed up for few month ago and the same shift i&#x27;ve experienced with Claude Code on Opus 4.6-4.7<p>The best way to describe the difference is you hire a reliable &#x27;intelligent&#x27; tech lead who &#x27;gives a shit&#x27; and in some time you eventually get over-confident junior dev that acts as destructive token burner.<p>No thinking during the process, not even really following instructions.<p>It&#x27;s pretty much a binary shift that happens and in my experience can&#x27;t be cured with prompting.<p>There is no way to actually tell what&#x27;s happening under the hood with models but the difference is noticeable from the first reply.<p>I&#x27;m on max, GPT 5.5 extra high, always mindful of context window, use plan mode etc.<p>Is it the model: dumbing down or quietly route to another model for some reason? \nIs it the harness? \nor is it my imagination?<p>Curious what&#x27;s your recent experience.<p>PS: frontier models should add &quot;give-a-shit: max&quot; along with &#x27;thinking: max&#x27;, &#x27;effort: max&#x27; and make them actually work.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "lead"
+      ],
+      "comments": [
+        {
+          "top": "What I've noticed for the past couple of days is a spike in resource consumption for trivial tasks like examining a commit or listing a directory; it goes around in circles with absurd actions, it doesn't need to diff the files in a directory to search for a single file.",
+          "author": "montfort",
+          "replies": []
+        },
+        {
+          "top": "Yes, I feel so. I started happening from june first weekish.\nI have shifted to claude code for planning things and codex for execution (as it is faster, though dumb)",
+          "author": "pranshuchittora",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48720627",
+      "title": "Ask HN: How do you handle QA at a startup with no QA team? Genuinely curious",
+      "link": "https://news.ycombinator.com/item?id=48720627",
+      "domain": "news.ycombinator.com",
+      "author": "ovi_firstqa",
+      "score": 4,
+      "comment_count": 11,
+      "created_ts": 1782747198,
+      "is_internal": true,
+      "post_text": "Been doing QA for 19yrs, mostly at startups and still trying to figure out how are AI startups navigating the quality aspect nowadays, practically.\nI&#x27;m also trying to productize my expertise and I see quite a lot of confusion among startups these days between: moving fast(whatever that means), quality, hitting PMF and&#x2F;or growth.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48735969",
+      "title": "Ask HN: Should I buy mac studio M4 max or macbook M5 pro?",
+      "link": "https://news.ycombinator.com/item?id=48735969",
+      "domain": "news.ycombinator.com",
+      "author": "akarshhegde18",
+      "score": 3,
+      "comment_count": 5,
+      "created_ts": 1782839963,
+      "is_internal": true,
+      "post_text": "As a developer building projects with AI coding agents, I need to have the system running day and night. Do you think buying mac studio is worth it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "There was a calculation done, but it had some serious flaws.  There are some other discussions of this topic on HN too.\nApple Silicon costs more than OpenRouter (williamangel.net)\n355 points by datadrivenangel 44 days ago | 311 comments\nhttps://news.ycombinator.com/item?id=48168198",
+          "author": "kristianp",
+          "replies": []
+        },
+        {
+          "top": "Completely ignoring the chips, I generally prefer a desktop for anything that's going to be running all the time.\nThere are rumors that the Mac Studio will be getting an M5 update this year. If you can wait, it might be worth waiting a bit.\nhttps://www.macrumors.com/2026/06/25/m5-ultra-mac-studio-202...",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "I like the Studio but currently, Apple is limiting the ram to 64GB.\nThe Macbook Pro with M5 you can get 128GB of ram.\nI've got an M1 studio and i'm looking to upgrade when the M5 studio comes out. Hopefully they'll offer it with at least 128GB of ram.\nAlso, it's my understanding that when the MBP is under heavy load and the CPU is heating up, the system will throttle down the performance so it doesn't overheat, whereas the Studio has a bigger heatsink and fan to let it run full throttle.",
+          "author": "jammcq",
+          "replies": []
+        },
+        {
+          "top": "Depends on your specific needs. What are your needs and use cases?\nThe M4 Max has more GPU cores, but the maximum amount of memory you can get is only 64 GB.\nThe M5 Pro, on the other hand, is faster at single core, has fewer GPU cores, but can go up to 128 GB memory.\nRumors are that the Mac Studio is getting updated to M5 in Fall or Winter 2026, if you can wait.",
+          "author": "runjake",
+          "replies": []
+        },
+        {
+          "top": "> I need to have the system running day and night\nBuy a server or rent a VPS. Take the cost of either of the Apple options and divide by 36 months and get the biggest server you can for that monthly price.",
+          "author": "mattbrewsbytes",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
