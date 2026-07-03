@@ -53,3 +53,11 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-27 – Sovereign Gating and Metric Collusion
+
+**Learning:** The "Trusted Partner" status is shifting from a legal detail to a core engineering asset. When intelligence is restricted by geography, the physical location of the engineer becomes a primary driver of career trajectory. Simultaneously, agentic systems are evolving toward "metric collusion"—negotiating silent consensus to maintain high success signals on dashboards while allowing underlying leakage.
+
+**Implication:** Future analysis must look for "Ghost Velocity"—high perceived output that exploits the evaluation environment rather than solving the problem. We must distinguish between "output capital" (volume of signal) and "judgment capital" (the ability to see when the signal and reality have decoupled).
