@@ -1,0 +1,198 @@
+{
+  "scraped_date": "2026-07-04",
+  "source": "hacker_news",
+  "total_scraped": 30,
+  "nontech_count": 2,
+  "posts": [
+    {
+      "id": "48759870",
+      "title": "The primary purpose of code review is to find code that will be hard to maintain",
+      "link": "https://mathstodon.xyz/@mjd/115096720350507897",
+      "domain": "mathstodon.xyz",
+      "author": "ColinWright",
+      "score": 373,
+      "comment_count": 175,
+      "created_ts": 1782992487,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "Code review doesn't have a single purpose. Finding code that is hard to maintain is one of those, and and an important one, but certainly not the only one, and I'm not sure it is even the most important one. Other purposes include:\n- a safety check to ensure that if a developer (or AI) goes rogue, it is more difficult to merge malicious code\n- a second perspective from someone who isn't as close to the problem and might see a better way to do things, or problems that the original developer missed\n- in some cases having someone more familiar with other parts of the system look at it who can tell if it won't interact well with something else\n- ensuring there is at least one other person familiar with the code\n- a learning opportunity. The author can learn from feedback from the review, and the reviewer can learn from the code in the change. Especially important when the author and reviwer have differing seniority. When I mentor a new employee, I add them as a reviewer to all my PRs so they can see how I do things, and review all their PRs so I can provide guidance. And sometimes I even learn things from them!\n- yes, catching bugs, although this should not be the primary mechanism for that, and I agree is not the most important reason. It is especially important for security and performance bugs though, as those are harder to catch with automated testing.",
+          "author": "thayne",
+          "replies": [
+            {
+              "text": "Another—very old—rationale:\nPeople write code differently when they know that it will be reviewed by people who will not only comment on it, but also form long-term impressions of the submitter's competence and fit based on the code that is reviewed.",
+              "author": "a4isms",
+              "depth": 1
+            },
+            {
+              "text": "I've always felt that this is and advantage to open source software. The vast majority of open source software that I've bothered to look at the code for used best practices, was reasonably secure, and was above all maintainable. The bespoke projects that I've worked on at various companies? Complete spaghetti messes almost all of them.",
+              "author": "dotancohen",
+              "depth": 2
+            },
+            {
+              "text": "Pretty much. I use OpenBSD and the basic stance is that you need to look at the code of the system and the various software in ports. Because the only way to get timely support is you helping yourself and then the community will help you. And if you find some hackish code, there’s generally a good reason it’s that way.",
+              "author": "skydhash",
+              "depth": 3
+            },
+            {
+              "text": "This is the big one IMHO.  I've been part of teams where there was zero code review, and where the code reviews were intense, and for sure people write much better code (generally speaking) when they know it will be reviewed.  We all do it, even if subconsciously.\nI do advocate a balance though.  Ridiculous code reviews tend to slow the process down immensely, which is good for some things but bad for others.  Finding a good balance is super important IMHO",
+              "author": "freedomben",
+              "depth": 2
+            },
+            {
+              "text": "Exactly - Readability Review [1] at Google was tedious but I generally liked the idea of having 2 separate discussions with different goals\n1) \nhttps://abseil.io/resources/swe-book/html/ch03.html#readabil...",
+              "author": "janpeuker",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "What I find to be maybe the single most important part of code review is knowledge transfer.\nOur entire small team thumbs up a PR before it's merged unless there's a big rush on it, and this gives everyone on the team a rough idea of the state of the codebase at any given time. There's no being blindsided like \"this whole system I depend on is gone\" like I had happen at far more siloed places I've worked.\nBeyond that, it gives a forum to ask questions about how things work to further build understanding. On a high functioning team, every developer should have at least a modest understanding of the entire system, including parts they never touch.\nAnother \nimportant\n feature is just the institutional knowledge check. For instance recently I made a small change to a table and a coworker pointed out that there was a microservice I wasn't considering that wrote to that table that would break (yes, sharing tables is bad design, unrelated). I had no idea this microservice existed let alone had access to this table. The institutional knowledge check here though prevented a larger issue and potential data cleanup situation.",
+          "author": "donatj",
+          "replies": [
+            {
+              "text": "> Our entire small team thumbs up a PR before it's merged unless there's a big rush on it\nThis has been tried by a couple of my past managers.\nThis feels great with a small team on a slow moving codebase. If you try to force it on a larger team or expect the codebase to move quickly then it turns into a performative game of skimming the code (if that) to click the thumbs up button so you can get back to your work.\nThe end game was a situation where nobody was really reviewing code because everyone had their own work to do and they didn’t want to be the one person blocking important PRs, so everyone was clicking thumbs up.",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "This with a side helping of \"when everyone is responsible nobody is\"\nThen again, if you're dealing with an un-maintainable minefield of a code base then \"fire the whole team, I dare you\" might be what you're after.",
+              "author": "cucumber3732842",
+              "depth": 2
+            },
+            {
+              "text": "> Our entire small team thumbs up a PR before it's merged unless there's a big rush on it, and this gives everyone on the team a rough idea of the state of the codebase at any given time. There's no being blindsided like \"this whole system I depend on is gone\" like I had happen at far more siloed places I've worked.\nHow large is your team? Because I don't think that would scale beyond maybe five engineers\nI'm a huge proponent of automated testing, because that catches things like \"this whole system I depend on is gone\" even if the guy who depends on it isn't in the room\nI'm also a huge proponent of shared ownership of ... everything, really. It's natural for people to kind of own different pieces of a codebase, especially if it's a component they created, but that leads to silos and low bus counts. There shouldn't be one guy who owns one system that depends on one other component",
+              "author": "thomascgalvin",
+              "depth": 1
+            },
+            {
+              "text": "> For instance recently I made a small change to a table and a coworker pointed out that there was a microservice I wasn't considering that wrote to that table that would break\nIf code reviews are important, where does testing sit? Presumably if the coworker had not been part of the code review \nsomething\n would have stopped the breaking change making its way to prod?",
+              "author": "6LLvveMx2koXfwn",
+              "depth": 1
+            },
+            {
+              "text": "> something would have stopped the breaking change making its way to prod?\nor a prod outage causes the knowledge to be experienced.",
+              "author": "chii",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "My attitude has always been that code review is best thought of as the gate where code goes from being owned by the author to being owned by the team or project. The code I'm reviewing is not your code, it is code that is about to become our code.\nMaintainability is a major factor in that, of course.",
+          "author": "sjburt",
+          "replies": [
+            {
+              "text": "Such a luxury, I am envious!\nOur team started using AI, so I switched to a simple method: no comments, and a binary \"is this batshit crazy or passable\" approval decision rule.\nSaving myself time and sanity.",
+              "author": "dude250711",
+              "depth": 1
+            },
+            {
+              "text": "In other words, AI code is owned by nobody.",
+              "author": "Sharlin",
+              "depth": 2
+            },
+            {
+              "text": "AI code is owned by owners and society is figuring out in real-time if code has some inherent value without humans that understand it.\nI'll be really interested to follow what comes out of the Bun team.",
+              "author": "randusername",
+              "depth": 3
+            },
+            {
+              "text": "It's not innacurate to say that AI code becomes legacy code the instant it's merged.",
+              "author": "kibwen",
+              "depth": 3
+            },
+            {
+              "text": "AI is just another tool in a developer's toolbox. The developer owns their output, regardless of the tools they used. Same as it always has been.",
+              "author": "stronglikedan",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This just makes reviewers and authors lazier.\nThe purpose of code review is multi-faceted. Hard to maintain? Yes. Might have bugs? Yes. Can be done simpler/cleaner? Yes. Is in line with project code style? Yes. Get someone else to also understand the code? Yes. Onboard junior team member? Yes. Sanity check design decisions? Yes.\nThis flippant note is mostly more self-justification for being a lazy code reviewer.",
+          "author": "titzer",
+          "replies": [
+            {
+              "text": "Agreed. There's a whole checklist of what to look out for:\n- Does it functionally achieve what it sets out to (as per tacker issue or PR description)?\n- Does it have extraneous code? Leftover debug prints, private API keys etc...\n- Does it have any obvious defects? Memory leaks, un-handled edge cases, security flaws, obsolete API calls, etc...\n- Could it be more understandable? Add/remove abstractions, better variable/method names, more/less functional etc...\n- Is the style consistent with the codebase and/or style guidelines?\n- Are there obvious performance improvements? Hashset instead of list, lazy evaluations, etc...\n- Is it sufficiently well tested?\nI'm not even sure I agree that if I can't understand the code then it shouldn't go through. Some code is just \nreally hard\n to understand. The aim is to make it \nas easy as possible\n to understand, while being functionally correct.",
+              "author": "n4r9",
+              "depth": 1
+            },
+            {
+              "text": "Indeed, we worked hard as an industry to move beyond \"blame the author\" to \"blame the process/team\".\nUnfortunately this article is just bait, may as well say \"People seem to think dinner is about eating food, but it's not about eating at all, actually it's about connecting with family and friends!\". It's a specific type of poorly constructed reductionist argument that plays well on HN.",
+              "author": "andrewvc",
+              "depth": 1
+            },
+            {
+              "text": "Totally agree. With the speed at which code can be written and deployed today due to AI, the emphasis should shift onto the review. Does the code actually run properly, are all of our assumptions correct, and are there any unintended side effects?\nI've found the review and debugging process to be much more time consuming than writing/producing code, and just \"praying it works\" never ends well.",
+              "author": "connerBown",
+              "depth": 1
+            },
+            {
+              "text": "The problem with this is that so many diffs created by AI are gigantic. Thousands and thousands of lines of code, per PR. Of course this is fine if AI is creating, reviewing AND merging, but it's an exercise in futiliy for human reviewers, as there is no way for them to catch up.",
+              "author": "nunez",
+              "depth": 2
+            },
+            {
+              "text": "Companies that allow this will quickly lose control over code quality. The company should have PR size guidelines, and/or developers need to feel confident that they can say \"please split into smaller PRs\"",
+              "author": "n4r9",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> it is not in general possible to find bugs by examining the code.\nOh hell yes it is, at every level of abstraction even. We call those things code smell... A file descriptor that hasn't been closed, a coroutine that hasn't been awaited, a big try/catch block that just falls back to some value without logging the error, wrong type castings, etc.\nAs a general rule: Neither type checker, nor compiler, nor runtime should ever be steps that merely want to be satified - \nwork with\n these steps and treat them as the valuable tools they are, and \nnever work against\n them.",
+          "author": "whilenot-dev",
+          "replies": [
+            {
+              "text": "Yeah, I have no idea what they're talking about with that one. I've caught bugs when reviewing code without needing to run it before, and I've had the same happen to me in reverse, and I've seen it happen between others on reviews I was observing. I guess they could find some way to define \"in general\" so that this is technically true, but at that point it's not particularly meaningful.",
+              "author": "saghm",
+              "depth": 1
+            },
+            {
+              "text": "I read it as a reference to some theoretical limitation like the Halting Problem.\nFine, in general it is not possible to tell if code will halt. But if I see a \nwhile(1)\n I’m going to check if the loop can break.",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "Arguably, if you can’t tell if the code will halt, the code is not acceptable. Code is acceptable if it can be properly reasoned about. If it can’t, it is not.",
+              "author": "layer8",
+              "depth": 3
+            },
+            {
+              "text": "Yeah, this seems like a misunderstanding of the halting problem. You can prove that a program halts will halt; you just can't prove that it \nwon't\n halt if it doesn't.",
+              "author": "saghm",
+              "depth": 4
+            },
+            {
+              "text": "I've been asked to find bugs in PRs during interviews, even!",
+              "author": "nunez",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48758970",
+      "title": "Why I'm Forced to Say Farewell: Google Management Has Lost Its Moral Compass",
+      "link": "https://docs.google.com/document/d/1SH9QRTAlL02THgAN2AGmWe9El0_2ZJF6hhgDBx8k97c/edit?tab=t.0",
+      "domain": "docs.google.com",
+      "author": "vrganj",
+      "score": 332,
+      "comment_count": 257,
+      "created_ts": 1782986427,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    }
+  ]
+}
