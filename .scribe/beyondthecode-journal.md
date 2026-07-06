@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-06 – From Usage Metrics to Cost Efficiency
+
+**Learning:** There is a distinct phase shift in AI adoption within large organizations. The first phase is "adoption volume," where management rewards any usage as a sign of progress. The second phase is "fiscal discipline," where the novelty has worn off and AI inference becomes a variable cost to be minimized. The transition from one to the other changes the "good engineer" definition from an early adopter to a cost-aware optimizer.
+
+**Implication:** When discussing AI impact, identify whether the organization is in the "Innovation subsidy" or "Margin optimization" phase. The incentives for the same behavior (using a frontier model) invert between these two phases.
+
+---
+
+## 2026-07-06 – Probabilistic Maintenance and the Death of Codemods
+
+**Learning:** The rise of "AI skills" for code migration (as seen in recent UI toolkit shifts) represents a move from deterministic to probabilistic repository maintenance. When AI makes it "easy" to vendor and customize dependencies, it breaks the future ability to use standard tools like codemods. We are trading library-standard legibility for bespoke local speed, assuming the AI will always be there to bridge the gap.
+
+**Implication:** Future essays should examine the "maintenance trap" of AI-assisted development. Lowering the cost of the *initial* change may be hiding a permanent increase in the cost of *future* reconciliation.
