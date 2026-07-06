@@ -1,0 +1,303 @@
+{
+  "scraped_date": "2026-07-06",
+  "source": "hacker_news",
+  "total_scraped": 100,
+  "nontech_count": 5,
+  "posts": [
+    {
+      "id": "48786638",
+      "title": "Zig: All Package Management Functionality Moved from Compiler to Build System",
+      "link": "https://ziglang.org/devlog/2026/#2026-06-30",
+      "domain": "ziglang.org",
+      "author": "tosh",
+      "score": 228,
+      "comment_count": 89,
+      "created_ts": 1783182610,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48796784",
+      "title": "Jim Keller's startup is building a factory to mass-produce small chip fabs",
+      "link": "https://www.tomshardware.com/tech-industry/atomic-semi-rebrands-as-fab2-and-shifts-operations-to-texas",
+      "domain": "www.tomshardware.com",
+      "author": "logickkk1",
+      "score": 115,
+      "comment_count": 28,
+      "created_ts": 1783277152,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "That's the one that Sam Zeloof is working on, \"having lithographically microfabricated various chips in his garage as early as the age of 17\"\nhttps://en.wikipedia.org/wiki/Sam_Zeloof",
+          "author": "WithinReason",
+          "replies": [
+            {
+              "text": "Featured on the frontpage four years ago: \nhttps://news.ycombinator.com/item?id=30043719\n (22-year-old builds chips in his parents’ garage | 525 | Jan 23, 2022 | 347 comments)\nI still recall being amazed reading and seeing it for the first time, and I have been eagerly awaiting to see what he been up to since starting Atomic Semi.",
+              "author": "embedding-shape",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The article mentions, but doesn't explicitly state, that they're going to be using electron beam lithography. Makes sense for their low volume and/or prototype fab goal, but I'm curious how well that would work for prototyping to fab at high volume with the likes of TSMC or Intel.\nI would assume that re-targeting a design to a different fab's process would change enough about it that you might as well just do verification in simulation rather than sidetrack through Fab2.",
+          "author": "sq_",
+          "replies": [
+            {
+              "text": "I think this might make a lot of sense in modern warfare scenarios: We're seeing in Ukraine that being able to produce weapons such as drones in very small production facilities using 3D printers and 'simple' technology makes it very hard for an adversary to shut down said production.\nThe more components can be produced in such a way, the better. Chips currently are quite an exception to that.",
+              "author": "dinfinity",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’m a semiconductor expert and without seeing the details, this seems like yet another smoke and mirrors wunderkind startup that will disperse once practical considerations are made.  As far as I know, Mr. Zeloof has not made any fundamental advancements in any steps in manufacturing.",
+          "author": "georgeburdell",
+          "replies": []
+        },
+        {
+          "top": "Applied for a job, but their recruiter was trash. Still, hope it works out for the company.",
+          "author": "jtullos",
+          "replies": []
+        },
+        {
+          "top": "I would've liked to read more about what they're doing, but their website fab2.com is unhelpful. Very little info, presented in pointless swirling animations that hijack your scroll action.",
+          "author": "ripe",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48798153",
+      "title": "Show HN: Homegames. An open-source game platform I've been making for 8 years",
+      "link": "https://homegames.io",
+      "domain": "homegames.io",
+      "author": "homegamesjoseph",
+      "score": 107,
+      "comment_count": 32,
+      "created_ts": 1783287164,
+      "is_internal": false,
+      "post_text": "I&#x27;m making a platform for simple open source games you can play anywhere.<p>Games are all just JavaScript classes and you can read the source of every game on the platform.<p>I started working on initial &quot;games&quot; (mostly rendering tests) in 2018 and eventually built all of the platform stuff around it to make it easy to share games.<p>There&#x27;s also an in-browser editor available for you to make and publish games all from the browser.<p>Would love some feedback on the games and studio features as well as the platform overall. All of the code is available at <a href=\"https:&#x2F;&#x2F;github.com&#x2F;homegamesio\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;homegamesio</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Could not play any of the games - \ntoo many requests\n errors. Why do they need \"sessions\", are they not running client-side?",
+          "author": "ricardobeat",
+          "replies": [
+            {
+              "text": "I forgot to mention this in the post, but the games themselves run on the server. This gives every game multiplayer for free out of the box, and clients just read the server state and send back input.\nThe idea is that you could use a browser or custom client or whatever to connect to a game server",
+              "author": "homegamesjoseph",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Does everything need a \"session\"? Is it possible to have fully static games/exports?",
+          "author": "avaer",
+          "replies": [
+            {
+              "text": "One thing I forgot to mention is all of these games run server side and thin clients just render and send input back to the server. So a game session needs to exist for the back and forth communication to work.\nTheoretically you could do this all client side too, but that would remove the magic of every game getting multiplayer for free",
+              "author": "homegamesjoseph",
+              "depth": 1
+            },
+            {
+              "text": "If you architect your protocol cleanly, you should be able to run the simulation client side too without much effort (certainly the web platform has everything you'd need). This is how modern game engines do it, it goes back to the Quake VM and probably beyond.\nYou'd still get multiplayer \"for free\", but it could be turned on and off. You could do it with zero code change for the actual games, they don't have to know.\nIt seems some of the games could do with a singleplayer mode that doesn't depend on the backend having free slots.\nJust an idea from a fellow web games person!",
+              "author": "avaer",
+              "depth": 2
+            },
+            {
+              "text": "This is something I’ve done with my web game, I run the entire simulation client side so as to never worry about scaling issues.\nWhy reach for a server unless you truly need one! My multiplayer mode is p2p planned",
+              "author": "purple-leafy",
+              "depth": 3
+            },
+            {
+              "text": "Thanks for the feedback! Local games weren't something I really considered until recently, but it would definitely be cool",
+              "author": "homegamesjoseph",
+              "depth": 3
+            },
+            {
+              "text": "as a matter of ux, users probably don't need to know that a session is being instantiated, and probably expect a simple play button\nfun",
+              "author": "__del__",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I like the concept and tried to play some games by starting or joining sessions, either nothing happened or I got disconnected straight away?\nAnyway nice concept. I’m also making web games (see my post history) so if anyone wanted to connect and discuss, send me an email (in profile too)",
+          "author": "purple-leafy",
+          "replies": [
+            {
+              "text": "Sorry about that, looks like the traffic spike from HN overwhelmed my session management stuff. It will only get better!",
+              "author": "homegamesjoseph",
+              "depth": 1
+            },
+            {
+              "text": "No need to be sorry! Good job on launching and working on it for years. It’s awesome. These launch hiccups happen.\nJust keep pushing, I know how hard it is",
+              "author": "purple-leafy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "interesting idea, i wanted to build something like this for some time",
+          "author": "subbu963",
+          "replies": []
+        },
+        {
+          "top": "Wow! Can you tell us a bit about what the past 8 years have looked like for you?",
+          "author": "BSTRhino",
+          "replies": [
+            {
+              "text": "Sure thing! Basically started making simple rendering tests over a websocket and then added images, font and audio support.\nThe initial idea was to make jackbox style games people could host on their computers and play on their phones in the same room over wifi.\nAdded to that and kind of did a whole lot of nothing productive around covid, just experiments that didn’t get deployed anywhere. And a podcast with over 100 episodes.\nA few years ago my wife and I had our first kid, so I spent about a year polishing the self hosted stuff and figured I would put the project on the shelf.\nSo that’s pretty much what I did until around 6 months ago when I realized the actual Internet is fast enough to run these games outside of a LAN, and a lot of people including myself miss browser based games. That plus Claude making me way more effective in my limited free time led to the current state of things",
+              "author": "homegamesjoseph",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48793542",
+      "title": "Show HN: KiCad in the Browser",
+      "link": "https://demo.pcbjam.com/",
+      "domain": "demo.pcbjam.com",
+      "author": "ViktorEE",
+      "score": 98,
+      "comment_count": 32,
+      "created_ts": 1783253217,
+      "is_internal": false,
+      "post_text": "KiCad, a PCB EDA suite is now working in a browser, you can try it at the link, there&#x27;s a demo project or you can bring your own. Firefox is best, Chrome is good, Safari is &quot;working&quot;.<p>We’re Emergence Engineering, a dev shop from Hungary, mostly working with rich text editors, CRDTs. PCBJam started as my (Viktor, CTO, ex-electrical engineer) hobby project but as time went on I put more\nand more energy into it, and a product started shaping up in my head, in the last few months we’ve started to focus on this project a bit more, and this is the first MVP~ish result.<p>This project is a ton of fun, ton of learning, ton of improvements over improvements:<p>- I thought there must be ways to emulate the PCB canvas OpenGL code on the web. And yes, there are a lot of ways, all of them very buggy. Turns out it’s faster to just write WebGL code that works with\nKiCad’s Graphics Abstraction Layer if you add the right intermediate debugging steps. I (with Claude) implemented the features and compared them to native at every step, then the app loaded up the first \ntime and just worked. I spent weeks hunting weird emulation bugs before that.<p>- There was an old wxWidgets web port as a starting point that helped a lot, bringing it up to the level KiCad needed is a long (and still ongoing) task. Thanks ahilss!<p>- Pthreads on the web: with Emscripten it’s possible to port multithreaded apps (used by DRC, software 3D renderer). A lot of Emscripten features (Asyncify, Pthreads, native exceptions) are in a war with each other, but it’s possible.<p>- Asyncify with native exceptions: Asyncify (used to make the WASM code suspend then call into the JS land, emulating blocking C++ calls by rewriting the WASM directly) is not compatible with native exceptions, even on the latest Binaryen version it can’t suspend inside catch arms. If you write a new Binaryen pass then it can, making the bundle 30-40% smaller and the app load in a second instead of 10.<p>- Optimizing bundle size is a fun game. We just moved Open CASCADE into a separate lazy-loaded WASM module, moving from 180 to 130 MB (24 MB brotli), still on -O1. -O2 &#x2F; -Oz etc will be more work than it\nlooks.<p>And a ton more problems like these above on a daily basis.<p>A few months ago I had a barely loading laggy pcbnew that crashed when you looked at it wrong, now we have the whole application working. I should say with quite a few bugs still, but now it feels pretty\nclose to native.<p>There’s a lot of built up knowledge &#x2F; code that we want to release as blogposts, mainline our changes to Binaryen &#x2F; KiCad &#x2F; wxWidgets, but I want to focus on the release first. Our wxWidgets port is quite \nclose to the core, the KiCad is ~150 changed core files (mostly build scripts, some code changes too). The goal is to keep as close to the mainline as possible, and merge eventually.<p>We’ll have a free tier for sure and something around $30&#x2F;mo for bigger&#x2F;closed projects, optional paid AI integration &#x2F; self hosting &#x2F; enterprise features &#x2F; native &amp; mobile version down the line.<p>The goal is to build a product on top of KiCad (collaboration, AI integration, sharing, integrations), kind of like what Red Hat did with Linux back then. We’re heads down making it functional and have the\nfirst version up in a ~month or so.<p>And of course we’re standing on the shoulders of the people who made KiCad &amp; wxWidgets and we want to give back and contribute as much as possible, if you have an idea on how to do that best let me know, I\nreleased a few moderately successful open source projects, but I’ve never been a contributor. All of the front-end code is GPL (it has to be) and you can run this project if you want.<p>You can find the sources at: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;emergence-engineering&#x2F;pcbjam\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;emergence-engineering&#x2F;pcbjam</a>.<p>Our company site is at:\n<a href=\"https:&#x2F;&#x2F;emergence-engineering.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;emergence-engineering.com&#x2F;</a><p>Our crappy LP is at: \n<a href=\"https:&#x2F;&#x2F;www.pcbjam.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.pcbjam.com&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "collaboration",
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "I love that Firefox is the best.\nI don't use kicad. But, this project, as a web-first version of kicad, seems like it offers the best opportunities to create a shared learning community. Is that part of the long term goal?\nI would love to experiment with kicad, but I learn best through watching others and asking questions. Can I do that with this? Is there a way I could \"watch\" other sessions as the build progresses? Or, chat about what I see there with other people interested in learning and teaching?\nVery nice work!",
+          "author": "xrd",
+          "replies": [
+            {
+              "text": "I love that too, the sad part is that ~30% of our visitors ( from Plausible ) are on Safari which is... Not good :) No threads for ya there. At least it works.\nYes! That's the plan for \"marketing\".\nAnd yes, we'll have to usual \"follow\" features ( without the popups etc which doesn't really suit your usecase ), chat ( maybe voice chat? ).\nThanks!!",
+              "author": "ViktorEE",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "To open a demo board click \"Open\" in the Projects/Demo board section then \"Open in PCB Editor\" at demo.kicad_pcb in Files.\nNext time I'll make a smoother demo...",
+          "author": "ViktorEE",
+          "replies": [
+            {
+              "text": "I have tried to open demo on mobile and it fails (iOS 18.6.2). Safari browser returns “there was a repeated problem with the page…”",
+              "author": "sixtyj",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, this is not optimized to mobile yet. My Iphone 13 pro did open once, didn't check further. Sometimes it works if you open it on a new tab ( memory issues ).",
+              "author": "ViktorEE",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I can totally see pcb manufacturers like JLC integrating this into their websites, with a set of customized design rules and an order button.",
+          "author": "karlkloss",
+          "replies": [
+            {
+              "text": "Yea, it makes sense. JLC already own EasyEDA, it's an interesting matchup for sure.",
+              "author": "ViktorEE",
+              "depth": 1
+            },
+            {
+              "text": "I initially found EasyEDA to be easier to use especially with auto routing. But KiCAD is definitely more powerful.",
+              "author": "IgorPartola",
+              "depth": 2
+            },
+            {
+              "text": "It's on the \"roadmap\", someday I'll take some time to take a look at the autorouting situtation. I have a few ideas.",
+              "author": "ViktorEE",
+              "depth": 3
+            },
+            {
+              "text": "There is apparently a Java-based plugin that does it but I did not manage to get it to work with a simple board on a fresh Mac install.",
+              "author": "IgorPartola",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "This is really cool. I think a lot of people will initially dismiss your demo as ‘slop’ unless the landing page drops some of the Claude-isms (text and design) because it’s clear this is a project with passion in it, but the demo page and landing page both look like something Claude might’ve made with a single prompt.",
+          "author": "varun_ch",
+          "replies": [
+            {
+              "text": "You're wrong! It was two prompts! \nJokes aside, you're right. I wanted to have something up quickly. Before the real launch ( and not just this demo ) I'll write one by hand, I'm against AI written copy / blogposts, just could not find the headspace to focus.\nAgain, thanks for the feedback, I'll take it!",
+              "author": "ViktorEE",
+              "depth": 1
+            },
+            {
+              "text": "Looking at the long list of the things you had to do to get this working .. and you couldn't \"find\" the energy to write some text for the landing page yourself? For a project you want people to buy from you? You supposedly put in all that effort, and built these sites around it, and building a business around it, and you couldn't deal with writing descriptions of it yourself? Seriously?",
+              "author": "thegrim33",
+              "depth": 2
+            },
+            {
+              "text": "Yea, it sounds worse than it felt in that light lol. You have a point. In hindsight I should've taken a day or two for writing a good copy, I was just very impatient and wanted to push this out.\nTo be fair, this is not \"the project\" yet, just a first preview. I'm an engineer, doing things like this is \"work\", optimizing the bundle size is fun. Sorry.",
+              "author": "ViktorEE",
+              "depth": 3
+            },
+            {
+              "text": "Please think about how this can be set up to track upstream Kicad.  Hopefully you have a small adaptation layer and some clever build, not wholesale changes to the code.\nI teach HS classes where a lot of students end up doing some pretty serious PCB layout.  We already benefit from MCAD that runs in the browser-- KiCad running in the browser would be a major boon to reduce setup requirements for student computers.\nThinking about how this could play with revision control and KiCad documents (footprint/symbol library, schematic, board, production gerbers) in Git repositories would be really helpful for my use case, too.\nCongratulations- this looks really slick!",
+              "author": "mlyle",
+              "depth": 4
+            },
+            {
+              "text": "Thanks,\nWe did not yet think trough the git integration, but I don't see why we couldn't add a \"commit\" / \"push\" button and pull from git.\nThe main thing we'll add to KiCad aside from browser version is shareable footprint/symbol libraries (private, public etc.), and organizations (with their own libs etc.). We're not 100% clear on the details yet.\nIf you have the time reach out to me at viktor dot vaczi at emergence-engineering.com, I'd love to hear what you need.",
+              "author": "ViktorEE",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Small suggestion, it would be nice to see the total size of the download during the first load (sry I am on a slow metered connection).",
+          "author": "thenthenthen",
+          "replies": [
+            {
+              "text": "Yea, I'll add it in the next deploy. Thanks! Right now it's about ~30 MB for the big app ( 2 editors + footprint + symbol ).",
+              "author": "ViktorEE",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48784662",
+      "title": "The Reports of Jim Carrey's Death Are a Failure Mode",
+      "link": "https://tane.dev/2026/07/the-reports-of-jim-carreys-death-are-a-failure-mode/",
+      "domain": "tane.dev",
+      "author": "taubek",
+      "score": 63,
+      "comment_count": 37,
+      "created_ts": 1783165141,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": []
+    }
+  ]
+}
