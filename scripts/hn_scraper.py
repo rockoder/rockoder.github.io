@@ -15,7 +15,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 HN_API_ITEM = "https://hacker-news.firebaseio.com/v0/item/{}.json"
 HN_BEST_URL = "https://news.ycombinator.com/best?h=24"
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36"
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
 # -----------------------------
@@ -24,11 +24,13 @@ HEADERS = {
 
 def get_item_metadata(item_id):
     try:
-        r = requests.get(HN_API_ITEM.format(item_id), timeout=10)
+        r = requests.get(HN_API_ITEM.format(item_id), headers=HEADERS, timeout=10)
         if r.status_code != 200:
+            print(f"DEBUG: API failure for {item_id}: {r.status_code}")
             return None
         return r.json()
-    except Exception:
+    except Exception as e:
+        print(f"DEBUG: API exception for {item_id}: {e}")
         return None
 
 
