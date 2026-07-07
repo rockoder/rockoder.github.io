@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 sys.stdout.reconfigure(encoding="utf-8")
 
 HN_API_ITEM = "https://hacker-news.firebaseio.com/v0/item/{}.json"
-HN_BEST_URL = "https://news.ycombinator.com/best?h=24"
+HN_BEST_URL = "https://news.ycombinator.com/best"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36"
 }
