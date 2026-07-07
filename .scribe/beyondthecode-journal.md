@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-07 – The Steering Mismatch
+
+**Learning:** There is a recursive confusion between "steering" (setting direction) and "alignment" (ensuring the direction is safe to travel). Executives often view AI as a way to solve the alignment problem by making steering more direct. However, alignment is a leaf-node judgment function that requires reconciling abstract intent with concrete, high-stakes reality.
+
+**Implication:** When discussing organizational leverage, distinguish between the speed of intent propagation and the quality of intent validation. They are often inversely correlated in current AI-assisted workflows.
+
+---
+
+## 2026-07-07 – The Latency of Validation
+
+**Learning:** The "Validation Tax" is a hidden cost that doesn't scale with authorship. As code generation speeds up, the cognitive latency of verification becomes the true bottleneck. Organizations that measure only output are essentially measuring the person who creates the work, rather than the person who ensures the work works.
+
+**Implication:** Future essays should explore how the shift from "builders" to "validators" alters the definition of Seniority. Seniority is no longer about the ability to produce, but the authority (and capital) to reject unvalidated output.
