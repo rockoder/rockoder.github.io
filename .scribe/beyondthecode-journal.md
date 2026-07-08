@@ -53,3 +53,11 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-08 – De-personalization as an Organizational Pivot
+
+**Learning:** The removal of emotional attachment to code is a double-edged sword. It increases feedback speed and lowers the social cost of refactoring, but it also erodes the traditional "ownership" built through the friction of manual construction. The mechanism of "mentorship" is shifting from pedagogical reasoning to prompt-coordination.
+
+**Implication:** When analyzing organizational agility in the AI era, look for the "Attachment Gap." A team that can pivot instantly because they don't care about their code is also a team that might not understand why that code fails at 3 AM. The absence of ego is not the same as the presence of judgment.
