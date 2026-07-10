@@ -1,0 +1,962 @@
+{
+  "scraped_date": "2026-07-10",
+  "source": "hacker_news",
+  "total_scraped": 88,
+  "nontech_count": 26,
+  "posts": [
+    {
+      "id": "48836778",
+      "title": "FAANG Simulator",
+      "link": "https://www.abeyk.com/escape-the-rat-race/",
+      "domain": "www.abeyk.com",
+      "author": "nerdbiscuits",
+      "score": 477,
+      "comment_count": 189,
+      "created_ts": 1783541142,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "faang"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48842459",
+      "title": "Show HN: Getting GLM 5.2 running on my slow computer",
+      "link": "https://github.com/JustVugg/colibri",
+      "domain": "github.com",
+      "author": "vforno",
+      "score": 444,
+      "comment_count": 113,
+      "created_ts": 1783584304,
+      "is_internal": false,
+      "post_text": "A few days ago I found myself trying out GLM 5.2 and was really positively impressed. The capabilities and security I was getting from this LLM are similar to those I&#x27;ve gotten from models like Claude or GPT, and this really surprised me.<p>But then I thought, &quot;I wonder how it would work on a normal computer like mine,&quot; and above all, &quot;I wonder if it would work without going into OOM on a computer like mine.&quot; So I started working with the help of agents to test this possibility.<p>I started converting the model to int4, understanding MTP usage, and if possible implementing DSA for long context. How it responds in int4 and whether the quality is maintained or not. Until I got to the point, on my computer with 32GB of RAM, I was able to communicate with GLM 5.2 with times that, of course, aren&#x27;t high in cold start, but even then, we&#x27;re talking about 0.1 tok&#x2F;s, but that wasn&#x27;t important to me. The important thing was the journey to reach this goal. I just wanted it to work at all costs, even slowly.<p>So I created Colibrì, which was born from a very simple idea, to be honest, but tested in every way, where a 744B Mixture-of-Experts model activates only ~40B parameters per token—and only ~11 GB of those change from token to token (the routed experts). So:<p>The dense part (attention, shared experts, embeddings—~17B params) stays resident in RAM at int4 (~9.9 GB); The 21,504 routed experts (75 MoE layers × 256 experts + the MTP head, ~19 MB each at int4) live on disk (~370 GB) and are streamed on demand, with a per-layer LRU cache, an optional pinned hot-store, and the OS page cache as a free L2.<p>The engine is a single C file (c&#x2F;glm.c, ~1,300 lines) plus small headers. No BLAS, no Python at runtime, no GPU.No GPU or serious hardware because I don&#x27;t have that hardware so I can&#x27;t test it on hardware that is more powerful than my computer.Colibrì is a one-person project, written and tested entirely on a 12-core laptop with 25 GB of RAM — the numbers above are the ceiling of what I can measure at home.<p>Any feedback is welcome! (and if anyone wanted to participate in the project I would be delighted)<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;JustVugg&#x2F;colibri\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;JustVugg&#x2F;colibri</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "My main question is whether when put into practical use, this can be measured in tokens/second, or more like 1 token per minute...   I \nhave\n seen locally hosted LLM that are as slow as 1 tok/second still be very useful if you give it a project to do something overnight and metaphorically walk away from it, check back with what it has done in 6 or 8 hours.\n0.05 to 0.1 tok/s on the other hand, as reported in the URL for the lowest class of hardware, isn't really usable for much.\nedit: I think this is a fantastic project in general concept, and look forward to seeing more efforts towards the general idea of being able to run a 350B to 900B size model locally, even if as slow as 1 tok/s, on hardware that ordinary people can afford. Anything along the general concept of \"we have fast read NVME SSD storage, we have a big ass model on local disk, we'll read it at 11GB/tok as we need it, not try to load the whole thing\".",
+          "author": "walrus01",
+          "replies": [
+            {
+              "text": "The funny thing is Claude Cowork has taught me to be patient with response timelines. I’m now figuring I’ll be running locally no later than 2028.\n(I want to spend no more than $10k. And I want to run a model comparable to today’s SOTA.)",
+              "author": "JumpCrisscross",
+              "depth": 1
+            },
+            {
+              "text": "For 10k you can buy a used dual socket Intel or amd based rackmount server with a terabyte of ram, and run models on cpu only at a reasonable speed. Same server would have been 4-5k a couple years ago before ram price rise.\nOr buy one on eBay with 512GB that has half its slots populated and then buy the matching 512GB kit to add.",
+              "author": "walrus01",
+              "depth": 2
+            },
+            {
+              "text": "Today's SOTA also sounds totally sufficient to me, but I wonder how much our standards will inflate by 2028. Maybe a lot, maybe not at all...very hard to say.",
+              "author": "paytonjjones",
+              "depth": 2
+            },
+            {
+              "text": "Looking at how critical we are about today’s models, vs where we were last year, and I don’t expect anyone to be content with Fable-class models in 2028.\nExpectations seem to be rising at a faster rate than models can improve.",
+              "author": "stingraycharles",
+              "depth": 3
+            },
+            {
+              "text": "This seems to vary by person. I get immense value in coding assistance from Qwen 3.6 35B-A3B which is like a frontier model from a year ago. But a lot of people say it’s stupid, useless, a toy, etc. I do work by the “short leash” method and mainly just use the model for brainstorming/planning/design assistance and zipping through  the drudgery of boilerplate and executing refactors. I don’t think this tier of model is good for “hey LLM, build me a Github clone” ... but I also don’t see the value in that use anyway.",
+              "author": "anon373839",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Working on something similar targeting macOS on Apple Silicon, Unsloth split GGUF, compressed partial residency in unified memory (would make more sense on 128GB instead of my 64GB...), native Metal kernels, and RAM-only native compressed KV. Happy to put on GitHub when it's ready.",
+          "author": "Archit3ch",
+          "replies": [
+            {
+              "text": "I will be delighted to try. I have a 128gb macbookpro m4 waiting for this.",
+              "author": "xtracto",
+              "depth": 1
+            },
+            {
+              "text": "This is the way.",
+              "author": "sebastianconcpt",
+              "depth": 1
+            },
+            {
+              "text": "Followed you on GitHub to get notified when you are!",
+              "author": "fragmede",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've taken a similar strategy w/ image/video gen at \nhttps://github.com/cretz/thinfer\n (see video branch for a ton of work).\nBasically I kept needing an inference engine that could stream weights in and out as needed in an LRU manner. So I ended up vibe coding this thing that accepts a `--vram-budget` and stays under it (mostly). It turns out moving mmap'd bytes in and out of VRAM is way cheap compared to compute. Coupled with some pipelining/double-buffering, I almost always end up compute bound not memory bound. Granted I use way smaller models heh.",
+          "author": "kodablah",
+          "replies": [
+            {
+              "text": "Wow, I see you managed to fit in so many models (krea, wan, hunyan, etc.). Did you get to build a common harness to run all of them? Which ones stay under your VRAM budget more consistently?",
+              "author": "espetro",
+              "depth": 1
+            },
+            {
+              "text": "All stay under because I had Claude build the workflow to respect it (text encoding, denoising, vae, etc), there's just a tiny bit of untracked pieces. While there are common interfaces to invoke them (CLI and API/webpage) and they share ops and some pieces, lots of model logic is unique. This is all vibe coded and surely has inaccuracies.",
+              "author": "kodablah",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "llama.cpp supports a wide variety of 4-bit and smaller quants and mmap's models by default, so you dont need to be able to hold the weights in memory (the OS will handle bringing them in from storage as needed)\nIts cool to see this implemented in a tiny amount of code without dependencies, but does it actually bring more performance?",
+          "author": "ac29",
+          "replies": []
+        },
+        {
+          "top": "Pretty cool!  I've also been playing around with GLM 5.2 this week and was equally impressed.  At work we're running it locally on some crazy expensive hardware as a test before starting another project so it's great to see people taking this massive FOSS model release and running it on an average machine, even if it's not terribly practical at this point.\nNice work!",
+          "author": "shrinks99",
+          "replies": [
+            {
+              "text": "Really thanks!!",
+              "author": "vforno",
+              "depth": 1
+            },
+            {
+              "text": "which hardware?",
+              "author": "agcat",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48839984",
+      "title": "I think I have LLM burnout",
+      "link": "https://www.alecscollon.com/blog/llm-burnout/",
+      "domain": "www.alecscollon.com",
+      "author": "sosodev",
+      "score": 384,
+      "comment_count": 340,
+      "created_ts": 1783562188,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "burnout"
+      ],
+      "comments": [
+        {
+          "top": "I don't think I have a \"burnout\", but LLMs are really exhausting due to amount of pressure they generate. No one is really pushing me to increase my workload, but at every moment there is always something ready, done by my clankers or clankers of other people that I could be unblocking. In the past (before LLMs) it was already hard to keep up, but now it feels like there's 10x more things waiting at any given time, and there could be 10x more if everyone just \"optimized\" and streamlined processes fed the AI even more tasks in parallel faster. It just being a bottleneck of everything, all the time is tiring...\nI am happy about all the little side-projects, and ideas it help my realize, and I enjoy exploring this new world, but I've noticed LLMs feed my unhealthy \"don't want to take a break and waste time being idle\" mindset, and I need to correct it.\nW.r.t. article's main complain - I think the similar thing happened due to factory manufacturing automation. What used to be a varied skillful craft in a shop became standing in a single place of an assembly line doing the exact same thing whole day. LLM took away the more creative and variable part of the work, and left the repetitive QA rubber-stamping. Probably some of the mitigations used back then could be rediscovered today.",
+          "author": "dpc_01234",
+          "replies": [
+            {
+              "text": "> done by my clankers or clankers of \nother people\nI'm getting so many requests to review LLM-generated documents - planning docs, docs intended for end-users, project docs, business plan docs. A team member sent me a zip file with about 30 LLM generated documents in it the other day and asked if I could review them right away. And a lot of it was just repetition and/or stuff that was just out of left field, made-up, hallucinated stuff. They're able to generate this stuff way faster than we can review. It used to be that it would take a significant part of a day for a project manager to come up with a planning doc - now they can generate one in a few minutes and send it out for review. It's just really tiring.",
+              "author": "UncleOxidant",
+              "depth": 1
+            },
+            {
+              "text": "The only way to even start to counter that is to make it a firm company policy that if you use an LLM to hallucinate any documents you absolutely must thoroughly review them yourself before you send them to anybody else, and that you are still responsible for the quality of LLM-generated content.\nGetting an LLM to vomit out a bunch of documents and sending them straight to another colleague is absolutely unacceptable behaviour.",
+              "author": "mathw",
+              "depth": 2
+            },
+            {
+              "text": "This is going to just run up against the insanity that is tokenmaxxing every moment of the day. When people are incentivized (upon pain of firing) to get the LLM to vomit out as much as possible, they're hardly going to stop and ponder if schlepping the slop over the wall is acceptable if the alternative is a pink slip.\nWhich is going to win?",
+              "author": "theideaofcoffee",
+              "depth": 3
+            },
+            {
+              "text": "We employees need to remember that most software projects fail. So the work we produce should have lower value than we give it.\nWe also need to be motivated to stay in our jobs.\nMost developers like their projects and value their work. But the chances are that it's for nothing.\nMany developers know they work on bad products (gambling industry, military, surveillance, whatever) and so it's here that they focus on their technologies, tools and frameworks rather than the work they produce.\n\"Agentic engineering\" for example.\nId be curious to see what and how Googlers are doing with their 20% time.",
+              "author": "thinkingemote",
+              "depth": 4
+            },
+            {
+              "text": "The 20% policy at Google is effectively dead.",
+              "author": "soulofmischief",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "From my experience, there are mainly 3 burnout reasons.\n1. Multi-tasking is the top one. I usually have to frequently switch between 3 to 5 agent windows which are on different things. It's extremely exhausting when each round takes a few minutes. Before coding agent era, I believe most developers had chance to spend 2+ hours focusing on one thing. Now coding agents have increased my spectrum on the tech stack, but the bandwidth to do deep work isn't increased.\n2. Agents are good at getting things running without crash, but do not guarantee to produce correct code. This is quite different from human experts with fundamental knowledge. \n3. I also get frustrated when reviewing piles of AI generated low quality PRs. My attention is a limited resource. I don't waste too much energy on other people's work, but if I don't spend more effort, the entire project is corrupted quickly by reckless AI generated code without human author's careful thoughts and designs. Working with people who have less due diligence in mind is painful, working with them in coding agent era is 10x painful because they produce 10x shit. It's a team culture challenge that cannot be easily enforced.",
+          "author": "treefry",
+          "replies": [
+            {
+              "text": "Agreed. I am working hard to restrict myself to only 1-2 agent workflows at a time. More is untenable, though it’s so easy to fall into the trap of deploying an agent “just for this minor fix.”",
+              "author": "j_bum",
+              "depth": 1
+            },
+            {
+              "text": "The worst is that every agent session is generating so many \"btw fix this\" side-quests that it is really hard to stay in the task focus. I throw some into todo list manually but still it is exploding by the day. Perfect is enemy of good.",
+              "author": "imhoguy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've started feeling slightly physically ill when I read Opus output for hours straight. This article rings very true for me. I've started complaining about it with my team; at least have a personal style guide in your agent rules that eliminates emdashes, the \"it's not X, it's Y\"s, the long lists of modifiers before the noun, using the word \"land\" to mean finish, etc. I hope this is just a phase of adolescent LLMs.",
+          "author": "block_dagger",
+          "replies": [
+            {
+              "text": "\"\nThat's such a clever way to see things!  Let's delve into that!\n\"\nThe bots (all of them) seem to show patterns of overuse of specific phrases, words, and punctuation.\nSome of those are the ones you mentioned.  Another that I've been seeing lately is overuse of the term \"gate\", wherein:  As a human, I know what a gate is.  A gate is a thing that can be open, or that can be closed.  It might be locked or unlocked.  The path beyond the gate may be passable or impassable or nonexistent.  The gate is just a gate, and the presence of the gate doesn't imply whether it is open or closed.\nBut in bot-speak, a gate only refers to a hard block -- an impassable construct.  Like a fence or a wall, or even a lava-filled moat.\nBut while a lava-filled moat is intended to be impassable, the bot uses \"gate\" -- a thing that \nis designed to be passed\n -- to describe that same kind of obstacle.\nThat's misuse of the term, I think, based on decades of dealing with gates in reality:  Usually when I encounter a gate that is closed, I just open it and walk through.\nI do have instructions that tell the bot to avoid that usage of the word and it ignores them sometimes anyway.\nBut \"gate\" is just today's problem-word that comes to mind as I write this.  Yesterday, it was something different.  Tomorrow, it will be something else entirely.\nThe overall pattern here is that of gratingly-repetitive bullshit-grade jargon that doesn't fit to begin with.\n\"\nAnd that's the real, no-nonsense truth!\n\"",
+              "author": "ssl-3",
+              "depth": 1
+            },
+            {
+              "text": "I found Codex to use \"gate\" in a different sense: As the condition of an if statement. I have a local style rule not to use that. Another really grating thing is to use \"X-shaped\" for \"something vaguely related to X\". And using temporal words like \"still\" and \"already\" in contexts with no temporal connotation.",
+              "author": "derdi",
+              "depth": 2
+            },
+            {
+              "text": "I like the word \"botspeak\".\nAnother example of typical botspeak is \"smoke test\". Why not just say \"test\"? It feels like a way of downplaying the ability to detect problems.",
+              "author": "stcg",
+              "depth": 2
+            },
+            {
+              "text": "One thing I did recently with the bot definitely involved actual smoke tests, though:  I was working with real hardware that can blow up in real ways, with the bot doing all of the circuit design work and coding based on my goals while I just distantly commanded the show from On-High and plugged shit into a breadboard.\n(The project works well and I consider it to be Good Enough; I might go back and polish it more later.  There was no smoke, but there could have been.)",
+              "author": "ssl-3",
+              "depth": 3
+            },
+            {
+              "text": "This makes more sense if you think about the contexts in which people would talk about gates on the Internet, I dare say.",
+              "author": "zahlman",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I’m currently doing a project with someone who only uses LLMs, and it’s exhausting and mentally draining.\nWhenever I give feedback on something, the answer is just “let me tell Claude”. The person has no understanding of how everything works, and most of the code reflects that.\nThe other day he hardcoded in a demo mode, simply because he didn’t even know how to set up a local environment and set environment variables. I’m confused as to why Claude didn’t even knew this, but it might just be the prompting.\nI limit LLM usage myself, and if I do use it, I try to use it on extremely specific tasks. It’s the only way it works for me.\nI honestly don’t understand how all these companies are getting away with generating AI code. Even in a small project I quickly fall behind on my understanding of the project.",
+          "author": "woutr_be",
+          "replies": [
+            {
+              "text": "I remember working with people like this before AI and it was annoying but they struggled with productivity because they didn't understand what they were working on enough to produce good code efficiently, so the problem usually took care of itself.\nNow these people can thrive because LLM coding encourages the incurious and punishes the deep thinker.",
+              "author": "jordanb",
+              "depth": 1
+            },
+            {
+              "text": "At least to me, before LLMs, those people could somewhat be trained. You could give them feedback, and they would improve and learn the code.\nNow your feedback is just another prompt for them, the code might be slightly better, but the person learned nothing from it.",
+              "author": "woutr_be",
+              "depth": 2
+            },
+            {
+              "text": "It punishes the inflexible deep thinker, perhaps. If you can’t figure out how to use an incredibly powerful tool to your advantage, how deeply are you thinking, really?",
+              "author": "antonvs",
+              "depth": 2
+            },
+            {
+              "text": "Exactly. Add it to the fact that the world was never particularly \"fair\" to deep thinkers, because said deep thinkers are often not prioritizing \"production\". It already rewarded people who could search for and ship a working solution before they understand it perfectly. The person who can only move after fully understanding the problem was at a disadvantage long before LLMs, almost everywhere outside academia.",
+              "author": "frgturpwd",
+              "depth": 3
+            },
+            {
+              "text": "Well most experienced developers I know hate it and agree it's taken all pleasure out of the work. We've spent our careers designing and building high quality software systems. But now we're told our job is to use the plagiarism box to sling slop all the time. Those who can are transitioning out of the field.\nThis is an industry where American developers have successfully competed on quality with the rest of the world for years. We never were very cheap but we always were the best and worth our premium. Now that's being destroyed by a short-sighted industry.\nI'd like to just do something else and work on open source. Except I know if I contribute to open source my work will just be stolen by the plagiarism bot.",
+              "author": "jordanb",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I am feeling very tired. Since I’ve started working with LLMs my output as a solo dev has easily gone up 20x. I’m closing client projects including ones that previously would have been far too ambitious to take on alone. Long running codebases are getting features that have dragged out for months or been sitting in the planning stages for even longer. And overall quality is way up now with more complete (and honestly better) test coverage.\nI’m building personal projects at a prodigious pace. In a role reversal I treat the agents like I’m one of my clients (albeit a more technical one who gives them architectural direction) and they are me. I’m using the apps and tooling they make every day. I’ve cancelled SaaS subs for tools I’ve built myself.\nI watch the tool calls and realize I should be better at core command line tools so I have a study plan to catch up (just a little bit a day). I’m revisiting long standing config that I dropped in to vim and tmux way back when I started and didn’t know anything.\nI guess in theory I could hold my productivity to previous levels and read more. But it doesn’t feel like that’s possible. It feels like we are in one of those sea changes where the promise is less work, but the reality is increased productivity and expectations (the Industrial Revolution feels like the right parallel to reach for). Increased expectations happen in small ways and large. The agents are so good at polishing data presentations that I always send cleaned up visually impactful reports that would have taken significant time in the past just as a matter of course now.\nBut, I’m tired. I’ve spent the Fable on subscription window sprinting through as much work as I can before it goes API only. (As an aside, I don’t understand how everyone is using so many tokens. I’m sleeping very little and running as much code as I can through fable and I can barely touch a 20x max plan limit.) I keep telling myself I will slow down when it comes off, now it’s extended to the 12th and my window just reset, a few more days to keep knocking out backlog items. I feel like I have to keep the robots busy overnight so when I wake up I can immediately sit down to review. I give directions to agents on my phone which feels wild to me.",
+          "author": "springtimesun",
+          "replies": [
+            {
+              "text": "The industrial revolution made life better at mass scale but it certainly didn't make life better for the hand loom weaver who had previously went from working at home by hand to higher output but working hard all day in a factory.\nFrom the outside, this all sounds like my father who worked as a mechanic at a flour mill.\nHis job was mostly watching the machine do the work and then fixing the machine when it broke down. 90% of the time it ran fine.\nGoing from working by hand to watching the machine would seem really boring and I guess I can understand the AI hate on here from that perspective.",
+              "author": "hraxz",
+              "depth": 1
+            },
+            {
+              "text": "I think people miss something fundamental this argument-by-analysis comparing LLMs to 1770s textile automation\n(which why on earth would be applicable? yet this argument is thrown around begging the question [meaning assuming its own validity, begging to be questioned, not suggesting further downstream investigation])\nNamely: there was a massive shift from household manufacture in the Indian subcontinent - then home to an estimated quarter of economic activity on earth - to Britain.\nIndustrialization was about out competing a geopolitical rival of the UK: Mughal India. It succeeded because the Crown adopted policy sabotaging Indian production, not because the capital intensiveness was inherently better. It was merely necessary for England to even aspire to outproduce a country with 20x its own population.\nIndustrialization was never about the sheer efficiency of the new industrial productive system. That wouldn't have tipped the scales in a matter of one or two decades. In fact, quite the opposite: the incredibly short timescale in this massive geographic shift in economic output necessitated an approach which was costlier, and socially and environmentally damaging.\nThe machine won out because it was the only way to get the job done. It was a way worse experience for everyone involved. Just look at the British elite's tenure: its 100 years of zenith pale in comparison to the Mughal third of a millennium ride. And now the center of gravity for global industry is shifting back to Asia despite the extremely heavy price paid by Atlantic society and the global environment for the anomaly state which is now waning.",
+              "author": "historianistic",
+              "depth": 2
+            },
+            {
+              "text": "I have a friend who is a confessed LLM-addict and has told me pretty much everything you mentioned (you might be my friend!), I just have a question I want to ask that I never do to him: Why do you feel the need to churn out so many \"personal projects\" if they burn you out that much? I think we can all agree on the exhaustiveness of reviewing tons of AI-generated code in our $JOB$ - then why extend this unpleasant situation to your whole day?",
+              "author": "cpt_sobel",
+              "depth": 1
+            },
+            {
+              "text": "I doubt it, but maybe :)\nRE personal projects specifically: addiction is an interesting angle. It feels more like anxiety though, that this thing is going to be taken away and this will be a brief and glorious window when I had the means and opportunity to make all the things I wanted, but never had time for. It’s also exhausting to have a bunch of stuff that you want to do piling up for years.\nCould just be a personal thing though. I had kids shortly after I started freelancing. I’m the primary caregiver for them and my partner has always worked insanity hours so just keeping our lives together is a full time job. Every billable hour had to be squeezed from a stone. Maybe I’m trying to make up for lost time.",
+              "author": "springtimesun",
+              "depth": 2
+            },
+            {
+              "text": "> addiction is an interesting angle. It feels more like anxiety though\nI would guess that anxiety and withdrawals are very similar",
+              "author": "bluefirebrand",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48747976",
+      "title": "Ask HN: Who is hiring? (July 2026)",
+      "link": "https://news.ycombinator.com/item?id=48747976",
+      "domain": "news.ycombinator.com",
+      "author": "whoishiring",
+      "score": 246,
+      "comment_count": 399,
+      "created_ts": 1782918081,
+      "is_internal": true,
+      "post_text": "Please state the location and include REMOTE for remote work, REMOTE (US)\nor similar if the country is restricted, and ONSITE when remote work is <i>not</i> an option.<p>Please only post if you personally are part of the hiring company—no\nrecruiting firms or job boards. One post per company. If it isn&#x27;t a household name,\nexplain what your company does.<p>Please only post if you are actively filling a position and are committed\nto replying to applicants.<p>Commenters: please don&#x27;t reply to job posts to complain about\nsomething. It&#x27;s off topic here.<p>Readers: please only email if you are personally interested in the job.<p>Searchers: try <a href=\"https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring\" rel=\"nofollow\">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring</a>, <a href=\"https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;</a>,\n<a href=\"http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;\" rel=\"nofollow\">http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;</a>, <a href=\"https:&#x2F;&#x2F;hnjobs.emilburzo.com\" rel=\"nofollow\">https:&#x2F;&#x2F;hnjobs.emilburzo.com</a>.<p>Don&#x27;t miss this other fine thread: <i>Who wants to be hired?</i> <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48747975\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48747975</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48771515",
+      "title": "Ask HN: Is anyone experimenting with different ways of using LLMs for coding?",
+      "link": "https://news.ycombinator.com/item?id=48771515",
+      "domain": "news.ycombinator.com",
+      "author": "yehiaabdelm",
+      "score": 204,
+      "comment_count": 202,
+      "created_ts": 1783059704,
+      "is_internal": true,
+      "post_text": "I&#x27;m a bit annoyed by the feeling that we&#x27;re kind of stuck when it comes to using LLMs for programming.<p>I use Claude Code and Codex, but I haven&#x27;t been able to enter flow state like I can when I hand write code.<p>This is kind of ironic to me since AI should be a bicycle for the mind, but right now it feels like a bicycle that just brakes abruptly every couple minutes. I stop, wait, review, prompt again.<p>Is there anyone exploring something fundamentally different than the prompt response loop we have today?<p>I actually think the idea of a tab model is directionally better than prompt response.<p>Would love to hear about any startups, personal experiments, etc.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I'm using what I call \"hermetic agents\", where completely sandboxed agents write code and tests from the same specification, where the code writer can't see the test and the test writer can't see the code. The idea is that we can get better quality this way (by avoiding confirmation bias between code and tests). It is more painful to set up however, since you have to distill a spec and guides that the agent would normally hook into using RAG.\nIt is more like people (agent?) management than coding though. I'm setting up and debugging processes, rather than writing code. I spend a lot of time cursing at and arguing with the agents I'm using to set up hermetic agents (who I can't argue with obviously, but I can have conventional agents go over their logs to figure out how to improve their sandboxed-context).",
+          "author": "seanmcdirmid",
+          "replies": [
+            {
+              "text": "This is similar to how our college CS problem sets were graded. We were given a spec, and we had to implement a program that conformed to it. We had access to 70% of the test suite during development, and another 30% was hidden and only evaluated after submission. We were graded out of 100.\nIt was effective at making you think about the problem and anticipate what tests might be missing. I can see how this would be effective for coding agents, which tend to get progressively lazier at writing tests as session context grows.",
+              "author": "chatmasta",
+              "depth": 1
+            },
+            {
+              "text": "The interesting twist here is that the test writer can also be wrong, the QA agent assigns blame when the implementation disagrees with a test case, and it’s not always going to be the implementation’s fault.\nMakes me wonder if there should be problems for CS students where given a spec and an interface, but not an actual implementation, they write the tests instead.",
+              "author": "seanmcdirmid",
+              "depth": 2
+            },
+            {
+              "text": "Had this issue at uni back in '08 (physics), my code did what was asked of it, but the auto grader didn't like it. Nagged the professor until he had a closer look and fixed the issue, and asked me to resubmit.",
+              "author": "exe34",
+              "depth": 3
+            },
+            {
+              "text": "I did a thing sorta like this between app and infra. My app agent sends messages to the infra agent for what it needs and they go back and forth to sort things out. They invented their own working process on top of it and wrote their own tool. It's interesting watching all this work. Feels like the future more than a lot of things I've seen in the past few years. Shame we're doing this to the detriment of the environment and the economy.\n  \"\"\"\n  Claude Code mesh: gossip-based multi-instance coordination.\n  \n  Usage:\n    mesh.py register --id ID --repo PATH --keyword KEYWORD\n    mesh.py list\n    mesh.py send --from ID --to ID MESSAGE\n    mesh.py broadcast --from ID MESSAGE\n    mesh.py watch --id ID\n    mesh.py forward --id ID MESSAGE_JSON\n    mesh.py peers --id ID [--n N]\n    mesh.py clean\n  \"\"\"",
+              "author": "leetrout",
+              "depth": 1
+            },
+            {
+              "text": "That's sort of crazy.\nMy agents are completely locked down and their communication channels are limited. For example, a QA agent can give feedback to the coder or tester agents, but it can't reveal information to them that they shouldn't know about.\nIt also prevents them from going off the rails, since they can't really do anything outside of their specified tasks (tools are locked down as well).",
+              "author": "seanmcdirmid",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I, like many nerds of the same stripe, have a dragon's hoard of every PC component I've owned in the last 20 years. I've attached as much of it to my homelab as is practical, but there's still a pile of GPUs from the last decade plus.\nSo I decided to load up everything with more then 3GB of VRAM into various machines on the network. Anything that could conceivably run an LLM of any utility. I've been experimenting with driving a swarm of heterogenous LLMs into coding tasks. I have models as small as llama3.2:3b up to Qwen3.6:27b dense. Over 10 unique models in the swarm.\nSo far, the results are... interesting. Coding isn't great, but what has worked \nshockingly\n well is polling the swarm for opinions. Getting ten unique perspectives synthesized into a single summary has been astonishingly useful. When I gave the swarm the ability to \ndebate\n with itself, the results got even more interesting.\nThe end goal here is an autonomous routing network that learns which models excel at which tasks, which machines can fit which models, and intelligently routes requests and models to where they're most effective.\nI can't afford an RTX 6000, but I can run smaller models on the pile of GPUs I do have. So far it hasn't worked out the way I'd hoped, but it did turn out to be very useful in other ways. Hopefully soon I can get coding worked out and the swarm can drive itself into self-improvement",
+          "author": "vitally3643",
+          "replies": [
+            {
+              "text": "> every PC component I've owned in the last 20 years. I've attached as much of it to my homelab as is practical\nthis sounds like a disease. one of the early signs for me was developing a particular interest in the breaker box.",
+              "author": "hashmap",
+              "depth": 1
+            },
+            {
+              "text": "Even though they arent Nvidia GPUs I wonder if setting up a swarm of Intel GPUs would be worthwhile for a similar setup, more VRAM, more diverse models.",
+              "author": "giancarlostoro",
+              "depth": 1
+            },
+            {
+              "text": "Using OpenVINO and a supported model can get you surprisingly far...",
+              "author": "7speter",
+              "depth": 2
+            },
+            {
+              "text": "Nice, not sure why I was downvoted for suggesting the cheapest GPU which comes with quite a lot of VRAM... but I guess some people are fatigued by AI / GPU talk?",
+              "author": "giancarlostoro",
+              "depth": 3
+            },
+            {
+              "text": "This sounds cool, do you have a more detailed write-up?",
+              "author": "fellerts",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "\"I haven't been able to enter flow state like I can when I hand write code.\" new flow state is having 10 terminal tabs in diff worktrees and trying to remember what each bit is",
+          "author": "tombot",
+          "replies": [
+            {
+              "text": "It hits the exact same endorphin system as “one more turn” style games like Civ. You can manage a few cities and keep them healthy, but the rest of your empire eventually regresses into a set of chores. Any time you encounter one of your zero growth cities you just queue some thoughtless production automation to keep it out of your “next turn” cycle as long as possible.",
+              "author": "chatmasta",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I see this as a design flaw in Civ. Better to limit the player's moves per turn to keep things moving. There's a game called \"Ozymandius\" that I quite like, or for a simple online game try Compact Conflict:\nhttps://wasyl.eu/games/compact-conflict/play.html\nHopefully the LLM's will get fast enough so we won't need to multitask, or least we can juggle fewer tasks.",
+              "author": "skybrian",
+              "depth": 2
+            },
+            {
+              "text": "Yeah I've used Opus fast mode a few times and it's incredible for staying in a flow state.\nBut it is crazy expensive so, not a feasible daily driver yet.",
+              "author": "adamtaylor_13",
+              "depth": 3
+            },
+            {
+              "text": "It sounds silly but lately I've been able to hit flow states doing exactly this.",
+              "author": "codybontecou",
+              "depth": 1
+            },
+            {
+              "text": "While it can be productive, I never feel like I'm in a flow state doing this. The general context switching can actually be a bit draining to me.",
+              "author": "chris_fullcycle",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've been experimenting with making AI generate literate code. The goal is to have the AI produce a bunch of prose alongside the code. A lot of context for the purpose and design of what you are doing usually gets thrown away, but with literate programming you can save it. And this way I can have some hope of understanding the code being created. I've liked it so far.\nI am using a literate programming project I built (\nhttps://github.com/adam-ard/organic-markdown\n) and I have an AGENTS.md file that looks like this:\n\"All the work we do on this project should utilize the organic-markdown literate style that you see explained/demonstrated in the `organic-markdown` project: \nhttps://github.com/adam-ard/organic-markdown\nSome guidelines for how you should utilize organic-markdown literate programming...\"\nThen I list a bunch of conventions for making literate code the way I like it.",
+          "author": "aard",
+          "replies": [
+            {
+              "text": "Nice.\nThere have been some similar activities on this front. In case you didn't already know of them;\nLiterate Programming in the Age of LLMs\n - \nhttps://news.ycombinator.com/item?id=48691666\nNatural Language Outlines for Code: Literate Programming in the LLM Era\n (inspired by LP) - \nhttps://dl.acm.org/doi/10.1145/3696630.3728541\nVisual Programming + Literate Programming: A Better Way to Build Business Logic With AI\n - \nhttps://www.leapter.com/ai-verification-problem/\nRenaissance of Literate Programming in the Era of LLMs: Enhancing LLM-Based Code Generation in Large-Scale Projects\n - \nhttps://arxiv.org/abs/2502.17441",
+              "author": "rramadass",
+              "depth": 1
+            },
+            {
+              "text": "This is wonderful, thanks! I was unaware of these!",
+              "author": "aard",
+              "depth": 2
+            },
+            {
+              "text": "You might also find my previous comment chains useful - \nhttps://news.ycombinator.com/item?id=48431591\n \nhttps://news.ycombinator.com/item?id=48618662\n and \nhttps://news.ycombinator.com/item?id=48264680\nWith AI agents we need some way to specify requirements, trace that they are met through the generated code and verify them against the requirements. All with the ability to generate documentation and facilitating understanding. Changes made to the specification should update code and vice-versa auto-magically. That is the holy grail of \"Round-Trip  Engineering\".",
+              "author": "rramadass",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Not being able to enter flow state is a very interesting observation. I've felt it too to the extent that I went down a whole new rabbit hole of what it means to be in flow state. Let me know if anybody here wants to know more, happy to post some links.\nTo answer your question - I discuss the approach with Claude Code (e.g., should I implement my own ACT model in JAX or PyTorch, Python or Rust or Julia, etc.). Then write the initial part of the code myself. Opening up a blank vscode is a simple joy of life I refuse to give up :-) I'll ask Claude for advice if I get stuck, it will helpfully offer to write that code for me, I obstinately decline. Eventually, I'll get bored of some minutiae or other, at which point I'll ask Claude to complete just that part of it.",
+          "author": "avilay",
+          "replies": [
+            {
+              "text": "Ok here are the flow related links. This was about 1.5 years ago when I was trying to figure out burnout and it turned out flow (or lack thereof) was closely related.\n  * https://youtu.be/VbUFMYs0kXQ?si=xiNw4ZFlla8k-p7w  The person who gives this talk (Rian Doris) has a good newsletter that I still read. I just checked their website and it has gone in full commercial mode, so YMMV.\n\n  * https://www.ted.com/talks/elizabeth_gilbert_your_elusive_creative_genius\n\n  * https://www.amazon.com/dp/0465074871\n\n  * https://www.betterup.com/blog/meaning-of-personal-values",
+              "author": "avilay",
+              "depth": 1
+            },
+            {
+              "text": "https://en.wikipedia.org/wiki/Mihaly_Csikszentmihalyi\n is considered the originator of the flow concept: \"a highly focused mental state conducive to creativity\", it's applied to other fields such as music. Definitely worth going down the rabbit hole.\nhttps://en.wikipedia.org/wiki/Flow_(psychology)\nhttps://www.sciencedirect.com/science/article/pii/S002839322...",
+              "author": "telesilla",
+              "depth": 1
+            },
+            {
+              "text": "I'd be interested in the rabbit hole of flow state. Also with regards to the dopamine rewards of solving a bug as motivation.\nSometimes using a LLM can assist these and sometimes it can feel like cheating myself out of a good thing and I'm not entirely sure where the borders are. It could also be related to a sense of ownership or pride in ones work and seeing the value in doing quality work.",
+              "author": "thinkingemote",
+              "depth": 1
+            },
+            {
+              "text": "Debugging can be super fun as we eliminate possibilities and it feels like we are converging to a solution. There have been instances where Claude (Opus family) was not able to effectively debug and I had to step in and do it. But debugging an over-engineered library for example, can become very wearisome. This is when I am really thankful for having Claude Code, it is able to figure out the bug and its fix/workaround pretty fast. I can then get back to doing my main task instead of spending an indefinite amount of time stepping through sloppily written code.",
+              "author": "avilay",
+              "depth": 2
+            },
+            {
+              "text": ">I've felt it too to the extent that I went down a whole new rabbit hole of what it means to be in flow state. Let me know if anybody here wants to know more, happy to post some links.\nI'm not a programmer, but I very much enter a flow state working on tickets, or playing a video game on higher difficulties when everything \"clicks\"",
+              "author": "Scroll_Swe",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48849292",
+      "title": "Interview with Mitchell Hashimoto about Ghostty and Zig",
+      "link": "https://alexalejandre.com/programming/interview-with-mitchell-hashimoto/",
+      "domain": "alexalejandre.com",
+      "author": "veqq",
+      "score": 153,
+      "comment_count": 60,
+      "created_ts": 1783617436,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "> I don’t like the Rust culture. There’s no better way to put it.\nThis is just so weird to me, because I would say the same about Zig.\nI tried to get into Zig even chatted with Loris Cro when he was streaming.  I was looking to explore what my Rust project could look like in Zig but there were features simply missing that I couldn't do without.  The entire interaction was mostly about how bad Rust is and how I could just do something different in Zig (completely misunderstanding my ask, with little interest to explore my actual requirements).\nI remember watching HN and seeing every time there was something Rust related trending, there was ALWAYS a post made shortly after trying to hype Zig and this went on for like 4 years.\nI'm not a Rust contributor and I don't care for some of the challenges that come with Rust, but I love what it accomplished and I find it does it very well.  \nBack then I found the Rust community had interest and respect for Zig, so the discourse was very much one sided.",
+          "author": "skhameneh",
+          "replies": [
+            {
+              "text": "> I remember watching HN and seeing every time there was something Rust related trending, there was ALWAYS a post made shortly after trying to hype Zig and this went on for like 4 years.\nYou just got a tiny taste of what Rust enthusiasts have been doing to every C++ related submission here on HN for years.",
+              "author": "spacechild1",
+              "depth": 1
+            },
+            {
+              "text": "> You just got a tiny taste of what Rust enthusiasts have been doing to every C++ related submission\nWhich is what C++ enthusiasts have done to C enthusiasts and C enthusiasts have done to assembly enthusiasts.",
+              "author": "tstack",
+              "depth": 2
+            },
+            {
+              "text": "Seriously. Yesterday there was a thread about a use-after-free bug in OpenBSD and despite BSD predating Rust by decades there were still people chiding the project for not using Rust (as though Rust would even protect you from all memory errors in a kernel project where you'd inevitably need to write unsafe Rust anyways!). Rust might be a fine language but it has the most toxic evangelist culture, bar none.",
+              "author": "applfanboysbgon",
+              "depth": 2
+            },
+            {
+              "text": "You have an awful low bar for what is considered chiding, damn\nThen again, your very username implies an indulgence in viewing technology through the lens of fandoms which is... weird",
+              "author": "throwaway27448",
+              "depth": 3
+            },
+            {
+              "text": "I read the comment that they were referring to and it wasn't even constructive conversation in the thread.\nIt was basically a complete derail to backdoor in a conversation about why they think everything should be in Rust.\nOpenBSD still uses CVS, C and Make because that's what works for them.  They will continue to keep using C, Make and CVS but that enables them to be productive with the contributors that they have.  Moving things to other languages will not increase their productivity.  That's the biggest thing that the largely-fanatical Rust evangelists completely fail to understand.",
+              "author": "busterarm",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Man, these are the kinds of things that I am so happy to read. People who think and care deeply about what they do, take pragmatic decisions that appears right to them and explain why they do things the way they do. Very motivating. Literally moved me from the couch to the work desk .",
+          "author": "tecoholic",
+          "replies": []
+        },
+        {
+          "top": "> I’ve always believed there should be way more forks, both personal and maintained ones.\nThere aren't more forks because once you fork something you take on the burden of synchronization, or you forfeit the benefit of future upstream work. To focus on Ghostty, Mitchell has taken on the effort of maintaining cross-platform support. If I want one specific feature (or even a bunch of features) and create a custom fork, but then GTK changes, now I have to support that change myself (assuming it is relevant to me or my community of users), or figure out a way to integrate Mitchell's changes into my fork, or I risk losing my customizations by having to rollback to baseline if the differences between my fork and baseline are too great.\nIf the system is well-engineered (the work on libghostty helps here) then you can keep that common core without forking, and fork just things on the periphery of the system. But well-engineered is not common.",
+          "author": "Jtsummers",
+          "replies": [
+            {
+              "text": "By making “upstreaming” the core of OS contribution, we have also failed to build tooling around downstream synchronisation. There are dedicated browser forks (a very highly complex software) that are maintained by a few volunteers. So maintaining 1 or 2 additional features depending on personal choices (or a specific company’s) shouldn’t be that hard. If we have a world where that’s normal, we will have a bigger talent pool in core tech, cloud vendors would have a hard time selling hosted solutions of open source software..etc., I think we left a good chunk of net positive impact on the table by what Mitchell mentions as the “open source project as a product” approach.",
+              "author": "tecoholic",
+              "depth": 1
+            },
+            {
+              "text": "Perhaps this is one place AI could prove very helpful - automating the synchronization of forks with their parents while keeping the changes that constitute the actual fork. Or perhaps something other than forking is needed that is more diff based so you have a view of the source overlaid with the fork and the parts unchanged flow through. At least until something like Bun’s change from Zig to Rust blows your fork up completely.",
+              "author": "NetMageSCW",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Reading this and Bun's Rust transition blog side by side just gives me a lot fun.\nI'm a big fan of Rust, and as well as Ghostty.\nPicking proper programming language is mostly about the product you are making and the problem you are solving.\nMy choice for my robot control system is Rust because I want zero-cost abstraction, no GC jitter, memory safety and avoid race conditions.\nThen I moved my focus to AI agents and web applications, I pick TypeScript to take advantage of the whole ecosystem and no need to sync between backend and frontend codes.\nI do not think products like Ghostty could benefit from Rust's memory safety feature a lot, but it do requires more attention to fight against the lifetime checker",
+          "author": "greatony",
+          "replies": []
+        },
+        {
+          "top": "This is the only statement I disagree with:\n> PowerShell gets a lot right with structured data.\nCLI programs should operate on text. If you want to parse and format it, do so, but the default output mode should be plain text, so that I can pipe it into grep or awk without a second thought.\nI am continuously irritated that the AWS CLI defaults to outputting in JSON. No one (I hope…) is using that tool in programs; that’s what boto3 and its ilk are for. But if humans are reading it, why default to something that they’re almost certainly going to be piping into jq if only for the formatting help?",
+          "author": "sgarland",
+          "replies": [
+            {
+              "text": "I always hated powershell for the same reason, and then I read a really long retro by the guy who ran the project and it makes sense now.\nBasically Unix has a long tradition of \"everything is a file\" and a big ecosystem of coreutils that are based around text and windows..  didn't.   You can't look at /dev or /etc and learn anything about the machine.  They had a few generations of APIs and wanted to give admins and power users any shell at all instead of a GUI.  So the shell is centered around making those APIs accessible, rather than piping grep and sed or whatever.",
+              "author": "nixon_why69",
+              "depth": 1
+            },
+            {
+              "text": "Slightly off topic, but it is worth being familiar with AWSCLI’s built in jmespath JSON transformation system. That saves on the need for jq in a lot of cases. Given that awscli bundles that, I generally forgive it for defaulting to JSON (especially given how deeply nested and interlinked many AWS API results are), but reasonable minds can differ. AWSCLI’s schizophrenic use (or not) of pagers for tiny results, on the other hand, is less defensible.",
+              "author": "zbentley",
+              "depth": 1
+            },
+            {
+              "text": "I'm not sure I agree.\nIn the AWS case the tools talk to an API server, so sure, you can call the API server directly or use a wrapper that does, but what about all the other CLI apps that don't? The CLI program is the API.\nI built a CLI program that wraps luks + btrfs, and they only offer a `--json` output option for a few commands. I have to write an ad hoc parser for each command since raw text includes arbitrary formatting and presentation lipstick that the creator came up with. And I have to do extra work to avoid breaking changes at the parser level instead of the higher data level.\nIf I had to pick between the two, json would at least solve the data representation part so that I can build on top of it. And it's trivial to go data (json) -> pretty print rather than pretty print -> data.\nI can see it being annoying if all you care about is using CLI programs by hand, but it seems like a mild upside compared to the downsides the second you want to consume it programmatically, even if it's with a chain of awk, cut, and tr.",
+              "author": "hombre_fatal",
+              "depth": 1
+            },
+            {
+              "text": "Powershell commands automatically format the data for you, you can pipe it to grep just fine (I do it all the time). It's just that you can \nalso\n access it in a structured way if you need to. It's the best of both worlds.\nLinux tools that are starting to output raw JSON by default are indeed a nuisance, but how else can you achieve structured output if no \nstandard\n shell supports it? It's a chicken and egg problem.",
+              "author": "tredre3",
+              "depth": 1
+            },
+            {
+              "text": "and new shells are developing features to handle structured data like json:\nhere is an elvish shell command that converts a freetube playlist from json into a list of urls grouped by author:\n    for i (cat 'freetube-playlist-favorites.db' | from-json)[\"videos\"] { \n      mkdir -p $i['author']\n      print http://youtu.be/$i['videoId'] >> $i['author']/get }\n\n\nhere is one to get a list of devices connected to my zerotier network\n    curl -s -H \"Authorization: token <redacted>\" \"https://api.zerotier.com/api/v1/network/<redacted>/member\" | \n      all (from-json) | \n      order &key={|d| put $d[name]} | \n      each { |device| \n             var t = (printf \"%.0f\" (/ $device[lastSeen] 1000))\n             if (> 20000000 (- (date '+%s') $t))  { \n               print (date -R --date='@'$t) $device[config][ipAssignments] $device[name] \"\\n\" } }\n\n\nthose are not scripts saved in a file. i run these directly on the commandline. ignore the elvish syntax, focus on the ease of accessing values from the json data. those are just two examples, though i recently discovered an ls replacement that optionally outputs  json, that will be interesting to use.",
+              "author": "em-bee",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48839397",
+      "title": "Remote Attestation",
+      "link": "https://www.liamcvw.com/p/remote-attestation",
+      "domain": "www.liamcvw.com",
+      "author": "lcvw",
+      "score": 107,
+      "comment_count": 106,
+      "created_ts": 1783557153,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "GrapheneOS has an implementation of this with their Auditor app. You can use their service or you can use another Android. No freedom lost, just security gained.\nhttps://attestation.app/about\nThere's also Android's hardware attestation API which apps can use to verify integrity in a more secure and privacy-respecting way than Google Play Integrity. An increasing number of apps are officially supporting GrapheneOS through this, and that number will only grow as GrapheneOS gains users.\nhttps://grapheneos.org/articles/attestation-compatibility-gu...",
+          "author": "Cider9986",
+          "replies": [
+            {
+              "text": "> No freedom lost, just security gained\nAs far as I can tell, it flags unlocked bootloaders? So this is already huge freedom lost.",
+              "author": "matejdro",
+              "depth": 1
+            },
+            {
+              "text": "With grapheneOS you can lock the bootloader with your own keys. Huge difference. (That said, I don't know if the apps which demand the attestation trust anything but the official grapheneOS keys)",
+              "author": "rcxdude",
+              "depth": 2
+            },
+            {
+              "text": "Auditor doesn't cause any issues with your system if there's a problem besides letting you know. It's just for informative purposes so you can determine your system is secure.",
+              "author": "Cider9986",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The German Healthcare System is moving to the TelematikInfrastruktur 2.0, which has foundations in Zero Trust security, which includes also remote attestation and proof with TPM.\nI had made a dummy client as example and I must say that on development perspectives, it is wild.\nThere are some Go libraries, which support only RSA instead of EC for TPM Keys, on the C++ side you get most of results in Windows through the CryptoProvider, on Linux and Mac exists own OS solutions/access.\nImplementing it isn't trivial at all, otherwise you would already seen (not vibe-coded) open source implementions spawning on GitHub.",
+          "author": "madduci",
+          "replies": [
+            {
+              "text": "> you get most of results in Windows through the CryptoProvider\nIsn't that what you want on that platform? ADCS even supports issuing remote-attested TPM certs via EK, no need to reinvent the wheel.\n> on Linux and Mac exists own OS solutions/access.\nI'm not sure what the story is on MacOS, but on Linux the options are definitely lacking. From what I can tell, tpm2-openssl is the most mature solution, but that doesn't support binding to PCRs at all, and validating EK signatures on the server side is left as an exercise to the reader.\n> Implementing it isn't trivial at all, otherwise you would already seen (not vibe-coded) open source implementions spawning on GitHub.\nIf I had to guess, I'd say another issue is that TPM remote attestation is seen as an \"enterprise\" feature. Open source projects like smallstep support it, but only via their paid enterprise offerings.",
+              "author": "lachiflippi",
+              "depth": 1
+            },
+            {
+              "text": "> Isn't that what you want on that platform? ADCS even supports issuing remote-attested TPM certs via EK, no need to reinvent the wheel.\nThis is really cool. Did not know about it: \nhttps://learn.microsoft.com/en-us/windows-server/identity/ad...",
+              "author": "jcgl",
+              "depth": 2
+            },
+            {
+              "text": "Exactly, how Windows exposes the TPM functionalities is a far better experience than in other platforms",
+              "author": "madduci",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "We use SPIFFE/SPIRE at work. It works well for our use case, remote embedded workflows that need to phone home.  It's very exacting: everything must be exactly right for the attestation to succeed. So it takes extra effort when you commit to that path.",
+          "author": "imglorp",
+          "replies": []
+        },
+        {
+          "top": "This is an incredibly nice technology that absolutely will be used to prevent you from using your computer as you wish.",
+          "author": "egorfine",
+          "replies": [
+            {
+              "text": "It's all about who owns the keys to the machine. Attestation with our own keys is good for us. It becomes a problem when it's the manufacturer's key, the digital fiefdom owner's key or the government's key.\nRemote attestation reveals the fact the computer belongs to corporations and governments. The user's attempts to claim ownership are \"tampering\".",
+              "author": "matheusmoreira",
+              "depth": 1
+            },
+            {
+              "text": "Not your keys, not your computer",
+              "author": "spacebanana7",
+              "depth": 2
+            },
+            {
+              "text": "This is also the technology that big and small OTT stream provider that they wish they can deploy on us.",
+              "author": "phantomathkg",
+              "depth": 1
+            },
+            {
+              "text": "this stuff should only be used for military and other high risk environments. it's an anti-consumer, anti-reuse, e-waste generating nightmare.",
+              "author": "lurkerforawhile",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": ">But what about attacks after boot? That’s your EDR’s problem. Trusted boot provides the bedrock to build a bunch of other primitives on top of. Including cryptographic proof your EDR is installed and running (at boot), immutable filesystems (verified at boot), signed upgrades, confidential computing, etc. Without it you can’t trust your hosts themselves and can’t make further security guarantees. Houses built on sand and all that.\nGood take - remote attestation doesn't solve all problems on its own but it is a very powerful tool in the platform security toolbox (and very cool \"to boot\" :P)",
+          "author": "nondescript2887",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48787886",
+      "title": "Ask HN: Where are the good search engines for mathematical formulas?",
+      "link": "https://news.ycombinator.com/item?id=48787886",
+      "domain": "news.ycombinator.com",
+      "author": "lo0dot0",
+      "score": 56,
+      "comment_count": 16,
+      "created_ts": 1783191469,
+      "is_internal": true,
+      "post_text": "Here&#x27;s what I found so far<p>approach0.xyz : offline<p>searchonmath.com : Gives irrelevant results such as p = m v when searching for F = m a<p>https:&#x2F;&#x2F;search.mathweb.org&#x2F;: A collection of abandoned projects and offline sites",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48821803",
+      "title": "Ask HN: Is GitHub preparing to go behind a login wall?",
+      "link": "https://news.ycombinator.com/item?id=48821803",
+      "domain": "news.ycombinator.com",
+      "author": "reconnecting",
+      "score": 55,
+      "comment_count": 38,
+      "created_ts": 1783449640,
+      "is_internal": true,
+      "post_text": "From time to time, I check that our open-source project is still available to all users, and I&#x27;ve occasionally noticed that the stargazers (1) information returns a 404 for non-logged-in users.<p>I assume they&#x27;re preparing to follow the LinkedIn model by making access available to registered users only.<p>Have you noticed that GitHub has started blocking access to certain functions&#x2F;pages for users without an account?<p>1. https:&#x2F;&#x2F;github.com&#x2F;tirrenotechnologies&#x2F;tirreno&#x2F;stargazers",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48816813",
+      "title": "Tell HN: Who wants to be hired\" posts outpace \"Who's hiring\" 2 to 1",
+      "link": "https://news.ycombinator.com/item?id=48816813",
+      "domain": "news.ycombinator.com",
+      "author": "santiagobasulto",
+      "score": 55,
+      "comment_count": 34,
+      "created_ts": 1783427513,
+      "is_internal": true,
+      "post_text": "Lately I&#x27;ve noticed that &quot;Who wants to be hired&quot; posts are getting more comments than the &quot;Who&#x27;s hiring&quot; ones.<p>I pulled the data using HN API and confirmed this &quot;reversal&quot;. &quot;Who wants to be hired&quot; posts are getting 2x more comments than &quot;Who&#x27;s hiring&quot; posts (and seems to be accelerating). For reference, in 2022 it used to be 0.25.<p>I&#x27;m old, I&#x27;m from the times where demand for software devs greatly outpaced supply, but maybe we&#x27;re seeing a reversal of it?<p>I don&#x27;t want to draw any conclusions yet, there could be many things going on. My initial thoughts would be AI-related. We&#x27;re either entering a general recession because the AI bubble is bursting, or the job market is changing due to AI.<p>Again, I don&#x27;t have any answers, but it&#x27;s something definitively interesting to discuss!<p>Here&#x27;s the source code (including data): https:&#x2F;&#x2F;github.com&#x2F;santiagobasulto&#x2F;hn-who-is-hiring-analysis",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring",
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48838907",
+      "title": "Ask HN: HN frontpage feels boring now?",
+      "link": "https://news.ycombinator.com/item?id=48838907",
+      "domain": "news.ycombinator.com",
+      "author": "xeonmc",
+      "score": 42,
+      "comment_count": 31,
+      "created_ts": 1783554058,
+      "is_internal": true,
+      "post_text": "Browsing the front page feels homogeneous these days.<p>It seems like what gets voted to the top these days are no longer &quot;things people find interesting&quot; but are all either boring &quot;big industry news&quot;, or common-denominator topics that people have contentious opinions about rather than any real novelty.<p>Does anyone else feel similarly that there are hardly any interesting or different or quirky topics that gets voted up these days?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48845963",
+      "title": "Ask HN: I am not able to find a job. Should I switch stacks?",
+      "link": "https://news.ycombinator.com/item?id=48845963",
+      "domain": "news.ycombinator.com",
+      "author": "need_a_work23",
+      "score": 11,
+      "comment_count": 11,
+      "created_ts": 1783605538,
+      "is_internal": true,
+      "post_text": "I have 4 years of experience working with React, Next.js, and Node.js.<p>Other than that, I have also done some work with React Native and Three.js.<p>My last contract ended about 3 months ago, and I have been trying to find new work since then. I started with LinkedIn, then reached out through my network, HN threads, Wellfound, Reddit, and other platforms.<p>I also tried reaching out directly to startup founders building things in areas I like, such as worldbuilding and writing-related products. But many of them are also early-stage and do not seem to have much funding or hiring capacity right now.<p>At the moment, I can find around 6–8 jobs per week, but it is not moving forward. I am not based in the US, which is another hurdle.<p>I am open to learning new things. I have also done some work and courses around LLMs and RAG, so I would be open to working in that area too.<p>I’m wondering if I should continue with React&#x2F;Next.js and keep applying, or if it makes sense to switch to another stack.<p>Has anyone been in a similar situation? What would you suggest? And how can I show experience in another stack?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup",
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "I highly recommend you read this classic post from Patrick McKenzie: \nhttps://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-pr...\n> You are not defined by your chosen software stack: I recently asked via Twitter what young engineers wanted to know about careers.  Many asked how to know what programming language or stack to study.  It doesn’t matter.  There you go.\nThis is \nespecially\n true now, since coding agents make it possible to work with any stack.",
+          "author": "gk1",
+          "replies": [
+            {
+              "text": "I dunno I find it almost more important than ever to have deep domain experience. You need to be able to scan output and spot any problems/improvements instantly. If I am just auditing AI output around an area I don’t have mastery of I am basically useless.",
+              "author": "ericmcer",
+              "depth": 1
+            },
+            {
+              "text": "A stack is still not a domain. You could have domain expertise in building highly scaled distributed systems and still not call yourself a ____ programmer. The point is that your value lies more in knowing how to build for performance, consistency, reliability at scale and not in knowing where the semicolon goes.",
+              "author": "patwork",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The job has never been about \"writing code\". You're there to solve problems for the business.\nI'd reach out to people you've worked with before and ask if they need help.",
+          "author": "rozenmd",
+          "replies": [
+            {
+              "text": "Managers might want solutions, but to get to them you have to go through HR, which wants checkboxes ticked.\nThat's two entirely different screening processes.",
+              "author": "Froedlich",
+              "depth": 1
+            },
+            {
+              "text": "nevermind, i was asked for \"10 years of React experience\" as a mandatory condition for a job, which was a no-pass in my case",
+              "author": "geldedus",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Rather than switch stacks, better way to phrase it is that one should try to  increase breadth and depth of knowledge.\nBy breadth I mean learning other programming language, frameworks, system design etc.\nBy depth I mean that - if you claim to know React - then get to know the deep detail of React, TS and the related ecosystem.\nYou can showcase the expertize by writing code, demoing it or sharing on github. Writing about it is another way",
+          "author": "catzapd",
+          "replies": []
+        },
+        {
+          "top": "Don’t believe anyone is hiring “switchers” or people looking to learn new things these days.  I only get interviews for things that done the last ten years.\nFolks saying it doesn’t matter are correct in times of scarcity, but was always a hard sell to employers.  Currently impossible without personal connections.",
+          "author": "mixmastamyk",
+          "replies": []
+        },
+        {
+          "top": "I started with js and php. Moved to Java. Then node. Then php again. Then Go. Then Kotlin. Then TS. Then Python. Then Go again. In between a bunch of sql, html, css, and many different tools, libraries and frameworks. The most important things Ive learned are around architecture/databases/distributed-systems, tho.\nI don’t think i could have survived in this industry if I knew only 1 or 2 “stacks”.",
+          "author": "sdevonoes",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48807108",
+      "title": "Ask HN: Are systems ready for the first negative leap second?",
+      "link": "https://news.ycombinator.com/item?id=48807108",
+      "domain": "news.ycombinator.com",
+      "author": "Asmod4n",
+      "score": 11,
+      "comment_count": 11,
+      "created_ts": 1783356086,
+      "is_internal": true,
+      "post_text": "It’s been 10 years since we had the last leap second and it looks like we will get the first negative one soonish. Are systems ready for that?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48844680",
+      "title": "Ask HN: Who is running the abusive scrapers?",
+      "link": "https://news.ycombinator.com/item?id=48844680",
+      "domain": "news.ycombinator.com",
+      "author": "jonatron",
+      "score": 9,
+      "comment_count": 2,
+      "created_ts": 1783599487,
+      "is_internal": true,
+      "post_text": "Personally I once had to triple app capacity and double database capacity just for just one scraper. I remember Cloudflare once figured out that Perplexity was one of the bad guys ( https:&#x2F;&#x2F;blog.cloudflare.com&#x2F;perplexity-is-using-stealth-undeclared-crawlers-to-evade-website-no-crawl-directives&#x2F; ) but has anyone else figured out who else is running large scale and poorly behaved scrapers?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48844345",
+      "title": "Ask HN: I hate coding agents. Is this skill issue?",
+      "link": "https://news.ycombinator.com/item?id=48844345",
+      "domain": "news.ycombinator.com",
+      "author": "cmar00",
+      "score": 8,
+      "comment_count": 7,
+      "created_ts": 1783597647,
+      "is_internal": true,
+      "post_text": "1. Farewell deep focus. Before, I could work in flow state for hours on end. Now, waiting for the prompt to finish introduces constant interruptions, which translates into constant distractions, constant context switch, infinite ideas for endless new projects. My brain is melting. I can literally feel when my neurons start clogging up, forcing me to take frequent pauses just staring outside the window for 10 minutes straight.<p>2. I don&#x27;t own my own projects anymore. Before, I used to understand every single little implementation detail of a project. When a client reported a bug, I immediately knew what and where to fix in the code base. Now, all I can do is to clasp my hands and recite a prayer to the LLM deity, hoping that my voice will be heard.<p>3. The overlords decide my fate. This is a corollary of #2. There&#x27;s an outage every other day, and since I don&#x27;t understand 80% of the code the AI has written, no AI available means it&#x27;s literally impossible for me to work. I depend completely on its availability.<p>4. It&#x27;s mostly right, but never quite there. I really make an effort to write descriptive prompts, extensive documentation, and various design docs. All of this to make it easier for the AI to understand the context and philosophy of the project. I write AGENTS.md, skills and rules. Yet, it can easily do 80% of the work correctly, but it always makes some wrong assumptions that make the other 20% very hard to fix. You have to held it&#x27;s hand over every single little bug that it can&#x27;t automatically fix. Old, already fixed bugs keep resurfacing out of nowhere. It&#x27;s like Penelope&#x27;s shroud: it looks like it fixed the current problem, but an old fix just wen&#x27;t undone. No real progress was made.<p>This is my experience with coding agents, please tell me your own. I&#x27;d love this to be a discussion.<p>P.S. This post was handwritten by a human being.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48836288",
+      "title": "Ask HN: How you manage local long lived research projects and LLM's?",
+      "link": "https://news.ycombinator.com/item?id=48836288",
+      "domain": "news.ycombinator.com",
+      "author": "ripplefringe",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1783538607,
+      "is_internal": true,
+      "post_text": "TLDR: Do you have a pattern or structure for doing long-lived research or non-coding projects using LLMs?<p>I was kind of inspired by this hacker news article where someone collected data to solve their fatigue problem: https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48605117<p>A similar but smaller I did was to collect nut-free restaurants to eat in Chicago. So I had articles, reviews, emails, phone calls, all sorts of stuff. I found it very easy to just use Copilot as my interface and I just data into it over and over and asked it to organize it.<p>https:&#x2F;&#x2F;github.com&#x2F;joshuabremer&#x2F;chicago-allergy-eats<p>This seems like a common thing where people would be working on a longer-term research or data collection task where you use the LLM to answer questions or help you accept the data. Does anyone have a standard format for this? Or an example that is working for you?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48852295",
+      "title": "Where'd Codex Go?",
+      "link": "https://news.ycombinator.com/item?id=48852295",
+      "domain": "news.ycombinator.com",
+      "author": "aleshh",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1783630759,
+      "is_internal": true,
+      "post_text": "I just clicked the &quot;Update&quot; button in the Mac Codex app, and the app quit and deleted itself. I went to download it from the download page, and it downloads a copy of the ChatGTP app.<p>Am I doing something wrong, or is this OpenAI unifying things?<p>https:&#x2F;&#x2F;openai.com&#x2F;index&#x2F;introducing-the-codex-app&#x2F;",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": [
+        {
+          "top": "An update that deletes the app and replaces it with ChatGPT sounds like a forced migration—check if OpenAI announced Codex is being sunset.",
+          "author": "PaiDxng",
+          "replies": []
+        },
+        {
+          "top": "Well this is fun, all of my chats are gone and I can't seem to get them back?",
+          "author": "MPiccinato",
+          "replies": []
+        },
+        {
+          "top": "I was having this issue and after installing and installing ChatGPT desktop, I finally got the ChatGpt Work, that has CODEX merged to it. So, if you still didn't get it right, try uninstall and install again and again and maybe again hehe.",
+          "author": "JoeGama",
+          "replies": []
+        },
+        {
+          "top": "I think Open AI merged codex and the ChatGPT app. This happened to me as well but still dont see the \"new\" version after the update which is odd.\nhttps://learn.chatgpt.com/docs/app",
+          "author": "strax01",
+          "replies": [
+            {
+              "text": "same here. this is maddening",
+              "author": "BelmontSteaks",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Same here. But where is Codex in ChatGPT app? I can only use codex as part of VS code extension. I talking about desktop.",
+          "author": "sintem",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48854066",
+      "title": "Ask HN: What are you running locally on your machine with LLMs?",
+      "link": "https://news.ycombinator.com/item?id=48854066",
+      "domain": "news.ycombinator.com",
+      "author": "agcat",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1783641223,
+      "is_internal": true,
+      "post_text": "There is a lot of buzz around this topic but i am really curious about what&#x27;s actually useful day to day when running AI&#x2F;LLMs locally on your PC.\nA few things I&#x27;m trying to understand:<p>Which models are you running locally and on what hardware?\nWhat use cases have actually worked out considering the speed and memory limitation?\nAt what point did local start making more sense than just hitting an API?\nWhat&#x27;s still not there yet?<p>Feels like we&#x27;re at an interesting inflection point but hard to cut through the noise on what&#x27;s working v&#x2F;s just setting it up",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "For a long time it has been a win to do clustering, retrieval, ranking, classification, anomaly detection and other non-generative tasks with local models from the BERT family.  These are so much better than all the things I tried from 2000-2020.  ModernBERT for feature generation plus classical algorithms from scikit-learn works so well,  plus scikit-learn has great tools for eval, model selection, probability calibration and all the other things that make the difference between \"write another arXiv paper\" vs \"deploy a product into production\"\nIf you read the splogs you'd think it is all about the \"zero-shot\" scenario where you write a prompt asking what decision you want the model to make.  Yeah,  it is amazing that it does so well with so little input,  but side by side \"many-shot\" models that learn a decision surface in hyperspace beat the pants off \"few-shot\" models that look at nearest neighbors and \"zero-shot\" models that do whatever they do.  It's not even close.\nThe reckoning for generative AI may near and it might be like something right out of \"Where's your Ed at?\"  When people see honest prices for current models I think a lot of people might decide the juice isn't worth the squeeze.  The story in the next few year is \nnot\n going to be bigger models that only Elon Musk models but a relentless fight to get costs down.",
+          "author": "PaulHoule",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48845508",
+      "title": "Ask HN: Is Google NERFing AI Mode?",
+      "link": "https://news.ycombinator.com/item?id=48845508",
+      "domain": "news.ycombinator.com",
+      "author": "PaulHoule",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1783603744,
+      "is_internal": true,
+      "post_text": "Sorry to ask a question about AI,  but...  Lately I&#x27;ve noticed that Google seems to be hiding the AI mode and trying to push people into the less capable AI Overviews.  Often when I go explicitly to the AI Mode form it kicks me to AI Overview and doesn&#x27;t give me a chance to converse more -- are token costs catching up with them?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "48843956",
+      "title": "Ask HN: How long has it been since you last opened Stack Overflow?",
+      "link": "https://news.ycombinator.com/item?id=48843956",
+      "domain": "news.ycombinator.com",
+      "author": "novoreorx",
+      "score": 3,
+      "comment_count": 8,
+      "created_ts": 1783595230,
+      "is_internal": true,
+      "post_text": "As Claude Code, Codex, and other AI coding agents take up more and more of our daily work, I&#x27;ve noticed that I now spend most of my time writing specs, nailing down requirements, and talking to the agent, rather than actually poring over the details of the code.<p>Today, for some totally random reason, it suddenly hit me that I haven&#x27;t opened Stack Overflow in a very, very long time, at least half a year. And that gives me a strange sense of loss. I used to open it almost every single day. It was there through more than a decade of my career, and somehow I managed to forget about it this fast.<p>So guys, for how long have you not opened Stack Overflow? And has anything else quietly dropped out of your workflow the same way, without you even noticing?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    }
+  ]
+}
