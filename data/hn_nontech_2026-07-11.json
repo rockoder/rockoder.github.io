@@ -1,0 +1,695 @@
+{
+  "scraped_date": "2026-07-11",
+  "source": "hacker_news",
+  "total_scraped": 100,
+  "nontech_count": 11,
+  "posts": [
+    {
+      "id": "48842459",
+      "title": "Show HN: Getting GLM 5.2 running on my slow computer",
+      "link": "https://github.com/JustVugg/colibri",
+      "domain": "github.com",
+      "author": "vforno",
+      "score": 833,
+      "comment_count": 206,
+      "created_ts": 1783584304,
+      "is_internal": false,
+      "post_text": "A few days ago I found myself trying out GLM 5.2 and was really positively impressed. The capabilities and security I was getting from this LLM are similar to those I&#x27;ve gotten from models like Claude or GPT, and this really surprised me.<p>But then I thought, &quot;I wonder how it would work on a normal computer like mine,&quot; and above all, &quot;I wonder if it would work without going into OOM on a computer like mine.&quot; So I started working with the help of agents to test this possibility.<p>I started converting the model to int4, understanding MTP usage, and if possible implementing DSA for long context. How it responds in int4 and whether the quality is maintained or not. Until I got to the point, on my computer with 32GB of RAM, I was able to communicate with GLM 5.2 with times that, of course, aren&#x27;t high in cold start, but even then, we&#x27;re talking about 0.1 tok&#x2F;s, but that wasn&#x27;t important to me. The important thing was the journey to reach this goal. I just wanted it to work at all costs, even slowly.<p>So I created Colibrì, which was born from a very simple idea, to be honest, but tested in every way, where a 744B Mixture-of-Experts model activates only ~40B parameters per token—and only ~11 GB of those change from token to token (the routed experts). So:<p>The dense part (attention, shared experts, embeddings—~17B params) stays resident in RAM at int4 (~9.9 GB); The 21,504 routed experts (75 MoE layers × 256 experts + the MTP head, ~19 MB each at int4) live on disk (~370 GB) and are streamed on demand, with a per-layer LRU cache, an optional pinned hot-store, and the OS page cache as a free L2.<p>The engine is a single C file (c&#x2F;glm.c, ~1,300 lines) plus small headers. No BLAS, no Python at runtime, no GPU.No GPU or serious hardware because I don&#x27;t have that hardware so I can&#x27;t test it on hardware that is more powerful than my computer.Colibrì is a one-person project, written and tested entirely on a 12-core laptop with 25 GB of RAM — the numbers above are the ceiling of what I can measure at home.<p>Any feedback is welcome! (and if anyone wanted to participate in the project I would be delighted)<p>Repo: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;JustVugg&#x2F;colibri\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;JustVugg&#x2F;colibri</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "After spending way too much time with Fable a few days ago, I noticed a new hallmark of AI generated text is using the word \"honest\" everywhere, in a somewhat self congratulating way.\nSome things that give it away to me:\n- \"Honest numbers (WSL2, 12 cores, 25 GB RAM, NVMe via VHDX)\"\n- \"an honest peak projection (working set, KV, MTP row, reconstruction buffers) so the kernel OOM-killer never fires.\"\n- \"Honest caveat from the same measurement: ...\"\nIt's the new \"It's not X, it's Y\". I have no issue with this, I just found it amusing.\nCool project btw!",
+          "author": "lopatin",
+          "replies": [
+            {
+              "text": "I've been seeing a lot of usage of the word `real`\nfrom recent fable sessions:\n- That gap is the real story: 3,873 flows\n- the real conversion filter types are:\n- I'll update the breakdown query to include a column for each real type",
+              "author": "abe94",
+              "depth": 1
+            },
+            {
+              "text": "I have almost completely stopped writing real in my own output as a direct consequence of this. Maybe next year they'll catch up with my alternative wordings and I'll end up switching back",
+              "author": "badatnames",
+              "depth": 2
+            },
+            {
+              "text": "This is what I've noticed lately. I write articles and over the past year or two I had to stop using specific words or change my writing style a bit many times, because people kept asking if it was AI. It just makes me sad when I show someone my work and the first thing they say is \"Is this AI\"?",
+              "author": "lukas9",
+              "depth": 3
+            },
+            {
+              "text": "Unfortunately we're much too late for realnetworks and realplayer to be relevant anymore.",
+              "author": "walrus01",
+              "depth": 2
+            },
+            {
+              "text": "I suspect it's a signature of anti-fabrication training.",
+              "author": "FeepingCreature",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My main question is whether when put into practical use, this can be measured in tokens/second, or more like 1 token per minute...   I \nhave\n seen locally hosted LLM that are as slow as 1 tok/second still be very useful if you give it a project to do something overnight and metaphorically walk away from it, check back with what it has done in 6 or 8 hours.\n0.05 to 0.1 tok/s on the other hand, as reported in the URL for the lowest class of hardware, isn't really usable for much.\nedit: I think this is a fantastic project in general concept, and look forward to seeing more efforts towards the general idea of being able to run a 350B to 900B size model locally, even if as slow as 1 tok/s, on hardware that ordinary people can afford. Anything along the general concept of \"we have fast read NVME SSD storage, we have a big ass model on local disk, we'll read it at 11GB/tok as we need it, not try to load the whole thing\".",
+          "author": "walrus01",
+          "replies": [
+            {
+              "text": "The funny thing is Claude Cowork has taught me to be patient with response timelines. I’m now figuring I’ll be running locally no later than 2028.\n(I want to spend no more than $10k. And I want to run a model comparable to today’s SOTA.)",
+              "author": "JumpCrisscross",
+              "depth": 1
+            },
+            {
+              "text": "For 10k you can buy a used dual socket Intel or amd based rackmount server with a terabyte of ram, and run models on cpu only at a reasonable speed. Same server would have been 4-5k a couple years ago before ram price rise.\nOr buy one on eBay with 512GB that has half its slots populated and then buy the matching 512GB kit to add.",
+              "author": "walrus01",
+              "depth": 2
+            },
+            {
+              "text": "Which CPU gen are you suggesting, is there any writeup on such setup where <10K (not incl. power bill) cpu only rig is giving usable token speeds on latest SoTA open weights models?\nIn my experience with rig half that cost, entire exercise of running coding models locally has been a huge disappointment.\nCost/Value when compared to cloud services is just not there, but I see the merit for those who value privacy over quality of output and want a backup of  huge condensed corpus of data within their control.\nKudos to OP though, They had clear goals and they achieved it.",
+              "author": "Abishek_Muthian",
+              "depth": 3
+            },
+            {
+              "text": "I realized I didn't answer the CPU question, as a \nvery quickly chosen example\n from eBay, there's a Dell R740XD with two Xeon Gold 6254 CPUs, 768GB RAM for sale for something like $5799 USD right now. I'm sure if I put some more time into it I could piece together something with a full terabyte for around the same price. Or faster/better CPUs, more core count CPUs by buying the system with no RAM, or minimal RAM (64GB) and then adding the DIMM kits from the more reputable refurb server part vendors on ebay.\nIt won't be fast at all, for certain, but it'll have enough memory to prove a configuration and be able to really use gargantuan GGUF format LLMs in the latest compiled llama-server. Re: electricity, I pay the equivalent of $0.07 ro $0.09 USD per kWh so it's not an extreme burden to have a theoretical 500W server running. Something like $35 to $50 of electricity a month if it's 500W 24x7.",
+              "author": "walrus01",
+              "depth": 4
+            },
+            {
+              "text": "Xeon Scalable in general seems like a good idea due to 6-channel (relatively) inexpensive RDIMM memory, but I've been reading that NUMA kills inference performance. Anyone got experience with multi-socket systems? IIRC even within the socket these cpus are divided into sub-numa nodes.",
+              "author": "puzzlingcaptcha",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Working on something similar targeting macOS on Apple Silicon, Unsloth split GGUF, compressed partial residency in unified memory (would make more sense on 128GB instead of my 64GB...), native Metal kernels, and RAM-only native compressed KV. Happy to put on GitHub when it's ready.",
+          "author": "Archit3ch",
+          "replies": [
+            {
+              "text": "I will be delighted to try. I have a 128gb macbookpro m4 waiting for this.",
+              "author": "xtracto",
+              "depth": 1
+            },
+            {
+              "text": "This is the way.",
+              "author": "sebastianconcpt",
+              "depth": 1
+            },
+            {
+              "text": "Link it already!",
+              "author": "arm32",
+              "depth": 1
+            },
+            {
+              "text": "Followed you on GitHub to get notified when you are!",
+              "author": "fragmede",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I was actually just working on the same thing as this, but I went down the route of mmapping the entire model into memory to avoid the extra ram usage. I also had Claude implement Medusa[1] on the model to try and avoid loading an additional model into memory but still get the benefits of MTP. Currently at a stop light so I can't list everything and I didn't get to read your full post either yet.\nTo expand since I just got home, I'm making all of my modifications to llama.cpp, the goal was to eventually put this on a SBC of some kind with an nvme to handle the mmapped files. I think the theoretical limit of my current setup is about 1.8 tok/s based on prior testing but that is also with the additional medusa heads not fully trained (I honestly don't know if the counting it's generated tokens or not.)\nIn the end it seems like the idea we had is similar, I just don't know how to write an llm parser/runner from scratch yet and instead of specifying what needed to stay in memory I just let the linux kernel handle it.\nOh last note, I also capped llama.cpp usage to 16GB of my 32GB, so it might be possible to get it down even lower.\n[1] \nhttps://arxiv.org/abs/2401.10774",
+          "author": "Cieric",
+          "replies": [
+            {
+              "text": "Not sure if mmapping is the right way. In my own tests I noticed that simple mmapping will produce many small reads and not keep the SSD queue saturated. So if RAM is large enough to cache most experts, that is a rounding error. But if the base weigths without experts fill more than half or RAM and you basically need to load in a few experts for each layer of each token, the latency gets important and mmap sadly blocks until the data is loaded. You can't do concurrent requests for multiple experts with mmap (but you know all the ones you need right after the router ran). And even going one step further, depending on the arch / the tensors you need, you could eagerly load some, start computing with them and load the rest of the expert tensors in the background (extra thread or async io) parallel to the compute. This is not really possible with mmap, even with madvise.\nOne further step is predicting which experts will be needed next token / next layer. LRU does this okish. But a learned projection from the hidden state can do better. Or even a simple correlation from past activated experts. Expert usage is heavily skewed.",
+              "author": "Roxxik",
+              "depth": 1
+            },
+            {
+              "text": "On the technical details of mmap I agree (at least while single threaded which is how I believe I'm running it), but making it async does sound like an interesting method for speeding it up. My only goal with my testing was get as large of a model as possible running on a computer that \"can't run it.\" I'm going to have to actually read through the code and figure out how it really works to really make any good optimizations, but as before this was just experiments with using and LLM (claude + codex) to just get it running. Since if they couldn't get it running I'm not sure if I would have wanted to spend time trying to get it working myself.\nI also know I did some things that would actually make the perf worse to, like I believe I also had AI mmap the KV Cache to make sure to runs under any circumstance. For actual optimizations based on what I currently know, I'm probably going to try and get the llm running under my igpu on my laptop with persistent shader that has some kind of inbuilt request mechanism. That way the weights that are loaded can be used as fast as possible.\nFor the expert prediction, I assume I could use the medusa paper as kind of a kick off point for that since I'm already using it to try and predict the next 4 tokens. Doing verification on those 4 tokens is about as much as I can do though since it started to thrash on loading the experts. So some method of predicting even more tokens, but then batching together those with the same experts would probably yield slightly better results in this weird case.\nNote: All of my tests have been around programming since that's the use case I'm interested in. I don't actually know if this would preform well in other cases (and anything more broad than that I assume would be slower.)",
+              "author": "Cieric",
+              "depth": 2
+            },
+            {
+              "text": "> Currently at a stop light so I can't list everything and I didn't get to read your full post either yet.\nPosting on the Hacker News forum is not worth risking your, or anybody else's, life.",
+              "author": "BigTTYGothGF",
+              "depth": 1
+            },
+            {
+              "text": "Being fully stopped at a stop light isn't putting my or anyone else's life in danger. If I have a phone in my hand the car is not moving. I also finished the comment before the light turned green so the phone also was no longer in my hand when I needed to start moving.",
+              "author": "Cieric",
+              "depth": 2
+            },
+            {
+              "text": "if you like, colibrì always needs to improve so if you have ideas or anything else you are welcome for pull request issues and also benchmarks!",
+              "author": "vforno",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is exactly the kind of technology that I expect Apple to ship anytime soon given the RAM prices and their HW/SW integration skills:\n- ship super fast SSD (tbh they are already top notch)\n- add a specific cache layer for tokens\n- keep the amount of unified memory reasonable",
+          "author": "harrouet",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48849292",
+      "title": "Interview with Mitchell Hashimoto about Ghostty and Zig",
+      "link": "https://alexalejandre.com/programming/interview-with-mitchell-hashimoto/",
+      "domain": "alexalejandre.com",
+      "author": "veqq",
+      "score": 377,
+      "comment_count": 226,
+      "created_ts": 1783617436,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "> Back to Zig, Zig has a really polarizing specific stance on what it does from technology, to community management and funding to PR, blog posts and how they talk. I don’t agree with all of it but I so respect that they are unapologetically weird. So I continue to support them financially and use their technology because I support people trying to be their own person.\nI read the full articles and always like what Mitchell trying to express, the above is an example",
+          "author": "mintflow",
+          "replies": [
+            {
+              "text": "That's the most eloquently diplomatic way to address it. He really does have a way with words.\nAt the same time, it makes me a little sad that when pressed, the best thing that could be said about Zig is that it's unapologetically weird right after a sentence about not agreeing with how they manage the project.\nI had high hopes for Zig, but the current situation feels like they're actively moving toward being a niche language and away from being something that I could make a case for in a business context.",
+              "author": "Aurornis",
+              "depth": 1
+            },
+            {
+              "text": "> when pressed, the best thing that could be said about Zig is\nWhat do you mean? We didn't really discuss technical aspects etc. and he said he does like how they manage the project.",
+              "author": "veqq",
+              "depth": 2
+            },
+            {
+              "text": "> he said he does like how they manage the project.\nThat's the diplomatic part. He sidesteps the problems by saying that he doesn't agree with all of it (which leaves it ambiguous) but then pivots to praising the way they're unapologetic and weird.\n> I don’t agree with all of it but I so respect that they are unapologetically weird.",
+              "author": "Aurornis",
+              "depth": 3
+            },
+            {
+              "text": "The person you are replying to is on every Zig thread bashing it.",
+              "author": "franktankbank",
+              "depth": 3
+            },
+            {
+              "text": "You must have me mistaken for someone else because that's not true on multiple levels.",
+              "author": "Aurornis",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Man, these are the kinds of things that I am so happy to read. People who think and care deeply about what they do, take pragmatic decisions that appears right to them and explain why they do things the way they do. Very motivating. Literally moved me from the couch to the work desk .",
+          "author": "tecoholic",
+          "replies": [
+            {
+              "text": "Unfortunately, it made me even more sad because the project I'm working on now is complete trash. Every line outdoes the previous in the dumbest thing possible. Four years at the company and not a single greenfield project for me, only well established piles of... you get the idea.",
+              "author": "nesarkvechnep",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> I’ve always believed there should be way more forks, both personal and maintained ones.\nThere aren't more forks because once you fork something you take on the burden of synchronization, or you forfeit the benefit of future upstream work. To focus on Ghostty, Mitchell has taken on the effort of maintaining cross-platform support. If I want one specific feature (or even a bunch of features) and create a custom fork, but then GTK changes, now I have to support that change myself (assuming it is relevant to me or my community of users), or figure out a way to integrate Mitchell's changes into my fork, or I risk losing my customizations by having to rollback to baseline if the differences between my fork and baseline are too great.\nIf the system is well-engineered (the work on libghostty helps here) then you can keep that common core without forking, and fork just things on the periphery of the system. But well-engineered is not common.",
+          "author": "Jtsummers",
+          "replies": [
+            {
+              "text": "By making “upstreaming” the core of OS contribution, we have also failed to build tooling around downstream synchronisation. There are dedicated browser forks (a very highly complex software) that are maintained by a few volunteers. So maintaining 1 or 2 additional features depending on personal choices (or a specific company’s) shouldn’t be that hard. If we have a world where that’s normal, we will have a bigger talent pool in core tech, cloud vendors would have a hard time selling hosted solutions of open source software..etc., I think we left a good chunk of net positive impact on the table by what Mitchell mentions as the “open source project as a product” approach.",
+              "author": "tecoholic",
+              "depth": 1
+            },
+            {
+              "text": "Perhaps this is one place AI could prove very helpful - automating the synchronization of forks with their parents while keeping the changes that constitute the actual fork. Or perhaps something other than forking is needed that is more diff based so you have a view of the source overlaid with the fork and the parts unchanged flow through. At least until something like Bun’s change from Zig to Rust blows your fork up completely.",
+              "author": "NetMageSCW",
+              "depth": 1
+            },
+            {
+              "text": "I've been thinking about this as well. How can people \"AI federate\" their forks, without relying on a single maintainer.\nMostly because in the pi.dev ecosystem there are so many similar extensions and usually everyone wants their own little special something, but then everyone could benefit from maintenance updates/bug fixes.",
+              "author": "Cilvic",
+              "depth": 2
+            },
+            {
+              "text": "You should address the point Mitchell made: maintaining a fork is roughly the same as maintaining a feature flag.",
+              "author": "the_gipsy",
+              "depth": 1
+            },
+            {
+              "text": "> maintaining a fork is roughly the same as maintaining a feature flag.\nHe didn't say that in the interview. Or, he didn't make nearly as broad a claim as you have made. He said:\n>>  If you want me to maintain a flag to remove it, I can ask you to maintain a fork removing it. Telling people to “fork it” often upsets them.\nThe context of his statement was people wanting a feature (search as one example) removed (or removable, via feature flag). In \nthat\n case, the fork is about as hard to maintain as the feature flag, assuming the software is reasonably well organized.\nBut in general, your claim is not true, and it's not what he wrote.\n> You should address the point Mitchell made\nNo, I have no obligation to respond to something that he didn't say.",
+              "author": "Jtsummers",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is the only statement I disagree with:\n> PowerShell gets a lot right with structured data.\nCLI programs should operate on text. If you want to parse and format it, do so, but the default output mode should be plain text, so that I can pipe it into grep or awk without a second thought.\nI am continuously irritated that the AWS CLI defaults to outputting in JSON. No one (I hope…) is using that tool in programs; that’s what boto3 and its ilk are for. But if humans are reading it, why default to something that they’re almost certainly going to be piping into jq if only for the formatting help?",
+          "author": "sgarland",
+          "replies": [
+            {
+              "text": "I think you're mistaking text-with-structured data for structured data itself.\nBecause unix shell is irrevocably text-oriented, kludging in something like JSON is basically the best that can be done when you start to want to do structured operations on structured data. (I'm sympathetic to your point about the AWS CLI tools doing JSON \nby default\n though--that just sounds like bad design.)\nBeing text-oriented imposes drastic limits on composability. Because there is no structure, every element of a pipeline needs to do \nits own parsing\n of the input data. This leads to brittle pipelines where every element is tightly coupled to its input's textual representation.\nAs an exercise, try to write a pipeline that sorts podman images by size without removing the column headers[0]:\n  $ podman image ls --all \n  REPOSITORY                                 TAG         IMAGE ID      CREATED       SIZE\n  docker.io/prom/prometheus                  latest      937690d77350  2 months ago  367 MB\n  quay.io/keycloak/keycloak                  latest      da9433c9fac3  2 months ago  466 MB\n  registry.fedoraproject.org/fedora-toolbox  43          a32da54355ca  4 months ago  2.19 GB\n  docker.io/powerdns/pdns-auth-49            latest      8c1385c9deed  4 months ago  208 MB\n  docker.io/testcontainers/ryuk              0.13.0      b75bc7ce94c3  6 months ago  7.21 MB\n\n\nAs far as I can tell, there is \nno\n way to do this in a manner that's even remotely composable. Your best bet is to basically do everything from within awk. Whatever the result would be, it certainly won't be pretty!\nContrast that with what you can do in PowerShell. You can write a couple of standalone functions[0] that are readable and composable, resulting in this pipeline:\n  podman image ls --all |\n      Replace-SpacesWithTabs |\n      ConvertFrom-Csv -Delimiter \"`t\" |\n      Sort-Object -Property {Convert-HumanSizeToBytes -Size $_.size} -Descending\n\n\n\n[0] Repurposing this from a blog post I wrote: \nhttps://www.cgl.sh/blog/posts/sh.html#this-should-be-basic",
+              "author": "jcgl",
+              "depth": 1
+            },
+            {
+              "text": "the point is well-taken, but i do want to show the bash version just for fun:\n    podman image ls --all | sed 's/\\s\\s\\+/\\t/g' | tee >(head -n 1) >(tail -n +2 | sort -hrk 5) >/dev/null\n\n\nthis is _still_ all text, and we're relying heavily on sort to do a bunch of internal parsing and be in agreement with podman about how sizes should be formatted. also, for \"real world\" work, i dunno if the tee trick here has any kind of order guarantees, just that it works fine in this case. I'd probably just end up dropping the header and living with worse output in reality",
+              "author": "alloyed",
+              "depth": 2
+            },
+            {
+              "text": "Ooh, I was so hoping someone would take up the challenge! This is a far shorter answer than I had honestly thought was possible. More readable too, somehow? Great use of \ntee\n that I would never have come up with (though I hear what you say about there maybe not being ordering guarantees).\nUnfortunately, it's not 100% correct, due to misaligned headers:\n  REPOSITORY TAG IMAGE ID CREATED SIZE\n  registry.fedoraproject.org/fedora-toolbox 44 5a36f433c691 2 months ago 2.14 GB\n  quay.io/keycloak/keycloak latest 1361d6e49205 9 days ago 478 MB\n  ...\n\n\nI think that speaks to your final point, which is spot-on:\n> I'd probably just end up dropping the header and living with worse output in reality\nThis pretty much sums up plain text and unix shell imo. It's very much the pragmatic solution here, and it's what ~100% of shell scripters would choose to do. And it should make anyone question the orthodoxy around the \"power\" of plain text in shells.",
+              "author": "jcgl",
+              "depth": 3
+            },
+            {
+              "text": "A variant:\n  docker image ls -a | stdbuf -oL sed -r 's/\\s{2,}/\\t/g' | { head -n1; tail -n+2 | sort -hrk5 -t$'\\t'; } | column -ts$'\\t'\n\n\nI used \ndocker\n since that's what I have installed and I assume the output is equivalent.\nsort\n's \n-t\n is set to tab for field separation.\nstdbuf\n sets \nsed\n's output to only buffer a line at a time and flush, so the \nhead\n in the \n{...}\n command group doesn't completely consume \nstdin\n's contents before it's passed to \ntail\n.\nThe \ncolumn\n command recreates the space-aligned table based on tab-delimited input.",
+              "author": "i15e",
+              "depth": 3
+            },
+            {
+              "text": "There is some cool stuff here.\nI like using \ncolumn\n to format the table. Appending it to alloyed's command fixes their header problem.\nThe \nstdbuf\n to multi-command block (term.?) is a neat trick. Although, one time when I ran this, I only got a couple lines of output. No idea why and I can't replicate it, but there could be some flakiness that results from the buffering somehow?\nQuestion: how do the \n?\n markers on the \nsort\n and \ncolumn\n invocations work/what do they do?",
+              "author": "jcgl",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I've tried to learn rust of the longest time but failed, it's not the community that is the problem but the language itself. It is far from aesthetically pleasing, a child of perl and c++ meta template programming that inherited the worst traits of both.\nGo and Python are my current preference, and C being an old soul mate.",
+          "author": "TheChaplain",
+          "replies": [
+            {
+              "text": "> C being an old soul mate.\nMaybe try Odin. Based on what I have read, it’s basically C capability-wise with better ergonomics - a simple language; no objects and limited compile time shenanigans.",
+              "author": "worrycue",
+              "depth": 1
+            },
+            {
+              "text": "I'd like to try out Odin and also Inko, which looks like Rust and Go had a baby.\n\nhttps://inko-lang.org",
+              "author": "sethops1",
+              "depth": 2
+            },
+            {
+              "text": "I have often described Zig to people as a middle ground between C and Go. It sounds like you might really enjoy it.",
+              "author": "Zambyte",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48852199",
+      "title": "Building a real-time AI tutor for 5-year-olds",
+      "link": "https://www.ello.com/blog/teaching-a-child-in-1000-ms",
+      "domain": "www.ello.com",
+      "author": "catalinvoss",
+      "score": 139,
+      "comment_count": 386,
+      "created_ts": 1783630266,
+      "is_internal": false,
+      "post_text": "Hey HN! We&#x27;ve spent the good part of this past year building an AI tutor that teaches kids ages 4-9 reading, math, ESL and more. Getting an AI tutor to effectively teach a child turns out to be a really hard technical challenge, this took getting the underlying architecture right.<p>Our tutor steers the UX in real-time and makes complex decisions on the fly. Doing both at conversation speed required us to replace the standard tool-use loop. We built our own tutor harness that utilizes a streaming interpreter that executes actions, while an asynchronous planner model reasons ahead of the conversation and makes calls that drive the child&#x27;s learning. On top of it all, we developed a safety system that checks every turn without it causing an interruption to the activity and conversation flow.<p>Effective teaching isn&#x27;t just about answering a child&#x27;s  question quickly, rather making the right move at the right moment. AI is also going to be an integral part shaping how this generation of kids learn to read and think, tackling this responsibly means getting the design right.<p>Happy to answer questions and curious what you all think, critical feedback included, we&#x27;ve been working on this problem for a long time and love to hear from the HN community.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48847562",
+      "title": "Launch HN: Context.dev (YC S26) – API to get structured data from any website",
+      "link": "https://www.context.dev",
+      "domain": "www.context.dev",
+      "author": "TheYahiaBakour",
+      "score": 115,
+      "comment_count": 86,
+      "created_ts": 1783610919,
+      "is_internal": false,
+      "post_text": "Hi Hacker News, I’m Yahia. I built Context.dev (<a href=\"https:&#x2F;&#x2F;www.context.dev&#x2F;\">https:&#x2F;&#x2F;www.context.dev&#x2F;</a>) to make it really easy to integrate web data into your products and agents.<p>Here’s a demo video: <a href=\"https:&#x2F;&#x2F;www.tella.tv&#x2F;video&#x2F;build-faster-with-context-dev-apis-2cgl\" rel=\"nofollow\">https:&#x2F;&#x2F;www.tella.tv&#x2F;video&#x2F;build-faster-with-context-dev-api...</a><p>Since it’s an API, here are the docs: <a href=\"https:&#x2F;&#x2F;docs.context.dev&#x2F;quickstart\">https:&#x2F;&#x2F;docs.context.dev&#x2F;quickstart</a>.<p>You can send us a URL and get back clean Markdown, rendered HTML, screenshots, extracted images, etc.. You can also send us a domain and get company or brand context: name, description, logos, colors, fonts, social links, screenshots, style information, and related metadata. For more custom use cases, you can send a URL plus a JSON Schema and ask us to extract structured data from the site into that shape. For example, you might ask for pricing plans, product categories, office locations, support links, integration partners, or anything else that is visible on the public site.<p>The goal is to give developers the output they actually want. Raw HTML is rarely the useful thing; the useful thing is usually Markdown for a model, JSON for an application, a logo for a UI, or a structured company profile for an agent.<p>Before, I worked at Amazon and Sunrun, and co-founded StockAlarm.io &amp; essense.io, both of which were acquired. Also, I built knifegeek.io, which scraped pocket knives from across the internet and listed them easily. The project is outdated now (coming back soon) but back then it hit the frontpage of hacker news and people seemed to like it: <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=34604281\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=34604281</a>.<p>Just before Context.dev, I built Brand.dev. The idea was that your software product should automatically know about your customer if they sign up with a corporate email. The API pulled brand data such as logos, backdrops, name, description, industry, and more from the public web and surfaced it to your product to integrate as part of their onboarding experience. That’s worth doing because conversion rates on onboarding improve dramatically when you go from “enter all this info” to “confirm all this info” (and there was never any privacy concern all the information is public).<p>That was a nifty niche, but the more customers used it, it became obvious that “brand data” was only one slice of a larger need. People started asking for things like screenshots, structured extraction, and LLM ready data. So I expanded to Context.dev, and applied to YC (got rejected after an interview), then kept going and re-applied at which point I got in as a solo founder.<p>People use Context.dev in more ways than I can list, but here are some: keeping context up to date on customer websites for chatbots - building beautiful brand assets&#x2F;ads for customers - enrichment flows using agent harnesses like eve.dev - crawling customer websites into chatbot knowledge bases - turning GitHub repos into branded docs sites - academic journal and PDF crawling. There are a ton more examples at <a href=\"https:&#x2F;&#x2F;www.context.dev&#x2F;customers\">https:&#x2F;&#x2F;www.context.dev&#x2F;customers</a>.<p>We know that many crawlers are not behaving like good citizens on the web, and the entire space has a bad reputation as a result. At the same time, customers are not usually trying to buy “scraping”. They are trying to make a support bot work, personalize onboarding, enrich CRM records, generate docs, monitor leads, or let an agent research a company. There are lots of legit use cases. We want to satisfy those while being respectful of everyone involved.<p>We maintain a caching layer and avoid hammering websites. Customers can configure the cache, but if we find we’re sending too many requests to a url in a certain amount of time, we step in and tone it down. Websites can opt out of our service, and we respect these requests and add them to our block list.<p>We focus on customers who want to build cool things for their users. Enriching onboarding is a popular use case. So is integrating context about their own websites (things like support bots), and building agents that can automatically reason about complex tasks involving the internet.<p>We only allow customers to use brand data to identify a specific customer on their software, you cannot use it in your own materials or to imply endorsement.<p>I&#x27;d love to hear your feedback about the product in the comments, thanks!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "corporate",
+        "interview",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48846332",
+      "title": "SimPolitics: America’s quest to solve politics with computers",
+      "link": "https://mitpress.mit.edu/9780262053198/simpolitics/",
+      "domain": "mitpress.mit.edu",
+      "author": "mckelveyf",
+      "score": 103,
+      "comment_count": 45,
+      "created_ts": 1783606814,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;direct.mit.edu&#x2F;books&#x2F;oa-monograph&#x2F;6166&#x2F;SimPoliticsAmerica-s-Quest-to-Solve-Politics-with\" rel=\"nofollow\">https:&#x2F;&#x2F;direct.mit.edu&#x2F;books&#x2F;oa-monograph&#x2F;6166&#x2F;SimPoliticsAm...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "politics"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48847834",
+      "title": "Show HN: Reverse-engineering web apps into agent tools",
+      "link": "https://news.ycombinator.com/item?id=48847834",
+      "domain": "news.ycombinator.com",
+      "author": "pancomplex",
+      "score": 80,
+      "comment_count": 32,
+      "created_ts": 1783611917,
+      "is_internal": true,
+      "post_text": "Hey HN! We built a browser-based agent that runs inside an authenticated web app, watches how the app calls its own APIs, and automatically turns those into agent tools. You can think of it as an auto-generated MCP server that self-updates as the host app changes.<p>The result is a skilled AI assistant that actually integrates deeply with any product (not just chat and RAG) with minimal effort.<p>Check out these short demos below that show the agent in software you&#x27;re probably familiar with:<p>- Jira: <a href=\"https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=jira\">https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=jira</a><p>- Spotify: <a href=\"https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=spotify\">https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=spotify</a><p>- Hacker News (lol): <a href=\"https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=hackernews\">https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=hackernews</a><p>- Full Demo: <a href=\"https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=full-demo\">https:&#x2F;&#x2F;demo.frigade.com&#x2F;hn?skill=full-demo</a><p>As you can see in the examples, you can do way more (and faster) than what you normally would be able to via point and click. And we never even touched the source code of these products!<p>Why do this?<p>In an ideal world, every application has an MCP server or an easily-digestible API available for AI agents to feed from. In practice, we found that even very modern software tends to have a spider web of confusing APIs and services that AI agents simply cannot use out of the box. Security also becomes a huge issue as applications have different (often homebrewed) standards for how endpoints are secured (JWTs&#x2F;cookies&#x2F;mix of both). Finally, having an actual browser agent go in and use the application on behalf of the user (i.e. computer-use), is simply too brittle, slow, and burns a lot of tokens.<p>We took our existing browser agent that’s already trained to use and learn authenticated applications, and added an extra step that automatically turns the app’s authenticated APIs into &quot;recipes&quot;. A recipe is a mix of the following:<p>- API endpoint + method<p>- Authentication method (and how to retrieve refresh auth tokens&#x2F;cookies)<p>- Response schema<p>- Input schema (for POST&#x2F;PUT)<p>- Human readable description of what the tool does<p>Putting it all together, these become reusable tools for LLMs, all without writing or maintaining any code. Even if the APIs change our agent figures this out and replaces the recipe for the tool with the updated version.<p>Adding tools to an AI agent becomes super simple this way:<p>- Our agent trains on the app and builds the recipes<p>- The app owner enables discovered tools from our dashboard<p>- The agent can now take actions on the user’s behalf directly inside the application. For instance, saying something like &quot;invite my teammate to my workspace&quot; would securely call the existing API endpoint for inviting users without proxying or relaying through a third party.<p>Of course, there&#x27;s a ton of edge cases you run into when you try to do this - every application is intrinsically different despite how many &quot;standards&quot; exist. Fun fact: graphql was by far the worst API to work with in standardizing the recipes.<p>Looking forward to your feedback&#x2F;comments!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "How do you make sure you are not violating terms and conditions if they forbid injecting third party javascript into the website explicitly?\nDoes your LLM ingest terms and conditions too?\nIn some cases in the past, finding and using auth tokens in the front end has resulted in hacking charges, in those cases alleged hacker found an api key in the front end and directly accessed the database, which resulted in a jail sentance.\nHow do you solve this issue that some companies may become hostile if injected code extracts  auth tokens and accesses backend?",
+          "author": "hoppp",
+          "replies": []
+        },
+        {
+          "top": "I'm so surprised you didn't add your agent on your own website? And the same fundamentals of a browser agent why you can't achieve everything with APIs alone apply here too inside a website. What's your take?\nWe have been building in the space balancing both with priority to GUI tools currently building on top of the great GUI experiences of a product, rtrvr.ai/rover",
+          "author": "quarkcarbon279",
+          "replies": []
+        },
+        {
+          "top": "I am not following a couple of things:\n- you sell to websites an in-app agent\n- why not just have them give you API spec, why reverse engineer their APIs?\nA bit longer term, would you see yourself competing with WebMCP then? Because the website can just expose those APIs to any browser agent",
+          "author": "arjunchint",
+          "replies": [
+            {
+              "text": "Even with an API spec it wouldn't \"just work\". You'd still need to handle authentication and have a place to manage which APIs you want the in-app agent to have access to / when to call a given tool.\nAnd believe it or not, even big companies with big eng teams don't have API specs available for their applications ¯\\_(ツ)_/¯",
+              "author": "pancomplex",
+              "depth": 1
+            },
+            {
+              "text": "Yeah the auth angle and unobtrusive integration path seems like the real neat thing here. From your customers eyes its just another user account right?\nIs that a requirement to integrate it? your app has to essentially have \"teams\" or at least shared resources?",
+              "author": "johnpaulkiser",
+              "depth": 2
+            },
+            {
+              "text": "Yup just another user account. It can work without this as well (we support ingesting other resources such as help center articles, pdfs, etc.) but at that point it's no different from any other (dumb) AI chatbot out there that just spits out a bunch of itemized bullets.",
+              "author": "pancomplex",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "it's more useful when you don't need permissions from anyone.\n1) get firefox MCP\n2) visit target site\n3) point GLM 5.2 to MCP   (maybe grok 4.5 will also work here? haven't tested their guardrails yet)\n4) instruct model to create userscript that augments/breaks whatever you want, or just break it with devtools for the one session.\nbetween 3 and 4 you may want to coax the model into instrumenting the client to understand it, write a report/skill for future sessions etc\nyou can also use the above to create a custom client or just a bot using web API. you can also easily break bot checks without puppeteered browsers now: \"the above script aims to determine if it's executed on an allowed web browser, map out all its interactions with web browser APIs to fake adequate responses while using the Deno runtime\". it's generally better to augment Deno to pass for Chrome and fool all the checks and their future versions then to just break a single check that may change soon.",
+          "author": "teravor",
+          "replies": [
+            {
+              "text": "This works for non-authenticated sites but wouldn't work for anything behind a login wall that requires a JWT or similar - right?",
+              "author": "pancomplex",
+              "depth": 1
+            },
+            {
+              "text": "are you asking if it will magically allow you to bypass authentication? only if the service is vulnerable to auth bypass and you don't mind breaking multiple laws.",
+              "author": "teravor",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Very cool! Does it require some kind of scraping of a third party web app, like clicking through with a browser agent? If so, how can I be sure it does not delete my account or subscribe to another plan or make some other destructive actions if I allow it to do that with my authed acct?",
+          "author": "nixus76",
+          "replies": [
+            {
+              "text": "We use a browser-based agent to learn all the APIs and turn them into skills. Most users will run this in a staging/test account to create all the recipes/blueprints. Our agent is also instructed to not take any destructive actions - but of course LLMs make mistakes (hence the test account :) ).\nYou can see more about how it works in detail here: \nhttps://frigade.com/how-it-works",
+              "author": "pancomplex",
+              "depth": 1
+            },
+            {
+              "text": "Got it- so it is \"inside-out\", not \"outside-in\" kind of product. Very impressive either case, congrats!\nHow does it work with the intercom widget though?",
+              "author": "nixus76",
+              "depth": 2
+            },
+            {
+              "text": "We can either replace an intercom widget entirely or do a hand off with context to a live intercom chat agent.",
+              "author": "pancomplex",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48840207",
+      "title": "Show HN: I mapped 8.5M research papers into an interactive atlas",
+      "link": "https://tomesphere.com/atlas",
+      "domain": "tomesphere.com",
+      "author": "leonickson",
+      "score": 78,
+      "comment_count": 23,
+      "created_ts": 1783563804,
+      "is_internal": false,
+      "post_text": "When I read papers, I have to jump between multiple tabs to find the dataset, code, videos, peer reviews, and so on. I tried to fix this with this project.<p>It started as a project just for papers on arXiv, but after its initial success on Twitter (got like 1.9k views: the most I have gotten for a post), I have now expanded it to include other openly available papers from PubMed Central, bioRxiv, medRxiv, and eLife. These papers have been linked with their genes, proteins, diseases, drugs, clinical trials, 3D protein structures, code, and cited and similar papers.<p>This project now has four parts:<p>First, a map. I embedded nearly 8.5M papers (with SPECTER2), ran UMAP for 2D representation, and rendered them as a scatterplot. The dots can be clicked to see brief information about the papers, like an LLM TLDR, key findings, peer reviews, linked entities, and more. The clusters are also labeled, though you might have to zoom in.<p>Second, I built a detailed paper page for each paper. They give you the paper&#x27;s full text, images, videos, peer reviews (from OpenReview), GitHub links, Hugging Face dataset&#x2F;model links, clinical trials, genes, diseases, 3D protein structures, cited papers, and similar papers. You can also copy the whole page, including the full paper text and image URLs, as markdown for your LLM.<p>Third, I have released an extension so you can read all this information in your sidebar by clicking &quot;open in Tomesphere&quot; that shows up in arXiv, PMC, bioRxiv, Google Scholar, or medRxiv. I have tried to provide as much information as possible in the extension, though for things like viewing all the images or a 3D protein structure, you might still have to go to the paper page using the link provided in the extension.<p>Fourth, all this data is available for your LLM via MCP. The MCP does have a 50-query free limit (this jumps 10x with signup).<p>Note: this project is still in beta, so papers might have some mismatched information. I am rolling out feedback forms soon to improve the data quality. Thank you so much for taking the time to read this.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "success"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48844046",
+      "title": "Show HN: Wyrm – Solve algebra by touch, built on an open-source soundness engine",
+      "link": "https://github.com/dicroce/wyrm_math",
+      "domain": "github.com",
+      "author": "dicroce",
+      "score": 63,
+      "comment_count": 9,
+      "created_ts": 1783595778,
+      "is_internal": false,
+      "post_text": "There is a mobile game called DragonBox. It sort of tricks you into learning algebra by starting with very abstract manipulations of a puzzle that must follow rules... gradually the game teaches you more and more rules and also strips out the more abstract elements until on the last levels you are finally solving real equations. I loved it, it taught my kids algebra.... and it was just fun.<p>Over the years I often thought that there should be a calculator for Algebra that works this way... something where you can drag terms around and cancel &amp; distribute with gestures, but most importantly enter your own problems.  It should also do more kinds of problems than DragonBox allowed. So I finally decided to build it.<p><a href=\"https:&#x2F;&#x2F;dicroce.github.io&#x2F;wyrm&#x2F;home.html\" rel=\"nofollow\">https:&#x2F;&#x2F;dicroce.github.io&#x2F;wyrm&#x2F;home.html</a><p>Here&#x27;s a video showing it: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=_STbS4zvIlU\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=_STbS4zvIlU</a>. If you&#x27;d rather just play with it: there&#x27;s a limited in-browser demo (real engine, a few example equations, no download) on the landing page — <a href=\"https:&#x2F;&#x2F;dicroce.github.io&#x2F;wyrm&#x2F;home.html\" rel=\"nofollow\">https:&#x2F;&#x2F;dicroce.github.io&#x2F;wyrm&#x2F;home.html</a>.<p>The app can be found on iOS (<a href=\"https:&#x2F;&#x2F;apps.apple.com&#x2F;us&#x2F;app&#x2F;wyrm-math&#x2F;id6782342042\">https:&#x2F;&#x2F;apps.apple.com&#x2F;us&#x2F;app&#x2F;wyrm-math&#x2F;id6782342042</a>) and as of this week on Google Play (<a href=\"https:&#x2F;&#x2F;play.google.com&#x2F;store&#x2F;apps&#x2F;details?id=com.dicroce.wyrm\">https:&#x2F;&#x2F;play.google.com&#x2F;store&#x2F;apps&#x2F;details?id=com.dicroce.wy...</a>).<p>I also decided to open source the underlying math engine so others could build on it: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;dicroce&#x2F;wyrm_math\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;dicroce&#x2F;wyrm_math</a>. My goal for the engine btw is to build it all the way up to Calculus.<p>Monetization is deliberately boring: the engine is free (MIT), and the polished gesture app is $4.99 once. No subscriptions, ads, accounts, or analytics.<p>I&#x27;d love feedback on the engine design — especially from anyone who&#x27;s worked on CAS or proof-assistant-adjacent problems. And if you played DragonBox as a kid and wished it went further: this is for you!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "48858997",
+      "title": "Ryanair passenger sucked toward broken window after midair engine failure",
+      "link": "https://simpleflying.com/ryanair-thessaloniki-diversion-window-damage/",
+      "domain": "simpleflying.com",
+      "author": "amelius",
+      "score": 57,
+      "comment_count": 62,
+      "created_ts": 1783686710,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "> \nA report in a Hungarian publication claims, \"A passenger was sucked into the window by the change in air pressure, with the 61-year-old man's head sticking out of the plane. Witnesses say his wife grabbed him, which was the reason he wasn't pulled out of the plane by the lower air pressure outside.\" [translation by Google]\nPoints for the wife!\n(from \nhttps://www.pprune.org/accidents-close-calls/672872-ryanair-...\n)",
+          "author": "skrebbel",
+          "replies": []
+        },
+        {
+          "top": "Well, this isn’t very typical, I’d like to make that point.\nLook, the windows not supposed to fall off, for a start. These things are built to rigorous aeronautical engineering standards — cardboard’s out, cardboard derivatives, no cellotape, no string. So chance in a million, really.\nAnd to be clear, the plane that the window fell off was flown to safety. So there’s nothing out there but birds, air, wind and clouds… and the window that fell off.",
+          "author": "clickety_clack",
+          "replies": [
+            {
+              "text": "The (hilarious) reference: \nhttps://youtu.be/3m5qxZm_JqM",
+              "author": "anaidioschrono",
+              "depth": 1
+            },
+            {
+              "text": "The window didn't \"fall off\". In article's 1st paragraph:\n\"debris from a dramatic engine failure caused damage to the aircraft's window\"\nThat's high-velocity pieces of metal. Hard to prevent that from shattering a window if engine housing didn't catch it.\nHow much stronger, thicker & heavier you want to make those windows? Costing how much more fuel? To save how many lives per year?\nI'd think airplane builders (note: not airlines!) are more qualified to make that calculation than armchair safety 'experts'.",
+              "author": "RetroTechie",
+              "depth": 1
+            },
+            {
+              "text": "Well there are a lot of these airplanes going around the world all the time, and very seldom does anything like this happen. I just don’t want people thinking that airplanes aren’t safe.",
+              "author": "clickety_clack",
+              "depth": 2
+            },
+            {
+              "text": "Fan and turbine failures are \nsupposed\n to be contained by the engine casing - it's part of certification.  But as we see here, uncontained failures do occur.  In general \"airplane builders\" do the absolute minimum to meet certification so they're not going to add reinforcement to protect against such an event until they're forced Into doing so by the authorities.\nTurboprops can't, of course, contain a propellor failure which is why they have a big slab of armour in line with the prop disk.  So in that case, yes, safety wins over cost and weight.",
+              "author": "dingaling",
+              "depth": 2
+            },
+            {
+              "text": "In the case of the Quantas A380 departing from Changi some shrapnel from the engine explosion did go through the aircraft's body, cutting cables, making a mess of the control-command systems. I don't know how one could contain the kind of energy imparted to these metal bits, especially on engines with so much power...",
+              "author": "touisteur",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Lesson learned for Ryanair leadership: charge more for seats not in range of debris from uncontained turbine failures.\nSeriously though, as an aviation geek, I always avoid those seats when given a choice.",
+          "author": "consumer451",
+          "replies": [
+            {
+              "text": "Seats near the engine are loud, so two birds, one stone.",
+              "author": "weinzierl",
+              "depth": 1
+            },
+            {
+              "text": "Serious question:  Which seats are the ones that are in range?  Just in front of the wing, or just behind it?",
+              "author": "AnimalMuppet",
+              "depth": 1
+            },
+            {
+              "text": "Hopefully someone can give a more informed comment. For me, it's the seats directly in-line with the first turbine, and a few seats back.\nedit: Well, I hope we are beyond boohoo LLM based info now. Here is Fable 5 High's explanation, and I loosely verified it. I post this to save many watts of energy due to others asking the same thing.\nSimplified:\n> I'd like to avoid seats in the rotor burst zone: the rows roughly in line with the plane of the engine's fan and turbine disks, plus a few rows fore and aft of that.\nMore details:\n> The term you're looking for is the rotor burst zone — sometimes called the uncontained engine rotor failure (UERF) debris zone. That's the phrase an aerospace engineer or pilot would immediately recognize.\n> Here's the physics behind it: the fan, compressor, and turbine disks in a jet engine spin at enormous speeds (turbine disks can exceed 10,000 RPM). If a disk or blade lets go and the containment case can't hold it, the fragments fly out tangentially — meaning they travel in the plane of rotation of that disk, perpendicular to the engine's axis. They don't spray forward or backward much; they carve out a relatively narrow band.\n> FAA guidance (Advisory Circular 20-128A, which designers use to minimize hazards from these events) models the debris path as the plane of each rotor stage plus roughly ±15 degrees fore and aft of it. Since an engine has multiple rotor stages spread along its length, the combined hazard band along the fuselage is a few rows wide, centered roughly abeam the engines.",
+              "author": "consumer451",
+              "depth": 2
+            },
+            {
+              "text": "Child comment if anyone would care to explain which info in the parent comment is incorrect.",
+              "author": "consumer451",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Good photo of the broken window in Aviation Herald: \nhttps://avherald.com/h?article=53ba2a01&opt=0\nMore discussion in: Airliners.net: \nhttps://www.airliners.net/forum/viewtopic.php?f=3&t=1510797&...",
+          "author": "rediguanayum",
+          "replies": [
+            {
+              "text": "That photo ws in the main article as well.",
+              "author": "dhosek",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Extremely similar to Southwest flight 1380 which killed a person in the US after they were partially sucked out of a broken window from an engine failure.\nhttps://en.wikipedia.org/wiki/Southwest_Airlines_Flight_1380",
+          "author": "flutas",
+          "replies": [
+            {
+              "text": "This would all be solved if the engines were out in front of the plane like podracers.",
+              "author": "bombcar",
+              "depth": 1
+            },
+            {
+              "text": "And both were Boeing 737s ... (albeit different variants)",
+              "author": "w4der",
+              "depth": 1
+            },
+            {
+              "text": "The Alaska Airlines flight that had a door fall off was also a Boeing 737",
+              "author": "insane_dreamer",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48851476",
+      "title": "Show HN: Reviving my 2001 college band with AI",
+      "link": "https://www.fadingmaize.com",
+      "domain": "www.fadingmaize.com",
+      "author": "jacobgraf",
+      "score": 53,
+      "comment_count": 56,
+      "created_ts": 1783626577,
+      "is_internal": false,
+      "post_text": "25 years ago, I joined a band called Fading Maize at Ripon College in Wisconsin. We did what we could with what we had. We recorded 3 albums over the next 3 years and played at as many bars and coffee shops as we could. We built a website with Microsoft Frontpage. Then we went our separate ways, got married, had kids, focused on other things.<p>Earlier this year I had the idea to approach the lead singer who wrote all of the lyrics and melodies to the stuff we played back then, and wanted to &quot;reimagine&quot; everything in 2026 using AI. That&#x27;s the project I want to share here!<p>The site has a before&#x2F;after player where you can flip between the original dorm-room recording and the 2026 version mid-song without losing your place, so you can hear exactly what changed. The original 2001 website is preserved and browsable at <a href=\"https:&#x2F;&#x2F;www.fadingmaize.com&#x2F;2001\" rel=\"nofollow\">https:&#x2F;&#x2F;www.fadingmaize.com&#x2F;2001</a>, rough edges intact.<p>Working on this, the thing that sparked in my own mind is that it was an experiment in a certain way to use AI. The songs, lyrics, and arrangements are the original human work (in this case from 2001-2003). We wrote the lyrics, we created the melodies, we played the parts, it just didn&#x27;t sound as good as we heard it in our own heads.<p>The stuff AI creates is awesome, but it means less if it&#x27;s just the AI cranking everything out from the ground up. In our case, the AI was only there to help us get the results we originally wanted back in 2001 when we were cooking ramen in our dorm rooms and couldn&#x27;t afford anything fancy<p>Being fully transparent about our use of AI, sticking tightly to our original lyrics and melodies, but making full use of AI to give us the studio, session players, and production budget we never had seemed like the right balance of concerns.<p>I&#x27;m super proud of how it turned out and the transparency we&#x27;ve used along the way.  Happy to discuss the audio pipeline, the site (Next.js), or what it&#x27;s\nlike to A&#x2F;B your 20-year-old self!<p>p.s. Oh and check this out! I remember this day. Our site was getting absolutely hammered! <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=KPJWlnN9tSE&amp;t=43\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=KPJWlnN9tSE&amp;t=43</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lead",
+        "balance"
+      ],
+      "comments": [
+        {
+          "top": "The original recordings sound much better and more interesting to me. Way better. The AI generated versions sound slicker in some sense but... like the re-recorded versions of old hit songs from the 60s you hear at the grocery store sometimes. Technically the song is still there, but it blends in with the rest of the muzak.\nI'm sorry to be so negative, it's great you're returning to the material after all these years, but the AI versions I've listened to all have the same smoothed-over quality that loses everything interesting and relatable to my ears in the original versions.",
+          "author": "erikschoster",
+          "replies": [
+            {
+              "text": "I'm glad to hear people share this sentiment. I think the human quality will be part of what people will start to enjoy more about music now that AI has improved so much in terms of it's ability to produce highly polished songs.",
+              "author": "AnthonyR",
+              "depth": 1
+            },
+            {
+              "text": "This is my hope as well but I'm doubtful. I'd expect it's more likely that the generations growing up with this stuff will enjoy being able to annoy their elders with it and fully embrace the human-less aesthetic.",
+              "author": "AlecSchueler",
+              "depth": 2
+            },
+            {
+              "text": "I think I can put the finger on how it differs and why the AI version seems more \"generic.\" I think the difference is in the \"post production\" that became more common in pop music in the 2010's. I'm not at all a musician so I don't know the right terms for it, but the AI version has a bunch more of little \"flairs\" and auto-tuning and audio tweaks which I assume is put in during post-production that makes it sound \"slick.\"\nHowever, it seems to me that all pop music uses the same post-production tricks these days, and so it all sounds somewhat formulaic even if the individual songs themselves are very different. As such the original version may sound more interesting simply by being different.\nSo the 2001 version sounds more like an \"MTV Unplugged\" performance whereas the AI version sounds more like the professional and polished version that gets released commercially.\nEach has their allure, however. I suspect the AI version will do better with younger crowds.",
+              "author": "keeda",
+              "depth": 1
+            },
+            {
+              "text": "I get it. Recorded music is a lot of fun to play and listen to. This still was a fun project for us to work on together after 25-years and with both of us living on opposite ends of the country. Hopefully our next release will be an in-person recording!\nI gotta brag on Chuck a bit more though. I do love the depth to his lyrics and the way he puts them to melodies. I think his stuff, at the core, is excellent. Can't wait to work on some new stuff!",
+              "author": "jacobgraf",
+              "depth": 1
+            },
+            {
+              "text": "My girlfriend has been using an AI music generator and like, her music is the best generative music I've listened to. Her prompts are \ncrazy,\n lots of actual like, music theory and specific requests.\nThat said, it still shares these qualities. It sounds like AI images look. Oversmoothed/overtuned.\nLike as a creative myself, what AI has taught me more than anything is that a lot of what we call artistry happens in the friction between an artist and their tools, when they're pushing to the limit of what they know how to and what their tools are able to do, that's where the great shit is. And it's not even that AI is a \nbad\n tool necessarily, it just doesn't create any friction. It can be frustrating, for sure, when you just can't get it to do what you want, but it's not an interesting frustration like friction because you aren't the problem, nor your skill: the tool is the problem.\nThat probably sounds like I'm saying it's bad and again, no. I'm saying the friction between the artist and their tools is the interesting part, and because there's very little friction, meaningfully, between artists and AI tools, it just comes out... boring.\nThe push for generative AI is \"you can make anything,\" and that's true. But if you can make anything, then by necessity, anything you make is unimpressive. It's only really impressive if you're not sure if you can make it.",
+              "author": "ToucanLoucan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "As a first reaction, I loved the idea, since I have had a handful of bands in my life and really loved how you revived (or aimed to revive) the old days with modern tools. I really liked the web design and nostalgia of the old photos combined with the possibilities of new technology. \nThen I hit play. \nAI sucked the soul out of your music. I am happy for you if you liked the results. But for me, each of the comparisons proved me right to loathe AI music.",
+          "author": "quietfox",
+          "replies": [
+            {
+              "text": "We appreciate you listening anyway! I enjoy the music, but it's definitely not for everybody!",
+              "author": "jacobgraf",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Interesting idea, and it sounds like you like the results, so kudos.\nMy musical taste tends toward less produced, rougher/lo-fi recordings, e.g. Guided By Voices.  So, it follows that I prefer the original recordings.\nThere is one aspect that I find slightly dehumanizing -- the AI changed the singer's voice so drastically that I don't recognize the original singer anymore.  The uniqueness of the voice has been smoothed out to be much more generic.  For me, music (and art in general) is in part an expression of one's identity, so I'd consider this a negative outcome.  I'm sure similar things could be said of the instrument performances as well.\nBut again, this is all just my two cents, and it's a matter of taste.  Ultimately if you're happy with the results, that's what matters!",
+          "author": "khr",
+          "replies": [
+            {
+              "text": "Completely agree. We tried feeding his voice in and using that as a voice model and it actually sounded even further away from his actual voice so we nixed it. We uploaded our original tracks as a reference, so there were some notes that left me feeling like \"that sounds like Chuck\", but for the most part, yeah, it's pretty far off.",
+              "author": "jacobgraf",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The revived (AI) versions have this...thin and hollow sound to it. It is difficult to explain, most AI-generated songs have this when they're modelling acoustic drums, stringed instruments, etc.\nFWIW, I'm (now a hobby) musician and have done studio work. Even the latest and best models have this unmistakable sound.",
+          "author": "TrackerFF",
+          "replies": [
+            {
+              "text": "Agreed. As someone who had never dove much into AI, it was a great learning process to experience first hand its limitations and tendencies.",
+              "author": "CSaponara",
+              "depth": 1
+            },
+            {
+              "text": "Totally agree. I guess that's what comes with the AI/robot stuff. Hopefully we'll be able to create an in-person album again, but with a little higher production quality than our dorm room versions.",
+              "author": "jacobgraf",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Nice - I've done similar things with some of my music [1].\nI have a classical piece I wrote over a decade ago for piano [2] (it’s the instrument I play), but it was always intended to be an orchestral work. Using AI allowed me to sonically experiment with a stringed score which was pretty cool.\nIt’s basically the equivalent of taking a piece you’ve written and running it through an arranger keyboard or Band-in-a-Box on steroids.\n[1] - \nhttps://mordenstar.com/blog/dutyfree-shop\n[2] - \nhttps://mordenstar.com/blog/screwdriver-sonata",
+          "author": "vunderba",
+          "replies": [
+            {
+              "text": "That's great. AI is a tricky beast. It can be used for good or evil. I had a lot of convictions while working on this project and my soul is resting easy with how we navigated things!",
+              "author": "jacobgraf",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48847298",
+      "title": "Show HN: LastShelf – an emergency map of your family's documents bills& contacts",
+      "link": "https://www.lastshelf.ai/",
+      "domain": "www.lastshelf.ai",
+      "author": "sbrown12",
+      "score": 47,
+      "comment_count": 32,
+      "created_ts": 1783609991,
+      "is_internal": false,
+      "post_text": "After my father was diagnosed with Stage 3 kidney cancer, my family was thrown into a tailspin. Getting second opinions, planning surgery, ensuring insurance coverage, coping with the fear. It was a lot to process.<p>In the middle of dealing with all the medical logistics, I realized none of our family could answer if he: \n- Had a medical directive? \n- How to trigger his life insurance policy?\n- Where is his will and who is the executor? \n- What bank accounts and credit cards existed?\n- What bills are not on auto-pay? \n- When these bills due and how are they paid?<p>That wasn’t solved by password managers or budgeting apps. So I built it.<p>LastShelf: automatically discovers, documents and distributes a map of critical life documents, expenses &amp; contacts in the event of an emergency. Register here: <a href=\"https:&#x2F;&#x2F;www.lastshelf.ai&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.lastshelf.ai&#x2F;</a><p>If you’ve lived through a similar crisis, I really want to hear what would have made the process easier.<p>Anyone who shares their feedback with me will get the first year free. Send a note to support [at] lastshelf.ai",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    }
+  ]
+}
