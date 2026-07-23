@@ -1,0 +1,505 @@
+{
+  "scraped_date": "2026-07-23",
+  "source": "hacker_news",
+  "total_scraped": 30,
+  "nontech_count": 4,
+  "posts": [
+    {
+      "id": "49008211",
+      "title": "Show HN: Bento - An entire PowerPoint in one HTML file (edit+view+data+collab)",
+      "link": "https://bento.page/slides/",
+      "domain": "bento.page",
+      "author": "starfallg",
+      "score": 683,
+      "comment_count": 154,
+      "created_ts": 1784733563,
+      "is_internal": false,
+      "post_text": "Over the past few months, our team has been building more and more slidedecks using web frontend technologies with coding harnesses like Claude Code, but a common complaint is to make even small edits we need to edit the code either manually or via the harness.<p>To avoid this loop, I ended up creating Bento, a single HTML file with everything you need in a slide tool including animations and shared editing. There&#x27;s no install or cloud login, everything works offline. The default deck is around 560 KB and it doesn&#x27;t need to fetch anything once you got it.<p>Open it in a browser and then you can edit, present, print and save. Share it via email or via Airdrop and all they need is a browser to edit, present and also do live collab on the slides. Drop it in to Claude or ChatGPT to transform existing pptx files into Bento slides. There is no cloud involved, only an encrypted blind relay to allow for shared editing. The relay doesn&#x27;t see any of the data.<p>Check it out at <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;slides&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;slides&#x2F;</a> which takes you straight to the editor.<p>Go to <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;guestbook&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;guestbook&#x2F;</a> to try out the live guestbook to experience share editing &#x2F; collab.<p>There is also a gallery with some sample decks on the website - <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;</a><p>All the code is MIT licensed and you can find it here - <a href=\"https:&#x2F;&#x2F;github.com&#x2F;nyblnet&#x2F;bento\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;nyblnet&#x2F;bento</a> . I used reveal.js with several other libraries (including some homegrown ones), and Claude Code.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "Hi, I'm the creator of Bento. Just wanted to share a bit more about how I created it beyond what's in Github.\nThe file contains more or less two sections. There is a plain block of JSON near the top of the file which is the slide data. You can read, grep, or point a harness at it. The app itself is in a base64 blob that loads through a small shim which deflates in the browser with DecompressionStream, which keeps the package small and so that we don't need to fetch any external files at runtime. File System Access API is used for JSON writeback into the same file, which falls back to a plian download and all updates are ECDSA signed.\nI started with reveal.js which served as a base, and incorporated GSAP/Flip to handle the animation. Then I added charting with echarts, but due to a number of issues with size and how the worked, I ended up re-implementing both.\nWhat I'm most pleased about is how seamless the CRDT works. The blind relay is a small file that runs on Cloudflare Durable Objects, and all it sees are the encrypted data from the clients. Collab is off until we turn it on in the app (by starting a session by sharing by invite file), and then some sets of keys are generated. Access is handled by user key, and you can have read-only users, and also revoke live collab access by user as well.",
+          "author": "starfallg",
+          "replies": [
+            {
+              "text": "The concept that's MAGICAL in Reveal.js is vertical slides.\ne.g. \nhttps://revealjs.com/#/2/1\n <-- from here you can go up or down, then go right to continue the presentation.\nYou just make one slide deck with lightweight high-abstraction slides and depending on the audience you just... hit the down arrow. bam. now you're inside the tech slides. no nerdy tech guys? sweet, don't hit down on slide 3. Instead you're with the marketing guys, so hit down on slide 5.\nAnyway - looks like you got rid of that in order to mimic Powerpoint, but... don't forget it's there. it's my favorite part of using Reveal.js!",
+              "author": "inanutshellus",
+              "depth": 1
+            },
+            {
+              "text": "It'd be cool to add a third dimension to reveal.js decks. One of the transition animation options is \"zoom\", which visual effect is like going into / through the current slide. The Overview mode could be enhanced to show a 3D map (a stack of 2D layers). All kinds of fun mazes / games / interactive fiction use cases come to mind....",
+              "author": "chrisweekly",
+              "depth": 2
+            },
+            {
+              "text": "You guys are reinventing Prezi and I'm into it",
+              "author": "gchamonlive",
+              "depth": 3
+            },
+            {
+              "text": "That's a great point. I went down the state slide route in order to handle a similar type of use-case, but I'll look into this and see if we can incorporate that somehow. It seems like a really elegant way to implement some state slide use cases. And thanks for the heads-up on this!",
+              "author": "starfallg",
+              "depth": 2
+            },
+            {
+              "text": "This was my biggest question. Thanks for preemptively answering (and being proud!).\nWhen I was playing with this, I immediately thought of TiddlyWikis, which I've always been fond of, but they never took for me. However, an easily editable presentation -- that's a use case I can understand.\nI couldn't see how there was a CDRT when I'm just working with a single file. I was trying to figure out where the server was. So -- this is just on for everyone? Are you concerned that your Cloudflare account will be hammered with this?",
+              "author": "mbreese",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is amazing. I also think this will become more common. I feel there is a lot of software that can just be served locally via html/typescript/react etc and even have local state. There's just not been an economic incentive till now.\nI am personally using kimi k3 to create a mobile friendly set of games, starting from math like linear algebra to quantum physics - neurodivergent friendly, completely local state, served from github pages -  to get someone interested in the field. This needs an economic incentive to exist without LLMs, because of so much different expertise needed, and time.\nif anyone's interested in the games let me know - i plan to play it myself, improve it, remove bugs etc before publishing on HN.",
+          "author": "praveer13",
+          "replies": [
+            {
+              "text": "Yeah, I was just discussing with a co-worker the concept of a hybrid document where editing controls and the content all exist in a single HTML file (prior implementations include various wikis such as: \nhttps://feather.wiki/\n ) --- makes one wonder what an SVG or spreadsheet implementation might look like.",
+              "author": "WillAdams",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! If you need anybody to test and feedback, I'll give it a go.",
+              "author": "starfallg",
+              "depth": 1
+            },
+            {
+              "text": "https://vecto.play.naigap.com/\nhttps://phaseworld.play.naigap.com/\nhttps://slope-rider.play.naigap.com\nThree so far\nRepos -\nhttps://github.com/praveer13/vecto\nhttps://github.com/praveer13/slope-rider\nhttps://github.com/praveer13/phase-world",
+              "author": "praveer13",
+              "depth": 2
+            },
+            {
+              "text": "I really like the first 2, but not sure about the game mechanics of the last one. However, the graphics were nice and fluid throughout, looks great!",
+              "author": "starfallg",
+              "depth": 3
+            },
+            {
+              "text": "Yeah I am not liking third one either. Mechanics aren’t working well for me either. I might get it redesigned - maybe by gpt this time lol",
+              "author": "praveer13",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Nice work!\nBut...I added an image to see what options it gave me. There was no way to add alt text, which leads me to believe that accessibility was not a priority. Unless passing accessibility checks is a feature, this isn't something I could use.",
+          "author": "jimmar",
+          "replies": []
+        },
+        {
+          "top": "Awesome. I've been trying to promote this kind of Single-File Web Apps as a concept - feel free to add this to the proposed Wikipedia page: \nhttps://en.wikipedia.org/wiki/Draft:Single_File_Web_Apps",
+          "author": "calebm",
+          "replies": [
+            {
+              "text": "The draft doesn't read as a Wikipedia article – e.g. addressing the reader as 'you'.\nI don't think WP is the right place for this. It is supposed to be a tertiary source, not a place to promote concepts you want to see established.",
+              "author": "yreg",
+              "depth": 1
+            },
+            {
+              "text": "The first reference (for the definition) also links directly to a blog post created by OP.\nEdit: Actually 4 of the references on that wiki page link to either OPs blog, YouTube, or projects. I can see why this article was declined, however broadly an article could exist for this concept if there were other sources to build on.",
+              "author": "Chilko",
+              "depth": 2
+            },
+            {
+              "text": "mdwiki [0] would probably qualify. Disclaimer, I created+released it in 2013. I always jokingly called it the first true single-page application - as it was a single, offline-capable .html file with all images, icons, styles etc. inlined in the same .html file.\n[0]: \nhttps://mdwiki.info",
+              "author": "littlecranky67",
+              "depth": 1
+            },
+            {
+              "text": "This might interest you as well [1]. Similarly, here is an example of presentation using this format [2].\n[1] \nhttps://github.com/gildas-lormeau/Polyglot-HTML-ZIP-PNG\n[2] \nhttps://github.com/gildas-lormeau/Polyglot-HTML-ZIP-PNG/raw/...",
+              "author": "gildas",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for taking the initiative to create this page! I was disappointed with the search feature github had regarding searching these type of files.\nHere are some more such tools I feel you might find interesting (or most likely you might already know them) but might be worth having in a single place as a list.\nNash is stand alone note as HTML. Source: \nhttps://github.com/keepworking/nash\n\nI recommend nash for when i feel people might get overwhelmed with tiddlywiki.\nhtpad: Handwritten scratch pad saves stuff to SVG.\nSource: \nhttps://github.com/akissinger/htpad\n\nI just use this for drawing on screen since teams annotation sucks.\nMinimal PWA template. Source: \nhttps://github.com/chr15m/minimal-pwa\n\nA minimal template that should ideally work, but i wasn’t able to get it working with marimo wasm notebooks.\nCurrently, my focus is to use python either using pyscript or hopefully just use marimo to have python apps for simple things.\nI don’t want to learn js and avoided this side longer than i would have wanted. But python WASM ecosystem has grown significantly to a point where i feel investing time in building these tools.\nCurrently, marimo is having issues with the completely offline part but hopefully, that gets fixed!",
+              "author": "analog_daddy",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Go to \nhttps://bento.page/guestbook/\n to try out the live guestbook to experience share editing / collab.\nMy M1 Mac froze in the end (had to hard-reboot), but that was so much fun! I guess there’s a reason Figma uses WASM and a custom renderer, though I guess your implementation should work fine for most cases (i.e. not when all of HN are trying to edit everything simultaneously :^)\nTwo notes:\n1. It would be nice if another person changing something unrelated to what I’m doing didn’t reset the focus for me.\n2. WAY too llm-y copy both on the landing page and the example deck. Your HN submission text is way easier and more pleasant to read.\nAnd huge kudos for releasing this as FOSS!",
+          "author": "notpushkin",
+          "replies": [
+            {
+              "text": "Thanks! I had to reset the guestbook because it's being spammed. It's on epoch 4 now, hopefully people will be better behaved moving forward!\n1. Yes, that's a good point that somebody else raised also. It went pass testing as I was only testing with 1 or 2 other people at once. Will fix this tonight.\n2. Yeah, agreed and fair point. But I don't write well and I don't have time between day job and being a dad. Will try to fix this gradually.",
+              "author": "starfallg",
+              "depth": 1
+            },
+            {
+              "text": "1. I’ve added the ⌘V remark on the first slide (it was the only way I could add anything in the previous epoch at all!). Hope it helps others have fun in the meanwhile.\n2. Absolutely fair point, and it’s okay – the demo speaks for itself :-) Although if you wrote that submission text yourself, you do write pretty well! But obviously no pressure here.",
+              "author": "notpushkin",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "48995213",
+      "title": "Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting",
+      "link": "https://runtimewire.com/article/jack-dorsey-block-buzz-team-chat-ai-agents-git",
+      "domain": "runtimewire.com",
+      "author": "ryanmerket",
+      "score": 368,
+      "comment_count": 326,
+      "created_ts": 1784654046,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;x.com&#x2F;jack&#x2F;status&#x2F;2079605800998146171\" rel=\"nofollow\">https:&#x2F;&#x2F;x.com&#x2F;jack&#x2F;status&#x2F;2079605800998146171</a>, <a href=\"https:&#x2F;&#x2F;xcancel.com&#x2F;jack&#x2F;status&#x2F;2079605800998146171\" rel=\"nofollow\">https:&#x2F;&#x2F;xcancel.com&#x2F;jack&#x2F;status&#x2F;2079605800998146171</a><p><a href=\"https:&#x2F;&#x2F;buzz.xyz&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;buzz.xyz&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "That screenshot is some Lynchian horror. \"#engineering. New direction, team – we're moving the prototype to Flutter\" and then the humans and agent bots engage in flirty emoji-filled chats with cutesy names \"I nailed the physics, UI shell @Honeybot?\"\nI'm trying to imagine a world in which this makes sense as a way to organize software development work, but coming up short. It's on a blockchain or something though, so there ya go.\nhttps://github.com/block/buzz/blob/main/docs/assets/screensh...",
+          "author": "themgt",
+          "replies": [
+            {
+              "text": "I have a premonition of future programming despair, and I wonder if it'll be like what Ian McKellen felt: A veteran of Shakespearean plays, doing all those [correction, not LoTR] \nThe Hobbit\n green-screen shots interacting with no real person...\n__________\n> McKellen said: \"I felt pretty miserable … and thought perhaps, has the time come for me to stop acting altogether if I can't cope with these difficulties?\" [...]\n> \"It was so distressing and off-putting and difficult that I thought 'I don't want to make this film if this is what I'm going to have to do',\" McKellen added. \"It's not what I do for a living. I act with other people, I don't act on my own.\"\n-- \n\nhttps://www.theguardian.com/film/2013/nov/20/the-hobbit-gand...",
+              "author": "Terr_",
+              "depth": 1
+            },
+            {
+              "text": "P.S.: I want to make it clear that this isn't \njust\n about dealing with other humans. The dread I contemplate should affect even introverted shut-ins.\nI want to reduce accidental complexity, discover and understand real problems, solve them well, and leave the world somehow better for it. Not just some infinitely process ping-pong of a hallucinated digital dollhouse fifteen levels removed from objective reality.",
+              "author": "Terr_",
+              "depth": 2
+            },
+            {
+              "text": "Soul engraving video seeing him go through that",
+              "author": "suladead",
+              "depth": 2
+            },
+            {
+              "text": "Compare that to actors acting in The Volume though, instead of the greenscreen room.",
+              "author": "fragmede",
+              "depth": 3
+            },
+            {
+              "text": "Being marginally better than hell is still hell.",
+              "author": "ses1984",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "> Explain Like I'm 5\n> Buzz is an open-source, self-hosted workspace that combines team chat, AI agents and Git hosting using signed Nostr events, so teams can keep control of their data.\nVery different expectations of 5-year-olds.",
+          "author": "rsstack",
+          "replies": [
+            {
+              "text": "It’s kinda interesting seeing what, IIRC, was originally a subreddit name which spawned from an AskReddit thread, is now a common marketing phrase in the tech world.\nSimilar to the sub itself, it’s now just shorthand for “describe using the first principles the expected audience should understand.”\nI imagine a lot of people in the industry also fondly remember the 2010s reddit experience.",
+              "author": "joenot443",
+              "depth": 1
+            },
+            {
+              "text": "Not sure how long the subreddit has existed but I always assumed it was inspired by the episode of The Office where Michael asks Oscar to explain what a surplus is like he's 5. The broader usage on social media and the ELI5 shorthand are definitely the result of the subreddit though.\nThis article is definitely abusing the terminology, because I wouldn't expect even tech-knowledgeable people to know what Nostr is or does.",
+              "author": "kyle-rb",
+              "depth": 2
+            },
+            {
+              "text": "The original joke for anyone who doesn't know or remember, Michael, the manager, asks his accountant to explain what a surplus is like he would to an 8 year old.  Michael doesn't understand this and asks for how he would explain it to a 5 year old, which Oscar does a very good job with explaining and Michael finally understands.\nLater the security guard is called upstairs to break a tie on votes for what to spend the surplus on, and Michael starts reciting Oscar's 5 year old explanation, and the guard cuts him off saying he knows what a surplus is.\nI have to imagine this is sort of a joke about the audience too as inevitably the writers were considering that audience members might not know what a surplus is, and this kind of joke is an opportunity to explain it.",
+              "author": "veltas",
+              "depth": 3
+            },
+            {
+              "text": "I remember when the sub was first created, I think there was an understanding it didn’t actually mean you were explaining to five year olds. Hard to recall exactly when it was created though, so definitely awhile ago.",
+              "author": "wincy",
+              "depth": 3
+            },
+            {
+              "text": "The same understanding still exists, from \nhttps://old.reddit.com/r/explainlikeimfive/wiki/detailed_rul...\n:\n> The purpose of this subreddit is to simplify complex concepts in a way that is accessible for laypeople.\n> The first thing to note about this is that this forum is not literally meant for 5-year-olds. Do not post questions that an actual 5-year-old would ask, and do not respond as though you're talking to a child.",
+              "author": "lgas",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "[I work for Slack, opinions very much my own]\nHaving agents see everything you and your colleagues see is cool.\nThe challenge comes when you want to make certain things private to certain people. In that world you don’t want multiplayer agents leaking data, so you end up having to write and maintain complex rulesets about what specific resources agents have access to.\nSingle-player agents, on the other hand, are much more straightforward — they act on a single user’s behalf, and then the challenge is ensuring the single-player agent cannot exfiltrate private data into a shared space unless the user specifically permits it.",
+          "author": "muglug",
+          "replies": [
+            {
+              "text": "Private groups are the worst thing in a truly collaborative environment. Would be nice in Slack to have a Publish this whole freaking thread to a public channel button.",
+              "author": "swader999",
+              "depth": 1
+            },
+            {
+              "text": "But who is allowed to press it? If anyone, then anyone can expose career ruining messages from someone else, even inadvertently.",
+              "author": "tomaskafka",
+              "depth": 2
+            },
+            {
+              "text": "Can’t anyone already do that with a screenshot or a log dump? I’m always assuming company provided comms platforms are fully readable by the admins",
+              "author": "coffeebeqn",
+              "depth": 3
+            },
+            {
+              "text": "That's a good operating assumption, and I usually think this way too.\nIt turns out Slack actually requires legal process or consent of parties to provide private messages to admins: \nhttps://slack.com/help/articles/204897248-Guide-to-Slack-imp...\nBut of course yes, another party could simply take a screenshot",
+              "author": "ivan888",
+              "depth": 4
+            },
+            {
+              "text": "They certainly can on Business and Enterprise plans. There’s some lip service to following employee policy and applicable laws, but if the policy allows (most do), and you’re in the US, the admins can do it.",
+              "author": "fcarraldo",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Now when I see new software projects I just think of how much of them are made with agents and the unreliability/easy abandonment that comes with it. Ten years ago this product would have been of a known quality. Not saying anything about buzz specifically.",
+          "author": "Gecko4072",
+          "replies": [
+            {
+              "text": "I find this thought process somewhat faulty given that the vast majority of software ends up in that spot regardless.\nHard to take this as that big a deal when Google literally launched a product along similar social themes named \"Google Buzz\" which lasted all of like 16 months in 2010, well before agents and llms.\nEither the project will find a fit, or it won't - and code quality doesn't have all that much to do with it existing in 2 years (some - but not as much as engineers want to believe).",
+              "author": "horsawlarway",
+              "depth": 1
+            },
+            {
+              "text": "Argument similar to: people still get hurt riding a skate without a helmet, why do I need it anyway?",
+              "author": "witx",
+              "depth": 2
+            },
+            {
+              "text": "If you can point me at any actual data that Saas companies are more like to be abandonware if AI is used... sure.\nBut my experience with startups is that the odds are great they're \nALL\n going to be abandonware in a couple years.\nEx - 50% of every company started is out of business in 5 years.",
+              "author": "horsawlarway",
+              "depth": 3
+            },
+            {
+              "text": "And I find \nthis\n thought process somewhat faulty.",
+              "author": "Brian_K_White",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, it used to be the friction of making something was at least a partial sign that it had been thought out to some degree. Now it's just \"lets lob it on users and make them figure out if this is worth a damn\". I feel like with a lot of this stuff, there isn't much value to being an early adopter and there's a lot of risk. Better just to wait a couple months to see how things shake out. If it has staying power it really won't matter if you're behind by like a few months.",
+              "author": "overgard",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Google Buzz [1] along with Wave you both were too soon for this world.\n1. \nhttps://en.wikipedia.org/wiki/Google_Buzz",
+          "author": "ecliptik",
+          "replies": [
+            {
+              "text": "Still can't make a Gmail label named 'Buzz'.",
+              "author": "cryptoz",
+              "depth": 1
+            },
+            {
+              "text": "Know of any other labels that are blocked or taken ?",
+              "author": "Melatonic",
+              "depth": 2
+            },
+            {
+              "text": "I was literally thinking this reminds me of Google+ and Buzz.",
+              "author": "MPSimmons",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49005787",
+      "title": "The startup's Postgres survival guide",
+      "link": "https://hatchet.run/blog/postgres-survival-guide",
+      "domain": "hatchet.run",
+      "author": "abelanger",
+      "score": 330,
+      "comment_count": 175,
+      "created_ts": 1784723768,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "Some comments and corrections:\n* Use uuidv7 not uuid in general (typically v4)\n* in addition to minimizing locked records, make sure your locks are ordered deterministically across all queries (eg by id asc, always) or you’ll deadlock (but postgres has a really good deadlock detector so you’ll more likely just error out if you’re lucky)\n* always use explain (generic_plan) to be able to a) copy-and-paste your queries with placeholders for parameters as-is, b) see how your query will actually be optimized when Postgres doesn’t have visibility into the specific parameter values\n* use set seqscan = off when testing your query plans esp when tables are empty or nearly so so you can see if indexes will be used when seq scans become less cheap\n* everyone defaults to btree indexes which are heavy and increase index bloat. Consider using a hash index instead if you just need to look up by column/id but not sort or get values greater/lesser than a param. You can’t create unique hash indexes but you can create exclude using hash constraints for the same effect (except no multicolumn unique index support)\n* learn about GIN (and GIST) indexes. They can speed up common queries without needing new syntax, something people coming from MySQL might not expect to be possible; i.e. you can use them to speed up Plain Jane like ‘%foo%’ queries without switching to FTS.",
+          "author": "ComputerGuru",
+          "replies": [
+            {
+              "text": "OP here, I appreciate this.\n> in addition to minimizing locked records, make sure your locks are ordered deterministically across all queries (eg by id asc, always) or you’ll deadlock (but postgres has a really good deadlock detector so you’ll more likely just error out if you’re lucky)\nThis is really good advice, I should put this somewhere in the guide. To add to this, not only can you deadlock by not having a consistent `ORDER BY` when you're locking sets of rows, but you should also be careful of locking rows on tables in different orders. For example, even if you lock each row in a table with an ORDER BY and FOR UPDATE, if one tx locks `table_a` and then `table_b`, and the other locks `table_b` and then `table_a`, you'll deadlock. This is obvious in theory but exponentially harder to debug in practice, because you need to be globally aware of every table that a write touches - something that's bitten us in particular with certain extensions.\n> learn about GIN (and GIST) indexes\nWe're just testing GIN for fast key-value lookups for JSONB columns, and the performance improvements have been really massive. Interestingly there was a large performance skew between AND vs OR on these key-value queries.",
+              "author": "abelanger",
+              "depth": 1
+            },
+            {
+              "text": "> use set seqscan = off when testing your query plans esp when tables are empty or nearly so so you can see if indexes will be used when seq scans become less cheap\nHow well does this work for you? I thought if you have _any_ index, Postgres will use it if you disabled sequential scans. Diabling sequential scans won't tell if you if you have the \nright\n index",
+              "author": "malisper",
+              "depth": 1
+            },
+            {
+              "text": "The seqscan option being a binary on/off is a bit of a misnomer; what it actually does is set the cost associated with a seqscan to be astronomically high so that other options will be preferred over it. An index on age when you're looking up by name won't be used whether or not seqscan is enabled.",
+              "author": "ComputerGuru",
+              "depth": 2
+            },
+            {
+              "text": "> \nUse uuidv7 not uuid in general (typically v4)\n7/4 'converters' have been featured on HN a few times:\n* \nhttps://github.com/ali-master/uuidv47\n* \nhttps://github.com/stateless-me/uuidv47",
+              "author": "throw0101d",
+              "depth": 1
+            },
+            {
+              "text": "Any kind of uuid PK is quite expensive and usually not worth, because you're so frequently joining on PKs. A safe default is to use serial PKs, then have a secondary-indexed uuid4 if you wish to publicly-expose anything. Why uuid7, is the btree performance better with it than with uuid4?",
+              "author": "frollogaston",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Should one of the first things you do with a database not be to have a backup strategy? I understand that HA would be a \"nice to have\" when first starting out, but surly if you have a production db, a backup and restore plan should be on a survival guide? Neither appear to be mentioned here.\nWhat do you all use for your pg backups? Is Barman ( \nhttps://pgbarman.org/\n) still the way many do it? (I haven't deployed a new pg instance for a while, but thinking about it for a new project).",
+          "author": "theallan",
+          "replies": [
+            {
+              "text": "I might get flak for saying this but if you aren't a postgres expert already: just use RDS or a similar cloud DB. The amount of money you're saving by hosting and managing your own postgres instance is absolute peanuts compared to having battle-tested infrastructure for HA, backup and restores, point-in-time recovery, read replicas, etc.",
+              "author": "mjr00",
+              "depth": 1
+            },
+            {
+              "text": "At $dayjob we have the same mentality and as a result have a load of managed read replicas that are never used for anything (not reporting, not read only queries, not backups because $cloud handles it) that cost every month. Plus managed database restricts what you can do with the database - sometimes in really annoying ways.\nSo while I partly agree with you, a lot of companies don't really need HA, read replicas, or even PITR (though I would argue the last one is so trivial and cheap to enable that why not), but they click the expensive check box, and I would argue that companies who do need these features should consider hiring at least a couple of DBAs and get more flexibility instead of the current status quo of everyone being scared of the database and everyone just hoping cloud support will come to their rescue if ever needed",
+              "author": "dwedge",
+              "depth": 2
+            },
+            {
+              "text": "> hiring at least a couple of DBAs and get more flexibility\nEvery place I’ve ever worked at that had DBAs had the complete opposite of more flexibility. You have to do things the DBA’s way, and if their way doesn’t work for your service, you need to fight for their time and priority.\nMeanwhile every place I worked at where every team completely owned their databases + did periodic data recovery drills had much more flexibility and no data loss.",
+              "author": "drdexebtjl",
+              "depth": 3
+            },
+            {
+              "text": "That’s usually because they’ve seen a lot of failure modes over the years, and what seems fine to you can have surprising outcomes later.\nMy personal experience has been the opposite of yours: lots of data inconsistency issues, data loss only resolved by the database team spinning up backups, etc. And somehow, even after yet another incident, there’s never been appetite to properly fix things.",
+              "author": "sgarland",
+              "depth": 4
+            },
+            {
+              "text": "You can use RDS without HA. Many people probably should do this, but no one wants to tell their boss they want to disable RDS HA and wear 1h of downtime a year so they can cut 50% of their spend.",
+              "author": "zdc1",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This advice is good, but every startup I've worked with has run into lower hanging fruit than this even. Less scaling problems and more just organizational. Usually what fixes that is:\n1. Don't use an ORM.\n2. Use serial PKs, not meaningful fields (article mentions this).\n3. Use jsonb if needed, but sparingly.\n4. Make your source of truth append-only, meaning you only insert, never update or delete. You can have secondary denormalized tables that are mutated, but that's only for performance/convenience and shouldn't be your sot.\n5. Use connection pools, but be mindful of how many connections you're using. You probably don't need PgBouncer unless you've messed something up.\n6. In code, avoid explicit transactions unless there's a clear reason you need them. Usually only need those for denormalized parts. Just take a conn from the pool, do something, commit, return conn to pool. If you're going to keep an xact open, never do long-running stuff in the middle like RPCs. Too often I see people leave xacts open without much thought. Edit: Also don't use SERIALIZABLE xacts almost ever.\n7. Something is probably wrong if you're using explicit locking like SELECT FOR UPDATE.\n8. Don't reinvent a type system by having a single table where each row can mean many different things depending on a \"type int\" enum col. Seems oddly specific, but for some reason someone always tries this.\n9. Related to above, don't reinvent a graph DB, typically with \"node\"/\"edge\" tables that FK into themselves or in a cycle. 99% of the time what you're trying to do is easily solvable with regular normalized tables.",
+          "author": "frollogaston",
+          "replies": [
+            {
+              "text": "Don't use an ORM\n.\nHighly debatable. When your highest cost is developers salaries.\nDon't reinvent a type system by having a single table where each row can mean many different things depending on a \"type int\" enum col.\nEasy to say, harder to not do when you have business requirements on table, customer pressure and budget already gone on discussing with DBA who maybe is right but you are burning money right here and right now. The same with point no. 9",
+              "author": "ozim",
+              "depth": 1
+            },
+            {
+              "text": "I would highly recommend using ORM's, with the caveat to know exactly when not to use them. Startups do not fall in that bucket.\n1. Most of these advices are unfortunately impractical and incomplete for startups. A good Data Model is highly dependent on understanding the business requirements, data flows. Means unless you are repeating yourself in the same domain its really hard to come up with a good schema in first iteration.\n2. Startups are in the mode of discovering the schema for most part\n3. Deleting columns is harder than adding additional columns, no one takes that risk so everyone ends up with schema bloat\n4. Once you go a little bigger you will realize that the integer based UUID are not that great of a choice. Those are separate tables which maintain those index counters and not part of your DDLs. They have their own set of issues with data merging, backups and recovery\nFor the OP, I looked at the repo (\nhttps://github.com/hatchet-dev/hatchet/blob/main/sql/schema/...\n) ,\n1. seems like the schema has database functions - Thats a potential scaling issue, plus you are asking vertical only scalable component to do something which could have taken care by horizontally scalable component\n2. TEXT datatype for pretty much every attribute - this is a footgun, you cant use them for indexes properly, in the absence of length checks they can be abused from client side",
+              "author": "sandeepkd",
+              "depth": 2
+            },
+            {
+              "text": "I've never actually known business requirements ahead of time, when I worked for a startup and for a large company. Stuff happens. You build your schema iteratively and yes, accept some temporary bloat when cols get added thoughtlessly.\nThe UUID backup/recovery thing isn't an issue if you're doing append-only. Joins on UUIDs are far slower, enough that even at small scale it can cause issues when you have many joins. Anyway I won't argue too hard against UUIDs cause they work too, just anything is better than using meaningful fields as the PKs.",
+              "author": "frollogaston",
+              "depth": 3
+            },
+            {
+              "text": "In my experience, ORMs save a little bit of writing SQL and then cost an unbounded quantity of time in debugging mysterious problems because knowing why a query is slow now requires understanding the DB, your own code, and also the ORM.",
+              "author": "waisbrot",
+              "depth": 2
+            },
+            {
+              "text": "And also more loc than SQL usually. It's not even a deferred cost, it's at least slightly worse upfront",
+              "author": "frollogaston",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Good article overall, some comments:\n> Use foreign keys with cascading deletes for low-volume tables, particularly where database consistency and correctness are important. Careful at higher volume.\nThis might be just me, but I \nhate\n cascades, for a very simple reason: at most places, the majority of developers \"live\" in the Python/Node/Go/whatever application that talks to the database, not the database itself. Cascading deletes (or updates) is basically magic and it can be very hard to understand \"why did deleting a row from table A delete something from table B automatically\". \nEspecially\n if someone sets up the cascading wrong! IMO it's better for long-term maintainability to emit explicit delete clauses. Correct use of foreign keys will prevent any issues with database consistency.\n> Tricks for large table migrations\nThe pitfalls and workarounds are all correct, but worth pointing out tooling already exists[0] for managing this for you. Making changes to large tables should be as simple as running a command (and then nervously monitoring for the next 24 hours as the data copies).\nOther things to consider,\n1. Get used to separating application and database deployments early. It is impossible to transactionally deploy both a schema change and an application change simultaneously, there will always be some delay where the versions of database and application are out of sync, and you will eventually run into a situation where the database change deploys fine but your application change does not. Once your app is in production, get in the habit of only doing backwards compatible schema changes: all new columns are nullable or have a default, no renaming of tables/columns, etc.\n2. In the same vein, figure out a schema management strategy early. You really don't want your database deployment process to be \"senior dev runs some DDL manually on production from his machine\". I'm still partial to liquibase because it's the devil I know, but there's other tooling like Flyway which exists.\n[0] \nhttps://github.com/shayonj/pg-osc",
+          "author": "mjr00",
+          "replies": [
+            {
+              "text": "FWIW, I built pgschema \nhttps://github.com/pgplex/pgschema\n which is a declarative approach to manage this.",
+              "author": "tianzhou",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Having been early at a startup that relied on Postgres I think this post doesn't put enough focus on monitoring and alerting. Postgres has a few key failure modes that you want to avoid \never\n happening, and you can use alerting to get early warning that you're danger of it happening.\nFor example, AWS will send you an email if you're approaching XID wraparound. In a startup that email is \nvery\n likely to be missed, especially if it's sent on Boxing day. You want whatever AWS is watching to send you that email to be something connected to a pager.",
+          "author": "thundergolfer",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49013036",
+      "title": "I Inspected My Take-Home Interview Project. It Was a Whole Operation",
+      "link": "https://citizendot.github.io/articles/fake-job-interview-git-hook-malware/",
+      "domain": "citizendot.github.io",
+      "author": "CITIZENDOT",
+      "score": 297,
+      "comment_count": 77,
+      "created_ts": 1784752424,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "Wow, after reading this article, I figured out I was hacked, but with a way more sophisticated attack.\nA few weeks ago, I had an interview with a CTO of a totally legit company.\nIt was weird because he had disabled the camera, and the person had a strong accent.\nBut everything else sounded like a normal screening interview, and the person definitely knew what he was talking about.\nAt the end of the interview, he explained to me that during the technical interview I would need to make some modifications to their project (it's an OSS product), so he asked me to clone the repo and check the setup.\nLater, the HR person said the CTO got sick, so the interview would be postponed.\nBut a few days later, the HR profile was deleted from LinkedIn.\nIt was super weird, but it didn't trigger my suspicion until I saw this post on HackNews.\nI checked, and the repo I was cloning and running during the interview had a malware payload.\nP.S. I think it was a targeted attack because in the past I maintained a very popular NPM package with 43+M weekly downloads. That's my only explanation for why someone would carry out such a sophisticated social-engineering attack against me.\nP.P.S. It's great that I have 2FA everywhere, and I always publish NPM packages manually without using tokens. But I need to wipe my laptop and reinstall everything.",
+          "author": "IvanGoncharov",
+          "replies": [
+            {
+              "text": "I just checked my calendar, and it was a 45-minute interview scheduled on Calendly.\nHR person sent me a link to Calendly so I could schedule an interview with the CTO.\nI actually talked with someone pretending to be the CTO for 45 minutes.\nI checked other similar threads on HN, but they don't mention an actual Google Meet call with a scammer.",
+              "author": "IvanGoncharov",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I refuse to just clone random projects.  Luckily, I’m a rails developer - and scaffolding entire applications takes literally minutes.\nJust give me the specification and I will build it end to end myself.\nIf you’re serious you would consider it.  If you don’t - I dodged a bullet.\nIf you consider that people are using LLMs for code generation pretty much exclusively now this should be possible with any stack.",
+              "author": "throwatdem12311",
+              "depth": 1
+            },
+            {
+              "text": "wow\n>  I maintained a very popular NPM package with 43+M weekly downloads\nmakes sense why they targetted you, good that you have 2FA enabled.",
+              "author": "CITIZENDOT",
+              "depth": 1
+            },
+            {
+              "text": "Yikes.\nGoing to need containerised vscode in this world.",
+              "author": "lathiat",
+              "depth": 1
+            },
+            {
+              "text": "whoa",
+              "author": "pwillia7",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> They embedded a script that checks the victim’s host operating system and silently executes a remote payload.\nSeems like this is becoming a recurring theme, similar story was on the front page last month.\nhttps://news.ycombinator.com/item?id=48546294",
+          "author": "wxw",
+          "replies": [
+            {
+              "text": "The OP says as much, and links to a Google Search results that says the same.",
+              "author": "gowld",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Recently there seems to be an uptick in North-Korean attacks against developers. In addition to this type of attack, which has been going on for years, I recently get ~1 email a week from North Korean hackers. It's always a \"Hello, I found your profile, want to collaborate?\" e-mail.\nDiscord communities I am in for programming are similar. People show up and within a few days either ask for a job or suggest cooperation. Sure, you could argue these Discord people may actually be out of a job (in this economy, very likely), but the volume and similarity of the messages say otherwise. You can also tell people show up in... _weird places_ to ask for jobs. An example being the Discord community for a not-really-used Python library with ~0 actual activity - either this person is very bad at finding good places to jobhunt or some attacker is just crawling a list of Discord communities and attacking them all.\nIt's a shame but there are a _lot_ of attacks that abuse our trust in each other nowadays. A good reminder to, like mom and dad said, never trust strangers on the internet",
+          "author": "petterroea",
+          "replies": []
+        },
+        {
+          "top": "My takeaway from this was that Claude was being completely useless as a helper Thanks to all the safety safeguards and that nonsense.",
+          "author": "vardalab",
+          "replies": []
+        },
+        {
+          "top": "> Why use a raw IP address? If anything, this screams “malware.”\nIf the victim is deep enough to check hook's content, it's unlikely they will just stop here losing suspicion. I'm sure most devs wouldn't think that doing `git commit` can be malicious (git security oversight?).",
+          "author": "ivanjermakov",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
