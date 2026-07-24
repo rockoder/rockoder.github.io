@@ -1,0 +1,1726 @@
+{
+  "scraped_date": "2026-07-24",
+  "source": "hacker_news",
+  "total_scraped": 115,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49008211",
+      "title": "Show HN: Bento - An entire PowerPoint in one HTML file (edit+view+data+collab)",
+      "link": "https://bento.page/slides/",
+      "domain": "bento.page",
+      "author": "starfallg",
+      "score": 986,
+      "comment_count": 230,
+      "created_ts": 1784733563,
+      "is_internal": false,
+      "post_text": "Over the past few months, our team has been building more and more slidedecks using web frontend technologies with coding harnesses like Claude Code, but a common complaint is to make even small edits we need to edit the code either manually or via the harness.<p>To avoid this loop, I ended up creating Bento, a single HTML file with everything you need in a slide tool including animations and shared editing. There&#x27;s no install or cloud login, everything works offline. The default deck is around 560 KB and it doesn&#x27;t need to fetch anything once you got it.<p>Open it in a browser and then you can edit, present, print and save. Share it via email or via Airdrop and all they need is a browser to edit, present and also do live collab on the slides. Drop it in to Claude or ChatGPT to transform existing pptx files into Bento slides. There is no cloud involved, only an encrypted blind relay to allow for shared editing. The relay doesn&#x27;t see any of the data.<p>Check it out at <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;slides&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;slides&#x2F;</a> which takes you straight to the editor.<p>Go to <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;guestbook&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;guestbook&#x2F;</a> to try out the live guestbook to experience share editing &#x2F; collab.<p>There is also a gallery with some sample decks on the website - <a href=\"https:&#x2F;&#x2F;bento.page&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;bento.page&#x2F;</a><p>All the code is MIT licensed and you can find it here - <a href=\"https:&#x2F;&#x2F;github.com&#x2F;nyblnet&#x2F;bento\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;nyblnet&#x2F;bento</a> . I used reveal.js with several other libraries (including some homegrown ones), and Claude Code.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "Hi, I'm the creator of Bento. Just wanted to share a bit more about how I created it beyond what's in Github.\nThe file contains more or less two sections. There is a plain block of JSON near the top of the file which is the slide data. You can read, grep, or point a harness at it. The app itself is in a base64 blob that loads through a small shim which deflates in the browser with DecompressionStream, which keeps the package small and so that we don't need to fetch any external files at runtime. File System Access API is used for JSON writeback into the same file, which falls back to a plian download and all updates are ECDSA signed.\nI started with reveal.js which served as a base, and incorporated GSAP/Flip to handle the animation. Then I added charting with echarts, but due to a number of issues with size and how the worked, I ended up re-implementing both.\nWhat I'm most pleased about is how seamless the CRDT works. The blind relay is a small file that runs on Cloudflare Durable Objects, and all it sees are the encrypted data from the clients. Collab is off until we turn it on in the app (by starting a session by sharing by invite file), and then some sets of keys are generated. Access is handled by user key, and you can have read-only users, and also revoke live collab access by user as well.",
+          "author": "starfallg",
+          "replies": [
+            {
+              "text": "The concept that's MAGICAL in Reveal.js is vertical slides.\ne.g. \nhttps://revealjs.com/#/2/1\n <-- from here you can go up or down, then go right to continue the presentation.\nYou just make one slide deck with lightweight high-abstraction slides and depending on the audience you just... hit the down arrow. bam. now you're inside the tech slides. no nerdy tech guys? sweet, don't hit down on slide 3. Instead you're with the marketing guys, so hit down on slide 5.\nAnyway - looks like you got rid of that in order to mimic Powerpoint, but... don't forget it's there. it's my favorite part of using Reveal.js!",
+              "author": "inanutshellus",
+              "depth": 1
+            },
+            {
+              "text": "That's a great point. I went down the state slide route in order to handle a similar type of use-case, but I'll look into this and see if we can incorporate that somehow. It seems like a really elegant way to implement some state slide use cases. And thanks for the heads-up on this!",
+              "author": "starfallg",
+              "depth": 2
+            },
+            {
+              "text": "Could the hidden state slides \"just\" react to a down arrow press as well as to the click? But then they probably would have to have an order somehow?\nJust my two cents.",
+              "author": "sdoering",
+              "depth": 3
+            },
+            {
+              "text": "Technically yes, and the order is just dependent on the chain of the keypress event triggering slide changes. Will investigate the best way to do this.",
+              "author": "starfallg",
+              "depth": 4
+            },
+            {
+              "text": "I guess I get the clarity (of vertical slides as you describe), but I'm wondering if two dimensions is limiting -- slides \ncould\n be a flow chart, with various forks/side quests along the way. Obviously it would be possible to build something as confusing as the Colossal Cave, but the vertical slides use case would easily be a subset of that larger functionality, and it would leave it up to the user to decide their level of need for/tolerance of complexity.",
+              "author": "gcanyon",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is amazing. I also think this will become more common. I feel there is a lot of software that can just be served locally via html/typescript/react etc and even have local state. There's just not been an economic incentive till now.\nI am personally using kimi k3 to create a mobile friendly set of games, starting from math like linear algebra to quantum physics - neurodivergent friendly, completely local state, served from github pages -  to get someone interested in the field. This needs an economic incentive to exist without LLMs, because of so much different expertise needed, and time.\nif anyone's interested in the games let me know - i plan to play it myself, improve it, remove bugs etc before publishing on HN.",
+          "author": "praveer13",
+          "replies": [
+            {
+              "text": "Yeah, I was just discussing with a co-worker the concept of a hybrid document where editing controls and the content all exist in a single HTML file (prior implementations include various wikis such as: \nhttps://feather.wiki/\n ) --- makes one wonder what an SVG or spreadsheet implementation might look like.",
+              "author": "WillAdams",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! If you need anybody to test and feedback, I'll give it a go.",
+              "author": "starfallg",
+              "depth": 1
+            },
+            {
+              "text": "https://vecto.play.naigap.com/\nhttps://phaseworld.play.naigap.com/\nhttps://slope-rider.play.naigap.com\nThree so far\nRepos -\nhttps://github.com/praveer13/vecto\nhttps://github.com/praveer13/slope-rider\nhttps://github.com/praveer13/phase-world",
+              "author": "praveer13",
+              "depth": 2
+            },
+            {
+              "text": "How do I tilt the desktop browser?",
+              "author": "Kuyawa",
+              "depth": 3
+            },
+            {
+              "text": "I made it specifically for mobile browsers. I’ll try to make it still work though for desktop!",
+              "author": "praveer13",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Awesome. I've been trying to promote this kind of Single-File Web Apps as a concept - feel free to add this to the proposed Wikipedia page: \nhttps://en.wikipedia.org/wiki/Draft:Single_File_Web_Apps",
+          "author": "calebm",
+          "replies": [
+            {
+              "text": "The draft doesn't read as a Wikipedia article – e.g. addressing the reader as 'you'.\nI don't think WP is the right place for this. It is supposed to be a tertiary source, not a place to promote concepts you want to see established.",
+              "author": "yreg",
+              "depth": 1
+            },
+            {
+              "text": "The first reference (for the definition) also links directly to a blog post created by OP.\nEdit: Actually 4 of the references on that wiki page link to either OPs blog, YouTube, or projects. I can see why this article was declined, however broadly an article could exist for this concept if there were other sources to build on.",
+              "author": "Chilko",
+              "depth": 2
+            },
+            {
+              "text": "Can you create a list on github with known single-file web apps?\nWikipedia is not a good place to promote ideas. It is a place where ideas in practice are documented.  Github is a good place to promote stuff.",
+              "author": "nashashmi",
+              "depth": 1
+            },
+            {
+              "text": "Already made: \nhttps://github.com/calebmadrigal/Single-File-Web-Apps\n. PRs welcome.",
+              "author": "calebm",
+              "depth": 2
+            },
+            {
+              "text": "i just launched iamsingle.app to be a directory for sfwas :)",
+              "author": "habibicode",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Love it. Like some others here, I've been making html presentations with code-agents and they come out really nice. Other alternatives for that suit different purposes are these:\n- slidev markdown-based slides, I often have a code-agent make these.\n  \nhttps://github.com/slidevjs/slidev\n- typst slides are great looking too, especially with math etc. Again easy for agents to do\nOne minor nit: Based on the title, I thought this was literally a tool that had something to do with PowerPoint, but \"PowerPoint\" is used here as a synonym for \"Presentation\", which is ironic/unfortunate given how many dislike PowerPoint.",
+          "author": "d4rkp4ttern",
+          "replies": [
+            {
+              "text": "Oh! I didn't know about slidev before. I like how it can embed Vue.js components. Typst kinda looks like LaTeX. Thanks for sharing.\nI thought about whether to use Slidedeck Tool in the title, but powerpoint won out mainly because how often people talk about presentations as powerpoints.",
+              "author": "starfallg",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Go to \nhttps://bento.page/guestbook/\n to try out the live guestbook to experience share editing / collab.\nMy M1 Mac froze in the end (had to hard-reboot), but that was so much fun! I guess there’s a reason Figma uses WASM and a custom renderer, though I guess your implementation should work fine for most cases (i.e. not when all of HN are trying to edit everything simultaneously :^)\nTwo notes:\n1. It would be nice if another person changing something unrelated to what I’m doing didn’t reset the focus for me.\n2. WAY too llm-y copy both on the landing page and the example deck. Your HN submission text is way easier and more pleasant to read.\nAnd huge kudos for releasing this as FOSS!",
+          "author": "notpushkin",
+          "replies": [
+            {
+              "text": "Thanks! I had to reset the guestbook because it's being spammed. It's on epoch 4 now, hopefully people will be better behaved moving forward!\n1. Yes, that's a good point that somebody else raised also. It went pass testing as I was only testing with 1 or 2 other people at once. Will fix this tonight.\n2. Yeah, agreed and fair point. But I don't write well and I don't have time between day job and being a dad. Will try to fix this gradually.",
+              "author": "starfallg",
+              "depth": 1
+            },
+            {
+              "text": "1. I’ve added the ⌘V remark on the first slide (it was the only way I could add anything in the previous epoch at all!). Hope it helps others have fun in the meanwhile.\n2. Absolutely fair point, and it’s okay – the demo speaks for itself :-) Although if you wrote that submission text yourself, you do write pretty well! But obviously no pressure here.",
+              "author": "notpushkin",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49023016",
+      "title": "Startup founders urge U.S. government not to shut off Chinese open weight AI",
+      "link": "https://www.politico.com/news/2026/07/22/startup-founders-urge-trump-not-to-shut-off-chinese-open-weight-ai-01008992",
+      "domain": "www.politico.com",
+      "author": "theanonymousone",
+      "score": 767,
+      "comment_count": 679,
+      "created_ts": 1784819920,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;littletech.org&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;littletech.org&#x2F;</a><p><a href=\"https:&#x2F;&#x2F;static.politico.com&#x2F;4a&#x2F;bf&#x2F;9c4021d8404386b0a311dcccf0e5&#x2F;lta-open-weight-ai-letter-7-22-26.pdf\" rel=\"nofollow\">https:&#x2F;&#x2F;static.politico.com&#x2F;4a&#x2F;bf&#x2F;9c4021d8404386b0a311dcccf0...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "I‘m not even sure what the argument for banning Chinese models/open weights even is supposed to be?\n1. if it’s to stop hackers doing hacking things with „uncontrollable models“ then, well… they’re already doing something illegal to begin with, why would they care about breaking another law running these models?\n2. if it’s to stop foreign actors, then that ban would not apply to them anyway\n3. it’s not stopping distillation either, Chinese labs are already banned from using US frontier models and look at how good that is working\nI don’t get it. Am I missing something? The only thing a ban would do is protect the American market from further downward price pressure on inference, protecting VC investors in the short term. But thats also an admittance that the American labs can’t compete on merit anymore, and should by itself also limit the viability of the idea that all those VC billions will ever make a return? In any case this would be something benefitting only a very few for a short time (labs + investors).\nSomeone please enlighten me what the actual argument here is, cause I can’t see it.",
+          "author": "capevace",
+          "replies": [
+            {
+              "text": "> Someone please enlighten me what the actual argument here is, cause I can’t see it.\n>  The only thing a ban would do is protect the American market from further downward price pressure on inference, protecting VC investors in the short term. But thats also an admittance that the American labs can’t compete on merit anymore\nThat's the argument. To be precise the publicly stated argument is that they're attacking American providers by distilling. The real aim is to eliminate competition because otherwise Anthropic and OpenAI are non viable and the US views them as crucial for winning the 'AI race' which they see as putting whoever wins it on top in terms of warfare/economic power etc.",
+              "author": "Matl",
+              "depth": 1
+            },
+            {
+              "text": "But isn‘t the whole argument of „winner takes all“ already dead, if china is such a big threat that the US labs need \nimport\n controls?\nDistilling or not, they are clearly close enough to the frontier, that the supposed „free market“ country needs market controls. That may work for US markets. But not the rest of the world.\nIdea: petrodollar policy becomes „tokendollar“, enforced by US military dominance. If you force me to pay altman at gunpoint, then maybe ill stop using kimi",
+              "author": "capevace",
+              "depth": 2
+            },
+            {
+              "text": "They are simply out of ideas to keep the most expensive party in the history of mankind going.\nThat's it. Simple as that. When you grasp for straws in panic mode, you don't exactly spend time strategizing and weighing the pros and cons of each straw carefully.",
+              "author": "Slartie",
+              "depth": 3
+            },
+            {
+              "text": "Yea, elections have consequences and we voted in a corrupt, bribable, moron.",
+              "author": "scoofy",
+              "depth": 4
+            },
+            {
+              "text": "I feel the election that brought mcdonalds trump into power merely accelerated what was already the trajectory in this regard, but he did manage to shift the overton window so dramatically that people are willing to ignore the rise in fascism that's allowing the oligarchy to take control.",
+              "author": "King-Aaron",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "They argue that the Chinese models  distill US models as one of the basis of the potential ban. I think it's quite ironic considering even the US models themselves are using data out there on the internet without asking for permissions and in many cases even infringing copyrights...",
+          "author": "blacksoil",
+          "replies": [
+            {
+              "text": "The real threat is the time machine Moonshot built to distill Fable and Sol before those models were even available! And with K3 surpassing Fable by a wide margin in some domains, Moonshot apparently also have distilled models that won't be released for some time into the future.",
+              "author": "anon373839",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Proprietary model weights are IP, their outputs are not IP and I can't imagine a court decision that would rule otherwise because that would set an extremely far reaching and dangerous precedent, even for American businesses.\nI don't think distillation as 'stealing IP' has any legal legs. They can probably claim violation of ToS at best because the terms of use do prohibit use for training rival models.",
+          "author": "GodelNumbering",
+          "replies": [
+            {
+              "text": "> Proprietary model weights are IP\nNot copyrightable IP, or at least it hasn't been challenged yet. I have experience with this: I made llama-dl, a way to download the original llama model. Meta issued a DMCA, I appealed to the HN community for funds, someone funded, and our lawyer successfully counterclaimed. Never heard from Meta again.\nA lack of response to the counterclaim doesn't mean the issue is settled. But now there's legal precedent for people pushing back against companies that claim model weights are secret IP and therefore DMCA-able.",
+              "author": "sillysaurusx",
+              "depth": 1
+            },
+            {
+              "text": "Congrats on your efforts, but by definition that does not count as legal precedent.  At a \nbare minimum\n, a legal precedent is some sort of written holding by a court with authority.  Even an out-of-court settlement doesn't count.",
+              "author": "kube-system",
+              "depth": 2
+            },
+            {
+              "text": "It was referenced by other legal cases. Why would they mention it if it didn’t help their case?",
+              "author": "sillysaurusx",
+              "depth": 3
+            },
+            {
+              "text": "Because lawyers have a broad ability to simply attempt to persuade the other party -- and \"Meta is a big rich company with lots of lawyers and they didn't pursue this\" is valuable because it is something that could persuade the opposing side not to bring a case.  It wouldn't persuade a court if it got that far, but it could be useful in convincing someone not to bring it to court. (e.g. \"are Meta's high paid lawyers smarter than me?  am I wasting my time and money by bringing this to trial?\")\nPrecedent is a different thing -- that's a court decision that other courts could/should/must follow.",
+              "author": "kube-system",
+              "depth": 4
+            },
+            {
+              "text": "Closed model weights probably do qualify as trade secrets, though. But I agree 100% that anything extractable from the API outputs is not secret and does not qualify. And they certainly aren’t copyrighted or patented.",
+              "author": "anon373839",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You guys need to wake up and realize that Anthropic are the enemy. They just increased their political spending as well... Stop giving them your money or this never ends.",
+          "author": "nullbio",
+          "replies": [
+            {
+              "text": "Can you elaborate on what makes you say this? I'm really struggling to understand the source of all the Anthropic hate on HN recently.",
+              "author": "vaaal",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Read this thread when you get the time:\nhttps://x.com/_vkaku/status/2080352797606744209\nOpen Data+Open Models gives everyone else an advantage and bringing regulatory capture here should be appealed and brought to the FTC and the courts to challenge such regulations.\nStartups need better than this whole lock down into four overvalued frontier models in the US sort of thing",
+          "author": "vkaku",
+          "replies": [
+            {
+              "text": "I'm only counting 3 frontier models in the U.S.…\nOh, Claude tells me Llama and Grok might count.",
+              "author": "JKCalhoun",
+              "depth": 1
+            },
+            {
+              "text": "Grok 4.5 is better and cheaper than any Gemini models.",
+              "author": "satvikpendem",
+              "depth": 2
+            },
+            {
+              "text": "Grok is a terrific model and my work horse. I hope Composer 3 reaches at least this level because Grok 4.5 intelligence + composer type speed pfffff, wild times ahead.",
+              "author": "sergiotapia",
+              "depth": 2
+            },
+            {
+              "text": "I think Grok is replacing composer now yeah? Fast mode is similar speed to composer.",
+              "author": "pants2",
+              "depth": 3
+            },
+            {
+              "text": "Cursor has confirmed that Grok will be their flagship model, and Composer 3 their workhorse.\nThe intention being that Grok 5 or whatever is the orchestrator and will summon sub agents using Composer 3 for work.",
+              "author": "sergiotapia",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49005787",
+      "title": "The startup's Postgres survival guide",
+      "link": "https://hatchet.run/blog/postgres-survival-guide",
+      "domain": "hatchet.run",
+      "author": "abelanger",
+      "score": 500,
+      "comment_count": 218,
+      "created_ts": 1784723768,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "Some comments and corrections:\n* Use uuidv7 not uuid in general (typically v4)\n* in addition to minimizing locked records, make sure your locks are ordered deterministically across all queries (eg by id asc, always) or you’ll deadlock (but postgres has a really good deadlock detector so you’ll more likely just error out if you’re lucky)\n* always use explain (generic_plan) to be able to a) copy-and-paste your queries with placeholders for parameters as-is, b) see how your query will actually be optimized when Postgres doesn’t have visibility into the specific parameter values\n* use set seqscan = off when testing your query plans esp when tables are empty or nearly so so you can see if indexes will be used when seq scans become less cheap\n* everyone defaults to btree indexes which are heavy and increase index bloat. Consider using a hash index instead if you just need to look up by column/id but not sort or get values greater/lesser than a param. You can’t create unique hash indexes but you can create exclude using hash constraints for the same effect (except no multicolumn unique index support)\n* learn about GIN (and GIST) indexes. They can speed up common queries without needing new syntax, something people coming from MySQL might not expect to be possible; i.e. you can use them to speed up Plain Jane like ‘%foo%’ queries without switching to FTS.",
+          "author": "ComputerGuru",
+          "replies": [
+            {
+              "text": "OP here, I appreciate this.\n> in addition to minimizing locked records, make sure your locks are ordered deterministically across all queries (eg by id asc, always) or you’ll deadlock (but postgres has a really good deadlock detector so you’ll more likely just error out if you’re lucky)\nThis is really good advice, I should put this somewhere in the guide. To add to this, not only can you deadlock by not having a consistent `ORDER BY` when you're locking sets of rows, but you should also be careful of locking rows on tables in different orders. For example, even if you lock each row in a table with an ORDER BY and FOR UPDATE, if one tx locks `table_a` and then `table_b`, and the other locks `table_b` and then `table_a`, you'll deadlock. This is obvious in theory but exponentially harder to debug in practice, because you need to be globally aware of every table that a write touches - something that's bitten us in particular with certain extensions.\n> learn about GIN (and GIST) indexes\nWe're just testing GIN for fast key-value lookups for JSONB columns, and the performance improvements have been really massive. Interestingly there was a large performance skew between AND vs OR on these key-value queries.",
+              "author": "abelanger",
+              "depth": 1
+            },
+            {
+              "text": "Any kind of uuid PK is quite expensive and usually not worth, because you're so frequently joining on PKs. A safe default is to use serial PKs, then have a secondary-indexed uuid4 if you wish to publicly-expose anything. Why uuid7, is the btree performance better with it than with uuid4?",
+              "author": "frollogaston",
+              "depth": 1
+            },
+            {
+              "text": "In practice you’ll never notice the difference between joining on a bigint vs uuid for most OLTP purposes and you’ll be able to generate the uuids in your backend instead of in the db which a) can be very helpful if you’re pre-generating linked records and inserting them pipelined rather than sequentially, saving a lot of round trip traffic, b) reduces concurrency bottlenecks on the db server.\nMore usefully, a uuidv7 can take the place of both the id and the created_at field (if precision is sufficient), and can (depending on your security comfort) also take the place of the uuidv4 public id field.\nWith uuidv7 the data is naturally sorted so you don’t run into the issues with btree worst case scenarios that you would with a uuidv4 id, and you can even take it a step further and use BRIN instead of btree indexes for a massive boost (also applicable to serial ids, though).",
+              "author": "ComputerGuru",
+              "depth": 2
+            },
+            {
+              "text": "> Why uuid7, is the btree performance better with it than with uuid4?\nYes, being ordered uuid7 leads to less splitting and index bloat than the fully random uuid4. So while the lookup is pretty similar the index is in much better shape.\nAnd if lookup is correlated with recency (which is probably the case for most record types) recent entries will be grouped together on the same pages in the uuid7 index leading to better cache presence, whereas in a uuid4 index they’ll be randomly spread over the entire index set.",
+              "author": "masklinn",
+              "depth": 2
+            },
+            {
+              "text": "> \nUse uuidv7 not uuid in general (typically v4)\n7/4 'converters' have been featured on HN a few times:\n* \nhttps://github.com/ali-master/uuidv47\n* \nhttps://github.com/stateless-me/uuidv47",
+              "author": "throw0101d",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Should one of the first things you do with a database not be to have a backup strategy? I understand that HA would be a \"nice to have\" when first starting out, but surly if you have a production db, a backup and restore plan should be on a survival guide? Neither appear to be mentioned here.\nWhat do you all use for your pg backups? Is Barman ( \nhttps://pgbarman.org/\n) still the way many do it? (I haven't deployed a new pg instance for a while, but thinking about it for a new project).",
+          "author": "theallan",
+          "replies": [
+            {
+              "text": "I might get flak for saying this but if you aren't a postgres expert already: just use RDS or a similar cloud DB. The amount of money you're saving by hosting and managing your own postgres instance is absolute peanuts compared to having battle-tested infrastructure for HA, backup and restores, point-in-time recovery, read replicas, etc.",
+              "author": "mjr00",
+              "depth": 1
+            },
+            {
+              "text": "At $dayjob we have the same mentality and as a result have a load of managed read replicas that are never used for anything (not reporting, not read only queries, not backups because $cloud handles it) that cost every month. Plus managed database restricts what you can do with the database - sometimes in really annoying ways.\nSo while I partly agree with you, a lot of companies don't really need HA, read replicas, or even PITR (though I would argue the last one is so trivial and cheap to enable that why not), but they click the expensive check box, and I would argue that companies who do need these features should consider hiring at least a couple of DBAs and get more flexibility instead of the current status quo of everyone being scared of the database and everyone just hoping cloud support will come to their rescue if ever needed",
+              "author": "dwedge",
+              "depth": 2
+            },
+            {
+              "text": "> hiring at least a couple of DBAs and get more flexibility\nEvery place I’ve ever worked at that had DBAs had the complete opposite of more flexibility. You have to do things the DBA’s way, and if their way doesn’t work for your service, you need to fight for their time and priority.\nMeanwhile every place I worked at where every team completely owned their databases + did periodic data recovery drills had much more flexibility and no data loss.",
+              "author": "drdexebtjl",
+              "depth": 3
+            },
+            {
+              "text": "That’s usually because they’ve seen a lot of failure modes over the years, and what seems fine to you can have surprising outcomes later.\nMy personal experience has been the opposite of yours: lots of data inconsistency issues, data loss only resolved by the database team spinning up backups, etc. And somehow, even after yet another incident, there’s never been appetite to properly fix things.",
+              "author": "sgarland",
+              "depth": 4
+            },
+            {
+              "text": "You can use RDS without HA. Many people probably should do this, but no one wants to tell their boss they want to disable RDS HA and wear 1h of downtime a year so they can cut 50% of their spend.",
+              "author": "zdc1",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "This advice is good, but every startup I've worked with has run into lower hanging fruit than this even. Less scaling problems and more just organizational. Usually what fixes that is:\n1. Don't use an ORM.\n2. Use serial PKs, not meaningful fields (article mentions this).\n3. Use jsonb if needed, but sparingly.\n4. Make your source of truth append-only, meaning you only insert, never update or delete. You can have secondary denormalized tables that are mutated, but that's only for performance/convenience and shouldn't be your sot.\n5. Use connection pools, but be mindful of how many connections you're using. You probably don't need PgBouncer unless you've messed something up.\n6. In code, avoid explicit transactions unless there's a clear reason you need them. Usually only need those for denormalized parts. Just take a conn from the pool, do something, commit, return conn to pool. If you're going to keep an xact open, never do long-running stuff in the middle like RPCs. Too often I see people leave xacts open without much thought. Edit: Also don't use SERIALIZABLE xacts almost ever.\n7. Something is probably wrong if you're using explicit locking like SELECT FOR UPDATE.\n8. Don't reinvent a type system by having a single table where each row can mean many different things depending on a \"type int\" enum col. Seems oddly specific, but for some reason someone always tries this.\n9. Related to above, don't reinvent a graph DB, typically with \"node\"/\"edge\" tables that FK into themselves or in a cycle. 99% of the time what you're trying to do is easily solvable with regular normalized tables.",
+          "author": "frollogaston",
+          "replies": [
+            {
+              "text": "Don't use an ORM\n.\nHighly debatable. When your highest cost is developers salaries.\nDon't reinvent a type system by having a single table where each row can mean many different things depending on a \"type int\" enum col.\nEasy to say, harder to not do when you have business requirements on table, customer pressure and budget already gone on discussing with DBA who maybe is right but you are burning money right here and right now. The same with point no. 9",
+              "author": "ozim",
+              "depth": 1
+            },
+            {
+              "text": "I would highly recommend using ORM's, with the caveat to know exactly when not to use them. Startups do not fall in that bucket.\n1. Most of these advices are unfortunately impractical and incomplete for startups. A good Data Model is highly dependent on understanding the business requirements, data flows. Means unless you are repeating yourself in the same domain its really hard to come up with a good schema in first iteration.\n2. Startups are in the mode of discovering the schema for most part\n3. Deleting columns is harder than adding additional columns, no one takes that risk so everyone ends up with schema bloat\n4. Once you go a little bigger you will realize that the integer based UUID are not that great of a choice. Those are separate tables which maintain those index counters and not part of your DDLs. They have their own set of issues with data merging, backups and recovery\nFor the OP, I looked at the repo (\nhttps://github.com/hatchet-dev/hatchet/blob/main/sql/schema/...\n) ,\n1. seems like the schema has database functions - Thats a potential scaling issue, plus you are asking vertical only scalable component to do something which could have taken care by horizontally scalable component\n2. TEXT datatype for pretty much every attribute - this is a footgun, you cant use them for indexes properly, in the absence of length checks they can be abused from client side",
+              "author": "sandeepkd",
+              "depth": 2
+            },
+            {
+              "text": "I've never actually known business requirements ahead of time, when I worked for a startup and for a large company. Stuff happens. You build your schema iteratively and yes, accept some temporary bloat when cols get added thoughtlessly.\nThe UUID backup/recovery thing isn't an issue if you're doing append-only. Joins on UUIDs are far slower, enough that even at small scale it can cause issues when you have many joins. Anyway I won't argue too hard against UUIDs cause they work too, just anything is better than using meaningful fields as the PKs.",
+              "author": "frollogaston",
+              "depth": 3
+            },
+            {
+              "text": "In my experience, ORMs save a little bit of writing SQL and then cost an unbounded quantity of time in debugging mysterious problems because knowing why a query is slow now requires understanding the DB, your own code, and also the ORM.",
+              "author": "waisbrot",
+              "depth": 2
+            },
+            {
+              "text": "In my experience ORM doesn’t save anything on writing queries. You still have to write somewhat same code that looks like sql query. You still need to know joins, you still need to know DB structure.\nGetting rid of SQL queries is not the job of ORM.\nORM saves you time on object mapping boilerplate THAT IS THE JOB of an ORM it is right there in the name „object relational mapper”.",
+              "author": "ozim",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Good article overall, some comments:\n> Use foreign keys with cascading deletes for low-volume tables, particularly where database consistency and correctness are important. Careful at higher volume.\nThis might be just me, but I \nhate\n cascades, for a very simple reason: at most places, the majority of developers \"live\" in the Python/Node/Go/whatever application that talks to the database, not the database itself. Cascading deletes (or updates) is basically magic and it can be very hard to understand \"why did deleting a row from table A delete something from table B automatically\". \nEspecially\n if someone sets up the cascading wrong! IMO it's better for long-term maintainability to emit explicit delete clauses. Correct use of foreign keys will prevent any issues with database consistency.\n> Tricks for large table migrations\nThe pitfalls and workarounds are all correct, but worth pointing out tooling already exists[0] for managing this for you. Making changes to large tables should be as simple as running a command (and then nervously monitoring for the next 24 hours as the data copies).\nOther things to consider,\n1. Get used to separating application and database deployments early. It is impossible to transactionally deploy both a schema change and an application change simultaneously, there will always be some delay where the versions of database and application are out of sync, and you will eventually run into a situation where the database change deploys fine but your application change does not. Once your app is in production, get in the habit of only doing backwards compatible schema changes: all new columns are nullable or have a default, no renaming of tables/columns, etc.\n2. In the same vein, figure out a schema management strategy early. You really don't want your database deployment process to be \"senior dev runs some DDL manually on production from his machine\". I'm still partial to liquibase because it's the devil I know, but there's other tooling like Flyway which exists.\n[0] \nhttps://github.com/shayonj/pg-osc",
+          "author": "mjr00",
+          "replies": [
+            {
+              "text": "FWIW, I built pgschema \nhttps://github.com/pgplex/pgschema\n which is a declarative approach to manage this.",
+              "author": "tianzhou",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Having been early at a startup that relied on Postgres I think this post doesn't put enough focus on monitoring and alerting. Postgres has a few key failure modes that you want to avoid \never\n happening, and you can use alerting to get early warning that you're danger of it happening.\nFor example, AWS will send you an email if you're approaching XID wraparound. In a startup that email is \nvery\n likely to be missed, especially if it's sent on Boxing day. You want whatever AWS is watching to send you that email to be something connected to a pager.",
+          "author": "thundergolfer",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49013036",
+      "title": "I Inspected My Take-Home Interview Project. It Was a Whole Operation",
+      "link": "https://citizendot.github.io/articles/fake-job-interview-git-hook-malware/",
+      "domain": "citizendot.github.io",
+      "author": "CITIZENDOT",
+      "score": 446,
+      "comment_count": 121,
+      "created_ts": 1784752424,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "Wow, after reading this article, I figured out I was hacked, but with a way more sophisticated attack.\nA few weeks ago, I had an interview with a CTO of a totally legit company.\nIt was weird because he had disabled the camera, and the person had a strong accent.\nBut everything else sounded like a normal screening interview, and the person definitely knew what he was talking about.\nAt the end of the interview, he explained to me that during the technical interview I would need to make some modifications to their project (it's an OSS product), so he asked me to clone the repo and check the setup.\nLater, the HR person said the CTO got sick, so the interview would be postponed.\nBut a few days later, the HR profile was deleted from LinkedIn.\nIt was super weird, but it didn't trigger my suspicion until I saw this post on HackNews.\nI checked, and the repo I was cloning and running during the interview had a malware payload.\nP.S. I think it was a targeted attack because in the past I maintained a very popular NPM package with 43+M weekly downloads. That's my only explanation for why someone would carry out such a sophisticated social-engineering attack against me.\nP.P.S. It's great that I have 2FA everywhere, and I always publish NPM packages manually without using tokens. But I need to wipe my laptop and reinstall everything.",
+          "author": "IvanGoncharov",
+          "replies": [
+            {
+              "text": "I just checked my calendar, and it was a 45-minute interview scheduled on Calendly.\nHR person sent me a link to Calendly so I could schedule an interview with the CTO.\nI actually talked with someone pretending to be the CTO for 45 minutes.\nI checked other similar threads on HN, but they don't mention an actual Google Meet call with a scammer.",
+              "author": "IvanGoncharov",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I refuse to just clone random projects.  Luckily, I’m a rails developer - and scaffolding entire applications takes literally minutes.\nJust give me the specification and I will build it end to end myself.\nIf you’re serious you would consider it.  If you don’t - I dodged a bullet.\nIf you consider that people are using LLMs for code generation pretty much exclusively now this should be possible with any stack.",
+              "author": "throwatdem12311",
+              "depth": 1
+            },
+            {
+              "text": "Cloning should be fine on its own - git hooks aren't installable automatically, for reasons like this, and they treat anything that makes cloning unsafe as a pretty severe security issue so new discoveries get plugged quickly.  This post's malware is possible because it's from a general archive, not a clone.\nThough other stuff on your system might be less preventative, and that could run stuff in the repo folder. And I kinda wish git would force review of hooks and executable config \neverywhere\n before they're run - I would absolutely enable that, security is sometimes a bit annoying and that's inescapable.",
+              "author": "Groxx",
+              "depth": 2
+            },
+            {
+              "text": "It's not the cloning that gets you. It's the inevitable step of running whatever you cloned to \"run the tests\" or \"see how it works\".",
+              "author": "lmz",
+              "depth": 3
+            },
+            {
+              "text": "Yikes.\nGoing to need containerised vscode in this world.",
+              "author": "lathiat",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Recently there seems to be an uptick in North-Korean attacks against developers. In addition to this type of attack, which has been going on for years, I recently get ~1 email a week from North Korean hackers. It's always a \"Hello, I found your profile, want to collaborate?\" e-mail.\nDiscord communities I am in for programming are similar. People show up and within a few days either ask for a job or suggest cooperation. Sure, you could argue these Discord people may actually be out of a job (in this economy, very likely), but the volume and similarity of the messages say otherwise. You can also tell people show up in... _weird places_ to ask for jobs. An example being the Discord community for a not-really-used Python library with ~0 actual activity - either this person is very bad at finding good places to jobhunt or some attacker is just crawling a list of Discord communities and attacking them all.\nIt's a shame but there are a _lot_ of attacks that abuse our trust in each other nowadays. A good reminder to, like mom and dad said, never trust strangers on the internet",
+          "author": "petterroea",
+          "replies": [
+            {
+              "text": "And they're using LLMs, which are convincing enough from a basic conversational standpoint to prevent being immediately filtered as a bot as easily as in the past.",
+              "author": "GitPushOrigin",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> They embedded a script that checks the victim’s host operating system and silently executes a remote payload.\nSeems like this is becoming a recurring theme, similar story was on the front page last month.\nhttps://news.ycombinator.com/item?id=48546294",
+          "author": "wxw",
+          "replies": [
+            {
+              "text": "The OP says as much, and links to a Google Search results that says the same.",
+              "author": "gowld",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Why use a raw IP address? If anything, this screams “malware.”\nIf the victim is deep enough to check hook's content, it's unlikely they will just stop here losing suspicion. I'm sure most devs wouldn't think that doing `git commit` can be malicious (git security oversight?).",
+          "author": "ivanjermakov",
+          "replies": [
+            {
+              "text": "if you just clone a repo no githooks are every automatically enabled. but since this was downloaded not cloned it's a different story",
+              "author": "zeratax",
+              "depth": 1
+            },
+            {
+              "text": "> git security oversight?\nExecuting downloaded code without prior review always is these days, regardless of the tool that does it.",
+              "author": "zombot",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My takeaway from this was that Claude was being completely useless as a helper Thanks to all the safety safeguards and that nonsense.",
+          "author": "vardalab",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49028037",
+      "title": "Tell HN: Namecheap gave my account to an unverified third party",
+      "link": "https://news.ycombinator.com/item?id=49028037",
+      "domain": "news.ycombinator.com",
+      "author": "Thrashed",
+      "score": 378,
+      "comment_count": 140,
+      "created_ts": 1784840729,
+      "is_internal": true,
+      "post_text": "I’ve been a NameCheap customer for 13 years. I’ve also helped out an old college club paying for a .com they use (that is registered to me under my name, address, and phone number). During a recent leadership transition, the incoming club lead wanted to make changes to the DNS and didn’t know to contact me. They figured out the domain name was parked at NameCheap, so they initiated a password reset using the domain name. I got a password reset email and immediately filed a NameCheap support ticket saying “I did not initiate this”. They called me to verify I was the one who filed the ticket, and then followed up with a canned email with tips like check your anti-virus.<p>The incoming club leader was persistent though, and called NameCheap support. He convinced them the domain registered in my name and address really belonged to his club, and with no verification or validation whatsoever, NameCheap changed my password, and changed the email address associated with my account. All because someone simply asked nicely on a phone call.<p>Meanwhile in the background, someone advised the new club leader who I was and we were able to connect and get things transferred over. Ultimately I was happy to give them access or even ownership if they wanted (student club turnover being what it is, it’s likely a domain doesn’t get renewed and gets gobbled up by a squatter, which is why I was keeping it current for them).<p>But NameCheap had no way of knowing any of this. As far as NameCheap was aware, this was a personal account of mine. They demonstrated they were perfectly able to pick up a phone and call me (to verify my initial support ticket) but when someone calls them and says “but I really want access to that account” they don’t bother?<p>I’d hesitate to even call this social engineering. It’s clearly a massive vulnerability. I’ve already moved a dozen of my most critical domains out of NameCheap after seeing just how easy it is for a third party to completely take over a NameCheap account: just ask nicely.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "leadership",
+        "lead"
+      ],
+      "comments": [
+        {
+          "top": "Namecheap has been owned by a private equity firm for several months now.\nIt would be nice to have a nonprofit registrar so jumping every few years isn't necessary.",
+          "author": "pilingual",
+          "replies": [
+            {
+              "text": "The problem is that they also need to be big enough not to be rolled by aggressive behaviour such as lawsuits, pressure from politicians, etc. I mean, some of my domains are at a tiny company run by geeks, but I wouldn't really blame them for caving if someone really put the heat on them.\nThere's a certain threshold above which you want to use the \"law firm with in-house domain registry\" type. I think the threshold is pretty high though, definitely \"call us for a quote\" territory. But you will notice that big companies like Amazon and Google that have their own registry, don't use it for their critical domains - such as Google.com or Amazon.com.",
+              "author": "ajb",
+              "depth": 1
+            },
+            {
+              "text": "The day Namecheap started terminating services for existing customers from Russia was the day I realised that service can't be relied upon at all and had initiated my domain transfer the very next day to another registrar I was using.",
+              "author": "crossroadsguy",
+              "depth": 1
+            },
+            {
+              "text": "I heard some advice recently, I think in an article here on HN, to just use a big company registry where it's not their profit center, indeed may even be netural to loss making, to drive other business.\nThis makes total sense to me. I'm not saying it solves all problems but it eliminates so many of them, including a meta problem: the risk of new classes of problems being unexpectedly introduced (by say a private equity acquisition or similar).\nIf domains themselves are the profit center, you are likely in trouble if there's really any incentive for them to make incremental revenue in such a competitive market. Doing 'the right thing' just of course will not factor in if there's really no reputation at stake.",
+              "author": "davnicwil",
+              "depth": 1
+            },
+            {
+              "text": "The only problem with this is that having such a complex function as a non-core business unit makes it ripe to get rid of, or try to find a way to make it a profit center.\nCloudflare, for example, removed the ability to change the nameservers for all domains registered with them.\nGoogle got tired of being in the business and sold it to Squarespace.\nBeing a domain registrar is a total PITA and is not for the faint of heart, so it's the sort of thing that any business that takes it on as a non-core function will eventually tire of.",
+              "author": "jasongill",
+              "depth": 2
+            },
+            {
+              "text": "> Cloudflare, for example, removed the ability to change the nameservers for all domains registered with them.\nCloudflare never offered that ability. From the time they started offering domain registrations, it was always with the caveat that the nameservers would be fixed to Cloudflare's.",
+              "author": "duskwuff",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I moved from Namecheap 2 years ago when I had auto renew on but it did not auto-renew, which their system automatically turns your domain into an advertisement hell page. Transfer system was locked and I contacted them and told them to transfer it to my other registrar or I would file an ICANN complaint. I moved it to my main registrar (Hover) which while more expensive I haven't a problem with them in the decades I've been with them. My original registrar shutdown sometime in the mid 2000s and Hover picked up my domains, so I'm all in over there now.",
+          "author": "Adachi91",
+          "replies": []
+        },
+        {
+          "top": "I've been a long, long term customer of Namecheap as well.\nDomain privacy protection is a feature that Namecheap provides for all valid domains. Its included by default at no extra cost.\nThe poster didn't indicate if they had this feature enabled or not for the domain. It would have prevented the college club person from even seeing their email address to initiate a password reset.\nThis clearly isn't an answer for NC's customer support personnel and company policies.\nBut I've been a happy customer for many years and I discourage others from immediately reading other comments and rushing to jump to other registrars without doing your due dilligence.\nRemember that in any situation, the people most likely to leave negative comments and reviews are the people that have had genuine bad experiences or feel like they've been slighted, even if unwarranted.",
+          "author": "geuis",
+          "replies": [
+            {
+              "text": "How is domain privacy relevant here? That only hides your email from public records. What if the attacker already knows it (as they did in this case)? Email address is quite literally something you are meant to share publicly. It is not a password.",
+              "author": "paxys",
+              "depth": 1
+            },
+            {
+              "text": "I think their point was that if WHOIS data were hidden, a password reset request that relied on providing the email address would've been impossible. But since NC's account management allows visitors to provide just a domain name to generate an unlock email, domain privacy wouldn't be a protective layer here.",
+              "author": "Thrashed",
+              "depth": 2
+            },
+            {
+              "text": "I still don’t get the argument. Say I call your bank and convince them to give me full control of your account. Are you going to go “well the bank didn’t publish my account number anywhere, so they are in the clear”?",
+              "author": "paxys",
+              "depth": 3
+            },
+            {
+              "text": "I agree, it's not an excuse to hand over an account. I think that commenter was considering practical mitigations for a broken system, not necessarily absolving NC of responsibility had my WHOIS been public.",
+              "author": "Thrashed",
+              "depth": 4
+            },
+            {
+              "text": "Registration info usually also includes a physical address and names.",
+              "author": "vel0city",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This kind of story makes me wonder what's the most popular/valuable domain I can take control of simply by being convincing over the phone. Sounds tempting!\nI can't even log in to most web sites anymore without doing a side-trip to my E-mail inbox, \"for enhanced security,\" but these clowns let you just take a domain by asking nicely!",
+          "author": "ryandrake",
+          "replies": [
+            {
+              "text": "In many countries that’s probably illegal, even if it’s easy. Just because a crime is easy to commit doesn’t mean it isn’t a crime.\nSo, keep it hypothetical.",
+              "author": "nkrisc",
+              "depth": 1
+            },
+            {
+              "text": "I can’t think of a jurisdiction where it would not be illegal. The “I was only testing your security, in fact I should get rewarded for it” defense never works outside of nerd fantasies.",
+              "author": "paxys",
+              "depth": 2
+            },
+            {
+              "text": "Be careful, I assume there are laws on the books that normal people wouldn't know about but a large enough target could use if you tried to pull this on them (or you could find yourself on the receiving end of a civil lawsuit).",
+              "author": "jacobgkau",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Well, they didn't call it NameCompetent, did they?",
+          "author": "addaon",
+          "replies": [
+            {
+              "text": "They're not even cheap these days, either. I'm still with them as a matter of laziness but I really need to migrate out.",
+              "author": "Retr0id",
+              "depth": 1
+            },
+            {
+              "text": "Cloudflare offers domain registration/renewal with no markup if you're looking for an option.  I moved to them after AWS increased fees.",
+              "author": "jolan",
+              "depth": 2
+            },
+            {
+              "text": "i'm sure that will last",
+              "author": "appcustodian2",
+              "depth": 3
+            },
+            {
+              "text": "namechintzy.com is available",
+              "author": "The_Blade",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49026810",
+      "title": "Show HN: Echo – Fable-level results at 1/3 the cost using open-weight models",
+      "link": "https://news.ycombinator.com/item?id=49026810",
+      "domain": "news.ycombinator.com",
+      "author": "adam_rida",
+      "score": 261,
+      "comment_count": 125,
+      "created_ts": 1784834761,
+      "is_internal": true,
+      "post_text": "I’ve been building Echo (<a href=\"https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;</a>), an experiment in making one AI system out of a pool of open-weight models rather than choosing a single model and using it for every task.<p>It started with a simple experiment. I took a group of models, including GLM-5.2, Kimi K2.7 and others, and ran them on the same evaluations. Then I measured what would happen if, for each problem, you somehow knew in advance which models would be useful and how their outputs should be combined.<p>That hypothetical system performed substantially better than any individual model in the pool. Of course, it is not something you can actually deploy because it relies on knowing which decisions were good after seeing the result. Echo is my attempt to recover some of that advantage without having that information in advance.<p>For each request, Echo decides how much computation to allocate, which models should participate, and how their work should be combined. Some prompts may only need a relatively small amount of inference, while others benefit from multiple models working on different parts of the problem.<p>One thing that surprised me while building it was how complementary the models are. A model that is clearly weaker overall can still be extremely useful on particular problems or as part of a combination.<p>On my first evaluation mix, Echo consistently performed better than the best individual model in its pool. It also reached roughly the same aggregate result as Fable, which I used as one of the stronger comparison systems, at around one third of the inference cost.<p>There are still some cases where Echo makes the wrong allocation or combination decision. I’m currently spending a lot of time understanding those failures, as well as testing whether the same approach holds up on coding and agentic tasks where measuring the quality of each decision becomes much harder.<p>I built a chat interface (echo.tracerml.ai) and an OpenAI-compatible API (<a href=\"https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;docs&#x2F;api\" rel=\"nofollow\">https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;docs&#x2F;api</a>) so the system can be tested outside the evaluation setup.<p>Here is a short&#x2F;high level video on how it works: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=lJFJSvOdXhg\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=lJFJSvOdXhg</a><p>I wrote up the evaluation methodology, individual model results, costs and current limitations here: <a href=\"https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;eval\" rel=\"nofollow\">https:&#x2F;&#x2F;echo.tracerml.ai&#x2F;eval</a><p>I would love for you to try it! Especially if you hit any weird failure cases or places where the allocation looks unintuitive.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": [
+        {
+          "top": "So this is the dogpile.com of the askjeeves, alta vista, and lycos approach? Time is a flat circle?",
+          "author": "dluan",
+          "replies": [
+            {
+              "text": "Good ideas are usually still good across time and tools",
+              "author": "glasss",
+              "depth": 1
+            },
+            {
+              "text": "Dogpile was only a good idea while Search Engines were mostly trash.\nYou needed to search all of them to find something decent.\nThat's roughly analogous to today.  Ignoring cost, you'd be way better off asking all the LLMs to solve a problem (like coding) where you can verify the answer.\nSo the question is, for things like that -> can a group of models perform better than frontier models, especially at a reasonable cost?\nFable is not a great value, so unless you're trying to find answers to Erdos questions, you can probably do better on cost.\nYou can probably typically ask 3 or 4 of the top Chinese models for an answer and get a response for the same Fable question...  Given that Fable isn't \nthat\n much better, it's not surprising you can do better for a large subset of problems.",
+              "author": "onlyrealcuzzo",
+              "depth": 2
+            },
+            {
+              "text": "> \nDogpile was only a good idea while Search Engines were mostly trash.\nPrecisely.",
+              "author": "Terretta",
+              "depth": 3
+            },
+            {
+              "text": "There is no reason a smarter model will not build an internal smarter/efficient router itself",
+              "author": "ai-x",
+              "depth": 3
+            },
+            {
+              "text": "Exactly\nHigh quality, fast & cheap (all 3 combined) - is a formula success.\nIt’s just way easier said than done.",
+              "author": "tiffanyh",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "thanks to everyone for taking the time to try Echo and share feedback, this is precisely why i wanted to launch early.\ni am going to try to address a couple of topics that came up often:\n-  i'll keep publishing stronger evals, including more difficult coding and agentic benchmarks, to map out more precisely the differences with sota\n- the public eval dashboard will keep expanding and be updated (very open to more benchmark suggestions as well!)\n- some people found issues in the eval dashboard ui and the sign up flow, should be now all fixed in prod\nsome important precisions as well:\n- NO credit card is required to try Echo\n- each acount includes 10$ of free credits to try on both the API and the chat\non the approach itself: the idea i'm exploring is more broader than model routing, i'm looking at how to allocate inference efficiently across open-weight models, deciding not only which models to use, but also how much computation a request deserves and how intermediate work should be combined.\nensembling by itself is not new. since random forests and probably even before in statistics/classic ml we knew that bringing multiple models together can outperform individual ones. the interesting problem for Echo is how to model and leverage this without paying the full ensemble cost at each request.\nwhile there are conceptual similarities with systems like Fusion or Fugu, the architecture and optimization objective are different.\nthanks again for all the thoughtful feedback.",
+          "author": "adam_rida",
+          "replies": []
+        },
+        {
+          "top": "> Fable-level results at 1/3 the cost\nI am guessing this is not targeting those of us on the heavily subsidized $200/mo plans. Sure, these plans may be temporary, but none of us really know how temporary they are. Until then, 1/3rd of the published API pricing is not very appealing.",
+          "author": "cheema33",
+          "replies": [
+            {
+              "text": "I burned though my weekly fable usage last night on the $200 plan.  I had $200 in promotional usage credits and was in the middle of executing a moderate sized coding plan.  Ran on usage credits for about 1h 15m and burned $120 in usage credits.  I was astounded to see how fast the $ usage added up.  One problem was that I was using sub-agent execution so multiple agents were running simultaneously and I realized at the end that claude had \"Forgotten\" my directive to use cheaper models as appropriate for sub-agent tasks so I was running multiple instances of Fable at once.  Still hard to imagine paying per token. $200 a month is high, $200 per night is crazy.",
+              "author": "stilesja",
+              "depth": 1
+            },
+            {
+              "text": "I stopped using sub agents after they caused me to hit my limit to quickly. Had to create a separate account and pay for another max plan to unblock myself temporarily",
+              "author": "good8675309",
+              "depth": 2
+            },
+            {
+              "text": "I believe they will last until they IPO, and not long after that. $200/mo plans are not good for their P&L when their users using $10000 worth api credits. That's -98% margin loss per user.",
+              "author": "byzantinegene",
+              "depth": 1
+            },
+            {
+              "text": "All enterprises users (people using them for work and not side projects) can't get the subsidized plans. I would say subsidized plans are a minority of usage?",
+              "author": "killingtime74",
+              "depth": 1
+            },
+            {
+              "text": "People _can_ get subsidized plans for work: we use Claude Teams, $100/mo premium seat, which caps at 150 seats. Not enterprise tier, but fine for SMBs.",
+              "author": "rodrodrod",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "No benchmarks, no info on which models are used, ai generated video, just a signup page with nothing else.\nAnyhow, this kinda reminds me of that quote about architecture: \"We replaced our monolith with micro services so that every outage could be more like a murder mystery.\"",
+          "author": "kamranjon",
+          "replies": [
+            {
+              "text": "The evaluator is public here: \nhttps://echo.tracerml.ai/eval/\nIt currently exposes 907 stored rows across seven benchmark families, with prompts, outputs, grades, and cost records. More benchmarks are coming soon.\nEcho does not disclose its per-request routing decision because that policy is the product. We can, however, publish some of the eligible open-weight model pool, version dates, aggregate allocation mix, and evaluation settings without exposing the request-level recipe.\nNew video is also being made.",
+              "author": "adam_rida",
+              "depth": 1
+            },
+            {
+              "text": "> Echo does not disclose its per-request routing decision because that policy is the product\nMy honest advice: that's going to pull away a decent amount of potential customers, even though I think your idea/concept is fantastic.\nFor example, if we were to consider it for Canva, observerability and full transparency is critical requirement; we can't accept not knowing which model serves a request. Both for legal/contract reasons, co-ordinated capacity planning with API providers, or even just evaluating our prompts and harnesses; and debugging/tracing results that went wrong. So that renders it out of consideration; and also suggests some kind of adversarial relationship where customers aren't trusted with critical information.\nI definitely understand you need to keep business value, but I don't think hiding which model a request is routed to, is the right one, or at least if you want to expand to bigger potential customers / more advanced LLM deployments.",
+              "author": "dannyw",
+              "depth": 2
+            },
+            {
+              "text": "> Echo does not disclose its per-request routing decision because that policy is the product\nI have not had need for a router product thus far so excuse my ignorance if this is standard, but how could I possibly use and improve a product built on a router like this if I am not permitted to see which model served my request? If I got a bad answer back in my LLM-powered app, do I really have no way of knowing which model was responsible?",
+              "author": "monk_grilla",
+              "depth": 2
+            },
+            {
+              "text": "Isn't the relevant benchmark RouterBench? \nhttps://arxiv.org/html/2403.12031v2#S7",
+              "author": "seizethecheese",
+              "depth": 2
+            },
+            {
+              "text": "> \nNo benchmarks, no info on which models are used, […]\nThe benchmarks are here → \nhttps://echo.tracerml.ai/eval/\nThey are not good benchmarks but at least they exist.",
+              "author": "guessmyname",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This does not really work well, if you don't know the complexity of the problem ahead of time and ensure all future conversations go to the same model.\nElse, you break the cache by doing a round robin of the same conversation across different models. Likely you'll end up paying more than what it would've cost with a cache aware system",
+          "author": "subygan",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49021006",
+      "title": "Alphabet's cash burn raises alarm for Big Tech as AI spending climbs",
+      "link": "https://www.reuters.com/business/retail-consumer/alphabets-cash-burn-raises-alarm-big-tech-ai-spending-climbs-2026-07-23/",
+      "domain": "www.reuters.com",
+      "author": "1vuio0pswjnm7",
+      "score": 257,
+      "comment_count": 264,
+      "created_ts": 1784812202,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "big tech"
+      ],
+      "comments": [
+        {
+          "top": "The current commitment by hyperscalers is around 1.7T USD, reported liabilities 1.3T and this year global debt related to AI is 570B. So that’s around 3T total. For this to make sense AI must generate 2T in new revenue per year by the end of the decade. And that would be only a 10% ROIC. For context ROIC for big tech is around 35% so at 10% they will be barely breaking even. The SP500 gives 10-12%. With 10% ROIC from AI the only thing investors will be celebrating is that the whole thing didn’t trigger a financial crisis. Data centers are NOT real estate. Buildings and power lines usually last 30-50 years. GPUs become obsolete in 5 years. If hyperscalers need to refinance and their interest rate goes up there’s zero margin for error.",
+          "author": "tedggh",
+          "replies": [
+            {
+              "text": "H100 is nearing five years and costs more to buy a used one now than a new one when it was released :)\nYou are completely missing the bet these companies are making.\nThey think can outlast their competitors and capture a larger portion of the pie while the cost of inference keeps going down dramatically.\nIf you haven't been paying attention, the cost is about 1/100th of what it was in 2024. This is the trajectory pretty much every technology has followed.\nOf course there will be market crashes and corrections and things like that and most companies won't survive, but the bet is that whoever survives ends up doing pretty well.",
+              "author": "fooker",
+              "depth": 1
+            },
+            {
+              "text": "The fact that supply constrained GPUs holding value is negative indicator. It's like the tulips mania except bubble enthusiasts are buying wilted/dead tulips because live tulips supply constrained due to irrational demand. Now GPUs has more gross utility than tulips but seems like at current revenue/capex spend, every GPU is still negative net financial yield - they lose money - literally buying tulips and watching it wilt. Economically, better off simply not buying and losing more. That's the level of economic irrationality at place sustaining bubble, at least for hyperscaler/big tech balance sheet - small operators logic different and antagonistic to big operator demand/business model.\nIf cost of inference goes down 100x, would need 100x more demand. This makes overspending on GPU even more irrational. Jevons this, Jevons that but ultimately irrelevant. At end of day, leading players, hungergame winner candidates is saddling themselves with so much debt, even if they survive, post crash they are immediately uncompetitive against new entrant with blank slate and newer gen, more efficient GPUs that will be cheaper to buy/operate post crash when hardware prices will revert to mean.\nIt doesn't matter if some of the current players survive, they've basically stabbed and weakened themselves so much any healthy upstart in the future can wipe them out unless they lock in legislative protection... safety regulations, ban open source models etc.\nThat is the new bet, regulatory capture moat, because economic bet is entirely lost, especially with open models eroding mote.",
+              "author": "maxglute",
+              "depth": 2
+            },
+            {
+              "text": "You're making a classic philosophical error here by accidentally anthropomorphizing companies :)\nA company losing out on a risky bet and failing, letting a new upstart rise up is pretty natural. A large fraction of experts from the failed companies continue at the new ones, business as usual. There are engineering teams at $BIGTECH now full of OS, database, or compiler experts from XP, Sun, HP etc.\nThis natural ability of companies to take risky bets is what made silicon valley successful.",
+              "author": "fooker",
+              "depth": 3
+            },
+            {
+              "text": "Companies are run by people, 100 billion dollar companies are ran by people who want to stay billionaires and will street accordingly. But I'm not sure what we're disagreeing on, yes the talent will migrate, AI industry will eventually settle on some none bubble equilibrium, but that doesn't mean current AI economics is sensible, or inflated hardware costs beyond yield is not danger indicator. Like yeah, risky bets are burning, most people are going to move and carry their technical expertise on instead of unalive themselves or flip burgers, but that's independent of whether business models and broader economy is going to explode.",
+              "author": "maxglute",
+              "depth": 4
+            },
+            {
+              "text": "You just stated yourself that it costs more now used than when they were new.\nIf everyone's running local then why are these larger companies dumping cash into data centres?",
+              "author": "lardosaurusrex",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Looking at cash burn is looking at the wrong end of the horse. Some companies, like Meta, have burned huge piles of cash in pursuit of, for example, the Metaverse and they've got nothing to show for it, not even a slight increment in ad tech, and yet they earned enough to shrug it off.\nThere's a big difference between Google spending tens of billions on AI infrastructure and what Oracle is doing. Oracle is spending to get on a bandwagon. Google is transforming their business, so far seemingly correctly. If AI flops big-time, Google will be left with some stranded assets, but it won't be existential the way it would be to Oracle.",
+          "author": "Zigurd",
+          "replies": [
+            {
+              "text": "If AI flops, they’re be left holding large pools of useful datacenter/compute capacity and “revert” to one of the most profitable businesses of all time.",
+              "author": "snowchaser",
+              "depth": 1
+            },
+            {
+              "text": "Meta entering cloud at scale would see huge competition and lowering of profit margins.",
+              "author": "khurs",
+              "depth": 2
+            },
+            {
+              "text": "useful for what? my unemployed neighbours wordpress website?",
+              "author": "bdangubic",
+              "depth": 2
+            },
+            {
+              "text": "Welcome to the world of too big to fail and the rich are beyond mortal judgement.",
+              "author": "TitaRusell",
+              "depth": 2
+            },
+            {
+              "text": "Meta glasses are a direct result of this investment, and they're selling like hotcakes",
+              "author": "phyrex",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm thinking Apple has been really smart in their AI strategy here.\nIt seems a mistake to make unprecedentedly large capital expenditures, in a very very crowded space, without much evidence of a moat. Presumably people thought the moat would be singularity-like self-improvement of AI, but the singularity is merely a religious concept, and nobody should take religious myth as fact, it's merely narrative for orientation and inspiration.",
+          "author": "epistasis",
+          "replies": [
+            {
+              "text": "Their strategy to let Siri stagnate for 15 years and let everyone else take that market?  Their strategy to put a bunch of not ready for consumer use AI features on their devices and then roll them back?\nThey just have such a strong hardware + os ecosystem that they can sit on the sidelines.  They'll be able to negotiate with some LLM provider at a good discount when the time is right and put harnesses around it for actual useful features.",
+              "author": "fullshark",
+              "depth": 1
+            },
+            {
+              "text": "> Their strategy to let Siri stagnate for 15 years and let everyone else take that market?\nWhat have they lost by doing this? Did anyone switch from iPhones to something else?\nGoogle's Assistant was and is better than Siri's. How many switched to Android because of it?",
+              "author": "BeetleB",
+              "depth": 2
+            },
+            {
+              "text": "I was talking more about massive investments in compute and model development. Voice assistants are barely AI, but real AI might help make better ones in the future. Similarly, I think Apple's failed attempts to add AI to macOS and iOS are a huge justification of avoiding capital investments in compute and AI frontier models.\nThere's two separate things here: 1) the underlying models, and 2) how they are applied to real world tasks. Both are changing at tremendous speed. The underlying models, 1), can be purchased as a component, so there's little advantage to vertical integration, as long as there's a robust competitive market, and boy is there ever. And Apple was never going to be the big B2B provider for LLM compute and models, such sales are just not in their corporate DNA.\nFor 2), application of AI in Apple's products, nobody knows how to do that correctly yet, and it's going to a wild few years of people trying things and failing before something comes to pass. Waiting to see where to actually find a competitive edge totally makes sense. Microsoft's Copilot bungling was far worse than Apple AI's bungling, for example. I can't even get access to Microsoft Office anymore, it seems, I'm instead confronted with a dumb chat interface that doesn't even know how to launch a new document or open existing ones. At least Apple never destroyed their brand like that...",
+              "author": "epistasis",
+              "depth": 2
+            },
+            {
+              "text": "I think that's precisely what the previous commenter is saying. Sit on the side lines, and let other people bloody themselves up.\nSimilar in a way to dot com. It's not to say ML won't have practical application in the future, but the likelihood that it will have specifically this form is low and worth waiting until the dust settles and a more commonly accepted utility presents itself.\nIf AI/ML were monstrously useful in its current form the companies pushing it would not need to be hawking products; people would be bashing their doors down. I think that's why in areas where it's more directly applied to a known problem set (like Pharma research, and I'm hoping someone with Pharma expertise can pipe up here) there has been more natural pickup.\nComing from trading and markets, ML has been a part of the mix in quantitative strategies for...well, nearly 20 years (by definition I suppose). Spaces with obvious utility will see rapid adoption. Worth waiting that out, honestly.",
+              "author": "HolyLampshade",
+              "depth": 2
+            },
+            {
+              "text": "The point was that one rational approach is that it's OK to not be top ranked in a market that has significant medium-term profitability issues. Apple has no problem creating new markets, but not if being top ranked requires years and years and years without return on investment \nafter launch\n, and large subsidies. Not to say Apple hasn't failed at creating new markets either, or anything like that.",
+              "author": "dundarious",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "i dont understand the concern. they are putting up great financials. you have to invest ahead of the outcome. this is just classic quarterly public company earnings BS, where public markets dont reward innovation investment. they just want crank the handle financials.\nThe bigger issue is on the model front, can Google compete; Gemini doesnt seem to be able to compete on the heavy expert end; they are doing well on lighter faster models.",
+          "author": "gavin_gee",
+          "replies": [
+            {
+              "text": "People bought Google for the torrential free cashflow, that looks like its gone forever with this new capital intensive model. If that the case then it needs to be valued like a heavy industrial rather than a capital light tech company.",
+              "author": "drumhead",
+              "depth": 1
+            },
+            {
+              "text": "I agree Gemini's value is not at the frontier, but they are making very useful smaller models. 3.5 flash lite is super fast, cheap and token efficient and accepts any kind of input. For large, price-sensitive processing, in consolidated workflows that don't need the latest improvement, it is the best. Perhaps they should focus on improving their dominance on this business, I don't see gemini reaching claude/gpt in coding. But they could be the ones that make it possible, and economically viable, to roll out llms in large scale automation.",
+              "author": "JV00",
+              "depth": 1
+            },
+            {
+              "text": "Their bigger positive in my opinion is that they have massive amounts of data and are working to vertically integrate with stuff like TPUs.",
+              "author": "giantg2",
+              "depth": 1
+            },
+            {
+              "text": "I've given up on Gemini. It sounds smart but most of what it tells me ends up being wrong or misleading. I might actually hand $20/mo to OpenAI. It's been far more helpful with the random collection of legal and health problems I've thrown at it. My recent comment history is going to make me come across like a shill for them but, holy crap, GPT has been doing amazing things for me at work as well.\nI don't get it either... Google has so much talent yet they just can't seem to get it right.",
+              "author": "01100011",
+              "depth": 1
+            },
+            {
+              "text": "Are you using Gemini Flash or Gemini Pro?\nAre you about to compare the free tier of Gemini to the paid tier of OpenAI?",
+              "author": "heaney-555",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "They just raised $85 billion and they're sitting on a mountain of cash - if their spending didn't increase in this context, it'd be bad management. The real story here is that they have decided to spend that mountain of cash on AI CapEx.",
+          "author": "Centigonal",
+          "replies": [
+            {
+              "text": "That $85 billion was bonds, and requires ongoing repayments of billions every year in interest payments\nAnd then the $85bn to be repaid too.",
+              "author": "khurs",
+              "depth": 1
+            },
+            {
+              "text": "I'm referring to the equity offering that started in June and has a second component that starts in 2026Q3. Most of this raise came from the sale of Class A and Class C stock. A fraction came from the sale of convertible stock. To my knowledge, none of this raise came from the sale of bonds.\nAlso, looks like I got it wrong and they've only raised $45B to date. The rest will come as part of the ATM offering program that begins in Q3.\nmore details here: \nhttps://www.sec.gov/Archives/edgar/data/1652044/000119312526...",
+              "author": "Centigonal",
+              "depth": 2
+            },
+            {
+              "text": "sorry, my error. Bonds was $31.5 billion\nhttps://www.reuters.com/business/alphabet-sells-bonds-worth-...",
+              "author": "khurs",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49022911",
+      "title": "Show HN: Palmier Pro – Open-source macOS video editor built for AI",
+      "link": "https://github.com/palmier-io/palmier-pro",
+      "domain": "github.com",
+      "author": "harrisontin",
+      "score": 129,
+      "comment_count": 20,
+      "created_ts": 1784819497,
+      "is_internal": false,
+      "post_text": "Hi HN, we are Marcos and Harrison, cofounders of Palmier (<a href=\"https:&#x2F;&#x2F;palmier.io\">https:&#x2F;&#x2F;palmier.io</a>). We are building Palmier Pro, an open source macOS video editor, with built-in AI generation and a local MCP server that connects to your agent. Here are a few demos:<p>- Making some AI transitions: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=hbM_-eR1GX4\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=hbM_-eR1GX4</a><p>- Multicam editing with Codex: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=SjS2q2LT1q8\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=SjS2q2LT1q8</a><p>- Cutting long form clips into shorts: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=PR66eN2ouuQ\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=PR66eN2ouuQ</a><p>We built Palmier Pro as an internal tool when we were making AI launch videos for other startups. The main problem it solved in the beginning was the back-and-forth between AI generation platform and video editor. The iteration loop was awkward: AI videos → download → import to editor → edit → realize we need to change the AI video → repeat. So we built a minimal video editor where we could let Claude generate AI videos inside the editor.<p>As we gave more and more tools to the agent, we wanted to push to see what else agents can do in the video editing space. So today, your Claude&#x2F;Codex can:<p>- Manage projects inside Palmier Pro<p>- Import media from a public URL or filesystem to the project, and organize them in folders<p>- Search media (by embedding footages using SigLIP2 running locally)<p>- Edit the timeline (tracks&#x2F;clips&#x2F;keyframes operations)<p>- Generate images, videos, sound effects, captions, music<p>- Export videos<p>There are two ways for LLMs to interact with the editor: by connecting to the local MCP server, or using the in-app chat. Both use the same tools and APIs exposed by the video editor.<p>We have seen people using MCP server to connect to their own workflow to automate massive-scale video editing (e.g. given this same podcast style, replicate it with other footages that I have). We have also seen people using the in-app chat where it lives closer to the editor UI, with lower latency for faster iteration.<p>We don&#x27;t believe that AI is going to replace human creativity (nor should it), but where it can really help is in automating the gruntwork in video editing. Most work in the editing workflow is more mechanical than creative. Our vision is to build a video editor where AI can enable more individuals to create.<p>Throughout our experiments, AI is not very good at creative editing, but given a pattern (transcription-based, beat-based), it can do a decent job at rough cut.<p>We built Palmier Pro in Swift as an MVP because we wanted better performance and minimal dependencies (no nodejs&#x2F;webview), with some native macOS APIs like SpeechAnalyzer and CoreML for us to run some models locally. We use SpeechAnalyzer for local transcriber, SigLip2 to embed video frames, beat_this for beat detection, Silero VAD for silence detection, all running locally. The tradeoff is that we don&#x27;t support Linux or Windows at the moment.<p>Palmier Pro is open source and free to try out (macOS 26 only at the moment, though - we&#x27;ll support more platforms over time, but for now are focusing on iterating the core product).<p>No login required except for the AI generation features, which route requests to our backend. We are offering free credits on sign up so you can try out the AI generation as well.<p>We&#x27;d love to hear your feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "This looks great! Have you thought about dropping the 'subscription'-part and 'just' selling credits instead?\nHere's my thinking as a SaaS founder: when I launch a product, I don't need a video every month. So a monthly pricing makes me do this little calculation every time: \"do I need a video this month? nah. Then I'll wait. I lose the early-bird price, but I still net out cheaper.\" And since there's no yearly option, there's nothing pulling me into the early plan either.\nWhat I \nwould\n jump on is a launch offer. Something like XXX credits for a good price, enough that it feels like 3 videos over the course of a year. Even if I never use them all (very likely, honestly), I'd buy it. Credits sit there and wait for me, a subscription just quietly bills me for months I don't need it.\nHope that makes sense :)",
+          "author": "Marciplan",
+          "replies": [
+            {
+              "text": "I feel the same way too. I also open sourced a video editor. It's free to use and you can buy credits whenever you want to access AI specific features.",
+              "author": "dthedavid",
+              "depth": 1
+            },
+            {
+              "text": "It makes sense! We are still early in experimenting the pricing and would want to reduce user's overhead in thinking about pricing/credits as much as possible.",
+              "author": "harrisontin",
+              "depth": 1
+            },
+            {
+              "text": "then please offer flexibility. I am looking for sth like that , but i want a prepaid based solution and not another sub.",
+              "author": "lmf4lol",
+              "depth": 2
+            },
+            {
+              "text": "I get that too! Rooting for y'all, it looks amazing and I'll definitely grab a month once I have enough ideas enough :)",
+              "author": "Marciplan",
+              "depth": 2
+            },
+            {
+              "text": "Just wanted to chime in to specify that credits are only for the AI generation and built in chat features. The editor is free to use if you connect it to your existing agents!",
+              "author": "Marcosricopeng",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Nice project. I’m building a similar project. It’s open source too.\nhttps://github.com/DonkeyUseCorp/Donkey\nIt’s mostly a web app with a native swift companion app to access local resources like TTS, file storage and video rendering.\nI arrived at the same conclusion as you; every app should have AI chat. Just give it full access to the app like a real user. I found that users prefer talking to the AI when editing vs clicking around.",
+          "author": "dthedavid",
+          "replies": []
+        },
+        {
+          "top": "This is what I have been waiting for in order to process my massive action camera library, I will definitely give it a try!\nI will start with older standard GoPro videos, and hope that by the time I make it to the Insta360 videos the editor supports 360 video (unless it does already!)",
+          "author": "nsbk",
+          "replies": [
+            {
+              "text": "not yet with .360 files. we currently support .mov and .mp4 for videos!",
+              "author": "harrisontin",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been following Marcos's youtube channel and it's so great to see that they've  finally found their thing. Looks like an awesome product that people actually want. Well done.",
+          "author": "misterchocolat",
+          "replies": [
+            {
+              "text": "hey Marcos here - really appreciate it! In hindsight this idea makes so much sense  and we're extremely excited to build and make something people want",
+              "author": "Marcosricopeng",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I assume using Swift means cross-platform support is tertiary at best?\nI have mostly Macs in my workflow so not an issue for me, but its good to have that plainly stated if so.\nBeing able to edit a long video to pull out different speakers segments automatically or do automatic edits of speaker transitions would be great- I'll give it a try and see what scenarios are best suited for our use cases...",
+          "author": "mrkstu",
+          "replies": [
+            {
+              "text": "Yes currently its only macOS support.\nLong videos with different speakers is a core use case that we are trying to optimize for, please let us know how it goes for you!",
+              "author": "harrisontin",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49021856",
+      "title": "I Regret Migrating to Codeberg",
+      "link": "https://xn--gckvb8fzb.com/i-regret-migrating-to-codeberg/",
+      "domain": "xn--gckvb8fzb.com",
+      "author": "boramalper",
+      "score": 127,
+      "comment_count": 96,
+      "created_ts": 1784815607,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "regret"
+      ],
+      "comments": [
+        {
+          "top": "I'm a member of Codeberg and was allowed to vote on these amendments. There was the annual assembly meeting before the ballots were sent by email. Each proposal had a short presentation and a few minutes of Q&A.\nIt wasn't a discussion (the text was final at this point), it was just to ask for clarifications. In the meeting I asked about the server load that they mentioned in their presentation, but misphrased it and got some answer about (AI?)bots scraping Codeberg and not if auto-generated code being shared on Codeberg is actually an issue.\nIt seemed pretty useless compared to commenting on the ticket where one could have a structured discussion. I also don't know how many of the >1000 members were in the meeting in the first place and how many just got the email \"Wanna ban AI? Vote now!\"\nOnce the results were announced, the rest of the users came into the ticket and started asking questions \nhttps://codeberg.org/Codeberg/org/pulls/1253#issuecomment-19...\n This was then shut down and if you have questions you should join the chat room on Matrix",
+          "author": "Aachen",
+          "replies": [
+            {
+              "text": "There was also a discussion on the codeberg forum.\nAnyway, I hope this new rule will be overturned in the future. I think it invites arbitrariness and besides, whether or not a project was vibecoded (and how much) doesn't really decide how useful or even how well-written it is.",
+              "author": "Tepix",
+              "depth": 1
+            },
+            {
+              "text": "So I voted against, partly because I feel that the text doesn't to justice to such a multifaceted topic.\nIf all projects on Codeberg were human-written, that would be a big seal of quality! There are a lot of projects coming out now where someone feels like they've made a cool thing but it breaks on the first edge case and is entirely unmaintainable. Many are built on wrong principles because the prompt authors aren't savvy and don't know better. Some authors (I've encountered this in the OpenStreetMap community) even have the gall to pretend that their code is a gift that we now have to host and maintain. Aside from these quality and community issues, build and test pipelines also take a lot of compute resources, and with large growth in projects, that will increase as well. That the author of the proposal wants to avoid this makes a ton of sense to me.\nBut it also drives a lot of projects away because maybe you later want to use LLM assistance (imagine LLMs got twice as good as they are today), or maybe the auto-generated tests might become >50% of the code. You'd have to migrate your repository and community away from Codeberg. Why take that risk? It's just not a worry I feel that developers need. They're looking to get away from Microsoft (GitHub) for their open source project and that's the point where Codeberg should be a no-brainer\nWe're an open source community and so the mass stealing of all our work to feed LLM training which heats the world and causes (at least temporarily) giant price hikes in consumer hardware... there's a lot to say for more ethical training and use of LLMs, but does it matter at all if Codeberg bans LLM output? Won't we just make ourselves obsolete? Idk. It's multifaceted and this proposal seems too vague and blunt for me. That's not an option that's set in stone btw, just my current understanding of the different aspects",
+              "author": "Aachen",
+              "depth": 1
+            },
+            {
+              "text": "A big seal of quality because it is human written? Maybe in narrow spaces but in general, I’d put money on the average developer being significantly worse at writing code with bugs than an AI. It’s codebergs infra so their choice, but it seems like an overly simplistic solution to a complicated advancing technology, in that it is a threadbare line between “vibe-coded” and “complex agent harness with human oversight and review”.\nAlso, I’m actually quite happy with some of the vibe-coded apps I use. Handy is an example, which started as a vibecoded app, and is fantastic for STT/dictation. It seems like a literal baby with the bath water approach.",
+              "author": "therealpygon",
+              "depth": 2
+            },
+            {
+              "text": "I'm not saying you can't be happy with autogenerated software, especially for something like a dictation app where the main functionality amounts to a language selector (or calling into a detector) and calling TTSlibary.render(String text).play(). You could also just use an existing TTS app, but whatever works for you\nFor more complex software, so far it has been my experience that you get more predictable behavior (fewer edge-cases), performance, and relevant (but, to be fair, less comprehensive) documentation when someone thought about and built it",
+              "author": "Aachen",
+              "depth": 3
+            },
+            {
+              "text": "For software that became popular, sure. Have you spent a lot of time looking at horribly written unpopular software that far outpaces the popular ones in quantity, not quality?\nI fully agree that a well-written human application can be far better organized and documented. But I’m not talking about the top 10% that most people interact with and focus on, but rather the bottom 90% that get far fewer eyes and are way more poorly written, regardless of perceived complexity.",
+              "author": "therealpygon",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "The author seems annoyed that Codeberg wants to focus on projects that have a legitimate contributor community and is not designed for one-off individual projects.\nI don't share that concern.\nIt's not all that different from Mastodon instances. It's a community space, and the community gets to decide who they allow to use their resources. Personally, I have a group of friends who share a GitLab instance, for example. Are you allowed to use it? No. Why? Because I didn't go to middle school with you decades ago. Is that fair? I don't really find that question relevant. I also keep a Gitea instance running at home for all the junk that really doesn't belong on someone else's hardware. Using someone else's forge isn't the only option.",
+          "author": "anticorporate",
+          "replies": [
+            {
+              "text": "> It's not all that different from Mastodon instances. It's a community space, and the community gets to decide who they allow to use their resources. Personally, I have a group of friends who share a GitLab instance, for example.\nI think it's a bad example since your private GitLab instance wasn't all over the HN earlier screaming \"are you tired of Github outages and Microslop breaking it every day? Migrate all your shit to Codeberg, the good guys of the internet\" only to later pull the rug like this.\nPrivate stuff is cool and there's place for it. Codeberg was actively positioned as an indie almost drop-in Github alternative and it's currently failing miserably at this.",
+              "author": "rwz",
+              "depth": 1
+            },
+            {
+              "text": "> Codeberg was actively positioned as an indie almost drop-in Github alternative\nWhat on earth are you talking about? No one, no less Codeberg themselves, would make up such fictitious comparison.\nThe terms and conditions second point is \"Allowed Content & Usage\", and has been for a good 4 years, no one who's part of the organization would say it's a \"drop-in GitHub alternative\". It's not a \"anything goes\" git host either.",
+              "author": "embedding-shape",
+              "depth": 2
+            },
+            {
+              "text": ">> Codeberg was actively positioned as an indie almost drop-in Github alternative\n> What on earth are you talking about? No one, no less Codeberg themselves, would make up such fictitious comparison.\nCodeberg's getting started documentation has the line, \"Codeberg is not a for-profit corporation but an open community of free software enthusiasts providing a humane, non-commercial and privacy-friendly alternative to commercial services such as GitHub.\" [1]\n[1] \nhttps://docs.codeberg.org/getting-started/what-is-codeberg/",
+              "author": "bhelkey",
+              "depth": 3
+            },
+            {
+              "text": "Can you point me at the posts where Codeberg was suggesting this? I just ran a quick search of Codeberg-related HN posts from the last year, and while there are some instances of \"why I moved \nmy\n stuff to Codeberg\" I wasn't able to find anything from the platform begging people to move. I believe you there could be examples, but that doesn't seem to be representative of the discussion.\nAt a macro level, this is always going to be a struggle for projects that are an alternative to enshittified corporate services. Hosting costs money. It seems like the real solution here is to work on the problem of federation between forges.",
+              "author": "anticorporate",
+              "depth": 2
+            },
+            {
+              "text": "> The author seems annoyed that Codeberg wants to focus on projects that have a legitimate contributor community and is not designed for one-off individual projects.\nI think Codeberg was never intended for one-off individual projects in the first place, such as them discouraging private repositories. Quoting their Terms of Use [0]:\n> Private repositories are only allowed for things required for FLOSS projects, like storing secrets, team-internal discussions or hiding projects from the public until they're ready for usage and/or contribution. [...]\nAnd this makes a ton of sense, because Codeberg is a community-funded volunteer-supported non-profit, and it doesn't make sense to spend their resources for repositories that don't benefit the public.\nI think \"legitimate contributor community\" is just an excuse so I am not going to dwell on it. From Ghostty to Redis, rsync to Linux kernel, more and more FOSS projects are taking advantage of various AI tools in a responsible manner and closing the door on them is just unfortunate and backward in my opinion. We gain nothing from this change and lose a ton of progress in software freedom and digital commons.\n> It's not all that different from Mastodon instances. It's a community space, and the community gets to decide who they allow to use their resources.\nOf course, and the bigger community gets to discuss their decision. :)\n[0] \nhttps://codeberg.org/Codeberg/org/src/branch/main/TermsOfUse...",
+              "author": "boramalper",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> A brief comment on Codeberg’s new terms, and why a free-software host deciding which projects are welcome worries\nBut, wait, Codeberg always had limitations on what projects are hosted there??? This been very explicit from the start, it's for FOSS and anything outside of that isn't welcome. It's one of the reasons I donate there in the first place. Now they're adding additional requirements, which most of the voting memebers voted for, this doesn't seem strange to me.\n> Unfortunately, the latest update to its terms of service seems to mark a first step in changing one part I moved there for, namely the “freedom” part.\nGiven they'll kick you off the platform if you're not aligned with FOSS views and act accordingly, it seems strange to have associated Codeberg with \"freedom\" at all.\nSide-note, but there is something that keeps popping up as an overlay on that page but I never end up being able to see what it is, as I click continuously as I read, and seems it auto-closes no matter where you click. Seems a bit distracting if nothing else :)",
+          "author": "embedding-shape",
+          "replies": []
+        },
+        {
+          "top": "If you click to another tab, the site changes its title and favicon to a random webpage like:\n- Pick up lines suggestions – ChatGPT\n- Rick Astley - Never Gonna Give You Up - Youtube\n- Amazon.com: waifu pillow\nWhen you go back to it there's an overlay chastising you for allowing JS on an untrusted website. I thought it was pretty funny. You can see the  list of fake pages in the source (which has the sketchiest URL ever due to punycode + the filename):\nhttps://xn--gckvb8fzb.com/js/kill.js",
+          "author": "Rendello",
+          "replies": [
+            {
+              "text": "I feel like it's a bit ironic that the blog post chastises Codeberg for taking a stance and then does the same with JS.",
+              "author": "itsmartapuntocm",
+              "depth": 1
+            },
+            {
+              "text": "The whole blog post is also taking a stance. What is criticized is the specific stance taken by Codeberg. TFA seems to state that Codeberg should allow projects of all kinds to be hosted on their service (though apparently artificially limiting their resources would be alright).",
+              "author": "FireInsight",
+              "depth": 2
+            },
+            {
+              "text": "I thought it was funny at first and kept clicking away to see what other random changes I'd get, but then I got a \"Zuckerberg nudes\" Google search webpage and I'm on my work computer...\nFortunately this functionality doesn't change your browser history, but it did really annoy me for a bit",
+              "author": "classictraffic",
+              "depth": 1
+            },
+            {
+              "text": "I find it endearing that someone is keeping up the resistance against JavaScript. Used things like noscript myself since 2008 or so. Eventually gave up since nearly no website would work that way and served you captcha loops instead.",
+              "author": "BoxwoodSeed",
+              "depth": 1
+            },
+            {
+              "text": "I still use NoScript. I actually started in 2018. I will turn on 1 or 2 js sites for a respectable looking page, but blank screens and captchas are a good signal to bounce, or occasionally to use an incognito window which enables all JS.\nAs the web gets more hostile (2018 was \nso\n much worse than 2008) NoScript will be more competitive in spite of all the inconvenience.",
+              "author": "akkartik",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> LLM-generated code, or is cryptocurrency-related\nCodeberg is making decisions to better manage their resource and infrastructure. It's no different than any other privately owned platform, making decisions to forbid certain kinds of content, or ban people for various reasons. Unlike other large centralized platforms, they at least tried to involve the community in this decision-making process, but in the end it's their call.\nIf you don't want to be under the mercy of someone else's decisions, you have to become more independent and host it yourself. Even then, who owns your server? Who owns the \"pipes\" of the network? They have terms of services, and can also ban you for various reasons, including your nationality, beliefs, etc. This line of thinking leads to a bigger question of how/whether a truly decentralized and free (as in freedom) computing and communication network is possible, how such a network can defend against abuse and malicious actors without compromising that freedom.",
+          "author": "lioeters",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49019647",
+      "title": "Worse on Purpose – How Corporate Greed Killed Product Quality – Worse on Purpose",
+      "link": "https://www.worseonpurpose.com/",
+      "domain": "www.worseonpurpose.com",
+      "author": "bilsbie",
+      "score": 114,
+      "comment_count": 98,
+      "created_ts": 1784804711,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose",
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "I read years ago about a drill which was sold at Walmart with the same sku as in higher-end stores but the Walmart version had plastic gears. This was due to pricing pressure by Walmart on the manufacturer.\nMe, personally, I seek out first Swiss brands then German brands when buying most things. I'm willing to pay extra.\nIn fact I'm a little pissed off this week because I ordered some oxygen absorbers off a Swiss website that listed a Swiss address but they were shipped directly from china. Investigating the site more closely, yeah, it's just a fake website made to look Swiss.",
+          "author": "comrade1234",
+          "replies": [
+            {
+              "text": "I did a little research study back in 2003 where I went to various grocers and purchased the same product at these grocers and compared.\nWalmart has larger boxes, and less contents, universally, for pretty much everything in a box, and they charge 1/3 more for their 2/3rds of what you get everywhere else. They make nearly 50% more profit from that little slight of hand. And try discussing this with any shoppers and they will say \"but the box is bigger\", <- actual statement from a CS PhD, demonstrating how it does not matter your education, once outside of that specialization you're an idiot.",
+              "author": "bsenftner",
+              "depth": 1
+            },
+            {
+              "text": ">Walmart has larger boxes, and less contents\nin EU labels must show prices per kilogram of product, to make this kind of fuckery harder",
+              "author": "GeoAtreides",
+              "depth": 2
+            },
+            {
+              "text": "Isn't this required in US stores now as well? Everywhere I go I see a $/oz next to the price.\nEdit: I guess not: \nhttps://www.nist.gov/pml/owm/national-legal-metrology/us-ret...\nThough my state doesn't have this law and I still see it at all stores. I very much rely on it, and it should be law.",
+              "author": "GitPushOrigin",
+              "depth": 3
+            },
+            {
+              "text": "I'll admit that I tend to implicitly trust that the larger boxes on the shelves contain more. I haven't checked the price-per-unit in a bit. Granted, my closest grocery is not a WalMart \nand\n I'm typically purchasing mass-produced sundries. Basically, the \"Family Size\" of Cheez-its is the same at any store.\nOne thing I have noticed is that 5lb bags of flour/sugar haven't been standard in a hot minute.",
+              "author": "bena",
+              "depth": 2
+            },
+            {
+              "text": "Actually, the family size Cheez-its is one of the worst offenders, they are not 1/3rd less, more like 50% less product.",
+              "author": "bsenftner",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "One massive unmentioned counterexample: High quality Chinese tools continue to proliferate and sucker-punch these brands for being so egregious with quality. They are now the high quality standard if you know what brands to look for, and not because their competition got worse as mentioned here, they are simply iterating and improving and making better tools and designs than they did 10 years ago. Sometimes you are getting the exact same tool as the name-brand but with less warranty for a fraction of the price. \"Corporate Greed\" is self-correcting in a free and fair market! Vote with your wallet.\nExample:\nhttps://www.reddit.com/r/harborfreight/comments/1v1ujxe/hmmm...\nWhich directly contradicts the blog's post about Knipex \nnever selling-out\n on quality:\nhttps://www.worseonpurpose.com/p/your-power-tools-got-worse-...\n>Knipex is family-owned out of Germany. They make what many consider the best pliers on the planet. Part of a larger group (Knipex Group) but not publicly traded, not for sale.",
+          "author": "1970-01-01",
+          "replies": [
+            {
+              "text": "I recently bought one of the Yukon tool chest / benches and the experience totally flipped my opinion of HF. I've been a customer for a while, but always considered them lower-quality in the back of my mind. The tool chest came in perfect condition, easy purchase. Whereas the Huskies I had bought previously were a hassle that involved returning multiple damaged-in-box units back to the store, driving an hour to another store with stock, dodgily swapping parts (drawer slides and top) to make a good one, etc.\nIt's of course never just one thing - I had been waiting for the Husky to show up in stock again (it has a 24 inch depth vs 18), but at this point it seems like HD has discontinued the 24 in favor of enshittifying with 18 inches instead. And of course I've been shying away from HD recently because of the F-word. It's like these companies want to self-immolate (or put more technically, they create short term boosts by arbitraging away their reputation).",
+              "author": "mindslight",
+              "depth": 1
+            },
+            {
+              "text": "In my experience in recent years, Oppo and Vivo phones look better, they are more robust and last longer than iPhones and Samsung premium phones.\nWhen giants like Apple and Samsung fail to innovate enough (and when they price their best products beyond the reach of the middle class of most nations), then upstarts will take their throne.\nThis may be good for industry so there's healthy competition, but it is unfortunate because China's CCP has a policy that Chinese companies must store and share customer and company data in China. So anyone using Chinese electronic gadgets is saying goodbye to their data security and privacy, even if it is an expensive gadget by a bigshot Chinese company (e.g., Lenovo was caught bundling adware on its premium laptops some years ago - search for \"Lenovo Superfish\" to know more).\nhttps://legioncyber.com/lenovos-security-failures-and-hidden...",
+              "author": "vee-kay",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This entire site can be boiled down to: products get decrease in quality when customers don't know or don't care what quality is.\nPrice is a clear and obvious thing to measure, quality is much more difficult. Consumers get little or no formal education in quality, and advertisements (and even review sites!) almost never address it properly. Any review site that is paid for by ads or affiliate links has the default position of trying to get you to buy something.",
+          "author": "xnx",
+          "replies": [
+            {
+              "text": "That might be an outdated accusation. There was a time when a touch of research or “caring about quality” was enough to avoid the pitfalls of garbage products, but I don’t believe that to be a fair statement anymore. The website details the history of some examples, but the implication is between the lines: the only reason you used to know a product would last 20 years is because \nthat specific product with those specific parts\n has already lasted 20 years. Don’t take advice about living to 100 from a 32 year old, don’t trust a warranty that’s longer than the company selling it has existed, and don’t trust that model XB5 is the same as your grandmas XB1.\nHow can you possibly know if you’re getting a quality product when the reviews you’re reading are for a model that doesn’t exist anymore, or are meaningless generalizations about a mega conglomerate? Saying “Brand X sucks/wins” only has the \npotential\n to be meaningful when it’s a single company in a single area and that has made that exact model in the same way for longer than your warranty on it. “Whirlpool sucks/wins” is as meaningless as reading “Water tastes good/bad” from everyone on the planet.",
+              "author": "docjay",
+              "depth": 1
+            },
+            {
+              "text": ">reading are for a model that doesn’t exist anymore\nIt's worse than that, the _same model_ from the same company can be quietly changed.",
+              "author": "krackers",
+              "depth": 2
+            },
+            {
+              "text": "Why do I no longer have any reliable signals for quality? Price, brand, materials, and word of mouth are all you really get, but price and materials are meaningless and brand and word of mouth stop mattering as a company starts to coast on its reputation for higher margin. Genuinely don't know how customers are supposed to choose quality when they want it. I always want it.",
+              "author": "DangitBobby",
+              "depth": 1
+            },
+            {
+              "text": "The market for lemons is always bustling, I guess [1].\n[1] \nhttps://en.wikipedia.org/wiki/The_Market_for_Lemons",
+              "author": "eventualcomp",
+              "depth": 1
+            },
+            {
+              "text": "Agree, but there’s also an element of consumer irrationality. Lower price + lower quality means you can buy more of what you want now, even if it means that you’ll end up with net less of what you want in the long term.\nMost consumers, me included, are not making purely rational decisions based in price and quality, even in domains where they are qualified to judge quality.",
+              "author": "brookst",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I call this the cycle of disruption.\nA company makes a really good product as first challenging incumbents. They get so big, they eventually become the incumbent. All this time, they’re probably losing money on the product or breaking even. Eventually, investors will want returns on their investment. This will first happen with prices increases to save the quality of the product. Once they can’t raise prices anymore, the quality will be decreased. By this point, the brand is strong enough to get sales even on this worse product.\nThen another company will come in and make the same product but better than the incumbent. The cycle continues.\nMy point is find these new companies that are trying to get market share by making a higher quality product. And if you really like that product, buy 2.",
+          "author": "theturtletalks",
+          "replies": [
+            {
+              "text": "Chasing eternal profit growth isn’t a fact of life, notwithstanding the mythology of commodification. Neither are all investors motivated purely by profit. Neither is it clear that everything can be improved upon (much less that outsiders can improve on it better than the incumbent).  Sometimes “do a thing, do it with excellence, make a modest living from it” is enough.\nOne thing I like about Mr. Sapp’s work at Worse On Purpose here—he (or perhaps his LLM, or perhaps he’s LLM) gives considerable attention to firms that \ndon’t\n do it that way. Where:\n> \nQuality, ownership, and stewardship all check out. […] Most of these are family-owned, trust-owned, employee-owned, or publicly traded with a long track record of not selling out.\nIt’s useful to have actionable alternatives, and I put more stock in his organizing thesis given how well its brand preferences line up with my own.\nhttps://ledger.worseonpurpose.com/status/approved\nhttps://ledger.worseonpurpose.com/methodology",
+              "author": "alwa",
+              "depth": 1
+            },
+            {
+              "text": "Once a product becomes so big it cannot increase in market share the only way to increase the total amount of profit it generates it by reducing the cost to produce the product or increasing the price.",
+              "author": "bitmasher9",
+              "depth": 1
+            },
+            {
+              "text": "This seems like what he said but less words",
+              "author": "ramgine",
+              "depth": 2
+            },
+            {
+              "text": "It feels like this observation should be in Marx somewhere (but in way more words badly translated from German)",
+              "author": "pjc50",
+              "depth": 3
+            },
+            {
+              "text": "It’s a more acute observation about market dynamics than what is usually found in Marx.  Marx heavily discusses how humanity interacts with capitalism, and focuses its market analysis on the labor market.",
+              "author": "bitmasher9",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "“corporate greed” is a signal to me of low quality commentary. The opening premise of Econ is that consumers want all the goods for free and producers want to give nothing in exchange for as much money as they can.",
+          "author": "groundzeros2015",
+          "replies": [
+            {
+              "text": "The problem here is that when the consumers try it they go to actual jail. Meanwhile the producers have been richly rewarded for getting away with their side of it.\nSo yeah, corporate greed actually has a meaning in this context for people.",
+              "author": "mingus88",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49024620",
+      "title": "Launch HN: Screenpipe (YC S26) – Record how you work and turn that into agents",
+      "link": "https://news.ycombinator.com/item?id=49024620",
+      "domain": "news.ycombinator.com",
+      "author": "louis030195",
+      "score": 62,
+      "comment_count": 49,
+      "created_ts": 1784825318,
+      "is_internal": true,
+      "post_text": "Hi Hacker News, I&#x27;m Louis. I built Screenpipe (<a href=\"https:&#x2F;&#x2F;screenpipe.com\">https:&#x2F;&#x2F;screenpipe.com</a>), an app that records your screen and audio locally (only!), and gives AI agents a searchable memory of what you&#x27;ve seen, said, and heard. This makes it easier to automate your repetitive tasks, turn them into SOPs (Standard Operating Procedure) and so on.<p>I made a HN-style demo video at <a href=\"https:&#x2F;&#x2F;www.tella.tv&#x2F;video&#x2F;build-your-ai-second-brain-with-screenpipe-e1j7\" rel=\"nofollow\">https:&#x2F;&#x2F;www.tella.tv&#x2F;video&#x2F;build-your-ai-second-brain-with-s...</a> and there’s a marketing video at <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=c1jV6E9pyug\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=c1jV6E9pyug</a>.<p>I’ve been obsessed with this for a long time. I’ve been maintaining a “second brain” since 2020, in which I would store journals, handwritten notes, music I listen to, projects I&#x27;m working on, conversations I have with people, personal CRM etc. I experimented a lot of RAG in the early days with ParlAI, hundreds of fine-tuned GPT2 models, and GPT3 (<a href=\"https:&#x2F;&#x2F;forum.obsidian.md&#x2F;t&#x2F;fine-tuning-openai-api-gpt3-on-your-second-brain-obsidian&#x2F;21849&#x2F;4\" rel=\"nofollow\">https:&#x2F;&#x2F;forum.obsidian.md&#x2F;t&#x2F;fine-tuning-openai-api-gpt3-on-y...</a>). Later I built Ava, the first Obsidian AI plugin, which grew to a few thousands of users quickly. It then became Embedbase, an API to make it easier to build AI apps powered by RAG.<p>What I learned from all this is how important it is for the models to have context about what you’re doing on your computer, in order to get them to do what you want.<p>In the early days there was fine tuning but it was too much pain, then there was tool calling so that AI can access software you use but still kinda not autonomous enough. needing micro management. Then MCP came, but it felt too static, and non technical users struggled to build and use MCP. Then we got skills. Most recently we’ve seen Karpathy’s LLM-maintained wiki, Garry&#x27;s GBrain, etc., where an agent incrementally maintains a persistent collection of Markdown pages. New sources update entity pages, strengthen or contradict existing claims, and improve a synthesis that compounds over time. I like this pattern, but it still begins with someone selecting and importing the sources. There is still no way AI can know what you and your company are doing every day, across apps, not just inside of apps.<p>Of course, not everyone wants this. But I do! I want AI to know what I&#x27;m doing and never lose memory ever again, and I want it to use the same software that humans do, without painful context switches.<p>I started building Screenpipe for myself in 2024 - a CLI to record your screen and plug this context into AI. An HN user posted it in 2024 (<a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=41695840\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=41695840</a>) and that discussion influenced the product. The most useful criticism concerned recording consent, local security, CPU usage, signal-to-noise, and whether agents could act on top of the data.<p>The naive implementation started from continuously recording video and running OCR over every frame. But that creates duplicate data, consumes substantial resources (it basically turns your computer into a space heater!), and discards structure the operating system already knows. Screenpipe now instead listens for events such as app switches, clicks, typing pauses, scrolling, and idle fallbacks. When something meaningful changes, it pairs a screenshot with the operating system’s accessibility tree at the same timestamp. OCR is used when structured accessibility data is unavailable. We also capture audio continuously, identify speakers and transcribe locally through Parakeet&#x2F;Whisper or using cloud models.<p>Everything is indexed in a local SQLite database, mp4 files, and sometimes md files. An AI friendly API on port 3030 is open for agents, with authentication and a MCP and skills.<p>Once Screenpipe has been up and running for a while, you can use it through our built-in chat, Claude, ChatGPT, Hermes, Openclaw, or any agent, to do things like:<p>- adding context to your current chat, e.g. &quot;gather all context about task X&quot;, then requiring less prompts to achieve your goal<p>- retrieve information, e.g. &quot;retrieve the tasks i was working on from 8 am to 4 pm, make a list of what got done and what&#x27;s left&quot;<p>- create and maintain a personal wiki &#x2F; second brain for your agents: &quot;every 1h organize everything i do in projects, people, tasks, meetings in my Obsidian vault as markdown files and folders&quot;<p>- create automations: whenever i visit someone&#x27;s profile on linkedin, update my crm<p>- find automation opportunities: look at everything my team has done this week and turn it into a list of automation opportunities<p>Screenpipe data is stored locally, though we also offer an enterprise plan to discover automation opportunities and for that the company decides where the data lives. We built our own AI PII model to redact sensitive information, it runs locally on Apple MLX or Windows DirectML, we also support cloud confidential inference for low end devices, although our local models are meant to use &lt;1% CPU and &lt;400 mb RAM. Users can set apps, windows, and urls to filter, in addition to browser incognito mode.<p>We also support recording schedules and other privacy features.<p>Most of our codebase is written in Rust, MLX, Onnx, we like cidre or direct C call for Apple APIs and windows-rs for Windows API. We also experimentally support Linux.<p>We have a desktop app (<a href=\"https:&#x2F;&#x2F;screenpipe.com&#x2F;how-to-install\">https:&#x2F;&#x2F;screenpipe.com&#x2F;how-to-install</a>) and a CLI:<p><pre><code>  npx screenpipe record\n</code></pre>\nYou can run that without creating an account. All the code is source-available at <a href=\"https:&#x2F;&#x2F;github.com&#x2F;screenpipe&#x2F;screenpipe\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;screenpipe&#x2F;screenpipe</a>. We took the dreaded step of making our own Screenpipe Commercial License. I know HN strongly prefers OSI open source (MIT&#x2F;Apache&#x2F;etc.) but couldn’t find a sustainable way to keep developing Screenpipe while companies were using it commercially for free. So now personal non-commercial, nonprofit, educational, and research use is free, but commercial use requires a license.<p>Versions released before the license change remain available under MIT. We have a free tier, and other plans, including Enterprise which helps companies find automation opportunities.<p>Would love to hear any feedback, things you&#x27;ve done with screenpipe, or features you&#x27;d want",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned",
+        "management",
+        "meetings",
+        "enterprise",
+        "team",
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Funny timing. I've been building something similar in my spare time called Daydream. There’s a lot of overlap: local screen/audio capture, OCR and transcription, window and activity context, SQLite, and a searchable memory of what happened.\nThe main difference is the product direction. Screenpipe seems focused on continuously giving agents context through APIs, MCP, and skills. Daydream is more narrowly built around answering \"what did I do today?\" through a timeline you can inspect, replay, search, and turn into a daily digest.\nI'm also treating deletion as part of the data model. If you cut a sensitive span, its frames, audio, OCR, transcripts, embeddings, and summaries should be deleted or invalidated too.\nMine is still early and Linux-first. I'm open-sourcing it in case anyone wants to contribute, poke around, or use it as a starting point. It’s built with Tauri, a Rust backend, React/TypeScript, SQLite, GStreamer, Whisper, OCR, and VLM processing.\nI genuinely didn’t know you were building this when I started. Apparently personal memory capture is becoming a SaaS category too lol.\nCode is here:\n\nhttps://github.com/snackbit/daydream",
+          "author": "AmazingTurtle",
+          "replies": [
+            {
+              "text": "Awesome thanks for sharing, will follow closely :)",
+              "author": "louis030195",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "How are you planing to segregate between professional use and personal use, I dont want any agent or any llm to know all the time what i have been doing on my system, it would be privacy nightmare and most of the time the screencapture is not meaningful. People may use their work laptop or devices to checkout reddit or hackernews occasionally.",
+          "author": "subhajeet2107",
+          "replies": [
+            {
+              "text": "You can define websites or apps to filter out. You can also define a recording schedule, for example stop recording on weekend",
+              "author": "louis030195",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Been a user of  Screenpipe to build some \"Ai-buddies\" for me since last year. Core of that is giving AI a look at what is happening in time space. Without Screenpipe this was rather hard to do at the performance screenpipe gives.",
+          "author": "fillskills",
+          "replies": [
+            {
+              "text": "That's interesting, thanks! Indeed we did a lot of work to optimize performance and reliability.\nI'm curious what does your AI buddies do more specifically and how do you use them?",
+              "author": "louis030195",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I built a similar app last week just for fun \nhttps://github.com/JGalego/HiddenSteps\n WIP will definitely check yours out",
+          "author": "jgalego",
+          "replies": [
+            {
+              "text": "That's great. I like the comparison to Celonis etc. We're sort of offering a privacy-first alternative to them for Enterprise",
+              "author": "louis030195",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "How does it run the LLMs? Or does it call a API to llama.cpp/ollama/etc. ?\nDuring normal usage, how often does it try to parse info from the screen capture? Once a minute?",
+          "author": "jboss10",
+          "replies": [
+            {
+              "text": "You can decide which AI provider you use, either local through Ollama for example,  using your own cloud API key, or using Screenpipe cloud. We also support confidential inference through tinfoil.sh\nScreenpipe captures accessibility tree and screenshot when you perform a meaningful action. It doesn't use AI at recording time (except PII removal and OCR infrequently). So it can be every few hundred milliseconds to few minutes or more (if screen idle or sleeping)\nWe usually benchmark CPU usage on $200 Windows/MacOS laptop",
+              "author": "louis030195",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49012902",
+      "title": "Ask HN: What changed in your life when you started meditating (and how)?",
+      "link": "https://news.ycombinator.com/item?id=49012902",
+      "domain": "news.ycombinator.com",
+      "author": "dondraper36",
+      "score": 30,
+      "comment_count": 25,
+      "created_ts": 1784751862,
+      "is_internal": true,
+      "post_text": "It&#x27;s my N-th attempt at learning to meditate.<p>At some point, I realized that even lifting weights, sleeping and eating well aren&#x27;t enough if you can&#x27;t tame your thoughts and control your stress level.<p>This time, I have started with the introductory course on the Waking Up mobile app.<p>It&#x27;s frustratingly difficult to even get through the first lesson in which you are supposed to focus on your breath and minimize the wandering of your mind.<p>I think it would be very motivating to hear the stories of how other people incorporated the practice of meditaton into their lives and what the results are.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49022990",
+      "title": "Ask HN: Is there a website that tracks excessive writes to SSDs in OS/app betas?",
+      "link": "https://news.ycombinator.com/item?id=49022990",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 29,
+      "comment_count": 21,
+      "created_ts": 1784819791,
+      "is_internal": true,
+      "post_text": "If not, why not?<p>That way, people can choose whether they want to install various software betas based on how much SSD wear they are willing to accept.<p>And since this data would be made public and available in one place, software developers would be more careful about excessive logging in their betas.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "> \nIf not, why not?\nAt least on Apple devices, this is not something anyone has to worry about.\nFor example, on my 2022 Mac Studio daily driver, on 24/7, DriveDx (\nhttps://binaryfruit.com/drivedx\n) reports my SSD lifetime left at 94%.\n(I'm aware of the February 2021 \"wear-gate\" scare involving the first M1 Macs. This turned to be incorrect SSD-wear reporting.)",
+          "author": "CharlesW",
+          "replies": [
+            {
+              "text": "On my personal computers I keep track of this and ensure nothing goes write-crazy.\nOn my work laptop though (M3 Pro, 1TB), I’m at ~70% health. Iirc the lifetime writes are at >700TB. I do develop on it, but a lot of it is due to the various endpoint security software that’s always there logging every single possible thing but I can’t do much about it. I expect the ssd to die first in this laptop at this rate, so best I can do is ensure everything always synced/backed up from my local work laptop.",
+              "author": "radicality",
+              "depth": 1
+            },
+            {
+              "text": "What about people who want their laptop to last 10 years?",
+              "author": "amichail",
+              "depth": 1
+            },
+            {
+              "text": "Then you probably want something that has replaceable parts and not an apple product (e.g. framework)?\nNot trying to discourage you from building your thing, but just figure that's worth considering.\nAlso, I could see why developers would want excessive logging in their betas, so that's kind of a catch-22 (without the verbose logs it might be harder to fix bugs found in the beta)",
+              "author": "justthehuman",
+              "depth": 2
+            },
+            {
+              "text": "For Macs, treat a renewable AppleCare subscription as part of the cost.",
+              "author": "ValentineC",
+              "depth": 2
+            },
+            {
+              "text": "You can replace your SSD without replacing your laptop.",
+              "author": "JohnFen",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I feel like the only responsible thing is to have a home network with at least one persistent device running 24/7 with large storage for local backups of things, and ideally a E2E cloud backup of the same thing. With this, comes the possibility of using things like Grafana+Prometheus to monitor your personal computer/workstation as well. This is what I've done, together with alerts from various things, and since the recent \"excessive writes by codex\" issue, also alerts if there is obsessive writing over hours long period from any process on my workstation. Luckily I wasn't hit by the Codex issue myself, but certainly made me consider the issue more generally so, happy accidents :)",
+          "author": "embedding-shape",
+          "replies": []
+        },
+        {
+          "top": "Just configure wear leveling in your storage layer. FDE may be the easiest way ti do it. Writes will be done linearly in circular fashion. That makes it difficult to delete stuff, but with encryption it's moot.",
+          "author": "tosti",
+          "replies": []
+        },
+        {
+          "top": "why do you think this is a function of betas?  or even of OS or app versions?\nI guess you've been burned, or are worried about being burned, by some software that generated excessive writes?  I think you need to describe that first, since this is a rare phenomenon.\nwhich is probably why there isn't some kind of downdetector infra tracking it.\nyou know you can access smart counters on any OS, right?",
+          "author": "markhahn",
+          "replies": []
+        },
+        {
+          "top": "If you are \nnot\n using bottom of a barrel and you are not writing 4K HD 3H mkv \nevery day\n then you wouldn't have a problem even with a 0.3 DPWD drive \nof a sufficient capacity\n.",
+          "author": "justsomehnguy",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "48996526",
+      "title": "Ask HN: How do people keep track of organizational knowledge?",
+      "link": "https://news.ycombinator.com/item?id=48996526",
+      "domain": "news.ycombinator.com",
+      "author": "kadhirvelm",
+      "score": 27,
+      "comment_count": 24,
+      "created_ts": 1784660132,
+      "is_internal": true,
+      "post_text": "With code coming in faster and faster, we&#x27;ve been losing track of context, what&#x27;s out of date, the source of truth, etc. Also with individuals spending less and less time on any one problem, finding an expert to answer questions has become challenging. People don&#x27;t have that single domain of expertise like we used to. There&#x27;s too much surface area to cover.<p>Are we the only ones dealing with this? How&#x27;s everyone else handling it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Two things.\n1. If it's not written down, it does not exist. This needs to be a ruthlessly enforced rule. I know we all love those Mel the Programmer stories, but that's a story about fragility. Similarly if you are relying on SRE or dev heroics to solve field problems, you have a gun to your head and you need to solve it yesterday.\n2. The TCO of knowledge is dominated by the maintenance cost, not the creation cost. I see this mistake made a lot. Anyone can create a confluence page, Slack comment, SharePoint site or a git comment. The org must make it someone's job to grow, weed, and maintain these gardens. It does not matter what system you use, but someone needs to look after it.\nYou get a bonus for building information \"data structures\" that make it easy for people to pull data out as your org changes, but this is probably something you should accept that you'll get wrong as your org grows. AI hides this problem because it makes search so easy, sometimes, but it will come and bite you hard one day, so be ready for it.",
+          "author": "kjellsbells",
+          "replies": [
+            {
+              "text": "If it's not written down \nin a place where other people can find it\n, it does not exist.  So the place has to be either standardized or searchable, or preferably both.",
+              "author": "AnimalMuppet",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "In my line of work (IT Operations for a large international bank), we came up with a classification framework that tried to gauge information along two axes: Importance and Frequency of Use.\nImportance is the more obvious one - there is critical info you absolutely need as a basis to understand the system, then there is also minor details. The difference is in an emergency, lack of the former will break your attempt to fix the system, lack of the latter will merely inconvenience you.\nThe Frequence of Use axis is the one that brought value to our operations when we introduced it. That's the question \"How often will I need this info?\". Regularly re-occuring, detailled procedures need to be accessible easily, so they go to a prominent Confluence page. But then there is information that you will hardly ever need, some arcanae about the system that only the old timers knew but that needed to be fixed in writing.\nThe most vexing bits of info are those that are highly important but are rarely ever needed. Do you plonk them into Confluence? Might not be the best idea because then you don't know how to quickly find it when need be. So we had an extra category for just that sort of thing which became our go-to info hub for all sorts of highly urgent but at first intractable issues with our system.",
+          "author": "hash0",
+          "replies": []
+        },
+        {
+          "top": "IMO, earlier we used to spend time on the issue, analysis(RCA), confluence documentation, however, now organizations are spending dollars on AI and expecting Individual Contributors to use AI to deliver the product in weeks rather than original timelines.\nThis behavior forcing every individual to skip the other necessary activities like RCA and documentation and straightly trying to deploy the product into production.",
+          "author": "autoshiftops",
+          "replies": []
+        },
+        {
+          "top": "> How do people keep track of organizational knowledge?\nIn my experience:\n1. Well meaning people try to build wikis/confluences/whatever that turn into backwaters of slowly rotting stuff\n2. Beyond a certain extent that they can hold in their heads, most other people give up.\n3. Some people hoard knowledge and use it for personal advantage.\nI dont know what the solution is. Maybe an ai that reads every chat and email and commit - and builds some kind of browsable, queryable, executable knowledge trove.",
+          "author": "andyjohnson0",
+          "replies": [
+            {
+              "text": "I’ve started hoarding knowledge, but not for personal advantage. There were two trends that led to it.\n1. People would go in and “clean up” what they thought was a rotting Confluence. They were new-ish to the company and didn’t have the knowledge or experience to know what they were looking at. Rather than ask, they just deleted stuff. Some of those things they deleted were docs I wrote, several over 20 pages long that I referenced regularly… gone.\n2. Constant re-orgs and tool changes meant it was becoming difficult to know where anything goes. Not long ago I had 4 bosses in 4 years. I got tired of starting over and shuffling things around.\nIf I keep what I need, no one else is going to delete it without consulting me, and I don’t have to try and migrate and re-organize it every time I get a new boss or management decides we’re using a new system.\nI guess a third thing, which is less of a trend, is friction. The collaboration platforms are much higher friction than something like a local Obsidian vault.\nI’ve probably written and shared more documentation than everyone else on my team combined, but at some point, I got tired of the uphill battle. I still do write and share stuff I think will benefit the team, but I no longer try and make everything public for the reasons listed. If someone asks for something I have, I will always send it over, and having my notes in markdown now makes that easy.",
+              "author": "al_borland",
+              "depth": 1
+            },
+            {
+              "text": "Do you think having an AI do that is 1) possible and 2) people will like that? Seems really invasive, no?",
+              "author": "kadhirvelm",
+              "depth": 1
+            },
+            {
+              "text": "Its possible - teams chats where I work can have ai transcription enabled, for example.\nAs to whether people like it: I was thinking of a work context, where expectations of privacy are lower. I guess it could be an opt-in for group chats.",
+              "author": "andyjohnson0",
+              "depth": 2
+            },
+            {
+              "text": "Going into all chats is a horrible idea. Some chats between small groups are meant to stay that way.",
+              "author": "al_borland",
+              "depth": 2
+            },
+            {
+              "text": "I agree, not all chats. But it could be an opt-in for group chats.",
+              "author": "andyjohnson0",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "We still make sure to maintain a healthy directory and \"backlinks\". And as soon as new updates are in, we have someone on the team dedicated to clarifying changes and updating the Wiki - Confluence pages, Notion, which are adequately linked to tickets and shared drives where necessary.\nThis way, new and updated context is not lost on the next user.",
+          "author": "Tadace",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49019663",
+      "title": "Ask HN: If OpenAI hacked HuggingFace, why aren't OpenAI prosecuted?",
+      "link": "https://news.ycombinator.com/item?id=49019663",
+      "domain": "news.ycombinator.com",
+      "author": "sam_lowry_",
+      "score": 24,
+      "comment_count": 32,
+      "created_ts": 1784804817,
+      "is_internal": true,
+      "post_text": "Hugging Face put up a blogpost saying that they reported the hacking to the authorities: https:&#x2F;&#x2F;huggingface.co&#x2F;blog&#x2F;security-incident-july-2026<p>It&#x27;s not clear whether they mean authorities for their US HQ or the French authorities.<p>But I can&#x27;t find any announcement of the follow-up. Is there a case open against OpenAI the company? Is their management interviewed by the authorities? Anyone detained yet?<p>I guess the people who left the model running unattended risk at least a suspended sentence here in France.<p>Where are concerned citizens making inquiries on this matter and reporting in their viral blogposts?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "There is a legal gap. The main law people look at is the Computer Fraud and Abuse Act (CFAA), plus state computer-crime laws, contract terms, and general civil claims.\nHowever, LLM active attacks do not always fit neatly into existing hacking laws, because the system may be accessed through normal text prompts rather than by breaking into a classic computer boundary. That is why legal commentators say the U.S. still lacks a clean, specific rule for adversarial AI/LLM testing and attacks.\nIn order to prosecuted, there must be  prosecutor or complainant to sue, but in this case, it is so complicate due to the legal gap.",
+          "author": "boveyking",
+          "replies": [
+            {
+              "text": "Could you clarify how an LLM compromising a system differs from any other software initiated by a user that achieves the same? Both are software, both are initiated by a user. Is “Oops, I didn’t mean to” an affirmative defense under CFAA?",
+              "author": "therealpygon",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Had this happened to any solo person, they'd surely be thrown in jail immediately with a heavy bond. Rules are for poor people.",
+          "author": "0xmattf",
+          "replies": []
+        },
+        {
+          "top": "They aren't getting prosecuted because everyone involved has made nice and turned it into a marketing exercise.\nI heard about it on the radio (local Johannesburg radio station)  before I saw it on HN. The economist had a full article up about it before the end of the day, and in the evening Sky news had talking heads up chatting about what it all meant while clearly being clueless.\nSomeone spent a LOT of money to turn this into a PR exercise for both companies. We'll never hear the entire story about what happened but I'm sure there was a lot of handshaking going on behind the scenes.",
+          "author": "elp",
+          "replies": [
+            {
+              "text": "I’m not convinced it wasn’t a PR stunt from the start",
+              "author": "eli",
+              "depth": 1
+            },
+            {
+              "text": "PR exercise or not, there was a successful hacking attempt, the company behind it acknowledged it.\nIt's a crystal clear case for OFAC, the French cyber-security branch of the National Police.\nI guess FBI would happily move such a simple case through the court system as well.",
+              "author": "sam_lowry_",
+              "depth": 1
+            },
+            {
+              "text": "Nobody is pressing charges because nothing happened. It wasn't nefarious either.\nI don't get what France has to do with this Huggingface and OpenAI are both US companies.",
+              "author": "cinntaile",
+              "depth": 2
+            },
+            {
+              "text": "> It wasn't nefarious either.\nAgree. But it was clearly recklessness, given they've have a history of similar issues in the past, they literally ran these sort of tests on 3rd party infrastructure while knowing what the risks were (alternatively, didn't evaluate the risks beforehand so they didn't even think this could happen), and didn't sufficiently isolate something that can clearly impact others and the public.\nHad this been a chemical, virus or some other regulated thing, we'd be seeing people going to jail over this. But given LLMs are still fairly dumb and doesn't yet seek world domination or the downfall of humanity, this is apparently OK and entertainment instead.",
+              "author": "embedding-shape",
+              "depth": 3
+            },
+            {
+              "text": "> Had this been a < thing it was not > we'd be seeing people going to jail over this.\n\"If my grandmother had wheels, she would have been a bike.\"",
+              "author": "tedmiston",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "That's an interesting point. I found the narrative - or at least what and how it was closed - interesting. \nThe questions is all about the responsibility and accountability. Is there a clear legislation about who is responsible for the actions of the AI model in the US?\nMy assumption is no (but I am no expert in US law with regards to this). It would in any case become a very expensive law suite.",
+          "author": "eckelj",
+          "replies": [
+            {
+              "text": "> My assumption is no\nWhat do you mean by \nno\n?\nIf I hack into Hugging Face, and I publicly brag about it, I will be prosecuted.\nIf I do it using a computer, my computer won't be prosecuted. I will be, but the accusation may change from \nwillful wrongdoing\n to \ngross negligence\n if the computer is sophisticated enough to do the evil thing when left unattended.\nThere are already laws about hacking in the concerned countries.",
+              "author": "sam_lowry_",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's surreal that we (media, govt, public, AI companies) are in awe of how dangerous a model can be how much it can misbehave. We seem to be measuring AI on how much harm it can do rather than how much good it can do.",
+          "author": "tdu01",
+          "replies": [
+            {
+              "text": "It doesn't matter how much good it can do if it can act independently and take over the world. That's worst case scenario, but the point stands - if the potential for such dangers exists, those dangers are far more important to consider than what good it could also produce. Consider the history of nuclear fission and the atomic bomb. Regardless how beneficial nuclear power generation is and other uses of radioactive material, it's highly regulated for fear of people making nuclear weapons, to the point that the wars in Iraq and Iran were started under the pretense of preventing another country from possibly developing one. AI should be considered as being possibly at least as dangerous.\nNo, that doesn't mean I'm in favor of this scaremongering over open weight models and Chinese sources. US companies aren't to be trusted to develop AI responsibly anymore than any other source and they shouldn't be the only ones allowed to wield its power. This is just anticompetitive behavior by a company who sees new competition entering their market, threatening their market share.",
+              "author": "RevEng",
+              "depth": 1
+            },
+            {
+              "text": "Because the subtext is the cyberwarfare and military applications - \"look how dangerous my AI is, now I can use it vanquish my enemies!\"",
+              "author": "kingkongjaffa",
+              "depth": 1
+            },
+            {
+              "text": "It's more: \"\"look how dangerous my AI is, now restrict and block access to open source models and use only mine!\"",
+              "author": "Cherryontop11",
+              "depth": 2
+            },
+            {
+              "text": "All of the leaders of this industry are steeped in LessWrong thought and effective accelerationism and stories like Roko's Basilisk. It shouldn't come as a surprise that this is the narrative they ended up constructing.",
+              "author": "jackb4040",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49022755",
+      "title": "Ask HN: Does anyone have an old Goodreads API key?",
+      "link": "https://news.ycombinator.com/item?id=49022755",
+      "domain": "news.ycombinator.com",
+      "author": "bwb",
+      "score": 20,
+      "comment_count": 3,
+      "created_ts": 1784818834,
+      "is_internal": true,
+      "post_text": "They shut down their API program years ago, but I was hoping to find someone who had an old key I could use.<p>I run BookDNA.com and it would be helpful for us. Anyone know anybody who still has a legacy key?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "So your product is a referral to Amazon, and they won't even give you api access to build their referral funnel? That doesn't sound like much of a business partner.",
+          "author": "1shooner",
+          "replies": [
+            {
+              "text": "You get access to Amazon's product API only after showing a certain level of success as an affiliate.",
+              "author": "leros",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You might be out of luck: I believe they expire unused after a fairly short time.",
+          "author": "ligne",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49029345",
+      "title": "Ask HN: What Linux distro do you daily drive?",
+      "link": "https://news.ycombinator.com/item?id=49029345",
+      "domain": "news.ycombinator.com",
+      "author": "addajones",
+      "score": 14,
+      "comment_count": 32,
+      "created_ts": 1784848513,
+      "is_internal": true,
+      "post_text": "I&#x27;m a long-time macOS user and I just want a change. Curious what people here actually use every day and what made you stick with it. Curious if you also switched from a Mac too. I&#x27;d like to get out of the &quot;walled garden&quot; ecosystem.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I am running - and strongly recommend - Linux Mint Debian Edition (LMDE). \nhttps://www.linuxmint.com/download_lmde.php\nFor the past several years, I was running Debian stable & XFCE. It is a great combination. However, I started teaching technology (programming, Linux, and maker-space tech, like laser cutters & CNC routers), and I wanted to see how close I could get to an \"easy button\" interface, paired with a principles-driven, highly stable base. I gave LMDE a try, with an open mind, and was seriously impressed.\nLinux desktop environments have come a long way, and Mint - with the \"start\" button (with application quick search), window management, \"sane\" defaults - it just works.\nI will also mention that the Software Manager perfectly blends Debian source packages, and FlatPaks. From my experience, nearly all software that I want to install on it \"just works\" by searching for it. Those that aren't available there, it seems that downloading a .Deb to install it \"just works\" as well.\nAs background context, I have used Linux for 20+ years (Mandrake, Gentoo, RHEL, CentOS, Ubuntu, Debian, and now LMDE) - LMDE gets my roaring endorsement, and I think more people ought to check it out.",
+          "author": "dv35z",
+          "replies": []
+        },
+        {
+          "top": "Picked up Mint this summer and it has been a joy to use. The progress they've made in the last three years is astounding and opposed to every other time I've used Linux there have been zero moments of needing to run ten terminal commands from stack overflow to get sound to work.",
+          "author": "spcebar",
+          "replies": []
+        },
+        {
+          "top": "I wouldn’t get too caught up on distros. So many people end up distro hopping for years and never settle. The grass is always greener somewhere else, or there is always something new to try.\nI’d just get one of the mainstream ones which will have the most community support available, and go with it. Ubuntu, Mint, or Fedora most likely. I’ve had good luck with OpenSuse in the past, but not too many people use Suse outside of the enterprise, which can be an issue if you’re just starting out.\nCurious what you’re doing for hardware. That’s always the biggest hurdle for me when looking to do anything outside of macOS.",
+          "author": "al_borland",
+          "replies": [
+            {
+              "text": "That’s great advice the main distros tend to have tons of support for much longer and easier to maintain I’m sure. I currently have a Mac mini m4 so I’m thinking a similar sized box with an AMD setup inside, those small mini PCs.",
+              "author": "addajones",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "PopOS! I used arch for my intro but shortly got tired of the setup. I like Rust so I tried it and fell in close with cosmic. with auto tiling turned on, of course ;)",
+          "author": "SHaD0S",
+          "replies": []
+        },
+        {
+          "top": "Ubuntu, because I don't want to think about the OS too much. I expect that I'll someday try out more distros either to get away from snap or to get faster updates for different fractional scaling on multiple monitors.",
+          "author": "ktrnka",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49006088",
+      "title": "Ask HN: Alternative Careers in the Age of AI",
+      "link": "https://news.ycombinator.com/item?id=49006088",
+      "domain": "news.ycombinator.com",
+      "author": "helpfulmandrill",
+      "score": 12,
+      "comment_count": 11,
+      "created_ts": 1784725204,
+      "is_internal": true,
+      "post_text": "I&#x27;m about to lose my job to AI and offshoring - a job that started well, but which I ended up less than ecstatic about. I&#x27;m wondering - what else can a software developer do that isn&#x27;t also vulnerable to AI? Whenever you Google this, you get things like &quot;Manager&quot;, &quot;Product Manager&quot; etc., but it strikes me that if software engineering is decimated by AI then many of these roles may be next in line - as is most &quot;pure&quot; knowledge work.<p>So I&#x27;m asking, what is the escape hatch? Do we all become plumbers? Anyone have a plan?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49021336",
+      "title": "Ask HN: Share Your Eccentric Hobby",
+      "link": "https://news.ycombinator.com/item?id=49021336",
+      "domain": "news.ycombinator.com",
+      "author": "jimnotgym",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1784813624,
+      "is_internal": true,
+      "post_text": "I was telling people on a post that got flagged (because the Article had that LLM , one of my eccentric hobbies (restoring paintings). They responded with an equally cool hobby.  I bet there are a lot more of us out there, please share.  To keep it tidy I&#x27;ll put a comment about mine below.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49014048",
+      "title": "New Inference Server for DGX Spark: large model C4:55-90 tok/s no spec decode",
+      "link": "https://news.ycombinator.com/item?id=49014048",
+      "domain": "news.ycombinator.com",
+      "author": "medicis123",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1784757579,
+      "is_internal": true,
+      "post_text": "Hi All, We are so excited to share the numbers and benchmark reports on our new inference server built specifically to run multi-model agentic workflows on DGX Spark clusters. We ran LlamaBench tests and also our own simulated traffic test on a 2 DGX Spark cluster setup and got some really good numbers. Here are the details. The full detailed report is available on our WoolyAI website.<p>WoolyAI Private Multi-agent Inference Stack for DGX Spark is built to enable groups within enterprises to set up their own private, low-cost inference stacks for business agentic workflow apps. It was built with the forward-looking vision that companies will need their own private, low-cost inference setup and that single-model-based inference is not sufficient for complex enterprise workflow agentic apps. These workflows need multiple models of different specializations (hence sizes) for different steps in the workflows. Having dedicated multi-GPU inference stacks for each model is very cost-prohibitive.<p>First benchmark: We first ran LlamaBenchy tests on our inference server on a 2 DGX Spark cluster across 3 models with no quantization and no speculative decoding. Using speculative decoding would result in even higher numbers.<p>MODEL LOAD-PREFILL-SYSTEM-TOK&#x2F;S DECODE-SYSTEM-TOK&#x2F;S DECODE-TOK&#x2F;S-PER-REQUEST<p>DeepSeek V4 Flash C1 1,518.91 21.15 21.15<p>DeepSeek V4 Flash C4 1,533.15 55.99 14.00<p>Gemma 4 26B A4B C1 4,579.73 30.22 30.22<p>Gemma 4 26B A4B C4 4,702.16 63.75 15.94<p>Nemotron 3 Nano Omni 30B NVFP4 C1 2,607.86 39.42 39.42<p>Nemotron 3 Nano Omni 30B NVFP4 C4 2,588.87 90.83 22.71<p>Second Benchmark: One endpoint, three different model-controlled activations. The scheduler batches each burst, coordinates both ranks, and changes the resident model only at a safe boundary<p>MODEL PREFILL-TOK&#x2F;S DECODE-TOK&#x2F;S Model-Activation-Wait<p>DeepSeek V4 Flash 4,154.34 49.30 16s<p>Gemma 4 26B A4B 18 4,781.44 64.67 6s<p>Nemotron 3 Nano Omni 30B NVFP4 2,395.59 93.31 2s<p>We think we can improve these numbers by 20% with more optimization. Please share your feedback. https:&#x2F;&#x2F;woolyai.com&#x2F;ai-compute-software&#x2F;dgx-spark-inference-stack&#x2F;",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "enterprise"
+      ],
+      "comments": []
+    }
+  ]
+}
