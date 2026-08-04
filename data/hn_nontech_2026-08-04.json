@@ -1,0 +1,644 @@
+{
+  "scraped_date": "2026-08-04",
+  "source": "hacker_news",
+  "total_scraped": 120,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49142569",
+      "title": "Show HN: Bor – Open-source policy management for Linux desktops",
+      "link": "https://getbor.dev/blog/2026-08-02-bor-v080-release/",
+      "domain": "getbor.dev",
+      "author": "eniac111",
+      "score": 184,
+      "comment_count": 28,
+      "created_ts": 1785661593,
+      "is_internal": false,
+      "post_text": "Hi HN! I&#x27;ve been working on Bor, an open-source system for centralized Linux desktop management.<p>Bor consists of a lightweight Go agent and a central server. Policies are streamed to clients over mTLS&#x2F;gRPC in real time—no polling—and currently support Firefox, Chrome, KDE, dconf, polkit and package management, with more coming.<p>Version 0.8 introduces several new policy types - Thunderbird, Microsoft Edge for Business and FirewallD zones, along with a number of improvements and fixes.<p>I&#x27;d love feedback on the architecture, policy model, and whether this is something you&#x27;d consider for managing Linux workstations.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49143925",
+      "title": "F*: A general-purpose proof-oriented programming language",
+      "link": "https://fstar-lang.org/",
+      "domain": "fstar-lang.org",
+      "author": "ducktective",
+      "score": 182,
+      "comment_count": 96,
+      "created_ts": 1785673876,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": [
+        {
+          "top": "Clicked like 5 pages and never found 1 code example.\nIdk why languages don't have their syntax in a sandbox front-and-center on the home page.\nIt's like a video game site with zero screenshots or videos (also rampant).\nNew programming languages I want 2 things:\n1. What does the syntax look like\n2. \nWhy would I use this language\nTalk about the proof logic, show the syntax, thank you",
+          "author": "cyanregiment",
+          "replies": [
+            {
+              "text": "I'm the opposite: when landing in a programming language site I want to know the user case the authors had in mind, the memory model, the type system, the compilation targets, the data layout, the control structures, and only at the end just check that the syntax is not indentation based.",
+              "author": "rixed",
+              "depth": 1
+            },
+            {
+              "text": "So I'm very seriously considering making my language indentation based. You're saying you wouldn't like that?",
+              "author": "sroerick",
+              "depth": 2
+            },
+            {
+              "text": "Indentation based is a pain when copy-pasting between contexts with different indentation levels, as you have to fix it up manually, which is error-prone. In languages without it, you can just auto-format. (And even in an editor that doesn't support that, having a second indicator makes it less error-prone to fix manually)",
+              "author": "Georgelemental",
+              "depth": 3
+            },
+            {
+              "text": "> have to fix it up manually\nAny editor written or actively maintained in the current century does this automatically for you. (Yes that obviously includes Emacs and Vim).",
+              "author": "teiferer",
+              "depth": 4
+            },
+            {
+              "text": "But that doesn't work if the indentation carries semantic meaning; you can't change the indentation without changing the meaning. Maybe you can correct syntactically-incorrect spacing (e.g. change 3 spaces to 4 spaces), but not much beyond that.",
+              "author": "jcgl",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I liked being able to express calling external libraries while incrementally migrating existing C codebases to F*. Very solid language.",
+          "author": "pvsnp",
+          "replies": [
+            {
+              "text": "What do you mean \"express calling\"? You mean calling the former C versions of the functions not yet ported, while asserting their behavior?",
+              "author": "rixed",
+              "depth": 1
+            },
+            {
+              "text": "I think it's meant to be parsed as \"I liked being able to (express (calling external libraries))\", not \"I liked being able to (express calling) (external libraries)\"",
+              "author": "aw1621107",
+              "depth": 2
+            },
+            {
+              "text": "Yes. Probably could’ve written it better but I’ve not poked around F* in a while and I was writing on my phone.\nSay you’re calling an external function implementation in hardware, being able to express those interfaces as external makes it viable to use F* vs assuming everything is open source and introspectable.",
+              "author": "pvsnp",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://fstar-lang.org/tutorial/",
+          "author": "LelouBil",
+          "replies": []
+        },
+        {
+          "top": "- stupid question: why dont we have a programming language that looks like typed python but runs much faster than c++, zig and rust",
+          "author": "vivzkestrel",
+          "replies": [
+            {
+              "text": "Your question is why don't we have a language that performs much better than the best-performing languages? Why would you expect such a thing?",
+              "author": "fluoridation",
+              "depth": 1
+            },
+            {
+              "text": "- another stupid question: what exactly makes the best performing languages perform so\n- c gets compiled to obj files and these are run natively by each cpu are they not?\n- isnt there a way to say translate a high level language directly into higly optimized machine code very specific to each processor model in the world? arent there like only a 100 processor models at max?",
+              "author": "vivzkestrel",
+              "depth": 2
+            },
+            {
+              "text": "> what exactly makes the best performing languages perform so\nThere's a multitude of factors. Broadly speaking, to achieve high performance on modern hardware you want one or more of:\n- Control over emitted code and/or data structures. You tend to see this most prominently with \"low-level\" programming languages like C or C++, especially when coupled with extensions like SIMD intrinsics or inline assembly.\n- Semantics/features that make life easier for the optimizer/runtime. Types are an obvious example here, but other things like annotations (e.g., `restrict` in C, `std::unreachable` or `[[likely]]`/`[[unlikely]]` in C++) and the right abstractions (e.g., C++ expression templates) can all make it easier to get good performance.\n- Less dynamic semantics. Stuff that changes or needs to be resolved at runtime tends to make optimizers/hardware unhappy, so if you want performance you either want to avoid writing such constructs in the first place (e.g., writing code that doesn't involve pointer chasing) or spend engineering effort to reduce/eliminate their impact at runtime (e.g., the JVM, though for best effect you tend to need to write your code in a specific style anyways).\nThere's probably other factors I'm forgetting...\n> c gets compiled to obj files and these are run natively by each cpu are they not?\nTo a first approximation, sure.\n> isnt there a way to say translate a high level language directly into higly optimized machine code very specific to each processor model in the world?\nThis is basically one of the things JITs promise - the ability to optimize a program specifically for the computer it is running on.\nIt's technically possible to offer processor-specific binaries with ahead-of-time compilation as well (e.g., passing the appropriate -march flag to GCC/Clang/etc.), but I think for most programs you'll usually see different binaries for different CPU families based on the instruction set(s) they implement (e.g., one binary for x86-64v2, one for x86-64v3, one for x86-64v4, etc.) rather than processor-specific binaries.",
+              "author": "aw1621107",
+              "depth": 3
+            },
+            {
+              "text": "Really appreciate the effort put into a seemingly naive questions, thanks.",
+              "author": "oxavier",
+              "depth": 4
+            },
+            {
+              "text": "There's nim [1] which is aiming for the same thing - syntax similar to python and performance similar to C++, zig etc.\n1 - \nhttps://nim-lang.org/",
+              "author": "DedlySnek",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I like Haskell, and to me this seems really useful as a kind of \"noob\" to functional languages.\nIs this used in the industry ? And for what kind of software ?",
+          "author": "LelouBil",
+          "replies": [
+            {
+              "text": "Firefox cryptographic primitives are written and formally verified in F*\nSome Windows things too I think (I think F* is partially funded by Microsoft Research)\nThey actually wrote a whole verified TLS implementation in F* and discovered a bunch of TLS vulnerabilities in other implementations\nhttps://project-everest.github.io/\nhttps://github.com/hacl-star/hacl-star\nhttps://blog.mozilla.org/security/2017/09/13/verified-crypto...\n (note, that's from 2017, so, not exactly new.. not sure how this is not more well known)",
+              "author": "nextaccountic",
+              "depth": 1
+            },
+            {
+              "text": "I found these links in the F* book\nhttps://www.microsoft.com/en-us/research/blog/everparse-hard...\nhttps://lwn.net/Articles/770750/\nhttps://project-everest.github.io/",
+              "author": "LelouBil",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49156683",
+      "title": "Ask HN: Who is hiring? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49156683",
+      "domain": "news.ycombinator.com",
+      "author": "whoishiring",
+      "score": 118,
+      "comment_count": 110,
+      "created_ts": 1785769254,
+      "is_internal": true,
+      "post_text": "Please state the location and include REMOTE for remote work, REMOTE (US)\nor similar if the country is restricted, and ONSITE when remote work is <i>not</i> an option.<p>Please only post if you personally are part of the hiring company—no\nrecruiting firms or job boards. One post per company. If it isn&#x27;t a household name,\nexplain what your company does.<p>Please only post if you are actively filling a position and are committed\nto replying to applicants.<p>Commenters: please don&#x27;t reply to job posts to complain about\nsomething. It&#x27;s off topic here.<p>Readers: please only email if you are personally interested in the job.<p>Searchers: try <a href=\"https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring\" rel=\"nofollow\">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring</a>, <a href=\"https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;</a>,\n<a href=\"http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;\" rel=\"nofollow\">http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;</a>, <a href=\"https:&#x2F;&#x2F;hnjobs.emilburzo.com\" rel=\"nofollow\">https:&#x2F;&#x2F;hnjobs.emilburzo.com</a>.<p>Don&#x27;t miss this other fine thread: <i>Who wants to be hired?</i> <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49156682\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49156682</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "Eleos Technologies (\nhttps://eleostech.com\n) | Remote Senior iOS Engineer | Permanently Remote (US-based applicants only) | Full time\nEleos Technologies is a growing company building communication software for truck drivers and the back-office workers who support them. We’re looking to scale up a second product engineering team to ship more advanced driver planning tools, automate outdated workflow, and a bunch of other wins to make drivers’ lives easier and more efficient.\nWe're looking for someone who has the experience to move fast on new stuff and knows how and when to pick their battles on old stuff. You'd be one of four iOS engineers at a company that's big enough to survive an economic downturn, but not so big you can't make immediate, direct impact that'll be seen and appreciated by the whole company. (We've also spent the last decade working really hard to make sure our tools, processes, and culture respect everyone's work/life balance. I'm the CTO and I don't text people on my team, and they don't text me, and that's true throughout.)\nIt's a native iOS app written in a mixture of Objective-C and Swift, leaning on Swift for new features. (But that said: if you chafe at the idea of maintaining or fixing bugs in battle-tested Objective-C that's paying our salaries, please look elsewhere!) We have about 1/3rd functional/UI automated test coverage and the rest is human-powered by our QA team.\nIf you're interested, please share your info via \nhttps://jobs.lever.co/eleostech/b4866f22-fab3-4f84-abec-6e74...\n and we'll get in touch!",
+          "author": "saltypal",
+          "replies": []
+        },
+        {
+          "top": "CodeWeavers | St Paul, MN, USA | Full Time | REMOTE | macOS low-level Open Source Developers | C-language systems programming\nhttps://www.codeweavers.com/about/jobs\nCodeWeavers needs new, full-time developers to improve Wine's ability to run games on macOS. Positions are available to work on a variety of Wine-based software, including CodeWeavers's own CrossOver product and projects for other clients. Positions working on the FEX emulator are also available.\nWe are hiring remote programmers, US or international, as well as workers local to Saint Paul, Minnesota. We will consider relocation, if desired, on a case-by-case basis. Please see link above for information, benefits, requirements, and how to apply.\nPlease direct any questions to the email address on our Jobs page.",
+          "author": "uczekalla",
+          "replies": []
+        },
+        {
+          "top": "Normal | Senior SWE Backend | Full-time | $100-140K USD | Remote PT/ET Hours | Typescript/Node/Postgres roles\nI'm the founder of Normcore.io, an autoscaling game server hosting service and Unity plugin that includes all of the pieces you need to create a multiplayer game. We launched a few years ago and have hosted over 1 billion multiplayer games since launch. I'm actively scaling the team to keep up with demand for new features that our customers are asking us for.\nWe’re all ex-Unity/Google folks working on making great SDKs and tools for multiplayer game development. We also make our own VR titles that are built on top of our own networking tech: \nhttps://www.youtube.com/watch?v=djsPTbs7R_w\nReasons you’d love working with us:\n* Work with a small, focused, and extremely talented team of developers.\n* Fully remote job with flexible working hours and vacation (Our whole team is remote too)\n* High-quality codebase, code reviews, tests.\n* High work satisfaction, own entire features, and work on an SDK that’s already used by 100,000+ developers.\nIf you're interested, please send me a note here and I'll be in touch: \nhttps://forms.gle/MyCAz4RszKog43nP8\n (If you skip the form and email me, it will be ignored. AI job hunting startups have scraped these posts and trashed my inbox unfortunately)",
+          "author": "maxweisel",
+          "replies": [
+            {
+              "text": "$100k for a senior engineer is atrocious. Really scraping the bottom of the barrel. Good luck!",
+              "author": "jw_mc",
+              "depth": 1
+            },
+            {
+              "text": "Hey Max, just submitted the form. Role is really unique and seems fun, would love to chat",
+              "author": "shohan99",
+              "depth": 1
+            },
+            {
+              "text": "Hey! I also submitted the form.\nI spent the last few years working on many of the same challenges, although unfortunately the startup I was with didn’t make it.\nI'd love to hear how you’ve approached some of them at Normcore.io",
+              "author": "pmhpereira",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Klara Systems | \nhttps://klarasystems.com\n | Technical Marketing Engineer | Remote | Full-time / Contract\nKlara Systems is a FreeBSD and ZFS engineering company serving enterprise customers across North America and Europe. Our team is senior, globally distributed, and operates with a high degree of autonomy.\nWe’re looking for a Technical Marketing Engineer who turns engineering work into technical content that helps buyers evaluate Klara’s services and provides engineers with useful, technically accurate resources. can find. You will interview engineers and consultants, mine incident write-ups, support cases, upstream PRs, mailing lists, and delivery lessons for source material, then turn that material into technical articles, pages, comparisons, FAQs, and migration guides. You will also build scripts and LLM-powered workflows to automate knowledge extraction, reporting, and first drafts.\nYou should have:\n- A background in software development, systems administration, or a related technical field.\n- The ability to hold a technical conversation with an operating systems or storage expert and turn it into something publishable.\n- Daily experience using AI tools to produce technically accurate and high-quality assets.\n- An understanding of technical buyer personas and how to build content they actually want to read.\nApply: \nhttps://klarasystems.com/careers/technical-marketing-enginee...",
+          "author": "klarainc",
+          "replies": [
+            {
+              "text": "Hey Klarainc, I see your company works on Embedded Systems as well. Would love to chat if you have remote roles available.",
+              "author": "Gaurav_Bh",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Stellar Science\n | Hybrid (USA) Albuquerque NM, Washington DC (Tysons VA), Dayton OH | Full time, interns/co-ops | U.S. citizenship required | \nhttps://www.stellarscience.com\nCompany\n: We're a small scientific software development company that develops custom scientific and engineering analysis applications in domains including: space situational awareness (monitoring the locations, health and status of on-orbit satellites), image simulation, high power microwave systems, modeling and simulation, laser systems modeling, AI/ML including physics-informed neural networks (PINN), human body thermoregulation, computer vision and image processing, high performance computing (HPC), computer aided design (CAD), and more. All exciting applications and no CRUD. We emphasize high quality code and lightweight processes that free software engineers to be productive.\nExperience\n: Except for interns, we currently require a Bachelors degree in physics, engineering, math, computer science, or a related field. Masters or PhD is a plus. (Roughly 25% of our staff have PhDs.)\nTechnologies\n: Lots of C++23, Qt 6.9, CMake, git, OpenGL, CUDA, Boost, Jenkins. Windows and Linux, msvc/gcc/clang/clangcl. AI/ML and analysis projects use Python and C++. Web projects use Java and Typescript/React. We're a bit behind the curve on developer AI adoption, and we're okay with that.\nApply online\n: at \nhttps://www.stellarscience.com/careers/\n.",
+          "author": "StellarScience",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49143412",
+      "title": "Show HN: Fuse – statically typed functional programming language",
+      "link": "https://fuselang.org",
+      "domain": "fuselang.org",
+      "author": "the_unproven",
+      "score": 115,
+      "comment_count": 47,
+      "created_ts": 1785669836,
+      "is_internal": false,
+      "post_text": "Hi HN! I&#x27;ve been working on the fuse programming language, it&#x27;s a statically typed purely functional language with higher-kinder types and ad-hoc polymorphism. It compiles to the GRIN whole-program optimizer, producing LLVM-generated native code.<p>Fuse supports ADTs, Generics, Type Methods, Traits, Pattern matching etc. all in a functional style with no mutations.<p>I’ve been developing the language for 5 years, with code written in Scala. I’ve started coding the language from the base of System F that was implemented as part of the book: Types and Programming Languages (tapl). And then extending with concepts such as Bidirectional Type Checking with Higher-Rank Polymorphism.<p>I’ve mainly drawn inspiration from Rust, Haskell, Scala and Python (in terms of syntax). It all started because I wanted a language that has Rust-like concepts such as: ADT, Traits, Impl block syntax, etc. but have the pure functional semantics.<p>I&#x27;d would love feedback on the language design and its general usage.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49150738",
+      "title": "Apple engineer says he was fired after refusing to send cust. device IDs to AT&T",
+      "link": "https://runtimewire.com/article/exclusive-apple-engineer-says-he-was-fired-after-refusing-to-send-customer-devic",
+      "domain": "runtimewire.com",
+      "author": "ryanmerket",
+      "score": 114,
+      "comment_count": 37,
+      "created_ts": 1785726052,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49151871",
+      "title": "Situational Awareness and the Impending Stock Market Volatility",
+      "link": "https://www.emergingtrajectories.com/lh/situational-awareness-bigger-picture/",
+      "domain": "www.emergingtrajectories.com",
+      "author": "cl42",
+      "score": 68,
+      "comment_count": 53,
+      "created_ts": 1785737873,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49156682",
+      "title": "Ask HN: Who wants to be hired? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49156682",
+      "domain": "news.ycombinator.com",
+      "author": "whoishiring",
+      "score": 67,
+      "comment_count": 192,
+      "created_ts": 1785769254,
+      "is_internal": true,
+      "post_text": "Share your information if you are looking for work. Please use this format:<p><pre><code>  Location:\n  Remote:\n  Willing to relocate:\n  Technologies:\n  Résumé&#x2F;CV:\n  Email:\n</code></pre>\nPlease only post if you are personally looking for work. Agencies, recruiters, job boards,\nand so on, are off topic here.<p>Readers: please only email these addresses to discuss work opportunities.<p>Searchers: try <a href=\"https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired\" rel=\"nofollow\">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired</a>, <a href=\"https:&#x2F;&#x2F;www.wantstobehired.com\" rel=\"nofollow\">https:&#x2F;&#x2F;www.wantstobehired.com</a>.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "Trying something different again here, sorry.\nLocation: Canada\nRemote: Yes\nTechnologies: C, OpenBSD\nI'm looking for monthly/yearly \"no-strings\" sponsors, not employment, if any individuals, companies (or bitcoin millionaires) would like to help a long-time OpenBSD slacker, unslack, I'd really like to focus more of my time on open source development (and advocacy), rather than making rent. Feel free to contact me (see HN bio).\nhttps://brynet.ca/wallofpizza.html\n(Native SegWit): bc1qwe6zv0ezq4gzlea6tw45qhsn5kckheljn0krvt",
+          "author": "brynet",
+          "replies": []
+        },
+        {
+          "top": "Location: Franklin, TN, USA\nRemote: Yes\nWilling to relocate: Chicago, IL, USA\nTechnologies: ML, C++, Hadoop, Java, Elixir, AWS, Python, C#, Rust, Kubernetes\nRésumé/CV: \nhttps://elliottclark.info/resume/\nEmail: elliott.neil.clark@gmail.com\nSenior Engineering Leader specializing in distributed systems & ML infrastructure. Founder & CEO of Batteries Included (raised $1.2M, built a self-driving cloud platform). Former Senior Tech Lead at Facebook Ads, scaling ML-driven ad services for billions. I care about correctness, latency, and scalability in production, and I'm looking to lead teams tackling hard, high-impact problems.",
+          "author": "eclark",
+          "replies": []
+        },
+        {
+          "top": "Location: Nigeria (GMT+1)\nRemote: Yes (Worldwide)\nWilling to relocate: Yes, for the right opportunity.\nTechnologies: Rust, C++, Python, JavaScript/TypeScript, React, Tauri, Node.js, Linux, PostgreSQL, Redis, WebSockets, REST APIs, Docker, Nginx, Distributed Systems, High-Performance Backends, Real-Time Systems.\nRésumé/CV: \nhttps://drive.google.com/file/d/1xO5EFLxffcsISB9OYeKnBJK6n7A...\nEmail: [ask4abusaidu@gmail.com](mailto:ask4abusaidu@gmail.com)\nEmail2: [contact@corexyte.com](mailto:contact@corexyte.com)\nSenior Full-Stack Engineer with 8+ years of experience building production-grade software and high-performance backend systems. I specialize in distributed systems, real-time applications, developer tools, desktop applications, and scalable cloud infrastructure.\nI've built a desktop trading platform from the ground up using Rust and Tauri, designed custom execution engines, market data pipelines, real-time communication systems, and scalable backend services. I enjoy owning products from architecture through deployment and solving complex engineering challenges.\nI'm looking for remote full-time, part-time, or contract opportunities where I can build reliable, high-performance software. I'm particularly interested in startups and engineering-focused teams working on infrastructure, developer tools, fintech, AI, cloud platforms, or other technically challenging products.",
+          "author": "ask4abusaidu",
+          "replies": []
+        },
+        {
+          "top": "Location: EU\nRemote: Yes, EU timezones preferred\nWilling to relocate: Depends on the location (but with a strong bias for EU-Schengen/US locations)\nTechnologies: Java, Python (and variants thereof like Groovy, Clojure, Pypy), Node/TS | AWS/Lambda Serverless, GCE/Kubernetes | Redis, MySQL, PostgreSQL, DynamoDB\nResume: \nhttps://bit.ly/3B3o65M\n (It links to my CV repo at Github, pinky promise. You can also visit github.com/<hnusername>.)\nI'm not actively looking (hence why my resume link is obfuscated like that) but I'm at least interested in getting a feel for the market right now. That said, I'm willing to consider a position with a great fit for my skill set and career goals.\nHere's my pitch: I have experience in a multitude of industries and positions. From improving legacy infra and processes in an established telco company to scaling a fast-moving startup from 200K to 2M users. In my free time, I love writing Code That Is Poetry but day-to-day I am not an idealist engineer who doesn't compromise. Well-engineered code is clean and correct but correct above all else.\nOh, also, I'm great at writing documentation. I consider myself introverted but apparently my communication skills are above average for Software Engineers. I also pride myself on my humility and modesty. :V\nI'm currently a backend engineer developing features and improving infra for an online game with millions of daily active users. I'd love to explore other technical positions in the games industry short of joining a AAA studio because (a) I don't want to crunch and (b) my skill set does not lay that way; other tech-creative industries would also appeal to me! Another particular interest is in B2C businesses where the 'C' is software developers. I'd love to chat and network about opportunities; if you think you have a product that could benefit from my skill set, drop me a line!",
+          "author": "skytreader",
+          "replies": []
+        },
+        {
+          "top": "Location: Bangladesh\n.\nRemote: Yes\n.\nTechnologies: React, Express, Postgres, React native\n.\nProject: Recently worked on \nhttps://sleepsignal.app\n\n.\nEmail: logoarrowdesign@gmail.com",
+          "author": "coldbreeze",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49157997",
+      "title": "Launch HN: Hoplite (YC S26) – Effortlessly deploy cloud coding agents",
+      "link": "https://hoplite.sh",
+      "domain": "hoplite.sh",
+      "author": "BenceRed",
+      "score": 62,
+      "comment_count": 51,
+      "created_ts": 1785774726,
+      "is_internal": false,
+      "post_text": "Hi HN, we’re Bence and Ryan, founders of Hoplite (<a href=\"https:&#x2F;&#x2F;hoplite.sh\">https:&#x2F;&#x2F;hoplite.sh</a>). Hoplite lets you deploy coding agents in the cloud, with a suite of tools that makes it incredibly easy to QA features. During onboarding, we port over your local setup - sessions, memories, MCP servers, and get your projects ready to run in the cloud.<p>Here’s a demo: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;bnyktZ_9pjE\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;bnyktZ_9pjE</a><p>We got here after pivoting away from the idea we applied to YC with; AI for retail investing. It ultimately wasn’t a product that we ourselves would use, nor served a customer base that we felt connected to. In reflecting on what we really wanted to do, we realised that we loved talking to founders and developers, and were really opinionated about the specific area of cloud agents. We tried out all the existing solutions, and didn’t find one that A) took good advantage of being in the cloud, and B) was performant and felt good to use.<p>We’re building a product that we feel reflects what mainstream development will look like in 6-12 months. As models improve, developers will end up reviewing less and less code, and will instead focus on reviewing the product output. That means evaluating new user flows, visually verifying that new features look good, that the API works as expected, that the CLI works on Windows, etc. And doing it while running hundreds of agents concurrently.<p>On the agent side, we’ve created a custom harness. We spent a lot of time deciding on whether we should use an off the shelf solution like Codex&#x2F;Claude Code, but ultimately wanted the independence and freedom that came with building it in house. It also means that we can test out completely new features without relying on Anthropic and OpenAI to catch up.<p>Everything is hosted on AWS, with the exception of: Temporal for durable workflows, Modal for sandboxes, and Planetscale for our database. Our infra decisions were driven by a strong belief that agents are becoming a tier 0 piece of infrastructure, and they need the reliability and security to match that.<p>You can try it now for free with the code ‘HACKERNEWS’ - we’ve included $100 in free credits, plus you can connect your Codex subscription and use OpenAI models via it. You can see some more details around our pricing at <a href=\"https:&#x2F;&#x2F;hoplite.sh&#x2F;pricing\">https:&#x2F;&#x2F;hoplite.sh&#x2F;pricing</a>.<p>At the moment we’re focusing on optimising two key experiences: onboarding and previews, and would love to hear your feedback on them. And if you find that the agent&#x27;s performance in certain tasks doesn’t match your expectations, please let us know!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Trying to wrap my head around how it differs from my current on-the-go setup that is claude code. On claude's phone app or web app I can choose a repo, ask it for a feature and it writes the code, runs my tests + add more tests and creates a new branch. Then I can click on create PR or configure claude code to auto create PR.\nI also have another setup which is a self-hosted docker compose behind my vpn with one container with claude code agents managed using agent of empires[0] and another container with playwright with sse. Using this setup, my agents get access to actual browser where it can test things live and I can access the app started by agent on domain:port. This is something I don't get with Claude.\n [0] \nhttps://github.com/agent-of-empires/agent-of-empires",
+          "author": "scottydelta",
+          "replies": [
+            {
+              "text": "That setup is pretty much what we're trying to offer with Hoplite!\nUsing us means losing freedom and control with regards to infrastructure, however we think that's a tradeoff people would want to make in exchange for easier onboarding and a more polished experience.",
+              "author": "BenceRed",
+              "depth": 1
+            },
+            {
+              "text": "Makes sense. It took me some experimentations with a few open source libraries and docker-compose to arrive at my setup. My setup also requires me to access agents via a terminal app on my phone so it's nice to have a web app like your offering.\nAre you offering browser access to the agents in your setup?",
+              "author": "scottydelta",
+              "depth": 2
+            },
+            {
+              "text": "Yes, agents have a persistent Chromium session they use via the agent-browser CLI. Typical workflow would involve starting the preview, seeding data, then the agent going through the old and new UX flows for a before + after view. We've also got some optimisations around saving the aforementioned flows in a QA library, so that they can be replayed without needing an agent to run through it all again.",
+              "author": "BenceRed",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Took me a minute to see the value - my first thought was \"this is just cursor's cloud agents...\"\nBut the key thing here for me is \"Every sandbox boots your app on a live URL.\"  Cursor doesn't easily have that, and that's what would allow me to ditch my local env entirely - the ability to actually try out a PR without needing to check it out locally.\nSo on that note: how does that work?  We've had trouble with getting our dev env running in other cloud envs because it requires a few things (clickhouse, localstack, pg, etc) running which we manage via docker compose locally.\nAlso, some minor pricing feedback: it'd be really great if there were a version with pay-as-you-go and a cheaper fixed cost.  I think your 99/seat/mo model is fine for professional work, but it's a lot to commit to for personal work.",
+          "author": "fishtoaster",
+          "replies": [
+            {
+              "text": "Modal just released some features that would allow users to bring custom Docker images, and I'm working on getting your exact use case supported! Aiming to get it out by the end of the week.\nNoted the pricing feedback! We're still figuring out exactly what works best so it's still very much so subject to change.",
+              "author": "BenceRed",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Good name, with The Odyssey out, and all. I guess that you could think of the agents as \"footsoldiers,\" and whatnot.\nGood luck!",
+          "author": "ChrisMarshallNY",
+          "replies": [
+            {
+              "text": "We use 'phalanx' internally!",
+              "author": "BenceRed",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Looks neat! I've been using Amp (\nhttps://ampcode.com/\n) for a while (Which seems to be doing something very similar), and I really appreciate this type of workflow. One thread = one VM feels like a solid model going forward.",
+          "author": "r5Khe",
+          "replies": [
+            {
+              "text": "Same instinct locally with git worktrees: one agent per worktree so they do not thrash the same checkout. Cloud VMs buy isolation and scale; worktrees buy cheap isolation when you already have a machine. I end up using both patterns depending on whether the bottleneck is compute or just not stepping on each other.",
+              "author": "yoanwaidev",
+              "depth": 1
+            },
+            {
+              "text": "Agreed. Per-thread VMs are quite similar to how local agents use worktrees to avoid cross contamination, but with the added benefit of being able to easily scale up/down compute requirements on demand.",
+              "author": "BenceRed",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Firstly: good luck!\nI've been wondering what the alternatives to things like Github Copilot Cloud and Codex Cloud might be, especially ones that might be flexible wrt models, and this seems at least to have some of those behaviours.\nIf that perception is correct, please would you explain what it offers against those sorts of services (those in particular) and how the pricing compares - eg. their base levels are $20 a month, yours starts at a higher level - I can see there seems to be more brought in from the local IDE world (and similar), which seems very useful compared to  the standard \"prompt against repo, repeat\" of the normal cloud agents but it would be useful to understand the targets and intents.",
+          "author": "mellosouls",
+          "replies": [
+            {
+              "text": "Thank you! Regarding models, as you said we're not locked into a specific provider, and are able to offer open weight models like Kimi K3 and GLM 5.2\nOur pricing is higher than other providers because we do not upcharge on token or sandbox costs. We believe that people should be running as many agents as they possibly can handle, and an upcharge would create a monetary incentive for us to say that, when it's a genuine belief we hold.\nWe also offer features out of the box that would usually be behind enterprise gating (e.g. sandbox baking).",
+              "author": "BenceRed",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49139703",
+      "title": "Ask HN: Anyone still do work on Intel Macs?",
+      "link": "https://news.ycombinator.com/item?id=49139703",
+      "domain": "news.ycombinator.com",
+      "author": "senor_digimon",
+      "score": 21,
+      "comment_count": 28,
+      "created_ts": 1785627869,
+      "is_internal": true,
+      "post_text": "I might need to hop on a 2018 mac for some dev work, so just curious what those still on it think about it. Are there major roadblocks, or you mostly fine once you get your code editor&#x2F;remote ssh?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49161877",
+      "title": "Ask HN: Who is quitting? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49161877",
+      "domain": "news.ycombinator.com",
+      "author": "ethanwillis",
+      "score": 19,
+      "comment_count": 0,
+      "created_ts": 1785793518,
+      "is_internal": true,
+      "post_text": "Curious what people are getting up to! Following on from my previous post(https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48760048):<p><pre><code>  1. Why are you quitting?\n  2. What will you be doing? (Even if nothing!)</code></pre>",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quitting"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49161893",
+      "title": "Ask HN: Who is firing? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49161893",
+      "domain": "news.ycombinator.com",
+      "author": "ethanwillis",
+      "score": 16,
+      "comment_count": 4,
+      "created_ts": 1785793598,
+      "is_internal": true,
+      "post_text": "As suggested in a comment(https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48765213) on my previous &quot;Who is quitting?&quot; post I figured I&#x27;d give a &quot;who is firing&quot; post a shot :)",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quitting"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49139845",
+      "title": "Ask HN: I still don't understand why AI agents need \"skills\"",
+      "link": "https://news.ycombinator.com/item?id=49139845",
+      "domain": "news.ycombinator.com",
+      "author": "skeptic_ai",
+      "score": 15,
+      "comment_count": 15,
+      "created_ts": 1785629342,
+      "is_internal": true,
+      "post_text": "I’ve asked AI a few times and I still don’t get it.<p>Why do frameworks like Claude Code or Codex have the concept of “skills” instead of just using well-organized Markdown docs?<p>Couldn’t I just have an AGENTS.md that points to folders of .md files and tells the agent when to read them? That feels functionally equivalent to me.<p>What am I missing? Is there a real architectural benefit, or is it mostly a standardization&#x2F;convenience thing?<p>I doubt we’d create so much hype about skills if they’d just be a md file that’s in a skills folder. So I feel I’m missing something.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49157839",
+      "title": "Tell HN: Pretending not to use AI has made me a better developer",
+      "link": "https://news.ycombinator.com/item?id=49157839",
+      "domain": "news.ycombinator.com",
+      "author": "throwaway260803",
+      "score": 11,
+      "comment_count": 5,
+      "created_ts": 1785774049,
+      "is_internal": true,
+      "post_text": "I work in an online game-development community where the culture is opposed to using AI for anything, even coding. The community is built around an open-source game-development software toolchain, as well as other web apps for distributing, playing, reviewing, and discussing those games.<p>I&#x27;ve filed PRs against the dev software toolchain in the past, but the toolchain is pretty complicated, (including tools written in multiple programming languages) and it&#x27;s always been extremely difficult to wrap my head around it, so I usually didn&#x27;t bother.<p>In 2026, it&#x27;s been way, way easier for me to fix bugs in that toolchain using LLMs. LLMs have no problem switching between programming languages, adding debug tracing to trace the flow of a bug through each layer, generating automated tests to reproduce the bug, and then fixing the bug correctly.<p>Of course, the problem then is: how would I convince the team to merge a PR containing code that was entirely LLM generated, when that&#x27;s explicitly against their policy?<p>The answer I&#x27;ve picked: I lie and say I wrote the code.<p>But, to <i>sell</i> the lie, I first ask the LLM to explain the bug fix in detail, then I review the generated code very carefully (making sure it&#x27;s written exactly the way I would have written it, especially the comments), and then I write all commit messages and the PR description entirely by hand.<p>I&#x27;ve found this to be an tremendously educational approach. I&#x27;ve learned a <i>lot</i> about the programming languages in the toolchain, and about the inner workings of the open-source game-dev tools. In many cases, my deeper understanding has allowed me to <i>truly</i> review the LLM&#x27;s code, finding problems in the generated code, which the LLM then fixes.<p>I&#x27;m certain that if I&#x27;d just clicked a button and had the LLM generate the commit message + PR description, I never would have found those issues. And I obviously would never have learned as much.<p>I can&#x27;t write anything about this under my own name, but I now genuinely recommend using LLMs to file open-source PRs, but never using the LLM to generate commit messages or PR descriptions. Pretend as if you wrote the code yourself, even if the open-source project explicitly permits LLM-generated PRs.<p>If you don&#x27;t understand the code well enough to write the commit message or the PR description, ask the LLM to generate one for you, but then rewrite it from scratch in your own terms. This is partly so the description doesn&#x27;t have that smell of AI slop, but also to ensure you understand the code well enough to explain what it does and why this code is the right approach.<p>Pretending that the code is really my code forces me to learn the code well enough to own it. I&#x27;m ashamed of lying about what I&#x27;ve done, but I&#x27;m proud of what I&#x27;ve learned and accomplished by doing so.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned",
+        "team",
+        "culture"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49150433",
+      "title": "Ask HN: Have LLMs Plateaued?",
+      "link": "https://news.ycombinator.com/item?id=49150433",
+      "domain": "news.ycombinator.com",
+      "author": "leandrobon",
+      "score": 9,
+      "comment_count": 23,
+      "created_ts": 1785722976,
+      "is_internal": true,
+      "post_text": "Have we hit a point where most advances come in the form of new integrations, or applications, rather than outright better models? How much more productivity will we be able to squeeze from them?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "How much more productivity will we be able to squeeze from them?\nProbably, depends on how you measure productivity.\nIf you measure productivity in terms of number of automated bureaucratic events (e.g. creating files, organizing files, generating lines of code, finding bugs in code, generating emails, responding to email) then yes productivity will continue to increase because LLM's are the killer app for increasing bureaucratic events.\nIf you measure productivity in terms of changes to the material world (e.g. traditional things like trade goods, buildings, food stuffs, irrigation systems, transportation networks, etc.) then no because LLM's have little meaningful impact on those activities...no AGI is going to harvest lettuce for our wedge salads).",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "No, LLMs have not plateaued, and each of the latest releases has been a proof of that.\nFable 5 is a model you instantly FEEL how smart and superior it is.\nGPT 5.6 Sol is a HUGE incremental improvement in multiple directions and dimensions.\nDeepSeek v4 Flash 0731 is a huge improvement over the preview version, using exactly the same architecture.\nKimi K3 gets open weight models very, very close to the frontier.\nNo my friend, we are not done yet.",
+          "author": "iagooar",
+          "replies": [
+            {
+              "text": "> you instantly FEEL how smart and superior it is\nI felt taken by the change in the system model personality and writing style compared to opus, but I also found it to be much less impressive than I was expecting - let alone that the cost was incredibly high when not given for free.\nAre you sure your reaction is not primarily to the improved ergonomics of Fable?",
+              "author": "taurath",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Obviously not, have you seen the 10 mathematical advances OpenAI found with Astra?\nhttps://openai.com/index/ten-advances-in-mathematics/",
+          "author": "atleastoptimal",
+          "replies": []
+        },
+        {
+          "top": "Obviously not. And if you look at the things LLMs do poorly there's clearly plenty of room for improvement.",
+          "author": "wmf",
+          "replies": [
+            {
+              "text": "LLM shill argument in a nutshell: \"while there is room for improvement in catalytic converters, they are improving practically by the month! Within a decade, internal combustion engines will put out air that is so breathable, it could be used for ventilating a maternity ward.\"",
+              "author": "kazinator",
+              "depth": 1
+            },
+            {
+              "text": "The exhaust from a hydrogen fuel cell car is drinkable water.\nHowever, experts do not recommend drinking it straight from the tailpipe because the water can pick up dust, dirt, and chemical residues.\n(it had to be disclaimed!)",
+              "author": "cyanregiment",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "In terms of the amount of information in the current LLMs,  I think the largest is 5.6 trillion bytes of memory, it is miniscule to what is actually out there.  There are over 13 zettabytes of information on the internet.  Part of the capacity is about absorbing information.  It has a lot further to go.  If there are emergent properties with additional knowledge in LLMs, it is scratching the surface.  I wonder what will happen with zettabyte computing.",
+          "author": "NishanStepak",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49138466",
+      "title": "Ask HN: How are you using AI to learn?",
+      "link": "https://news.ycombinator.com/item?id=49138466",
+      "domain": "news.ycombinator.com",
+      "author": "mfalcon",
+      "score": 9,
+      "comment_count": 23,
+      "created_ts": 1785618238,
+      "is_internal": true,
+      "post_text": "It&#x27;s time to start learning advanced topics again and I thought it&#x27;d be at least interesting to take advantage of LLM&#x27;s to help me learn better or faster.<p>I&#x27;ve read here that some of you are using &quot;socratic skills&quot; where you give the LLM some content and then you get a series of questions in order to learn but I don&#x27;t think it&#x27;s the only approach to this.<p>I&#x27;ll start tackling the &quot;Attention is all you need&quot; paper and then I want to go deeper.<p>What&#x27;s your approach?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49158267",
+      "title": "Ask HN: ReAct vs. Planning Pattern",
+      "link": "https://news.ycombinator.com/item?id=49158267",
+      "domain": "news.ycombinator.com",
+      "author": "hairymouse",
+      "score": 7,
+      "comment_count": 1,
+      "created_ts": 1785775815,
+      "is_internal": true,
+      "post_text": "My question might seem stupid, but ReAct pattern seems to always work and actually gives great results in the other hand we have the plan pattern and to be honest i cannot think of how it&#x27;s exactly used in production system, im not sure if this is correct but how it&#x27;s technically implemented is you give the LLM context and you tell it, hey give me your plan to how you will solve this thing, so now it will build the plan but won&#x27;t it also follow the same plan in the ReAct pattern to solve that exact problem? I want learn from people that used the planning pattern in production, how and why you used it? and how do you enforce the LLM the follow the plan exactly?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49150911",
+      "title": "Local, Open source AI meeting recorder that sees and hears everything",
+      "link": "https://news.ycombinator.com/item?id=49150911",
+      "domain": "news.ycombinator.com",
+      "author": "puremetrics",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1785727795,
+      "is_internal": true,
+      "post_text": "I wanted the simplest possible AI meeting recorder that sees and hears your meetings, workflows etc.<p>No cloud.\nNo account.\nNo subscription.<p>Lumi a small CLI that uses the features already built into macOS.<p>Everything stays on your Mac. Your recordings never leave your machine unless you choose to.<p>It’s fully open source, so you can inspect exactly what it’s doing instead of trusting a black box.<p>Simply run “lumi record start” once.<p>If you’re looking for a low key, private alternative to cloud meeting recorders, check out lumi. I’d love your feedback.<p>https:&#x2F;&#x2F;github.com&#x2F;puremetricsai&#x2F;lumi",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meeting",
+        "feedback",
+        "meetings"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49149028",
+      "title": "Tips for Landing a YC Internship?",
+      "link": "https://news.ycombinator.com/item?id=49149028",
+      "domain": "news.ycombinator.com",
+      "author": "cnnadozi",
+      "score": 6,
+      "comment_count": 9,
+      "created_ts": 1785709318,
+      "is_internal": true,
+      "post_text": "I&#x27;m a rising sophmore in university, and I really want to work for a YC-backed startup this Fall (leaning towards consumer products).<p>I think I have solid experience (interned at AWS this summer as a SWE, and I&#x27;ve also built and scaled consumer mobile apps solo to 20k+ downloads).<p>My main method so fair has been sending cold DMs to founders on Linkedin for startups I find interesting, but so far I&#x27;ve had no luck. Any advice?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup",
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49143243",
+      "title": "What is the downside of coaching that I may not be seeing yet?",
+      "link": "https://news.ycombinator.com/item?id=49143243",
+      "domain": "news.ycombinator.com",
+      "author": "ikut3hva",
+      "score": 6,
+      "comment_count": 1,
+      "created_ts": 1785668303,
+      "is_internal": true,
+      "post_text": "Hi everyone!<p>TL;DR: I genuinely enjoy every coaching session I run, and I believe my mentees find them incredibly valuable. However, I’m still curious about one thing: what is the downside of coaching that I may not be seeing yet?<p>As an experienced software engineer (still working full-time), I started mentoring to share my own experiences—the good, the bad, and the challenges people may face in a professional environment. More importantly, I help people improve their presence within their organizations so that their work and contributions become more visible.<p>I genuinely love every coaching session, and I’m grateful to all of my mentees for openly sharing their stories and challenges.<p>One day, after finishing a session, I asked myself:<p>If what I’m doing is genuinely valuable for both my mentees and myself, what are the downsides of coaching that I might not be able to foresee at this stage?<p>At the moment, coaching feels like a second hobby that also happens to generate some extra income on top of my full-time job. I imagine things would be very different if I decided to become a full-time coach.<p>A few facts for context:<p>* I’ve conducted 32 coaching sessions over the past 7 months.\n* My retention rate has remained consistently between 82% and 83% since my first session.\n* I mainly coach in three areas:\n    * CV review\n    * Story bank development\n    * Behavioral interviews\n* I usually charge $12–20 Euro per session, although I often adjust the price depending on each mentee’s circumstances.<p>I’m genuinely interested in hearing from people who coach professionally or have made coaching their full-time career.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "It has the same downside than all activities, opportunity cost.\nI teach math at the first year of university in Argentina. My kids (a bunch of 18 y.o., but I call them \"my kids\") start the semester and barely can solve a 2x2 equation system. At the end most of them can use the Gauss Method and the Simplex Method. I enjoy seeing the improvement, and also the challenge that they are very different. Some have a bad math background and we have to teach the rule of of the signs for integer addition. Some have a better preparation and ability and we can give some hints about deeper topics like the dimension that are covered very shallowly in the course.\nAlso, a few years ago I worked with teenagers training for the national Mathematical Olympiad. I had smaller groups so it was more personalized, and I have the same students for years. I still meet some of them from time to time. It's nice to see how they improve during the years.\nIn my opinion, if you get enough money+happiness to compensate the time investment, it's a nice activity.\n---\n> \nI usually charge $12–20 Euro per session\nI think it's a little on the cheap side. Last year I asked about the 1 to 1 private class that some of my coworkers do (with students of other universities, obviously not with their own students). The unofficial rule for the price was \"1Kg of ice cream from Freddo\" (one of the most expensive ice cream stores here)  that today is like €17. That's the price for a good standard math class in not the most expensive country on Earth.\nSo, if you have more request than what you can handle, consider raising your price. Anyway, money is not the only metric, some in some case you can lower the price in exchange of happiness or interesting cases.\nTake a look at the old posts by patio11 \nhttps://www.kalzumeus.com/2012/01/23/salary-negotiation/\n (HN discussion \nhttps://news.ycombinator.com/item?id=24588379\n (420 points | Sept 2020 | 263 comments)) and also \nhttps://www.kalzumeus.com/2012/09/21/ramit-sethi-and-patrick...\n (HN discussion \nhttps://news.ycombinator.com/item?id=4554669\n (234 points | Sept 2012 | 87 comments))",
+          "author": "gus_massa",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49149599",
+      "title": "Ask HN: What's Next for LLMs?",
+      "link": "https://news.ycombinator.com/item?id=49149599",
+      "domain": "news.ycombinator.com",
+      "author": "apatheticonion",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1785714712,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been using DeepSeek v4 flash for guided agent workflows (in-IDE, prompt&#x2F;review diffs) and have found no noticeable benefit to using Haiku, Opus, Sonnet in this workflow.<p>For around a dollar a day, I am able to more than double my own productivity. What are the frontier models for&#x2F;what are they trying to solve?<p>Are they designed to one shot applications? Is the expectation that we want to be able to &quot;yolo&quot; prompt LLMs and have them complete work unsupervised?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
