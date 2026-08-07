@@ -1,3 +1,7 @@
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
+
+## 2026-02-08 – The Migration of Craft
+Learning: Expert anxiety in technical discussions often masks a shift in the location of complexity rather than its disappearance. When "craft" is mourned, it usually signals that the tools have reached a level of abstraction where the previous "hard part" has become a commodity, forcing the practitioner to confront a new, more ambiguous layer of the system.
+Implication: Editorial focus should pivot from comparing technical implementation methods to exploring the new failures that occur at the higher layers of abstraction (e.g., specification, verification, and orchestration).
