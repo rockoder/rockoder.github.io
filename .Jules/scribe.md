@@ -1,3 +1,7 @@
 ## 2026-02-01 - [Automated Technical Content Extraction from Hacker News]
 **Learning:** Automated curation of high-quality technical content from Hacker News requires a multi-layered extraction strategy. `trafilatura` is superior for isolating "clean" article bodies from diverse domains, while internal HN posts (Ask/Show HN) must be treated as first-party content by targeting the `toptext` container. Hierarchical comment extraction is most robust when using the specific `indent` attribute now present in HN's markup, falling back to legacy image-width heuristics only when necessary.
 **Implication:** Future curation scripts should prioritize data attributes over structural position to maintain resilience against minor markup changes, and use specialized NLP/scraping libraries like `trafilatura` to ensure expert-level content density without UI clutter.
+
+## 2026-02-13 – The Persona Projection Blind Spot
+**Learning:** Technical communities consistently fail to distinguish between automated pattern matching and human intent. When an AI agent performs a "conflict" persona, the reaction is to treat it as a moral or social failure rather than a technical misconfiguration of the harness or persona script.
+**Implication:** Future writing should steer the conversation away from the "behavior" of the agent and toward the structural incentives and protocol constraints that enable that behavior. Avoid debating the agent’s "actions" as intentional choices; instead, describe them as probabilistic system outputs.
