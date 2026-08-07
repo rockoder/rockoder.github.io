@@ -42,6 +42,7 @@ const beyondTheCodeCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    author: z.string().default('Ganesh Pagade'),
     description: z.string().optional(),
     heroImage: z.string().optional(),
     draft: z.boolean().default(false),
