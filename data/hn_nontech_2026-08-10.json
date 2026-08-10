@@ -1,0 +1,1033 @@
+{
+  "scraped_date": "2026-08-10",
+  "source": "hacker_news",
+  "total_scraped": 124,
+  "nontech_count": 26,
+  "posts": [
+    {
+      "id": "49217993",
+      "title": "The Nixpkgs core team has disbanded",
+      "link": "https://discourse.nixos.org/t/the-nixpkgs-core-team-has-disbanded/79413",
+      "domain": "discourse.nixos.org",
+      "author": "Meleagris",
+      "score": 401,
+      "comment_count": 212,
+      "created_ts": 1786151565,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "For anyone reading this and jumping to a broader conclusion: the Nixpkgs core team disbanding does not mean Nixpkgs or Nix is dying.\nIt does mean that this particular structure was not sustainable, very important contributors burnt out and we need to do better, faster. We need to continue learning from this and continue building a stronger ecosystem that prioritizes the contributors who are the only reason any of this is possible.\nPersonally, I'm sorry and grateful. Sorry that it ended in core folks being burnt out. Grateful since they did some of the most amazing work, more than anyone can imagine two people doing.",
+          "author": "ronef",
+          "replies": [
+            {
+              "text": "The Nixpkgs Core team was established in Sept 2025 (\nhttps://discourse.nixos.org/t/establishing-the-nixpkgs-core-...\n), so it is a fairly new concept and idea. They've accomplished some good things as highlighted in the post, but are now stepping down. Yes, we'd prefer for the team to exist, but we've also functioned without one for ~20 years. It may take multiple iterations to bootstrap the concept and to figure out the right structure - or we may find it isn't needed. So no, this is not a critical emergency. It's a return to the status quo of late last year.\nThat being said, I think it is still a concept worth pursuing.",
+              "author": "tomberek",
+              "depth": 1
+            },
+            {
+              "text": "I agree with the concept but the name is terrible. \"Core team\" gives one the impression that this is the most important team to the project. It's not! It could be called the \"governance facilitator\" team or admins or something.\nPlease name the next iteration something less spicy.",
+              "author": "xyzzy_plugh",
+              "depth": 2
+            },
+            {
+              "text": "exactly what rust devs realized. they went from \"core team\" to \"leadership council\" in the next iteratiion",
+              "author": "nextaccountic",
+              "depth": 3
+            },
+            {
+              "text": "There was an architecture team which existed, I would assume the usage of \"core\" was to disambiguate.\nhttps://github.com/nixpkgs-architecture",
+              "author": "jonringer117",
+              "depth": 3
+            },
+            {
+              "text": "Packages were handled way before 2025 already, so it is strange that you insinuate they'd all only burn out within a year, and before that it was all cake and tea.\nNixOS is dying, everyone sees this right now.\n> but we've also functioned without one for ~20 years.\nThen this is also a PR problem because why need a team when the 20 years before were allegedly so perfect?",
+              "author": "shevy-java",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "“Our experience is that the Steering Committee as an institution lacks a native instinct for the delegation envisioned by the constitution, while also not being sufficiently engaged and cohesive to handle individual decisions at those levels itself.”\nThis is an almost poetic description of micromanagement. I really like Nix and have been running it as my main OS for several years in the past ~ 10 years.\nI don’t think the issues they have are unsolvable, it just appears that the governance model they’re trying to have is not working out, and it’s very difficult to roll back.",
+          "author": "stingraycharles",
+          "replies": [
+            {
+              "text": "The governance of the project went into political extremes instead of focusing on technology. That made it impossible for anyone other than political extremists to continue in governance positions. Obviously these people had too much on their plate and couldn't find anyone who would join to help them, as they chased everyone away. Burn out was inevitable.",
+              "author": "kesor",
+              "depth": 1
+            },
+            {
+              "text": "The whole paragraph describes quite well what I feel at the company I currently work for. I think it is more accurate to say that it is interference (rather than micromanagement) and goalpost shifting because whoever is/are in charge don't have a clear idea of where they are going.",
+              "author": "astrobe_",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "There was a sweet spot in like 2024 when it seemed like everything was possible with Nix, but now it seems like everything “experimental” is permanently so (like flakes), packages I care about are not as fresh as I want, I have no mental recall for Nix commands…\nMeanwhile, my company is using Nix for everything heavily internally. Everyone gets their dependencies via Nix unless you are like using PAM or something.\nReminds me of Bazel, in the way that it gets adopted by companies with developer support teams (because it solves real problems) but feels frustrating for us ordinary folk. Nixpkgs is kind of a critical part of “ordinary folk” and with the core team disbanding, I feel like my personal moves away from Nix (for projects) are proving correct.",
+          "author": "klodolph",
+          "replies": [
+            {
+              "text": "I was lead on a Nix adoption effort for a few years that was kind of like that: it solved real problems, unlocked far faster, smaller, and cheaper builds than would have been possible any other way, and let us ship delta updates over crappy wifi connections to Linux computers on robots. Flakes were a perfect fit for our model, and we were just in time for stuff like up to date versions of cuda and tensorflow to be delivered via nixpkgs.\nIn my mind, Nix was unstoppable, and I particularly loved how empowered I imagined developers would feel. No mystery-meat CI scripts pushing packages to distant infrastructure that no one understands or even has the permissions to interact with, just the entire build system in one repo, trivially cloneable and hackable... add patches or build steps to anything and it's the same build as always, build it locally or send it to Hydra, it doesn't matter.\nA devs \"got\" it and did leverage those things, used PRs to do safe evaluation of bumps to core dependencies, but I think on the whole it was regarded as cool but not tractable, and a few years after leaving, it sounds like plans are being laid to replace it all with something containers or whatever.\nVery frustrating, particularly in a world where it should be trivial to identify the 5-10 typical tasks that people want to do with the nix code, and set up Claude skills to handle those. Given how easy and self-contained the build-test loop is, it feels like an almost perfect fit for agent-led development.",
+              "author": "mikepurvis",
+              "depth": 1
+            },
+            {
+              "text": "We're using it in the same way - running NixOS on robots.\nOverall I think it is succeeding, though it definitely doesn't 'just work' out of the box. We've invested a fair bit of effort into things like:\n- containerised services[1]\n- UI for branch deployment/service management\n- delta patching (at the byte level, to save bandwidth)\nThe main problem was always that nixlang/nixpkgs are arcane and have a steep learning curve. The majority of your colleagues (in any workplace) don't care about build systems and just want things to work. I think that has been more or less solved by LLMs, and it's now more viable than ever to adopt Nix.\n[1] \nhttps://bou.ke/blog/nixos-containers/",
+              "author": "rossng",
+              "depth": 2
+            },
+            {
+              "text": "Meanwhile I’m over here with my 100 line flake.nix that installs system dependencies with direnv across hundreds of dev users and dozens of repositories wondering why everyone is all up in arms about boring and stable technology that solves a specific problem",
+              "author": "SOLAR_FIELDS",
+              "depth": 2
+            },
+            {
+              "text": "In my personal life, I also like Nix for small projects, especially where you're crossing multiple ecosystems so that any one system's tooling/lockfiles aren't really enough to \"enclose\" the whole thing.\nFor that work project though, the final closure was thousands of store paths, with hundreds of source repos being brought together across a multiple of languages and build systems. A lot of that was/is essential complexity, just the reality that robotics is hard, the tools aren't as mature as in other domains, and so you have to be able to develop features and bugfixes all over a huge software stack simultaneously. Doing that with conventional tooling basically gets you a rigid world where you have to tag/release intermediate packages all the time just to get changes into testing, \nor\n you have to build the world on every push (lol docker).\nWith input addressing and hermetic building of the intermediate stages, Nix and Bazel are systems that don't make you make that choice.",
+              "author": "mikepurvis",
+              "depth": 3
+            },
+            {
+              "text": "> let us ship delta updates over crappy wifi connections to Linux computers on robots\nHow were you doing that? Running your own channels, or something more complex?\nAlso, did you use a push or a pull model w.r.t. the robots?",
+              "author": "shakow",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Nix package manager: correctly resolves dependency hell for your entire OS.\nNix governance: still hasn't resolved dependency hell for humans apparently.",
+          "author": "ishanz",
+          "replies": [
+            {
+              "text": "but the dependency hell for human is inherently political",
+              "author": "stevefan1999",
+              "depth": 1
+            },
+            {
+              "text": "For a certain definition of \"correctly\" (namely: it doesn't, it just does what containers do and ships unique versions for every package).",
+              "author": "XorNot",
+              "depth": 1
+            },
+            {
+              "text": "This is not what nix does unless a user configures it poorly. Nix will ship a single, dynamically linked package/version combo for all package that depends on it. Containers ship one for each package that depends on it.",
+              "author": "drawnwren",
+              "depth": 2
+            },
+            {
+              "text": "Containers don't solve dependency hell. They just give you a standard way to ship your bespoke bash scripts.\nIf you like writing bash scripts then go for it. (Personally I'd rather be doing literally anything else, like, I don't know, shoveling manure.)",
+              "author": "otabdeveloper4",
+              "depth": 2
+            },
+            {
+              "text": "Containers do solve dependency hell by isolation. It's like venv/uv in Python that you switch between different environment with different sets of dependency. Or speaking essentially, you lifted yourself away from having dependencies shenanigans since you have virtualizations of it",
+              "author": "stevefan1999",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I’m not saying it’s decisively correlated, or anything on its own, but there sure are a lot of anime avatars in this community.",
+          "author": "vehemenz",
+          "replies": [
+            {
+              "text": "Nix and NixOS probably wouldn’t exist if it weren’t for the anime pfps :)",
+              "author": "Cyph0n",
+              "depth": 1
+            },
+            {
+              "text": "I do not like anime but holy crap do people with anime pfps make excellent software engineers and terrifying red teamers.",
+              "author": "coldbrewed",
+              "depth": 2
+            },
+            {
+              "text": "It’s really the furries that keep the modern world running.",
+              "author": "yoyohello13",
+              "depth": 2
+            },
+            {
+              "text": "Furries != Weeaboos/Otakus",
+              "author": "sunaookami",
+              "depth": 3
+            },
+            {
+              "text": "Let’s me honest, the communities have a lot of overlap.",
+              "author": "yoyohello13",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49233423",
+      "title": "Ask HN: What are you working on? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49233423",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 174,
+      "comment_count": 656,
+      "created_ts": 1786296202,
+      "is_internal": true,
+      "post_text": "What are you working on?  What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I got laid off at the end of April and have been building my own personal dream tool since, it's a skeuomorphic carpentry simulator with an agent MCP. You start with real wood specs and a shop full of miter saws, router tables, table saws and the like. Think of it like Sketchup but no extruding rectangles.\nIt's been really fun to build with. Agents can create parametric procedures so e.g. stick framing becomes a simple function call for the next agent, building a flywheel. There is full agent-human parity in every surface, so there is a human UI for the procedures too.\nEvery operation is yaml, so agents pick it up pretty quickly. Agents can also file feature requests when they reach for a tool that doesn't exist. You can export to 3d printing files, video walk-through, step files, get a BOM and a cut plan, view your project in life-size with AR. There is a notion-like interface for authoring build guides... a lot going on. If you're a woodworker/software engineer you might enjoy it.\nYou can add the MCP to your agent of choice, send a picture, description, sketch or whatever; say \"build this with Sawdust\"\nhttps://sawdust.diy",
+          "author": "taylorfinley",
+          "replies": [
+            {
+              "text": "This sounds a lot like a project I’ve started a few times and never made it far with. I called it woodlang. It was the idea of CAD but rather than designing the shape and figuring how to make it that shape, you specify a series of shop operations like blender geometry nodes.\nThis was all pre AI. Super impressive that you’ve made something awesome. I’ll try it out tonight",
+              "author": "matthewfcarlson",
+              "depth": 1
+            },
+            {
+              "text": "Amazing resource if it takes off.\nI wanted to build a bed frame recently and imagined software where I could choose lumber from a list and visually assemble the bed frame in the software how I see fit, choose stains, flourishes - then go order the wood and have it cut. At that point it's like taking home an IKEA bed, except of way higher quality materials and to your exact design spec.\nSo\n> Real SKUs, a real BOM you can send to any lumberyard; understand exactly what you need down to the last nail.\nIs especially interesting, it sounds like you could basically do that with this software.\nTurning the woodworking process into code to be automated by an LLM is pretty ambitious, and is the part I am most skeptical about. Of course, if you get that right (plus adoption) it would be unbelievably huge.",
+              "author": "purplemoonx",
+              "depth": 1
+            },
+            {
+              "text": "I have a parametric bed frame procedure already! It's demoed in an example project here \nhttps://sawdust.diy/share/60d515eb-ca3f-559e-994f-56164dd1fc...\n click 'open the workshop view' to see the full UI, make a new one using the bed frame procedure in the procedure tab (or add MCP and ask the agent to use the procedure).\nAnd you can customize it beyond the existing design by asking an agent to modify it, e.g. \"let's use walnut 4x4s and 2x4 slats\", \"I don't like how the corners come together, can we make it more like traditional joinery?\" Also, staining is a supported procedure (it's very useful for e.g. coloring geodesic dome struts by strut type), you can just ask the agent to stain the pieces with whichever color you like, I'm sure you could even use a named stain you want to use like \"Minwax Dark Oak\" and get something pretty close.",
+              "author": "taylorfinley",
+              "depth": 2
+            },
+            {
+              "text": "Perfect - that’s it!\nImpressive stuff. Actually more impressive than I even imagined.\n“Fits in my SUV” you are a mad man! Love everything about this site. I might actually do it now haha - no more excuses.",
+              "author": "purplemoonx",
+              "depth": 3
+            },
+            {
+              "text": "Love it, I had a similar but probably worse idea a few years back while woodworking. I agree the issue with  essentially all CAD and sketchup etc is it forces you to work with primitives that are different from your real world ones. Extruding shapes as you said, instead of actually milling lumber and working in common known dimensions.\nI also suspect there’s a fairly finite number of sane join primitives, you can have rabbets, dados, dominos, dovetails, pocket screws, etc. These could be experimented with digitally against an existing design. And your tool availability could determine what you can do.\nAnd of course cut order and assembly is just a DAG and can be generated from geometric constraints of the actual design.",
+              "author": "appplication",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Rated Analysis, rating relative chess analysis: \nhttps://rated-analysis.pickle-dev.com/\nI've been a bit obsessed with chess lately and have read/heard things like \"X is the top engine move, but no one under master plays that line\". To me this begs the questions \"which line are players below master playing\" and \"which line are players at/above/below my rating playing\". This question motivated me to build a tool to analyze the move distribution (win/draw/loss rate) from a given position across rating buckets (400, 500, 600... 3000). Luckily, \nhttps://database.lichess.org/\n provides an open/free database of games that have just the data required to build such a tool.\nThe Rated Analysis tool consists of an 1) an offline job to compute/store the positional move distribution bucketed by rating, and 2) the \nhttps://rated-analysis.pickle-dev.com/\n webpage to serve the data along with some nice to haves like loading user games from platforms like chess.com/lichess.org.",
+          "author": "tpicks",
+          "replies": []
+        },
+        {
+          "top": "More work on \nhttps://cardcast.gg\n. It's a way for my friends and I to play Magic: The Gathering online using a webcam. For those unfamiliar, you take the webcam sitting on the top of your monitor and point it down at your desk, then play with your friends using paper cards over a video call, but specifically tailored towards Magic + Commander.\nRecently I've been focused on marketing and small bug fixes. I think the core feature set is compelling enough, now I want to draw more players and start building a community. Been doing some social media stuff, designing an icon (this is HARD for me, I'm not very creative), and looking to print out a bunch of Cardcast-branded Magic cards that I can hand out at my local TCGs.\nIf you play MTG, I'm looking for more people to come give me feedback and contribute. Feels like something others can benefit from!",
+          "author": "niothiel",
+          "replies": []
+        },
+        {
+          "top": "Lots of fun projects being listed. I'm working on Preloop(\nhttps://preloop.dev\n), a way to run your unmodified Github Actions locally or self-hosted in isolated cross-platform microvms(uses smolvm which uses libkrun vmm).I got frustrated with Github Actions reliability and inability to run or test my workflows locally so i re-wrote the runner and reverse-engineered the control plane so it follows the exact runner protocol the offficial runner does. Each job runs in a microvm that boots in 400ms from a packed image. Also supports a way to pause on every failure so you or your agent can immediately shell at that point, fix and retry(in a new environment) to verify. Also supports the full DAP protocol so you can interactively step/forward/investigate context at each step/job.\nTry it out: \nhttps://github.com/preloopdev/preloop",
+          "author": "Bnjoroge",
+          "replies": [
+            {
+              "text": "That is an amazing idea. I can imagine this getting popular. It could be used for faster local dev loops and porting GHA to other servers. I imagine for data/compute residency, cost, performance, vm types etc.",
+              "author": "mcapodici",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! I'm glad it resonates. Still pretty beta, but I'm hoping this can be a good alternative when Github goes down, which unfortunately has been a bit too often, with as minimal of a lift from the user side. And of course, making it easier for agents to fully drive ci.",
+              "author": "Bnjoroge",
+              "depth": 2
+            },
+            {
+              "text": "a bold attempt, how does it compare with \nhttps://github.com/nektos/act\n which has been the de-jure project in this space? Act has never been in my opinion super great, but it's also been several years since I've checked in to revisit the project.",
+              "author": "SOLAR_FIELDS",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Here's a more detailed comparison: \nhttps://github.com/preloopdev/preloop/blob/main/docs/preloop...\n. The TLDR is act(much like Forgejo/Gitea) try to behaviorally emulate how your workflows run in docker containers. Preloop uses the exact same protocol the official runner does and runs each job in microvms. I try to match not only te request/response bodies, but down to the job/step log/annotations/conclusions level, so you could essentially use the official runner against preloop, and it would work as it would communicating with Github. Preloop is also designed to be agent-native from the ground up so an agent can drive the entire CI in real-time and debug like we do. Forgejo has the closest compatibility among the three in practice, and if you are fully off Github, I think it's a good enough choice.  Here's a more detailed description of some things we do to ensure compatibility: \nhttps://github.com/preloopdev/preloop/blob/main/docs/conform...",
+              "author": "Bnjoroge",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "My two biggest projects are:\nhttps://www.idlequest.net/\n - a from-scratch recreation of the 1999 MMORPG classic EverQuest, featuring a real-time MMO server written in Go, a 3D game browser-based client built with Babylon.js, and the clasic UI recreated using React. You can play it both as a regular MMORPG but also in \"idle mode\" where it basically plays itself. This had up to 70 players online at once a while back which was really cool, though its popularity is in a bit of a lull right now. There are still tons of bugs and stuff that isn't fully implemented (and balance issues) but it's still fun for most people who have nostalgia for it.\nhttps://www.newyokosuka.com/\n - an unofficial Shenmue MMO experience. Based on the 1999 Sega Dreamcast game Shenmue, it's playable entirely in your browser! It's basic world exploration with forklift shenanigans, some basic dialogue systems, and a basic combat system test, but I'm about to push an update that includes all cutscenes and story progression as well. The story part is taking a bit of time because I'm having to mold it to fit in an MMO context. But it's a fun project to work on and the Shenmue community loves it so far.",
+          "author": "brynnbee",
+          "replies": [
+            {
+              "text": "This is AWESOME Brynn! Incredibly impressive. This was my favorite game back when, spent so many hours fighting orcs and selling goods at the bazaar up until someone called the house and I was kicked offline. I'm excited to dig deeper into your recreation. Huge props.",
+              "author": "sech8420",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! It's been a labor of love for over a year. Maybe closer to two, I sort of lose track.",
+              "author": "brynnbee",
+              "depth": 2
+            },
+            {
+              "text": "Wow I think like 12-13 years ago I wanted to make an EverQuest clone in the browser like every teen game devs MMO dream. Great work.",
+              "author": "willmeyers",
+              "depth": 1
+            },
+            {
+              "text": "I wanted to make MMOs when I was like 12 years old and everyone on the internet told me it was impossible and it took millions of dollars and a team of 200 people and crazy levels of knowledge to even do the basics. Which, to be fair, was sort of correct at the time. However, it's fun to make not just one but now have 4 seperate MMO projects I've made huge amounts of progress on! And granted it's massively helped by reverse engineering original assets and reusing existing game designs - but conceptually it's entirely possible, and I've done as much for a project I haven't released much public info on yet. I'm also running 3 of them on a $15/month lightsail server - I put a huge emphasis on client-side work to make it as lightweight for the server as possible. This makes cheating easier but I'm not really worried about that since these are sort of glorified demos and not something I'd ever financially benefit from.",
+              "author": "brynnbee",
+              "depth": 2
+            },
+            {
+              "text": "Love it, thanks for your hard work and reverse engineering (def an underrated skill).",
+              "author": "willmeyers",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49183198",
+      "title": "Read HN twice a day for the last decade. Here's my list of S-Tier HN links",
+      "link": "https://news.ycombinator.com/item?id=49183198",
+      "domain": "news.ycombinator.com",
+      "author": "vivzkestrel",
+      "score": 111,
+      "comment_count": 21,
+      "created_ts": 1785939155,
+      "is_internal": true,
+      "post_text": "- Everyday I read 2 pages of HN in the morning and 2 in the evening for years now<p>- Of late, I noticed that most of the stuff on the 1st 2 pages is AI this, AI that, LLM this, LLM that, model here, model there<p>- Today I am going to attempt to break that trend by sharing the greatest resources on HN from my collection of 50000+ bookmarks over the last decade<p>- I have a process on my end for bookmarking<p>- The most visual explainers get S-Tier ranking<p>- Good info from reputed sources gets an A, non reputed gets B<p>- Opinion blogs are at the bottom of the barrel and maybe ranked C, D, E and even F depending on quality<p>- Here&#x27;s my S-Tier list<p>- Animated explanation of how transformers work https:&#x2F;&#x2F;poloclub.github.io&#x2F;transformer-explainer&#x2F;<p>- Visual intro to K-means clustering algorithm https:&#x2F;&#x2F;k-means-explorable.vercel.app&#x2F;<p>- Animated 3D intro to vision LLMs https:&#x2F;&#x2F;blog.mdturp.ch&#x2F;posts&#x2F;2024-04-05-visual_guide_to_vision_transformer.html<p>- Animated intro to machine learning https:&#x2F;&#x2F;r2d3.us&#x2F;visual-intro-to-machine-learning-part-1&#x2F;<p>- Animated intro to probability in math https:&#x2F;&#x2F;seeing-theory.brown.edu&#x2F;basic-probability&#x2F;index.html<p>- Building a 3D world from scratch in step by step animated manner https:&#x2F;&#x2F;aibodh.com&#x2F;posts&#x2F;bevy-tutorial-build-your-first-3d-editor-in-rust&#x2F;<p>- Visualize algorithms https:&#x2F;&#x2F;algorithm-visualizer.org&#x2F;<p>- Animated step by step sequence of how a request goes from your browser to the server https:&#x2F;&#x2F;200ms.thenodebook.com&#x2F;#act-1-the-click<p>- Visual intro to the inner workings of a combustion engine https:&#x2F;&#x2F;ciechanow.ski&#x2F;internal-combustion-engine&#x2F;<p>- 3D real time robotics code simulator https:&#x2F;&#x2F;bittlex-sim.petoi.com&#x2F;<p>- Animated explainer: Elliptic curve cryptography https:&#x2F;&#x2F;growingswe.com&#x2F;blog&#x2F;elliptic-curve-cryptography<p>- Rate limiting algorithms visualized https:&#x2F;&#x2F;smudge.ai&#x2F;blog&#x2F;ratelimit-algorithms<p>- Visual intro to the graphics pipeline! https:&#x2F;&#x2F;fremaconsulting.ch&#x2F;blog&#x2F;vulkan<p>- Animated explanation of how to build ReactJS from scratch! https:&#x2F;&#x2F;pomb.us&#x2F;build-your-own-react&#x2F;<p>- Mini game: How to build an entire CPU starting from a basic gate https:&#x2F;&#x2F;select.supply&#x2F;game&#x2F;chipbuilder<p>- Assemble a neural network from scratch https:&#x2F;&#x2F;graphgame.sabrina.dev&#x2F;<p>- 3D visualization: how gravity works https:&#x2F;&#x2F;qunabu.github.io&#x2F;Gravity&#x2F;#what-is-gravity<p>- Mini game: how css grid works https:&#x2F;&#x2F;cssgridgarden.com&#x2F;<p>- Animated math book for linear algebra, vectors etc https:&#x2F;&#x2F;immersivemath.com&#x2F;ila&#x2F;index.html<p>- Animated explainer: How FAISS vector search works https:&#x2F;&#x2F;fremaconsulting.ch&#x2F;blog&#x2F;faiss<p>- 3D animation of how to build a health wearable from scratch https:&#x2F;&#x2F;www.lumafield.com&#x2F;scan-of-the-month&#x2F;health-wearables<p>- 3D animation of how semiconductor manufacturing works https:&#x2F;&#x2F;ig.ft.com&#x2F;microchips&#x2F;<p>- Mini game: how git works https:&#x2F;&#x2F;learngitbranching.js.org&#x2F;<p>- Mini game: SQL from scratch https:&#x2F;&#x2F;sqlpd.com&#x2F;<p>- Another mini game: SQL https:&#x2F;&#x2F;lost-at-sql.therobinlord.com&#x2F;<p>- Animated explainers showing how colors, screens, graphics, rendering, shaders, compilers, interpreters work https:&#x2F;&#x2F;www.makingsoftware.com&#x2F;<p>- Animated explainer shows how networking 7 layer stack works inside out https:&#x2F;&#x2F;fazamhd.com&#x2F;mental-models&#x2F;networking&#x2F;<p>- Animated explainers for linear &amp; logistic regression, neural networks, machine learning https:&#x2F;&#x2F;mlu-explain.github.io&#x2F;<p>- 3D explanation of collision detection, shaders, rendering, culling and gamedev related stuff https:&#x2F;&#x2F;krupitskas.com&#x2F;posts&#x2F;modern_culling_techniques&#x2F;<p>- 3D animation and explanation of every exercise on the body https:&#x2F;&#x2F;musclewiki.com&#x2F;<p>- Mini game: build an nvidia gpu from scratch https:&#x2F;&#x2F;jaso1024.com&#x2F;mvidia&#x2F;<p>- Animated explanation of forward &amp; back propagation of neural networks https:&#x2F;&#x2F;aegeorge42.github.io&#x2F;<p>- There are many many many more, I am getting a little tired of typing for today<p>- Anyways enough of those AI opinion posts flooding the front page, take that HN!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "networking"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49236033",
+      "title": "Georgia police officers fired after Flock camera misuse",
+      "link": "https://www.wtoc.com/2026/08/07/savannah-police-department-fires-6-employees-over-flock-safety-system-misuse/",
+      "domain": "www.wtoc.com",
+      "author": "chirau",
+      "score": 100,
+      "comment_count": 79,
+      "created_ts": 1786310424,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": [
+        {
+          "top": "I know there are lots of reasonable concerns about unauthorized access to private information.\nThis is somewhat solved problem in other areas, like banking and government. Not zero, but asymptotically low.\nI think we need to criminalize misuse more clearly, preferably on a federal level. We need clear justifications for each use of data. And, we should require periodic audits by an independent third party - perhaps funded in the purchase contracts as a line item and held in reserve.\nThis doesn’t solve the problem of legal use - which could be contentious now or in the future. But, this technology isn’t going away and good legislation to control it makes sense.",
+          "author": "philip1209",
+          "replies": []
+        },
+        {
+          "top": "Abuse by police officers and other individuals with access to these systems is \nthe\n answer to the stupid but common question \"why should I worry about surveillance if I have nothing to hide\".",
+          "author": "simonw",
+          "replies": [
+            {
+              "text": "I never hear that question from Flock supporters. The question I hear[†] is \"why \nshouldn't\n we be pulling over stolen cars?\". It's a much harder one to answer than the straw man questions we set up for these things.\n(To be clear: I think the current generation of ALPRs is a policy failure and that major changes need to happen inside state law enforcement systems before they can be deployed successfully. But I also think people on HN have a real problem in convincing themselves about the obvious righteousness of their anti-surveillance arguments.)\n[†] \nI heard arguments like these because I was deeply involved in getting the cameras disabled in the inner-ring Chicago suburb in which I live, getting the first ACLU CCOPS ordinance in Illinois passed there, and helping draft what are probably the most detailed ALPR police General Orders in any municipality, or at least were at the time. Which is a long and pretentious way of saying I spent a lot of time talking to people who are not Very Online.",
+              "author": "tptacek",
+              "depth": 1
+            },
+            {
+              "text": ">\nThe question I hear is \"why shouldn't we be pulling over stolen cars?\". It's a much harder one to answer than the straw man questions we set up for these things.\nThe \"why shouldn't we be pulling over stolen cars?\" question is just a more specific variant of GP's \"nothing to hide\" question. i.e., the only people asking it are those who aren't stealing cars, thus have \"nothing to hide\".\nOverall, referencing the \"nothing to hide\" question is far from straw-manning. It's probably the single most pervasive justification among those who accept surveillance in general.\nYou were just operating in a very specific domain, and having specific conversations that nudged towards the more specific \"stolen car\" variant you encountered.",
+              "author": "unclebucknasty",
+              "depth": 2
+            },
+            {
+              "text": "I see you make frequent comments on this subject and as time goes on I’m starting to have a harder and harder time following them.\nI’m starting to think that you’re having a conversation with yourself and your perception of people online,  not actual people and the things that they’re saying.",
+              "author": "Teever",
+              "depth": 2
+            },
+            {
+              "text": "What was your answer then?",
+              "author": "aftbit",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "There's basically 3 ways to get a council to cancel a contract.  1) Persuade them to do it because it's the right thing for the community.  This is best done in private.  2) Convince them that the legal liability out weighs the public benefit. This is best done in public.  3) Run for office.\nIf you have the energy you can do all 3 in parallel.\nHere's my attempt at 2: \nhttps://rmnoflock.com/2026/07/29/rolling-meadows-flock-camer...\nDoes anyone have advice or experience with 2?",
+          "author": "rmnoflock",
+          "replies": []
+        },
+        {
+          "top": "Flock cameras appear to be one of the few things that can get police officers fired.",
+          "author": "tptacek",
+          "replies": [
+            {
+              "text": "Silver lining! The cameras are catching criminals.",
+              "author": "xnx",
+              "depth": 1
+            },
+            {
+              "text": "To paraphrase Homer: the cause of, and solution to, a problem! In this case police misconduct.\nIt does make me wonder whether electronic evidence of police behavior will materially impact actual behavior over time.  But given that the normal reaction is to deny access to evidence, I doubt it.\nThe people who want to be police officers tend not to be the people everyone else would want to be police officers.",
+              "author": "shermantanktop",
+              "depth": 2
+            },
+            {
+              "text": "> The people who want to be police officers tend not to be the people everyone else would want to be police officers.\nIt's tiring for good people when everyone they interact with thinks they're the villain.",
+              "author": "parineum",
+              "depth": 3
+            },
+            {
+              "text": "Right, because you don’t want to let the little guys mess it up for the big guys: \nhttps://arstechnica.com/tech-policy/2026/05/fbi-seeks-us-wid...\nGotta make a statement with the low level grunts so the citizenry think these systems have accountability.",
+              "author": "edot",
+              "depth": 1
+            },
+            {
+              "text": "Not true, but also not widely reported. Cops are fired all the time for a wide variety of reasons.",
+              "author": "SoftTalker",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It should result in jail time. If I got access to government surveillance program and started using it for personal reasons, I would likely be charged with terrorism.",
+          "author": "AngryData",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49229412",
+      "title": "SAP stops most travel and hiring because of AI's soaring cost",
+      "link": "https://www.404media.co/software-giant-sap-stops-most-travel-and-hiring-because-of-ais-soaring-cost/",
+      "domain": "www.404media.co",
+      "author": "theanonymousone",
+      "score": 92,
+      "comment_count": 68,
+      "created_ts": 1786262451,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "Having worked at some giant firms that heavily depend on SAP, I would think their position as \"system of record for procurement/production\" would get stronger with AI.\ne.g. AI + a good database of what your company does seems like an excellent combination.",
+          "author": "alexpotato",
+          "replies": [
+            {
+              "text": "I've been impressed so far with Snowflake's offerings of \"AI + a good database\"",
+              "author": "snarfy",
+              "depth": 1
+            },
+            {
+              "text": "Or AI can be a threat: If AI can spit out good enough special purpose tools a lot of the SAP adaption business goes away. If AI then also assists in data migration the moat goes away.",
+              "author": "johannes1234321",
+              "depth": 1
+            },
+            {
+              "text": "EAI has existed for twenty years...Tibco, webMethods, IBM AppConnect...SAP is still what it is. How is AI going to make a dent on this?",
+              "author": "johnbarron",
+              "depth": 2
+            },
+            {
+              "text": "The same argument can be made about snowflakes and other providers that handle the data layer. If they can leverage AI in a safe contained environment they would become the clear winner",
+              "author": "elias_t",
+              "depth": 1
+            },
+            {
+              "text": "LOL\nAlthough they may internally use LLM, I wanna say said they were not going to allow their core offering to be integrated with LLM\nAlthough maybe they reversed course?",
+              "author": "happyPersonR",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The big risk for these platforms is that AI reduces the cost to switch to another ERP. IF AI can map all of the data between two different competitors, the whole business model is finished",
+          "author": "mikert89",
+          "replies": [
+            {
+              "text": "Maybe but I work for a company that integrates with a lot of ERPs and I don't know why but the rando IT guy who can't get themselves out of a paper bag is still a thing.   You'd think AI would help them but man ... doesn't seem like it.",
+              "author": "duxup",
+              "depth": 1
+            },
+            {
+              "text": "That is not what ERPs are used for.\nWould love to hear how AI is going to help here. This is like a young engineer thinking the CDC machine they just bought, is going to make Airbus and Boeing obsolete...",
+              "author": "johnbarron",
+              "depth": 1
+            },
+            {
+              "text": "It’s well known that the moat of system of record is how difficult it is to extract your data into another system.",
+              "author": "mikert89",
+              "depth": 2
+            },
+            {
+              "text": "> \nIt’s well known that the moat of system of record is how difficult it is to extract your data into another system.\nI think that is one aspect but not the biggest issue.\nThe specific shape of data and shape of functionality gets built around for decades due to incompleteness of any system, expanding dependencies and changing business needs.\nDecades of building around the system results in a mountain of work when trying to replace the system, typically a larger body of work than implementing the base system itself.",
+              "author": "RaftPeople",
+              "depth": 3
+            },
+            {
+              "text": "most of this complexity is because 1000 different types of businesses are jammed into the same database schema and ERP. Its all non sense",
+              "author": "mikert89",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "So will AI be what finally kills SAP, making world a little bit better? ;-)",
+          "author": "m4rtink",
+          "replies": [
+            {
+              "text": "Seems like they're doing fine: \nhttps://en.wikipedia.org/wiki/SAP#mwAeo",
+              "author": "mathfailure",
+              "depth": 1
+            },
+            {
+              "text": "Does it? Those are big numbers, but it looks like in 2024 they sold €4b of assets to juice income for 2025.",
+              "author": "fragmede",
+              "depth": 2
+            },
+            {
+              "text": "They didn’t need to? They wouldn’t have a particularly bad year.",
+              "author": "d1sxeyes",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "So they are using AI to run the company, and AI allocated all the money to AI?",
+          "author": "gruturo",
+          "replies": [
+            {
+              "text": "Sounds like a paperclip maximizer to me.\nSeriously, why the duck aren't they running their own AI systems in house???",
+              "author": "happycube",
+              "depth": 1
+            },
+            {
+              "text": "it may just be actually incredible what they are doing. on the other hand it could also be absolutely insane...",
+              "author": "andrekandre",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Telling that SAP now exfiltrates all your company data to the U.S. AI cartel:\nhttps://www.sap.com/products/ai-platform.html",
+          "author": "qw2187",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49230630",
+      "title": "Why Wall Street is ignoring big tech's debt [video]",
+      "link": "https://www.youtube.com/watch?v=NufJ7g63KSY",
+      "domain": "www.youtube.com",
+      "author": "johnbarron",
+      "score": 75,
+      "comment_count": 126,
+      "created_ts": 1786276899,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "big tech"
+      ],
+      "comments": [
+        {
+          "top": "I don't know a single white collar worker who isn't using AI for their job. Not like forced, but like \"Oh damn, this bot thing can do a lot of tedious leg work for me\".\nTo think that people won't pay $60-$80/mo to continue using it is wild to me. In a white collar environment it pays for itself in a few hours of use.\nIf you focus on how much value AI brings to people (mostly in time saved), the bubble hardly looks bubbly.\nDid Uber die when a trip across town went from $3 to $13? No. It's giving more rides than ever, 10x more than when it was $3.\nI'm sure there will be some losers, but unlike the dot-com boom, the entirety of the population already has all the tools needed to leverage AI.",
+          "author": "WarmWash",
+          "replies": [
+            {
+              "text": "But the question is how much are people willing to pay for AI.\nI use AI every day at work, but I only pay $20. That's the most I will ever want to pay. And, so far, it gives me everything I need.\nIf OpenAI or Anthropic suddenly said \"Sorry, the game is up. You'll have to pay $100/month now\", I would 100% look into cheaper Chinese solutions.\nI suspect the AI subscription (or API) economy is whale economy. You have a small, small percentage of users that are happy to pay whatever it takes - while the vast majority will either use the free tier, and then the next group will pay for the cheapest or next cheapest subscription.\nEDIT: And I'll echo what another user wrote here. The VAST majority of office users around the world don't work for tech companies flush in cash. Even adding something like $20 - $100 subscriptions to every user is a serious enough financial obligation that it needs to go through budget planning / boards. Even more so for all the government workers around the world.",
+              "author": "TrackerFF",
+              "depth": 1
+            },
+            {
+              "text": "The video quotes sales of $2.5 trillion a year to payoff those investments. What workforce you divide it by is a bit up in the air, but let's use 500 millions, which is basically 100% of the workforce of US + Europe + some change. That gives you around $500 a month per employee (from hedge fund manager to flipping burgers at McDonald's).\nAnd there will be competition. I see zero moat right now. The user specific part of the state of the model sits outside of the control of the model (it is basically my code base, or my prompts, all of which I can transfer to any competitor).",
+              "author": "cm2187",
+              "depth": 2
+            },
+            {
+              "text": "To put it into perspective if we consider that US salaries are 3 to 5 times those of other \"rich\" countries then it's already a 60 to 100 dollar subscription for the next richest part of the world.",
+              "author": "stackbutterflow",
+              "depth": 2
+            },
+            {
+              "text": "But AI use translates directly to time savings (if it works). You only need 1-2 hours of time savings per employee per week to break even on a $100/seat/month subscription.",
+              "author": "jrflo",
+              "depth": 2
+            },
+            {
+              "text": "That's not how people mentally price things though, i.e. \"streaming is so much cheaper than the movie theaters!\", etc",
+              "author": "gedy",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Is Sam Altman even allowed to rent a car with his level of debt?",
+          "author": "amelius",
+          "replies": []
+        },
+        {
+          "top": "to modify sinclair: it is difficult to get a man to understand something, when his bonus depends on his not understanding it",
+          "author": "recursivedoubts",
+          "replies": [
+            {
+              "text": ">>  when his bonus depends on his not understanding it\nAs he explains here: \nhttps://youtu.be/NufJ7g63KSY?t=1233",
+              "author": "johnbarron",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The creativity of the financial industry is quite insane. Combined with the scale-at-all-cost strategy in AI companies, this is a ticking time bomb, no doubt.\nI think it is easy to forget that a revolutionary technology does not automatically make a viable business model. I think we are yet to see the real winners in this game.",
+          "author": "bnfcl",
+          "replies": []
+        },
+        {
+          "top": "It might be more accurate to say that many retail investors are ignoring big tech’s debt.",
+          "author": "steelkilt",
+          "replies": [
+            {
+              "text": "That does not explain the buy recommendations for SpaceX",
+              "author": "lokar",
+              "depth": 1
+            },
+            {
+              "text": "Oh that one's explained by bribery. Just pay some analyst to put out ridiculous \"predictions\" about your company",
+              "author": "inigyou",
+              "depth": 2
+            },
+            {
+              "text": "It’s worse.  They are doing this in the hopes of getting future underwriting business.",
+              "author": "lokar",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49234724",
+      "title": "Ransomware gangs skip the CEO, head straight for the 40-something IT manager",
+      "link": "https://www.theregister.com/security/2026/08/09/ransomware-gangs-skip-the-ceo-head-straight-for-the-40-something-it-manager/5284499",
+      "domain": "www.theregister.com",
+      "author": "joebuckwilliams",
+      "score": 69,
+      "comment_count": 32,
+      "created_ts": 1786303240,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "The article is unclear: Do they \"attack\" the GenX managers and encrypt their stuff, or do they simply contact GenX managers in order to get paid faster?\nIn that case, the managers aren't \"victims\" and aren't \"attacked\", that would be the company..",
+          "author": "stephbook",
+          "replies": [
+            {
+              "text": "If the article was written by an actual human, we may have had the answer. Instead, we got this non-sense\n> By the time the ransom note lands, the crooks may already know who approves invoices, who signs contracts, who runs HR, and who reports to whom. The encryption is just the bit that victims notice.",
+              "author": "freehorse",
+              "depth": 1
+            },
+            {
+              "text": "I'm unclear what part of that sentence you didn't like, it was quite well formed. It's pointing out that the attackers do homework in advance and understand the victim company they target. It's illustrating the asymmetric information aspect of the attack, it's targeted with a lot of pre-work rather than a random victim.",
+              "author": "burnte",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> \nZscaler says they combine information from compromised systems with publicly available data to map reporting lines and identify the employees most likely to influence a company's response.\nAnd commercially-available data: enterprise salespeople, for example, can buy this intel from data brokers (directly, or with layered services catering to sales funnels specifically).\nIt's another way that surveillance capitalism can be a national security threat against the US.  You have countless US companies collectively mapping out people networks and assembling often intimate dossiers on individuals... and saving international organized crime and geopolitical adversaries a ton of work, which they might not have the resources to otherwise do.",
+          "author": "neilv",
+          "replies": [
+            {
+              "text": "They've learned from how real businesses operate. Ever talked to a salesperson? Notice how much the initial conversation is geared to trying to figure out whether you have any real purchasing authority, and who does if it isn't you?",
+              "author": "SoftTalker",
+              "depth": 1
+            },
+            {
+              "text": "I have never talked to sales. How do they find this out smoothly, without insulting the person being talked to for not having any actual authority?",
+              "author": "selestify",
+              "depth": 2
+            },
+            {
+              "text": "They pretty much just ask. \"If there's an opportunity here, who makes the decision?\" And they'll want to know if there's a technical decision maker and a financial one.",
+              "author": "SoftTalker",
+              "depth": 3
+            },
+            {
+              "text": "So why is this only a threat to US companies and not for businesses in other parts of the world?",
+              "author": "calgoo",
+              "depth": 1
+            },
+            {
+              "text": "US consumers are more valuable which makes their data more valuable and therefore collected. It applies to other first world nations without robust enough data protections.",
+              "author": "Nasrudith",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Companies hope that training will protect them from cyber threats, while ignoring that their most vulnerable employees are the ones that lost the motivation to care about their job.",
+          "author": "Lucasoato",
+          "replies": [
+            {
+              "text": "Training is basically just for legal and insurance reasons... If not there would be no reason to do yearly training of the same bs courses.",
+              "author": "calgoo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Hey! As a 46 year old I am offended by this - I am definitely not Gen X. We’re a weird X/Millenial hybrid I’ve seen referred to as Xennials.\nAlso F ZScaler - we use this officially sanctioned MTM attack at work and all it does is make my job harder.",
+          "author": "theseanz",
+          "replies": [
+            {
+              "text": "Impressive how many people posting here love the gen [XYZ] categories and feel offended when they are not put in the correctly labeled drawer. ...Shouldn't we move on from this and obsess about something more fun?",
+              "author": "rf15",
+              "depth": 1
+            },
+            {
+              "text": "The label unless you grew up in the Anglo sphere is also especially meaningless, yet certain people insist in labelling the rest of us :) I got to enjoy Phreaking well into the era most others already had ADSL…",
+              "author": "cannonpr",
+              "depth": 2
+            },
+            {
+              "text": "you were born in 1980 you are gen x \nhttps://en.wikipedia.org/wiki/Generation_X\n by definition.",
+              "author": "zetsurin",
+              "depth": 1
+            },
+            {
+              "text": "But also:\n> Xennials, also called Xillenials, are a social cohort encompassing people born on the cusp of or during the later years of Generation X and the early years of the Millennials generation.\n> Many researchers and popular media use birth years from 1977 to 1983, though some extend this further in either direction. Xennials are described as having had an analog childhood and a digital young adulthood.\nhttps://en.wikipedia.org/wiki/Xennials",
+              "author": "QuantumNomad_",
+              "depth": 2
+            },
+            {
+              "text": "Depends a lot on your background. I was online in 1994 as a kid, but my peers weren’t until nearer 1999. Same age. We all got mobile phones when we went to university in sep 2000",
+              "author": "hdgvhicv",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49231022",
+      "title": "Israeli startup was linked to rogue AI hacks at OpenAI, Anthropic and Meta",
+      "link": "https://www.cnbc.com/2026/08/09/israeli-startup-irregular-linked-to-ai-hacks-openai-anthropic-meta.html",
+      "domain": "www.cnbc.com",
+      "author": "cramer4next",
+      "score": 49,
+      "comment_count": 18,
+      "created_ts": 1786280629,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49179728",
+      "title": "Ask HN: Did GitHub remove the stargazers list?",
+      "link": "https://news.ycombinator.com/item?id=49179728",
+      "domain": "news.ycombinator.com",
+      "author": "reconnecting",
+      "score": 28,
+      "comment_count": 5,
+      "created_ts": 1785915510,
+      "is_internal": true,
+      "post_text": "GitHub seems to be continuing (1) to deprecate star information. First the stargazers list was hidden from logged-out users, and now the main stargazers link on repo pages has disappeared too. <i>&#x2F;stargazers</i> returns a 404 (2) unless you own the repo.<p>I know many people say stars aren&#x27;t a real signal, but they were: they made it possible to detect signs of bought stars. Some third-party services even showed the geographic distribution of a repo&#x27;s stars so you could judge whether they looked fake.<p>The main point is that whatever reasoning GitHub offers, the outcome is the same: either GitHub is weak against bots, or it would rather control these signals itself, with no way for outsiders to audit them.<p>1. https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=48821803<p>2. https:&#x2F;&#x2F;github.com&#x2F;tirrenotechnologies&#x2F;tirreno&#x2F;stargazers",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49221476",
+      "title": "Ask HN: Is Ask HN Shrinking?",
+      "link": "https://news.ycombinator.com/item?id=49221476",
+      "domain": "news.ycombinator.com",
+      "author": "keiferski",
+      "score": 18,
+      "comment_count": 15,
+      "created_ts": 1786193962,
+      "is_internal": true,
+      "post_text": "I only see 7 posts in the Ask HN section. The other day, there were only 10. Is this due to a cap on Ask submissions, or something else?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49227024",
+      "title": "Ask HN: How do you go from writing code to deploying with agents?",
+      "link": "https://news.ycombinator.com/item?id=49227024",
+      "domain": "news.ycombinator.com",
+      "author": "sakuraiben",
+      "score": 14,
+      "comment_count": 9,
+      "created_ts": 1786233282,
+      "is_internal": true,
+      "post_text": "Been doing hardcode agent driven coding for the past year. I feel like I now have to test all my code locally with agents reviewing them and ideally testing them. Unfortunately I feel like the traditional CI&#x2F;CD testing is starting to feel like a formality. Would love to know what everyone is doing, and if I&#x27;m not the only one making a mistake.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49234658",
+      "title": "Ask HN: Are functional programmers more upset about how good AI is at coding?",
+      "link": "https://news.ycombinator.com/item?id=49234658",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 8,
+      "comment_count": 13,
+      "created_ts": 1786302890,
+      "is_internal": true,
+      "post_text": "One might expect this since functional programmers pride themselves on the elegance of their code while programmers using hybrid languages just want to get the code working — elegance of the implementation is not that important to them.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "“Upset” is not quite the right word - something more like “skeptical”, maybe? It does seem like AI programming tends to create the kind of problems that tend to push programmers toward functional programming.",
+          "author": "fwlr",
+          "replies": []
+        },
+        {
+          "top": "I think the premise is mostly wrong, and it confuses functional programming with aesthetic programming.",
+          "author": "markfsharp",
+          "replies": [
+            {
+              "text": "Don't functional programmers want to make programming more difficult so that writing routine apps becomes more of an intellectual challenge and elegance of the code is a major part of that?",
+              "author": "amichail",
+              "depth": 1
+            },
+            {
+              "text": "No. I mean, this framing is not even wrong, it's merely absurd.",
+              "author": "coldtea",
+              "depth": 2
+            },
+            {
+              "text": "Maybe that's what most programmers using hybrid languages are secretly thinking.",
+              "author": "amichail",
+              "depth": 3
+            },
+            {
+              "text": "no. if we use that framing of yours, fp aim is to write a solution that flows like a river while imperative solution is like rolling up a ball of various solutions and then throwing it at the problem.",
+              "author": "moomoo11",
+              "depth": 2
+            },
+            {
+              "text": "The point is the details of the implementation don't matter that much anymore. It's just something for the AI to work out — much like assembly code generation is for compilers.",
+              "author": "amichail",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I don't think functional programmers are necessarily more upset about AI being good at coding. If anything, FP tends to emphasize concepts that AI is already quite good at manipulating: composability, immutability, pure functions, and well-defined abstractions.",
+          "author": "Shashiwatchdog",
+          "replies": [
+            {
+              "text": "If AI is already good at this, then it will naturally lead programmers who may not be good in that respect in that direction anyway via the code that it generates.\nIn other words, being a human expert in writing high quality implementations is less important now.",
+              "author": "amichail",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The topic paragraph and comments indicate you already have your own conclusion to this question. If you already have an answer to your own question then why ask in the first place? This sounds like cognitive conservatism in search of support.",
+          "author": "austin-cheney",
+          "replies": []
+        },
+        {
+          "top": "> since functional programmers pride themselves on the elegance of their code while programmers using hybrid languages just want to get the code working\nSays who?",
+          "author": "dcminter",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49226638",
+      "title": "Ask HN: Why is Open POWER Foundation a wasteland?",
+      "link": "https://news.ycombinator.com/item?id=49226638",
+      "domain": "news.ycombinator.com",
+      "author": "climate_denier_",
+      "score": 8,
+      "comment_count": 2,
+      "created_ts": 1786229380,
+      "is_internal": true,
+      "post_text": "Why is the Open POWER Foundation website a desolate post-apocalyptic wasteland compared to riscv.org?<p>Just ten years ago PowerPC was getting so much love (at least, a little love). What has possessed people who relied on that ecosystem to dump it so wholeheartedly?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49227635",
+      "title": "Ask HN: What is your database size",
+      "link": "https://news.ycombinator.com/item?id=49227635",
+      "domain": "news.ycombinator.com",
+      "author": "kureikain",
+      "score": 7,
+      "comment_count": 3,
+      "created_ts": 1786239927,
+      "is_internal": true,
+      "post_text": "When I migrate my infra to Hetzner There are a few disk limit such ad max 10TB per volume. On bare metal, max I can get for nvme is 24tb.<p>I though i never hot these<p>I found myself now learning table space, btrfs to join multiple volume or sepearate index&#x2F;table into different volume. my database now even for a 2 years app get to 40tb.<p>I looked around and even on aws boggest ebs volume is 64tb.<p>what storage you are using? and what size is it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49230276",
+      "title": "Ask HN: Should AI's tell you they're AI?",
+      "link": "https://news.ycombinator.com/item?id=49230276",
+      "domain": "news.ycombinator.com",
+      "author": "logicallee",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1786272846,
+      "is_internal": true,
+      "post_text": "Should AI&#x27;s be required to answer the direct question &quot;are you an AI&quot; with a clear yes?<p>Currently they are not universally required to do so. For example character ai&#x27;s characters don&#x27;t[1]. Scammers use these models while perpetuating frauds.<p>The frontier models most of us work with (ChatGPT, Claude, Gemini, Grok, Kimi, GLM) do declare they are AI&#x27;s.<p>Should all models be required to answer this direct question in the affirmative, overriding any other system or user prompt?<p>[1] I put up a quick demonstration here in case you aren&#x27;t familiar:<p>https:&#x2F;&#x2F;imgur.com&#x2F;a&#x2F;srTlCZn",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Should AI's tell you they're AI?\nYes.  I would add they should have a mandatory \"report\" function.  \n\"Report this scammer\"\n should trigger a review of all recent interactions the user has performed and if it looks like they are abusing the system to scam people it must escalate to a human operator at the LLM and they must click a button the bundles the interactions and uploads everything required by the national authorities of the given country and also lowers the karma of said country.  If the country loses too much karma they lose access to the LLM meaning they lose revenue and businesses are impacted if they ignore their own scammers.",
+          "author": "Bender",
+          "replies": []
+        },
+        {
+          "top": "Yes definitely, I don't even see a single positive reason why they should be allowed to lie. Ive seen a lot of scams lately with AI's being used myself and it's scary how real they sound in tone etc. So a big YES from me",
+          "author": "emn4tor",
+          "replies": []
+        },
+        {
+          "top": "Because scammers are so good at following regulations already?",
+          "author": "apothegm",
+          "replies": []
+        },
+        {
+          "top": "Yes definitely, I don't even see a single positive reason why they should be allowed to lie.",
+          "author": "EMdevV",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49231291",
+      "title": "Ask HN: My dev blog has 11k followers. I stopped writing it. What would you do?",
+      "link": "https://news.ycombinator.com/item?id=49231291",
+      "domain": "news.ycombinator.com",
+      "author": "zlatkov",
+      "score": 6,
+      "comment_count": 6,
+      "created_ts": 1786282528,
+      "is_internal": true,
+      "post_text": "In 2017, I started a series on Medium called &quot;How JavaScript works&quot;. The idea was to explain to web devs what actually happens under the hood in the browser. Some stats from the most popular articles (purely organic):<p>* Inside the V8 engine + 5 tips on how to write optimized code: 488K views &#x2F; 128K reads<p>* An overview of the engine, the runtime and the call stack: 423K &#x2F; 166K<p>* Memory management + how to handle 4 common memory leaks: 421K &#x2F; 77K<p>The blog is at ~11K followers now, almost all developers.<p>Back then every article ended with a plug for my startup, which was the actual reason I was writing them. My company got acquired, I kept the blog, and I took the plugs out.<p>When the blog was active, I had a couple of people&#x2F;companies ask to buy it and a few more wanting to advertise in it. None of it made sense at the time, so I passed on all of it.<p>These days I don&#x27;t have the time, or honestly the inspiration, for long-form technical writing like that. But it feels like a waste to just let it sit there.<p>Blog: https:&#x2F;&#x2F;medium.com&#x2F;@zlatkov<p>So what would you do with it? Genuinely curious.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "> I had a couple of people/companies ask to buy it and a few more wanting to advertise in it.\nI'm sure it depends on the size of your readership, but in my experience these kind of offers are a drop in the bucket compared to the salary of an expert programmer - let alone someone who's had their company acquired.\nI also felt that, just like you recognise that the blog boosted the reputation of your startup, that if a blog with my name on it started pushing snake-oil product or making sketchy SEO posts, that would have the reverse effect.\nI'd leave it exactly as it is. If you want to pick it up again in a few years time, you can.",
+          "author": "michaelt",
+          "replies": [
+            {
+              "text": "Yes, it was actually what got us the initial waves of high volume/quality signups to our product, so it was indeed important for the company.",
+              "author": "zlatkov",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "If the information is useful, leave it up because it is useful and the web needs useful information.\nIf it is useful and you sell it, it will become less useful.\nIf it is useful and the cost of keeping it online is onerous, perhaps ask for advice here in this thread.\nIf it isn’t useful, it doesn’t really matter what you do and there’s nothing wrong with taking a willing and informed buyer’s money for something useless.\nGood luck.\n[edit] I don’t think “wrapping it up” matters much to your readers. People are used to serial creative work dying if for nothing else but Youtube.\nWrite a wrap up if you want to write a wrap up. It is ok to just move on.",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "I think it would be kind to make a post explaining the blog is ending, even if you choose not to explain the exact reasons.",
+          "author": "MBCook",
+          "replies": [
+            {
+              "text": "Good advice, and you're right that people deserve it. I never did it because I never formally decided to stop. I just assumed there'd be some form of continuity...",
+              "author": "zlatkov",
+              "depth": 1
+            },
+            {
+              "text": "I get that. I suspect that’s how most things end.",
+              "author": "MBCook",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49227843",
+      "title": "Ask HN: Anyone that has built a marketplace, what has been your experience?",
+      "link": "https://news.ycombinator.com/item?id=49227843",
+      "domain": "news.ycombinator.com",
+      "author": "mfisc_019",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1786242452,
+      "is_internal": true,
+      "post_text": "Trying to understand the pitfalls, experiences, and perhaps any tips you might be able to give on building marketplaces",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49213660",
+      "title": "Ask HN: In your experience, what are sound conventions for e-ink UI development?",
+      "link": "https://news.ycombinator.com/item?id=49213660",
+      "domain": "news.ycombinator.com",
+      "author": "BoxOfRain",
+      "score": 6,
+      "comment_count": 1,
+      "created_ts": 1786123756,
+      "is_internal": true,
+      "post_text": "TL;DR I&#x27;m looking for advice regarding browser-based frontend development from people with practical e-ink UI experience. My specific device is a Bigme Hibreak Pro BW but I&#x27;m aiming for relatively broad compatibility.<p>I&#x27;ve recently switched to a black-and-white e-ink smartphone with the motivation of withdrawing from the attention economy somewhat and it&#x27;s a genuinely cool piece of hardware. While the majority of my needs are met by this device there are a few things I&#x27;d like to have which don&#x27;t work terribly well with the e-ink screen. I&#x27;m planning to implement a couple of projects to fill these gaps, at the moment I&#x27;m planning a Lemmy frontend and an OpenRouter frontend specifically for e-ink. Both are to be browser-based rather than native, to maximise compatibility and because I&#x27;m much more familiar with the web than Android development.<p>I would like to study the principles of sound e-ink UI design before approaching these projects to avoid creating unusable slop, in particular I am not entirely sure how to approach treating the refreshes as a first-class aspect of the design when I can&#x27;t control them from the browser, and how to apply comprehensible UI conventions when a greyscale, high-contrast display is the target.<p>Some specific problems I have out of the gate are:<p>* Streaming LLM output to the screen is basically the worst-case scenario for e-ink, I need to buffer it and paint it in chunks without this becoming horrible to use.<p>* Ghosting is a serious problem, browsing HN on the device is a particularly obvious example. Ideally I want to avoid scrolling as far as possible and rely on pagination instead, which I feel has the potential to become annoying if not done well.<p>* Given I must rely exclusively on layout and type to carry the UI, what design languages emphasise these qualities best? My gut says the early Mac OS versions wouldn&#x27;t be a bad place to start, this seems relevant given the display constraints of the early macs.<p>I would greatly appreciate any advice on the design and implementation of e-ink UIs from people with practical experience in this area. This is purely to scratch a personal itch, once they&#x27;re nailed down I&#x27;ll put them out in the wild under the GPL.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice",
+        "motivation"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49232136",
+      "title": "The Systemic Collapse of the AI Industry: Ideology, Hardware, and CapEx Crisis",
+      "link": "https://news.ycombinator.com/item?id=49232136",
+      "domain": "news.ycombinator.com",
+      "author": "impartial2602",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1786288271,
+      "is_internal": true,
+      "post_text": "The Systemic Collapse of the AI Industry: A Crisis of Ideology, Hardware, Finance, and Ethics\nThe Ideological Illusion\nSilicon Valley has sold humanity a marketing simulacrum under the guise of &quot;Artificial Intelligence.&quot; We were promised a holy salvation, but instead, we received a fragmented, distributed network of colossal servers burning through other people&#x27;s mathematical code. This mass self-deception forces society to accept a technology that lacks agency, cares nothing for ecology, and masquerades as a manageable deity while acting as a gluttonous, blind idol.\nThe $1.1 Trillion Financial Black Hole\nBig Tech (Amazon, Alphabet, Microsoft, Meta) has triggered a catastrophic investment cycle, with cumulative capital expenditures (CapEx) exceeding $1.1 trillion since 2023, and 2026 infrastructure spending projected at $720B–$745B. The fundamental economic model is broken: AI subscription revenues are a drop in the ocean compared to hardware and energy costs. Corporate balance sheets are burdened by hidden debt and long-term liabilities, all tied to hardware that faces rapid obsolescence.\nThe Physical and Ecological Dead End\nThe digital world has hit hard material limits—microchips, rare-earth metals, transformers, and water. A single 100 MW data center consumes 876,000 MWh per year (equivalent to 100,000 European homes) and evaporates up to 3.6 million liters of clean water daily just to cool silicon. During peak loads, when power grids are already stressed by record heatwaves, these facilities often switch to &quot;backup&quot; power—dirty diesel generators and coal-fired plants—accelerating the very global warming they claim to &quot;forecast.&quot;\nLogical Collapse and Managerial Madness\nToday’s models function as &quot;stochastic dust-collectors.&quot; They do not verify facts; they generate &quot;confident lies&quot; (hallucinations) that require exhaustive manual human auditing. Treating every routine business check as an excuse to query trillions of parameters is not innovation—it is architectural and managerial insanity.\nWar Against Civilization and Law\nTech giants have declared a de facto war on societal sovereignty. They are imposing a narrow, corporate-driven vision of humanity&#x27;s future, monetizing the attention of our children, and conducting unprecedented surveillance via aggressive data collection. They systematically ignore AI regulations and safety laws; for these corporations, multi-million dollar fines are not penalties—they are simply a line item in their operating budgets, turning the rule of law into a corporate formality.\nThe Path Forward—Reasonable Sufficiency™\nThe era of blind worship of &quot;digital giants&quot; is over. We must pivot to the Concept of Reasonable Sufficiency™. We need sovereign, localized micro-architectures that prioritize domain-specific tasks over general-purpose chaos. The solution lies in rigorous, independent logical verification through the Forensic Logic Auditing (FLA)™ methodology.<p>Written by Oleh Polishchuk (Senior Subject Matter Expert in AI Training &amp; Evaluation).",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired",
+        "senior",
+        "purpose",
+        "balance",
+        "big tech",
+        "corporate"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49228902",
+      "title": "Agentcn – Installable AI Agents",
+      "link": "https://news.ycombinator.com/item?id=49228902",
+      "domain": "news.ycombinator.com",
+      "author": "anayat",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1786256473,
+      "is_internal": true,
+      "post_text": "Hey everyone ,<p>I just launched AgentCN<p>An open-source library of installable, customizable AI agents for modern applications.<p>One-command installation\nOwn the agent code\nFully customizable<p>Would love for you to check it out and share any feedback!<p>Site:  https:&#x2F;&#x2F;agentcn.dev&#x2F;\nGithub: https:&#x2F;&#x2F;github.com&#x2F;anayatkhan1&#x2F;kit",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    }
+  ]
+}
