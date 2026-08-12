@@ -1,0 +1,548 @@
+{
+  "scraped_date": "2026-08-12",
+  "source": "hacker_news",
+  "total_scraped": 100,
+  "nontech_count": 7,
+  "posts": [
+    {
+      "id": "49242739",
+      "title": "Tl;dv: Over 180k meetings left wide open",
+      "link": "https://bobdahacker.com/blog/tldv-hack",
+      "domain": "bobdahacker.com",
+      "author": "colesantiago",
+      "score": 613,
+      "comment_count": 205,
+      "created_ts": 1786364765,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meetings"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49246804",
+      "title": "Show HN: Needle2: 14MB agentic LLM for phones, wearables, smart home and robots",
+      "link": "https://cactuscompute.com/needle",
+      "domain": "cactuscompute.com",
+      "author": "HenryNdubuaku",
+      "score": 508,
+      "comment_count": 171,
+      "created_ts": 1786382527,
+      "is_internal": false,
+      "post_text": "Hey HN,<p>Henry from Cactus here!<p>We previously released Cactus Needle, a 14MB agentic LLM for tool call, device use, and structured extraction for phones, wearables, smart homes, small robots and microcontrollers. We got really great feedback here, and have now incorporated the suggestions to release Needle 2.<p>The whole model is a single 14MB binary that runs a full session in 28MB of RAM; 45m parameters at 2bit compression. Needle hits 500 tokens&#x2F;sec decode speed on a Raspberry Pi 5, sits between 400-1,500 tokens&#x2F;sec on VR devices like Meta Quest 3S and Apple Vision Pro, and ranges 300-700 on sub-$200 phones such as the Samsung A-Series.<p>On the tool call and mobile device use benchmarks, Needle 2 trades wins with closest small models like LFM2.5 230M and Apple Foundation Model, at 5x to 70x smaller, both at f16 vs Needle 2 at 2bit. Needle is based on Simple Attention Networks from our paper (<a href=\"https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2607.18363\" rel=\"nofollow\">https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2607.18363</a>).<p>Edge AI has lately meant Macs and PCs, but that is just 1.5 billion of over 21 billion connected IoT devices in the world today, and in emerging markets most phones ship under $200, no NPU, cheap GPUs. These include budget phones, Raspberry Pis, microcontrollers, wearables, small robots like Reachy Mini, and connected home devices.<p>A conventional transformer of Needle&#x27;s width and depth spends 164 MFLOPs per token, and even one squeezed down to Needle&#x27;s parameter count spends 87, Needle spends 70. Even on a high-end phone, an always-on assistant lives inside a power budget; every MFLOP is milliwatt-hours, and Needle spends 7x to 85x fewer of them per token than the smallest performant LLMs. More about the architecture in the link.<p>When we structure intelligence for consumer devices as functions with typed parameters, the only hard part is mapping a messy sentence onto them; which function, with which values. Our research found that when framed that way, the problem needs no world knowledge and no open-ended prose, which is why 45M parameters suffice.<p>Needle 2 expands to structured extraction where the schema can be passed in-place of tools and the model returns structured output. You can use Needle as a text-classification model with an enum field, as a summarization model by providing a schema that extracts key fields, everything but free-range decode.<p>Every product has its own tool vocabulary and fine-tuning needle helps it achieve frontier-level performance on custom tasks, so using the python package (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;cactus-compute&#x2F;needle\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;cactus-compute&#x2F;needle</a>), Needle can be fine-tuned Needle on a Mac&#x2F;PC in minutes to a few hours, with automated data-generation pipeline, just pass a couple samples.<p>Nonetheless, every response carries a learned confidence score based our Cactus Hybrid technique. If above your threshold, act, below it, escalate to the cloud or bigger model. Combining Needle 2 with a private DeepSeek-v4-Flash deployment works particularly well for enterprise-level tasks at barely any cost, we can help with this setup.<p>We have put a lot of thoughts into Needle 2 but might still be missing quite a lot, please use the playground in the provided link to test Needle and share your thoughts, always appreciated!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned",
+        "feedback",
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "This is cool. I definitely think the \"micro\" sized LLM space is underappreciated, so it's always good to see work like this. I foresee a paradigm in some contexts where you have a hierarchy of LLMs, with more competent models actively training smaller models to solve specific tasks very efficiently, and something like this could be the smallest layer in that stack.\nWith that being said, the web demo is not particularly impressive. It really doesn't like anything I throw at it. I'm fine with accepting that fine-tuning is the solution to this, but I wonder if there's anything to gain from a bigger model? I know it's completely counter to the whole point of this, but a 14MB binary using 28MB of RAM seems unnecessarily small and pretty arbitrary.\nLike, what does a 28MB binary get you? Or a 140MB binary? Or a 1.4MB binary? I'm guessing the choice of 14MB came from minimizing the size as much as possible while meeting certain requirements/performance expectations, but even a Pi 5 has plenty more room to spare. Curious if there's a good explanation for this (which I may have missed in my skim of the post).",
+          "author": "nater5000",
+          "replies": [
+            {
+              "text": "So, its not a general language model, focused on tool call strictly for tiny edge-devices. There are solutions everywhere for high-capacity devices, Needle is for sub-$200 devices.",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            },
+            {
+              "text": "It seems to me that the model struggles to have enough general intelligence, knowledge, or reasoning capacity for arbitrary prompted tool calling. At this size, not surprising.\nI am VERY interested in seeing how it could perform with some fine-tuning for a specific family of tools/tasks. That would be a great addition to the demo.",
+              "author": "anon373839",
+              "depth": 2
+            },
+            {
+              "text": "It also seems to have far more tokens per second than needed for general \"close the blinds\" \"tool_call(blinds, CLOSED)\".\nI do wonder if more smartness could be had by using sparser experts....     And possibly even having some kind of expert switching penalty to try to reduce the amount of data read from read only flash memory by encouraging subsequent tokens to use already loaded experts.",
+              "author": "londons_explore",
+              "depth": 3
+            },
+            {
+              "text": "i would assume a model this size would require finetuning tbh. even functiongemma recommends that.",
+              "author": "electroglyph",
+              "depth": 3
+            },
+            {
+              "text": "14mb? More like sub-$20 devices.",
+              "author": "fwipsy",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "It's definitely cool that you can get any reasoning whatsoever out of such a small model. That said, its reasoning is \"interesting\":\nQuery: \"Make the living room dark\"\nAgent: \"User wants lights on in living room. 'dark' implies dim. Room 'living room', action 'on'.\" (And on every test I did, it just completely ignored the \"brightness\" parameter)\nIt also appears to have no concept of what a door or light actually is, whenever the query diverges from \"Lock door X\" or \"Turn on light X\", it tries to shoehorn whatever additional context is given into the device name:\nQuery: \"Lock out the vacuum salesman at the front door\"\nAgent tries to lock \"front door vacuum salesman\"\n\"The way you talk really makes me appreciate silence\" is classified as \"positive\" with 82% confidence.",
+          "author": "CarpeNecopinus",
+          "replies": [
+            {
+              "text": "Ok, this is genuinely funny, we will fix these as we iterate, thanks lol.",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            },
+            {
+              "text": "that model is 14MB large what do you expect. but I agree it's funny regardless",
+              "author": "AmazingTurtle",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My first query:\n> Make it a little warmer in here.\nThe reply:\n>      \"name\": \"set_thermostat\",\n>      \"arguments\": {\n>        \"temperature\": 65,\n>        \"mode\": \"cool\",\n> ...\n>   \"reasoning\": \"'warmer' implies need for cooling; set_thermostat with temperature 65 (typical warmth) and mode 'cool'.\",\nMaybe I'm doing it wrong?",
+          "author": "dbeardsl",
+          "replies": [
+            {
+              "text": "Tested your example, the confidence is 0. In smart home context, I can think of an application where the low confidence answers can be forwarded to cloud, whereas the vast majority generic queries solved locally, if the confidence is reliable enough. The response is quite fast by the way.",
+              "author": "ocihangir",
+              "depth": 1
+            },
+            {
+              "text": "But this isn’t a query that \nshould\n need to be forwarded to the cloud for acting on!",
+              "author": "ComputerGuru",
+              "depth": 2
+            },
+            {
+              "text": "I don't know, the back of my napkin says you'll need consensus of at least three servers in order to complete the command.",
+              "author": "goodmythical",
+              "depth": 3
+            },
+            {
+              "text": "It's not a conversational model. It's meant as a local tool calling model.",
+              "author": "dannyw",
+              "depth": 1
+            },
+            {
+              "text": "Yes, I think OP understands that. What he and many others in this thread are trying to understand is what makes this model useful.",
+              "author": "derangedHorse",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Funny result from the web demo. I'm well aware that it's an extremely small and, well, stupid, model, but even so:\nQuery: HN\nResult:\n{\n  \"function_calls\": [\n    {\n      \"name\": \"lock_door\",\n      \"arguments\": {\n        \"door\": \"front door\"\n      }\n    }\n  ],\n  \"reasoning\": \"User wants to lock the door. No specific door mentioned, so use 'front door' as default.\",\n  \"confidence\": 0\n}\nI'd expect it to at least ignore (call no tools) for the queries that it doesn't understand. And it seems like it does do that, just not consistently.",
+          "author": "Tiberium",
+          "replies": [
+            {
+              "text": "The website says the model is for \"tool calling, device use, and structured extraction\". Your example just doesn't seem to be very relevant. FWIW, it did a pretty good job for tool calling when I tried it, and I think it could be pretty nice to have this running on locally and integrate with Home Assistant.",
+              "author": "yoavm",
+              "depth": 1
+            },
+            {
+              "text": "False positives are definitely relevant and worth measuring - natural language interfaces always have a discoverability problem, i.e., users not knowing what actions the system does and does not support. If the frontend of that system lacks the ability to reject unsupported commands, weird stuff happens.\nNonetheless, this is very cool work! If I can offer a small suggestion to the team at Cactus, it would be to evaluate your releases on some usability criteria (including false positives). Any serious integrator or adopter of these models would want to have that information available.",
+              "author": "evmaki",
+              "depth": 2
+            },
+            {
+              "text": "> \"confidence\": 0\nOP and the linked page talk about the confidence score and using it as an action threshold, so it looks like an appropriate total response to me.",
+              "author": "jdknezek",
+              "depth": 3
+            },
+            {
+              "text": "Right, but that's not the same thing as reporting a benchmark across a test set. It doesn't help me determine how well the model does across a decently-large sample size of commands. It doesn't tell me with what reliability the confidence will be below a given threshold when it should be, above that threshold when it should be, etc.",
+              "author": "evmaki",
+              "depth": 4
+            },
+            {
+              "text": "Thanks, noted!",
+              "author": "HenryNdubuaku",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Specifying units seems to be unreliable; I tried adding a description to the set_thermostat temperature:\n    \"temperature\": {\n      \"type\": \"number\",\n      \"description\": \"degrees Fahrenheit\"\n    },\n\n\nSet the living room temperature to 70 degrees Celsius\n    {\n      \"function_calls\": [\n        {\n          \"name\": \"set_thermostat\",\n          \"arguments\": {\n            \"room\": \"living room\",\n            \"temperature\": 70,\n            \"mode\": \"cool\"\n          }\n        }\n      ],\n      \"confidence\": 0.6045\n    }\n\n\nSet the living room temperature to 70 degrees Fahrenheit\n    {\n      \"function_calls\": [\n        {\n          \"name\": \"set_thermostat\",\n          \"arguments\": {\n            \"room\": \"living room\",\n            \"temperature\": 70,\n            \"mode\": \"heat\"\n          }\n        }\n      ],\n      \"confidence\": 0.4536\n    }\n\n\nSet the living room temperature to 70 degrees\n    {\n      \"function_calls\": [\n        {\n          \"name\": \"set_thermostat\",\n          \"arguments\": {\n            \"room\": \"living room\",\n            \"temperature\": 70\n          }\n        }\n      ],\n      \"confidence\": 0.8517\n    }\n\n\nTrying \"in degrees Fahrenheit\" for the tool description had similarly counterintuitive confidences.\nEdit: to be clear, the counterintuitive behavior is that the confidence ended up higher for the wrong units.",
+          "author": "wky",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49238851",
+      "title": "Show HN: Voice driven murder mystery, Interview AI suspects with your voice",
+      "link": "https://www.whodunnitai.com/",
+      "domain": "www.whodunnitai.com",
+      "author": "MrRowTheBoat",
+      "score": 208,
+      "comment_count": 86,
+      "created_ts": 1786331920,
+      "is_internal": false,
+      "post_text": "Hey HN!<p>I&#x27;m excited to show off this really fun project I put together. I originally built this project 2-3 years ago, AI was already booming at the time, however voice AI agents were still very early. I loved my proof of concept at the time, but wasn&#x27;t quite happy with it.<p>I recently had the desire to check out the tech again, and know many of you will be interested.<p>Interviews are speech to speech with OpenAI&#x27;s gpt-realtime-2.1 over WebRTC. This model is... expensive, and because of that, I have to add some amount of restrictions, conversations are tied to a authenticated Clerk user id. I have also added a 30 minute timer because well, I really don&#x27;t want to go broke while I sleep tonight.<p>Each suspect has a tool they call when you make a direct accusation. It captures who you accused and a faithful list of the evidence you actually stated.<p>A separate gpt-5-mini judge then decides which of the case&#x27;s required evidence facts you genuinely presented. Paraphrasing counts, vague suspicion and fishing don&#x27;t.<p>The rest is Next.js, MongoDB, and Clerk.<p>Let me know whether the suspects hold up under a real interrogation.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49245491",
+      "title": "Exploiting System Management Mode with a very long interrupt",
+      "link": "https://github.com/xoreaxeaxeax/smiiiiiiiiiiiiiiii",
+      "domain": "github.com",
+      "author": "WhiteDawn",
+      "score": 181,
+      "comment_count": 77,
+      "created_ts": 1786377794,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "Technically this is not a vulnerability because you need to be root. I would rather call it \"taking back control of your hardware\". SMM is an evil thing because the user cannot control it or look into SMM memory region. Why do CPU vendors implement a mode that cannot be controlled by the user? Obviously to use it in user-hostile purposes (software copying prevention and reporting, DRM, government access backdoors, etc.), I see no other explanation.",
+          "author": "codedokode",
+          "replies": [
+            {
+              "text": "It's interesting to keep this in historical context, IMO.\nYou're Intel.  The year is somewhere around 1989.  Your hardware interface that you export to regular software has gotten complex enough that you want to implement some of it in some kind of software that you can implement at a higher level than just logic.  You also maybe want your hardware partners (ie. motherboard and system manufacturers) to be able to change parts for their implementations.  Additionally some of this code might eventually end up being hard real time with the possibility of damaging the chip if it doesn't run at the correct window (think power management).  You don't have the area budget for rewritable microcode of the size you'd want; this code has to live in DRAM.\nYou look around at the system software people are running on x86.  At the highest quality you've got OS/2, and it goes downhill fast from there.  Most end users are running DOS (from several vendors).  So you write a higher privilege mode that runs underneath DOS, can actually be pretty close to a tiny RTOS kernel, and document it.  But the whole point is to be relatively transparent, and definitely inaccessible to kernel mode, which you don't trust to pull its own pants up after it uses the bathroom.\nThen later, when your corporate vendors are asking you to secure the boot chain, it only makes sense that this mode is also cryptographically signed.\nAnd I think this is a more interesting story (and probably closer aligned to the truth).  That is, we can get to an anti-user feature that can't be truly owned by the final customers through small steps where each felt like a pro-user customer product decision.",
+              "author": "monocasa",
+              "depth": 1
+            },
+            {
+              "text": "On commodity PC platforms there are both upsides and downsides of having runtime firmware in a special mode like SMM (or the secure world on ARM64 which is a whole other topic). For hardware errors (e.g. mapping row/bank/column to PA), platform workarounds, certain platform power states, power fail notifications, backwards compat, (unfortunately) extending AML by writing to port B2, etc it can be beneficial for hardware+firmware vendors to have a runtime execution environment that doesn't require shipping OS drivers. Lately the downsides of this are growing and historically security hasn't been great.\nThat being said, there are benefits of having SMM protect firmware integrity from a malicious/compromised kernel. On most AMD64 platforms, SPI flash can only be written to by SMM and that is a foundational piece of the PC security model (FW update, authenticated UEFI variables, etc). This has nothing to do with copy protection, DRM, or backdoors.",
+              "author": "emily-c",
+              "depth": 1
+            },
+            {
+              "text": "SMM was originally conceived for power management, as it first appeared in the laptop-oriented 386SL. Then it was used for seamless backwards compatibility e.g. peripheral emulation. Unlike e.g. TPMs or other DRM-ish schemes, IMHO SMM was never hostile from the beginning.",
+              "author": "userbinator",
+              "depth": 1
+            },
+            {
+              "text": "I disagree.  If it were not user hostile the days before BIOSes were cryptographically signed the SMM code would have no reason to disallow the kernel modifying or replacing it.  Like `insmod` lets root-in-userspace modify kernel-privilege-level code.\nIn fact the whole situation is very much analogous to Kernel Lockdown, which is controversial.\nWith signed bootcode you can give a reason for not letting the userspace modify the SMM code.  But when all this stuff was designed there were no bootcode signatures.",
+              "author": "octoberfranklin",
+              "depth": 2
+            },
+            {
+              "text": "the SMM code would have no reason to disallow the kernel modifying or replacing it\nDon't forget that SMM code started out in A0000 --- the area of RAM that would've otherwise been inaccessible and wasted anyway, because it was usually decoded to the VGA. Also, this was the era of DOS; there was no difference between \"kernel\" and \"application\".",
+              "author": "userbinator",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The designers of the firmware anticipate this attack but punt it to the vendor, apparently:\n    //\n    // Platform implementor should choose a timeout value appropriately:\n    \n    [snip]\n\n    // - The timeout value must be longer than longest possible IO operation in the system",
+          "author": "mike_hearn",
+          "replies": [
+            {
+              "text": "I wonder whether a Thunderbolt accessory can cause arbitrarily long IO operations. What's the upper bound before some other layer gives up and causes the instruction to fault?",
+              "author": "wtallis",
+              "depth": 1
+            },
+            {
+              "text": "No need. Thunderbolt is usually susceptible to DMA attacks.",
+              "author": "M95D",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "One question, the firmware the repo shows seems to come from tianocore. How would you know what firmware your OEM is using? What if they have some other kind of configuration? Also I'm kind of surprised that the firmware can execute instructions like this, I was under the impression that after booting the firmware basically has finished it's job and is never touched again.",
+          "author": "podocarp",
+          "replies": []
+        },
+        {
+          "top": "Related repo from them, mentioned in the readme as well: \nhttps://github.com/xoreaxeaxeax/asm-hall-of-shame\n> Instruction latency analysis usually focuses on performance optimization—making code run as fast as possible. The Assembly Hall of Shame takes the opposite approach: searching for the absolute floor of single-instruction performance.\nFun stuff!",
+          "author": "Hyperlisk",
+          "replies": [
+            {
+              "text": "And already posted to HN a few days ago which is surely where this post originated from.",
+              "author": "inigyou",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm amused at the lengths the readme goes to in order to drive home the fact that this needs to be a LOOOOOOOOOOOOOOOOOOOONG instruction, including the unnecessarily long code block illustration. The topic is interesting anyway, but that makes it way more entertaining.",
+          "author": "nazgulsenpai",
+          "replies": [
+            {
+              "text": "Do you think a short instruction is okay or does it need to be long? The instructions were a bit unclear in that regard :D",
+              "author": "BadBadJellyBean",
+              "depth": 1
+            },
+            {
+              "text": "Only if the short instruction is incredibly long.",
+              "author": "nazgulsenpai",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49256057",
+      "title": "What I learned by putting GitHub Copilot behind a MitM proxy",
+      "link": "https://www.lighthousenewsletter.com/p/i-put-github-copilot-behind-a-mitm",
+      "domain": "www.lighthousenewsletter.com",
+      "author": "j0selit0",
+      "score": 164,
+      "comment_count": 24,
+      "created_ts": 1786444847,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": [
+        {
+          "top": "One thing I found that I thought was a fun addition, is using eBPF made this even easier. No need to fight with anyone that is using certificate pinning, mTLS or anything else, you just get the raw plaintext data straight of the wire (right before encryption and right after decryption) and works nicely for most of the agents and IDE's.\nThat will in practice give you everything from telemetry to prompts, and its funny to see just how much some of them collect/run that is not at all related to your own ask..\nA handy alternative when certain applications tend to make it harder to apply a MiTM proxy and you can dump it straight into your own scripts/programs to filter out and store it in whichever format you want for more analysis.",
+          "author": "p1llus",
+          "replies": [
+            {
+              "text": "Out of curiosity: How?\nThey don't offload TLS to the kernel, do they? Most apps do it in userspace linked against openssl afaik.\nDo you patch that lib? If ebpf \"just\" operates at network/packet level, I don't see how it can do more than Mitmproxy in regard to avoid DH-PFS/Pinning",
+              "author": "kro",
+              "depth": 1
+            },
+            {
+              "text": "It’s done via uprobes which allows ebpf to attach to users processes or libraries, basically like ld_preload but built into the kernel. First link that explains it \nhttps://blog.quarkslab.com/defeating-ebpf-uprobe-monitoring....\n but there are many more links about it and it is a pretty useful tool for debugging in prod environments. (Also first link: \nhttps://blog.px.dev/ebpf-function-tracing/\n) this also the intended use case. \npx.dev is btw a cncf project which also helps for ebpf debugging in k8s (comes from new relic)",
+              "author": "merb",
+              "depth": 2
+            },
+            {
+              "text": "Exactly this :)\nYou can either attach the uprobes directly to the systems OpenSSL to capture anything using it (curl etc), though most of these LLM clients and similar uses their own static compiled  BoringSSL, but its very straight forward to find, it does require some knowledge to determine the right place where you attach the uprobe, but after that it can easily be scripted to automatically find the right offsets (as these are usually stripped binaries)",
+              "author": "p1llus",
+              "depth": 3
+            },
+            {
+              "text": "eBPF started as a network tool, but (according to the creators of it) targeting the network was just a ploy to get a foot in the door so they could start expanding it to other things. They didn’t think the idea would be accepted if they tried to do it all at once. So now it works on many parts of the system, not just the network.",
+              "author": "orev",
+              "depth": 2
+            },
+            {
+              "text": "Surprised that works, I thought TLS was done entirely in process space.\nI think I found it, My first thought was some sort of builtin ssl library backdoor, but it looks like you do some ld.preload shenanigans to inject a eBPF monitor. I am not sure exactly what the BPF brings to the table here. A convenient interface to intercept the accept() syscall?",
+              "author": "somat",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I was curious to understand how Copilot implements its harness, and also how I was exhausting my quota so quickly. End up going down a rabbit hole of intercepting its network traffic with mitmproxy.\nA few interesting things I found along the way:\n- watched model/capability discovery and routing happen in real time\n- looked at what gets injected into context and sent with ghost completions\n- found that recent edits can pull in context from files other than the one you're currently editing (including infamous .env)\n- found the SQLite session store behind Chronicle, including previous prompts/responses\n- watched the model query that history through tool calls\nI then went through the VS Code source to reconcile some of what I was seeing on the wire with the actual implementation.\nOverall some interesting lessons around how their harness is implemented.",
+          "author": "j0selit0",
+          "replies": [
+            {
+              "text": "How do you actually cleanly solve that .env issue?\nAnything cross platform and coding agent agnostic?\nI suppose that .env file should be removed, but then things aren’t easy: no native multiplatform secret manager, or the std lib of the language doesn’t offer an API over the native secret store, etc.\nOr a \"secret injection proxy\" for some cases could work I guess.",
+              "author": "jiehong",
+              "depth": 1
+            },
+            {
+              "text": "Infisical, or Bitwarden Secret Manager? Those two look like perfectly reasonable if the llm is just careless (but still, nothing prevents the LLM from intentionally cat'ing /proc/self/environ or from running /usr/bin/env or set or similar)",
+              "author": "ElectricalUnion",
+              "depth": 2
+            },
+            {
+              "text": "https://varlock.dev\n (free, open source) can pull secrets from many places, and has a credential broker (proxy) to inject placeholders, then replace with real secrets at the network boundary. There are a few other tools like this, but ours seems to be the most flexible so far.",
+              "author": "theozero",
+              "depth": 2
+            },
+            {
+              "text": "Do you feel that something like \nhttps://secretspec.dev/\n addresses these points?",
+              "author": "mehackernewsacc",
+              "depth": 2
+            },
+            {
+              "text": "Data retention clauses?\nI dont see how you can ever really trust an LLM anyway to follow instructions.",
+              "author": "sandos",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Minor factual correction: The Codex client is open source. \nhttps://github.com/openai/codex",
+          "author": "ameliaquining",
+          "replies": []
+        },
+        {
+          "top": "Nice deep dive, I always wondered how copilot worked compared to similar tools. I'm shocked at the lack of of a rule for env files, I at least thought with a tool more integrated with github as a whole that would be a default but alas.",
+          "author": "tolugenius",
+          "replies": []
+        },
+        {
+          "top": "Disagree with the conclusion, even without carefully curated context every high end LLM perform just as well, maybe with an extra detour. In contrast if even one of the learnings is not up to date or doesn't apply to the current situation you find yourself with a long detour or even a failure.",
+          "author": "_davide_",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49246057",
+      "title": "Launch HN: Stoa Markets (YC S26) – A Marketplace for GPUs and AI Servers",
+      "link": "https://www.stoaexchange.com",
+      "domain": "www.stoaexchange.com",
+      "author": "erenberke",
+      "score": 77,
+      "comment_count": 51,
+      "created_ts": 1786379727,
+      "is_internal": false,
+      "post_text": "Hi HN, we’re Eren, Berat and Kaan. We’re building Stoa (<a href=\"https:&#x2F;&#x2F;www.stoaexchange.com\">https:&#x2F;&#x2F;www.stoaexchange.com</a>), a marketplace for new and used GPUs and AI servers.<p>GPUs are the collateral in the data center buildout. Today, financing terms mostly depend on the offtaker, meaning the company that has committed to use the compute.<p>If that company is a hyperscaler, the financing can look investment grade. If it’s a smaller cloud or startup, terms get expensive fast, even with the same hardware as collateral.<p>The lender’s problem is pretty reasonable. If the borrower defaults and we need to sell these servers, what can we actually get for them? There isn’t a good answer today.<p>We started brokering GPU deals to understand why. It was much more manual than we expected. The hardware is still traded through phone calls, forwarded spreadsheets and long email threads.<p>One week, a seller quoted us $200k for a server node and another quoted $240k for what looked like the same thing. Neither was necessarily wrong. They had different information and could only see their own corner of the market.<p>Before we could compare the quotes, we had to sort out the configuration, condition, warranty, location and delivery terms. It’s the same information Kelley Blue Book attaches to a used-car price through the year, trim, mileage and condition. “An H100 server” isn’t enough information to know what something is worth, just as “a used BMW” isn’t.<p>This is also just a bad way to buy or sell hardware. A buyer looking for the best price shouldn’t have to contact several brokers and dealers separately, repeat the same request and then untangle a pile of different quotes. Sellers shouldn’t have to search for demand one buyer at a time. A market of this size deserves better liquidity.<p>Stoa puts the request into one format and sends it to dealers that have gone through know-your-business (KYB) checks. We verify the company, who owns it and who is allowed to trade for it. Before the request goes out, the buyer confirms the exact configuration, quantity, condition, warranty, location, delivery terms and what will be checked during inspection. Dealers return firm quotes against that same request without seeing each other’s bids. Once a quote is accepted, payment, shipping, delivery and inspection are then tracked through settlement. We don’t take possession of the hardware.<p>We got more than $300M in requests for quotes (RFQs) during our first month.<p>The immediate goal is to make buying and selling this hardware less painful. As trades build up, they also leave lenders with actual resale evidence instead of list prices and one off appraisals.<p>We knew from the beginning that this couldn’t be a software only marketplace. GPU trading runs on relationships, and inventory isn’t shown to just anyone. Dealers need to trust the people bringing them clients, and clients need to trust that quotes will actually turn into trades. We built those relationships over time by brokering deals ourselves. Stoa gives people a cleaner way to trade, from the first RFQ through settlement, but it doesn’t replace the trust underneath. Those relationships, and the history of who actually follows through, are a big part of our process.<p>We’ve known each other for more than ten years. We have founded companies, traded interest rate derivatives, built trading and pricing systems for oil and gas. We learned GPU trading by doing the deals ourselves, and Stoa grew out of the problems we kept running into.<p>We charge a tiered fee on completed trades, with lower fees at higher volumes. It’s free to sign up at <a href=\"https:&#x2F;&#x2F;www.stoaexchange.com&#x2F;signup\">https:&#x2F;&#x2F;www.stoaexchange.com&#x2F;signup</a>. If you’ve bought, sold, financed or had to liquidate GPUs, would be great to hear your take!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning",
+        "learned",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "I assume this is a strictly B2B proposition in spite of \"built for every side of the GPU market\" -- meaning I'm probably not going to be able to buy/bid on small (e.g. 2-8) lots of used, matched RTX 3090s for example?",
+          "author": "mayank",
+          "replies": [
+            {
+              "text": "For now, we are focusing on institutions, since most of this hardware has strict export controls. We deal with all sizes though, we can do a single card to 1024 servers. Can always reach out to us to see if a specific request would fit in the marketplace or not",
+              "author": "erenberke",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is super cool!\nI agree the non-fungible nature of a H100 (or whatever) is a massive challenge. How do you actually verify usage/thermal history on these? Hours run and thermal violations aren't stored on the card IIRC, only ECC error counts and retired pages persist in the GPU's own InfoROM, host side monitoring like DCGM logs, are only as good as whatever the seller hands over. Is condition at inspection based on a real monitoring export from the deployment or just an InfoROM/diagnostic check at the time, and if it's the latter isn't hours run and thermal history basically unverifiable unless we assume good faith and the seller was logging the whole time ?\nEssentially how do you avoid having the 'used car problem' without leaning heavily on seller reputation & warranties?",
+          "author": "matt-p",
+          "replies": [
+            {
+              "text": "Great question. We don’t treat “used” as one bucket. Before the RFQ goes out, the buyer says what logs and tests they need. If the seller can’t provide usage history, that’s stated in the quote rather than inferred. The market then prices that difference. Hardware with better records and more thorough testing should attract higher bids.",
+              "author": "erenberke",
+              "depth": 1
+            },
+            {
+              "text": "Yep, so basically the buyer has to trust the seller is honest and/or doesn't make a mistake (uploading the data for the wrong GPUs or something).",
+              "author": "matt-p",
+              "depth": 2
+            },
+            {
+              "text": "if wrong documentation is produced, buyers have the right to dispute / return the equipment for a preset period of time. we get the sellers to certify the verifications they upload.",
+              "author": "erenberke",
+              "depth": 3
+            },
+            {
+              "text": "I'm not saying this is bad, or any worse than other marketplaces, but essentially a direct contract would typically have these 'protections' too. How do you enforce 'you can get a refund in xx days if you're unhappy'? Are you holding the funds in escrow for that period of time or is this a direct buyer<>seller contract term that you have no way of enforcing on behalf of the buyer?",
+              "author": "matt-p",
+              "depth": 4
+            },
+            {
+              "text": "The terms are defined in the sales agreements on the platform. Both parties abide by the terms throughout the transaction. We do not release any payment to the sellers until the buyer certifies that they have done the inspection and they are satisfied with the purchase. Throughout the settlement steps, we ask for evidence from both parties.\nContract is essentially pre-defined on the platform, and the parties need to agree with it to trade on Stoa. Establishes mutual trust among both parties.",
+              "author": "erenberke",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I’m very curious about how you’re fending off fraud— just wondering about how a lot of dark web transactions supposedly have escrow, but people waive it and then get burned. Do you have anything beyond KYC/escrow?",
+          "author": "bklosky",
+          "replies": [
+            {
+              "text": "We use Stripe Connect to transfer the funds, and it is not a waivable process. In addition to KYC documentation, the team personally meets with any participant we onboard to the marketplace. We also have the ability to manually intervene in transactions if need be, but so far we have not had any transaction issues. It almost reminds me of how people were super skeptical of Uber and Airbnb when they first launched, but human trust goes a long way, sometimes further than we originally anticipate.\nOne thing that guides how we think about this is: we will never ask you to make the payment before you feel comfortable with the counterparty you are dealing with.",
+              "author": "erenberke",
+              "depth": 1
+            },
+            {
+              "text": "I agree with you that most humans are trustworthy, but fraudulent actors will build trust with counterparties on your marketplace and then abscond. \n\"Personally meeting with them\" does not prevent a \"long firm\" from skipping town with the proceeds from a $6m order later.\nI think what you guys are building is awesome, just gotta be really really careful with fraud and trust when building a marketplace in particular.",
+              "author": "bklosky",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "But what about the GPUs that are considered defective for corporate and enterprise use, but perfect for personal use...say like A100s that maybe having ECC issues but I can live with that",
+          "author": "stevefan1999",
+          "replies": [
+            {
+              "text": "We ask any seller to post the condition and testing reports for the hardware they sell, so there is no info asymmetry. As long as there is a willing buyer and a willing seller at the conditions specified, transaction goes through! We deal with A100s all the time.\nNice thing about these chips is that they have built in software that allows you to see the condition. The secondary market also supports the circular economy, most of these servers are proving to be useful longer than what the market initially thought. There is always a case to go with used equipment instead of new ones.",
+              "author": "erenberke",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Is pricing spot-only or do you support forward commitments? GPU supply deals seem to want term structure - a lab locking capacity for 6 months cares about a very different price than burst spot. Curious how you handle default risk on the longer terms.",
+          "author": "jawdatz",
+          "replies": [
+            {
+              "text": "We do both! Solving for the forward curve has very interesting applications in the GPU market, as depreciation is a big factor.\nWe have credit limits/margins in place to be posted for any forward trades which helps with the default risk, similar to other commodity markets. Users can enter the delivery timing details as they create a request, and dealers will price accordingly.\nMost of the hardware has super long wait times right now (16-24 weeks), and there is no market structure today that allows to price the differential between a spot, immediately available B300 server vs one with 16-24 week lead time. Our marketplace allows to observe that.",
+              "author": "erenberke",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49250090",
+      "title": "Toxic underground fires spreading at California landfills",
+      "link": "https://www.newstribune.com/news/2026/aug/07/toxic-underground-fires-spreading-at-california/",
+      "domain": "www.newstribune.com",
+      "author": "tapper",
+      "score": 70,
+      "comment_count": 25,
+      "created_ts": 1786397740,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "toxic"
+      ],
+      "comments": [
+        {
+          "top": "Somewhat moot point but official website insists it is NOT a fire\nhttps://chiquitacanyon.com/odor-mitigation/recent-updates/\n>>Any odors coming from the Chiquita Canyon Landfill are related to an abnormal biotic or abiotic process (also known as a landfill reaction) taking place deep within a lined, but older and inactive portion of the Landfill waste mass. This reaction is not a fire or subsurface oxidation event within the waste mass, and is not related to waste disposal operations at the Landfill.",
+          "author": "ethagknight",
+          "replies": []
+        },
+        {
+          "top": "Time to tax the generation that filled them for the costs of their choices. Unpriced externalities is a failure mode of unregulated market choices.",
+          "author": "maerF0x0",
+          "replies": [
+            {
+              "text": "Or fine the operator for violating existing laws",
+              "author": "lokar",
+              "depth": 1
+            },
+            {
+              "text": "The problem is that the statutory fines need to be setup so that they are actually a deterrent rather than a cost of doing business.\nThey need to be based on revenue and an exponentially growing cost per violation, directly related or not.\nFirst offense: 25% of ALL TIME revenue (not profit)\nSecond offense: 50%\nThird offense: 100%\nWhy 100%? Because they should be effectively put out of business if they get to their third offense. California has the third strike rule for people and crime, let's make it the same for corporations; they're people after all.",
+              "author": "garciasn",
+              "depth": 2
+            },
+            {
+              "text": "> The problem is that the statutory fines need to be setup so that they are actually a deterrent rather than a cost of doing business\nOut of curiosity, how high are the fines now?\n> Why 100%? Because they should be effectively put out of business if they get to their third offense. California has the third strike rule for people and crime, let's make it the same for corporations; they're people after all.\nIf you've already lost 75% of your all-time revenue, you're probably already out of business. Heck, a loss of 25% of all revenue ever is enough to knock most businesses out.\nIt'd be interesting to consider the unintended effects of such a law. Making sure you regularly pay out any spare cash as dividends to the owners seems likely, as it reduces the risk (meaning, if they get fined, they've already taken out of the business all that they can).\n>  California has the third strike rule for people and crime, let's make it the same for corporations; they're people after all.\nA big practical difference is that corporations have limited liability. Because of limited liability, such laws are going to hit very differently than sending people to jail, because the owners can avoid much much more of the personal risk than an equivalent person could under Three Strikes.",
+              "author": "Windchaser",
+              "depth": 3
+            },
+            {
+              "text": "One way to curb limited liability is to require a bond or insurance.  Now you can be fined more than the net value of the company.  And, you need to convince another party (who has $ on the line) to sell you the insurance at a reasonable price, they will have questions.",
+              "author": "lokar",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Thank your ancestors, who were to lazy to recycle and treat the rest in a thermic process upfront.\nIt bet those landfills could have easily been only one third the size and close to non-toxic.\nWhen generations cheap out, it's always one of the next who suffers.\nPains me.",
+          "author": "GuestFAUniverse",
+          "replies": [
+            {
+              "text": "Recycling is mostly a lie.  Plastic can’t really be usefully recycled.  Glass would need to be sorted by color, which is infeasible.  There is already more paper and cardboard than can be consumed.  Clean aluminum and steel containers recycle well, but are not a lot of volume, and don’t burn.",
+              "author": "lokar",
+              "depth": 1
+            },
+            {
+              "text": ">Glass would need to be sorted by color, which is infeasible\nA 16 year old with an Arduino can do the obvious part, what's the hard part that I'm missing? Scale/volume?",
+              "author": "snypher",
+              "depth": 2
+            },
+            {
+              "text": "Europeans seemed to manage to figure the problem out. It’s a cultural problem, not a scientific one. Because it requires gen pop to accept some sort of civic responsibility to do it properly, something Europeans have much more inkling to do",
+              "author": "SOLAR_FIELDS",
+              "depth": 2
+            },
+            {
+              "text": "Strange. And why did paper and cardboard prices go up during COVID and recycling companies asked to _not_ put paper into the rest?\nYour statements do not make sense.",
+              "author": "GuestFAUniverse",
+              "depth": 2
+            },
+            {
+              "text": "Household waste recycling mostly works if you sort the materials at source. If you have separate bins for glass, metal, and paper+cardboard, all of them can be recycled economically. Plastic recycling only works for industrial waste, as you can't really expect consumers to identify and sort all the different types of plastic.",
+              "author": "jltsiren",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
