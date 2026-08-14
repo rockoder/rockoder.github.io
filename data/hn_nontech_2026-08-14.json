@@ -1,0 +1,632 @@
+{
+  "scraped_date": "2026-08-14",
+  "source": "hacker_news",
+  "total_scraped": 116,
+  "nontech_count": 16,
+  "posts": [
+    {
+      "id": "49233423",
+      "title": "Ask HN: What are you working on? (August 2026)",
+      "link": "https://news.ycombinator.com/item?id=49233423",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 317,
+      "comment_count": 1169,
+      "created_ts": 1786296202,
+      "is_internal": true,
+      "post_text": "What are you working on?  What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I got laid off at the end of April and have been building my own personal dream tool since, it's a skeuomorphic carpentry simulator with an agent MCP. You start with real wood specs and a shop full of miter saws, router tables, table saws and the like. Think of it like Sketchup but no extruding rectangles.\nIt's been really fun to build with. Agents can create parametric procedures so e.g. stick framing becomes a simple function call for the next agent, building a flywheel. There is full agent-human parity in every surface, so there is a human UI for the procedures too.\nEvery operation is yaml, so agents pick it up pretty quickly. Agents can also file feature requests when they reach for a tool that doesn't exist. You can export to 3d printing files, video walk-through, step files, get a BOM and a cut plan, view your project in life-size with AR. There is a notion-like interface for authoring build guides... a lot going on. If you're a woodworker/software engineer you might enjoy it.\nYou can add the MCP to your agent of choice, send a picture, description, sketch or whatever; say \"build this with Sawdust\"\nhttps://sawdust.diy",
+          "author": "taylorfinley",
+          "replies": [
+            {
+              "text": "Love it, I had a similar but probably worse idea a few years back while woodworking. I agree the issue with  essentially all CAD and sketchup etc is it forces you to work with primitives that are different from your real world ones. Extruding shapes as you said, instead of actually milling lumber and working in common known dimensions.\nI also suspect there’s a fairly finite number of sane join primitives, you can have rabbets, dados, dominos, dovetails, pocket screws, etc. These could be experimented with digitally against an existing design. And your tool availability could determine what you can do.\nAnd of course cut order and assembly is just a DAG and can be generated from geometric constraints of the actual design.",
+              "author": "appplication",
+              "depth": 1
+            },
+            {
+              "text": "> I also suspect there’s a fairly finite number of sane join primitives, you can have rabbets, dados, dominos, dovetails, pocket screws, etc. These could be experimented with digitally against an existing design. And your tool availability could determine what you can do.\n> And of course cut order and assembly is just a DAG and can be generated from geometric constraints of the actual design.\nThat's exactly it! It's a well-constrained space, and some amazing utility falls out as a consequence of using real-world materials and operations instead of cad-native primitives.",
+              "author": "taylorfinley",
+              "depth": 2
+            },
+            {
+              "text": "Wishing you all the best with this project. Super cool.\nIf you are looking to improve the mcp, you should try adding a UI to it (see \nhttps://apps.extensions.modelcontextprotocol.io/api/\n). And the server happens to be in python, you should check out: \nhttps://mplemay.github.io/belgie/examples/mcp/\n. It is a project I have been working on which makes it easy to build MCP UIs from python.",
+              "author": "mplemay",
+              "depth": 1
+            },
+            {
+              "text": "Have been building something non-CAD too in the space which is also aligned with carpentry. This looks really neat and can't believe how similar the functionality is. Would be great to chat!\nhttps://shopspec.io/app",
+              "author": "variodot",
+              "depth": 1
+            },
+            {
+              "text": "Shopspec looks very cool! Love to see people building in this direction, we have at least validated for each other that the demand for a tool like this has a minimum bound of at least 2.\nFeel free to reach out! Email in profile.",
+              "author": "taylorfinley",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Lots of fun projects being listed. I'm working on Preloop(\nhttps://preloop.dev\n), a way to run your unmodified Github Actions locally or self-hosted in isolated cross-platform microvms(uses smolvm which uses libkrun vmm).I got frustrated with Github Actions reliability and inability to run or test my workflows locally so i re-wrote the runner and reverse-engineered the control plane so it follows the exact runner protocol the offficial runner does. Each job runs in a microvm that boots in 400ms from a packed image. Also supports a way to pause on every failure so you or your agent can immediately shell at that point, fix and retry(in a new environment) to verify. Also supports the full DAP protocol so you can interactively step/forward/investigate context at each step/job.\nTry it out: \nhttps://github.com/preloopdev/preloop",
+          "author": "Bnjoroge",
+          "replies": [
+            {
+              "text": "a bold attempt, how does it compare with \nhttps://github.com/nektos/act\n which has been the de-jure project in this space? Act has never been in my opinion super great, but it's also been several years since I've checked in to revisit the project.",
+              "author": "SOLAR_FIELDS",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Here's a more detailed comparison: \nhttps://github.com/preloopdev/preloop/blob/main/docs/preloop...\n. The TLDR is act(much like Forgejo/Gitea) try to behaviorally emulate how your workflows run in docker containers. Preloop uses the exact same protocol the official runner does and runs each job in microvms. I try to match not only te request/response bodies, but down to the job/step log/annotations/conclusions level, so you could essentially use the official runner against preloop, and it would work as it would communicating with Github. Preloop is also designed to be agent-native from the ground up so an agent can drive the entire CI in real-time and debug like we do. Forgejo has the closest compatibility among the three in practice, and if you are fully off Github, I think it's a good enough choice.  Here's a more detailed description of some things we do to ensure compatibility: \nhttps://github.com/preloopdev/preloop/blob/main/docs/conform...",
+              "author": "Bnjoroge",
+              "depth": 2
+            },
+            {
+              "text": "Is it a goal to actually run self-hosted runners against preloop?",
+              "author": "Kinrany",
+              "depth": 3
+            },
+            {
+              "text": "Yes! You could effectively use the official runner against preloop or our (almost) drop-in rust equivalent which is a 10x smaller binary and has far lower idle rss. The control plane currently is unfortunately coupled with the data plane, but a refactor is one of my top priorities soon.",
+              "author": "Bnjoroge",
+              "depth": 4
+            },
+            {
+              "text": "That is an amazing idea. I can imagine this getting popular. It could be used for faster local dev loops and porting GHA to other servers. I imagine for data/compute residency, cost, performance, vm types etc.",
+              "author": "mcapodici",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My two biggest projects are:\nhttps://www.idlequest.net/\n - a from-scratch recreation of the 1999 MMORPG classic EverQuest, featuring a real-time MMO server written in Go, a 3D game browser-based client built with Babylon.js, and the clasic UI recreated using React. You can play it both as a regular MMORPG but also in \"idle mode\" where it basically plays itself. This had up to 70 players online at once a while back which was really cool, though its popularity is in a bit of a lull right now. There are still tons of bugs and stuff that isn't fully implemented (and balance issues) but it's still fun for most people who have nostalgia for it.\nhttps://www.newyokosuka.com/\n - an unofficial Shenmue MMO experience. Based on the 1999 Sega Dreamcast game Shenmue, it's playable entirely in your browser! It's basic world exploration with forklift shenanigans, some basic dialogue systems, and a basic combat system test, but I'm about to push an update that includes all cutscenes and story progression as well. The story part is taking a bit of time because I'm having to mold it to fit in an MMO context. But it's a fun project to work on and the Shenmue community loves it so far.",
+          "author": "brynnbee",
+          "replies": [
+            {
+              "text": "This is AWESOME Brynn! Incredibly impressive. This was my favorite game back when, spent so many hours fighting orcs and selling goods at the bazaar up until someone called the house and I was kicked offline. I'm excited to dig deeper into your recreation. Huge props.",
+              "author": "sech8420",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! It's been a labor of love for over a year. Maybe closer to two, I sort of lose track.",
+              "author": "brynnbee",
+              "depth": 2
+            },
+            {
+              "text": "That Shenmue MMO is a phenomenal effort. Who would have thought a hobbyist would launch Shenmue Online before Yu Suzuki :D",
+              "author": "ac2u",
+              "depth": 1
+            },
+            {
+              "text": "Thanks :)",
+              "author": "brynnbee",
+              "depth": 2
+            },
+            {
+              "text": "> an unofficial Shenmue MMO experience\nHow is this not going to get sued into oblivion by Sega? Especially using your real name with it.\nThat being said, I tried it on Firefox and just got an empty blue screen after the level loaded.",
+              "author": "ranger_danger",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been building the most advanced automotive diagnostic app on the market\nI used to be a mechanic, and spend a lot of my free time working on project vehicles, motorcycles, tractors, trucks etc. I wanted a tool to track the tasks I needed done, then a way to easily access VIN info for parts search, then I DMV records, and finally built an iphone app to scan the OBD2 diagnostic codes and hook them up to a custom ai diagnostic prompt.\nIt's been a blast to work on, I need to focus on marketing it and get some users that aren't close friends, but it's been serving my purposes this summer so far.\nI've seen nothing with anywhere close to this depth of diagnostic reporting.\nhttps://crewchief.cc\n \nhttps://apps.apple.com/us/app/crewchief-auto/id6760673109",
+          "author": "meandave",
+          "replies": [
+            {
+              "text": "From your description I hoped that you would be analyzing audio to solve problems that don't raise codes.\nYears ago my daily driver had a noisy wheel hub bearing, so when I heard a similar noise in a different vehicle this year, I assumed it was the same problem.  However, when a mechanic investigated, it turned out to be an issue with the breaks instead.  I have now learned to discriminate between a bearing and a brake issue, but there are a ton of other conditions I've never heard before that would be obvious to an experienced repair technician.\nI bet an app could become as good a seasoned mechanic at identifying mechanical issues from audio samples.",
+              "author": "elevation",
+              "depth": 1
+            },
+            {
+              "text": "I agree, its an idea I've been playing with for a while also. The difficult part would be isolating the sound, but perhaps with new ai audio models that has become trivial, its definitely worth revisiting",
+              "author": "meandave",
+              "depth": 2
+            },
+            {
+              "text": "Don't worry about isolating the sound too much. If your human ear can identify a bad bearing even if the radio is on, you can train a model to do the same.  Some of this will come just from spectral analysis, which makes it easy to distinguish the rumble of a V8 a belt squeak.\nYou can also probably guide a user through a couple of system changes to isolate sounds.  For instance, a sound related to the alternator may change with both RPMs and electrical load.  A sound related to the serpentine belt might be affected by engaging/disengaging a mechanical load like the A/C.  A wheel bearing or brake noise will track with the rolling speed, not the RPMs, and may be affected by steering (a hard turn to the right may unload the left side of the vehicle.)\nI'm blown away by how much diagnostic info a good repair tech can get just from listening to a car; I would pay to have this kind of guidance in a phone app.",
+              "author": "elevation",
+              "depth": 3
+            },
+            {
+              "text": "I wish Apple exposed serial on iOS so that we could just use any generic USB - OBD2 cable on iPhones",
+              "author": "asimovDev",
+              "depth": 1
+            },
+            {
+              "text": "same",
+              "author": "meandave",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "A boat game for 5+ age group!\nI was never much of a game developer, but recently my 5 year old son wanted to play a game so we decided to build one together.\nIt's a boat game, you basically steer a boat in an isometric 2d world, transporting passengers, cargo etc between ports.\nAs we designed it, the ideas just kept on coming. He made or directed a lot of the art inside of the game (even the audio), and we included friends and family as characters within the game.\nA lot of fun to build - hilarious at times. I used Lua and LÖVE2D, building basically a game engine for an isometric world, so that took \nsignificantly\n more time than expected.\nIf you want to test it [1], please do, but keep in mind it's only in Norwegian, but I am sure most people would be able to figure it out as it's meant for age group 5 and up:\n[1] \nhttps://apps.apple.com/no/app/b%C3%A5tspillet/id6791630382\nAt this point our entire extended family and their kids, grandchildren etc are actually playing this, so it's been super fun.",
+          "author": "sgt",
+          "replies": [
+            {
+              "text": "I'm super curious how you make the development process interesting for him. I get that a 5yo would be good at generating ideas but how do you then go \"okay, now I'll need a week in front of a screen to build all these ideas\" and not have him lose interest. Do you accelerate using LLMs?",
+              "author": "parasti",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, good question! We can do a lot of the creative process on paper, with his styrofoam models, and audio effects etc without even being near the computer. Then when I need to go ahead and write code, it's not going to be that interesting for him, but I've shown him how it works and how we can change stuff.\nA lot of the very technical parts are done during the evenings after he's asleep, and I think that's okay, as it'll end up in a better result the next day so he can go and test and give further feedback.\nOh yes, I eventually did less hand coding and relied more on Claude Code to get the job done. I understand the game loop, the architecture and the algorithms, which I think is important. Don't hide that under the hood.",
+              "author": "sgt",
+              "depth": 2
+            },
+            {
+              "text": "This is precisely why I'm building Breaka Club:\nhttps://breaka.club/blog/why-were-building-clubs-for-kids\nI also attempted to make a game with my eldest daughter initially. Unsurprisingly, she didn't want to sit there watching me code or drag things around in Godot's level editor.\nAdmittedly, I really need to make a new blog post showing the latest improvements brought about from the in school pilot I'm running weekly at the moment.",
+              "author": "Benjamin_Dobell",
+              "depth": 2
+            },
+            {
+              "text": "That's a really interesting approach. I love to see the kids sitting there and drawing on paper etc.",
+              "author": "sgt",
+              "depth": 3
+            },
+            {
+              "text": "Oh that sounds too extremely cool, have a 5yo brother, will definitely show this to him, wish you all the best on your journey :)",
+              "author": "emn4tor",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49270040",
+      "title": "Show HN: Woxi - Open-source Mathematica / Wolfram Language reimplementation",
+      "link": "https://woxi.ad-si.com",
+      "domain": "woxi.ad-si.com",
+      "author": "adius",
+      "score": 308,
+      "comment_count": 45,
+      "created_ts": 1786529189,
+      "is_internal": false,
+      "post_text": "Woxi is an interpreter for the Wolfram Language written in Rust.<p>It comes with Woxi Studio, a Mathematica-like GUI built with iced, but you can also use Woxi through a CLI, Jupyter kernel, Python package, npm package, or WASM module.<p>Compared with wolframscript &#x2F; Mathematica, the main differences are:<p>- Free and open source\n- Very fast startup - Typically milliseconds rather than seconds for the Wolfram kernel, making Woxi practical for shell scripts, one-liners, and other short-lived processes\n- Embeddable - It can run in a browser via WASM or be embedded into another application as a scripting language<p>A more detailed comparison with Mathematica is available here:\n<a href=\"https:&#x2F;&#x2F;woxi.ad-si.com&#x2F;docs&#x2F;comparison&#x2F;mathematica&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;woxi.ad-si.com&#x2F;docs&#x2F;comparison&#x2F;mathematica&#x2F;</a>.<p>Conformance is ensured with ~26&#x27;000 unit tests and ~900 .wls script snapshot tests.<p>The current focus is on fixing remaining edge cases, improving performance, and growing the community.<p>If you use the Wolfram Language, I&#x27;d be particularly interested in feedback on compatibility and missing functionality.\nContributions and bug reports are also very welcome: <a href=\"https:&#x2F;&#x2F;github.com&#x2F;ad-si&#x2F;Woxi\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;ad-si&#x2F;Woxi</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49213660",
+      "title": "Ask HN: In your experience, what are sound conventions for e-ink UI development?",
+      "link": "https://news.ycombinator.com/item?id=49213660",
+      "domain": "news.ycombinator.com",
+      "author": "BoxOfRain",
+      "score": 212,
+      "comment_count": 72,
+      "created_ts": 1786123756,
+      "is_internal": true,
+      "post_text": "TL;DR I&#x27;m looking for advice regarding browser-based frontend development from people with practical e-ink UI experience. My specific device is a Bigme Hibreak Pro BW but I&#x27;m aiming for relatively broad compatibility.<p>I&#x27;ve recently switched to a black-and-white e-ink smartphone with the motivation of withdrawing from the attention economy somewhat and it&#x27;s a genuinely cool piece of hardware. While the majority of my needs are met by this device there are a few things I&#x27;d like to have which don&#x27;t work terribly well with the e-ink screen. I&#x27;m planning to implement a couple of projects to fill these gaps, at the moment I&#x27;m planning a Lemmy frontend and an OpenRouter frontend specifically for e-ink. Both are to be browser-based rather than native, to maximise compatibility and because I&#x27;m much more familiar with the web than Android development.<p>I would like to study the principles of sound e-ink UI design before approaching these projects to avoid creating unusable slop, in particular I am not entirely sure how to approach treating the refreshes as a first-class aspect of the design when I can&#x27;t control them from the browser, and how to apply comprehensible UI conventions when a greyscale, high-contrast display is the target.<p>Some specific problems I have out of the gate are:<p>* Streaming LLM output to the screen is basically the worst-case scenario for e-ink, I need to buffer it and paint it in chunks without this becoming horrible to use.<p>* Ghosting is a serious problem, browsing HN on the device is a particularly obvious example. Ideally I want to avoid scrolling as far as possible and rely on pagination instead, which I feel has the potential to become annoying if not done well.<p>* Given I must rely exclusively on layout and type to carry the UI, what design languages emphasise these qualities best? My gut says the early Mac OS versions wouldn&#x27;t be a bad place to start, this seems relevant given the display constraints of the early macs.<p>I would greatly appreciate any advice on the design and implementation of e-ink UIs from people with practical experience in this area. This is purely to scratch a personal itch, once they&#x27;re nailed down I&#x27;ll put them out in the wild under the GPL.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice",
+        "motivation"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49283063",
+      "title": "Launch HN: Bullet (YC S26) – A Faster Coding Agent",
+      "link": "https://www.codewithbullet.com",
+      "domain": "www.codewithbullet.com",
+      "author": "adi1",
+      "score": 85,
+      "comment_count": 56,
+      "created_ts": 1786608870,
+      "is_internal": false,
+      "post_text": "Hi HN! We’re Adi and Alex, founders of Bullet, a faster coding agent.<p>Bullet started in a senior year dorm. We were fresh out of working at AppLovin and Citadel, and naturally thought we were on a sure path to startup success. We were going to use our skills optimizing stock pricing calculation speeds and agent document context to take over the world. So, Bullet started as an AI hedge fund, a browser-use agent, synthetic financial data (oof), a mobile IDE, and a bunch of other things. We wanted to build something people wanted, but it seemed like everything we built was just terrible, useless, or both.<p>So, we decided to do something completely different, something completely out of the blue, something that no one had ever done before. Solve a problem we actually had.<p>Over the course of six pivots, we suffered. Throughout all of our adventures, one final boss kept getting in our way. Claude Code and his little brother Codex. We were spending hours waiting for coding agents like Claude Code and Codex, and got so frustrated to the point that I downloaded the Claude Code whip. We had spent months of time waiting for six codebases-worth of useless coding agent work.<p>Lightbulb moment. There’s nothing more noble than destroying the institutions! Let’s take on Claude Code and Codex, we can do it! Piece of cake!<p>And so, Bullet started off as a side project. We used the Claude Code to improve the Claude Code:<p>1. Model routing. Do you regret giving a task to Fable when it could have literally been done by Sonnet?<p>2. Targeted code + context search. We think embedding the whole repo is dumb. We also think sticking the whole context (or compressed context) in chat is dumb. So we do faster and better greps over both.<p>3. Aggressive context hygiene. Tool output is bounded, stale screenshots disappear, we don’t re-read files…the garbage never floods the model.<p>4. Efficient turns. Batch independent investigation, make one surgical edit, then perform one focused verification. Internal measurement showed 16% fewer round trips and 27% lower cost.<p>5. The Flash. We prayed to Barry Allen for speed.<p>And thank the Flash, he gave us speed! On SWE-bench Verified, Bullet resolved 479&#x2F;500 (95.8%) in one attempt, averaging 119s per task, 35–67% faster than mini-SWE-agent + Fable&#x2F;Sol depending on task. Full results and methodology here (<a href=\"https:&#x2F;&#x2F;www.codewithbullet.com&#x2F;blog&#x2F;benchmark-results.html\" rel=\"nofollow\">https:&#x2F;&#x2F;www.codewithbullet.com&#x2F;blog&#x2F;benchmark-results.html</a>)<p>Eventually we started using it every day and never went back.<p>Listed above were just some of the things about Claude Code that frustrated us the most, but we are constantly optimizing every day (look at that, maybe we did learn something from our jobs).<p>In our development, the biggest insight was that model speed matters less than reducing round trips. Independent searches, reads, and commands should happen in parallel, while dependent editing and verification stay sequential. One surprising obstacle was code search, small issues like regex-dialect mismatches caused silent misses and sent agents down completely wrong paths, so we built targeted search with fallbacks and bounded context. The most interesting use case so far has been long iterative work (like benchmarks, data pipelines, and evaluation loops), where each step depends on the last and running multiple agents can’t help as much.<p>Here’s the video demo (<a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=rWVmG5fRKgE\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=rWVmG5fRKgE</a>)<p>We hope that you guys try out Bullet if you are suffering with speed as much as we were, and we hope it brings you joy, rainbows, and faster responses. And if it’s terrible, let us know it’s terrible (we’re masochists btw)! We&#x27;ll be in the comments all day, you can also contact us at bullet@davidhf.com.<p>You can try it at <a href=\"https:&#x2F;&#x2F;codewithbullet.com\" rel=\"nofollow\">https:&#x2F;&#x2F;codewithbullet.com</a>.<p>P.S: we hid a code on the website, see if you can unlock the secret page at the footer, all built with Bullet",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "success",
+        "regret",
+        "stock",
+        "side project",
+        "senior",
+        "startup",
+        "boss"
+      ],
+      "comments": [
+        {
+          "top": "This is a promising direction! Unfortunately, I think the benchmark result here is essentially meaningless.\nI recently discovered this same lesson the hard way. I was trying to get a multi-agent system I was building to improve upon GPQA  Diamond scores (system here: \nhttp://pellmell.ai\n). No matter how hard I tried, I could not get any lift. When Fable 5 dropped, it also did not improve upon Opus, and I realized my mistake. The benchmark was saturated!\nNow, looking at the result here, I see a similar pattern. Fable is not better than Opus, and the score is ~95%.   Notably, this post omits which subagent is being used. Why? An intellectually honest way to tell if this thing really works would be to run that agent and report its score and cost as well.\nGoing back to my GPQA Diamond lesson, you can see here how a saturated leaderboard behaves \nhttps://artificialanalysis.ai/evaluations/gpqa-diamond\n.  Fable gets 92.6% for $0.22 per task while several models score \nhigher\n for $0.01. I could easily publish a router that “enhances Fable on GPQA Diamond” showing improved score for lower cost, just by implementing a router that picks the model at random!",
+          "author": "seizethecheese",
+          "replies": [
+            {
+              "text": "The breakdown with which model, per-task cost, and methodology is in the \"Full results and methodology\" link in the post, not omitted. Definitely check it out if you haven't.\nOn the saturation point, we agree that a 95.8% result on a mature benchmark isn't the main proof, which is why we're currently running against harder, less saturated benchmarks like Terminal-Bench, CursorBench, and SlopCodeBench (going to publish results on these hard benchmarks shortly). Apart from current user experiences, that will show the value of our harness.",
+              "author": "adi1",
+              "depth": 1
+            },
+            {
+              "text": "I did read \"Full results and methodology\". It doesn't seem to show which agents you are routing to. Am I missing something? And how do those agents score on SWE-Bench Verified?",
+              "author": "seizethecheese",
+              "depth": 2
+            },
+            {
+              "text": "The benchmark wasn't evaluated with the router, we wanted an apples-to-apples comparison of our harness against other harnesses like mini-swe-agent on the same models to see if we added speed + cost value beyond routing.",
+              "author": "alsima",
+              "depth": 3
+            },
+            {
+              "text": "Okay, that makes more sense, but then this post is very confusing. Why mention the router at all? Or does your live system have a router and the eval doesn't? In which case why not publish an eval with the router?",
+              "author": "seizethecheese",
+              "depth": 4
+            },
+            {
+              "text": "Fair point, yes, the router is only in the live system (we'll try to make that more clear). We thought that comparing the router to other harnesses on the benchmark wouldn't be a fair evaluation because the speed/cost gains from our harness would mostly be from using cheaper and simpler models rather than actually having a better harness.",
+              "author": "alsima",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Hey just some feedback.  I'm giving it a try on a new project I'm spinning up.  It does seem faster although I haven't timed it against Claude or anything.  I like the integrated browser to immediately see the changes (or see what the agent is doing).  Thanks for having Linux support.",
+          "author": "mattm",
+          "replies": [
+            {
+              "text": "Thanks for trying it! If you want to time it against Claude/Codex in app, we have a race lab you can use for that. Good to hear that the Linux support and integrated browser help.",
+              "author": "alsima",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I use codex cli. It doens't have a UI for linux. I use opencode for that but it doens't work that well with the new 5.6 model suite from openai. Codex is both faster and better. \nI would have loved if there was a way to use a GUI that worked like codex. Gave this a try. I think this might be it.\nPlease consider atleast adding MCP support if you can. That'll help",
+          "author": "karanraina",
+          "replies": []
+        },
+        {
+          "top": "Can someone explain how this actually can go faster than other harnesses?\n1. Model routing. Do you regret giving a task to Fable when it could have literally been done by Sonnet?\nThis is the one thing that I can understand.\n2. Targeted code + context search. We think embedding the whole repo is dumb. We also think sticking the whole context (or compressed context) in chat is dumb. So we do faster and better greps over both.\nIs this just a different system prompt? Why would other harnesses not be able to do it this way given instructions to do so?\n3. Aggressive context hygiene. Tool output is bounded, stale screenshots disappear, we don’t re-read files…the garbage never floods the model.\nExisting harnesses already don't re-read files that have not changed. And content that is already in the context window is cached tokens and doesn't add significant latency, what am I missing? Removing context from history invalidates KV cache.\n4. Efficient turns. Batch independent investigation, make one surgical edit, then perform one focused verification. Internal measurement showed 16% fewer round trips and 27% lower cost.\nIsn't this just a specific sub-agent strategy, also addressable with prompting?\nI'm genuinely confused about what is mechanically different in this harness that could not be accomplished with a prompt/skill in another harness.",
+          "author": "yetanotherjosh",
+          "replies": []
+        },
+        {
+          "top": "Skip signup:\nCmd+Option+I > Console > 'allow pasting'\nconst onboarding = document.querySelector('#onboarding');\nconst app = document.querySelector('#app');\nonboarding.style.setProperty('display', 'none', 'important');\napp.inert = false;\napp.removeAttribute('aria-hidden');\ndocument.querySelector('#prompt')?.focus();\nAlso, warning:\n# Share chats with Bullet — helps us improve model routing and answer quality\nEnabled by default.",
+          "author": "apimade",
+          "replies": [
+            {
+              "text": "Thanks for bringing this up and trying it out! We've disabled Cmd+Option+I in the new version and also have a message during signup about sharing chats with Bullet, let us know if you run into any other issues!",
+              "author": "alsima",
+              "depth": 1
+            },
+            {
+              "text": "> We've disabled Cmd+Option+I in the new version\nBulletproof.",
+              "author": "poly2it",
+              "depth": 2
+            },
+            {
+              "text": "Truly built on vibes.",
+              "author": "xrisk",
+              "depth": 3
+            },
+            {
+              "text": "We're optimizing every day :)",
+              "author": "alsima",
+              "depth": 4
+            },
+            {
+              "text": "> We've disabled Cmd+Option+I\nOP was providing a userful tips to users, and they weren't giving you a bug report to remove it. If anything, they were suggesting you remove a login-wall.\nBut now that you blocked the inspector tool, you'll find it harder for users to report bugs. Unless of course those are automatically shared too? /s",
+              "author": "davidfiala",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49279197",
+      "title": "Process as a Proxy for Motivation",
+      "link": "https://bengodfrey.dev/blog/process/",
+      "domain": "bengodfrey.dev",
+      "author": "sudo-bendg",
+      "score": 66,
+      "comment_count": 25,
+      "created_ts": 1786572103,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "motivation"
+      ],
+      "comments": [
+        {
+          "top": "This is a really well-written short article, and I agree with it completely.\nI just wanted to add as well that, as someone who has read quite a lot of books on self-help and productivity, there is one that makes a lot of similar points: \"Triggers: Creating Behavior That Lasts--Becoming the Person You Want to Be\"\nhttps://www.goodreads.com/en/book/show/22544758-triggers\nI recommend it to anyone who agrees with this article and feels like a book-length treatment of similar ideas would be helpful to them.",
+          "author": "senkora",
+          "replies": []
+        },
+        {
+          "top": "> I was burdened with the mental labour of making this decision\nBut why, I always enjoyed having a choice. I also drove for a long time with several roads to choose, and I liked that each time I could like \"naah, the sunset must be better on that road tonight, let's check it out\" or \"hopefully there's some fog going down the slopes today on another road\". It's not labour, it was fun to play, kept out of boredom. Sometimes I even took roads that took longer just to have something new.\nI believe you dread choices only when you try to min-max your life, overoptimizing every single choice. Just relax and let the life go its way.",
+          "author": "deepsun",
+          "replies": [
+            {
+              "text": "Wow, thanks, I'm cured.\nBefore giving out asinine advice like \"just relax and let the life go its way\", you may want to consider if doing that was an option, the person would have done it already. It's the equivalent of telling a depressed person to \"cheer up\".\nIf you don't struggle with executive dysfunction, that's fantastic. But you're also not the intended audience for this article. Avoiding losing hours of one's day to decision paralysis isn't the same as trying to min-max or overoptimise.",
+              "author": "Aramgutang",
+              "depth": 1
+            },
+            {
+              "text": "++",
+              "author": "LateCheckOut",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I think the strongest version of this idea is that process is basically a way of spending willpower once instead of repeatedly",
+          "author": "Pawenniag",
+          "replies": []
+        },
+        {
+          "top": "This is a good one. Sometimes it doesn’t even matter if the made decision is suboptimal. It’s better than no decision.\nOpinionated linters is an example.\nSometimes you just gotta turn your brain off and move forward.",
+          "author": "aleksiy123",
+          "replies": [
+            {
+              "text": "Agree. My team standardized on black in our Python CI/CD pipeline and precommit hooks and it was surprising how much time we reclaimed from not having to review coding style and discuss patterns. The compromise was to apply black and not think about it. And it worked out really well. This was back in the days when humans still wrote code XD",
+              "author": "airspresso",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I think I would avocate actually against processes. Processes are nice, handy, and sage, but that assumes you have unlimited time. A baby crying and death approaching really make you rethinking useless 1-1s and meetings.",
+          "author": "hartator",
+          "replies": [
+            {
+              "text": "I feel like the way you're using 'process' and the way TFA is using it are not the same, which makes this comment orthogonal to the point TFA is trying to make.",
+              "author": "rootusrootus",
+              "depth": 1
+            },
+            {
+              "text": "Your counter is that death is a better motivator as well as being a desperate parent?\nWell, main generational challenge is procrastination with too many unlroductive time sinks available.",
+              "author": "wordpad",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49274034",
+      "title": "Ask HN: How's Everyone Feeling Today?",
+      "link": "https://news.ycombinator.com/item?id=49274034",
+      "domain": "news.ycombinator.com",
+      "author": "arm32",
+      "score": 16,
+      "comment_count": 18,
+      "created_ts": 1786548786,
+      "is_internal": true,
+      "post_text": "I&#x27;m tired, worried and particularly burnt out.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Not that good. Struggling at work. We had a series of hard issues in a row and I felt being accused for poor work in the past, when while it is true I should have understood technical stuff in the past better, a lot of this was due to technical debt.\nI am seeing the end of the tunnel, but I hope nothing else comes up for a while or I'll have a mental breakdown.\nOn top of this I'm struggling with my little kids. They are giving us a hard time going to bed on time, keep coming up, and I get frustrated with them and hate myself after because I have a reaction and get mad at them.\nI just hope this period passes soon.",
+          "author": "highhedgehog",
+          "replies": [
+            {
+              "text": "Heres something I learnt ont eh kids side for bedtime routine: choices and consequences. You can have a discussion with them about the choice they have on bedtime, and what the likely consequence can be (getting up late, not going to school etc). Then let them make the choice and bear the consequence. It's both trust building, and genuinely gives agency and outcome to the kids. Not sure if you can implement this, but if you can, it helps.\nDon't wish for the period to pass, since parenthood is a sequence of these challenges, this will go and the next one will come. It's rather a chance to \"upgrade\" your parenting.\nWishing you the best.",
+              "author": "unified101",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm feeling okay. I got to go climbing this week. That tends to elevate my mood. But sometimes, I think I'm in a long-term state of permanent burnout.\nDo you mind saying what worries you? And why you're feeling burnt out? I hope it's a transient thing.",
+          "author": "fullStackOasis",
+          "replies": [
+            {
+              "text": "you ever go climbing and it doesn't meet your expectations and that disappointment rolls into the next work week?",
+              "author": "oldsklgdfth",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm kinda bored waiting for a coding agent to signal completion on a long run. A little hungry (it's almost lunch time). In good spirits.",
+          "author": "spottedmarley",
+          "replies": []
+        },
+        {
+          "top": "I found my \"one\" and I apparently \"lost her.\" Praying she returns... not another temporary run, but this time really have a future together.",
+          "author": "moizrocky1",
+          "replies": []
+        },
+        {
+          "top": "Kind of sick of people copy pasting my conversations in slack to AI, that just leads me to talking in circles.",
+          "author": "jryan49",
+          "replies": [
+            {
+              "text": "Solution: \"Let's hop on a call.\"",
+              "author": "gaws",
+              "depth": 1
+            },
+            {
+              "text": "Bro you gotta fight AI with ai. Just have u AI chat with their Ai while you take a break.",
+              "author": "yogibear678142",
+              "depth": 1
+            },
+            {
+              "text": "Yeah I probably should just give up trying at this point lol",
+              "author": "jryan49",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49279790",
+      "title": "Ask HN: How are you finding the job market in 2026?",
+      "link": "https://news.ycombinator.com/item?id=49279790",
+      "domain": "news.ycombinator.com",
+      "author": "dzonga",
+      "score": 13,
+      "comment_count": 18,
+      "created_ts": 1786575973,
+      "is_internal": true,
+      "post_text": "Monitoring the past few months of HN whoishiring threads - seems there&#x27;s more seekers than firms hiring.<p>on LinkedIn - seems a bunch of jobs get rotated (reposted) - or are just spam.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "job market"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49290713",
+      "title": "Ask HN: How much money do you spend monthly on subscriptions for AI models?",
+      "link": "https://news.ycombinator.com/item?id=49290713",
+      "domain": "news.ycombinator.com",
+      "author": "marko-djuric",
+      "score": 7,
+      "comment_count": 18,
+      "created_ts": 1786648896,
+      "is_internal": true,
+      "post_text": "Monthly total for all AI model subscriptions for personal use, with a breakdown of which models you use and for what purpose (coding side projects, AI assistants, etc.).<p>You can also mention how much you spend monthly on AI tools for professional work that your company pays for.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49279494",
+      "title": "Ask HN: Is AI code verification becoming your main bottleneck?",
+      "link": "https://news.ycombinator.com/item?id=49279494",
+      "domain": "news.ycombinator.com",
+      "author": "ochidaniel4",
+      "score": 7,
+      "comment_count": 6,
+      "created_ts": 1786574031,
+      "is_internal": true,
+      "post_text": "I am a beginner in programming and honestly I have been using AI to code a lot but I am scared to ship because of the countless stories of AI code silently breaking, AI code not being reliable long term and all that.Please share your stories with me how you handle AI code reliability and verification and what I can do to be more confident before I ship",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49276529",
+      "title": "Ask HN:Why do websites today refuse to work on EDGE/2G?",
+      "link": "https://news.ycombinator.com/item?id=49276529",
+      "domain": "news.ycombinator.com",
+      "author": "DenisDolya",
+      "score": 7,
+      "comment_count": 10,
+      "created_ts": 1786558606,
+      "is_internal": true,
+      "post_text": "I remember that back then (2017–2020), most websites loaded just fine, whether on 3G or EDGE — the only difference was the speed. As of today, even the search engine lite.duckduckgo.com&#x2F;lite&#x2F; (in Google Chrome) barely works when searching on H and 3G mobile networks — not to mention EDGE. When I try to open a website on EDGE, the browser displays the message: DNS_PROBE_STARTED.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49290499",
+      "title": "Ask HN: How can you tell a site/app is vibe coded?",
+      "link": "https://news.ycombinator.com/item?id=49290499",
+      "domain": "news.ycombinator.com",
+      "author": "gkolli",
+      "score": 6,
+      "comment_count": 5,
+      "created_ts": 1786647772,
+      "is_internal": true,
+      "post_text": "With so many people vibe coding sites and full apps, I feel like there is much more AI slop shown to the user. What are your tell-tale signs? Black background, green and orange gradients, same font, etc. Would love to learn more!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49283011",
+      "title": "Gemini API removes postpay billing",
+      "link": "https://news.ycombinator.com/item?id=49283011",
+      "domain": "news.ycombinator.com",
+      "author": "alex14fr",
+      "score": 6,
+      "comment_count": 1,
+      "created_ts": 1786608358,
+      "is_internal": true,
+      "post_text": "Mail received:<p>We are writing to inform you of an upcoming billing change to Google AI Studio and the Gemini API.<p>We require developers to switch your Gemini API billing from Postpay to Prepay by September 14, 2026. This is part of our ongoing effort to improve our platform to give developers more control over API consumption and costs.<p>This change applies exclusively to your Gemini API usage in AI Studio. All other GCP services on your account will remain on Postpay.\nWhat you need to know<p>Key changes:\nStarting September 14, 2026, to use paid features in the Gemini API you will be required to change the billing plan associated with your Google AI Studio projects to Prepay. Learn more about the Prepay billing plan here.<p>Potential impact:\nIf you do not transition to Prepay and purchase credits before September 14, 2026, your service will be interrupted.\nWhat you need to do<p>Action required:<p><pre><code>    If you use, or plan to use, paid features in the Gemini API:\n        Switch to Prepay: Transition to Prepay on the AI Studio billing page and purchase credits to continue using paid Gemini API features\n        Recommendations:\n            Switch before the September 14, 2026 migration date to avoid service interruptions\n            Configure auto-reload to automatically top up your Prepay balance and prevent future service interruptions\n            View your current billing plan, manage payment methods, and switch to Prepay on the AI Studio billing page\n    No action is required if you do not currently use paid features in the Gemini API</code></pre>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "balance"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49286427",
+      "title": "Ask HN: What browser do you use?",
+      "link": "https://news.ycombinator.com/item?id=49286427",
+      "domain": "news.ycombinator.com",
+      "author": "Pieczasz",
+      "score": 5,
+      "comment_count": 26,
+      "created_ts": 1786630981,
+      "is_internal": true,
+      "post_text": "At work, I use Chrome mainly because I work on an observability and analytics product, so it makes sense to use the browser that sends everything, everywhere by default.<p>Outside of work, though, I use Zen and have also been thinking about switching to Mullvad. Privacy-focused browsers, or even simple extensions like Mullvad, Zen, Brave, LibreWolf, or Firefox with uBlock Origin are easy to install and use these days, so I&#x27;m wondering why so many people still stick with Chrome, Safari, or Edge.<p>What keeps you using your current browser?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49289942",
+      "title": "Ask HN: New Reddit also requiring login?",
+      "link": "https://news.ycombinator.com/item?id=49289942",
+      "domain": "news.ycombinator.com",
+      "author": "7402",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1786645083,
+      "is_internal": true,
+      "post_text": "I&#x27;ve seen the discussion on HN about old reddit requiring login, but today I tried the current interface, and it seemed to require login after scrolling a bit. Do others see this? Is there an alternative?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49273774",
+      "title": "Ask HN: Are there any production LLM pipeline setups to learn from?",
+      "link": "https://news.ycombinator.com/item?id=49273774",
+      "domain": "news.ycombinator.com",
+      "author": "atif089",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1786547905,
+      "is_internal": true,
+      "post_text": "I believe vLLM has been the gold standard for inferencing but I&#x27;d like to learn how vLLM, langgraph, langfuse, other observability and business logic is meld into a single setup.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49286334",
+      "title": "Ask HN: Small team devs – how do you collab with UI/UX designers in the AI era?",
+      "link": "https://news.ycombinator.com/item?id=49286334",
+      "domain": "news.ycombinator.com",
+      "author": "cameronnimmo",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1786630590,
+      "is_internal": true,
+      "post_text": "Running a 2 person product company, my cofounder (product designer by trade) and I are struggling to get the design&#x2F;dev process right as AI transforms the way we ship.<p>There are a couple of interrelated problems:<p>1. As we move faster and a higher proportion of our frontend code is AI generated it means more minor UI bugs and inconsistencies. \nThese are generally things that could be zero-shotted by an agent but from what I&#x27;ve found the agentic coding tools for existing mid-sized codebases tend to be developer-focused and not easy for a designer to setup&#x2F;use.<p>2. Everything was originally designed in Figma but pixel pushing every screen is feeling increasingly redundant. So ideally we&#x27;d just rely on some core components built in Figma and then vibe code their implementation. But of course when we want to change an existing component, I tend to just implement that change in code, get design-approval, and ship it: figma never gets updated, so its been pretty much discarded and the actual component system in production has become unwieldy and inconsistent.<p>Wondering if anyone can relate to these issues and what you&#x27;re are doing to solve them? And more generally what the design&#x2F;dev process is looking like these days in early stage teams.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "Claude can read Figma links, so for me it's made it much easier to work with UI/UX folks on small teams.\nAnd Figma has an MCP server which they talk about in this blog post:\n\nhttps://www.figma.com/blog/introducing-claude-code-to-figma/\nHope that helps.",
+          "author": "wbnns",
+          "replies": []
+        },
+        {
+          "top": "Even before AI era, I didn't work with UX/UI designers. But, on-premise apps dodn't require anything more than boostrap framework can help me",
+          "author": "r2ob",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
