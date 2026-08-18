@@ -1,0 +1,469 @@
+{
+  "scraped_date": "2026-08-18",
+  "source": "hacker_news",
+  "total_scraped": 55,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49331033",
+      "title": "Ask HN: Alternatives to GitHub",
+      "link": "https://news.ycombinator.com/item?id=49331033",
+      "domain": "news.ycombinator.com",
+      "author": "dhruv3006",
+      "score": 491,
+      "comment_count": 313,
+      "created_ts": 1786975157,
+      "is_internal": true,
+      "post_text": "Github has been down consistently over the last few months - does it make sense to switch to alternatives?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "To all of those proposing self-hosted GitLab: we did it for 6+ years in my company, and it's not always a smooth sailing. We had our own runners and we made it auto-upgrade across docker images daily before business start. It mostly worked really well, except those few times were a Docker upgrade had to be rolled back, or that one time the bundled pg_shared_buffers was set at 1MB by default, making schema upgrades impossible for bigger instances, or a version major would break pipeline expectations forcing to upgrade 200+ repos at a time (we pinned to major afterwards). Lately I was also receiving an almost weekly \"critical patch\" newsletter due to critical/high vulnerabilities, which I can only imagine are due to LLM running over the code and identifying bugs.\nThat said, I wish we hadn't migrated to GH, our self-hosted instance had \nWAY\n less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil: GH is nowhere near Enterprise-ready and it feels a downgrade across the board. GL has better access granularity, better docs, better integrations, and you can clearly see the UI received a lot of attention (although it does take 10m with a new account to pin the proper items in the maze of sub-menus that is the sidebar). You can also look at the code and help out if needed, and/or simply provide a patched version to your image via a docker mount.\nIf you're really looking at self-hosting GitLab for a smallish team (up to 50-100 ppl), prepare at the very least a 16GB machine (best 32GB) with 4 cores and a decent SSD, and at least a small team (1-3 people) that can maintain it properly or jump at it at any moment. For runners, a small k3s cluster is ideal to make use of all the resources you can throw at it without worrying about managing the runner state/configuration.",
+          "author": "plqbfbv",
+          "replies": [
+            {
+              "text": "Never forget the sudden GitLab price-hike and flavor feature changes just a few years ago. I was literally about to go from free to paid, when the pricing doubled nearly overnight. I left for Gitea.\nhttps://news.ycombinator.com/item?id=35144974",
+              "author": "jrey2112",
+              "depth": 1
+            },
+            {
+              "text": "Setting up custom GitLab runners can be cumbersome in the beginning! We faced that multiple times with various customer projects for which we were using GitLab.com managed repos. That's why my colleague and I recently built a \"GitLab Runners as a Service\" [0] -- simply use your self-managed GitLab or GitLab.com account to login, adding pipeline runners is a 1-click operation! Under the hood we provision a Hetzner machine for you runners and automatically connect your GitLab group or project to it. Happy to hear your feedback!\n[0] \nhttps://rocketrunner.io/",
+              "author": "inanothertime",
+              "depth": 1
+            },
+            {
+              "text": "This is pretty cool and one of the few things I couldn't find a viable alternative to in-house hosting so far. The only thing your \"GitLab Runners as a Service\" is missing is ISO 27001 (and optionally SOC 2) certification. That makes it again easier for your customer to get / maintain their ISO 27001.\n(So far I used this cloud.init script to spin up and upgrade GitLab-Runner instants: \nhttps://gitlab.com/21analytics/gitlab-runner-cloud-init/-/bl...\n)",
+              "author": "lclc",
+              "depth": 2
+            },
+            {
+              "text": "Ha, let us look into ISO 27001 certification and see what it takes to obtain it (and SOC 2). Thank you for this valuable pointer! If you could just sign in (accounts are free and you can even try us out for the first 48h and not be charged), then we could message you to your email address once we have an update here.",
+              "author": "inanothertime",
+              "depth": 3
+            },
+            {
+              "text": "You’re on for a ride. Set at least 50k on the side for that.",
+              "author": "senorrib",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are after?\n1. Do you want something that works and feels like GitHub? -- Forgejo and Gitea are good for this.\n2. Do you want a place to host git repositories with minimal hassle? -- GitLab, CodeBerg, and others are available.\n3. Do you have your own hosting infrastructure? You could use gitolite and CGit/GitWeb on that hosting platform or local hardware.\n4. Do you just want to host repositories? -- Gitolite can be used to help with SSH/auth/repository creation, and CGit or GitWeb for the frontend.\n5. Do you need something like GitHub Actions? -- GitLab, Forgejo, and Gitea offer CI, or use external CI infrastructure.\n6. Do you need issue tracking and management? -- GitLab, Forgejo, and Gitea provide these. There are alternatives from Jira to Kanban (including Trello) to Markdown (Obsidian and others) and more.",
+          "author": "rhdunn",
+          "replies": [
+            {
+              "text": "> 4. Do you just want to host repositories?\nan ssh connection and\n    git --bare init\n\n\non your ssh accessible server works just fine",
+              "author": "mejutoco",
+              "depth": 1
+            },
+            {
+              "text": "“Just” is a four letter word and a trap our industry repeatedly falls into.\nhttps://sgringwe.com/2019/10/10/Please-just-stop-saying-just",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "I hadn't read this article until now, but I started catching myself using the word at work a few years ago and I've actively been trying to avoid using it for the reasons laid out in this post.",
+              "author": "chrysoprace",
+              "depth": 3
+            },
+            {
+              "text": "If all you want to do is host repositories, “just” is the appropriate word here.  For lone wolf work, all I care about is having a remote that mirrors all the changes and branches I create locally.  It’s just redundancy. A git bare repo and SSH are all that’s needed.\nI don’t do pull requests to myself, and I don’t need a bug tracker or CI.",
+              "author": "hamburglar",
+              "depth": 3
+            },
+            {
+              "text": "But sometimes it's applied properly! \nhttps://github.com/casey/just",
+              "author": "nine_k",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://tangled.org\n! Founder/CEO here. We're a new forge building things from the ground up, and are fully federated -- you can host your git repos on your own infra, along with the CI runners. We've also got a pretty neat set of features (if I may say so myself): stacked PRs, Nix-based CI (if you want it), and a fully open protocol (\nhttps://atproto.com\n) to for you and your agents.\nHappy to answer any questions.",
+          "author": "icy",
+          "replies": [
+            {
+              "text": "The whole \"social coding\" angle is highly off-putting. List of \"X followed Y\" on the front page, and the large \"social coding\" reminds of facebook, social manipulation, developer burnout and all the negative things about social networks. It also brings up the questions about project's long-term direction - is this going to focus on the code part or the social part?\nWhich is a pity - as I think most projects just need a git host + web UI + easy pull requests + a way to clone other's repos, and tangled seems to do this pretty well.",
+              "author": "theamk",
+              "depth": 1
+            },
+            {
+              "text": "Arguably the \"social coding\" angle is the reason why Tangled is the only actual alternative to GitHub.  Otherwise there's actually plenty of other alternatives to GitHub, but none of them have GitHub's punchcard, which I'm ashamed to admit is the primary draw for me.",
+              "author": "Bjorkbat",
+              "depth": 2
+            },
+            {
+              "text": "The neat thing about Tangled is you can build your own frontend pretty quickly. We've got an open API \nhttps://api.tangled.org\n (or self-host your own API server: \nhttps://docs.tangled.org/bobbin#bobbin\n)",
+              "author": "icy",
+              "depth": 2
+            },
+            {
+              "text": "You're not the target market, there are a number of other forges as seen in this thread as alternatives.",
+              "author": "satvikpendem",
+              "depth": 2
+            },
+            {
+              "text": "What's the monetization pathway here? No private repositories (because everything is on ATProto) so near zero commercial use potential - CI is free, everything is free, no pricing page... Am I the product if I use this service?",
+              "author": "whycombinetor",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://forgejo.org/",
+          "author": "polycaster",
+          "replies": [
+            {
+              "text": "I recently set this up on my homelab, not really expecting to switch to it, more out of interest. But wow, after I saw how unbelievably fast it was, I’ve moved everything over. I’ve now set it up to mirror things automatically to Github if I want to make them public.\nUsing Github at work is painful in comparison. (Also literally just this morning we’ve had to delay a release due to Github being down.)",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "Is their CI and CD workflow robust like gitlab/github ?",
+              "author": "bobkb",
+              "depth": 1
+            },
+            {
+              "text": "It's based on act[0] so it's quite like GitHub actions but not completely [1].\nI found in the current version of Forgejo the most secure way to set it up was just to put the runner on a different host. There's a Docker in Docker setup [2] that was challenging to get working correctly but still didn't quite feel secure...\nAfter setting it all up, I'm convinced GitHub actions as a concept is flawed. I wish the community would make a simpler git-defined CI/CD that didn't have the crazy surface area that actions does... Named shell scripts that can call out to other stuff in the runner Docker image and report it to the UI would be a nice start.\n[0]: \nhttps://github.com/nektos/act\n[1]: \nhttps://forgejo.org/docs/v15.0/user/actions/github-actions/#...\n[2]: \nhttps://forgejo.org/docs/v15.0/admin/actions/docker-access/#...",
+              "author": "cobertos",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. GitHub Actions feels like someone's science project created while on a mushroom trip. Really you just want a thing that executes a shell script in a runner.",
+              "author": "dboreham",
+              "depth": 3
+            },
+            {
+              "text": "Works well and is pretty straightforward.\nJust set up a CI pipeline for PHP projects with a forgejo runner last week. Tried many approaches, ended up with a simple debian VM. Runner works well with docker images inside the VM, quite a flexible setup.\nFound this easier and better than my last tries a few years ago with gitlab, which always felt quite bloated.\nI also published a blog post today about this whole journey:\n\nhttps://sarah-robin.com/blog/we-just-wanted-to-deploy-a-webs...",
+              "author": "sarah-robiin",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you are frustrated with Github being down again, and just want an alternative, the other options listed are better fits. If you have the time to look at doing more than that, then check out fossil \nhttps://fossil-scm.org/home/doc/trunk/www/index.wiki\n- It isn't git\n- Works best with smaller teams\n- You need to be ok self hosting (single binary, easy to do)\nThe first point is really the killer. It is revision control, it is as good as git (maybe better), but it is different. Git = branches are easy, was built to support Linux's lieutenant development model, and a massive, loosely connected team. Fossil = branches are intentionally hard, built to support a small, tight knit team (SQLite).\nMost teams I've been on are closer in size to SQLite than they are to Linux, but everyone already knows git at a gut deep level. YMMV.",
+          "author": "shofetim",
+          "replies": [
+            {
+              "text": "Fossil looks really cool. I like how it's all in one and includes the web interface. The only thing is it doesn't seem like anyone actually uses it outside of sqlite. I don't necessarily need to use the most popular thing out there, but some social proof is nice.",
+              "author": "jm4",
+              "depth": 1
+            },
+            {
+              "text": "It is a small community. The forums are moderately active though: \nhttps://fossil-scm.org/forum/forum",
+              "author": "shofetim",
+              "depth": 2
+            },
+            {
+              "text": "There's also a hosting service for fossil repos which does a really good job for a number of years now \nhttps://chiselapp.com/repositories/",
+              "author": "stefanos82",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49319389",
+      "title": "Research papers using \"kidney disappointment\" instead of \"kidney failure\"",
+      "link": "https://scholar.google.com/scholar?q=%22kidney+disappointment%22",
+      "domain": "scholar.google.com",
+      "author": "Alifatisk",
+      "score": 428,
+      "comment_count": 152,
+      "created_ts": 1786882940,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "failure"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49322695",
+      "title": "Models Are Getting Dumber on Purpose",
+      "link": "https://w4g1.dev/blog/models-are-getting-dumber-on-purpose",
+      "domain": "w4g1.dev",
+      "author": "hruvhwe",
+      "score": 327,
+      "comment_count": 187,
+      "created_ts": 1786907066,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49332495",
+      "title": "Ask HN: GitHub employees what's going on? Why?",
+      "link": "https://news.ycombinator.com/item?id=49332495",
+      "domain": "news.ycombinator.com",
+      "author": "sharts",
+      "score": 99,
+      "comment_count": 78,
+      "created_ts": 1786979971,
+      "is_internal": true,
+      "post_text": "Pretty self explanatory. Could you folks shed some light on why these issues keep happening?<p>I’ve noticed most posts and replies are just people coming to their own conclusions based on whatever published data.<p>I think it would be helpful to get some actual, non-corporate&#x2F;marketing information on the goings-on by those that actually see what’s happening on the inside.<p>Thanks<p>Can",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49308059",
+      "title": "Ask HN: How do you keep up with HN these days?",
+      "link": "https://news.ycombinator.com/item?id=49308059",
+      "domain": "news.ycombinator.com",
+      "author": "simonebrunozzi",
+      "score": 89,
+      "comment_count": 145,
+      "created_ts": 1786773552,
+      "is_internal": true,
+      "post_text": "In the last 2-3 years, mostly because of AI, keeping up with interesting articles on HN has become harder and harder.<p>How do you deal with it? Besides the simple solution of simply ignoring interesting stuff more and more.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49314700",
+      "title": "Ask HN: What is your favorite lightweight tool or CLI utility in 2026?",
+      "link": "https://news.ycombinator.com/item?id=49314700",
+      "domain": "news.ycombinator.com",
+      "author": "pranav_tech26",
+      "score": 21,
+      "comment_count": 33,
+      "created_ts": 1786831163,
+      "is_internal": true,
+      "post_text": "Tools like ripgrep, fzf, and htop have saved me countless hours over the years. What small utilities do you rely on daily?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49309061",
+      "title": "Alternative to Internet Archive",
+      "link": "https://news.ycombinator.com/item?id=49309061",
+      "domain": "news.ycombinator.com",
+      "author": "earworms",
+      "score": 19,
+      "comment_count": 17,
+      "created_ts": 1786785784,
+      "is_internal": true,
+      "post_text": "Now; i use the archive to archive my prolithic output of music. (i have over 300 albums.) The music is of my own creation.<p>Since the DDoS attack of 2024; Archive has been a hit or miss on the uploading factors. And many of my releases have specific dates for release. With the uncertainty of the uploads happening it causes me to break focus on working with music and watch the upload to make sure there isn&#x27;t a 503 happening each file. (which sometimes happens frequently.)<p>I am in search of a similar uploading process with an unlimited amount of uploads. I don&#x27;t want to make money off of my music. I don&#x27;t want to individually input over 2000 songs; including their metadata and other factors.<p>Many sites that we both have heard of; have various limitations or are not privacy friendly platforms ran by a company that seeks to be Big Brother from 1984 and watch us in a Brave New World.<p>I would simply P2P my music on nicotine+ or even have a server for my music.<p>The only thing stoping me on P2P my music on nicotine is the requirement of have a big enough stickdrive to have it available all the time (along with other music and films i share already.) I could buy a 1TB one for that.<p>The server setup is quite complicated and searching online the past couple of days keeps leading me to... (o yeah i forgot to add how reddit has that popup now after a few seconds of looking at their site on the other post... and the google thing on devs. if you read both then the open source closing is that purpose.)<p>Though i keep getting results on this site.<p>Anyways; what i am seeking as an alternative would also include sharing my books, short films, and music. (all in one place.) The service would need to be free; and an easy uploading process. (similar to how the archive&#x27;s works.)<p>or if someone could point me to an easy means of setting up a server... like what all i would need and how to make it possible, along with a fairly easy step by step explaining the process.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49299333",
+      "title": "Ask HN: Should hard-tech founders join a problem or technology-first PhD lab?",
+      "link": "https://news.ycombinator.com/item?id=49299333",
+      "domain": "news.ycombinator.com",
+      "author": "misterballer",
+      "score": 13,
+      "comment_count": 14,
+      "created_ts": 1786718302,
+      "is_internal": true,
+      "post_text": "I&#x27;m an engineering undergrad considering pursuing a PhD with the long-term goal of founding a hard-tech startup. I’m undecided about the specific area and only have a vague sense of what interests me -- industrial decarbonization, mining &#x2F; mineral processing, and advanced materials are a few areas that currently seem exciting.<p>However, I&#x27;m unsure which type of PhD lab would provide better preparation: either a problem-first lab (e.g., like Yet-Ming Chiang at MIT) or a technology-first lab (e.g., your typical academic lab that focuses on novel science without a predetermined application, and where commercialization happens largely by chance — when a technology happens to have a valuable market application).<p>I&#x27;ve looked at advice online from successful hard-tech entrepreneurs, but the answers are conflicting. Some say to work backwards from a problem, but others argue that problem-first approaches often don&#x27;t work since deep tech is inherently different: you often can&#x27;t force a scientific breakthrough for a predetermined problem. Instead, they argue that most hard-tech companies are only founded because somebody made a scientific breakthrough and realized afterwards that there might be a commercial application. Indeed, the VC firm Pillar VC says that most deep-tech companies they know were &quot;technology-first.&quot;<p>With that in mind, does anybody have any advice on which type of PhD lab to join?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "advice",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49318324",
+      "title": "Ask HN: Where to learn software engineering fundamentals?",
+      "link": "https://news.ycombinator.com/item?id=49318324",
+      "domain": "news.ycombinator.com",
+      "author": "mstank",
+      "score": 12,
+      "comment_count": 5,
+      "created_ts": 1786871714,
+      "is_internal": true,
+      "post_text": "I have an open question for software engineers out there:<p>As someone that has never studied CS but has written basic code most of my life (accelerated now with AI), where is the best place to learn software engineering fundamentals?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49298901",
+      "title": "Ask HN: Does a human still review your code?",
+      "link": "https://news.ycombinator.com/item?id=49298901",
+      "domain": "news.ycombinator.com",
+      "author": "stikit",
+      "score": 11,
+      "comment_count": 21,
+      "created_ts": 1786716449,
+      "is_internal": true,
+      "post_text": "Most of the code I work on is for internal company use at a small company and for personal projects. After experiencing painful code review processes where code was rewritten several times for what many times felt like arbitrary reasons to fit someone’s idea of a best practice, I am now on a team where code review is largely automated. I find Claude’s &#x2F;review and &#x2F;code-review are invaluable and do a more thorough code review than any human . For those of you who use AI to write the majority of your code, do you still have a human in the loop to do more than spot checks ?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49321400",
+      "title": "Ask HN: What tools are you using for human code review of AI-assisted code?",
+      "link": "https://news.ycombinator.com/item?id=49321400",
+      "domain": "news.ycombinator.com",
+      "author": "dafelst",
+      "score": 10,
+      "comment_count": 5,
+      "created_ts": 1786897245,
+      "is_internal": true,
+      "post_text": "A good proportion of us and our colleagues are now churning out agent-assisted code at an incredible rate, with some of it that is actually good, and a lot that is not so good. I&#x27;m personally finding that the real quality gate for our projects is now how thoroughly the generated code was human reviewed to ensure that it is not just correct, but architecturally sensible.<p>AI code review tools like coderabbit and copilot, or even pointing claude code at a PR are all generally pretty good at finding bugs and style nits, but less good at finding duplicate code, module cross coupling, bad separation of concerns, and so on, even if prompted to do so.<p>I&#x27;m finding that github&#x27;s PR interface is not really cutting it for me, it was janky even when the reviews were small, but now at the size they&#x27;re at, it is becoming unmanageable.  Add to that the extra noise of mixing in agent reviews, and people &quot;meat-proxying&quot; in copy-pasted agent output, and it&#x27;s getting pretty noisy and difficult to navigate.<p>What have you all found that works well for streamlining human review of AI assisted code? Tools and process suggestions are welcome.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49323677",
+      "title": "Why is the GitHub trending page weirdly excluding DeepSeek projects?",
+      "link": "https://news.ycombinator.com/item?id=49323677",
+      "domain": "news.ycombinator.com",
+      "author": "tianyicui",
+      "score": 9,
+      "comment_count": 1,
+      "created_ts": 1786914381,
+      "is_internal": true,
+      "post_text": "Hi, this is Tianyi from DeepSeek AI&#x27;s Harness team.<p>I&#x27;m looking to get in touch with someone from GitHub, as I found it weird that https:&#x2F;&#x2F;github.com&#x2F;trending page doesn&#x27;t seem to include https:&#x2F;&#x2F;github.com&#x2F;deepseek-ai&#x2F;deepseek-harness at all. The project was rapidly being starred, forked, and plugin&#x27;ed by the GitHub community in the past few days.<p>I wonder whether we were false positive&#x27;ed by some mechanism or something. Some colleague told me that they vaguely remembered that other popular DeepSeek repositories such as https:&#x2F;&#x2F;github.com&#x2F;deepseek-ai&#x2F;DeepSeek-R1 also didn&#x27;t show up in the trending page when it was in fact trending in the community. (I didn&#x27;t fact check that though.)<p>Is there some way this can be resolved? Happy to help in some way that I can.<p>Feel free to reach out by email via [my first name at deepseek dot com].",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49333747",
+      "title": "Ask HN: What's the Best Agent Harness?",
+      "link": "https://news.ycombinator.com/item?id=49333747",
+      "domain": "news.ycombinator.com",
+      "author": "cakbeslik",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1786984347,
+      "is_internal": true,
+      "post_text": "Well, because Opencode couldn&#x27;t run it&#x27;s own servers and brutally due to Deepseek API, now lot&#x27;s people says it&#x27;s not the best option anymore. So what are your thoughts?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49333136",
+      "title": "Ask HN: Is GitHub Fried Today?",
+      "link": "https://news.ycombinator.com/item?id=49333136",
+      "domain": "news.ycombinator.com",
+      "author": "johncole",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1786982385,
+      "is_internal": true,
+      "post_text": "Keep getting weird responses and their pink unicorn of death.  Is Github unreliable today?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49316403",
+      "title": "Ask HN: How would you market this service?",
+      "link": "https://news.ycombinator.com/item?id=49316403",
+      "domain": "news.ycombinator.com",
+      "author": "dmzxnico",
+      "score": 4,
+      "comment_count": 8,
+      "created_ts": 1786847839,
+      "is_internal": true,
+      "post_text": "Hi all,<p>I have a genuine problem here, I have been working for myself on a licensing layer for my personal apps.<p>A few fellow developers are using it after seeing how good it is, but I&#x27;ve had a very hard time getting new users into the platform.<p>In average, a dozen of people are signing up a week and are going through the first steps, setup their dashboard and issue their first license. I made a CLI that automates all of that by safely.<p>Then, blank.<p>I feel like I didn&#x27;t find the way to properly show off the service or I don&#x27;t know. For me it totally make sense to use a licensing layer, it ensures your data stays in one spot, even if u use multiple payment providers or MoR.<p>Although it seems hard for people to understand the value of it.<p>I won&#x27;t share the link, I&#x27;m not doing marketing here. The SaaS is really about, licensing your app, customer portal, payment provider agnostic, deep analytics, usage and cross-platform SDKs.<p>Do any of you have any ideas?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49333404",
+      "title": "Ask HN: How can we care more about fewer things?",
+      "link": "https://news.ycombinator.com/item?id=49333404",
+      "domain": "news.ycombinator.com",
+      "author": "robalni",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1786983255,
+      "is_internal": true,
+      "post_text": "There is a lot of stuff available on the internet.\nJust look at HN; link after link, every day more links.\nOther social medias are probably even worse.<p>I feel like this has a disabling effect.\nI mean, when there is always more stuff on the internet to find, why should I focus on the things I already have?\nThings feel less important when there are so many of them.\nIt feels like everyone just keeps looking for more all the time.\nBut do we really need more?\nI don&#x27;t think so.<p>How can we pick some half-bad thing and just stick to it and make it better, as if there were no other things in the world?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49333379",
+      "title": "Ask HN: If you're burning tokens at scale, what are you using them for?",
+      "link": "https://news.ycombinator.com/item?id=49333379",
+      "domain": "news.ycombinator.com",
+      "author": "simonw",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1786983184,
+      "is_internal": true,
+      "post_text": "I know lots of people use tokens to run coding agents, but I&#x27;m interested in hearing from people who are burning large amounts of tokens on automated tasks that aren&#x27;t driving some kind of agent.<p>Do you have processes set up that are e.g. processing documents, audio, or video files? Particularly interested in hearing from people doing this in a business context.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49331243",
+      "title": "Ask HN: Is Mockup Data a thing you can ask from SaaS Salesperson?",
+      "link": "https://news.ycombinator.com/item?id=49331243",
+      "domain": "news.ycombinator.com",
+      "author": "xtiansimon",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1786975750,
+      "is_internal": true,
+      "post_text": "My accounting client is asking me to help evaluate a third Point of Sale (POS) in seven months. They actually signed on to the first one, and are desperately unhappy with the results. The promised solutions are ineffective and the API integration to the ERP insufficient.<p>Which raises the question in my mind, do any SaaS providers offer to &quot;mock up&quot; the solution with some examples of difficult to structure sales items (not the full product list)? Produce example reporting for evaluation? Common sense would say there is no division in any high-flying POS company which does this sort of work. The company&#x27;s organization drives customers into contract quickly, run it through provisioning, and then deal with contract if the result is no joy.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49330503",
+      "title": "Ask HN: Is classical AI research still being done because it helps modern AI?",
+      "link": "https://news.ycombinator.com/item?id=49330503",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1786973304,
+      "is_internal": true,
+      "post_text": "That is, classical AI has turned into tools to be used by LLMs as the need arises?<p>So classical AI research is still continuing?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49322689",
+      "title": "Ask HN: What LLM subscription/provider to use with pi harness?",
+      "link": "https://news.ycombinator.com/item?id=49322689",
+      "domain": "news.ycombinator.com",
+      "author": "vira28",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1786907030,
+      "is_internal": true,
+      "post_text": "I used to use Claude code but obviously they gone downhill for the last 2 to 3 months.<p>I switched to Codex and have been happy with it. Curious what other provider who provides good models at decent pricing?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
