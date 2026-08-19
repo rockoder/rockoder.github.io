@@ -1,0 +1,882 @@
+{
+  "scraped_date": "2026-08-19",
+  "source": "hacker_news",
+  "total_scraped": 128,
+  "nontech_count": 25,
+  "posts": [
+    {
+      "id": "49331033",
+      "title": "Ask HN: Alternatives to GitHub",
+      "link": "https://news.ycombinator.com/item?id=49331033",
+      "domain": "news.ycombinator.com",
+      "author": "dhruv3006",
+      "score": 628,
+      "comment_count": 421,
+      "created_ts": 1786975157,
+      "is_internal": true,
+      "post_text": "Github has been down consistently over the last few months - does it make sense to switch to alternatives?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "To all of those proposing self-hosted GitLab: we did it for 6+ years in my company, and it's not always a smooth sailing. We had our own runners and we made it auto-upgrade across docker images daily before business start. It mostly worked really well, except those few times were a Docker upgrade had to be rolled back, or that one time the bundled pg_shared_buffers was set at 1MB by default, making schema upgrades impossible for bigger instances, or a version major would break pipeline expectations forcing to upgrade 200+ repos at a time (we pinned to major afterwards). Lately I was also receiving an almost weekly \"critical patch\" newsletter due to critical/high vulnerabilities, which I can only imagine are due to LLM running over the code and identifying bugs.\nThat said, I wish we hadn't migrated to GH, our self-hosted instance had \nWAY\n less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil: GH is nowhere near Enterprise-ready and it feels a downgrade across the board. GL has better access granularity, better docs, better integrations, and you can clearly see the UI received a lot of attention (although it does take 10m with a new account to pin the proper items in the maze of sub-menus that is the sidebar). You can also look at the code and help out if needed, and/or simply provide a patched version to your image via a docker mount.\nIf you're really looking at self-hosting GitLab for a smallish team (up to 50-100 ppl), prepare at the very least a 16GB machine (best 32GB) with 4 cores and a decent SSD, and at least a small team (1-3 people) that can maintain it properly or jump at it at any moment. For runners, a small k3s cluster is ideal to make use of all the resources you can throw at it without worrying about managing the runner state/configuration.",
+          "author": "plqbfbv",
+          "replies": [
+            {
+              "text": "> That said, I wish we hadn't migrated to GH, our self-hosted instance had WAY less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil\nThe key thing that drove our decision to self host gitlab was that WE were the ones in control of when things happened. We didn't do upgrades during times where we really needed our git infra up, and we were in control of our response time to incidents. We were not at the mercy of some other company's upgrade schedule and incident resolution process.\nOf course, it comes with added workload and responsibility, but as the above comment says, it was not that onerous. While we paid for Gitlab Enterprise for a long time, we eventually switched to the free tier as that company was winding down (for reasons unrelated to our choice of git hosting), and the free tier actually has pretty much everything we needed.",
+              "author": "cortesoft",
+              "depth": 1
+            },
+            {
+              "text": "Never forget the sudden GitLab price-hike and flavor feature changes just a few years ago. I was literally about to go from free to paid, when the pricing doubled nearly overnight. I left for Gitea.\nhttps://news.ycombinator.com/item?id=35144974",
+              "author": "jrey2112",
+              "depth": 1
+            },
+            {
+              "text": "Have you looked at migrating to Forgejo? It’s a fork of Gitea though I think it has diverged significantly since the fork.",
+              "author": "Grombobulous",
+              "depth": 2
+            },
+            {
+              "text": "I did and then rolled back. Gitea is far ahead in CI/CD features, which is the main thing I want from my own git forge.\nAnd they also seem to keep adding more meaningful features, not just refactoring to keep some federation thing working.",
+              "author": "Jnr",
+              "depth": 3
+            },
+            {
+              "text": "Interesting, thanks for the perspective. I’ve heard about both in various ways. Obviously some people like one over the other.",
+              "author": "Grombobulous",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are after?\n1. Do you want something that works and feels like GitHub? -- Forgejo and Gitea are good for this.\n2. Do you want a place to host git repositories with minimal hassle? -- GitLab, CodeBerg, and others are available.\n3. Do you have your own hosting infrastructure? You could use gitolite and CGit/GitWeb on that hosting platform or local hardware.\n4. Do you just want to host repositories? -- Gitolite can be used to help with SSH/auth/repository creation, and CGit or GitWeb for the frontend.\n5. Do you need something like GitHub Actions? -- GitLab, Forgejo, and Gitea offer CI, or use external CI infrastructure.\n6. Do you need issue tracking and management? -- GitLab, Forgejo, and Gitea provide these. There are alternatives from Jira to Kanban (including Trello) to Markdown (Obsidian and others) and more.",
+          "author": "rhdunn",
+          "replies": [
+            {
+              "text": "> 4. Do you just want to host repositories?\nan ssh connection and\n    git --bare init\n\n\non your ssh accessible server works just fine",
+              "author": "mejutoco",
+              "depth": 1
+            },
+            {
+              "text": "“Just” is a four letter word and a trap our industry repeatedly falls into.\nhttps://sgringwe.com/2019/10/10/Please-just-stop-saying-just",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "I hadn't read this article until now, but I started catching myself using the word at work a few years ago and I've actively been trying to avoid using it for the reasons laid out in this post.",
+              "author": "chrysoprace",
+              "depth": 3
+            },
+            {
+              "text": "I didn't check if this was mentioned in the article but I've heard it described as a \"lullaby word\". I think that is very apt, and I have stopped using it whenever I can.",
+              "author": "gosub100",
+              "depth": 4
+            },
+            {
+              "text": "If all you want to do is host repositories, “just” is the appropriate word here.  For lone wolf work, all I care about is having a remote that mirrors all the changes and branches I create locally.  It’s just redundancy. A git bare repo and SSH are all that’s needed.\nI don’t do pull requests to myself, and I don’t need a bug tracker or CI.",
+              "author": "hamburglar",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://tangled.org\n! Founder/CEO here. We're a new forge building things from the ground up, and are fully federated -- you can host your git repos on your own infra, along with the CI runners. We've also got a pretty neat set of features (if I may say so myself): stacked PRs, Nix-based CI (if you want it), and a fully open protocol (\nhttps://atproto.com\n) to for you and your agents.\nHappy to answer any questions.",
+          "author": "icy",
+          "replies": [
+            {
+              "text": "The whole \"social coding\" angle is highly off-putting. List of \"X followed Y\" on the front page, and the large \"social coding\" reminds of facebook, social manipulation, developer burnout and all the negative things about social networks. It also brings up the questions about project's long-term direction - is this going to focus on the code part or the social part?\nWhich is a pity - as I think most projects just need a git host + web UI + easy pull requests + a way to clone other's repos, and tangled seems to do this pretty well.",
+              "author": "theamk",
+              "depth": 1
+            },
+            {
+              "text": "Arguably the \"social coding\" angle is the reason why Tangled is the only actual alternative to GitHub.  Otherwise there's actually plenty of other alternatives to GitHub, but none of them have GitHub's punchcard, which I'm ashamed to admit is the primary draw for me.",
+              "author": "Bjorkbat",
+              "depth": 2
+            },
+            {
+              "text": "Forgejo, and by extent Codeberg, has the punchcard-like feature, it‘s just hidden under „Public activity“ on the profile page",
+              "author": "zImPatrick",
+              "depth": 3
+            },
+            {
+              "text": "Don't think anyone uses Github to follow people",
+              "author": "jatins",
+              "depth": 3
+            },
+            {
+              "text": "I'd like to know if most people use GitHub because of the social network part, or other reasons. I, for one, hate the social network part.\nOne thing with GitHub for open source projects is that the CI is free (and included macOS runners). The other is that many people have a GitHub account and would refuse to contribute to a project on another forge if it means that they must create a new account.\nThe federated design of Tangled solves the latter problem, so there's that.",
+              "author": "palata",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://forgejo.org/",
+          "author": "polycaster",
+          "replies": [
+            {
+              "text": "I recently set this up on my homelab, not really expecting to switch to it, more out of interest. But wow, after I saw how unbelievably fast it was, I’ve moved everything over. I’ve now set it up to mirror things automatically to Github if I want to make them public.\nUsing Github at work is painful in comparison. (Also literally just this morning we’ve had to delay a release due to Github being down.)",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "Have been running self-hosted forgejo for a while now. Work's like a charm. Easy to use with LLM",
+              "author": "sisve",
+              "depth": 2
+            },
+            {
+              "text": "Is their CI and CD workflow robust like gitlab/github ?",
+              "author": "bobkb",
+              "depth": 1
+            },
+            {
+              "text": "It's based on act[0] so it's quite like GitHub actions but not completely [1].\nI found in the current version of Forgejo the most secure way to set it up was just to put the runner on a different host. There's a Docker in Docker setup [2] that was challenging to get working correctly but still didn't quite feel secure...\nAfter setting it all up, I'm convinced GitHub actions as a concept is flawed. I wish the community would make a simpler git-defined CI/CD that didn't have the crazy surface area that actions does... Named shell scripts that can call out to other stuff in the runner Docker image and report it to the UI would be a nice start.\n[0]: \nhttps://github.com/nektos/act\n[1]: \nhttps://forgejo.org/docs/v15.0/user/actions/github-actions/#...\n[2]: \nhttps://forgejo.org/docs/v15.0/admin/actions/docker-access/#...",
+              "author": "cobertos",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. GitHub Actions feels like someone's science project created while on a mushroom trip. Really you just want a thing that executes a shell script in a runner.",
+              "author": "dboreham",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I answered this in another thread, if you're already running a large GitHub organization, GitLab is the closest alternative in terms of features\nA big plus is that it also has an open-source Community Edition that you can self-host",
+          "author": "mariocesar",
+          "replies": [
+            {
+              "text": "There are also many consultancies able to provide professional support with running it in your org, including migrations.",
+              "author": "Nemo_bis",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49351324",
+      "title": "Beware Management Consultants",
+      "link": "https://about.iceland.co.uk/our-story/the-dark-ages/beware-management-consultants/",
+      "domain": "about.iceland.co.uk",
+      "author": "KolmogorovComp",
+      "score": 439,
+      "comment_count": 122,
+      "created_ts": 1787081391,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "This is great: \nhttps://about.iceland.co.uk/our-story/the-dark-ages/the-chie...",
+          "author": "orf",
+          "replies": []
+        },
+        {
+          "top": "I smirk and laugh this little slideshow and then remember that my own work involves internal tools to promote governance and productivity while formalizing requirements to two outsourced developers.\nI don't think I'm one of the red team's 7 captains, but I don't exactly have my hands on the paddle every single day. After all, I can find the time to lollygag on HN between 9-5.",
+          "author": "schnevets",
+          "replies": []
+        },
+        {
+          "top": "The intentional bad UX made me read the whole thing, instead of skimming through.\nIn this day and age, bad UX is great for preventing ADHD users",
+          "author": "yipinwong",
+          "replies": [
+            {
+              "text": "They may want to secure the services of a consultant.",
+              "author": "kevin_thibedeau",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I think generalizations are usually bad. I genuinely am weirded out by management's fascination with consultants. It really is about incentives, and consultants usually do not have the right ones, at least the big ones. Also, there are management which feel like companies always need change, but really you have to examine the competitve position within the broader industry not just a vacumm. Things honestly stay the same for a long time. IBM had more revenue then Microsoft all the way up to the early 2010s. Switching costs are powerful - \nhttps://s-1.vercel.app/posts/why-dropbox-is-a-obvious-pe-tar...\nI think a key takeaway is the human nature to constantly act, and not just sit and do nothing. Lot's of value in sitting around, especially in investing.",
+          "author": "Taikhoom10",
+          "replies": [
+            {
+              "text": "It seems that management in most organisations can't believe something unless they've paid vast sums for it. So they can't believe their own staff if they say X, even if it's right, because they haven't paid enough for it. Then the consultant comes along, interviews the staff, finds they say X, tell the client, charge buckets for it, and are believed. Weird human behaviour...\ndisclaimer: ex management consultant",
+              "author": "niccl",
+              "depth": 1
+            },
+            {
+              "text": "In my experience senior management hires management consultants to tell them to do what they wanted to do anyway but now they can blame the consultants.\nThe two consults in Office Space absolutely nailed it.",
+              "author": "noir_lord",
+              "depth": 1
+            },
+            {
+              "text": "yeah that's fair, Office Space is goated.",
+              "author": "Taikhoom10",
+              "depth": 2
+            },
+            {
+              "text": "> It really is about incentives, and consultants usually do not have the right ones\nAs a consultant myself, I don't get it, that might be true for management consultants, but not for technical ones.\nAs a software engineering one, there hasn't been a single time where I wasn't among the top performers after a month.\nMy incentive was always to do a good showing so they may call you for other projects in the future.",
+              "author": "epolanski",
+              "depth": 1
+            },
+            {
+              "text": "The term most people here would use for your job is “contractor”, not “consultant.”\nA consultant, in most people’s minds, is someone they would \nconsult with\n, who would tell them what to do, in an advisory capacity; not someone who would actually do any kind of work. (In other words, a management consultant.)\nThe only people who use the term differently are consulting firms themselves, because they think “consultant” sounds fancier (and worth paying more for!) than “contractor.”",
+              "author": "derefr",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Private firms are entertainingly idiosyncratic in ways only founder-powered public firms barely approach. The other big one I find entertaining is Dr Bronner’s soap which has a massive label full of dense text that is totally stream of consciousness sentences. Amazing.\nPerhaps it’s a characteristic of closed groups. SQLite has its moral code that is the Ten Commandments++. Good stuff.",
+          "author": "arjie",
+          "replies": [
+            {
+              "text": "Weird story ... Dr Bronner also appeared in the greatest unreleased movie ever made.  With Bill Murray and Dan Ackyroyd and Liz Taylor's ex husband.  And it was the only movie Dr Bronner appeared in according to imdb: \nhttps://www.imdb.com/name/nm0111462/",
+              "author": "rwmj",
+              "depth": 1
+            },
+            {
+              "text": "“Liz Taylor’s ex-husband” is extremely vague…",
+              "author": "bitbckt",
+              "depth": 2
+            },
+            {
+              "text": "I imagine that Dr Bronner's unhingedness is a net asset for the brand. I always prefer to buy things that seem less sterilized by corporateness.",
+              "author": "ajkjk",
+              "depth": 1
+            },
+            {
+              "text": "Actually had no idea Dr. Bronner's was this weird. The guy started it as a tax-exempt religious organization!",
+              "author": "vostrocity",
+              "depth": 1
+            },
+            {
+              "text": "If a public co CEO acts differently than others and then underperforms the market, shareholders then look at rhe idiosyncrasy as a bad thing. So they naturally all start to act like each other. Buffett had a similar idea he termed the institutional imperative.\nIf you’re the private owner/CEO you just get to be steered by the customer, and can even stop growing if you want.",
+              "author": "jbs789",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49348751",
+      "title": "Claude Code May–August 2026 weekly limits promotion",
+      "link": "https://support.claude.com/en/articles/15910845-claude-code-may-august-2026-weekly-limits-promotion",
+      "domain": "support.claude.com",
+      "author": "tyre",
+      "score": 258,
+      "comment_count": 227,
+      "created_ts": 1787072535,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "promotion"
+      ],
+      "comments": [
+        {
+          "top": "I think the difference between the Anthropic token maximization approach (vibe code all the things!) and OpenAI's focus on efficiency, terseness and token reduction are going to be the defining features of who wins the long-term race.\nMy money is on the more efficient solution. Even if Anthropic can win some benchmarks by using 3x tokens over 3x time, it is a terrible base to build toward the future. Users are no longer willing to wait exponentially long for linear improvements. And as we see from some of the Chinese models, they can quickly distill frontier models with the tax of being slower and more token-guzzling, while retaining most of the quality. The real differentiators are becoming speed and efficiency, which translate to cost and user velocity more than incremental capability improvements.\nIt's great that frontier models can solve complex math equations, but bread and butter LLM usage (where the money is made) has already shifted from \"I need the best always\" to \"what solves my day-to-day problems quickly and consistently\". Fable usage as a percentage is flat-lining. We are already at the point where output quality is negligible. What wins going forward is cost, speed, consistency and the compounding effects of \"softer\" improvements to the harness.",
+          "author": "lubujackson",
+          "replies": [
+            {
+              "text": "Not to sound like a mark, I try to not get attached to any of these providers.\nI've jumped between copilot, claude, gemini and chatgpt since the start of the year. chatgpt wasn't even worth looking at early this year.\nAnthropic has the smarter models for sure, and seems to be default in corporate. However, the amount of budget you get with GPT as a user is much better, the harness feels more polished, and the models are faster. They are also much nicer to work with, I can just read the output for the most part. With claude I get pages of text and need to skim to find where the actual information i need to care about lies. So much more cognitive overhead.\nSol is smart enough for anything I've thrown at it, it's not one-shotting like fable, but I'm more willing to actually go back and forth with it, and it's likely producing better output to keep a human in the loop rather than trying to solve the world independently and making multiple incorrect assumptions.\nI think GPT sees the market changing and is correctly repositioning themselves. Anthropic is down the wrong road, and if they don't correct course quickly I'm sure many of those enterprise contracts will start pivoting.",
+              "author": "WhiteDawn",
+              "depth": 1
+            },
+            {
+              "text": "> and it's likely producing better output to keep a human in the loop rather than trying to solve the world independently and making multiple incorrect assumptions.\nI was just discussing this with a co-worker yesterday. I would really like a model (or harness?) that worked with me instead of for me. Walk me through its choices and decisions, let me correct it and guide it along. I would be way more confident in it's output, I would be more familiar with the changes that are being made, and it would make reviewing the final code way easier since I was making the decisions along side it. I'm sure it would also reduce the \"brainrot\" we're all going to experience the more we hand work to these models.",
+              "author": "stanmancan",
+              "depth": 2
+            },
+            {
+              "text": "Those exist and they're called orchestration skill frameworks like Superpowers, GetShitDone, etc.",
+              "author": "halfmatthalfcat",
+              "depth": 3
+            },
+            {
+              "text": "does \"Superpowers\" exist outside of the Claude ecosystem? I feel like I've become hooked on this workflow - honestly I could take or leave the models ... it's the workflows and the way that they essentially create tightly focused loops over multiple sessions that I've becoming fairly dependent on.",
+              "author": "ray_v",
+              "depth": 4
+            },
+            {
+              "text": "Yes, Superpowers is just a set of (agent agnostic) skills that you can use in any harness.",
+              "author": "halfmatthalfcat",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Looking like this will be the last month with Anthropic. Between the outages and just overall crap utility of Opus/Fable lately...",
+          "author": "swader999",
+          "replies": [
+            {
+              "text": "They'll all be getting around to this sooner or later, its just too expensive",
+              "author": "20k",
+              "depth": 1
+            },
+            {
+              "text": "I get incredible utility out of $200 per month\nIt's hard to put a number on it, but even accounting for all the time in meetings, talking with stakeholders and developers etc I'm over 10% more productive overall. I earn substantially more than $2000/month, the ROI is there\nIt's only expensive compared to the currently very strong offering from OpenAI. Or other models - my hobby projects are all on DeepSeek",
+              "author": "wongarsu",
+              "depth": 2
+            },
+            {
+              "text": "What you’re saying is that they should be charging $2000 or more per month then.\nPerhaps that’s true, but it’s a price tag that’s a lot harder to swallow for many orgs than $200/mo, and would require some hard justification for how your increased productivity contributes to the business bottom line.\nI’ll agree that you can probably do that with hard numbers. I am skeptical that most $200/mo users could.",
+              "author": "moregrist",
+              "depth": 3
+            },
+            {
+              "text": "yes and no, anthropic and openai are losing money on people who max out their sub, but openai has a lot more room to play with with much cheaper models to serve (by all signs we have from actual api/task pricing)",
+              "author": "oh_no",
+              "depth": 2
+            },
+            {
+              "text": "I posted on LinkedIn that I thought the future of AI will be \nlocal\n. I'm surprised I didn't get tarred and feathered, but it's been crickets.\nI do believe it though. While the subsidies of the frontier providers \nare\n nice, they can't continue forever.",
+              "author": "akulbe",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "For anyone on the fence, I was a hardcore CC user since it was released. I made the full switch to 5.6 sol and Codex about a month ago.\nIt's the better experience. The limits are way higher (I almost never burn through my $200/m plan), and the output is better than Opus 4.8 (Opus 5 is completely unusable for me).",
+          "author": "ryanSrich",
+          "replies": [
+            {
+              "text": "I had a very similar experience. The combination of Claude going down frequently and the hype around open source models was enough for me to swap my harness from Claude Code to OpenCode. Then it became trivial to test out different models, and now the rest is history. Currently using OpenCode with z.ai and Codex $200/m plans for all my work atm.",
+              "author": "robertn702",
+              "depth": 1
+            },
+            {
+              "text": "You're underselling how good/reliable 5.6 sol is. It's in the fable discussion league not Opus4.8",
+              "author": "ramoz",
+              "depth": 1
+            },
+            {
+              "text": "I haven't used fable since they brought it back. But based on my experience before they removed it, I would agree that sol is pretty close.",
+              "author": "ryanSrich",
+              "depth": 2
+            },
+            {
+              "text": "Yep, switched from CC to 5.6 Sol. Not using it in my day job (only side projects), but I can crank 5.6 Sol on Extra High \"fast mode\" and never have to worry about credits.\nNot doing crazy multi agent swarms, but have yet to hit any limits during pretty intense weekend sessions.",
+              "author": "brotchie",
+              "depth": 1
+            },
+            {
+              "text": "Also try a hundred bucks on Openrouter and experiment with the Chinese models like Deepseek, Kimi, GLM. $100 will last a good while, and it isn't tied to a single model or provider.",
+              "author": "nozzlegear",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Anthropic has just announced extending the limits through August 31st with plans to make the new limits permanent.\nhttps://xcancel.com/ClaudeDevs/status/2089798442306711646",
+          "author": "ajhai",
+          "replies": []
+        },
+        {
+          "top": "The promotion is ending; the limits are reverting to pre-promotion levels.\n\"From May 13, 2026 through August 19, 2026, your weekly usage limit in Claude Code is 50% higher.\"",
+          "author": "bdcravens",
+          "replies": [
+            {
+              "text": "During this period however they’ve released models which lots of people report to be significantly more chatty. Framing it purely as a promotion ending feels like you’re giving them a bit too much credit. I doubt it’s a coincidence they started this promotion a week before the release of 4.8.",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "I think running a model unsupervised in anything above medium is a sucker move to burn more tokens. The high effort models can be great in limited context, but unsupervised they too often end up navel gazing. High doesn't always mean smarter, but it always burns more tokens. Medium and low seem to be decent for day to day tasks.",
+              "author": "dexwiz",
+              "depth": 2
+            },
+            {
+              "text": "I am not sure the supervision is the problem, it's more the way Claude is acting in general, taking initiative that could burn thousands of token in a second. Just today I ask it a small fix on a newly pulled project, it wrote 5 lines of code but then immediately started to run the full test suites, which itself runs in docker, with several images that I didn't pull yet so it started to download everything and by the time I click stop, it already filled the context windows with dozen of hundreds of useless lines...\nI find it very hard to fins the sweet spot in the prompt between \"do not assume, do not take initiatives\" and \"inform me if there is a simpler way to do what I am asking or if there are some downsides I may not have thought about\".",
+              "author": "flaburgan",
+              "depth": 3
+            },
+            {
+              "text": "> I think running a model unsupervised in anything above medium is a sucker move to burn more tokens.\nWhat about errors compounding and any on-the-go decisions being made being the wrong ones? That kills \nanything\n long form, no matter how good and detailed your initial plan is - there will always be something along the way.\nThe models would need a way to identify a difficult problem and apply max reasoning there themselves and cruise through everything else at a lower level.",
+              "author": "KronisLV",
+              "depth": 3
+            },
+            {
+              "text": "That’s my experience too, going off the deep end with CoT doesn’t meaningfully improve output on a lot of tasks but it does incinerate tokens and take longer",
+              "author": "ifwinterco",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49340013",
+      "title": "Ask HN: Does anyone else feel like nothing matters anymore?",
+      "link": "https://news.ycombinator.com/item?id=49340013",
+      "domain": "news.ycombinator.com",
+      "author": "ramesh31",
+      "score": 250,
+      "comment_count": 165,
+      "created_ts": 1787016528,
+      "is_internal": true,
+      "post_text": "New software releases? Who cares. Learning new CS concepts? Whatever. Studying for the next interview? Job probably won&#x27;t even exist in a year. Working on that side project? No one will care because it&#x27;s just another addition to the mountain of slop, and the guy bagging your groceries can do it. Everything is done and cooked with AI now.<p>It&#x27;s exactly like that feeling once you enable cheats in a game; sure you can do anything, but everything is meaningless now. Our entire purpose and joy in life has been taken from us.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "side project",
+        "purpose",
+        "interview"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49332495",
+      "title": "Ask HN: GitHub employees what's going on? Why?",
+      "link": "https://news.ycombinator.com/item?id=49332495",
+      "domain": "news.ycombinator.com",
+      "author": "sharts",
+      "score": 226,
+      "comment_count": 190,
+      "created_ts": 1786979971,
+      "is_internal": true,
+      "post_text": "Pretty self explanatory. Could you folks shed some light on why these issues keep happening?<p>I’ve noticed most posts and replies are just people coming to their own conclusions based on whatever published data.<p>I think it would be helpful to get some actual, non-corporate&#x2F;marketing information on the goings-on by those that actually see what’s happening on the inside.<p>Thanks",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "Github is struggling because AI-boosted coding increased the number of commits 14x in the past year, and the pace is still accelerating. The site is struggling to keep up.\nGithub's COO confirms it here: \nhttps://x.com/kdaigle/status/2040164759836778878\nPlatform activity is surging. There were 1 billion commits in 2025. As of three months ago, it was 275 million per week, on pace for 14 billion this year if growth remains linear (spoiler: it won't.)\n20% of all GitHub accounts were created in the past 6 months \nhttps://x.com/kdaigle/status/2082604368399159542",
+          "author": "tristanj",
+          "replies": [
+            {
+              "text": "GitHub’s reliability issues started earlier than the boom in agentic coding they talk about. I have comments on here from 2025 talking about massive outages with actions and issues.",
+              "author": "maccard",
+              "depth": 1
+            },
+            {
+              "text": "When you're the uncontested market leader, you don't budget operations to be perfectly reliable, you budget to not be too unreliable. All those 9's are expensive after all.\nThe AI boom caught them napping though, and they're slipping well into the too unreliable category",
+              "author": "fooey",
+              "depth": 2
+            },
+            {
+              "text": "> The AI boom caught them napping though\nMicrosoft, who invested eyewatering sums into AI, even near to betting the whole company on an AI boom, is surprised about the AI boom?",
+              "author": "aleph_minus_one",
+              "depth": 3
+            },
+            {
+              "text": "Microsoft bet everything on possible AGI, no one thought the result would be a bonafide commit printing machine.",
+              "author": "minraws",
+              "depth": 4
+            },
+            {
+              "text": "That's not what Nadella said 1-2 years ago. Everyone seemed pretty aware of LLMs soon being able to handle a lot of steps of software development.\nI bet it's mostly due to Azure being brittle and the AI boom is just a nice cover story (not saying it's not challenging to handle all that new load) to save face and sell more Azure services.",
+              "author": "jasonvorhe",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Github used to be built on mysql / redis / ruby on rails / C / shell, running on dedicated hardware. Microsoft left it like that after they acquired the company.\nEventually, though, they decided to migrate the whole thing to Azure. And they were far enough through that to be basically committed... when AI coding started hitting them with much higher workloads.\nI personally think the reliability problems are more to do with the reliability of the Azure migration. But both factors are likely relevant.",
+          "author": "andyjohnson0",
+          "replies": [
+            {
+              "text": "They didn't leave the architecture alone, right? They shoved React in and created a weird SSR + React frankenstein that is objectively worse in many ways.",
+              "author": "sosodev",
+              "depth": 1
+            },
+            {
+              "text": "This is the reason, at least what I know from people who worked there, the azure migration has been very painful as far as I’m aware",
+              "author": "dgellow",
+              "depth": 1
+            },
+            {
+              "text": "After their infamous \"Fail Whale\" outages, Twitter replaced its Ruby on Rails / MySQL stack with modern (at the time) technologies: Scala (functional language running on the JVM) / Finagle (RPC) / Thrift (framework) / Kafka (message queues) and this made Twitter stable under the load of several hundred million users.\nRuby is single-threaded, slow with poor GC and memory leaks. As Twitter's Alex Payne said publicly in 2008: \"there shouldn't be doubt in anybody's mind that Ruby itself is slow\" and that scaling Rails meant \"just throw more instances at it\"",
+              "author": "cbeach",
+              "depth": 1
+            },
+            {
+              "text": "tell that to Shopify that handles 8.15 million requests per second and processes 5.1 million per minute in sales during Black Friday. You scale your architecture, not your programming language.",
+              "author": "lab14",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "non-helpful answer: the \"Microsoft Acquires GitHub\" line in this graph answers all questions \nhttps://damrnelson.github.io/github-historical-uptime/",
+          "author": "herpdyderp",
+          "replies": [
+            {
+              "text": "To be fair, before the aquisition, GitHub was super stable, but also it felt like they rarely changed or added anything.\nAfter Microsoft acquired them, they started rolling out new features at an incredible pace. And if you look at the breakdown of the downtime, most of the downtime is in features that didn't exist before the acquisition.\nThough not all of the downtime is in new features. The core is also less stable than ever.",
+              "author": "fallingbananna",
+              "depth": 1
+            },
+            {
+              "text": "My (actuarial) read on this is that pre-Microsoft GitHub acknowledged that the complexity inherent in their technology stack imparted a lot of change risk, and that probably informed their decisions around shipping new features.\nMy (not-so-actuarial 1990's-experience-colored) feeling is that this is Microsoft doing what Microsoft does best, namely including a lot of seemingly compelling features in a product to get people hooked and to keep competitors in a position of trying to keep up.",
+              "author": "nrr",
+              "depth": 2
+            },
+            {
+              "text": "But I just want stable hosting for my shit. I barely even interact with the web UI, other than commenting on PRs.",
+              "author": "a2ff6eeb0",
+              "depth": 2
+            },
+            {
+              "text": "In all fairness, the features expanded substantially \nafter\n the acquisition so there's are a lot more components that can experience downtime. Pre-acquisition, github was a fairly simple code repository with issues bolted on. Actions, Dependabot, Codespaces, Advanced Security, Package Registry, Copilot, etc. all came after the acquisition and probably involve much more overhead than what github was prior to the acquisition. It basically went from code hosting platform where machines are sitting idle when pushes and pulls aren't happening to a fully integrated developer ecosystem. Any one of those things experiencing degraded performance is going to show up on an uptime chart.",
+              "author": "jm4",
+              "depth": 1
+            },
+            {
+              "text": "True, but you could argue whether these were good product decisions especially given they've probably contributed to the cost of running the platform and the instability substantially.\n(Github did probably want a native CI implementation but I'm not really sure Actions was the way to do it. It seems so needlessly complex to me, not to mention the massive security issues. The rest of those features are just far from something I'd ever use so I don't even really know how to comment on them)",
+              "author": "rcxdude",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I got an \"it is unacceptable\" from their CPO on 8/7, and that they are \"working around the clock on it\".\nhttps://x.com/mariorod1/status/2085800861469495465\nI really think something deeper is going wrong there, and they're not being honest with their paying customers (and enterprises) about it.",
+          "author": "qrush",
+          "replies": [
+            {
+              "text": "The reality is that it's probably a skill issue. Scaling a mature platform 10x can be a really, really hard problem, they obviously don't have their arms around a solution, and are probably spending a majority of their time on ops to keep the bleeding down. In the old days you would have Jeff Dean come down from heaven and invent a new database for you or something like that. It doesn't really seem like Github has that kind of technical ability, so they're probably trying to cobble together Azure ops with internal bandaids while everyone internally is cranking out AI code and it's just not going to be enough.",
+              "author": "tibbar",
+              "depth": 1
+            },
+            {
+              "text": "May I just leave this for you here? \nhttps://isolveproblems.substack.com/p/how-microsoft-vaporize...\nA technical foundation is not infinitely strong. Put a big enough castle on a swamp, and it will sink into the swamp.",
+              "author": "conartist6",
+              "depth": 2
+            },
+            {
+              "text": "I wouldn’t be surprised if that tweet response you got was written by an LLM",
+              "author": "dgellow",
+              "depth": 1
+            },
+            {
+              "text": "I mean they may be working around the clock, but after 5 or 6 layoffs in 3 years… half their engineers are probably still learning the code base.",
+              "author": "Pseudocrat",
+              "depth": 1
+            },
+            {
+              "text": "I don’t think their engineers « learn the codebase » anymore, that’s so 2025. It’s all agentic now, the model learns the codebase, the engineer ask the agents to do their best and believe in themselves",
+              "author": "dgellow",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Lovable only uses GitHub for storing projects. And requires people to provide their own GitHub account. Lots of vibe coders with no technical background are now having lovable push commits to GitHub",
+          "author": "alightsoul",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49332751",
+      "title": "Launch HN: Speko (YC S26) – OpenRouter for Voice AI",
+      "link": "https://speko.ai/",
+      "domain": "speko.ai",
+      "author": "abdik",
+      "score": 114,
+      "comment_count": 65,
+      "created_ts": 1786980978,
+      "is_internal": false,
+      "post_text": "Hi HN! I&#x27;m Bek, founder of Speko, a platform that finds an optimal combination of speech-to-text, LLM, and text-to-speech models, given your constraints, among all our public benchmarked options, and tells you why.<p>Demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=no2LY2gRh-c\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=no2LY2gRh-c</a><p>Typical production voice agent is an ensemble of three models: STT, an LLM, and TTS.<p>Each of those layers offers a dozen credible vendors, and each month there are new models on the market. Almost everyone evaluates once, picks a stack of their choice, and never rechecks because switching from a vendor to another involves yet another integration and arguments about the numbers.<p>The result is that you use voice agents running last quarter&#x27;s models while better and cheaper options are available.<p>Before founding Speko, I spent four years as cofounder and CTO building voice agents for enterprises across Asia in 10+ languages. Each time a new speech model would arrive, we repeated the same ritual: hire native-speaking raters, benchmark it against our existing stack, and update production if it improved. Speko turns this process into an API. A team running thousands of calls a day told us: &quot;we can literally go to this dashboard, switch the model, and it will do it for us.&quot;<p>How it works: you send a request with your optimization criteria (accuracy, latency, cost or balanced), language and region. The router filters to models which we measured for the given combination of constraints, benchmarks them, selects the winner, and returns a response with headers containing provider, model names, and the scores. The gateway prefetches signed session plans, so a new session dials the provider straight from memory; no control-plane round trip while a caller waits.<p>Failover happens only during connection setup stage: if the provider refuses the connection attempt, we start connecting to the runners-up.<p>Some of the customer stories: one founder came to us not knowing what to pick at all: he gave us his use case and now routes everything through the platform. A property management AI runs LiveKit in Python and had not updated STT or TTS since launch: they did not know their STT had high error rates on their calls, better options existed, and swapping always looked like an R&amp;D project. One team did not know which models to pick for Spanish. A medical team did not know which STT handles medical vocabulary best. In every case we helped find the right stack from the benchmarks, and now they route through us.<p>The measuring part is public: we pass the same inputs to every model in one region in different dated runs and we publish the boards, including those where our selections perform worse than alternatives. A launch demo answers which 30-second clip sounds better; production asks which model survives minute eight, so we test spontaneous speech, money and dates, ten-minute takes, and the rankings change. We trained an automatic scorer for TTS naturalness on our blind head-to-head listening votes; on providers it has never seen a vote for, it picks the same winner our raters do about as often as raters agree with each other.<p>We don&#x27;t train or sell models ourselves, that&#x27;s precisely how we keep our rankings impartial.<p>We also open sourced the gateway for teams who want to avoid an extra network hop on the audio path and don&#x27;t want to share keys with our cloud (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;SpekoAI&#x2F;gateway\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;SpekoAI&#x2F;gateway</a>, MIT): one Go binary, which is running as a sidecar in your agent&#x27;s container, speaks one local protocol over Unix socket, pins provider hosts and attaches your keys. In BYOK mode it doesn&#x27;t communicate with us at all.<p>Notice that the anonymous, content-free telemetry is enabled by default, and one env var disables it.<p>Cost: the gateway and BYOK setup will be free forever, we charge for the hosted router and managed keys with consolidated billing. Since we started the batch in late June, external usage has grown about 25 percent per week on average, front-loaded toward the launch weeks.<p>I would love feedback from the community: how do you pick speech models now, and what makes you trust the third-party benchmark?<p><a href=\"https:&#x2F;&#x2F;speko.ai&#x2F;\">https:&#x2F;&#x2F;speko.ai&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "management",
+        "feedback",
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "The piece I'd want to see in the constraint solver is effective cost rather than list price. On the LLM leg alone, current 5.6 pricing splits at 272K input tokens with the long band at exactly 2x, and cached input runs 90% below standard input, so two stacks with identical list prices can differ several-fold depending on how much of the prompt is a stable prefix.\nDoes the optimizer model cache-hit rate and context distribution, or does it score on list rates?",
+          "author": "hirak10",
+          "replies": []
+        },
+        {
+          "top": "Answering your question from the small end: I picked my STT by testing self-correction handling. My tool cleans up spoken drafts, and the failure that mattered wasn't word accuracy, it was \"meet Tuesday, no wait, Wednesday\": a raw transcript of that is worse than useless, and models differ a lot in how gracefully downstream cleanup can recover. Your spontaneous-speech testing sounds close to this already. Do the boards score corrections and disfluencies specifically, or do they fold into overall accuracy?",
+          "author": "jobuildsstuff",
+          "replies": []
+        },
+        {
+          "top": "This looks really interesting.\nI feel like there is a lot of room to build great voice-based agents that don't exist right now.\nI have found that ChatGPT voice mode is unusable (e.g. hallucinates me saying things); Claude voice mode is usable, but very buggy around tool calling, and it often mishears things.  And it only supports Opus, not Fable (though it looks like you don't support either of those).  But I use it anyway.\nQuestion, do any of your TTS options support increasing the speaking speed?",
+          "author": "dgreensp",
+          "replies": [
+            {
+              "text": "> I feel like there is a lot of room to build great voice-based agents that don't exist right now\nI agree. Even Codex’s new voice mode isn’t \njust\n “It does things I tell it”, all commercially available voice modes have to be dumbed down in the name of latency for some reason. I have even experienced the latency being \nuncomforably low\n before.\nThis is what I enjoy the most about my in-development personal OpenCode client: It’s \njust STT-LLM-TTS\n with the original model and all of its capabilities. Latency is obviously higher, but I don’t mind that much given the upside (would be interesting to optimize for completely blind usage, my current MO is mostly hybrid).",
+              "author": "solarkraft",
+              "depth": 1
+            },
+            {
+              "text": "thanks! yes, some of them do, cuz speed is a per-provider capability, not universal. And, you can see it in the gateway code (minimax, hume, xai tts adapters all handle a speed param). \nthat unevenness is actually a routing constraint by itself: \"voices that support rate control\" narrows the candidate list the same way language or latency does. and agree on the voice modes, the gap between the demo and a dependable agent is exactly why we started this. what are you building with it?",
+              "author": "abdik",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The benchmarks page seems interesting and something I can use to help make an informed decision. Can you talk about how you're measuring some of these? I imagine it needs to involve some human input.\nhttps://benchmarks.speko.ai/turntaking",
+          "author": "webo",
+          "replies": [
+            {
+              "text": "Turn-taking specifically does not need a listening panel, but it is measured mechanically. 200+ real human clips, and we score end-vs-wait decisions: did the model decide the caller finished speaking, or just paused mid-thought. The best detector gets 94.0% of those right; a plain VAD silence timer gets 46.9%. Results are published here: \nhttps://benchmarks.speko.ai/turntaking\nYou are right about human input for naturalness, that one we did not automate away with yet. We run blind A/B listening rounds with native speakers.",
+              "author": "abdik",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Does this include a turn taking API? It'd be great to have one API that could do \"Conversation in a box\". One of the biggest annoyances is daisy chaining many models together for turn taking, dumb models for immediate responses, with smarter models returning and taking over after.",
+          "author": "spmartin823",
+          "replies": [
+            {
+              "text": "Yes, on the hosted side (agents platform): full sessions come with VAD and turn-taking handled - we set them up and tune them for your use case, so that is the closest thing to conversation in a box. If you run your own orchestration, the gateway is just the routing layer and turn-taking stays in your framework - in our own stack we run Pipecat's Smart Turn in-process and tune the commit threshold on real calls. We also share our benchmarks here: \nhttps://benchmarks.speko.ai/turntaking\nOn fast dumb models answering while a smarter one takes over: we are experimenting with exactly that split - a small fast model holds the conversation while a larger one works behind it. Today it runs as two pinned routes, not one packaged API. Most turns in a phone call do not need a frontier model, and the fastest models on our LLM board are all small, so this is where routing earns its keep. We publish benchmarks on LLMs here: \nhttps://benchmarks.speko.ai/llm",
+              "author": "abdik",
+              "depth": 1
+            },
+            {
+              "text": "One packaged API for the takeover would be great, also worth considering predicting answers with a stronger LLM while the user is talking. Ello (the reading tutoring company) does this.",
+              "author": "spmartin823",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49341411",
+      "title": "Exercise intensity modulates interorgan communication and is associated with",
+      "link": "https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791%2826%2900405-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2666379126004052%3Fshowall%3Dtrue",
+      "domain": "www.cell.com",
+      "author": "newsomix9xl",
+      "score": 99,
+      "comment_count": 60,
+      "created_ts": 1787028693,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49308059",
+      "title": "Ask HN: How do you keep up with HN these days?",
+      "link": "https://news.ycombinator.com/item?id=49308059",
+      "domain": "news.ycombinator.com",
+      "author": "simonebrunozzi",
+      "score": 90,
+      "comment_count": 146,
+      "created_ts": 1786773552,
+      "is_internal": true,
+      "post_text": "In the last 2-3 years, mostly because of AI, keeping up with interesting articles on HN has become harder and harder.<p>How do you deal with it? Besides the simple solution of simply ignoring interesting stuff more and more.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49326825",
+      "title": "$12B of US ratepayers' money wasted on a modeling mistake in PJM",
+      "link": "https://newsletter.semianalysis.com/p/12b-of-us-ratepayers-money-wasted",
+      "domain": "newsletter.semianalysis.com",
+      "author": "_delirium",
+      "score": 78,
+      "comment_count": 36,
+      "created_ts": 1786944169,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49313346",
+      "title": "Ask HN: I've quit six systems for tracking my illness. What works?",
+      "link": "https://news.ycombinator.com/item?id=49313346",
+      "domain": "news.ycombinator.com",
+      "author": "Abh1Works",
+      "score": 41,
+      "comment_count": 47,
+      "created_ts": 1786820982,
+      "is_internal": true,
+      "post_text": "Hey everyone, I am a 20 year old college student who was recently diagnosed with seronegative spondyloarthropathy. Over the last 3 years, Ive tried apps, paper journal, Google Sheets, and notes to track&#x2F;catalogue my journey. I always ended up quitting within 2-4 weeks and not keeping accurate track.<p>Is this a common experience or do I just have to be better at tracking? Is there a unique&#x2F;non habit-building way to track&#x2F;catalogue&#x2F;recall?<p>Im building something for this (part of the reason why I am asking) - and if anyone is open to a longer conversation, Ill gladly pay for you time!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quitting",
+        "quit"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49314700",
+      "title": "Ask HN: What is your favorite lightweight tool or CLI utility in 2026?",
+      "link": "https://news.ycombinator.com/item?id=49314700",
+      "domain": "news.ycombinator.com",
+      "author": "pranav_tech26",
+      "score": 22,
+      "comment_count": 34,
+      "created_ts": 1786831163,
+      "is_internal": true,
+      "post_text": "Tools like ripgrep, fzf, and htop have saved me countless hours over the years. What small utilities do you rely on daily?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49346932",
+      "title": "Ask HN: What's a Dirty Secret No One Wants to Admit in the Tech Industry?",
+      "link": "https://news.ycombinator.com/item?id=49346932",
+      "domain": "news.ycombinator.com",
+      "author": "karakoram",
+      "score": 10,
+      "comment_count": 23,
+      "created_ts": 1787066250,
+      "is_internal": true,
+      "post_text": "What’s a Dirty Secret No One Wants To Admit In The Tech&#x2F;Software Industry?<p>Industry as a whole or within software engineering.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49346906",
+      "title": "Ask HN: Do you feel comfortable admitting that you use AI?",
+      "link": "https://news.ycombinator.com/item?id=49346906",
+      "domain": "news.ycombinator.com",
+      "author": "var0xyz",
+      "score": 9,
+      "comment_count": 24,
+      "created_ts": 1787066175,
+      "is_internal": true,
+      "post_text": "AI took the industry by storm, and naturally this generates a lot of resistance. The way I see this resistance expressing itself is in the form of certain feeling of superiority by those who refuse to use it, and a feeling of shame when admitting to using AI assistance for writing code.<p>However, I would argue (even though I have no data back this claim up) that most developers either choose to use it or are required by their employers. I can&#x27;t predict the future, so I don&#x27;t know if this is an ASM vs. C kind of moment, or if those giving in to the convenience will regret it years down the line when their skills atrophy.<p>Me personally, I use it and I feel more productive than ever. That said I can&#x27;t help but feeling a bit of shame when admitting that. Hearing so many people say that AI-generated code is unusable and fixing it takes longer than writing it by hand, makes me wonder if they are working on a very specific field or I just have skill issues. Or maybe both.<p>How much AI are you using? If you do, do you feel comfortable admitting it?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "regret"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49345255",
+      "title": "Ask HN: Good content on using AI to modernize professional services delivery",
+      "link": "https://news.ycombinator.com/item?id=49345255",
+      "domain": "news.ycombinator.com",
+      "author": "mguerville",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1787059298,
+      "is_internal": true,
+      "post_text": "I&#x27;m curious if the HN community has a good resources (blogs, podcasts, other content) on practical uses of SOTA AI to improve professional services (e.g. outsourced finance, etc.)<p>I&#x27;ve read a fair amount of what people think should be done (theory) but haven&#x27;t found a ton of content from people who actually have done it (practice)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "With regards to automation and outsourcing more generally, there was an Odd Lots episode [0] that had the following discussion:\n- Guy owns a wholesale bakery that delivers to restaurants\n- They do one delivery a day in the morning to each of their customers\n- The options were to hire their own drivers or outsource to a delivery service.\nThe bakery owner points out that while it's cheaper to use the delivery service, there are a couple downsides:\n1. He doesn't \"control\" the customer experience around the delivery b/c it's a 3rd party\n2. If a customer has feedback on a delivery, it's less likely to get back to the baker owner b/c the service driver isn't incentivized to pass that back up the chain\nI say all of this as someone who LOVES automating things btw. Engineers can be too focused on automation though and that can lead to worse overall customer experiences even if there are short term wins.\n0 - \nhttps://www.youtube.com/watch?v=eKGNctKpx8w",
+          "author": "alexpotato",
+          "replies": []
+        },
+        {
+          "top": "There is tons of possibilities of automation, but you have to split down general services delivery into underlying operational categories behind it, then you migh find relevant products/ case studies, if not then you have to dig deeper and decompose into smaller operational areas. In my case it was (software developement company) it was something like: frontend usability testing, frontend ux testing etc.\nI would recommend decomposing and prioritizing:\n  - what takes most of your time\n  - what is needed to close the automation loop for a process\n\n\nIf you can eliminate small task and in return larger delivery process gets automated, then it might be more beneficiall then fighting on automating large complex process",
+          "author": "Xx_crazy420_xX",
+          "replies": []
+        },
+        {
+          "top": "You can search for or look up the corresponding data and evaluation test cases on Hugging Face.",
+          "author": "peefy",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49333136",
+      "title": "Ask HN: Is GitHub Fried Today?",
+      "link": "https://news.ycombinator.com/item?id=49333136",
+      "domain": "news.ycombinator.com",
+      "author": "johncole",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1786982385,
+      "is_internal": true,
+      "post_text": "Keep getting weird responses and their pink unicorn of death.  Is Github unreliable today?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49346107",
+      "title": "Ask HN: Can I realistically make an app as a junior dev?",
+      "link": "https://news.ycombinator.com/item?id=49346107",
+      "domain": "news.ycombinator.com",
+      "author": "brooke1",
+      "score": 4,
+      "comment_count": 15,
+      "created_ts": 1787063224,
+      "is_internal": true,
+      "post_text": "I&#x27;m trying to make an app to help out my local community, but with the intention of scaling it at some point and serving a much wider community. It&#x27;s a complex app with a lot of moving parts, and as a junior dev with little experience in some of the technologies I&#x27;m using, I&#x27;m going to be relying heavily on Claude. However, I know generally, Claude is only as strong as the developer using it—and I&#x27;m a junior dev. So, for example, what do I do about architecture? I can&#x27;t leave the architecture up to Claude, but I&#x27;m not at the point in my career where I can design the architecture on my own without flaws.<p>What are y&#x27;all&#x27;s thoughts on what I can learn on my own through posts&#x2F;YouTube videos, vs. what I might need to hire a senior dev to help me do?<p>I&#x27;ve had this idea for a while, with the thought that I&#x27;d make it when I&#x27;m a more experienced software engineer, but there&#x27;s no time like the present and I just want to bite the bullet and get started, even if it means I&#x27;ll be making more mistakes and learning on the job.<p>For reference, the stack I&#x27;m leaning toward is PostreSQL (I don&#x27;t have experience with this), Java Spring Boot (I&#x27;m pretty experienced with this), Typescript with Angular (pretty experienced), and some python (some experience). There&#x27;s more stuff, like Redis (no experience).<p>Anyway...any help&#x2F;advice on how to do this properly would be really helpful. Part of the idea of this project is just to learn, even if it means I learn a couple of months in that I have to start everything over from scratch, lol.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career",
+        "senior",
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49345137",
+      "title": "Ask HN: How do you manage focus and avoid burnout while working remotely?",
+      "link": "https://news.ycombinator.com/item?id=49345137",
+      "domain": "news.ycombinator.com",
+      "author": "pranav_tech26",
+      "score": 4,
+      "comment_count": 9,
+      "created_ts": 1787058738,
+      "is_internal": true,
+      "post_text": "With Slack, Zoom, and async notifications constant, keeping deep work blocks uninterrupted can be tough. What strategies work best for your workflow?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "burnout"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49353921",
+      "title": "Ask HN: Good IMAP Email Clients?",
+      "link": "https://news.ycombinator.com/item?id=49353921",
+      "domain": "news.ycombinator.com",
+      "author": "pudgywalsh",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1787093386,
+      "is_internal": true,
+      "post_text": "I&#x27;m looking for a good, simple desktop IMAP email client for Windows and Linux and coming up empty handed.<p>Thunderbird absolutely sucks now, it is borderline unusable (it would not connect to our internal email system, and I had no patience with its incomprehensible UI to figure out why).<p>New Outlook is just a web wrapper.<p>It feels like there are far fewer options in this space than existed 20 years ago.<p>Does anyone still use Seamonkey?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49352245",
+      "title": "Ask HN: Countries with greatest temperature increases have benefited from them?",
+      "link": "https://news.ycombinator.com/item?id=49352245",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1787085023,
+      "is_internal": true,
+      "post_text": "It seems that if you look at the countries that have experienced the greatest temperature increases from global warming, they have actually benefited from the warmer weather.<p>Is this true?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49346871",
+      "title": "Ask HN: Another GitHub Outage?",
+      "link": "https://news.ycombinator.com/item?id=49346871",
+      "domain": "news.ycombinator.com",
+      "author": "tom1337",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1787066059,
+      "is_internal": true,
+      "post_text": "We are seeing a lot of actions failing because their GitHub Tokens are being denied and failing either Forbidden errors",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
