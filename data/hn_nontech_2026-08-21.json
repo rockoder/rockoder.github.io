@@ -1,0 +1,821 @@
+{
+  "scraped_date": "2026-08-21",
+  "source": "hacker_news",
+  "total_scraped": 122,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49331033",
+      "title": "Ask HN: Alternatives to GitHub",
+      "link": "https://news.ycombinator.com/item?id=49331033",
+      "domain": "news.ycombinator.com",
+      "author": "dhruv3006",
+      "score": 640,
+      "comment_count": 430,
+      "created_ts": 1786975157,
+      "is_internal": true,
+      "post_text": "Github has been down consistently over the last few months - does it make sense to switch to alternatives?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "To all of those proposing self-hosted GitLab: we did it for 6+ years in my company, and it's not always a smooth sailing. We had our own runners and we made it auto-upgrade across docker images daily before business start. It mostly worked really well, except those few times were a Docker upgrade had to be rolled back, or that one time the bundled pg_shared_buffers was set at 1MB by default, making schema upgrades impossible for bigger instances, or a version major would break pipeline expectations forcing to upgrade 200+ repos at a time (we pinned to major afterwards). Lately I was also receiving an almost weekly \"critical patch\" newsletter due to critical/high vulnerabilities, which I can only imagine are due to LLM running over the code and identifying bugs.\nThat said, I wish we hadn't migrated to GH, our self-hosted instance had \nWAY\n less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil: GH is nowhere near Enterprise-ready and it feels a downgrade across the board. GL has better access granularity, better docs, better integrations, and you can clearly see the UI received a lot of attention (although it does take 10m with a new account to pin the proper items in the maze of sub-menus that is the sidebar). You can also look at the code and help out if needed, and/or simply provide a patched version to your image via a docker mount.\nIf you're really looking at self-hosting GitLab for a smallish team (up to 50-100 ppl), prepare at the very least a 16GB machine (best 32GB) with 4 cores and a decent SSD, and at least a small team (1-3 people) that can maintain it properly or jump at it at any moment. For runners, a small k3s cluster is ideal to make use of all the resources you can throw at it without worrying about managing the runner state/configuration.",
+          "author": "plqbfbv",
+          "replies": [
+            {
+              "text": "> That said, I wish we hadn't migrated to GH, our self-hosted instance had WAY less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil\nThe key thing that drove our decision to self host gitlab was that WE were the ones in control of when things happened. We didn't do upgrades during times where we really needed our git infra up, and we were in control of our response time to incidents. We were not at the mercy of some other company's upgrade schedule and incident resolution process.\nOf course, it comes with added workload and responsibility, but as the above comment says, it was not that onerous. While we paid for Gitlab Enterprise for a long time, we eventually switched to the free tier as that company was winding down (for reasons unrelated to our choice of git hosting), and the free tier actually has pretty much everything we needed.",
+              "author": "cortesoft",
+              "depth": 1
+            },
+            {
+              "text": "Never forget the sudden GitLab price-hike and flavor feature changes just a few years ago. I was literally about to go from free to paid, when the pricing doubled nearly overnight. I left for Gitea.\nhttps://news.ycombinator.com/item?id=35144974",
+              "author": "jrey2112",
+              "depth": 1
+            },
+            {
+              "text": "Have you looked at migrating to Forgejo? It’s a fork of Gitea though I think it has diverged significantly since the fork.",
+              "author": "Grombobulous",
+              "depth": 2
+            },
+            {
+              "text": "I did and then rolled back. Gitea is far ahead in CI/CD features, which is the main thing I want from my own git forge.\nAnd they also seem to keep adding more meaningful features, not just refactoring to keep some federation thing working.",
+              "author": "Jnr",
+              "depth": 3
+            },
+            {
+              "text": "Interesting, thanks for the perspective. I’ve heard about both in various ways. Obviously some people like one over the other.",
+              "author": "Grombobulous",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are after?\n1. Do you want something that works and feels like GitHub? -- Forgejo and Gitea are good for this.\n2. Do you want a place to host git repositories with minimal hassle? -- GitLab, CodeBerg, and others are available.\n3. Do you have your own hosting infrastructure? You could use gitolite and CGit/GitWeb on that hosting platform or local hardware.\n4. Do you just want to host repositories? -- Gitolite can be used to help with SSH/auth/repository creation, and CGit or GitWeb for the frontend.\n5. Do you need something like GitHub Actions? -- GitLab, Forgejo, and Gitea offer CI, or use external CI infrastructure.\n6. Do you need issue tracking and management? -- GitLab, Forgejo, and Gitea provide these. There are alternatives from Jira to Kanban (including Trello) to Markdown (Obsidian and others) and more.",
+          "author": "rhdunn",
+          "replies": [
+            {
+              "text": "> 4. Do you just want to host repositories?\nan ssh connection and\n    git --bare init\n\n\non your ssh accessible server works just fine",
+              "author": "mejutoco",
+              "depth": 1
+            },
+            {
+              "text": "“Just” is a four letter word and a trap our industry repeatedly falls into.\nhttps://sgringwe.com/2019/10/10/Please-just-stop-saying-just",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "If all you want to do is host repositories, “just” is the appropriate word here.  For lone wolf work, all I care about is having a remote that mirrors all the changes and branches I create locally.  It’s just redundancy. A git bare repo and SSH are all that’s needed.\nI don’t do pull requests to myself, and I don’t need a bug tracker or CI.",
+              "author": "hamburglar",
+              "depth": 3
+            },
+            {
+              "text": "I hadn't read this article until now, but I started catching myself using the word at work a few years ago and I've actively been trying to avoid using it for the reasons laid out in this post.",
+              "author": "chrysoprace",
+              "depth": 3
+            },
+            {
+              "text": "I didn't check if this was mentioned in the article but I've heard it described as a \"lullaby word\". I think that is very apt, and I have stopped using it whenever I can.",
+              "author": "gosub100",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "https://tangled.org\n! Founder/CEO here. We're a new forge building things from the ground up, and are fully federated -- you can host your git repos on your own infra, along with the CI runners. We've also got a pretty neat set of features (if I may say so myself): stacked PRs, Nix-based CI (if you want it), and a fully open protocol (\nhttps://atproto.com\n) to for you and your agents.\nHappy to answer any questions.",
+          "author": "icy",
+          "replies": [
+            {
+              "text": "The whole \"social coding\" angle is highly off-putting. List of \"X followed Y\" on the front page, and the large \"social coding\" reminds of facebook, social manipulation, developer burnout and all the negative things about social networks. It also brings up the questions about project's long-term direction - is this going to focus on the code part or the social part?\nWhich is a pity - as I think most projects just need a git host + web UI + easy pull requests + a way to clone other's repos, and tangled seems to do this pretty well.",
+              "author": "theamk",
+              "depth": 1
+            },
+            {
+              "text": "Arguably the \"social coding\" angle is the reason why Tangled is the only actual alternative to GitHub.  Otherwise there's actually plenty of other alternatives to GitHub, but none of them have GitHub's punchcard, which I'm ashamed to admit is the primary draw for me.",
+              "author": "Bjorkbat",
+              "depth": 2
+            },
+            {
+              "text": "Forgejo, and by extent Codeberg, has the punchcard-like feature, it‘s just hidden under „Public activity“ on the profile page",
+              "author": "zImPatrick",
+              "depth": 3
+            },
+            {
+              "text": "Don't think anyone uses Github to follow people",
+              "author": "jatins",
+              "depth": 3
+            },
+            {
+              "text": "I'd like to know if most people use GitHub because of the social network part, or other reasons. I, for one, hate the social network part.\nOne thing with GitHub for open source projects is that the CI is free (and included macOS runners). The other is that many people have a GitHub account and would refuse to contribute to a project on another forge if it means that they must create a new account.\nThe federated design of Tangled solves the latter problem, so there's that.",
+              "author": "palata",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://forgejo.org/",
+          "author": "polycaster",
+          "replies": [
+            {
+              "text": "I recently set this up on my homelab, not really expecting to switch to it, more out of interest. But wow, after I saw how unbelievably fast it was, I’ve moved everything over. I’ve now set it up to mirror things automatically to Github if I want to make them public.\nUsing Github at work is painful in comparison. (Also literally just this morning we’ve had to delay a release due to Github being down.)",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "Have been running self-hosted forgejo for a while now. Work's like a charm. Easy to use with LLM",
+              "author": "sisve",
+              "depth": 2
+            },
+            {
+              "text": "Is their CI and CD workflow robust like gitlab/github ?",
+              "author": "bobkb",
+              "depth": 1
+            },
+            {
+              "text": "It's based on act[0] so it's quite like GitHub actions but not completely [1].\nI found in the current version of Forgejo the most secure way to set it up was just to put the runner on a different host. There's a Docker in Docker setup [2] that was challenging to get working correctly but still didn't quite feel secure...\nAfter setting it all up, I'm convinced GitHub actions as a concept is flawed. I wish the community would make a simpler git-defined CI/CD that didn't have the crazy surface area that actions does... Named shell scripts that can call out to other stuff in the runner Docker image and report it to the UI would be a nice start.\n[0]: \nhttps://github.com/nektos/act\n[1]: \nhttps://forgejo.org/docs/v15.0/user/actions/github-actions/#...\n[2]: \nhttps://forgejo.org/docs/v15.0/admin/actions/docker-access/#...",
+              "author": "cobertos",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. GitHub Actions feels like someone's science project created while on a mushroom trip. Really you just want a thing that executes a shell script in a runner.",
+              "author": "dboreham",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I answered this in another thread, if you're already running a large GitHub organization, GitLab is the closest alternative in terms of features\nA big plus is that it also has an open-source Community Edition that you can self-host",
+          "author": "mariocesar",
+          "replies": [
+            {
+              "text": "There are also many consultancies able to provide professional support with running it in your org, including migrations.",
+              "author": "Nemo_bis",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49362934",
+      "title": "Remote workers report the highest well-being in study of 7,700 employees",
+      "link": "https://www.colorado.edu/today/2026/08/12/remote-workers-report-highest-well-being-study-7700-employees",
+      "domain": "www.colorado.edu",
+      "author": "downbad_",
+      "score": 621,
+      "comment_count": 338,
+      "created_ts": 1787153528,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49332495",
+      "title": "Ask HN: GitHub employees what's going on? Why?",
+      "link": "https://news.ycombinator.com/item?id=49332495",
+      "domain": "news.ycombinator.com",
+      "author": "sharts",
+      "score": 319,
+      "comment_count": 260,
+      "created_ts": 1786979971,
+      "is_internal": true,
+      "post_text": "Pretty self explanatory. Could you folks shed some light on why these issues keep happening?<p>I’ve noticed most posts and replies are just people coming to their own conclusions based on whatever published data.<p>I think it would be helpful to get some actual, non-corporate&#x2F;marketing information on the goings-on by those that actually see what’s happening on the inside.<p>Thanks",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "Github is struggling because AI-boosted coding increased the number of commits 14x in the past year, and the pace is still accelerating. The site is struggling to keep up.\nGithub's COO confirms it here: \nhttps://x.com/kdaigle/status/2040164759836778878\nPlatform activity is surging. There were 1 billion commits in 2025. As of three months ago, it was 275 million per week, on pace for 14 billion this year if growth remains linear (spoiler: it won't.)\n20% of all GitHub accounts were created in the past 6 months \nhttps://x.com/kdaigle/status/2082604368399159542",
+          "author": "tristanj",
+          "replies": [
+            {
+              "text": "GitHub’s reliability issues started earlier than the boom in agentic coding they talk about. I have comments on here from 2025 talking about massive outages with actions and issues.",
+              "author": "maccard",
+              "depth": 1
+            },
+            {
+              "text": "When you're the uncontested market leader, you don't budget operations to be perfectly reliable, you budget to not be too unreliable. All those 9's are expensive after all.\nThe AI boom caught them napping though, and they're slipping well into the too unreliable category",
+              "author": "fooey",
+              "depth": 2
+            },
+            {
+              "text": "> The AI boom caught them napping though\nMicrosoft, who invested eyewatering sums into AI, even near to betting the whole company on an AI boom, is surprised about the AI boom?",
+              "author": "aleph_minus_one",
+              "depth": 3
+            },
+            {
+              "text": "Microsoft bet everything on possible AGI, no one thought the result would be a bonafide commit printing machine.",
+              "author": "minraws",
+              "depth": 4
+            },
+            {
+              "text": "That's not what Nadella said 1-2 years ago. Everyone seemed pretty aware of LLMs soon being able to handle a lot of steps of software development.\nI bet it's mostly due to Azure being brittle and the AI boom is just a nice cover story (not saying it's not challenging to handle all that new load) to save face and sell more Azure services.",
+              "author": "jasonvorhe",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Github used to be built on mysql / redis / ruby on rails / C / shell, running on dedicated hardware. Microsoft left it like that after they acquired the company.\nEventually, though, they decided to migrate the whole thing to Azure. And they were far enough through that to be basically committed... when AI coding started hitting them with much higher workloads.\nI personally think the reliability problems are more to do with the reliability of the Azure migration. But both factors are likely relevant.",
+          "author": "andyjohnson0",
+          "replies": [
+            {
+              "text": "They didn't leave the architecture alone, right? They shoved React in and created a weird SSR + React frankenstein that is objectively worse in many ways.",
+              "author": "sosodev",
+              "depth": 1
+            },
+            {
+              "text": "React apps with SSR is standard these days.",
+              "author": "esperent",
+              "depth": 2
+            },
+            {
+              "text": "SSR that is javascript native,  sure. This is still Ruby doing the rendering.",
+              "author": "sosodev",
+              "depth": 3
+            },
+            {
+              "text": "What's the difference? If it's SSR it's happening on the server, the only benefit of using JS is ergonomics. Ruby is fine otherwise.",
+              "author": "esperent",
+              "depth": 4
+            },
+            {
+              "text": "Ruby can't render React code. JavaScript can. With GitHub it seems that they sometimes can do SSR for the React bits, but that must mean that they're invoking a JavaScript interpreter within the Ruby process. Which means they have the overhead of two runtimes and the jank that comes with the IPC between the two.\nIt's just pointless hacks on hacks. GitHub didn't need React on the frontend and any potential resource savings of client side rendering were lost when they realized they need to do SSR on that stuff too.\nI've encountered so much frontend jank as they expanded that portion of the stack whereas it was always excellent when it was just Ruby SSR and minimal JS on the frontend.",
+              "author": "sosodev",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "non-helpful answer: the \"Microsoft Acquires GitHub\" line in this graph answers all questions \nhttps://damrnelson.github.io/github-historical-uptime/",
+          "author": "herpdyderp",
+          "replies": [
+            {
+              "text": "Note that most of the downtime in that graph comes from Github Actions, which simply \ndidn't exist\n before the Microsoft acquisition.\nThe downtime also starts happening in 2020, which is a while after the acquisition. 2020 was the year many people started learning to code while being stuck at home.",
+              "author": "flexagoon",
+              "depth": 1
+            },
+            {
+              "text": "To be fair, before the aquisition, GitHub was super stable, but also it felt like they rarely changed or added anything.\nAfter Microsoft acquired them, they started rolling out new features at an incredible pace. And if you look at the breakdown of the downtime, most of the downtime is in features that didn't exist before the acquisition.\nThough not all of the downtime is in new features. The core is also less stable than ever.",
+              "author": "fallingbananna",
+              "depth": 1
+            },
+            {
+              "text": "But I just want stable hosting for my shit. I barely even interact with the web UI, other than commenting on PRs.",
+              "author": "a2ff6eeb0",
+              "depth": 2
+            },
+            {
+              "text": "Unfortunately there isn't as much money to be made¹² serving people who just want a stable host for basic repos. The money comes from the paid accounts, and those \ndo\n tend to want the extra features - even if the end users don't the management agreeing to the spend will see value in the integration³ of other parts of the development/release/support processes. The problem is they all want a different mix of features, meaning that the feature set needs to be wide to capture as much interest as possible especially in light of competitors that may offer something you don't (yet).\n--------\n[1] Possibly none, are you paying for a pro or enterprise account?\n[2] There will be a little indirect income perhaps, via deriving value from tracking users and being able to use the combined content for various analytics (including lately AI training).\n[3] Potentially reducing the cost/complexity of integrating disparate systems⁴, themselves.\n[4] Sometimes in-house developed systems that might distract key devs from the company's products/services that they can sell.",
+              "author": "dspillett",
+              "depth": 3
+            },
+            {
+              "text": "My (actuarial) read on this is that pre-Microsoft GitHub acknowledged that the complexity inherent in their technology stack imparted a lot of change risk, and that probably informed their decisions around shipping new features.\nMy (not-so-actuarial 1990's-experience-colored) feeling is that this is Microsoft doing what Microsoft does best, namely including a lot of seemingly compelling features in a product to get people hooked and to keep competitors in a position of trying to keep up.",
+              "author": "nrr",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I got an \"it is unacceptable\" from their CPO on 8/7, and that they are \"working around the clock on it\".\nhttps://x.com/mariorod1/status/2085800861469495465\nI really think something deeper is going wrong there, and they're not being honest with their paying customers (and enterprises) about it.",
+          "author": "qrush",
+          "replies": [
+            {
+              "text": "The reality is that it's probably a skill issue. Scaling a mature platform 10x can be a really, really hard problem, they obviously don't have their arms around a solution, and are probably spending a majority of their time on ops to keep the bleeding down. In the old days you would have Jeff Dean come down from heaven and invent a new database for you or something like that. It doesn't really seem like Github has that kind of technical ability, so they're probably trying to cobble together Azure ops with internal bandaids while everyone internally is cranking out AI code and it's just not going to be enough.",
+              "author": "tibbar",
+              "depth": 1
+            },
+            {
+              "text": "May I just leave this for you here? \nhttps://isolveproblems.substack.com/p/how-microsoft-vaporize...\nA technical foundation is not infinitely strong. Put a big enough castle on a swamp, and it will sink into the swamp.",
+              "author": "conartist6",
+              "depth": 2
+            },
+            {
+              "text": "This is nightmarish.",
+              "author": "tibbar",
+              "depth": 3
+            },
+            {
+              "text": "I mean they may be working around the clock, but after 5 or 6 layoffs in 3 years… half their engineers are probably still learning the code base.",
+              "author": "Pseudocrat",
+              "depth": 1
+            },
+            {
+              "text": "I don’t think their engineers « learn the codebase » anymore, that’s so 2025. It’s all agentic now, the model learns the codebase, the engineer ask the agents to do their best and believe in themselves",
+              "author": "dgellow",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "GitHub Will Prioritize Migrating to Azure Over Feature Development\n - \nhttps://news.ycombinator.com/item?id=45517173\n - October 2025 (63 comments)\nHN Search: azure capacity\n - \nhttps://hn.algolia.com/?dateRange=all&page=0&prefix=true&que...\nAzure Capacity Crunch Extends into 2026 Amid Data Center Constraints\n - \nhttps://windowsforum.com/threads/azure-capacity-crunch-exten...\n - October 9th, 2025\nhttps://news.ycombinator.com/item?id=47427779",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49355607",
+      "title": "Show HN: Automatically detect and patch walking-dead states in Sierra games",
+      "link": "https://github.com/katiahayati/lucasartsifier/",
+      "domain": "github.com",
+      "author": "wkfauna",
+      "score": 157,
+      "comment_count": 97,
+      "created_ts": 1787104713,
+      "is_internal": false,
+      "post_text": "Hi HN, I&#x27;ve become lazier in my old age and struggle to replay my favorite Sierra games from the 80s and 90s because I keep getting into those situations where I need an item from 3 acts ago, I have no save game handy, and now I gotta make dinner.<p>So I&#x27;m building the Lucasartsifier: a static analysis tool that decompiles Sierra resource files, automatically finds those states, automatically generates code to prevent the player from getting into those states, then emits loose patch files that can be placed alongside the original game resources. There&#x27;s no game-specific code involved; all the logic is generic, though of course Sierra introduces new idioms and mechanics in every game so every new supported game needs a bunch of engine work.<p>So for example in Leisure Suit Larry 2, the patched game prevents you from boarding the cruise ship until you have both the sunscreen and the Grotesque Gulp. Without them you die on the raft 3 play-hours later.<p>So far this works on Leisure Suit Larry 2 (SCI0), King&#x27;s Quest 4 (SCI0), King&#x27;s Quest 6 (SCI1.1), and Laura Bow 2 (SCI1.1). I&#x27;m currently working on King&#x27;s Quest 5 (SCI1.0).<p>This is work done with Claude -- I do the design and playtesting and it does the rest :D<p>Any feedback, play testing, and suggestions would be great!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49376332",
+      "title": "How to compromise your system with a job interview",
+      "link": "https://www.codedge.de/posts/how-to-compromise-your-system-with-a-job-interview",
+      "domain": "www.codedge.de",
+      "author": "codedge",
+      "score": 118,
+      "comment_count": 100,
+      "created_ts": 1787241057,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "out of the list under \n\"Before you start with the test, you might be suspicious about the following:\"\n there is only one that is important:\nonly interact with people using an official email address.\nthe rest \ncan\n be used as yellow/red flags, but simply asking for confirmation via an official email address will thwart the vast majority of scams (including other ones, like someone claiming to be from Intuit calling about your QuickBooks or whatever).",
+          "author": "john_strinlai",
+          "replies": [
+            {
+              "text": "I have seen official company recruiters operate exclusively through Gmail or whatever. Third party headhunters may not have anything tied to the sponsoring company.\nIt is a decent rule, but one which is immediately thwarted by companies going out of their way to constantly look illegitimate.",
+              "author": "0cf8612b2e1e",
+              "depth": 1
+            },
+            {
+              "text": "IMO, blocking such headhunters is a net win.",
+              "author": "Retric",
+              "depth": 2
+            },
+            {
+              "text": "> only interact with people using an official email address.\nAnd then google whether the domain is associated with phishing attempts. i've been targeted several times recently by folks with \"official\" email addresses but whose domains are (per google) strongly associated with phishing.",
+              "author": "sgbeal",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> “A relevant opportunity” with part-time remote work and a great hourly compensation\nThat is so suspicious at the moment.",
+          "author": "forinti",
+          "replies": []
+        },
+        {
+          "top": "My first thought after reading the article: develoepers NEED to learn to use firewalls such as LuLu(\nhttps://objective-see.org/products/lulu.html\n) to get interactive dialogs asking whether any given binary can access any given internet address whether it is a domain address or IP address (which can seem even shadier).\nI am an Emacs user but every time I have tried a new editor, including VS Code or VSCodium I blocked access to remote addressed which were prompted to me even though I did not neither authorize extension download nor extension download.\nI think it would have been even funny for devs trying out for code challenges while using \"interactive\" firewalls such as LuLu, then catching the shadiness and blocking access right up.",
+          "author": "gfalcao",
+          "replies": [
+            {
+              "text": "This really is the simplest path to somewhat decent security, and alongside it you may catch some programs doing requests that are fine for security but you'd rather it not do because of privacy.",
+              "author": "Numerlor",
+              "depth": 1
+            },
+            {
+              "text": "The line between privacy and security is very blurry. Consider this: if Microsoft exfiltrates your keystrokes, it's a privacy violation, but if a random person does the same thing then it's a security violation. You might say that the random person is more likely to use it against you, but then the car insurance companies mining your driving data absolutely do use it against some customers, but that's generally considered to be a privacy violation rather than a security violation.",
+              "author": "john01dav",
+              "depth": 2
+            },
+            {
+              "text": "> \nConsider this: if Microsoft exfiltrates your keystrokes, it's a privacy violation, but if a random person does the same thing then it's a security violation\nNo, it's a security violation no matter who does it.",
+              "author": "inetknght",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "If a company is not even willing to have a real person speak to you at the start of the recruitment process, what does that say about them? Or about the legitimacy of that job posting? Or about the people you would be working with if you did get hired?\nRegardless if you get an offer or not, you will invest a significant amount of finite time in each interview cycle and if you do get an offer, you'll be investing even more time into that company.\nSo no matter who you are, protect your time and remember that interviewing is always a 2-way street.",
+          "author": "shahbaby",
+          "replies": []
+        },
+        {
+          "top": "I get enough legit and illegitimate ones every week on LinkedIn that it's become really easy to tell the difference. Hard to pinpoint in a comment because it's mostly a gut feeling. But, in rough order:\n1. Look at the person's LinkedIn profile contacting you and examine their post history. In one comical scenario the \"recruiter\" had a long 4 year gap where they were writing comments in English and all of the sudden they switched to Spanish. Mostly short, pointless comments as well.\n2. Look at the company and make sure they have a legitimate website and are still actually in business. Even better, see if there's a public team page that lists this person.\n3. Give the recruiter an email (I usually use something like SimpleLogin) and ask them to forward you the details. Of course, pay close attention to what address they send it from.\n4. In addition, or alternatively, ask the recruiter for the public job listing (scammers almost always \"paste\" it into a DM or upload a clearly AI generated PDF doc).\nOnce you learn the game it's not too hard to start picking up on them. I've made it a game to play along sometimes just for fun. Ultimately, at the end of the day, make sure you report them on LinkedIn. I've had the account disappear within a hour of doing so.",
+          "author": "aliasxneo",
+          "replies": [
+            {
+              "text": "Honestly unless I'm planning on quitting my current job, or if I were unemployed, I just ignore the linkedin.\nSure they spam you with \"XX wants to connect\", or \"I'm awaiting your reply\" emails.  But real contacts and friends can call/email you, and everybody else can wait six months.\nDespite only connecting with actual people I've worked with, not recruiters, I still get \"suggested\" posts which are slop, and \"that happened\".  The site is a cesspool.",
+              "author": "stevekemp",
+              "depth": 1
+            },
+            {
+              "text": "I got my last two jobs from recruiters contacting me via LinkedIn. I've also kept in touch with a good group of recruiters over DMs who regularly bring me new offers. My experience might be unique, but I've gotten a lot of value being on LinkedIn. I don't interact with the social part of it (posts or whatever they are called) at all.",
+              "author": "aliasxneo",
+              "depth": 2
+            },
+            {
+              "text": "I haven't had LinkedIn since... 2014 I think.\nI deleted my account after I got my first job offer and have never used it since.\nIf people dislike the site so much, I don't understand why they don't delete their account. Is there any value provided, or is it the fear of missing out on potential future value?",
+              "author": "milkytron",
+              "depth": 2
+            },
+            {
+              "text": "Every single job app I filled out in the last two years asked for my linkedin url. I don't know if not having one was disqualifying, but it does worry me.",
+              "author": "wredcoll",
+              "depth": 3
+            },
+            {
+              "text": "It's not disqualifying, but not having a linkedin is a signal that could drop you towards the bottom of the resume pile. Companies have problems with fake applicants, and ATS systems do create \"how likely this person is a human\" scores. Having an online identity is one signal, and for better or worse, that is often a LinkedIn history.\nLike a fico score, you can't escape the game if you want to play.",
+              "author": "floatrock",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49363710",
+      "title": "Launch HN: OneCLI (YC S26) – OSS sandboxed agent harness for teams",
+      "link": "https://github.com/onecli/onecli",
+      "domain": "github.com",
+      "author": "guyb3",
+      "score": 85,
+      "comment_count": 25,
+      "created_ts": 1787156942,
+      "is_internal": false,
+      "post_text": "Hi HN, Jonathan &amp; Guy here from OneCLI, an agent harness built for teams, giving every employee a secured, sandboxed personal agent.<p>Here’s what you can do with it:<p>1. get a sandboxed agent, with all the OneCLI capabilities in place like connect your GitHub account, Gmail, Notion, or Dropbox simply from the chat.<p>2. deterministic human in the loop approval in the chat itself for things that you need 100% control like sending an email or deleting the Linear ticket.<p>3. manage team policy in one place, enforced across every agent in the workspace<p>4. enjoy global connections at the team level, like shared LLM keys or service accounts<p>Here’s a demo: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=dlW-44ntpbE\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=dlW-44ntpbE</a><p>We started working on this by accident, even though our careers were in the security space. We were working on a devtool called ChartDB, an open-source DB tool. When OpenClaw took off back in January, we started using it to orchestrate agents on top of ChartDB. We quickly understood there is a big issue around auth. Agents need credentials to do real work, but to give them those secrets would not be the best idea. They keep them in their memory and also write them down to local files and their sessions as plain text. And we knew that agents can easily be fooled into giving up those API keys&#x2F;secrets. So we needed some way to control the agent and stop prompt injections from tricking it into using its services for an attacker&#x27;s benefit.<p>We created OneCLI that started as a vault for AI Agents built in Rust.<p>We found out that most of our demand for OneCLI came from autonomous agents like Hermes, OpenClaw and NanoClaw for individuals and teams.<p>Users looked for useful agents that do things for the person who runs them with two missing parts: 1) managing secrets and permissions. 2) and for teams - multiplayer management.<p>We decided to pivot and provide the agent itself as a harness for teams, to give each employee an agent. We saw that teams had to deal with setting up their own harness again and again, and basically as we already had the vault as a gateway. We got the idea to provide the missing piece of the agent management out of the box and open source it (Apache-2.0, with a small enterprise exception).<p>We&#x27;re open source first - the entire platform, not just a small portion of it like other agents, so companies can actually see the code, evaluate it, and trust it instead of taking our word for it. They run it isolated, in their own environment, fully under their control, at production quality, not a locked black box hosted somewhere else. That means the safety isn&#x27;t just a promise, it&#x27;s something they can verify themselves. Combined with real autonomy and least-privilege access, that&#x27;s what makes it something a company can fully own and trust, not just adopt.<p>We also approach this from a company perspective rather than an individual one. Our solution manages agents on behalf of each employee, wrapped in deterministic guardrails that company admins configure through centralized policies.<p>For the agent engine itself we’re using jcode which is the core of the agent-loop. We found out that it improves the experience and makes the agent smarter and faster.<p>Here’s how it works:<p>It runs on infra you control. Fully open-source, self-host or cloud in minutes.<p>The agent never holds a real secret. It gets a placeholder. The real credential is injected at the gateway, per request, after the call is authorized. It never enters the agent&#x27;s context, memory, or logs.<p>Enforcement outside the model. Prompts are suggestions. Policies defined by the org admin run at the network layer, outside the agent and the LLM. Block endpoints, rate limit per agent, require approval, scope per employee. The gateway decides. The agent can&#x27;t bypass it.<p>Isolated VM per agent. Own memory, own keys, own permissions. Blast radius is one agent.<p>Speed of the Harness: Rust engine under the agent loop.<p>Full identity trail. Every agent is bound to an employee. Every call logged with who it acted for and which policy allowed it.<p>Some things people are doing with the platform include:<p>- Managing their company life cycle entirely from the sales calls, to the product side automatically open tickets to the engineering teams, that would kick the development agents to deliver and ship to production.<p>- Operational side, like automatically hygiene the CRM after calls, sourcing leads, book meetings and manage follow ups emails.<p>- Some of our customers also doing their entire grocery shopping using those agents and send them to take care of their chores like ordering things online.<p>About the team: Both founders come from cybersecurity backgrounds. Jonathan spent years at Axis Security building zero trust network access. The core idea is that you never trust the client. You decide exactly what a person can reach, and you enforce it outside of them, at the network layer, so it doesn&#x27;t matter what the client tries to do. That&#x27;s how every serious company gives access to humans today. Guy was the 1st employee in Argon security doing AppSec.<p>We would love to hear your thoughts on the move, happy to get issues open to improve and get your agent to be powerful and secure - designed for teams, not just individuals.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meetings",
+        "enterprise",
+        "team",
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49375244",
+      "title": "Show HN: Open-source Stripe Connect alternative",
+      "link": "https://zoneless.com",
+      "domain": "zoneless.com",
+      "author": "tinyprojects",
+      "score": 63,
+      "comment_count": 25,
+      "created_ts": 1787236725,
+      "is_internal": false,
+      "post_text": "Hey, I&#x27;m Ben. I built Zoneless because I was paying so much to use Stripe Connect on my own marketplace. The fees were really, really bad, and it was also limiting in terms of the seller countries I could onboard. To give you an idea, I was paying around $9,000 per month in fees just to run payouts. Using Zoneless, that cost goes down to around $6.<p>I&#x27;ve been using it personally for the past few months, and onboarded 5,000+ sellers and done 3,000+ payouts. 74% of new sellers on my marketplace choose Zoneless over Stripe, which is really interesting. I appreciate crypto and stablecoins are a bit of a touchy subject, but for this use case of sending global payouts cheaply, it&#x27;s perfect.<p>The project is open source with an Apache 2.0 licence, which means there&#x27;s the benefit of no lock-in and no risk of your account getting flagged or shut down. It also has an almost identical API and dashboard to Stripe.<p>Would love to hear any feedback you may have in the comments.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "It's worth noting that this offloads the KYC/AML component to someone else down the road, but doesn't protect you from possible money laundering risk (e.g., you send USDC to a sanctioned individual who launders it into monero or something else). I'm no lawyer but I did work on Stripe Connect's compliance pieces for five years and I would NOT take the risk of (as a business) sending money to USDC addresses without actually verifying identities.\nIt also doesn't offer you protection against fraud (which is a huge problem that marketplaces face).\nFrankly the missing piece to this is a real, actual identity verification component. If you're not checking identities against sanctions lists at the absolute minimum, you're not doing your due diligence. I wouldn't take that risk. The last thing you need is to be on the receiving end of a US Treasury inquiry.",
+          "author": "bastawhiz",
+          "replies": [
+            {
+              "text": "Appreciate you raising this, especially given your Connect experience.\nThis is a fair concern. Zoneless does verify the identity of payout recipients through Didit, and marketplaces can require KYC before the first payout. We also have support for blocking OFAC-listed wallet addresses, and also have additional checks to flag suspicious behaviour.\nI agree that KYC doesn't eliminate marketplace fraud, though. That's true with Stripe Connect too; Stripe explicitly leaves platforms responsible for monitoring and preventing fraudulent activity even though it handles KYC and provides risk tooling.\nI think the area I could make much clearer in the docs is the distinction between identity verification, sanctions screening, and marketplace fraud prevention.",
+              "author": "tinyprojects",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The website design and art are beautiful, well done.",
+          "author": "ind-igo",
+          "replies": [
+            {
+              "text": "Thanks, really appreciate that!",
+              "author": "tinyprojects",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "How do you handle refunds & chargebacks? And do you have a maximum amount that can be charged?\nFor context - I'm building a marketplace for artists and struggling to find a global payouts rail. The ones that exist have really high turnover requirements or reject new marketplaces that deal with higher value physical items due to chargeback risk.",
+          "author": "renierbotha",
+          "replies": [
+            {
+              "text": "Totally get this - one reason I built this was due to the risk of being shut down or rejected from a traditional payment platform. With this there's no risk of being rejected as 1) you can self-host it yourself, and 2) everything is self-custodial on the managed hosting version.\nThis is mainly for the payout side, but there is a working stablecoin checkout / payments /subscription system in the project - there's no limit on charges, and there are no chargebacks possible because it uses stablecoins.",
+              "author": "tinyprojects",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "There are others that use stablecoins but also handle the legal side like KYC and AML, I was looking at Coinflow for one, so you're probably better off using them.",
+          "author": "satvikpendem",
+          "replies": [
+            {
+              "text": "Definitely other options out there. The main difference is Zoneless is open-source and self-hostable, so there's no transaction fees charged on top.  Zoneless has KYC built in via Didit along with additional risk / compliance tools also.",
+              "author": "tinyprojects",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Cool project, what is your marketplace you are referring to if not a secret?\nAlso the pricing is not very clear - you mention your costs went down to $6, but the first paid tier is $99/month ?",
+          "author": "aleqs",
+          "replies": [
+            {
+              "text": "The marketplace is called PromptBase, which I've been bootstrapping for the past few years (now around ~500k users).\nThanks for this feedback, that could be clearer - the $6 is the total network fees for the underlying rails if you were self-hosting (about $0.002/transaction). The managed hosting option is just if you don't want to host it and run it yourself.",
+              "author": "tinyprojects",
+              "depth": 1
+            },
+            {
+              "text": "Out of interest, how is it going with PromptBase? Love the idea, does it have legs -- ie are you making money?",
+              "author": "renierbotha",
+              "depth": 2
+            },
+            {
+              "text": "Going good thanks - it was a tiny side project that span out into being my full time job for the past few years :) A lot of fun to run also.",
+              "author": "tinyprojects",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49375237",
+      "title": "Show HN: Check if any of the $656M in unclaimed royalties at The MLC is yours",
+      "link": "https://pub.doub.ly/",
+      "domain": "pub.doub.ly",
+      "author": "knaught",
+      "score": 60,
+      "comment_count": 37,
+      "created_ts": 1787236708,
+      "is_internal": false,
+      "post_text": "Hi HN, I built this. Quick background on why it exists:<p>When music is streamed on digital streaming platforms (think Spotify, Apple Music, Pandora), there are two separate royalty streams: one for the recording, paid through your distributor (DistroKid, TuneCore, CDBaby), and one for the underlying work (generally known as publishing). The work side&#x27;s mechanical royalties are collected by The MLC, a nonprofit that was created by the 2018 Music Modernization Act (MMA). If you haven&#x27;t registered your songs with The MLC, there are issues with your metadata, or about half a dozen other reasons, that money will never reach you, it just collects in a big pile we call the &quot;black box&quot;.<p>That pile is big. The MLC&#x27;s own dashboard currently shows over $656M is held (themlc.com&#x2F;blanket-royalties), and the biggest problem is the MMA dictates that The MLC cannot hold that money indefinitely. At some point, by law, The MLC must distribute this big pile of cash, and since they don&#x27;t know who it&#x27;s supposed to go to, they pay it out through a process called &quot;market share&quot; (themlc.com&#x2F;marketshare). Market share means they pay it out, pro-rata, to the artists, songwriters and publishers that are in the system, which in practice means the largest publishers collect most of the leftovers.<p>This is slated to begin in January 2027 and will pay portions of the pool out monthly (themlc.com&#x2F;unclaimed-accrued-royalties), as of this morning, the next 12 months of market share sums up to $76.61M, starting with $6.41M in January.<p>Full disclosure: I run Doubly, which is an independent publishing administrator, so I have a commercial interest in this space. That being said, we&#x27;re a team of two people and we don&#x27;t have the bandwidth to directly assist the hundreds of thousands of artists and songwriters who are going to start losing this money in January 2027.<p>That&#x27;s why I built this self-service tool, no signup, no email, no paywall, the reports are completely actionable without needing anything from us.<p>The tool: paste a Spotify artist link (or search for a Spotify artist by name). It pulls every release on that profile, checks each recording against The MLC&#x27;s public bulk data, and tells you per-song whether it&#x27;s fully claimed, partially claimed, registered but unmatched, or missing entirely. It then provides a link to the exact MLC tool that fixes each case. It also estimates the dollars stuck, as a rough range.<p>Even if you&#x27;re not an artist yourself, you probably know someone who is a musician, please share it with them.<p>Thanks for your time and I&#x27;m happy to answer any questions about the industry as a whole, The MLC, the tech, anything really.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": [
+        {
+          "top": "FWIW - I put in an album I produced on Spotify. Rather than just returning results for that album, it returned some not related to the album by another artist with the same name. It's not worth pursuing based on the number of streams I have, just - this is exactly what I suspected would happen before running search, and it did. So it makes me skeptical of the accuracy in general. But I'm definitely in favor of this.",
+          "author": "SoleilAbsolu",
+          "replies": [
+            {
+              "text": "Interesting, would you mind sharing the album? There might be some weirdness with album searching with our latest updates.",
+              "author": "knaught",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thanks for building this!\nI was in a band active in the mid 2000s (think myspace era) and we never signed up for, or collected any of our publishing. Somehow, we still stream quite well so have been actively trying to connect the dots on this stuff over the past few months.\nThey do NOT make it easy, and if you want to collect internationally as a DIY artist, its basically impossible. Trying to navigate this is almost a full time job.",
+          "author": "kyasui",
+          "replies": []
+        },
+        {
+          "top": "A note: nowhere in your post or the site (except the footer) is the “MLC” acronym expanded. I certainly didn’t know what it was before now.",
+          "author": "subract",
+          "replies": [
+            {
+              "text": "Agree, this needs context. I thought this was like some sort of unclaimed government funds thing or something at first.",
+              "author": "pimlottc",
+              "depth": 1
+            },
+            {
+              "text": "Excellent point, I'll fix that.",
+              "author": "knaught",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Spotify is rate limited so its very difficult to check now. Happy you built it, hopefully we will be able to use it soon to check our catalog.",
+          "author": "addajones",
+          "replies": [
+            {
+              "text": "Thanks for letting me know, I'm checking the logs now.",
+              "author": "knaught",
+              "depth": 1
+            },
+            {
+              "text": "appreciate it! I don't want to bombard the system you set up, but very eager to check as I'm sure there could be income not collected and missing.",
+              "author": "addajones",
+              "depth": 2
+            },
+            {
+              "text": "Appreciate it, we blew through 250K tracks in an hour, the HN hug is real. We have added more capacity.",
+              "author": "knaught",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I tried running an artist through who is a friend, with a few grand found. Will forward the link to her. Is this Spotify only? Thank you.",
+          "author": "quickdeer",
+          "replies": [
+            {
+              "text": "Amazing! The only stream count we can find that is publicly available is Spotify, so we use it as a reference point in our calculation, and it's why we give a range. If they have heavy plays on a different streaming platform like Apple, we don't have a good way of finding that number.\nThe estimate range is our best guess for money specifically in the MLC, which is for US digital streaming mechanicals for all DSPs (Spotify, Apple, Pandora, YouTube, Amazon, etc.)",
+              "author": "knaught",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49313346",
+      "title": "Ask HN: I've quit six systems for tracking my illness. What works?",
+      "link": "https://news.ycombinator.com/item?id=49313346",
+      "domain": "news.ycombinator.com",
+      "author": "Abh1Works",
+      "score": 52,
+      "comment_count": 87,
+      "created_ts": 1786820982,
+      "is_internal": true,
+      "post_text": "Hey everyone, I am a 20 year old college student who was recently diagnosed with seronegative spondyloarthropathy. Over the last 3 years, Ive tried apps, paper journal, Google Sheets, and notes to track&#x2F;catalogue my journey. I always ended up quitting within 2-4 weeks and not keeping accurate track.<p>Is this a common experience or do I just have to be better at tracking? Is there a unique&#x2F;non habit-building way to track&#x2F;catalogue&#x2F;recall?<p>Im building something for this (part of the reason why I am asking) - and if anyone is open to a longer conversation, Ill gladly pay for you time!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quitting",
+        "quit"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49362305",
+      "title": "Ask HN: What's the endgame of the AI comments buried in every post?",
+      "link": "https://news.ycombinator.com/item?id=49362305",
+      "domain": "news.ycombinator.com",
+      "author": "elar_verole",
+      "score": 14,
+      "comment_count": 13,
+      "created_ts": 1787150445,
+      "is_internal": true,
+      "post_text": "A lot of submissions nowadays have a few LLM comments (whether directly written by an agent, or human with a LLM I don&#x27;t know), often downvoted and sitting at the end of the comment section. No-one even bothers to call them out anymore, it&#x27;s just part of the landscape.\nJust wondering why ? What&#x27;s the point for these people ?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49366144",
+      "title": "Ask HN: Has anyone shipped a self-modifying application with LLMs?",
+      "link": "https://news.ycombinator.com/item?id=49366144",
+      "domain": "news.ycombinator.com",
+      "author": "ex-aws-dude",
+      "score": 10,
+      "comment_count": 12,
+      "created_ts": 1787168007,
+      "is_internal": true,
+      "post_text": "In the past the model for software would typically be to ship a fixed application and then if users need some custom functionality, they would need to install a plugin or create their own.<p>For non technical users they would have to find an existing plugin or maybe it doesn&#x27;t exist so they are stuck.<p>But I can&#x27;t help but think why wouldn&#x27;t for example an application just have a prompt box that builds an extension dynamically on the fly (e.g. &quot;make me a UI panel with some buttons that does X&quot;)<p>Obviously it would be &quot;use at your own risk&quot; and YMMV<p>Have any companies or applications actually done something like this?<p>I think modifying the real source code would get out of hand but perhaps just generating extensions that have access to a sand boxed set of safer APIs.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49378057",
+      "title": "Are you good at AI, or just using it?",
+      "link": "https://news.ycombinator.com/item?id=49378057",
+      "domain": "news.ycombinator.com",
+      "author": "ppezaris",
+      "score": 8,
+      "comment_count": 9,
+      "created_ts": 1787249058,
+      "is_internal": true,
+      "post_text": "We’re working on a ladder for individual AI proficiency and would love feedback on both the levels and the definitions.<p>L0 New: brand new to AI, or has not yet used it.<p>L1 Chat: simple prompt-and-response use. Work is serial: ask, wait for an answer, then ask again.<p>L2 Contextual Work: gives AI relevant documents, data, or workspace context so it can work within the actual artifact and produce a more useful result.<p>L3 Orchestrate: coordinates multiple agents or AI roles across independent workstreams, with work that may review, challenge, compare, or build on other work. This is not just for engineering.<p>L4 Automate: creates workflows that are triggered by business events and run without someone sitting at a laptop directing each step.<p>L5 Loop: feeds the output of those workflows back into shared knowledge or a company brain, so future workflows improve over time.<p>A few things I’d love your perspective on:<p>Are these the right levels?\nAre any of the names unclear or overlapping?\nWhat observable behaviors would you use to distinguish one level from the next?\nDoes “loop” make sense as an individual proficiency level, or is it inherently a team or company capability?\nIs there a L6 and if so how would you define it?\nWe’re trying to define these because, in customer conversations, we’ve found that people are not very good at self-evaluating their own AI proficiency. Frequent use often gets mistaken for proficiency. And being low on a ladder like this can feel like admitting you are falling behind, do not fit in, or are less secure in your job, especially for leaders expected to set the pace. We want a more objective, behavior-based way to distinguish the two.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49378706",
+      "title": "InstantDB Is Shutting Down",
+      "link": "https://news.ycombinator.com/item?id=49378706",
+      "domain": "news.ycombinator.com",
+      "author": "redindian75",
+      "score": 7,
+      "comment_count": 1,
+      "created_ts": 1787252372,
+      "is_internal": true,
+      "post_text": "Nothing on their website - but I got an email.<p>Hey there, you’re one of our active users and we wanted to let you know we’re sunsetting Instant.<p>In more detail:<p>New signups will be closed soon. We recommend migrating your apps off of Instant Cloud within the next 12 months. Any subscriptions that were started after July 31st, 2026 will be fully refunded.\nOn August 31st, 2027, all cloud apps will shut down. Backups will stay available for 12 more months, until August 31st, 2028.\nWe’ve written a guide to help you self-host Instant and migrate your apps too. All of Instant is open source, and we’ve worked to make the migration process as seamless as possible.\nThe idea behind Instant started in 2021. We shared a blog post about a database in the browser. It was only an idea, but the more apps we built, the more we saw the need for it. We joined YC in 2022, built a prototype, and shared a version zero.<p>Turning a prototype into something production-grade was a long journey. The work was hard, but there were many moments of joy. Very early on Daniel joined the team and helped solve some of the gnarliest problems in sync tech. Our community grew, more folks joined [^], and we officially open sourced. From there it was maelstrom of feedback and making Instant better. When time came to really make our TypeScript SDKs ergonomic, Drew joined the team and did just that. From there, over 17,000 users got to try Instant. They made 400,000 apps, and those apps processed about 2.5 billion *transactions.<p>We’ll be starting a new journey and hope to share more details soon. In any case, it’s been an honor building for you!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49376007",
+      "title": "Ask HN: Is AI the New Spreadsheet?",
+      "link": "https://news.ycombinator.com/item?id=49376007",
+      "domain": "news.ycombinator.com",
+      "author": "Gshaheen",
+      "score": 7,
+      "comment_count": 4,
+      "created_ts": 1787239604,
+      "is_internal": true,
+      "post_text": "Spreadsheets became and still are prolific for individuals and teams to create simple “apps.”<p>I wonder how much of that is moving over to things like cowork or codex type apps.<p>Personally, and anecdotally, my spreadsheet use has dropped immensely since starting to use these tools.<p>Thoughts?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49376072",
+      "title": "Ask HN: No Path from Techie to Management?",
+      "link": "https://news.ycombinator.com/item?id=49376072",
+      "domain": "news.ycombinator.com",
+      "author": "seeking_gruntle",
+      "score": 5,
+      "comment_count": 11,
+      "created_ts": 1787239943,
+      "is_internal": true,
+      "post_text": "When I was a much more junior techie I would apply for management roles in my company only to be told that I needed more experience and to upgrade my credentials. Years later I have certifications, a graduate degree and have advanced through the technical ranks. Now when I apply to management roles I am told that they are looking for a fresh perspective after hiring junior to intermediate applicants into the roles.<p>I am not an isolated example at my work and as a result we have lost some excellent talent. Is this happening at other companies or is mine an outlier?<p>Outside of this problem I really like where I work and the people that I work with but I feel that I may need to move on if I want to advance my career. I can&#x27;t think of a way to address this problem with the higher ups without torching my future further.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "management",
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49378314",
+      "title": "Ask HN: How do you review and validate LLM generated code?",
+      "link": "https://news.ycombinator.com/item?id=49378314",
+      "domain": "news.ycombinator.com",
+      "author": "darkLord19",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1787250365,
+      "is_internal": true,
+      "post_text": "It&#x27;s become very fast to generate code nowadays, but how do you review and test all of it?<p>Every time you ask a model to review some piece of code, it comes back with different &quot;findings&quot;. So, you still have to filter through the noise of their findings to get to actual defects.<p>And if you try to do the full review manually, then it might take more time to just understand the code than writing it yourself from the beginning.<p>As for testing, you can ask the LLM to write the tests, but you can&#x27;t be sure if the tests actually assert the expected product flow or just write pass&#x2F;fail tests for a piece of logic.<p>I would like to know if you have any workflows, strategies, or tricks.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49380490",
+      "title": "Ask HN: How did you write code on restricted hardware?",
+      "link": "https://news.ycombinator.com/item?id=49380490",
+      "domain": "news.ycombinator.com",
+      "author": "diselody",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1787261138,
+      "is_internal": true,
+      "post_text": "I remember trying to write code for a project in college from those library computers when I did not have a laptop of my own at the time.<p>I often used sites like Codepen and copy-pasted the progress into a github repo so I didnt lose my work.<p>What are some workarounds you’ve used (or tried) for writing or running code from restricted hardware, like a school computer or a mobile device? What kind of project was it for, and what hurdles did you encounter?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49377427",
+      "title": "Ask HN: One SSH key or many SSH keys?",
+      "link": "https://news.ycombinator.com/item?id=49377427",
+      "domain": "news.ycombinator.com",
+      "author": "htunnicliff",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1787246136,
+      "is_internal": true,
+      "post_text": "Is there any benefit to using multiple, separate keys to authenticate to different resources versus only using a single SSH key?<p>On one hand, I&#x27;ve heard that an SSH key is supposed to represent an identity, so using your &quot;identity&quot; everywhere makes sense.<p>On the other hand, I&#x27;ve heard that keeping SSH keys separate is important in the same way using separate passwords for different resources is important.<p>What do you all think?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49375869",
+      "title": "Ask HN: Do you automate your prospection or doing hand made?",
+      "link": "https://news.ycombinator.com/item?id=49375869",
+      "domain": "news.ycombinator.com",
+      "author": "mathieu_aithos",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1787239080,
+      "is_internal": true,
+      "post_text": "When your technical founder, prospection and talking to clients is pain.<p>With AI we have tentation of automating everything.<p>Linkedin or other social medias and letting AI do everything.<p>Problem is that it is also painfull to automate because of anti-bot protections, and services that do it are not enough good (i think).<p>But also that you go a little bit far from discovering your potential clients.<p>What do you think about it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49373709",
+      "title": "Algorithm Interview: a conversation between two parrots",
+      "link": "https://news.ycombinator.com/item?id=49373709",
+      "domain": "news.ycombinator.com",
+      "author": "dersoverflow",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1787228994,
+      "is_internal": true,
+      "post_text": "Algorithm Interview: a conversation between two parrots<p>All children know that parrots can talk. All adults understand that parrots simply repeat sounds.<p>You&#x27;ll laugh, but these same adults actually believe that an Algorithm Interview is a conversation between a very smart algorithm expert who is trying to find out whether the candidate understands algorithms at an acceptable level…<p>So, how many ycombinator.com readers have successfully passed the algorithms interview? Probably tens of thousands.<p>Well, how many of them were able to understand that breaking down sorting into independent stages is a Fundamental Discovery? Zero!<p>Zero questions and comments: https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49314420<p>P.S. Have you ever thought that NOT everyone has a mental model? But most people just memorize ready-made answers instead of understanding the problem?<p>I recommend reading The Programmers&#x27; Stone https:&#x2F;&#x2F;www.datapacrat.com&#x2F;Opinion&#x2F;Reciprocality&#x2F;r0&#x2F;index.html\n---------------8&lt;---------------\nThe work leading to this course was motivated by wondering why, in software engineering, there are some people who are one or two orders of magnitude more useful than most people. If this was true of bricklayers, the building industry would be very keen to find out why. The problem of course, is that one can film a bricklayer, and later analyze what is happening at leisure. One cannot even see what great programmers do, and for some reason they cannot explain what the difference is themselves, although most of them wish they could.\n---------------8&lt;---------------<p>In essence, this book argues that all people are divided into two non-intersecting subsets: Packers and Mappers:\n- Packers just remember ready-made answers.\n- Mappers are able to think and find answers on their own.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": []
+    }
+  ]
+}
