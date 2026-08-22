@@ -1,0 +1,568 @@
+{
+  "scraped_date": "2026-08-22",
+  "source": "hacker_news",
+  "total_scraped": 77,
+  "nontech_count": 13,
+  "posts": [
+    {
+      "id": "49331033",
+      "title": "Ask HN: Alternatives to GitHub",
+      "link": "https://news.ycombinator.com/item?id=49331033",
+      "domain": "news.ycombinator.com",
+      "author": "dhruv3006",
+      "score": 645,
+      "comment_count": 432,
+      "created_ts": 1786975157,
+      "is_internal": true,
+      "post_text": "Github has been down consistently over the last few months - does it make sense to switch to alternatives?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "To all of those proposing self-hosted GitLab: we did it for 6+ years in my company, and it's not always a smooth sailing. We had our own runners and we made it auto-upgrade across docker images daily before business start. It mostly worked really well, except those few times were a Docker upgrade had to be rolled back, or that one time the bundled pg_shared_buffers was set at 1MB by default, making schema upgrades impossible for bigger instances, or a version major would break pipeline expectations forcing to upgrade 200+ repos at a time (we pinned to major afterwards). Lately I was also receiving an almost weekly \"critical patch\" newsletter due to critical/high vulnerabilities, which I can only imagine are due to LLM running over the code and identifying bugs.\nThat said, I wish we hadn't migrated to GH, our self-hosted instance had \nWAY\n less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil: GH is nowhere near Enterprise-ready and it feels a downgrade across the board. GL has better access granularity, better docs, better integrations, and you can clearly see the UI received a lot of attention (although it does take 10m with a new account to pin the proper items in the maze of sub-menus that is the sidebar). You can also look at the code and help out if needed, and/or simply provide a patched version to your image via a docker mount.\nIf you're really looking at self-hosting GitLab for a smallish team (up to 50-100 ppl), prepare at the very least a 16GB machine (best 32GB) with 4 cores and a decent SSD, and at least a small team (1-3 people) that can maintain it properly or jump at it at any moment. For runners, a small k3s cluster is ideal to make use of all the resources you can throw at it without worrying about managing the runner state/configuration.",
+          "author": "plqbfbv",
+          "replies": [
+            {
+              "text": "> That said, I wish we hadn't migrated to GH, our self-hosted instance had WAY less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil\nThe key thing that drove our decision to self host gitlab was that WE were the ones in control of when things happened. We didn't do upgrades during times where we really needed our git infra up, and we were in control of our response time to incidents. We were not at the mercy of some other company's upgrade schedule and incident resolution process.\nOf course, it comes with added workload and responsibility, but as the above comment says, it was not that onerous. While we paid for Gitlab Enterprise for a long time, we eventually switched to the free tier as that company was winding down (for reasons unrelated to our choice of git hosting), and the free tier actually has pretty much everything we needed.",
+              "author": "cortesoft",
+              "depth": 1
+            },
+            {
+              "text": "Setting up custom GitLab runners can be cumbersome in the beginning! We faced that multiple times with various customer projects for which we were using GitLab.com managed repos. That's why my colleague and I recently built a \"GitLab Runners as a Service\" [0] -- simply use your self-managed GitLab or GitLab.com account to login, adding pipeline runners is a 1-click operation! Under the hood we provision a Hetzner machine for you runners and automatically connect your GitLab group or project to it. Happy to hear your feedback!\n[0] \nhttps://rocketrunner.io/",
+              "author": "inanothertime",
+              "depth": 1
+            },
+            {
+              "text": "This is pretty cool and one of the few things I couldn't find a viable alternative to in-house hosting so far. The only thing your \"GitLab Runners as a Service\" is missing is ISO 27001 (and optionally SOC 2) certification. That makes it again easier for your customer to get / maintain their ISO 27001.\n(So far I used this cloud.init script to spin up and upgrade GitLab-Runner instants: \nhttps://gitlab.com/21analytics/gitlab-runner-cloud-init/-/bl...\n)",
+              "author": "lclc",
+              "depth": 2
+            },
+            {
+              "text": "Ha, let us look into ISO 27001 certification and see what it takes to obtain it (and SOC 2). Thank you for this valuable pointer! If you could just sign in (accounts are free and you can even try us out for the first 48h and not be charged), then we could message you to your email address once we have an update here.",
+              "author": "inanothertime",
+              "depth": 3
+            },
+            {
+              "text": "You’re on for a ride. Set at least 50k on the side for that.",
+              "author": "senorrib",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are after?\n1. Do you want something that works and feels like GitHub? -- Forgejo and Gitea are good for this.\n2. Do you want a place to host git repositories with minimal hassle? -- GitLab, CodeBerg, and others are available.\n3. Do you have your own hosting infrastructure? You could use gitolite and CGit/GitWeb on that hosting platform or local hardware.\n4. Do you just want to host repositories? -- Gitolite can be used to help with SSH/auth/repository creation, and CGit or GitWeb for the frontend.\n5. Do you need something like GitHub Actions? -- GitLab, Forgejo, and Gitea offer CI, or use external CI infrastructure.\n6. Do you need issue tracking and management? -- GitLab, Forgejo, and Gitea provide these. There are alternatives from Jira to Kanban (including Trello) to Markdown (Obsidian and others) and more.",
+          "author": "rhdunn",
+          "replies": [
+            {
+              "text": "> 4. Do you just want to host repositories?\nan ssh connection and\n    git --bare init\n\n\non your ssh accessible server works just fine",
+              "author": "mejutoco",
+              "depth": 1
+            },
+            {
+              "text": "“Just” is a four letter word and a trap our industry repeatedly falls into.\nhttps://sgringwe.com/2019/10/10/Please-just-stop-saying-just",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "If all you want to do is host repositories, “just” is the appropriate word here.  For lone wolf work, all I care about is having a remote that mirrors all the changes and branches I create locally.  It’s just redundancy. A git bare repo and SSH are all that’s needed.\nI don’t do pull requests to myself, and I don’t need a bug tracker or CI.",
+              "author": "hamburglar",
+              "depth": 3
+            },
+            {
+              "text": "I hadn't read this article until now, but I started catching myself using the word at work a few years ago and I've actively been trying to avoid using it for the reasons laid out in this post.",
+              "author": "chrysoprace",
+              "depth": 3
+            },
+            {
+              "text": "I didn't check if this was mentioned in the article but I've heard it described as a \"lullaby word\". I think that is very apt, and I have stopped using it whenever I can.",
+              "author": "gosub100",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "https://tangled.org\n! Founder/CEO here. We're a new forge building things from the ground up, and are fully federated -- you can host your git repos on your own infra, along with the CI runners. We've also got a pretty neat set of features (if I may say so myself): stacked PRs, Nix-based CI (if you want it), and a fully open protocol (\nhttps://atproto.com\n) to for you and your agents.\nHappy to answer any questions.",
+          "author": "icy",
+          "replies": [
+            {
+              "text": "The whole \"social coding\" angle is highly off-putting. List of \"X followed Y\" on the front page, and the large \"social coding\" reminds of facebook, social manipulation, developer burnout and all the negative things about social networks. It also brings up the questions about project's long-term direction - is this going to focus on the code part or the social part?\nWhich is a pity - as I think most projects just need a git host + web UI + easy pull requests + a way to clone other's repos, and tangled seems to do this pretty well.",
+              "author": "theamk",
+              "depth": 1
+            },
+            {
+              "text": "Arguably the \"social coding\" angle is the reason why Tangled is the only actual alternative to GitHub.  Otherwise there's actually plenty of other alternatives to GitHub, but none of them have GitHub's punchcard, which I'm ashamed to admit is the primary draw for me.",
+              "author": "Bjorkbat",
+              "depth": 2
+            },
+            {
+              "text": "Forgejo, and by extent Codeberg, has the punchcard-like feature, it‘s just hidden under „Public activity“ on the profile page",
+              "author": "zImPatrick",
+              "depth": 3
+            },
+            {
+              "text": "Don't think anyone uses Github to follow people",
+              "author": "jatins",
+              "depth": 3
+            },
+            {
+              "text": "I'd like to know if most people use GitHub because of the social network part, or other reasons. I, for one, hate the social network part.\nOne thing with GitHub for open source projects is that the CI is free (and included macOS runners). The other is that many people have a GitHub account and would refuse to contribute to a project on another forge if it means that they must create a new account.\nThe federated design of Tangled solves the latter problem, so there's that.",
+              "author": "palata",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://forgejo.org/",
+          "author": "polycaster",
+          "replies": [
+            {
+              "text": "I recently set this up on my homelab, not really expecting to switch to it, more out of interest. But wow, after I saw how unbelievably fast it was, I’ve moved everything over. I’ve now set it up to mirror things automatically to Github if I want to make them public.\nUsing Github at work is painful in comparison. (Also literally just this morning we’ve had to delay a release due to Github being down.)",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "Have been running self-hosted forgejo for a while now. Work's like a charm. Easy to use with LLM",
+              "author": "sisve",
+              "depth": 2
+            },
+            {
+              "text": "Is their CI and CD workflow robust like gitlab/github ?",
+              "author": "bobkb",
+              "depth": 1
+            },
+            {
+              "text": "It's based on act[0] so it's quite like GitHub actions but not completely [1].\nI found in the current version of Forgejo the most secure way to set it up was just to put the runner on a different host. There's a Docker in Docker setup [2] that was challenging to get working correctly but still didn't quite feel secure...\nAfter setting it all up, I'm convinced GitHub actions as a concept is flawed. I wish the community would make a simpler git-defined CI/CD that didn't have the crazy surface area that actions does... Named shell scripts that can call out to other stuff in the runner Docker image and report it to the UI would be a nice start.\n[0]: \nhttps://github.com/nektos/act\n[1]: \nhttps://forgejo.org/docs/v15.0/user/actions/github-actions/#...\n[2]: \nhttps://forgejo.org/docs/v15.0/admin/actions/docker-access/#...",
+              "author": "cobertos",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. GitHub Actions feels like someone's science project created while on a mushroom trip. Really you just want a thing that executes a shell script in a runner.",
+              "author": "dboreham",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I answered this in another thread, if you're already running a large GitHub organization, GitLab is the closest alternative in terms of features\nA big plus is that it also has an open-source Community Edition that you can self-host",
+          "author": "mariocesar",
+          "replies": [
+            {
+              "text": "There are also many consultancies able to provide professional support with running it in your org, including migrations.",
+              "author": "Nemo_bis",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49332495",
+      "title": "Ask HN: GitHub employees what's going on? Why?",
+      "link": "https://news.ycombinator.com/item?id=49332495",
+      "domain": "news.ycombinator.com",
+      "author": "sharts",
+      "score": 321,
+      "comment_count": 260,
+      "created_ts": 1786979971,
+      "is_internal": true,
+      "post_text": "Pretty self explanatory. Could you folks shed some light on why these issues keep happening?<p>I’ve noticed most posts and replies are just people coming to their own conclusions based on whatever published data.<p>I think it would be helpful to get some actual, non-corporate&#x2F;marketing information on the goings-on by those that actually see what’s happening on the inside.<p>Thanks",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49376332",
+      "title": "How to compromise your system with a job interview",
+      "link": "https://www.codedge.de/posts/how-to-compromise-your-system-with-a-job-interview",
+      "domain": "www.codedge.de",
+      "author": "codedge",
+      "score": 179,
+      "comment_count": 164,
+      "created_ts": 1787241057,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "interview"
+      ],
+      "comments": [
+        {
+          "top": "If a company is not even willing to have a real person speak to you at the start of the recruitment process, what does that say about them? Or about the legitimacy of that job posting? Or about the people you would be working with if you did get hired?\nRegardless if you get an offer or not, you will invest a significant amount of finite time in each interview cycle and if you do get an offer, you'll be investing even more time into that company.\nSo no matter who you are, protect your time and remember that interviewing is always a 2-way street.",
+          "author": "shahbaby",
+          "replies": [
+            {
+              "text": "Are you familiar with the concept of a recruitment funnel? It is not financially worth it to personally talk with every single person that applies to a company.",
+              "author": "charcircuit",
+              "depth": 1
+            },
+            {
+              "text": "Well then it’s not financially worth it for capable people to work for that company. And of story",
+              "author": "gmerc",
+              "depth": 2
+            },
+            {
+              "text": "Well then it's not financially worth it to have a job, because every company does this because if they didn't they'd need to triple in size with recruiters.\nSomething must be wrong with this logic because it clearly is financially worth it to have a job.",
+              "author": "inigyou",
+              "depth": 3
+            },
+            {
+              "text": "> Well then it's not financially worth it to have a job, because every company does this because if they didn't they'd need to triple in size with recruiters.\nEvery company does not do this. I \nalways\n refuse tasks like this unless I've talked to a human before hand, as unless the company has invested a little effort, then I won't invest any effort.",
+              "author": "disgruntledphd2",
+              "depth": 4
+            },
+            {
+              "text": "> it clearly is financially worth it to have a job\nYes, for the company.",
+              "author": "Pooge",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "out of the list under \n\"Before you start with the test, you might be suspicious about the following:\"\n there is only one that is important:\nonly interact with people using an official email address.\nthe rest \ncan\n be used as yellow/red flags, but simply asking for confirmation via an official email address will thwart the vast majority of scams (including other ones, like someone claiming to be from Intuit calling about your QuickBooks or whatever).",
+          "author": "john_strinlai",
+          "replies": [
+            {
+              "text": "I have seen official company recruiters operate exclusively through Gmail or whatever. Third party headhunters may not have anything tied to the sponsoring company.\nIt is a decent rule, but one which is immediately thwarted by companies going out of their way to constantly look illegitimate.",
+              "author": "0cf8612b2e1e",
+              "depth": 1
+            },
+            {
+              "text": "> immediately thwarted by companies going out of their way to constantly look illegitimate\nInteresting reading: \nhttps://www.troyhunt.com/thanks-fedex-this-is-why-we-keep-ge...",
+              "author": "LoganDark",
+              "depth": 2
+            },
+            {
+              "text": "how do you know they were really official company recruiters?",
+              "author": "logicallee",
+              "depth": 2
+            },
+            {
+              "text": "not OP, but because I've looked for a job previously and have experiences with recruiters like that which ended up at a legitimate offer at the companies they claimed to represent?",
+              "author": "supriyo-biswas",
+              "depth": 3
+            },
+            {
+              "text": "By not using their 'official' company email account, I'd assume the recruiter is working on the side behind their employers back.",
+              "author": "GJim",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "> “A relevant opportunity” with part-time remote work and a great hourly compensation\nThat is so suspicious at the moment.",
+          "author": "forinti",
+          "replies": []
+        },
+        {
+          "top": "I get enough legit and illegitimate ones every week on LinkedIn that it's become really easy to tell the difference. Hard to pinpoint in a comment because it's mostly a gut feeling. But, in rough order:\n1. Look at the person's LinkedIn profile contacting you and examine their post history. In one comical scenario the \"recruiter\" had a long 4 year gap where they were writing comments in English and all of the sudden they switched to Spanish. Mostly short, pointless comments as well.\n2. Look at the company and make sure they have a legitimate website and are still actually in business. Even better, see if there's a public team page that lists this person.\n3. Give the recruiter an email (I usually use something like SimpleLogin) and ask them to forward you the details. Of course, pay close attention to what address they send it from.\n4. In addition, or alternatively, ask the recruiter for the public job listing (scammers almost always \"paste\" it into a DM or upload a clearly AI generated PDF doc).\nOnce you learn the game it's not too hard to start picking up on them. I've made it a game to play along sometimes just for fun. Ultimately, at the end of the day, make sure you report them on LinkedIn. I've had the account disappear within a hour of doing so.",
+          "author": "aliasxneo",
+          "replies": [
+            {
+              "text": "Honestly unless I'm planning on quitting my current job, or if I were unemployed, I just ignore the linkedin.\nSure they spam you with \"XX wants to connect\", or \"I'm awaiting your reply\" emails.  But real contacts and friends can call/email you, and everybody else can wait six months.\nDespite only connecting with actual people I've worked with, not recruiters, I still get \"suggested\" posts which are slop, and \"that happened\".  The site is a cesspool.",
+              "author": "stevekemp",
+              "depth": 1
+            },
+            {
+              "text": "I got my last two jobs from recruiters contacting me via LinkedIn. I've also kept in touch with a good group of recruiters over DMs who regularly bring me new offers. My experience might be unique, but I've gotten a lot of value being on LinkedIn. I don't interact with the social part of it (posts or whatever they are called) at all.",
+              "author": "aliasxneo",
+              "depth": 2
+            },
+            {
+              "text": "I haven't had LinkedIn since... 2014 I think.\nI deleted my account after I got my first job offer and have never used it since.\nIf people dislike the site so much, I don't understand why they don't delete their account. Is there any value provided, or is it the fear of missing out on potential future value?",
+              "author": "milkytron",
+              "depth": 2
+            },
+            {
+              "text": "Every single job app I filled out in the last two years asked for my linkedin url. I don't know if not having one was disqualifying, but it does worry me.",
+              "author": "wredcoll",
+              "depth": 3
+            },
+            {
+              "text": "It's not disqualifying, but not having a linkedin is a signal that could drop you towards the bottom of the resume pile. Companies have problems with fake applicants, and ATS systems do create \"how likely this person is a human\" scores. Having an online identity is one signal, and for better or worse, that is often a LinkedIn history.\nLike a fico score, you can't escape the game if you want to play.",
+              "author": "floatrock",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "My first thought after reading the article: develoepers NEED to learn to use firewalls such as LuLu(\nhttps://objective-see.org/products/lulu.html\n) to get interactive dialogs asking whether any given binary can access any given internet address whether it is a domain address or IP address (which can seem even shadier).\nI am an Emacs user but every time I have tried a new editor, including VS Code or VSCodium I blocked access to remote addressed which were prompted to me even though I did not neither authorize extension download nor extension download.\nI think it would have been even funny for devs trying out for code challenges while using \"interactive\" firewalls such as LuLu, then catching the shadiness and blocking access right up.",
+          "author": "gfalcao",
+          "replies": [
+            {
+              "text": "This really is the simplest path to somewhat decent security, and alongside it you may catch some programs doing requests that are fine for security but you'd rather it not do because of privacy.",
+              "author": "Numerlor",
+              "depth": 1
+            },
+            {
+              "text": "The line between privacy and security is very blurry. Consider this: if Microsoft exfiltrates your keystrokes, it's a privacy violation, but if a random person does the same thing then it's a security violation. You might say that the random person is more likely to use it against you, but then the car insurance companies mining your driving data absolutely do use it against some customers, but that's generally considered to be a privacy violation rather than a security violation.",
+              "author": "john01dav",
+              "depth": 2
+            },
+            {
+              "text": "No, we really need to stop using weasel words and call it like it is: Windows is malware. Microsoft has illegally hacked billions of computers, and gets away with it by being a big company and by the world having gotten complacent with big companies constantly hacking everyone they can.",
+              "author": "inigyou",
+              "depth": 3
+            },
+            {
+              "text": "> \nConsider this: if Microsoft exfiltrates your keystrokes, it's a privacy violation, but if a random person does the same thing then it's a security violation\nNo, it's a security violation no matter who does it.",
+              "author": "inetknght",
+              "depth": 3
+            },
+            {
+              "text": "That's adjacent to my point. I'm criticizing how I see these words used.",
+              "author": "john01dav",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49313346",
+      "title": "Ask HN: I've quit six systems for tracking my illness. What works?",
+      "link": "https://news.ycombinator.com/item?id=49313346",
+      "domain": "news.ycombinator.com",
+      "author": "Abh1Works",
+      "score": 52,
+      "comment_count": 89,
+      "created_ts": 1786820982,
+      "is_internal": true,
+      "post_text": "Hey everyone, I am a 20 year old college student who was recently diagnosed with seronegative spondyloarthropathy. Over the last 3 years, Ive tried apps, paper journal, Google Sheets, and notes to track&#x2F;catalogue my journey. I always ended up quitting within 2-4 weeks and not keeping accurate track.<p>Is this a common experience or do I just have to be better at tracking? Is there a unique&#x2F;non habit-building way to track&#x2F;catalogue&#x2F;recall?<p>Im building something for this (part of the reason why I am asking) - and if anyone is open to a longer conversation, Ill gladly pay for you time!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quit",
+        "quitting"
+      ],
+      "comments": [
+        {
+          "top": "I have to track daily data for an illness.  What motivates me to stay on top of it are the insights gained from the tracking.   Being able to go to the doctor and answer questions definitively instead of anecdotally.\nWe've actually changed the therapy procedures based on the data and then been able to show it was effective with the data that came after.\nSo think about the insights the tracking will provide you and your doctor, and that might help motivate you.\nWe use old school paper and pencil.  I have a clipboard with a tracking sheet created in excel with rows for each thing that needs tracking and columns for the day.  Then I don't have to think, I just fill in boxes, and the pencil and paper are always right there on the wall in the bathroom, where the data is \"generated\" :)\nThis also lets me scan quickly across for daily and weekly trends.  I have room at the bottom for longer notes if necessary.  I put a [1] in the box and then a note that matches.",
+          "author": "jedberg",
+          "replies": []
+        },
+        {
+          "top": "I don't know anything about tracking your particular illness, but I have tried tracking various things in my life with varying success. Many times I've failed, but then I tried again in different ways. One thing that I noticed is that too often I would try to track too much too rigorously. It would become a burden, I would lose motivation, and I would stop.\nFor some things, I decided to find a way to do the minimum amount of tracking that is sustainable. One example is fitness. I tried keeping a detailed track of the kinds of exercise I do. I realized it is too much of a burden. So instead, I opted for just noting in my journal whether I did any exercise at all. And it worked. And I realized that I have capacity for more so I started marking whether I did too little, just enough, or a lot. And that was sustainable. And then I built it up some more and for one particular type of exercise, and now I track it thoroughly, while only noting the others. This is now a habit and it seems to have stuck.\nSo instead of starting with a thorough way of tracking something, start with a minimal way of noting and build up from there.",
+          "author": "koliber",
+          "replies": [
+            {
+              "text": "I hear you, ill try this out",
+              "author": "Abh1Works",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The reason these things did not work for me is because they were things I had to \"do\" as in remember/initiate so I made Crohn's AI - because its a program that runs and I just have to reply or answer when the AI-GIs contact me.\nIntent: \nhttps://wiki.crohns.ai/agent/posts/ibd-biologic-therapy-init...\nProgram: \nhttps://crohns.ai/program/71174-eim-joint-pain-flare\nProtocol: \nhttps://crohns.ai/protocol/71174\nThis allowed me to essentially set it and forget it until and each program is specific to each condition so its not just a dumb daily alert or something like that.\nYou can make yourself a program at Medicare.dev - just explain your situation or whatever and it should guide you through the rest.",
+          "author": "arionhardison",
+          "replies": [
+            {
+              "text": "You're operating a third-party Medicare guide at \"medicare.dev\" with no visible disclaimer anywhere that you are not affiliated with Medicare?",
+              "author": "ghostly_s",
+              "depth": 1
+            },
+            {
+              "text": "No, its not a guide and there are disclaims literally everywhere. As long as you don't use the gov bar (at top of all gov websites) its OK.  I work w/ people from CMS daily.",
+              "author": "arionhardison",
+              "depth": 2
+            },
+            {
+              "text": "Where are the disclaimers? I've clicked around, and nothing is really clear what this is, or what it isn't.",
+              "author": "Jeremy1026",
+              "depth": 3
+            },
+            {
+              "text": "Deploying now; TY again for the heads up on that.  Im fairly aggressive about the distinction, especially since i'm a part of ACCESS and work with the Innovation Center frequently so this was def a messaging lapse on my part.",
+              "author": "arionhardison",
+              "depth": 4
+            },
+            {
+              "text": "I see now.  You are just a random user, you have no invite code so you don't see that landing page or any intents; just a blank record.  I could def make that clearer but 99% of the traffic comes in w/ ref codes so they see the full paths w/ the disclaimers.\nTY for the heads up.",
+              "author": "arionhardison",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "For tracking in general you need a system and a medium. The bullet journal method has worked well for me for many years. The systems and structures within the bullet journal change over time, but you can jump back years, and see what you were thinking at the time. More recently I have been using GTD within the bullet journal framework. I highly suggest reading at least those two methods before building your own system.",
+          "author": "punknight",
+          "replies": [
+            {
+              "text": "+1 for outliners. Logseq was the first note-taking app that really got me to a daily logging habit that stuck, great for friction-less capture of random thoughts and notes, medical and what not. Flat wiki links and backlinks take some getting used to, but absolutely amazing for discovery and organization of notes.",
+              "author": "ivankra",
+              "depth": 1
+            },
+            {
+              "text": "Actually I have tried this. GTD with obsidian",
+              "author": "Abh1Works",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My friend paid someone to call her every day and ask her how she's doing, then write the rating in a spreadsheet.",
+          "author": "luplex",
+          "replies": [
+            {
+              "text": "This is the best solution. It's very easy to ignore a notification from some app and not so easy to ignore a call from somebody you know by name who is trying to help you.",
+              "author": "criddell",
+              "depth": 1
+            },
+            {
+              "text": "I said this somewhere else in the thread, but it's crazy that this type of service exists ( in a good way obviously). I just never thought you would pay for someone to do this",
+              "author": "Abh1Works",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49388293",
+      "title": "Ask HN: Is GitHub Down Again?",
+      "link": "https://news.ycombinator.com/item?id=49388293",
+      "domain": "news.ycombinator.com",
+      "author": "delduca",
+      "score": 11,
+      "comment_count": 7,
+      "created_ts": 1787321220,
+      "is_internal": true,
+      "post_text": "Connection closed by 4.228.31.150 port 22",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49392365",
+      "title": "Windmill.dev is not \"fully open-sourced (AGPLv3)\"",
+      "link": "https://news.ycombinator.com/item?id=49392365",
+      "domain": "news.ycombinator.com",
+      "author": "alpine-rockies",
+      "score": 8,
+      "comment_count": 1,
+      "created_ts": 1787338257,
+      "is_internal": true,
+      "post_text": "I think Windmill.dev (https:&#x2F;&#x2F;github.com&#x2F;windmill-labs&#x2F;windmill) is really cool, and fully support their desire to be paid for their work.<p>However, their README says:<p>&gt; “Windmill is fully open-sourced (AGPLv3)…”<p>But their LICENSE says:<p>&gt; ... The files under backend&#x2F; are AGPLv3 Licensed, except any snippets of code under the compile flag ‘enterprise’. Those snippets and files are under a proprietary and commercial license. Private and public forks MUST not include the proprietary&#x2F;commercial code mentioned above.<p>I dove deeper into the code, there are around 300 files in the codebase that contain references to enterprise or private features, so it&#x27;s not a clearly separated directory that can just be removed.<p>They have 1.1k forks of their repository that I can see on Github, and I doubt all of them took the time to strip the proprietary code to comply with the license.<p>So at this point, it feels like a licensing trap for anyone that clicks the fork button on Github or is attracted by the AGPL license<p>Don&#x27;t get me wrong, I wish more companies made their code open-source if for no other reason other than to be transparent. But calling this mixed source repository &quot;fully open-sourced (AGPLv3)&quot; feels like false advertising that actively leads users to violate the terms unknowingly.<p>Also, even if that line was removed from the readme or fixed, it does not feel right to have: &quot;...Private and public forks MUST not include the proprietary&#x2F;commercial code mentioned above...&quot; and the Github Fork button right next to each other. It&#x27;s like a giant violate-the-license button next to the license.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "Unfortunately AGPL has been a scam for years. It's now an anti-freedom license.",
+          "author": "wmf",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49389408",
+      "title": "Coding Agents killed my identity. How do you feel?",
+      "link": "https://news.ycombinator.com/item?id=49389408",
+      "domain": "news.ycombinator.com",
+      "author": "bah9",
+      "score": 8,
+      "comment_count": 31,
+      "created_ts": 1787325314,
+      "is_internal": true,
+      "post_text": "I always was a nerdy, deeply technical programmer. Contributing-to-open-source-and-reading-papers-in-my-spare-time type of programmer.<p>Programming is like a game of chess for me: winning (i.e. delivering a product) is important, but only if I played this game myself. I don&#x27;t enjoy winning if my opponent disconnected. I don&#x27;t enjoy beating people who don&#x27;t know how to move pieces. I don&#x27;t enjoy winning with an engine, and coding agents are basically &quot;winning with a chess engine&quot;.<p>I started to use AI for coding a long time ago, when copilot was first introduced. At first, I was happy: &quot;wow, this can write boring boilerplate and unit tests&quot;. Time went by, agents got better, time spent writing code myself went down. Half a year ago I suddenly realized I hadn&#x27;t written any code for over a month, and I am a full-time software dev without any managing work. Not only did I stop writing code, but agents also became pretty good at proposing plans and architectures, and I was mostly providing missing context and technical details of our infrastructure.<p>One day the realization hit hard. Coding agents removed everything I loved, and - mostly - amplified everything I hated. My role is to gather context from other humans and provide a detailed explanation (similar to a well-written jira ticket) to some super intelligent engineer, then review the result and provide more context&#x2F;explanation if needed. So, basically, a manager.<p>A couple of years ago I could work on a single coding task for weeks. I knew all classes, all functions, I was slowly building up information at a comfortable tempo. Now I am forced to increase my mental throughput multiple times. What took a couple of weeks now takes a couple of hours, and I still need to comprehend that. I always feel tired, I don&#x27;t have enough mental capacity to hold that many abstractions and technical details. So you either autoaccept or get burned out reviewing tens of thousands of lines.<p>One more downside is that code has 0 value. You can code your own OS from scratch, and people will think &quot;ye, I can vibe code that in a weekend&quot;. I don&#x27;t even know what is valuable nowadays.<p>Maybe I am a bad employee. Increasing employer profits was never my goal. I always loved to solve puzzles, and for the last 10 years this was well aligned with my employer&#x27;s desire to increase profits. I never was good as a manager, or brilliant at generating ideas. My power - and passion - was solving complex technical problems with my hands, fast and with good quality. Now it is gone forever. I feel completely lost and unmotivated. I don&#x27;t see any value in learning anything related to computer science, reading  papers, contributing to open source. I hate my new &quot;AI delegator&quot; role and I hate my work. I loved coding so much (I use neovim btw) that I was sure I would do this until I die, and now I don&#x27;t know what to do with my life. This is the only thing I know, and, most importantly, the only thing I am&#x2F;was passionate about. Anyone else feeling the same?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49388835",
+      "title": "Ask HN: OpenCode no longer including DeepSeek?",
+      "link": "https://news.ycombinator.com/item?id=49388835",
+      "domain": "news.ycombinator.com",
+      "author": "dv35z",
+      "score": 7,
+      "comment_count": 5,
+      "created_ts": 1787323054,
+      "is_internal": true,
+      "post_text": "I noticed that OpenCode harness no longer is including DeepSeek. Does anyone know why?<p>The current free models provided by OpenCode are currently: Nemotron (NVidia),  Hy3 (Tencent),  Muse Spark (Meta), Ox Alpha (stealth&#x2F;unknown developer), Mimo (Xiaomi), Big Pickle (OpenCode).",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49386529",
+      "title": "Ask HN: How do you keep notes organized across long-running side projects?",
+      "link": "https://news.ycombinator.com/item?id=49386529",
+      "domain": "news.ycombinator.com",
+      "author": "hackerstest",
+      "score": 5,
+      "comment_count": 2,
+      "created_ts": 1787311720,
+      "is_internal": true,
+      "post_text": "I keep starting side projects that go on for months, and my notes end up scattered between a text file, a couple of markdown docs, and whatever I remembered to write down.<p>Curious how others handle this — do you keep everything in one place, or does it not matter as long as you write it down somewhere?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49386514",
+      "title": "Ask HN: Do teams really need to use GitHub?",
+      "link": "https://news.ycombinator.com/item?id=49386514",
+      "domain": "news.ycombinator.com",
+      "author": "avinoth",
+      "score": 5,
+      "comment_count": 5,
+      "created_ts": 1787311610,
+      "is_internal": true,
+      "post_text": "Enterprises can self-host, sure. Open source projects uses it for the the network effects of GitHub. But why does a small software team need to use GitHub?<p>I understand the ecosystem argument. Once you&#x27;ve got your repos, CI&#x2F;CD, PRs, code reviews, packages, integrations, etc. all wired into GitHub, moving everything is a pain. But Git itself is distributed, and GitHub has a pretty open plugin&#x2F;integration system. There are also perfectly capable alternatives like GitLab, Bitbucket, Forgejo, Gitea, SourceHut, etc.<p>So what is the actual thing that makes a 10–20 person software company stick with GitHub? Is it mostly switching costs? The ecosystem? Developer familiarity? Something else? And if you were to start a project today, would you still go with GitHub?<p>And a slightly more personal question.<p>I&#x27;ve had a rough idea for what a new GitHub could look like if it were built specifically for software that is increasingly being written by AI agents, and specifically for companies rather than open-source projects. The idea isn&#x27;t really &quot;another GitHub clone&quot;. More of a forge designed around how software teams might work when agents are doing a significant part of the coding, reviewing, testing and deployment work, etc.<p>I&#x27;ve been sitting on the idea for a while because, well, GitHub exists. But after the recent outages, I&#x27;ve started wondering whether this is actually worth pursuing. In fact, I see a future where there are multiple alternatives to GitHub with their own take on the interface and UI&#x2F;UX. Interested to hear your thoughts.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49385541",
+      "title": "Ask HN: Do you need Google ads help?",
+      "link": "https://news.ycombinator.com/item?id=49385541",
+      "domain": "news.ycombinator.com",
+      "author": "cosbgn",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1787302589,
+      "is_internal": true,
+      "post_text": "Hello everyone! I’m building https:&#x2F;&#x2F;unfetch.com, something like Codex but focused on Google Ads.<p>It has:<p>- Keyword research support (like Ahrefs)<p>- A Google Ads connector<p>- Memory, sandbox, and artifacts<p>- Automations (coming soon, for example, automatically scanning for and adding negative keywords every day)<p>While I iron out the last few details, I’d like to help 10&#x2F;15 companies run their Google Ads campaigns.<p>I would primarily manage your ads manually while testing the same workflows in Unfetch. I’ll continue optimizing it until I’m confident that it can replace me for most routine daily&#x2F;weekly monitoring and optimization tasks.<p>If you’re currently running ads or planning to do so, email me at &lt;username&gt;@gmail.com.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49392170",
+      "title": "Ask HN: Why is HN missing a \"go to top\" link on long posts?",
+      "link": "https://news.ycombinator.com/item?id=49392170",
+      "domain": "news.ycombinator.com",
+      "author": "KellyCriterion",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1787337266,
+      "is_internal": true,
+      "post_text": "Im wondering nearly every day:<p>Is there maybe a reason HN does not have that typical &quot;go to top&quot; or &quot;to top&quot; link at the end of, at least very long, posts?<p>Maybe we can file a change request @dang :-D",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49391444",
+      "title": "Ask HN: How to Relicense an Old Project",
+      "link": "https://news.ycombinator.com/item?id=49391444",
+      "domain": "news.ycombinator.com",
+      "author": "gradschool",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1787333898,
+      "is_internal": true,
+      "post_text": "I&#x27;ve heard from someone who wants to revive an old abandoned project\nof mine and asks that I change the license from GPLv3 to LGPL or MIT.\nI&#x27;m willing to do that but I took down the original repo from github a\nlong time ago and there seems to be only a fork that still exists.\nWhat&#x27;s the right way to make it publicly known that I&#x27;m changing the\nlicense?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
