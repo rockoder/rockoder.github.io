@@ -1,0 +1,523 @@
+{
+  "scraped_date": "2026-08-23",
+  "source": "hacker_news",
+  "total_scraped": 48,
+  "nontech_count": 12,
+  "posts": [
+    {
+      "id": "49331033",
+      "title": "Ask HN: Alternatives to GitHub",
+      "link": "https://news.ycombinator.com/item?id=49331033",
+      "domain": "news.ycombinator.com",
+      "author": "dhruv3006",
+      "score": 648,
+      "comment_count": 435,
+      "created_ts": 1786975157,
+      "is_internal": true,
+      "post_text": "Github has been down consistently over the last few months - does it make sense to switch to alternatives?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "To all of those proposing self-hosted GitLab: we did it for 6+ years in my company, and it's not always a smooth sailing. We had our own runners and we made it auto-upgrade across docker images daily before business start. It mostly worked really well, except those few times were a Docker upgrade had to be rolled back, or that one time the bundled pg_shared_buffers was set at 1MB by default, making schema upgrades impossible for bigger instances, or a version major would break pipeline expectations forcing to upgrade 200+ repos at a time (we pinned to major afterwards). Lately I was also receiving an almost weekly \"critical patch\" newsletter due to critical/high vulnerabilities, which I can only imagine are due to LLM running over the code and identifying bugs.\nThat said, I wish we hadn't migrated to GH, our self-hosted instance had \nWAY\n less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil: GH is nowhere near Enterprise-ready and it feels a downgrade across the board. GL has better access granularity, better docs, better integrations, and you can clearly see the UI received a lot of attention (although it does take 10m with a new account to pin the proper items in the maze of sub-menus that is the sidebar). You can also look at the code and help out if needed, and/or simply provide a patched version to your image via a docker mount.\nIf you're really looking at self-hosting GitLab for a smallish team (up to 50-100 ppl), prepare at the very least a 16GB machine (best 32GB) with 4 cores and a decent SSD, and at least a small team (1-3 people) that can maintain it properly or jump at it at any moment. For runners, a small k3s cluster is ideal to make use of all the resources you can throw at it without worrying about managing the runner state/configuration.",
+          "author": "plqbfbv",
+          "replies": [
+            {
+              "text": "> That said, I wish we hadn't migrated to GH, our self-hosted instance had WAY less downtime despite being perhaps a bit slower (mgmt saving money) and required a bit more toil\nThe key thing that drove our decision to self host gitlab was that WE were the ones in control of when things happened. We didn't do upgrades during times where we really needed our git infra up, and we were in control of our response time to incidents. We were not at the mercy of some other company's upgrade schedule and incident resolution process.\nOf course, it comes with added workload and responsibility, but as the above comment says, it was not that onerous. While we paid for Gitlab Enterprise for a long time, we eventually switched to the free tier as that company was winding down (for reasons unrelated to our choice of git hosting), and the free tier actually has pretty much everything we needed.",
+              "author": "cortesoft",
+              "depth": 1
+            },
+            {
+              "text": "Setting up custom GitLab runners can be cumbersome in the beginning! We faced that multiple times with various customer projects for which we were using GitLab.com managed repos. That's why my colleague and I recently built a \"GitLab Runners as a Service\" [0] -- simply use your self-managed GitLab or GitLab.com account to login, adding pipeline runners is a 1-click operation! Under the hood we provision a Hetzner machine for you runners and automatically connect your GitLab group or project to it. Happy to hear your feedback!\n[0] \nhttps://rocketrunner.io/",
+              "author": "inanothertime",
+              "depth": 1
+            },
+            {
+              "text": "This is pretty cool and one of the few things I couldn't find a viable alternative to in-house hosting so far. The only thing your \"GitLab Runners as a Service\" is missing is ISO 27001 (and optionally SOC 2) certification. That makes it again easier for your customer to get / maintain their ISO 27001.\n(So far I used this cloud.init script to spin up and upgrade GitLab-Runner instants: \nhttps://gitlab.com/21analytics/gitlab-runner-cloud-init/-/bl...\n)",
+              "author": "lclc",
+              "depth": 2
+            },
+            {
+              "text": "Ha, let us look into ISO 27001 certification and see what it takes to obtain it (and SOC 2). Thank you for this valuable pointer! If you could just sign in (accounts are free and you can even try us out for the first 48h and not be charged), then we could message you to your email address once we have an update here.",
+              "author": "inanothertime",
+              "depth": 3
+            },
+            {
+              "text": "You’re on for a ride. Set at least 50k on the side for that.",
+              "author": "senorrib",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "It depends on what you are after?\n1. Do you want something that works and feels like GitHub? -- Forgejo and Gitea are good for this.\n2. Do you want a place to host git repositories with minimal hassle? -- GitLab, CodeBerg, and others are available.\n3. Do you have your own hosting infrastructure? You could use gitolite and CGit/GitWeb on that hosting platform or local hardware.\n4. Do you just want to host repositories? -- Gitolite can be used to help with SSH/auth/repository creation, and CGit or GitWeb for the frontend.\n5. Do you need something like GitHub Actions? -- GitLab, Forgejo, and Gitea offer CI, or use external CI infrastructure.\n6. Do you need issue tracking and management? -- GitLab, Forgejo, and Gitea provide these. There are alternatives from Jira to Kanban (including Trello) to Markdown (Obsidian and others) and more.",
+          "author": "rhdunn",
+          "replies": [
+            {
+              "text": "> 4. Do you just want to host repositories?\nan ssh connection and\n    git --bare init\n\n\non your ssh accessible server works just fine",
+              "author": "mejutoco",
+              "depth": 1
+            },
+            {
+              "text": "“Just” is a four letter word and a trap our industry repeatedly falls into.\nhttps://sgringwe.com/2019/10/10/Please-just-stop-saying-just",
+              "author": "janalsncm",
+              "depth": 2
+            },
+            {
+              "text": "If all you want to do is host repositories, “just” is the appropriate word here.  For lone wolf work, all I care about is having a remote that mirrors all the changes and branches I create locally.  It’s just redundancy. A git bare repo and SSH are all that’s needed.\nI don’t do pull requests to myself, and I don’t need a bug tracker or CI.",
+              "author": "hamburglar",
+              "depth": 3
+            },
+            {
+              "text": "I hadn't read this article until now, but I started catching myself using the word at work a few years ago and I've actively been trying to avoid using it for the reasons laid out in this post.",
+              "author": "chrysoprace",
+              "depth": 3
+            },
+            {
+              "text": "I didn't check if this was mentioned in the article but I've heard it described as a \"lullaby word\". I think that is very apt, and I have stopped using it whenever I can.",
+              "author": "gosub100",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "https://tangled.org\n! Founder/CEO here. We're a new forge building things from the ground up, and are fully federated -- you can host your git repos on your own infra, along with the CI runners. We've also got a pretty neat set of features (if I may say so myself): stacked PRs, Nix-based CI (if you want it), and a fully open protocol (\nhttps://atproto.com\n) to for you and your agents.\nHappy to answer any questions.",
+          "author": "icy",
+          "replies": [
+            {
+              "text": "The whole \"social coding\" angle is highly off-putting. List of \"X followed Y\" on the front page, and the large \"social coding\" reminds of facebook, social manipulation, developer burnout and all the negative things about social networks. It also brings up the questions about project's long-term direction - is this going to focus on the code part or the social part?\nWhich is a pity - as I think most projects just need a git host + web UI + easy pull requests + a way to clone other's repos, and tangled seems to do this pretty well.",
+              "author": "theamk",
+              "depth": 1
+            },
+            {
+              "text": "Arguably the \"social coding\" angle is the reason why Tangled is the only actual alternative to GitHub.  Otherwise there's actually plenty of other alternatives to GitHub, but none of them have GitHub's punchcard, which I'm ashamed to admit is the primary draw for me.",
+              "author": "Bjorkbat",
+              "depth": 2
+            },
+            {
+              "text": "Forgejo, and by extent Codeberg, has the punchcard-like feature, it‘s just hidden under „Public activity“ on the profile page",
+              "author": "zImPatrick",
+              "depth": 3
+            },
+            {
+              "text": "Don't think anyone uses Github to follow people",
+              "author": "jatins",
+              "depth": 3
+            },
+            {
+              "text": "I'd like to know if most people use GitHub because of the social network part, or other reasons. I, for one, hate the social network part.\nOne thing with GitHub for open source projects is that the CI is free (and included macOS runners). The other is that many people have a GitHub account and would refuse to contribute to a project on another forge if it means that they must create a new account.\nThe federated design of Tangled solves the latter problem, so there's that.",
+              "author": "palata",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://forgejo.org/",
+          "author": "polycaster",
+          "replies": [
+            {
+              "text": "I recently set this up on my homelab, not really expecting to switch to it, more out of interest. But wow, after I saw how unbelievably fast it was, I’ve moved everything over. I’ve now set it up to mirror things automatically to Github if I want to make them public.\nUsing Github at work is painful in comparison. (Also literally just this morning we’ve had to delay a release due to Github being down.)",
+              "author": "sandcat_",
+              "depth": 1
+            },
+            {
+              "text": "Have been running self-hosted forgejo for a while now. Work's like a charm. Easy to use with LLM",
+              "author": "sisve",
+              "depth": 2
+            },
+            {
+              "text": "Is their CI and CD workflow robust like gitlab/github ?",
+              "author": "bobkb",
+              "depth": 1
+            },
+            {
+              "text": "It's based on act[0] so it's quite like GitHub actions but not completely [1].\nI found in the current version of Forgejo the most secure way to set it up was just to put the runner on a different host. There's a Docker in Docker setup [2] that was challenging to get working correctly but still didn't quite feel secure...\nAfter setting it all up, I'm convinced GitHub actions as a concept is flawed. I wish the community would make a simpler git-defined CI/CD that didn't have the crazy surface area that actions does... Named shell scripts that can call out to other stuff in the runner Docker image and report it to the UI would be a nice start.\n[0]: \nhttps://github.com/nektos/act\n[1]: \nhttps://forgejo.org/docs/v15.0/user/actions/github-actions/#...\n[2]: \nhttps://forgejo.org/docs/v15.0/admin/actions/docker-access/#...",
+              "author": "cobertos",
+              "depth": 2
+            },
+            {
+              "text": "Agreed. GitHub Actions feels like someone's science project created while on a mushroom trip. Really you just want a thing that executes a shell script in a runner.",
+              "author": "dboreham",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I answered this in another thread, if you're already running a large GitHub organization, GitLab is the closest alternative in terms of features\nA big plus is that it also has an open-source Community Edition that you can self-host",
+          "author": "mariocesar",
+          "replies": [
+            {
+              "text": "There are also many consultancies able to provide professional support with running it in your org, including migrations.",
+              "author": "Nemo_bis",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49332495",
+      "title": "Ask HN: GitHub employees what's going on? Why?",
+      "link": "https://news.ycombinator.com/item?id=49332495",
+      "domain": "news.ycombinator.com",
+      "author": "sharts",
+      "score": 323,
+      "comment_count": 261,
+      "created_ts": 1786979971,
+      "is_internal": true,
+      "post_text": "Pretty self explanatory. Could you folks shed some light on why these issues keep happening?<p>I’ve noticed most posts and replies are just people coming to their own conclusions based on whatever published data.<p>I think it would be helpful to get some actual, non-corporate&#x2F;marketing information on the goings-on by those that actually see what’s happening on the inside.<p>Thanks",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate"
+      ],
+      "comments": [
+        {
+          "top": "Github is struggling because AI-boosted coding increased the number of commits 14x in the past year, and the pace is still accelerating. The site is struggling to keep up.\nGithub's COO confirms it here: \nhttps://x.com/kdaigle/status/2040164759836778878\nPlatform activity is surging. There were 1 billion commits in 2025. As of three months ago, it was 275 million per week, on pace for 14 billion this year if growth remains linear (spoiler: it won't.)\n20% of all GitHub accounts were created in the past 6 months \nhttps://x.com/kdaigle/status/2082604368399159542",
+          "author": "tristanj",
+          "replies": [
+            {
+              "text": "GitHub’s reliability issues started earlier than the boom in agentic coding they talk about. I have comments on here from 2025 talking about massive outages with actions and issues.",
+              "author": "maccard",
+              "depth": 1
+            },
+            {
+              "text": "When you're the uncontested market leader, you don't budget operations to be perfectly reliable, you budget to not be too unreliable. All those 9's are expensive after all.\nThe AI boom caught them napping though, and they're slipping well into the too unreliable category",
+              "author": "fooey",
+              "depth": 2
+            },
+            {
+              "text": "> The AI boom caught them napping though\nMicrosoft, who invested eyewatering sums into AI, even near to betting the whole company on an AI boom, is surprised about the AI boom?",
+              "author": "aleph_minus_one",
+              "depth": 3
+            },
+            {
+              "text": "Microsoft bet everything on possible AGI, no one thought the result would be a bonafide commit printing machine.",
+              "author": "minraws",
+              "depth": 4
+            },
+            {
+              "text": "That's not what Nadella said 1-2 years ago. Everyone seemed pretty aware of LLMs soon being able to handle a lot of steps of software development.\nI bet it's mostly due to Azure being brittle and the AI boom is just a nice cover story (not saying it's not challenging to handle all that new load) to save face and sell more Azure services.",
+              "author": "jasonvorhe",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Github used to be built on mysql / redis / ruby on rails / C / shell, running on dedicated hardware. Microsoft left it like that after they acquired the company.\nEventually, though, they decided to migrate the whole thing to Azure. And they were far enough through that to be basically committed... when AI coding started hitting them with much higher workloads.\nI personally think the reliability problems are more to do with the reliability of the Azure migration. But both factors are likely relevant.",
+          "author": "andyjohnson0",
+          "replies": [
+            {
+              "text": "They didn't leave the architecture alone, right? They shoved React in and created a weird SSR + React frankenstein that is objectively worse in many ways.",
+              "author": "sosodev",
+              "depth": 1
+            },
+            {
+              "text": "React apps with SSR is standard these days.",
+              "author": "esperent",
+              "depth": 2
+            },
+            {
+              "text": "SSR that is javascript native,  sure. This is still Ruby doing the rendering.",
+              "author": "sosodev",
+              "depth": 3
+            },
+            {
+              "text": "What's the difference? If it's SSR it's happening on the server, the only benefit of using JS is ergonomics. Ruby is fine otherwise.",
+              "author": "esperent",
+              "depth": 4
+            },
+            {
+              "text": "Ruby can't render React code. JavaScript can. With GitHub it seems that they sometimes can do SSR for the React bits, but that must mean that they're invoking a JavaScript interpreter within the Ruby process. Which means they have the overhead of two runtimes and the jank that comes with the IPC between the two.\nIt's just pointless hacks on hacks. GitHub didn't need React on the frontend and any potential resource savings of client side rendering were lost when they realized they need to do SSR on that stuff too.\nI've encountered so much frontend jank as they expanded that portion of the stack whereas it was always excellent when it was just Ruby SSR and minimal JS on the frontend.",
+              "author": "sosodev",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "non-helpful answer: the \"Microsoft Acquires GitHub\" line in this graph answers all questions \nhttps://damrnelson.github.io/github-historical-uptime/",
+          "author": "herpdyderp",
+          "replies": [
+            {
+              "text": "Note that most of the downtime in that graph comes from Github Actions, which simply \ndidn't exist\n before the Microsoft acquisition.\nThe downtime also starts happening in 2020, which is a while after the acquisition. 2020 was the year many people started learning to code while being stuck at home.",
+              "author": "flexagoon",
+              "depth": 1
+            },
+            {
+              "text": "To be fair, before the aquisition, GitHub was super stable, but also it felt like they rarely changed or added anything.\nAfter Microsoft acquired them, they started rolling out new features at an incredible pace. And if you look at the breakdown of the downtime, most of the downtime is in features that didn't exist before the acquisition.\nThough not all of the downtime is in new features. The core is also less stable than ever.",
+              "author": "fallingbananna",
+              "depth": 1
+            },
+            {
+              "text": "But I just want stable hosting for my shit. I barely even interact with the web UI, other than commenting on PRs.",
+              "author": "a2ff6eeb0",
+              "depth": 2
+            },
+            {
+              "text": "Unfortunately there isn't as much money to be made¹² serving people who just want a stable host for basic repos. The money comes from the paid accounts, and those \ndo\n tend to want the extra features - even if the end users don't the management agreeing to the spend will see value in the integration³ of other parts of the development/release/support processes. The problem is they all want a different mix of features, meaning that the feature set needs to be wide to capture as much interest as possible especially in light of competitors that may offer something you don't (yet).\n--------\n[1] Possibly none, are you paying for a pro or enterprise account?\n[2] There will be a little indirect income perhaps, via deriving value from tracking users and being able to use the combined content for various analytics (including lately AI training).\n[3] Potentially reducing the cost/complexity of integrating disparate systems⁴, themselves.\n[4] Sometimes in-house developed systems that might distract key devs from the company's products/services that they can sell.",
+              "author": "dspillett",
+              "depth": 3
+            },
+            {
+              "text": "My (actuarial) read on this is that pre-Microsoft GitHub acknowledged that the complexity inherent in their technology stack imparted a lot of change risk, and that probably informed their decisions around shipping new features.\nMy (not-so-actuarial 1990's-experience-colored) feeling is that this is Microsoft doing what Microsoft does best, namely including a lot of seemingly compelling features in a product to get people hooked and to keep competitors in a position of trying to keep up.",
+              "author": "nrr",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I got an \"it is unacceptable\" from their CPO on 8/7, and that they are \"working around the clock on it\".\nhttps://x.com/mariorod1/status/2085800861469495465\nI really think something deeper is going wrong there, and they're not being honest with their paying customers (and enterprises) about it.",
+          "author": "qrush",
+          "replies": [
+            {
+              "text": "The reality is that it's probably a skill issue. Scaling a mature platform 10x can be a really, really hard problem, they obviously don't have their arms around a solution, and are probably spending a majority of their time on ops to keep the bleeding down. In the old days you would have Jeff Dean come down from heaven and invent a new database for you or something like that. It doesn't really seem like Github has that kind of technical ability, so they're probably trying to cobble together Azure ops with internal bandaids while everyone internally is cranking out AI code and it's just not going to be enough.",
+              "author": "tibbar",
+              "depth": 1
+            },
+            {
+              "text": "May I just leave this for you here? \nhttps://isolveproblems.substack.com/p/how-microsoft-vaporize...\nA technical foundation is not infinitely strong. Put a big enough castle on a swamp, and it will sink into the swamp.",
+              "author": "conartist6",
+              "depth": 2
+            },
+            {
+              "text": "This is nightmarish.",
+              "author": "tibbar",
+              "depth": 3
+            },
+            {
+              "text": "I mean they may be working around the clock, but after 5 or 6 layoffs in 3 years… half their engineers are probably still learning the code base.",
+              "author": "Pseudocrat",
+              "depth": 1
+            },
+            {
+              "text": "I don’t think their engineers « learn the codebase » anymore, that’s so 2025. It’s all agentic now, the model learns the codebase, the engineer ask the agents to do their best and believe in themselves",
+              "author": "dgellow",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "GitHub Will Prioritize Migrating to Azure Over Feature Development\n - \nhttps://news.ycombinator.com/item?id=45517173\n - October 2025 (63 comments)\nHN Search: azure capacity\n - \nhttps://hn.algolia.com/?dateRange=all&page=0&prefix=true&que...\nAzure Capacity Crunch Extends into 2026 Amid Data Center Constraints\n - \nhttps://windowsforum.com/threads/azure-capacity-crunch-exten...\n - October 9th, 2025\nhttps://news.ycombinator.com/item?id=47427779",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49313346",
+      "title": "Ask HN: I've quit six systems for tracking my illness. What works?",
+      "link": "https://news.ycombinator.com/item?id=49313346",
+      "domain": "news.ycombinator.com",
+      "author": "Abh1Works",
+      "score": 52,
+      "comment_count": 89,
+      "created_ts": 1786820982,
+      "is_internal": true,
+      "post_text": "Hey everyone, I am a 20 year old college student who was recently diagnosed with seronegative spondyloarthropathy. Over the last 3 years, Ive tried apps, paper journal, Google Sheets, and notes to track&#x2F;catalogue my journey. I always ended up quitting within 2-4 weeks and not keeping accurate track.<p>Is this a common experience or do I just have to be better at tracking? Is there a unique&#x2F;non habit-building way to track&#x2F;catalogue&#x2F;recall?<p>Im building something for this (part of the reason why I am asking) - and if anyone is open to a longer conversation, Ill gladly pay for you time!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quitting",
+        "quit"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49389408",
+      "title": "Coding Agents killed my identity. How do you feel?",
+      "link": "https://news.ycombinator.com/item?id=49389408",
+      "domain": "news.ycombinator.com",
+      "author": "bah9",
+      "score": 17,
+      "comment_count": 32,
+      "created_ts": 1787325314,
+      "is_internal": true,
+      "post_text": "I always was a nerdy, deeply technical programmer. Contributing-to-open-source-and-reading-papers-in-my-spare-time type of programmer.<p>Programming is like a game of chess for me: winning (i.e. delivering a product) is important, but only if I played this game myself. I don&#x27;t enjoy winning if my opponent disconnected. I don&#x27;t enjoy beating people who don&#x27;t know how to move pieces. I don&#x27;t enjoy winning with an engine, and coding agents are basically &quot;winning with a chess engine&quot;.<p>I started to use AI for coding a long time ago, when copilot was first introduced. At first, I was happy: &quot;wow, this can write boring boilerplate and unit tests&quot;. Time went by, agents got better, time spent writing code myself went down. Half a year ago I suddenly realized I hadn&#x27;t written any code for over a month, and I am a full-time software dev without any managing work. Not only did I stop writing code, but agents also became pretty good at proposing plans and architectures, and I was mostly providing missing context and technical details of our infrastructure.<p>One day the realization hit hard. Coding agents removed everything I loved, and - mostly - amplified everything I hated. My role is to gather context from other humans and provide a detailed explanation (similar to a well-written jira ticket) to some super intelligent engineer, then review the result and provide more context&#x2F;explanation if needed. So, basically, a manager.<p>A couple of years ago I could work on a single coding task for weeks. I knew all classes, all functions, I was slowly building up information at a comfortable tempo. Now I am forced to increase my mental throughput multiple times. What took a couple of weeks now takes a couple of hours, and I still need to comprehend that. I always feel tired, I don&#x27;t have enough mental capacity to hold that many abstractions and technical details. So you either autoaccept or get burned out reviewing tens of thousands of lines.<p>One more downside is that code has 0 value. You can code your own OS from scratch, and people will think &quot;ye, I can vibe code that in a weekend&quot;. I don&#x27;t even know what is valuable nowadays.<p>Maybe I am a bad employee. Increasing employer profits was never my goal. I always loved to solve puzzles, and for the last 10 years this was well aligned with my employer&#x27;s desire to increase profits. I never was good as a manager, or brilliant at generating ideas. My power - and passion - was solving complex technical problems with my hands, fast and with good quality. Now it is gone forever. I feel completely lost and unmotivated. I don&#x27;t see any value in learning anything related to computer science, reading  papers, contributing to open source. I hate my new &quot;AI delegator&quot; role and I hate my work. I loved coding so much (I use neovim btw) that I was sure I would do this until I die, and now I don&#x27;t know what to do with my life. This is the only thing I know, and, most importantly, the only thing I am&#x2F;was passionate about. Anyone else feeling the same?",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49397441",
+      "title": "Ask HN: Why does the US government search through people's phones at the border?",
+      "link": "https://news.ycombinator.com/item?id=49397441",
+      "domain": "news.ycombinator.com",
+      "author": "roschdal",
+      "score": 13,
+      "comment_count": 12,
+      "created_ts": 1787383624,
+      "is_internal": true,
+      "post_text": "Seems scary, tyrannical and totalitarian to me.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Even before 9/11, border controls at airports were sometimes very rigorous, at least compared to Germany, where I'm from, or the EU in general. Since then, they have become increasingly strict.\nI'm not sure, however, that excessively strict controls are necessarily that effective. In the end, what matters is the quality of the checks. In 2013, I flew from Chicago to Frankfurt and realized afterwards that I had a small pocket knife in my jacket. It was completely unintentional, of course, and I was pretty shocked. At security, they had searched all kinds of things, from my shoes to my luggage. But when you have to check so many things, it's easy to become careless.",
+          "author": "geek237",
+          "replies": [
+            {
+              "text": "How is that possible, don’t you have to go through a metal detector? Also if you took off your jacket and put it in the scanner it would have been flagged",
+              "author": "sajithdilshan",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "it started with Institutional paranoia and is now an method to prevent critics of gouvernment to get into the us",
+          "author": "stop50",
+          "replies": []
+        },
+        {
+          "top": "Because it can…",
+          "author": "jleyank",
+          "replies": []
+        },
+        {
+          "top": "because they are scary, tyrannical and totalitarian...",
+          "author": "jbec_x",
+          "replies": []
+        },
+        {
+          "top": "Searching for digital contraband.",
+          "author": "amazingamazing",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49397022",
+      "title": "Ask HN: What is the evidence for a stock market bubble in AI?",
+      "link": "https://news.ycombinator.com/item?id=49397022",
+      "domain": "news.ycombinator.com",
+      "author": "roschdal",
+      "score": 10,
+      "comment_count": 7,
+      "created_ts": 1787378868,
+      "is_internal": true,
+      "post_text": "Should the circular cash flows between the top AI companies, Nvidia, Anthropic, Openai, Google and Meta, be banned because of the systemic risks to the global economy?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "stock"
+      ],
+      "comments": [
+        {
+          "top": "I don’t think all the companies you’ve mentioned are in a bubble territory. Even without AI some of these companies have a good source of revenue. However some are over valued.\nAs an example Google is a company with a lot of products and diversified revenue streams. Last year the revenue was around 350 Billion and the ratio of price to earnings was around 17. But if you take Nvidia, their main product is GPUs and last year the revenue was around 190 Billions, but the price to earnings ratio is 33. Both companies have around 100 Billion net revenue.\nHowever, let’s say the demand for AI is dropped or disrupted, Nvdia would  be vastly overvalued because they sell only one product and now the demand dropped for it and won’t have the same revenue moving forward. But Google would survive because their revenue is diversified.\nWe don’t know any official revenue to expenditures on Anthropic or OpenAI. They have to publish them when going public and then only we would have a good idea how profitable or growth opportunity AI actually have and that would be a deciding point stock market",
+          "author": "sajithdilshan",
+          "replies": []
+        },
+        {
+          "top": "I am a big P/E (price vs earnings) fan.\nValue companies typically around 10.\nGrowth companies usually exceed 20.\nIMHO anything over 40 is too risky. Although this would prevent me from being an early investor in many successful companies.  It also keeps me away from the larger number of failures.\n<edit>\nFor what it is worth, they have trailing P/E (history) vs foreword P/E which is expected.  As of today NVIDIA Trailing P/E is 33.24 and forward is 24.75.",
+          "author": "sloaken",
+          "replies": []
+        },
+        {
+          "top": "Number go up",
+          "author": "vga1",
+          "replies": []
+        },
+        {
+          "top": "Circular financing is the big one. Enron and the dotcom bubble were both doing it, wether it was actual fraud or fraud adjacent, that's how recent bubbles pop.",
+          "author": "cyanydeez",
+          "replies": []
+        },
+        {
+          "top": "valuation vs earnings...nothing special about this one",
+          "author": "pestatije",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49392365",
+      "title": "Windmill.dev is not \"fully open-sourced (AGPLv3)\"",
+      "link": "https://news.ycombinator.com/item?id=49392365",
+      "domain": "news.ycombinator.com",
+      "author": "alpine-rockies",
+      "score": 9,
+      "comment_count": 2,
+      "created_ts": 1787338257,
+      "is_internal": true,
+      "post_text": "I think Windmill.dev (https:&#x2F;&#x2F;github.com&#x2F;windmill-labs&#x2F;windmill) is really cool, and fully support their desire to be paid for their work.<p>However, their README says:<p>&gt; “Windmill is fully open-sourced (AGPLv3)…”<p>But their LICENSE says:<p>&gt; ... The files under backend&#x2F; are AGPLv3 Licensed, except any snippets of code under the compile flag ‘enterprise’. Those snippets and files are under a proprietary and commercial license. Private and public forks MUST not include the proprietary&#x2F;commercial code mentioned above.<p>I dove deeper into the code, there are around 300 files in the codebase that contain references to enterprise or private features, so it&#x27;s not a clearly separated directory that can just be removed.<p>They have 1.1k forks of their repository that I can see on Github, and I doubt all of them took the time to strip the proprietary code to comply with the license.<p>So at this point, it feels like a licensing trap for anyone that clicks the fork button on Github or is attracted by the AGPL license<p>Don&#x27;t get me wrong, I wish more companies made their code open-source if for no other reason other than to be transparent. But calling this mixed source repository &quot;fully open-sourced (AGPLv3)&quot; feels like false advertising that actively leads users to violate the terms unknowingly.<p>Also, even if that line was removed from the readme or fixed, it does not feel right to have: &quot;...Private and public forks MUST not include the proprietary&#x2F;commercial code mentioned above...&quot; and the Github Fork button right next to each other. It&#x27;s like a giant violate-the-license button next to the license.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "enterprise"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49388835",
+      "title": "Ask HN: OpenCode no longer including DeepSeek?",
+      "link": "https://news.ycombinator.com/item?id=49388835",
+      "domain": "news.ycombinator.com",
+      "author": "dv35z",
+      "score": 8,
+      "comment_count": 6,
+      "created_ts": 1787323054,
+      "is_internal": true,
+      "post_text": "I noticed that OpenCode harness no longer is including DeepSeek. Does anyone know why?<p>The current free models provided by OpenCode are currently: Nemotron (NVidia),  Hy3 (Tencent),  Muse Spark (Meta), Ox Alpha (stealth&#x2F;unknown developer), Mimo (Xiaomi), Big Pickle (OpenCode).",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49401374",
+      "title": "Ask HN: At what point does \"clean architecture\" become technical debt?",
+      "link": "https://news.ycombinator.com/item?id=49401374",
+      "domain": "news.ycombinator.com",
+      "author": "kiops",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1787416656,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49392170",
+      "title": "Ask HN: Why is HN missing a \"go to top\" link on long posts?",
+      "link": "https://news.ycombinator.com/item?id=49392170",
+      "domain": "news.ycombinator.com",
+      "author": "KellyCriterion",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1787337266,
+      "is_internal": true,
+      "post_text": "Im wondering nearly every day:<p>Is there maybe a reason HN does not have that typical &quot;go to top&quot; or &quot;to top&quot; link at the end of, at least very long, posts?<p>Maybe we can file a change request @dang :-D",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49391444",
+      "title": "Ask HN: How to Relicense an Old Project",
+      "link": "https://news.ycombinator.com/item?id=49391444",
+      "domain": "news.ycombinator.com",
+      "author": "gradschool",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1787333898,
+      "is_internal": true,
+      "post_text": "I&#x27;ve heard from someone who wants to revive an old abandoned project\nof mine and asks that I change the license from GPLv3 to LGPL or MIT.\nI&#x27;m willing to do that but I took down the original repo from github a\nlong time ago and there seems to be only a fork that still exists.\nWhat&#x27;s the right way to make it publicly known that I&#x27;m changing the\nlicense?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49404822",
+      "title": "Ask HN: What's the current best research/understanding of healthy weight loss?",
+      "link": "https://news.ycombinator.com/item?id=49404822",
+      "domain": "news.ycombinator.com",
+      "author": "simonebrunozzi",
+      "score": 2,
+      "comment_count": 1,
+      "created_ts": 1787440925,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
