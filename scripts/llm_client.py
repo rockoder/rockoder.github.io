@@ -5,10 +5,15 @@ Supports multiple providers with automatic fallback.
 """
 
 import os
+import subprocess
+import tempfile
 import yaml
 from pathlib import Path
 from typing import Optional
 from abc import ABC, abstractmethod
+
+# One-shot CLI calls shouldn't hang forever; generous enough for slow drafts.
+CLI_TIMEOUT_SECONDS = 600
 
 
 class LLMProvider(ABC):
@@ -20,143 +25,81 @@ class LLMProvider(ABC):
         pass
 
 
-class AnthropicProvider(LLMProvider):
-    """Claude API provider."""
+class ClaudeCodeProvider(LLMProvider):
+    """Writes via the local Claude Code CLI (subscription-based, no per-token billing)."""
 
-    def __init__(self, model: str, max_tokens: int = 4096, temperature: float = 0.7):
+    def __init__(self, model: str):
         self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self._client = None
-
-    @property
-    def client(self):
-        if self._client is None:
-            try:
-                import anthropic
-                self._client = anthropic.Anthropic()
-            except ImportError:
-                raise ImportError("anthropic package not installed. Run: pip install anthropic")
-        return self._client
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
-        messages = [{"role": "user", "content": prompt}]
-        kwargs = {
-            "model": self.model,
-            "max_tokens": self.max_tokens,
-            "messages": messages,
-        }
+        cmd = [
+            "claude", "-p", prompt,
+            "--output-format", "text",
+            "--model", self.model,
+            "--tools", "",  # pure text completion: no Bash/Edit/file access
+        ]
         if system_prompt:
-            kwargs["system"] = system_prompt
+            cmd += ["--system-prompt", system_prompt]
 
-        response = self.client.messages.create(**kwargs)
-        return response.content[0].text
+        # This machine has both a work and a personal Claude Code subscription.
+        # Force the personal one explicitly (mirrors the `cldp` shell function) —
+        # never rely on whatever CLAUDE_CONFIG_DIR happens to be ambient.
+        env = {**os.environ, "CLAUDE_CONFIG_DIR": os.path.expanduser("~/.claude-personal")}
 
-
-class GeminiProvider(LLMProvider):
-    """Google Gemini API provider using the new google-genai SDK."""
-
-    def __init__(self, model: str, max_tokens: int = 4096, temperature: float = 0.7):
-        self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self._client = None
-
-    @property
-    def client(self):
-        if self._client is None:
-            try:
-                from google import genai
-                api_key = os.environ.get("GOOGLE_API_KEY")
-                if not api_key:
-                    raise ValueError("GOOGLE_API_KEY environment variable not set")
-                self._client = genai.Client(api_key=api_key)
-            except ImportError:
-                raise ImportError("google-genai package not installed. Run: pip install google-genai")
-        return self._client
-
-    def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
-        contents = prompt
-        if system_prompt:
-            contents = f"{system_prompt}\n\n{prompt}"
-
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=contents,
-            config={
-                "max_output_tokens": self.max_tokens,
-                "temperature": self.temperature,
-            }
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=CLI_TIMEOUT_SECONDS,
+            stdin=subprocess.DEVNULL,
+            env=env,
         )
-        return response.text
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"claude CLI failed (exit {result.returncode}): "
+                f"{result.stderr.strip() or result.stdout.strip()}"
+            )
+        return result.stdout.strip()
 
 
-class GroqProvider(LLMProvider):
-    """Groq API provider for fast Llama inference."""
+class CodexProvider(LLMProvider):
+    """Critiques via the local Codex CLI (free ChatGPT plan, no per-token billing)."""
 
-    def __init__(self, model: str, max_tokens: int = 4096, temperature: float = 0.7):
-        self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self._client = None
-
-    @property
-    def client(self):
-        if self._client is None:
-            try:
-                from groq import Groq
-                self._client = Groq()
-            except ImportError:
-                raise ImportError("groq package not installed. Run: pip install groq")
-        return self._client
+    def __init__(self, model: Optional[str] = None):
+        self.model = model  # None -> let `codex exec` use its own default
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
+        full_prompt = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
 
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-        )
-        return response.choices[0].message.content
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as tf:
+            out_path = tf.name
 
+        try:
+            cmd = [
+                "codex", "exec", full_prompt,
+                "--sandbox", "read-only",
+                "--skip-git-repo-check",
+                "-o", out_path,
+            ]
+            if self.model:
+                cmd += ["-m", self.model]
 
-class OpenAIProvider(LLMProvider):
-    """OpenAI API provider (GPT-4, GPT-4o, etc.)."""
-
-    def __init__(self, model: str, max_tokens: int = 4096, temperature: float = 0.7):
-        self.model = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        self._client = None
-
-    @property
-    def client(self):
-        if self._client is None:
-            try:
-                from openai import OpenAI
-                self._client = OpenAI()
-            except ImportError:
-                raise ImportError("openai package not installed. Run: pip install openai")
-        return self._client
-
-    def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
-
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-        )
-        return response.choices[0].message.content
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=CLI_TIMEOUT_SECONDS,
+                stdin=subprocess.DEVNULL,
+            )
+            if result.returncode != 0:
+                raise RuntimeError(
+                    f"codex CLI failed (exit {result.returncode}): "
+                    f"{result.stderr.strip() or result.stdout.strip()}"
+                )
+            with open(out_path, "r") as f:
+                return f.read().strip()
+        finally:
+            os.unlink(out_path)
 
 
 class LLMClient:
@@ -169,10 +112,8 @@ class LLMClient:
     """
 
     PROVIDER_CLASSES = {
-        "anthropic": AnthropicProvider,
-        "gemini": GeminiProvider,
-        "groq": GroqProvider,
-        "openai": OpenAIProvider,
+        "claude_code": ClaudeCodeProvider,
+        "codex": CodexProvider,
     }
 
     def __init__(self, config_path: Optional[str] = None):
@@ -189,7 +130,7 @@ class LLMClient:
         with open(config_path, "r") as f:
             return yaml.safe_load(f)
 
-    def _get_provider(self, provider_name: str, model: str) -> LLMProvider:
+    def _get_provider(self, provider_name: str, model: Optional[str]) -> LLMProvider:
         """Get or create a provider instance."""
         key = f"{provider_name}:{model}"
         if key not in self._providers:
@@ -197,12 +138,7 @@ class LLMClient:
             if not provider_class:
                 raise ValueError(f"Unknown provider: {provider_name}")
 
-            provider_settings = self.config.get("providers", {}).get(provider_name, {})
-            self._providers[key] = provider_class(
-                model=model,
-                max_tokens=provider_settings.get("max_tokens", 4096),
-                temperature=provider_settings.get("temperature", 0.7),
-            )
+            self._providers[key] = provider_class(model=model)
         return self._providers[key]
 
     def generate(
@@ -232,8 +168,8 @@ class LLMClient:
 
         # Try primary provider
         primary_provider = model_config["provider"]
-        primary_model = model_config["model"]
-        print(f"  [LLM] {task} → {primary_provider}/{primary_model}", end="", flush=True)
+        primary_model = model_config.get("model")  # None -> provider's own default
+        print(f"  [LLM] {task} → {primary_provider}/{primary_model or 'default'}", end="", flush=True)
         try:
             provider = self._get_provider(primary_provider, primary_model)
             result = provider.generate(prompt, system_prompt)

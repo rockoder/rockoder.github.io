@@ -18,10 +18,17 @@ A multi-source content pipeline that scrapes career/workplace topics from HN, Re
 
 ### What It Does
 
-1. **Daily (automated)**: Scrapes HN, Reddit, and newsletters for career/workplace topics
-2. **Daily (automated)**: Extracts themes and scores topics using AI
-3. **Twice weekly (automated)**: Generates a blog post draft with critique loop
+1. **Daily (automated, GitHub Actions)**: Scrapes HN, Reddit, and newsletters for career/workplace topics
+2. **On-demand (local, `codex` CLI)**: Extracts themes and scores topics using AI
+3. **On-demand (local, `claude` + `codex` CLIs)**: Generates a blog post draft with critique loop
 4. **Human review**: You review the PR, pick a headline, edit, and merge
+
+Topic extraction and content generation run locally through the `claude`
+(Claude Code) and `codex` (Codex CLI) tools, which are authenticated to
+subscriptions on this machine rather than paid API keys. Neither can run
+unattended on a GitHub Actions runner, so only the scrapers (no LLM calls)
+stay on a daily schedule — extraction and generation are commands you run
+yourself whenever you want a new draft.
 
 ### Output
 
@@ -35,27 +42,28 @@ A multi-source content pipeline that scrapes career/workplace topics from HN, Re
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DAILY (00:00 UTC)                            │
+│                DAILY (00:00 UTC) — GitHub Actions                │
 │  btc-scrape.yml workflow                                        │
 ├─────────────────────────────────────────────────────────────────┤
 │  hn_scraper_btc.py → data/hn_nontech_{date}.json               │
 │  reddit_scraper.py → data/reddit_{date}.json                   │
 │  newsletter_monitor.py → data/newsletters_{date}.json          │
-│  topic_extractor.py → data/topic_bank.json                     │
+│  (no LLM calls — nothing here needs a subscription/CLI login)  │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│              TWICE WEEKLY (Mon/Thu 08:00 UTC)                   │
-│  btc-generate.yml workflow                                      │
+│              ON-DEMAND (local, run when you want a post)         │
 ├─────────────────────────────────────────────────────────────────┤
+│  topic_extractor.py → data/topic_bank.json          (codex)    │
+│                              ↓                                  │
 │  content_generator.py:                                          │
 │    1. Select best unused topic                                  │
-│    2. Generate outline (Claude)                                 │
-│    3. Critique outline (Gemini)                                 │
-│    4. Generate draft (Claude)                                   │
-│    5. Critique draft (Gemini)                                   │
-│    6. Apply revisions (Claude)                                  │
-│    7. Generate headline options                                 │
+│    2. Generate outline                              (claude)   │
+│    3. Critique outline                               (codex)   │
+│    4. Generate draft                                (claude)   │
+│    5. Critique draft                                  (codex)   │
+│    6. Apply revisions                                (claude)   │
+│    7. Generate headline options                     (claude)   │
 │    8. Create PR as draft                                        │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
@@ -69,6 +77,11 @@ A multi-source content pipeline that scrapes career/workplace topics from HN, Re
 └─────────────────────────────────────────────────────────────────┘
 ```
 
+`claude` and `codex` are both CLI tools authenticated locally (Claude Code
+subscription and free ChatGPT/Codex login), so the on-demand box above only
+runs on your machine — there's no equivalent GitHub Actions workflow for it
+anymore.
+
 ---
 
 ## Setup
@@ -77,18 +90,16 @@ A multi-source content pipeline that scrapes career/workplace topics from HN, Re
 
 Go to: **Repository → Settings → Secrets and variables → Actions → New repository secret**
 
-Add these secrets:
+Add these secrets (only used by `btc-scrape.yml`, which just scrapes — no LLM calls run in CI):
 
 | Secret Name | Required | Description | How to Get |
 |-------------|----------|-------------|------------|
-| `ANTHROPIC_API_KEY` | Yes* | Claude API key | [console.anthropic.com](https://console.anthropic.com/) |
-| `GOOGLE_API_KEY` | Yes | Gemini API key (free tier) | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
-| `OPENAI_API_KEY` | Yes* | OpenAI API key (fallback for Anthropic) | [platform.openai.com](https://platform.openai.com/api-keys) |
-| `GROQ_API_KEY` | No | Groq API key (free fallback) | [console.groq.com](https://console.groq.com/) |
 | `REDDIT_CLIENT_ID` | Yes | Reddit OAuth app client ID | [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) - Create "script" app |
 | `REDDIT_CLIENT_SECRET` | Yes | Reddit OAuth app secret | Same as above - shown after creating app |
 
-*Either `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` is required. OpenAI serves as fallback when Anthropic is unavailable.
+No LLM API keys are needed in GitHub Secrets. Topic extraction and content
+generation run locally via the `claude` and `codex` CLIs, authenticated to
+your own subscriptions on this machine — see step 3 below.
 
 **Reddit App Setup**: Go to reddit.com/prefs/apps → "create another app" → Select "script" type → Set redirect URI to `http://localhost:8080` → Note the client ID (under app name) and secret.
 
@@ -101,7 +112,7 @@ pip install -r scripts/requirements.txt
 
 ### 3. Set Local Environment Variables (for manual runs)
 
-Copy the example file and fill in your keys:
+Copy the example file and fill in your Reddit credentials:
 
 ```bash
 cp .env.example .env
@@ -111,15 +122,20 @@ cp .env.example .env
 Or export variables directly:
 
 ```bash
-export ANTHROPIC_API_KEY="sk-ant-..."
-export GOOGLE_API_KEY="AIza..."
-export OPENAI_API_KEY="sk-..."      # fallback for Anthropic
-export GROQ_API_KEY="gsk_..."       # optional
 export REDDIT_CLIENT_ID="..."       # Reddit OAuth
 export REDDIT_CLIENT_SECRET="..."   # Reddit OAuth
 ```
 
 The `.env` file is already gitignored and will be automatically loaded by `run_pipeline.py`.
+
+You also need the `claude` and `codex` CLIs installed and logged in once —
+no environment variable is needed for either:
+
+```bash
+claude          # log in with your Claude Code subscription, then exit
+codex login     # log in with your ChatGPT account
+codex login status   # confirms you're logged in
+```
 
 ### 4. Commit the Pipeline Files
 
@@ -135,17 +151,25 @@ git push
 
 ### Automated Flow (No Action Needed)
 
-Once set up, the pipeline runs automatically:
+Once set up, only scraping runs automatically:
 
 | Time | What Happens |
 |------|--------------|
-| Daily 00:00 UTC | Scrapers run, topics extracted, data committed |
-| Mon/Thu 08:00 UTC | Draft generated, PR created |
+| Daily 00:00 UTC | Scrapers run (HN, Reddit, newsletters), scraped data committed |
 
-### Your Weekly Workflow
+Topic extraction and draft generation are **not** scheduled — they run
+through the local `claude`/`codex` CLIs, so you trigger them yourself
+whenever you want a new post.
 
-1. **Check for new PRs** (Mon/Thu afternoons)
-   - Look for PRs titled `[Draft] ...`
+### Your On-Demand Workflow
+
+1. **Generate a draft when you're ready**
+   ```bash
+   python scripts/run_pipeline.py --extract --generate
+   ```
+   This extracts topics from the latest scraped data (via `codex`), then runs
+   the outline/critique/draft/critique/revise/headline loop (via `claude` +
+   `codex`) and opens a draft PR.
 
 2. **Review the PR**
    - Read the draft in `src/content/beyondthecode/`
@@ -180,9 +204,11 @@ pip install -r scripts/requirements.txt
 
 # 2. Set up environment variables
 cp .env.example .env
-# Edit .env and add your API keys
+# Edit .env and add your Reddit credentials
 
-# 3. Run full pipeline in dry-run mode (no PR, no git changes)
+# 3. Make sure claude/codex are installed and logged in (see Setup above)
+
+# 4. Run full pipeline in dry-run mode (no PR, no git changes)
 python scripts/run_pipeline.py --all --dry-run
 ```
 
@@ -274,19 +300,18 @@ Options:
   --skip-topic-update Don't mark topic as used (for testing)
 ```
 
-### Trigger Workflows Manually
+### Trigger the Scrape Workflow Manually
 
 ```bash
 # Trigger daily scrape
 gh workflow run btc-scrape.yml
 
-# Trigger content generation
-gh workflow run btc-generate.yml
-
 # Check workflow status
 gh run list --workflow=btc-scrape.yml
-gh run list --workflow=btc-generate.yml
 ```
+
+Content generation has no workflow to trigger — run it locally instead:
+`python scripts/run_pipeline.py --extract --generate`.
 
 ---
 
@@ -294,25 +319,26 @@ gh run list --workflow=btc-generate.yml
 
 ### Change LLM Models
 
-Edit `config/models.yaml`:
+Edit `config/models.yaml`. There are only two providers now, both local CLIs:
 
 ```yaml
 models:
   draft_writing:
-    provider: "anthropic"
-    model: "claude-sonnet-4-20250514"  # Change to claude-3-haiku for cheaper
-    fallback:
-      provider: "anthropic"
-      model: "claude-3-haiku-20240307"
+    provider: "claude_code"
+    model: "sonnet"   # or "opus" / "haiku" — any alias `claude --model` accepts
+
+  draft_critique:
+    provider: "codex"
+    # model omitted -> uses whatever your `codex` CLI default is
 ```
 
-Available providers: `anthropic`, `openai`, `gemini`, `groq`
+Available providers:
+- **claude_code**: shells out to `claude -p ...`. `model` accepts any alias the `claude` CLI understands (`sonnet`, `opus`, `haiku`, or a full model id).
+- **codex**: shells out to `codex exec ...`. Omit `model` to use the CLI's own default, or set it to any model `codex exec -m <model>` accepts.
 
-Available models:
-- **anthropic**: `claude-sonnet-4-20250514`, `claude-3-haiku-20240307`
-- **openai**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`
-- **gemini**: `gemini-2.0-flash`, `gemini-1.5-pro`
-- **groq**: `llama-3.1-70b-versatile`
+There's no `fallback:` support left — a failed CLI call raises instead of
+silently trying a paid API. If you want a fallback, the simplest option is
+to point the failing task at the other CLI provider and re-run.
 
 ### Change Scraping Sources
 
@@ -358,16 +384,13 @@ Edit the prompt templates in `scripts/prompts/`:
 
 ### Change Schedule
 
-Edit the cron expressions in `.github/workflows/`:
+Edit the cron expression in `.github/workflows/btc-scrape.yml` (the only
+scheduled workflow left — content generation is local/on-demand, not cron-based):
 
 ```yaml
 # btc-scrape.yml - Currently daily at midnight UTC
 schedule:
   - cron: '0 0 * * *'  # Change as needed
-
-# btc-generate.yml - Currently Mon/Thu at 8am UTC
-schedule:
-  - cron: '0 8 * * 1,4'  # Change days/time as needed
 ```
 
 Cron format: `minute hour day-of-month month day-of-week`
@@ -395,17 +418,24 @@ python scripts/topic_extractor.py
 
 ### "LLM call failed"
 
-API key issues or rate limits.
+`claude`/`codex` CLI auth issues, or a bad model name.
 
 ```bash
-# Test API keys
+# Test each CLI directly
+claude -p "hi" --tools ""
+codex exec "hi" --sandbox read-only
+
+# Check codex login status
+codex login status
+
+# Test through the pipeline's client
 python -c "from scripts.llm_client import LLMClient; c=LLMClient(); print(c.generate('topic_extraction', 'Say hello'))"
 ```
 
 Check:
-- API keys are set correctly
-- You have credits/quota remaining
-- The model name in `config/models.yaml` is valid
+- `claude` and `codex` are installed and on your `PATH`
+- Both are logged in (`claude` via your subscription, `codex login status` shows ChatGPT login)
+- The model name in `config/models.yaml` is one `claude`/`codex` actually accepts
 
 ### "Failed to create PR"
 
@@ -477,10 +507,9 @@ with open('data/topic_bank.json', 'w') as f:
 rockoder.github.io/
 ├── .env.example            # Template for local environment variables
 ├── .github/workflows/
-│   ├── btc-scrape.yml      # Daily scraping workflow
-│   └── btc-generate.yml    # Twice-weekly generation workflow
+│   └── btc-scrape.yml      # Daily scraping workflow (no LLM calls)
 ├── config/
-│   └── models.yaml         # LLM provider configuration
+│   └── models.yaml         # claude_code/codex CLI routing per task
 ├── data/
 │   ├── topic_bank.json     # Persistent topic storage
 │   ├── hn_nontech_*.json   # Daily HN scrape results
@@ -509,18 +538,13 @@ rockoder.github.io/
 
 ## Cost Estimates
 
-With the default configuration (Gemini free tier + Claude/OpenAI paid):
+There's no per-token billing anymore. Outline/draft/revision run through the
+`claude` CLI against an existing Claude Code subscription, and both critique
+steps plus topic extraction run through the `codex` CLI against a free
+ChatGPT plan — so the marginal cost per post is effectively $0 beyond those
+subscriptions.
 
-| Usage | Anthropic | OpenAI (fallback) |
-|-------|-----------|-------------------|
-| Topic extraction (daily) | Free (Gemini Flash) | Free (Gemini Flash) |
-| Outline generation (2x/week) | ~$0.10/post (Haiku) | ~$0.05/post (GPT-4o-mini) |
-| Outline critique (2x/week) | Free (Gemini Flash) | Free (Gemini Flash) |
-| Draft writing (2x/week) | ~$0.50/post (Sonnet) | ~$0.40/post (GPT-4o) |
-| Draft critique (2x/week) | Free (Gemini Flash) | Free (Gemini Flash) |
-| Final revision (2x/week) | ~$0.30/post (Sonnet) | ~$0.25/post (GPT-4o) |
-| **Monthly total (8 posts)** | **~$7-10** | **~$5-8** |
-
-To reduce costs:
-- Use `claude-3-haiku` or `gpt-4o-mini` for draft writing
-- Switch primary provider to OpenAI if you have credits there
+The one thing worth watching: the free ChatGPT plan backing `codex` has its
+own usage caps/rate limits. If `codex exec` starts failing with a quota or
+rate-limit error, check your ChatGPT plan's usage before assuming something
+is broken in the pipeline.

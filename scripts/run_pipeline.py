@@ -22,6 +22,7 @@ Usage:
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -42,28 +43,24 @@ SCRIPT_DIR = Path(__file__).parent
 
 
 def check_env_vars():
-    """Check and report on required environment variables."""
+    """Check and report on required environment variables and local CLI tools."""
     required = {
-        "LLM API (at least one)": [
-            ("ANTHROPIC_API_KEY", "Claude API"),
-            ("OPENAI_API_KEY", "OpenAI GPT"),
-        ],
         "Reddit OAuth (for reddit scraper)": [
             ("REDDIT_CLIENT_ID", "Reddit OAuth client ID"),
             ("REDDIT_CLIENT_SECRET", "Reddit OAuth client secret"),
         ],
     }
 
-    optional = {
-        "GOOGLE_API_KEY": "Gemini API (used for critiques, free tier)",
-        "GROQ_API_KEY": "Groq API (optional fallback)",
+    cli_tools = {
+        "claude": "Claude Code CLI - run `claude` once to log in with your subscription",
+        "codex": "Codex CLI - run `codex login` (check with `codex login status`)",
     }
 
     print("\n=== Environment Check ===\n")
 
     all_good = True
 
-    # Check required groups
+    # Check required env var groups
     for group_name, vars_list in required.items():
         group_ok = any(os.environ.get(var) for var, _ in vars_list)
         status = "OK" if group_ok else "MISSING"
@@ -76,17 +73,21 @@ def check_env_vars():
 
     print()
 
-    # Check optional
-    print("Optional:")
-    for var, desc in optional.items():
-        present = "set" if os.environ.get(var) else "not set"
-        print(f"  - {var} ({desc}): {present}")
+    # Check local CLI tools (used for topic extraction and content generation)
+    print("Local CLI tools (for topic extraction / content generation):")
+    for tool, desc in cli_tools.items():
+        found = shutil.which(tool) is not None
+        status = "found" if found else "NOT FOUND"
+        print(f"  - {tool}: {status} ({desc})")
+        if not found:
+            all_good = False
 
     print()
 
     if not all_good:
-        print("WARNING: Some required environment variables are missing!")
-        print("         Create a .env file from .env.example and fill in your keys.")
+        print("WARNING: Some required environment variables or CLI tools are missing!")
+        print("         Reddit vars: create a .env file from .env.example and fill them in.")
+        print("         CLI tools: install `claude`/`codex` and log in as noted above.")
         print()
 
     return all_good

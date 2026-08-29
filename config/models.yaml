@@ -1,78 +1,34 @@
 # LLM Model Configuration for Beyond the Code Pipeline
-# Edit this file to switch providers or models without code changes
+# Edit this file to switch models without code changes.
+#
+# Both providers are local CLI tools, authenticated via subscription/login on
+# this machine (no API keys, no per-token billing):
+#   - claude_code: shells out to `claude -p ...` (personal Claude Code subscription)
+#   - codex:       shells out to `codex exec ...` (free ChatGPT/Codex CLI login)
+# There is deliberately no `fallback:` on any task — a failed CLI call should
+# fail loudly rather than silently falling back to a paid API.
 
 models:
-  # Topic extraction from scraped content (runs daily)
-  # Using OpenAI since Gemini free tier has limits
+  # Fast/cheap classification task — Codex, keeps Claude Code capacity for writing
   topic_extraction:
-    provider: "openai"
-    model: "gpt-4o-mini"
-    fallback:
-      provider: "gemini"
-      model: "gemini-2.0-flash"
+    provider: "codex"
 
-  # Outline generation - needs creativity, structure awareness
-  # Claude Haiku is cheap ($0.25/1M input) but capable
-  # Falls back to GPT-4o-mini if Anthropic unavailable
+  # Outline/draft/revision — Claude Code CLI, plays the "writer" role
   outline_generation:
-    provider: "anthropic"
-    model: "claude-3-haiku-20240307"
-    fallback:
-      provider: "openai"
-      model: "gpt-4o-mini"
+    provider: "claude_code"
+    model: "sonnet"
 
-  # Outline critique - checking structure, depth, contrarian angle
-  # Using OpenAI since Gemini quota is exhausted
+  # Critique steps — Codex CLI, plays the "reviewer" role (previously Gemini)
   outline_critique:
-    provider: "openai"
-    model: "gpt-4o-mini"
-    fallback:
-      provider: "gemini"
-      model: "gemini-2.0-flash"
+    provider: "codex"
 
-  # Draft writing - quality matters most here
-  # Claude Sonnet for best output quality
-  # Falls back to GPT-4o if Anthropic unavailable
   draft_writing:
-    provider: "anthropic"
-    model: "claude-sonnet-4-20250514"
-    fallback:
-      provider: "openai"
-      model: "gpt-4o"
+    provider: "claude_code"
+    model: "sonnet"
 
-  # Draft critique - voice consistency, shareability, claims
-  # Using OpenAI since Gemini quota is exhausted
   draft_critique:
-    provider: "openai"
-    model: "gpt-4o-mini"
-    fallback:
-      provider: "gemini"
-      model: "gemini-2.0-flash"
+    provider: "codex"
 
-  # Final revision - apply critique feedback
-  # Same as draft writing for consistency
-  # Falls back to GPT-4o if Anthropic unavailable
   final_revision:
-    provider: "anthropic"
-    model: "claude-sonnet-4-20250514"
-    fallback:
-      provider: "openai"
-      model: "gpt-4o"
-
-# Provider-specific settings
-providers:
-  anthropic:
-    max_tokens: 4096
-    temperature: 0.7
-
-  gemini:
-    max_tokens: 4096
-    temperature: 0.7
-
-  groq:
-    max_tokens: 4096
-    temperature: 0.7
-
-  openai:
-    max_tokens: 4096
-    temperature: 0.7
+    provider: "claude_code"
+    model: "sonnet"

@@ -20,16 +20,14 @@ When making code changes that affect configuration, setup, or behavior:
 ## Project Structure
 
 ### Beyond the Code Pipeline
-- **Scraping**: `scripts/hn_scraper_btc.py`, `scripts/reddit_scraper.py`, `scripts/newsletter_monitor.py`
-- **Processing**: `scripts/topic_extractor.py`, `scripts/content_generator.py`
-- **Config**: `config/models.yaml`
-- **Workflows**: `.github/workflows/btc-scrape.yml`, `.github/workflows/btc-generate.yml`
+- **Scraping (automated daily, GitHub Actions)**: `scripts/hn_scraper_btc.py`, `scripts/reddit_scraper.py`, `scripts/newsletter_monitor.py`
+- **Processing (local/on-demand only, via `claude`/`codex` CLIs)**: `scripts/topic_extractor.py`, `scripts/content_generator.py`
+- **Config**: `config/models.yaml` (routes tasks to `claude_code` or `codex` CLI providers, not paid APIs)
+- **Workflows**: `.github/workflows/btc-scrape.yml` only — `btc-generate.yml` was removed because `claude`/`codex` are authenticated locally and can't run unattended in CI. Generate a draft with `python scripts/run_pipeline.py --extract --generate`.
 
 ### Required Secrets (GitHub Actions)
-- `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` (at least one)
-- `GOOGLE_API_KEY`
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET` (OAuth for Reddit API)
-- `GROQ_API_KEY` (optional)
+- No LLM API keys needed — content generation runs locally through the `claude` and `codex` CLIs, not GitHub Actions.
 
 ## Known Issues & Solutions
 

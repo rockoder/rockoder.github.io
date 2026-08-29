@@ -2,32 +2,34 @@
 
 ## First-Time Setup Checklist
 
-### For GitHub Actions (automated pipeline)
-- [ ] Add `ANTHROPIC_API_KEY` to GitHub Secrets (or use OpenAI as primary)
-- [ ] Add `OPENAI_API_KEY` to GitHub Secrets (fallback for Anthropic)
-- [ ] Add `GOOGLE_API_KEY` to GitHub Secrets
-- [ ] (Optional) Add `GROQ_API_KEY` to GitHub Secrets
+### For GitHub Actions (automated scraping only)
 - [ ] Add `REDDIT_CLIENT_ID` to GitHub Secrets (create app at reddit.com/prefs/apps)
 - [ ] Add `REDDIT_CLIENT_SECRET` to GitHub Secrets
 - [ ] Commit and push pipeline files
 - [ ] Run first scrape manually: `gh workflow run btc-scrape.yml`
 
-### For Local Development
+### For Local Development (topic extraction + content generation)
 - [ ] `pip install -r scripts/requirements.txt`
 - [ ] `cp .env.example .env`
-- [ ] Fill in API keys in `.env`
+- [ ] Fill in Reddit credentials in `.env`
+- [ ] Install `claude` and `codex` CLIs; log in to each once (`claude`, `codex login`)
 - [ ] Test: `python scripts/run_pipeline.py --check-env`
-- [ ] Run: `python scripts/run_pipeline.py --all --dry-run`
+- [ ] Run: `python scripts/run_pipeline.py --extract --generate --dry-run`
 
 ## Weekly Workflow
 
 ```
-Mon/Thu → Check email/GitHub for new draft PRs
+Whenever you want a new post →
+    python scripts/run_pipeline.py --extract --generate
         → Review draft in PR
         → Pick headline (update title: in frontmatter)
         → Edit as needed
         → Merge to publish
 ```
+
+There's no more automatic Mon/Thu draft — scraping stays automated daily, but
+extraction and generation are on-demand local commands (they run through the
+`claude`/`codex` CLIs, which are authenticated on this machine, not in CI).
 
 ## Common Commands
 
@@ -37,9 +39,6 @@ python -c "import json; d=json.load(open('data/topic_bank.json')); print(f'Unuse
 
 # Trigger scraping manually
 gh workflow run btc-scrape.yml
-
-# Trigger content generation manually
-gh workflow run btc-generate.yml
 
 # Check workflow status
 gh run list
@@ -54,30 +53,30 @@ gh run view <run-id> --log
 # Install deps
 pip install -r scripts/requirements.txt
 
-# Set up environment (copy template and fill in your keys)
+# Set up environment (copy template and fill in Reddit credentials)
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your Reddit OAuth credentials
 
-# Run full pipeline in dry-run mode (safe - no PR, no git changes)
-python scripts/run_pipeline.py --all --dry-run
+# Extract topics and generate a draft locally (safe - no PR, no git changes)
+python scripts/run_pipeline.py --extract --generate --dry-run
 
 # Or run stages individually:
 python scripts/run_pipeline.py --scrape           # Just scrape sources
-python scripts/run_pipeline.py --extract          # Just extract topics
-python scripts/run_pipeline.py --generate --dry-run  # Just generate draft
+python scripts/run_pipeline.py --extract          # Just extract topics (codex)
+python scripts/run_pipeline.py --generate --dry-run  # Just generate draft (claude + codex)
 ```
 
 ### Advanced Local Testing
 
 ```bash
-# Check your environment variables
+# Check your environment variables and local CLI tools
 python scripts/run_pipeline.py --check-env
 
 # Run content generator directly with options
 python scripts/content_generator.py --dry-run --skip-topic-update
 
 # Create actual PR (when ready)
-python scripts/run_pipeline.py --all
+python scripts/run_pipeline.py --extract --generate
 ```
 
 ## Key Files
@@ -96,12 +95,14 @@ python scripts/run_pipeline.py --all
 
 | When | What |
 |------|------|
-| Daily 00:00 UTC | Scrape sources, extract topics |
-| Mon/Thu 08:00 UTC | Generate draft, create PR |
+| Daily 00:00 UTC | Scrape sources only (HN, Reddit, newsletters) |
+
+Topic extraction and content generation are no longer scheduled — run them
+locally whenever you want a new draft (see Weekly Workflow above).
 
 ## Troubleshooting
 
-**No topics?** → Run scrapers + extractor
-**LLM failed?** → Check API keys, quota
+**No topics?** → Run scrapers, then `python scripts/topic_extractor.py` locally
+**LLM failed?** → Check `claude`/`codex` CLI auth: `claude -p "hi" --tools ""`, `codex login status`
 **PR failed?** → Run `gh auth status`, re-login if needed
 **Reddit 403?** → Missing `REDDIT_CLIENT_ID`/`REDDIT_CLIENT_SECRET` secrets (Reddit blocks datacenter IPs without OAuth)
