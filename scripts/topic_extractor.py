@@ -90,6 +90,32 @@ Respond in JSON format:
 """
 
 
+SCRAPE_PREFIXES = ("hn_nontech_", "reddit_", "newsletters_")
+
+
+def find_scrape_date(data_dir: Path, preferred_date: str) -> str:
+    """
+    Pick which date's scraped files to load. Extraction now runs on-demand
+    (not guaranteed to run same-day as the scrape), so prefer today's data
+    if present, else fall back to the most recent date any scraper wrote.
+    """
+    if any((data_dir / f"{prefix}{preferred_date}.json").exists() for prefix in SCRAPE_PREFIXES):
+        return preferred_date
+
+    available_dates = set()
+    for prefix in SCRAPE_PREFIXES:
+        for path in data_dir.glob(f"{prefix}*.json"):
+            available_dates.add(path.stem[len(prefix):])
+
+    if not available_dates:
+        return preferred_date  # nothing found at all; let the caller report it
+
+    latest = max(available_dates)
+    if latest != preferred_date:
+        print(f"  No scraped data for {preferred_date} yet — using most recent available: {latest}")
+    return latest
+
+
 def load_scraped_data(data_dir: Path, date_str: str) -> dict:
     """Load all scraped data for a given date."""
     data = {
@@ -211,9 +237,12 @@ def main():
     # Setup paths
     data_dir = script_dir.parent / "data"
 
-    # Load scraped data
-    print(f"Loading scraped data for {date_str}...")
-    data = load_scraped_data(data_dir, date_str)
+    # Load scraped data (falls back to the latest available date if today's
+    # scrape hasn't run yet — extraction is on-demand now, not tied to the
+    # same day as scraping)
+    scrape_date = find_scrape_date(data_dir, date_str)
+    print(f"Loading scraped data for {scrape_date}...")
+    data = load_scraped_data(data_dir, scrape_date)
 
     sources_found = sum(1 for v in data.values() if v is not None)
     if sources_found == 0:

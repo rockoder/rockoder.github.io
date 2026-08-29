@@ -55,6 +55,32 @@ def save_topic_bank(data_dir: Path, bank: dict):
         json.dump(bank, f, indent=2, ensure_ascii=False)
 
 
+def commit_topic_bank_update(data_dir: Path, slug: str):
+    """
+    Commit the topic bank's "used" update on master. Without this, the write
+    from save_topic_bank() is just an uncommitted working-tree change — it
+    used to run in CI where nothing ever committed it, so `used` flags were
+    silently lost on every run. This makes the mark durable. Does not push;
+    push it along with your other commits whenever you're ready.
+    """
+    bank_path = str(data_dir / "topic_bank.json")
+    subprocess.run(["git", "add", bank_path], check=True, capture_output=True)
+
+    # Nothing to commit if the bank content didn't actually change.
+    diff = subprocess.run(
+        ["git", "diff", "--staged", "--quiet", "--", bank_path]
+    )
+    if diff.returncode == 0:
+        return
+
+    subprocess.run(
+        ["git", "commit", "-m", f"Mark topic as used: {slug}"],
+        check=True,
+        capture_output=True,
+    )
+    print("  Committed topic_bank.json update on master (not pushed)")
+
+
 def select_topic(bank: dict, month: int) -> Optional[dict]:
     """
     Select the best unused topic from the bank.
@@ -100,7 +126,7 @@ def generate_outline(client: LLMClient, topic: dict, timeliness: str) -> str:
 
 
 def critique_artifact(client: LLMClient, artifact_type: str, content: str) -> dict:
-    """Critique an outline or draft using Gemini."""
+    """Critique an outline or draft using the codex-routed critique task."""
     prompt_template = load_prompt("critique")
     prompt = prompt_template.format(
         artifact_type=artifact_type,
@@ -542,6 +568,7 @@ def main():
         topic["used_date"] = date_str
         topic["pr_url"] = result_path
         save_topic_bank(data_dir, bank)
+        commit_topic_bank_update(data_dir, slugify(headlines[0] if headlines else topic["theme"]))
         print("  Topic marked as used")
 
     print(f"\n=== {mode_label}Generation Complete ===")
