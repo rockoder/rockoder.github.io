@@ -1,0 +1,135 @@
+{
+  "scraped_date": "2026-09-01",
+  "source": "hacker_news",
+  "total_scraped": 60,
+  "nontech_count": 1,
+  "posts": [
+    {
+      "id": "49499831",
+      "title": "Startup Anti-Patterns",
+      "link": "https://www.itamarnovick.com/intro-to-startup-anti-pattern-series/",
+      "domain": "www.itamarnovick.com",
+      "author": "rzk",
+      "score": 184,
+      "comment_count": 93,
+      "created_ts": 1788105450,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "Such anti patterns are like Nostradamus’s prophecies - you see a company flopping then curve fit a narrative to justify the antipatterns.\nHow do I, as a founder, know that I am falling into an anti pattern? I don’t believe it is possible to know. You can only “know” in hindsight and that makes these anti patterns useless.",
+          "author": "saimiam",
+          "replies": [
+            {
+              "text": ">> How do I, as a founder, know that I am falling into an anti pattern?\nThe easiest way is to have outside advisors who can and are willingto adversarially challenge the assumptions you're making. If you don't have those, good cofounders can sometimes play the same role (although that is harder since they are likely to share similar biases as you).",
+              "author": "enraged_camel",
+              "depth": 1
+            },
+            {
+              "text": "This type of advice is much like best practices. One of the core reasons why AI will fail.\nIts a bit like cooking advice\n- Products should be fresh\n- Use the best ingredients\n- Salt early and correctly\n- Cook by temperature, not time\nAnd so on but then you cook side by side with a pro chef...and does not taste the same...",
+              "author": "tcp_handshaker",
+              "depth": 1
+            },
+            {
+              "text": "or worse, what if an anti-pattern is \"your\" way to success",
+              "author": "tough",
+              "depth": 1
+            },
+            {
+              "text": "It takes understanding your own impulses and cognitive biases.\nhttps://en.wikipedia.org/wiki/List_of_cognitive_biases\nMost people start a small business for tax reasons, and the few lucky loud clowns claiming hyper-scaling BS is sustainable simply disappear within 5 years.\nBest advice, answer the simple question \"will random people buy this when no one is looking?\"...  if you have to explain/sell a product/service more than 5 seconds, than that business model likely isn't sustainable.\nI also see a lot of smart folks that think they will get paid for excuses... only lawyers, PR, and politicians are in that business.  =3",
+              "author": "Joel_Mckay",
+              "depth": 1
+            },
+            {
+              "text": "> Best advice, answer the simple question \"will random people buy this when no one is looking?\"... if you have to explain/sell a product/service more than 5 seconds, than that business model likely isn't sustainable.\nFor B2c, maybe.  B2B is very different - they aren't going to make up their mind in 5 seconds and you aren't going to have a product that can be explained in 5s.",
+              "author": "lelanthran",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "The issue with many critiques like this is that “it depends” and that many of these strategies actually work while often they do not - but given that most startups fail even generally successful strategies will have a high rate of failure.\nAnd the people that study these types of lists to apply it to their own case are then engaging in “analysis paralysis” because the list is so long you are bound to be caught up by it.\nSo while I think it is useful to critique your idea and business the best thing to do is to try and sell it and make money and keep adjusting and trying new things to maximize your income.  There is no magic bullet.",
+          "author": "bhouston",
+          "replies": []
+        },
+        {
+          "top": "Hiring middle-management from large companies has to be the biggest startup killer.\nDoubly so if they are mediocre to start with and triple so if they bring with them their legion of yes-men.",
+          "author": "jpgvm",
+          "replies": [
+            {
+              "text": "With hiring from management consulting companies coming in a close second place.",
+              "author": "darksaints",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Some seem to treat microservices as a sign of good engineering when it's often just premature complexity. You can always split a monolith later, but you're stuck maintaining that complexity from day one",
+          "author": "1saadcodes",
+          "replies": [
+            {
+              "text": "I have been building a SaaS for a business. One of the decisions I took is \"as monolithic as possible\" (though you cannot just use that).\nOne reason is that microservice architecture requires much more operational overhead. So any server we have (except for the database) should be self-contained as a rule, so that it can be autonomous and horizontally scalable.\nSo far, it is working quite well. You do not need suddenly a Redis for one thing, a ZooKeeper for the next one, and 3 or 4 things to just run the damn binaries. The binaries will start, do whatever migrations need to be done if it applies, and start running. They only need the database. They land health checks, api calls and all the logic needed, in one binary with zero dependencies that is containerized.\nThis has saved me a lot of pain compared to other architectures where I worked, but those were massive and it was justified (and there was budget for it). But you just need a bunch of teams to be able to do that.\nI think going the microservices way for a small team not only does not pay off. I think it can be a suicide.\nAt the same time, I keep the servers internally modular (enable/disable feature).",
+              "author": "germandiago",
+              "depth": 1
+            },
+            {
+              "text": "well... no, splitting a monolith once it has grown past the point where services make sense is incredibly difficult. My last employer spent a couple of years doing it and ultimately gave up. There is just way too much interdependency to split it up cleanly.\nSo the key here is good engineering leadership to recognize when that point arrives, and push the company to start the transition.\nAnd indeed, microservices solve a organization problem not an engineering problem. When I taught the architecture to new hires, I always say: a service is the largest piece of system that stays together in a reorg :)",
+              "author": "HeavenFox",
+              "depth": 1
+            },
+            {
+              "text": "That's assuming you don't separate concerns in your monolith into modules with clear boundaries and dependencies. If you did that from day one, splitting a module off to a different service is easy.",
+              "author": "plmpsu",
+              "depth": 2
+            },
+            {
+              "text": "If you can manage that then there's no real benefit to microservices though. The \nreason\n for splitting is to solve the problem of failing to separate concerns, so a team that can't do that well is better off building microservices from the start because the alternative \nfor them\n is building a monolith that will be hard to split.",
+              "author": "onion2k",
+              "depth": 3
+            },
+            {
+              "text": "That's my belief as well: modular architecture and separation of concerns is orthogonal to monolith <-> microservice infrastructure axis.\nAnd Service Oriented Architecture is the nice middle ground of that infrastructure axis",
+              "author": "taberiand",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Seems like a useful list of things to avoid when running a startup, plus situations where it may not always be a bad thing.\nStill, got a few thoughts here:\n> if you build it, they will come\nThis feels like the cause for so many news/media bundling services, akin to Blendle. Loads of people seem to have the thought process \"no-one pays for journalism, that's because it's too inconvenient to subscribe seperately, let's bundle it all\", but far fewer people actually seem to want such a service.\n> Chasing Blue Oceans\nThis feels like the explanation for the Wii U, despite Nintendo obviously not being a startup of any kind. The Wii was a blue ocean product, and the company clearly thought the same logic could apply to its successor too. Find an idea that didn't have much competition (using a portable screen to control what's going on elsewhere), and use that to attract a new market.\nUnfortunately, while the concept worked on a handheld device, it didn't really feel good to use on a larger scale, and the ideas designed for it (usually some sort of asymmetric gameplay experience) just didn't have the appeal that more traditional ones did.\n> Boiling the Ocean\nThis seems really common with crowdfunded products, since if their scope isn't unrealistic as hell beforehand (and if it wants the public's attention and money, it usually is), it certainly is once the stretch goals start being added and the creators start promising everything and the kitchen sink.\nAlso with video games, as shown by Duke Nukem Forever, Beyond Good & Evil 2, etc.",
+          "author": "CM30",
+          "replies": [
+            {
+              "text": "> This feels like the explanation for the Wii U, despite Nintendo obviously not being a startup of any kind.\nThis is a particularly interesting example, because they followed up with the Switch, which is, in some ways, the diametric opposite of the Wii U. Arguably, what happened was that they had the right idea that the hybrid TV/handheld format was the right blue ocean play, but the Wii U failed by being TV first and handheld second, instead of handheld first and TV second. You could probably build a whole business strategy course on just this discussion.",
+              "author": "pdpi",
+              "depth": 1
+            },
+            {
+              "text": "That's very true, the Switch feels like an improvement on the Wii U concept in many ways.\nThough I feel the other big difference is that the Wii U Gamepad was highly limited in its capabilities. You could play games on it while other people watched TV or used that TV for something else, but you couldn't go beyond that. You still had to be close to the TV for it to function, and that usually meant being in the same room.\nThe Switch being a hybrid console meant you could take the whole thing outside of the room if others needed the space, or bring it with you to events or places outside of the home. So, it solved all the same problems the Wii U did (playing while others used the TV), but also a ton of more pressing ones (taking the game with you while traveling/leaving the house, playing in other rooms/areas, etc).",
+              "author": "CM30",
+              "depth": 2
+            },
+            {
+              "text": "I have a Switch 2, Nintendo user since I was very young, with the 8 bits NES, SNES, Game Boy, Nintendo 64... I would not change my Switch 2 for any PS5 or XBox, even if they are interesting :)\nIt is indeed a hybrid, but a very well-thought one I'd say.",
+              "author": "germandiago",
+              "depth": 3
+            },
+            {
+              "text": "I once played mario kart with the stranger sitting next to me on a plane with the switch.",
+              "author": "annzabelle",
+              "depth": 3
+            },
+            {
+              "text": "I don't think that's the real cause for the Wii U's woes. Consoles from the big players are almost automatic buys for a lot of people, just to get access to the new games. They have to screw up to change that. No one was particularly bothered by what the Wii U offered, even though it wasn't really compelling.\nI hold that the Wii U was primarily an advertising problem, with a dash of the Wii itself being an anomaly.",
+              "author": "terribleperson",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
