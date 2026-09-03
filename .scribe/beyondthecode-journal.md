@@ -48,6 +48,22 @@
 
 ---
 
+## 2026-06-30 – The End of Experimental Immunity
+
+**Learning:** The "experimental" immunity for AI projects is expiring. Organizations are moving from asking "what can it do?" to "what does it cost to do it?". This forces engineering into a financial legibility that was previously reserved for more mature, less speculative domains. Technical excellence is being redefined as financial efficiency in the presence of expensive tokens.
+
+**Implication:** Analyze the role of the CFO in engineering decisions more deeply. Future essays should explore how the transition from R&D to COGS (Cost of Goods Sold) changes the Director-level incentive structure, moving from velocity-seeking to margin-preserving.
+
+---
+
+## 2026-06-30 – Phantom Seniority and the Succession Trap
+
+**Learning:** AI is enabling a "phantom seniority" where output remains high but the underlying pedagogical friction—which traditionally formed judgment—is missing. This creates a succession problem that is invisible to current performance metrics. Senior folks use it as a prosthetic for memory; junior folks use it as a bypass for learning. The packets look identical, but the underlying capital is vastly different.
+
+**Implication:** When writing about seniority, focus on the *formation* of judgment, not just its application. The tool can apply judgment, but it cannot form it. The most dangerous organizational state is unearned seniority that cannot survive the absence of the tool.
+
+---
+
 ## 2026-02-17 – Hero Images: Real Code Over Symbolic Code
 
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
