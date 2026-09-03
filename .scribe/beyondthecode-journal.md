@@ -53,3 +53,27 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-02-18 – The I/O Bound Organization and Semantic Ablation
+
+**Learning:** The "CPU vs I/O" metaphor is a powerful way to ground abstract velocity discussions in recognizable engineering concepts. It clarifies why Senior Engineers feel productive while the organization feels stagnant. Additionally, the concept of "semantic ablation" provides a technical-sounding but accurate description for the loss of intent in "polished" corporate prose.
+
+**Implication:** Avoid treating AI as a "productivity" tool in isolation. Always analyze it as a component in a larger, high-latency human system. The bottleneck is not the producer; it is the consumer and the coordinator.
+
+---
+
+## 2026-02-18 – Professionalism as a False Proxy
+
+**Learning:** Polished output used to be a high-effort signal of competence. AI has broken this proxy. In corporate systems, "professionalism" is often just a linguistic register. If that register can be automated, it loses its value as a class marker and signal of depth.
+
+**Implication:** Look for the "jagged edges" in organizational artifacts. The presence of friction is becoming a more reliable signal of original thought than the presence of polish.
+
+---
+
+## 2026-02-18 – Succession Debt and the Five-Year Horizon
+
+**Learning:** The tension between current-quarter headcount and future leadership pipeline is a classic structural conflict. IBM's explicit pivot back to junior hiring provides a concrete corporate anchor for the "Junior Ceiling" concept.
+
+**Implication:** Frame the loss of junior roles not as a loss of "jobs," but as an accumulation of "Succession Debt." It shifts the discussion from politics to organizational durability.
