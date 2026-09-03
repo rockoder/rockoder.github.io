@@ -53,3 +53,11 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-03 – The Code Review Social Contract Breakdown
+
+**Learning:** Code review is often discussed as a technical quality gate, but its primary organizational function is a social contract for knowledge transfer and shared ownership. When AI-assisted output breaks the symmetry of production and review bandwidth, the contract doesn't just bend; it is unilaterally retracted by the reviewer.
+
+**Implication:** When evaluating the 'productivity' of AI tools, the loss of the peer-review knowledge loop must be accounted for as a long-term capital loss. Senior engineers transitioning to 'verification bureaucrats' is a leading indicator of organizational knowledge depletion.
