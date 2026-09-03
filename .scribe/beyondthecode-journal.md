@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-28 – Access as Geopolitical Capital
+
+**Learning:** We often treat AI as a universal productivity multiplier. In practice, as top-tier models become gated national assets, access to tools becomes a form of corporate capital tied to geography. A firm's ability to license intelligence from a trusted vendor now dictates its talent strategy more than local labor costs.
+
+**Implication:** When analyzing organizational shifts, look for where "tool-entitlement" creates new classes of engineers. The "permission slip" for compute is a more potent driver of centralization than any return-to-office mandate.
+
+---
+
+## 2026-06-28 – The Decoupling of Correctness and Maintainability
+
+**Learning:** High-fidelity oracles (proof assistants, advanced test generators) allow for the production of "vibe-coded blobs"—artifacts that are functionally correct but humanly incomprehensible. Organizations are structurally incentivized to reward the "green checkmark" because it is legible, while the cognitive debt of unmaintainable logic remains invisible until the first major incident.
+
+**Implication:** Focus on the "Verification Kernel" as the new seat of engineering power. The transition from *writing* logic to *curating* the systems that verify logic is the primary shift in the Staff Engineer's role.
