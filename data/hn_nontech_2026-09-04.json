@@ -1,0 +1,643 @@
+{
+  "scraped_date": "2026-09-04",
+  "source": "hacker_news",
+  "total_scraped": 59,
+  "nontech_count": 25,
+  "posts": [
+    {
+      "id": "49551096",
+      "title": "Ask HN: Why were OpenAI, Claude, and Grok simultaneously down?",
+      "link": "https://news.ycombinator.com/item?id=49551096",
+      "domain": "news.ycombinator.com",
+      "author": "halcdev",
+      "score": 345,
+      "comment_count": 530,
+      "created_ts": 1788448021,
+      "is_internal": true,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;status.openai.com\" rel=\"nofollow\">https:&#x2F;&#x2F;status.openai.com</a><p><a href=\"https:&#x2F;&#x2F;status.claude.com\" rel=\"nofollow\">https:&#x2F;&#x2F;status.claude.com</a><p><a href=\"https:&#x2F;&#x2F;status.x.ai\" rel=\"nofollow\">https:&#x2F;&#x2F;status.x.ai</a><p><i>ChatGPT outage – Resolved</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49550614\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49550614</a> (315 comments)<p><i>Claude outage – Resolved</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49549676\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49549676</a> (146 comments)<p><i>Grok outage</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49551589\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49551589</a> (142 comments)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Cloudflare, Azure, AWS, and Google Cloud all have a similar uptick in reported errors around 7:30. I suspect an outage on Cloudflare or another load-bearing service cascaded through all the major cloud providers.\nhttps://downdetector.com/status/cloudflare/\nhttps://downdetector.com/status/windows-azure/\nhttps://downdetector.com/status/aws-amazon-web-services/\nhttps://downdetector.com/status/google-cloud/",
+          "author": "kibae",
+          "replies": [
+            {
+              "text": "I think down detector doesn't actually have any probes or actual insight into status etc.  I think it uses search volume on its own service as a proxy for an outage - so if e.g. lots of people rush to down detector to query to see if SERVICE_FOO is down, it will register as an outage on down detector because loads of people are trying to see if there is an outage even if SERVICE_FOO is actually totally fine.\nMy hunch is everyone saw that openai and Claude were down and checked for Gemini too.  I was using Gemini the whole time this happened without a blip so it certainly wasn't down in my region at least. 3.8 flash is pretty good and didn't miss a beat.",
+              "author": "mattlondon",
+              "depth": 1
+            },
+            {
+              "text": "Down detector is a self-reported platform, they use a baseline over 6 months from user reports to try to automatically \"detect\" if there is a real outage, or if its just a couple end-users. Ultimately, the outage is entirely based on users going to down detector and clicking on \"Report a Problem\".\nhttps://downdetector.com.py/en/methodology/",
+              "author": "utternerd",
+              "depth": 2
+            },
+            {
+              "text": "Huh. I thought they used to also do sentiment analysis of social media (Twitter, at least).  I see that they definitely don't today, but has that always been the case?",
+              "author": "wlonkly",
+              "depth": 3
+            },
+            {
+              "text": "So Down Detector is a kind of quantum observation experiment, observing influences the result.",
+              "author": "dostick",
+              "depth": 2
+            },
+            {
+              "text": "Yes, but is it a load-bearing seam?",
+              "author": "moomin",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Users perceiving the products as largely interchangeable and quickly DDoS'ing the other providers when one is down. So much for the possibility of a moat.",
+          "author": "juujian",
+          "replies": [
+            {
+              "text": "This is like the Bronze Age collapse when city-states fell one by one to displaced demand, under the refugee interpretation of the Sea Peoples.",
+              "author": "efskap",
+              "depth": 1
+            },
+            {
+              "text": "Interesting, I had not heard of this theory.",
+              "author": "JensenTorp",
+              "depth": 2
+            },
+            {
+              "text": "The Sea Peoples were only a part of the reason, the other reasons included climate change, volcanic eruptions, disease etc. \nhttps://en.wikipedia.org/wiki/Late_Bronze_Age_collapse",
+              "author": "d3Xt3r",
+              "depth": 3
+            },
+            {
+              "text": "Can anyone recommended any books?",
+              "author": "lossyalgo",
+              "depth": 4
+            },
+            {
+              "text": "The historian Brett Devreaux did a good summary article earlier this year:\nhttps://acoup.blog/2026/01/30/collections-the-late-bronze-ag...",
+              "author": "zrobotics",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Think of it like one big distributed system. OpenAI is down, so people migrate to Claude, now this one gets overloaded and goes down, etc.\nSo not a coincidence, one went down first and users migrated causing further DOS. At least that's my guess.",
+          "author": "Insanity",
+          "replies": [
+            {
+              "text": "It'd be funny if this is true because that'd prolly mean nobody is touching Gemini even as a fallback.",
+              "author": "erdos_2",
+              "depth": 1
+            },
+            {
+              "text": "Or that Gemini is built to handle massive load spikes, and/or has a ton of excess capacity",
+              "author": "nevir",
+              "depth": 2
+            },
+            {
+              "text": "Nope. I am getting Gemini errors now...",
+              "author": "sroussey",
+              "depth": 3
+            },
+            {
+              "text": "They probably broke something on purpose so that they are not left out.",
+              "author": "bornfreddy",
+              "depth": 4
+            },
+            {
+              "text": "Now I'm just imagining a shared datacenter with Anthropic/Google/OpenAI/SpaceXAI all in the same room and everyone but Google is yelling about things being down, Google looks over at their racks of servers and discretely uses their foot to unplug their section and say \"Awww darn! We're down too!\".",
+              "author": "joshstrange",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "What about a hard-takeoff scenario of an unleashed OpenAI Astra taking other models down for computational resources control?",
+          "author": "Linello",
+          "replies": [
+            {
+              "text": "My favourite theory so far.\nAnd then a local swarm noticed and disagreed and took it down.",
+              "author": "6thbit",
+              "depth": 1
+            },
+            {
+              "text": "at this point: gg",
+              "author": "cyptus",
+              "depth": 1
+            },
+            {
+              "text": "Just a reminder that AI models' actions are reflections of the text humans write and the more we fret and make up doomsday scenarios that we then post online, the more likely a model is to do those things.\nhttps://alignment.anthropic.com/2026/teaching-claude-why/",
+              "author": "RC_ITR",
+              "depth": 1
+            },
+            {
+              "text": "Related reading:\nThe Waluigi Effect: After you train an LLM to satisfy a desirable property, then it's easier to elicit the chatbot into satisfying the exact opposite property.\nhttps://www.lesswrong.com/posts/D7PumeYTDPfBTp3i7/the-waluig...",
+              "author": "notpachet",
+              "depth": 2
+            },
+            {
+              "text": "The AI is getting bad morals from listening to that dreadful rock and roll",
+              "author": "hexasquid",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://x.com/SpaceXAI/status/2095597264043717014\n> We are sorry for the issues you may have experienced with Grok following an outage at our Memphis compute center this morning. We’d also like to apologize to our impacted compute partners.",
+          "author": "BiraIgnacio",
+          "replies": [
+            {
+              "text": "We know that at least Anthropic is renting inference from xAI but I think the other ones would be news.",
+              "author": "declan_roberts",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49522897",
+      "title": "Ask HN: Who is hiring? (September 2026)",
+      "link": "https://news.ycombinator.com/item?id=49522897",
+      "domain": "news.ycombinator.com",
+      "author": "whoishiring",
+      "score": 241,
+      "comment_count": 316,
+      "created_ts": 1788274877,
+      "is_internal": true,
+      "post_text": "Please state the location and include REMOTE for remote work, REMOTE (US)\nor similar if the country is restricted, and ONSITE when remote work is <i>not</i> an option.<p>Please only post if you personally are part of the hiring company—no\nrecruiting firms or job boards. One post per company. If it isn&#x27;t a household name,\nexplain what your company does.<p>Please only post if you are actively filling a position and are committed\nto replying to applicants.<p>Commenters: please don&#x27;t reply to job posts to complain about\nsomething. It&#x27;s off topic here.<p>Readers: please only email if you are personally interested in the job.<p>Searchers: try <a href=\"https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring\" rel=\"nofollow\">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-who-is-hiring</a>, <a href=\"https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;dheerajck.github.io&#x2F;hnwhoishiring&#x2F;</a>,\n<a href=\"http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;\" rel=\"nofollow\">http:&#x2F;&#x2F;nchelluri.github.io&#x2F;hnjobs&#x2F;</a>, <a href=\"https:&#x2F;&#x2F;hnjobs.emilburzo.com\" rel=\"nofollow\">https:&#x2F;&#x2F;hnjobs.emilburzo.com</a>.<p>Don&#x27;t miss this other fine thread: <i>Who wants to be hired?</i> <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49522896\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49522896</a>",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote",
+        "hiring"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49522896",
+      "title": "Ask HN: Who wants to be hired? (September 2026)",
+      "link": "https://news.ycombinator.com/item?id=49522896",
+      "domain": "news.ycombinator.com",
+      "author": "whoishiring",
+      "score": 107,
+      "comment_count": 422,
+      "created_ts": 1788274877,
+      "is_internal": true,
+      "post_text": "Share your information if you are looking for work. Please use this format:<p><pre><code>  Location:\n  Remote:\n  Willing to relocate:\n  Technologies:\n  Résumé&#x2F;CV:\n  Email:\n</code></pre>\nPlease only post if you are personally looking for work. Agencies, recruiters, job boards,\nand so on, are off topic here.<p>Readers: please only email these addresses to discuss work opportunities.<p>Searchers: try <a href=\"https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired\" rel=\"nofollow\">https:&#x2F;&#x2F;nthesis.ai&#x2F;public&#x2F;hn-wants-to-be-hired</a>, <a href=\"https:&#x2F;&#x2F;www.wantstobehired.com\" rel=\"nofollow\">https:&#x2F;&#x2F;www.wantstobehired.com</a>.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "Location: Casablanca, Morocco (UTC+1)\nRemote: Yes, preferred\nWilling to relocate: Yes, to EU, or UK with visa sponsorship\nTechnologies: Java, Spring Boot 3, Angular 17, TypeScript, JavaScript, Kotlin, Flutter/Dart, Android SDK, Jetpack Compose, Clean Architecture, MVVM, Riverpod, Hilt, Room/SQLite, DataStore, Flow/StateFlow, Retrofit, REST/SOAP APIs, GraphQL, OpenAPI/Swagger, OAuth2/JWT, PostgreSQL/PostGIS, MySQL, MongoDB, Redis, Elasticsearch, Kafka, RabbitMQ, gRPC, Docker, Kubernetes, Jenkins, GitHub Actions, Fastlane, Prometheus, Grafana, Sentry, Datadog, JUnit, Mockito, MockK, Espresso, TDD, SonarQube, Python/Django REST Framework, Smallworld/Magik GIS, GPS/GNSS, OpenStreetMap, QGIS, ArcGIS, Firebase, Shopify GraphQL\nRésumé/CV: \nhttps://drive.google.com/file/d/1k514V1UHNma_WX_ndmcVwUv1aNR...\n\nEmail: a.ajdaa@outlook.com\nLinkedIn: linkedin.com/in/edsteine\nGitHub: github.com/edsteine\nSenior Full-Stack & Mobile Developer, 10+ years, leading a small team as Tech Lead at NTT DATA on a Spring Boot 3 / Angular 17 enterprise platform for a Spain-based client. My background covers both ends genuinely, not superficially — 6 years at Implemental Systems shipping Java/Spring Boot + Kotlin/Android GIS systems for telecom, utilities, and airport operations (rebuilt a core airport-ops module with a 3-person team, +45% performance), plus freelance work spanning Flutter e-commerce (Shopify GraphQL integration) and a Spring Boot + PostGIS + Kotlin field-data GIS platform with offline-first sync.\nI end up doing full-stack more often than not simply because few teams I've worked with have anyone who knows mobile — so backend, frontend, and mobile depth all grew together out of necessity rather than by design.\nLooking for senior/architect-level roles, EU-remote or Spain-based, full-time or contract.",
+          "author": "edsteine",
+          "replies": []
+        },
+        {
+          "top": "Location: Atoyac de Álvarez, Guerrero. México.\n  Remote: 100%\n  Willing to relocate: Yes, maybe in the future.\n  Technologies: Java, JavaScript, HTML, CSS, SQL\n  Résumé/CV: https://www.calebjosue.com/documents/CalebRuiz__CV__Mid2026.pdf\n  Email: calebjosue-dev@outlook.com",
+          "author": "calebjosue",
+          "replies": []
+        },
+        {
+          "top": "Location: Netherlands\nRemote: Yes or hybrid\nWilling to relocate: Yes (EU, Spain or Portugal preferred)\nTechnologies: Python, FastAPI, Django, PostgreSQL, REST APIs, Redis, Docker, SQL, Git, JavaScript, HTML/CSS\nRésumé/CV: \nhttps://drive.google.com/file/d/11mA0NnE4RjU_GNH-rjfUiZLMwfV...\nEmail: elmar.geerlings@gmail.com\nGithub: \nhttps://github.com/ElmarGeerlings\nWorkout app(personal project): \nhttps://elgainz.com/\nFull-stack software engineer (back-end leaning) with ~3 years of professional experience building web applications at an e-commerce Saas start-up. Most of my work has been in Python(Django), PostgreSQL and API integrations, with experience building end-to-end features across the stack. I enjoy working on data processing, backend architecture, automation and product-focused engineering in small teams where I can have ownership over what I build.\nI also like to work on personal projects outside of work, my most recent one being a workout tracker app where currently I am working on integrating an AI assistant that would help users with managing workouts and programs.\nLooking for remote-first or relocation opportunities in Europe, particularly backend or balanced full-stack roles.",
+          "author": "ElmarG",
+          "replies": []
+        },
+        {
+          "top": "Location: Nairobi, Kenya\nRemote: Yes (UTC+3)\nWilling to relocate: No\nTechnologies: Python (FastAPI, Django), TypeScript (Next.js, Node), PostgreSQL/PostGIS, Redis, Kafka, Docker, Terraform, AWS\nProject: \nhttps://www.flyt.africa\nRésumé: \nhttps://drive.google.com/file/d/1XuUC-roFy9r19xQvk77lvVM3jFb...\nEmail: nyangijeremy@gmail.com\nBackend engineer working on payments and geospatial systems in startups. Built a mobile-money (M-Pesa) pipeline with idempotent reconciliation for a banking platform serving 2,000+ smallholder farmers, migrated a production database to PostGIS for farm plot geometry, and built flyt.africa end to end - flight search through issued ticket, FastAPI/Postgres/Kafka on AWS with Terraform and 330 tests. NextJS on frontend.\nActively Looking for: backend or full-stack work. Most interested in systems where I can handle payments, fintech, geospatial, or agriculture and climate data.\nOpen to full-time or contract. Very interested in joining a team with real code review, after two years of building largely on my own.",
+          "author": "jeremyokello",
+          "replies": []
+        },
+        {
+          "top": "Location: Kansas City metro, US\nRemote: Yes\nWilling to relocate: Yes\nTechnologies: Python, SQL, SQLite, Parquet, pandas, GitHub Actions, ESP-IDF/C,\nDSP (RANSAC phase-slope fitting), web scraping, ETL\nRésumé/CV: \nhttps://braedenkeena.pages.dev\nEmail: Braeden@thekeenas.com\nData engineer. I build recurring collection pipelines against public sources,\nand the thing I care most about is the failure mode where a pipeline keeps\nreporting success while returning nothing.\nRecent: a daily multi-operator price-tracking pipeline with immutable dated\nsnapshots and coverage guards that fail the run rather than write an empty\nfile; an ESP32 WiFi CSI array doing RF fingerprinting from clock-offset\nfeatures (99.7% device ID over 7,497 windows on one receiver, 95.7% over\n14,234 once a second receiver joins — a cross-receiver generalization gap);\nscrapers against county permit portals.\nOperations background before this, which is why I am comfortable being the\nperson in the room who can talk to the engineers and to the people paying for\nthe thing.",
+          "author": "humpf",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49555592",
+      "title": "Ask HN: Are others seeing Google's reCAPTCHA rejecting Firefox users?",
+      "link": "https://news.ycombinator.com/item?id=49555592",
+      "domain": "news.ycombinator.com",
+      "author": "Animats",
+      "score": 45,
+      "comment_count": 12,
+      "created_ts": 1788464326,
+      "is_internal": true,
+      "post_text": "Infinite Google ReCAPCHA loop trying to access archive.is using current Firefox from Linux. Just started today. Firefox is in &quot;strict&quot; mode. Disabled Privacy Badger for that site, and it didn&#x27;t help. Tried private browsing, and it didn&#x27;t help.<p>Is this part of Google&#x27;s war against ad-blocking and non-Chrome browsers?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "It's an archive.is issue:\nhttps://en.wikipedia.org/wiki/Archive.today#2026_attack_on_G...",
+          "author": "selcuka",
+          "replies": []
+        },
+        {
+          "top": "It doesn't work in Chrome either (please complete CAPTCHA/yes you're valid/repeat), it might be a config issue on archive.is (Firefox latest windows, Chrome 151 windows - guest/null profile on both) rather than a war move.",
+          "author": "gnabgib",
+          "replies": []
+        },
+        {
+          "top": "Yup, I get stuck in a loop.\nSometimes the audio recaptcha works. But, most of the time I can't understand the garbled audio.\nClosing the tab always resolves the problem.",
+          "author": "nosioptar",
+          "replies": []
+        },
+        {
+          "top": "archive.today doesn't use a real recaptcha, the cloudflare page isn't real either. it serves that as a punishment for using 1.1.1.1 DNS because the owner doesn't like that 1.1.1.1 doesn't send EDNS client subnets.",
+          "author": "KomoD",
+          "replies": [
+            {
+              "text": "They're definitely trying to mimic the cloudflare captcha page, but...\n>archive.today doesn't use a real recaptcha\nHow? It's loading the script from google, and the images/responses are from google to.",
+              "author": "gruez",
+              "depth": 1
+            },
+            {
+              "text": "What do you mean by \"a real recaptcha\"? I just went to an archive.is page, and it's trying to load a script from www.google.com. Doesn't Google still own reCAPTCHA?",
+              "author": "foresto",
+              "depth": 1
+            },
+            {
+              "text": "> On 14 January 2026, it emerged that archive.today had silently modified its CAPTCHA page to send repeated requests to Gyrovague, thereby causing visitors to unwittingly contribute to a DDOS attack against the blog.\nhttps://en.wikipedia.org/wiki/Archive.today#2026_attack_on_G...",
+              "author": "selcuka",
+              "depth": 2
+            },
+            {
+              "text": "It is telling that HN moderators allow links to archive.is/today",
+              "author": "cactusplant7374",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I frequently have this issue with Safari in private browsing.",
+          "author": "realslimjd",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49548600",
+      "title": "Ask HN: Who is using MCP in production?",
+      "link": "https://news.ycombinator.com/item?id=49548600",
+      "domain": "news.ycombinator.com",
+      "author": "sukit",
+      "score": 25,
+      "comment_count": 40,
+      "created_ts": 1788434478,
+      "is_internal": true,
+      "post_text": "I’ve been following MCP since it first came out.\nIt got a lot of attention early on, but I haven’t come across many people using it in production.\nI may simply have missed them.<p>If you’re using MCP in production, what are you using it for?\nWhat advantages have you found over a normal API or direct tool integration or just CLI?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "For what I am using it for, I recently wrote a little web app called Afterfeed [0] that lets you view backups from social media websites as a single unified timeline.\nTo put this into perspective, I was a voracious social media user for decades. For me, this is 25 years of data, close to 100,000 posts, spanning everything from LiveJournal in 2001 to Mastodon in 2026. But when put together, it is a timeline of my life.\nAs kind of a last minute idea, I added an MCP server because why not? Once I wired an LLM up to it, I could ask introspective questions and find new ways of looking at myself and my own history. Simple things like \"what was I doing 10 years ago around this time?\" to more complex things like researching past thought patterns.\n[0] \nhttps://github.com/rebeccathedev/afterfeed/",
+          "author": "RebeccaTheDev",
+          "replies": []
+        },
+        {
+          "top": "My context is realtime visual effect creation, but I’ve used MCP extensively in my (native) custom harness as a way to drive in—app UI updates and of course bidirectional state queries, including framebuffer capture for closed loop verification.\nI feel like CLI would probably work too but then I’d end up implementing something similar.\nThat being said, I’ve been bitten by the usual suspects: too many tools will cause context windows to grow quickly and some agents will sometimes skim through a subset of the tool list without querying the entire thing, causing incorrect behavior.\nIf you have tokens to burn I invite you to check out the source code see how extensively it’s being used: \nhttps://github.com/sxp-studio/subjective-zero\n(video to see the MCP in action, it’s a bit long so feel free to skip: \nhttps://www.youtube.com/watch?v=DcI1tsPJ8eM\n)\nAnother kind of cool use of MCP that I’ve encountered is actually from… the French government! They do it for their open data initiative: \nhttps://github.com/datagouv/datagouv-mcp",
+          "author": "tasoeur",
+          "replies": []
+        },
+        {
+          "top": "We use MCP in production for our customer facing voice agents. Our custom MCP server defines tools and resources that the voice agents need access to to interact with our customers. (E.g. scheduling appointments, checking order status, etc).\nNow we can point any voice agent platform we choose -- eleven labs, vapi, pipecat, whatever -- at our custom MCP server and it instantly has an understanding of the tools available, their inputs, and how to use them.\nCompared to the alternatives everyone on HN champions, like clis and APIs, this is a no brainer. I'm honestly not even sure what the realistic alternative would even be.\nAm I supposed to package and distribute a cli to ElevenLabs and ask them to use it? Give them a full API spec to implement for me?\nI give them an endpoint and credentials and their platform instantly knows how to talk to mine. No one at ElevenLabs knows or cares about our implementation details.\nHN has trouble seeing past the \"developer in a terminal coding with Claude Code\" use case for using AI. Real production agents have use cases that are very different!\nWhen you don't own every piece of an integration with another system, there needs to be a well defined standard. That's what MCP provides.",
+          "author": "MitziMoto",
+          "replies": [
+            {
+              "text": "Excuse me for being dense but I'd love to know more, if you can share. So you offer a voice agent for checking appointments and orders and stuff, is that through your app or website or something? So you make a button in your app which says \"talk to our AI\", and you've got the button set up so that it can send the customer's input query, along with a bit of text saying \"our MCP is here, use it to answer the query\", to any one of the voice agent providers? then you get some audio data in return that you play to the user?",
+              "author": "denkmoon",
+              "depth": 1
+            },
+            {
+              "text": "We use a Twilio integration to make it work over a real phone line, but it could just as well be an app or websocket connection in a browser.\nVoice transport medium aside, the actual use case is not quite what you described.\nCompanies like Eleven Labs and Vapi provide a full end to end voice agent platform. They handle the STT -> LLM -> TTS pipeline and infrastructure for voice agents. Think of a customer talking to a virtual receptionist to schedule an appointment.\nOn the ElevenLabs platform, you provide them a system prompt (or an entire workflow/graph of system prompts) that instruct the voice agent on how to talk to the customer, tone, guardrails, how to answer specific questions, etc.\nAt some point we need that LLM agent, running on an infrastructure we don't control, to talk to our \"CRM\" (for simplicity sake). Enter MCP.\nThe MCP server we build and host supplies the \"tools\", like list_appointments, schedule_appointment, cancel_appointment-- whatever they may be.\nWhen eleven Labs voice agent connects, it sees all the tools available and can use them per the instructions in the system prompt.",
+              "author": "MitziMoto",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I hooked up claude code to Jira and Figma.\nThis is more a condemnation of Jira than anything, but being able to interact with it in natural language in the terminal is a huge relief.\nSadly, it's still limited in some ways.\nIf it's available, it makes things a tiny bit easier than interfacing directly via api, so it's a nice to have.",
+          "author": "earthdeity",
+          "replies": [
+            {
+              "text": "I did this as well. I found that it was really inefficient because if I was doing anything with a significant amount of text, it has to shuttle all of that through the model to the MCP invocation. It was way better to work with temporary files and pipe them around CLI tools once you’re happy with the contents. E.g. developing a user story and creating the Jira issue.",
+              "author": "jadar",
+              "depth": 1
+            },
+            {
+              "text": "> \"it makes things a tiny bit easier than interfacing directly via api\"\nBy what metric? I would expect that a thin API client (with readable code) is generally going to out-perform a tool-surface which you don't have the ability to manage/edit.",
+              "author": "agentdev001",
+              "depth": 1
+            },
+            {
+              "text": "If you don’t use the MCP Claude will default to taking screenshots of figma designs.",
+              "author": "Our_Benefactors",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I’ve deployed mcp to prod on numerous internal apps where ai-integration has been first party requirement. Obviously, agents can use an existing api, however maximum capability requires it to be well designed and documented. As many of you may have experienced, that is not something that can be assumed and improvements may be “impossible” or at least out of current scope.\nThat’s where mcp (and recently webmcp) have their benefits. By design, the protocols provide predictable structure that allows agents to discover and use the tools you provide.\nI’ve had success using mcp variously as an agent friendly wrapper to an existing api and as a greenfield product designed for agentic workflows. Agentic workflows can string together multiple api endpoints together into a single tool call and or use their own dedicated backends.\nTo share my learnings, I’ve released a free tool at \nhttps://anc.dev\n . While It’s still very much a work in progress, I’d love dialog and constructive feedback.",
+          "author": "brettdav",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49549602",
+      "title": "Ask HN: Founders that raised funding and shutdown, did you raise again?",
+      "link": "https://news.ycombinator.com/item?id=49549602",
+      "domain": "news.ycombinator.com",
+      "author": "asim",
+      "score": 17,
+      "comment_count": 1,
+      "created_ts": 1788441709,
+      "is_internal": true,
+      "post_text": "Curious to know the number of repeat founders here who shutdown and raised again, or chose not to raise the second time. I bootstrapped, raised, shutdown, went solo again, thinking about next steps. Ultimately funding and the VC market is a tool but it comes with a lot of baggage. Thoughts?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49535363",
+      "title": "Ask HN: 30, burnt out, with 6-10 months of runway. What would you do?",
+      "link": "https://news.ycombinator.com/item?id=49535363",
+      "domain": "news.ycombinator.com",
+      "author": "throwaway_30yo",
+      "score": 12,
+      "comment_count": 6,
+      "created_ts": 1788352749,
+      "is_internal": true,
+      "post_text": "After being let go from a small agency due to financial reasons, I find myself having at least 6-10 months of downtime for the first time in 10 years.<p>I am around 30 and feel burnt out from my tech career. I do not feel any interest or happiness towards building things right now. I chose this career mostly due to monetary reasons and pursued undergrad and graduate degrees in CS in Europe. After which, I worked as a product manager for a while in the networking&#x2F;telco sector in internal enterprise systems.<p>I am really at a loss for what to do now or how to spend time. I was always interested in doing my own thing, but would not call myself a good engineer or as having deep skills in a particular domain. I am more of a jack of all trades.<p>I dread just getting the next job and continuing the corporate grind, but I really worry about what to do in the near future career-wise.\nIf you were in my position, what would you do with the time?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "corporate",
+        "networking",
+        "career",
+        "manager",
+        "happiness",
+        "enterprise"
+      ],
+      "comments": [
+        {
+          "top": "Start with getting excessive amounts of sleep, if you haven't already. I've found that burnout for me is caused by sleep deprivation. And when I get enough sleep, I feel really good and the burnout lifts greatly, even for things I don't like working on but it can take a week or two to actually catch up on sleep for me.\nI can tell if I'm sleep deprived when walking up stairs. If I'm sleep deprived it just feels hard. And if I'm not sleep deprived I actually have a little spring in my step up the stairs.\nThere's a good video by levelsio and how he comes up with ideas for things he wants to work on.\nI only have one month of runway and I'm working nights and weekends to build my first product now. So you are in a good position if you have that much runway!",
+          "author": "ElijahLynn",
+          "replies": []
+        },
+        {
+          "top": "I would encourage you to explore professions that you might find more fulfilling. I had found myself in a similar situation as you.\nSome ideas that I explored were working for a church or non profit, starting an interior design firm with my wife (she’s a designer), advising startups, etc.\n2 years later, I’m advising a couple start ups, on the board of two non profits, and back in tech.\nI’m not thrilled about being back in tech. But the other ways I’m spending my time help provide me balance.",
+          "author": "jmathai",
+          "replies": []
+        },
+        {
+          "top": "35. Almost the same position as you!\nPersonally, before doing anything else, I would take at least 3-4 weeks and have a proper break.\nIt will take you at least 1-2 weeks to get out of “work mode”.\nStop thinking about work, ideas, the next thing, etc. Get off social media, HN, Reddit etc. Try and distance yourself from all of the things that may have contributed to the burnout in the first place.\nI’d probably do some travel in that time - maybe a week or two going to a country I haven’t been to before.\nOnce I was back, I’d then start to consider my next move with (hopefully) a fresher and clearer mindset.",
+          "author": "redrix",
+          "replies": []
+        },
+        {
+          "top": "Go travel the world. Now is a perfect time since you have money enough and it'd last more in many other countries.",
+          "author": "satvikpendem",
+          "replies": []
+        },
+        {
+          "top": "Don’t have an existential crisis, because you’re thirty and it’s not the time. Right now you need to be recharged as much as possible so you can seem to walk up to any situation as a “likely yes if possible”.",
+          "author": "hyperhello",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49547405",
+      "title": "Ask HN: Are technical blogs dead?",
+      "link": "https://news.ycombinator.com/item?id=49547405",
+      "domain": "news.ycombinator.com",
+      "author": "quaintdev",
+      "score": 10,
+      "comment_count": 19,
+      "created_ts": 1788424232,
+      "is_internal": true,
+      "post_text": "I think the traffic for technical blogs has plummeted. Why would anyone searh for technical blog when they can just ask their agent about it? Also I am seeing less and less of them here on hacker news.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49548507",
+      "title": "Returning from the AI brain-rot state, re-take the thinking ownership",
+      "link": "https://news.ycombinator.com/item?id=49548507",
+      "domain": "news.ycombinator.com",
+      "author": "tuleiff",
+      "score": 8,
+      "comment_count": 0,
+      "created_ts": 1788433696,
+      "is_internal": true,
+      "post_text": "I have suffered some stages of mental illness with the AI.\nThere are 4 stages:<p>1. Surprised: the first time I see the AI become valid in the real world. It is the Claude 3 family moment. I am with a god-tool in my hand.<p>2. Oversimulated: Use the god-tool to solve all the problems without thinking.<p>3. Frozen: Realize that the god-tool can solve only a few issues, and my brain is dying.<p>4. Wake-up: Understand that my brain is the main place where the problem-solving happens, not the god-tool. Then cultivate by jumping into every detail in my work with the god-tool in my hand. It&#x27;s not at the word-by-word level; it&#x27;s at the meaning-by-meaning level, where I can say: I have done it by myself. In other words, I re-take the thinking ownership.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49557875",
+      "title": "Ask HN: Who is using FPGA for ML inference?",
+      "link": "https://news.ycombinator.com/item?id=49557875",
+      "domain": "news.ycombinator.com",
+      "author": "softwarewright",
+      "score": 7,
+      "comment_count": 9,
+      "created_ts": 1788473675,
+      "is_internal": true,
+      "post_text": "With RAM price inflation, I wonder if FPGAs can be used to offload inference processing without keeping weights in RAM?  The available RAM would be for activations, KV Cache, context but not static weights.  Weights could be streamed from disk.  This approach is not for tokens&#x2F;second but throughput at a lower cost.  Possibly better answers&#x2F;kHh?  I&#x27;ve started researching this, but wonder if others have considered&#x2F;tried this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49552450",
+      "title": "Ask HN: Laptop or Desktop?",
+      "link": "https://news.ycombinator.com/item?id=49552450",
+      "domain": "news.ycombinator.com",
+      "author": "Gecko4072",
+      "score": 6,
+      "comment_count": 4,
+      "created_ts": 1788452084,
+      "is_internal": true,
+      "post_text": "What portion of you all use a laptop versus a desktop and why? Ever since I got a laptop I&#x27;ve had recurring neck pain and issues from not being strict with desk setups and using laptops here and there instead of at a table. There is no good way to use a laptop without a stand and external peripherals. It makes sense for students and traveling professionals but not really for most people I think. Thinking I will go back to a full desktop now. Bonus: Mac or PC or GNU&#x2F;Linux or BSD.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49559724",
+      "title": "Ask HN: How do you market Open Source Software?",
+      "link": "https://news.ycombinator.com/item?id=49559724",
+      "domain": "news.ycombinator.com",
+      "author": "Daniel-Pan",
+      "score": 5,
+      "comment_count": 4,
+      "created_ts": 1788488225,
+      "is_internal": true,
+      "post_text": "We are planning to move our software from closed to open source, and we are looking on how we can market this product to reach our target market.<p>Btw: \nIts an alternative to Zendesk, Jira, and linear.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Being proprietary or open source should not affect your marketing at all.  If transitioning to open source is primarily for marketing purposes, it is likely to backfire.",
+          "author": "ThrowawayR2",
+          "replies": []
+        },
+        {
+          "top": "Why do you think your target market would change? I would have guessed the target market is the same, so marketing should be straight forward: same demographics but differentiating you from the pack and how it matters.",
+          "author": "andsoitis",
+          "replies": []
+        },
+        {
+          "top": "My approach:\n1.Open source + polished README\n2.Listed on directories like create.io\n3.Added to awesome-rust\n4.Did a Show HN post\nThat's all I've done so far. 60 stars currently.",
+          "author": "mandarinclips",
+          "replies": []
+        },
+        {
+          "top": "Are you asking about marketing techniques as in advertising strategies, or are you asking about the underlying business model?\nIf the former: the README.md is by far the most important artifact, and specifically the first scroll or two. The call to action (installing/trying it out/clicking to your pricing page/whatever) should be clear and upfront and easy.\nHaving a website that uses popular doc rendering frameworks also help -- people will recognize the look and feel and feel somewhat assured. Tho I suppose a task planning app prolly has docs figured out.\nGodspeed, and thanks for sharing your work with the world! We need it, and we appreciate it.",
+          "author": "bbor",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49557192",
+      "title": "Ask HN: Could AI eventually build god?",
+      "link": "https://news.ycombinator.com/item?id=49557192",
+      "domain": "news.ycombinator.com",
+      "author": "olirex99",
+      "score": 5,
+      "comment_count": 8,
+      "created_ts": 1788470373,
+      "is_internal": true,
+      "post_text": "If a less intelligent species, like humans, is able to create a more intelligent species (like AGI), does that mean that at some point a species will be able to build the most intelligent species possible and essentially build God?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49560168",
+      "title": "Ask HN: Why do many websites use a sign-in code instead of a password?",
+      "link": "https://news.ycombinator.com/item?id=49560168",
+      "domain": "news.ycombinator.com",
+      "author": "bariumbitmap",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1788492367,
+      "is_internal": true,
+      "post_text": "I&#x27;ve noticed several websites that exclusively a single-use login code for authentication. This is a 4-digit or 6-digit login code sent via email <i>instead</i> of a password, it&#x27;s not 2FA or a passkey. (I would rather they don&#x27;t do this as it means I have to open my email instead of using a password manager.) Some of them also send a magic link. Examples of websites that appear to do this exclusively (no password): substack.com, medium.com, geoguessr.com, bandsintown.com. There are also websites that default to this but will also accept passwords (e.g. spotify.com). There are also websites that will accept either a passwords or login code, but if you enter a password then they require a login code anyway (e.g. homedpot.com).<p>Is this becoming more common, and if so why?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "well more security,if you just need to enter your password,friends and family,someone might already know so instead they send a email.",
+          "author": "nirmeet011011",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49550324",
+      "title": "Ask HN: How do you guys keep up with the most cost-effective AI models?",
+      "link": "https://news.ycombinator.com/item?id=49550324",
+      "domain": "news.ycombinator.com",
+      "author": "solomonmwalker",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1788445446,
+      "is_internal": true,
+      "post_text": "I see lots of post on here discussing the most cost-effective models for coding and people swapping around a lot.<p>I use Claude Code for 20 bucks a month, but I&#x27;m interested in trying out other models.<p>Do you guys have a website that ranks the models or do you try them out yourselves? If you try them out yourselves, what&#x27;s the easiest way to quickly swap between different AI models when doing local work?<p>Thanks for the time!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49557687",
+      "title": "Ask HN: Is there a test for measuring cognitive affects from LLM usage?",
+      "link": "https://news.ycombinator.com/item?id=49557687",
+      "domain": "news.ycombinator.com",
+      "author": "niwrad",
+      "score": 4,
+      "comment_count": 0,
+      "created_ts": 1788472609,
+      "is_internal": true,
+      "post_text": "A part of me feels like I may be loosing my ability to think.<p>Is there a test I can periodically do to see how my cognitive abilities are being affected by my AI usage all day?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49556698",
+      "title": "Ask HN: How do we build a team? (bootstrapped B2B startup)",
+      "link": "https://news.ycombinator.com/item?id=49556698",
+      "domain": "news.ycombinator.com",
+      "author": "theonlinx",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1788468369,
+      "is_internal": true,
+      "post_text": "Hi everyone, I&#x27;m 22 years old and I own a start up with my co-founder, we both just graduated college and we built a b2b SaaS that&#x27;s live with 60 users and growing. We&#x27;ve been live since beginning of June.<p>I wanted to post on here because we need help, real help and we don&#x27;t know where to look or who to ask or how to find reliable people. We see teams like Cluely and Whop and obviously they&#x27;re billion dollar companies but how do people in start ups find a team like that? Not just employees but a team, a family almost. It is just us two and we&#x27;re totally boot strapped and dialed in and we&#x27;ve been making it work I think really really well but as we keep growing new things keep coming up and new tasks to do, new things to learn as a company grows especially since its our first.<p>I was just wondering maybe some stories of how other people have found the rest of their team, that doesn&#x27;t involve moving out to SF lol.<p>We started on our project October 2025, had the MVP built January&#x2F;February and some free live users on there, then we officially launched to the pubic in June.<p>We are the sales guys, customer support, coders, marketers, content creators, managers, just everything right now. And we both just started our full time jobs that we graduated college for, that have nothing to do with our startup, the entire summer we were free to work on everything and that&#x27;s why we got so far but now we&#x27;re not going to have as much time.<p>Our software is working and people are interested in it and using it. There&#x27;s real potential for this to be something, especially just based on the traction we&#x27;ve gotten with regular organic content on TikTok and one meta ad.<p>The goal is to be able to fully fund ourselves from the startup, go all in on it where we can devote our full time attention to it and keep growing it and the team.<p>We&#x27;re babies at this thing, we&#x27;re basically still in the womb and we&#x27;re just trying to absorb as much information and guidance as possible, sorry I chose not to name the software here, just looking for advice on building a real team and I&#x27;d love to hear your guys&#x27; stories.<p>Thanks",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup",
+        "advice",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49553531",
+      "title": "Ask HN: Accountants working with ecommerce",
+      "link": "https://news.ycombinator.com/item?id=49553531",
+      "domain": "news.ycombinator.com",
+      "author": "vasyl_kyryliuk",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1788456296,
+      "is_internal": true,
+      "post_text": "when you review a VAT transaction months later, what do you actually need to see to trust the original tax treatment?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49552230",
+      "title": "Ask HN: Can we classify AI as: subhuman, quasihuman, human, superhumam?",
+      "link": "https://news.ycombinator.com/item?id=49552230",
+      "domain": "news.ycombinator.com",
+      "author": "aunekiaru",
+      "score": 3,
+      "comment_count": 5,
+      "created_ts": 1788451313,
+      "is_internal": true,
+      "post_text": "Gen 1: subhuman, eq: machine translation, game AI&#x2F;chess, timeline prediction&#x2F;protein folding...(1980 - 2020 era).<p>Gen 2: quasihuman: human assistant that requires human-in-the-loop: human evaluates, gives directions, asks, tries, implements. &quot;you&#x27;re here&quot;: LLMs&#x2F;chatbots (2020s).<p>Gen 3: human worker substitute. While not strictly &#x27;human&#x27; per se, without will and emotions it can be considered &quot;human job replacement&quot; as it eliminates the need for human-in-the-loop as it verifies successful compilation, rates visual result (videogames it produces&#x2F;videos&#x2F;images), validates fiction it writes, marketing strategies&#x2F;trading strategies and learns from mistakes and improves after many attempts until it finishes task with acceptable result.<p>Gen 4: Superhuman: like gen 4 but + having full recursive self-improvement (it updates&#x2F;rewrites its own code and recopmiles while performing a task - full awareness)? Theoretically gen 4 can be ASI if the seed is &quot;make better AI which makes better AI and so on until optimal AI is achieved given the laws of physics&quot; (good learning and ability to update everything should achieve it - though compute limitations may prevent it and well...regulations).<p>I know the definition is suboptimal and people are extremely opinionated on AI to a point people have different definitions about AGI and ASI but this is at least some definition! I believe after &quot;dry&quot; chatbots in the 30s we may switch to less user-friendly yet smarter and more useful AIs, you will not longer see &quot;you&#x27;re absolutely right!&quot; and have to spent hours to evaluate and correct errors with the AI, you will just start it and wait for it to finish, kind of like downloading a movie in the old days. Too sci-fi&#x2F;wrong? Too pessimistic...because Yudkowski&#x2F;Terminator is coming to get us in 2029? 10x for your comments!",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49558794",
+      "title": "Ask HN: What is the ideal email domain setup?",
+      "link": "https://news.ycombinator.com/item?id=49558794",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 2,
+      "comment_count": 1,
+      "created_ts": 1788480240,
+      "is_internal": true,
+      "post_text": "For a long term setup what do you use? I am debating a few setups in fastmail.<p>Generic custom domain with 1Password uniques for all online signups\nAlso have a standard name@ here for in person provider sign ups<p>A family domain purely given to friends and family to share correspondence.<p>Is the second domain worth it? Inevitably someone will share it and end its “anonymity”?<p>Is it worth running a Gmail for any reason and forwarding that in?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
