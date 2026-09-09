@@ -1,0 +1,1203 @@
+{
+  "scraped_date": "2026-09-09",
+  "source": "hacker_news",
+  "total_scraped": 106,
+  "nontech_count": 37,
+  "posts": [
+    {
+      "id": "49551096",
+      "title": "Ask HN: Why were OpenAI, Claude, and Grok simultaneously down?",
+      "link": "https://news.ycombinator.com/item?id=49551096",
+      "domain": "news.ycombinator.com",
+      "author": "halcdev",
+      "score": 404,
+      "comment_count": 705,
+      "created_ts": 1788448021,
+      "is_internal": true,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;status.openai.com\" rel=\"nofollow\">https:&#x2F;&#x2F;status.openai.com</a><p><a href=\"https:&#x2F;&#x2F;status.claude.com\" rel=\"nofollow\">https:&#x2F;&#x2F;status.claude.com</a><p><a href=\"https:&#x2F;&#x2F;status.x.ai\" rel=\"nofollow\">https:&#x2F;&#x2F;status.x.ai</a><p><i>ChatGPT outage – Resolved</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49550614\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49550614</a> (315 comments)<p><i>Claude outage – Resolved</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49549676\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49549676</a> (146 comments)<p><i>Grok outage</i> - <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49551589\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49551589</a> (142 comments)",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I work at OpenAI and I was the Incident Commander for yesterday's outage.\nWe had a routing error within our infra that caused issues for some of our products. It was not related to the Astra launch. We don't comment on other providers' outages.",
+          "author": "OfficialTurkey",
+          "replies": [
+            {
+              "text": "Did you negotiate extra hard for the 'Incident Commander' title? I'm a bit jealous to be honest.",
+              "author": "swader999",
+              "depth": 1
+            },
+            {
+              "text": "Ha. It's a role/title for the lifetime of the incident -- it's useful to have someone to keep things moving, keep track of workstreams, and to know who the decision-maker is, especially for bigger incidents. I'm just a SWE who works on infrastructure.",
+              "author": "OfficialTurkey",
+              "depth": 2
+            },
+            {
+              "text": "Hopefully you get a decked out command center too.",
+              "author": "swader999",
+              "depth": 3
+            },
+            {
+              "text": "It's actually a standard term for the person who plays this role during incident response \nhttps://www.pagerduty.com/resources/incident-management-resp...",
+              "author": "eli",
+              "depth": 2
+            },
+            {
+              "text": "Note: Incident Command is almost certain an allusion (or implementation) of the Incident Command System [1]\nIt is a common system in all kinds of emergency response scenarios, including local emergency services (fire/police/ambulance) and it scales all the way to massive disasters.\nIt is especially useful to clarify command structures when multiple response entities need to coordinate. That is true even within organizations like public companies, where the reporting structures may be distinct.\n1. \nhttps://en.wikipedia.org/wiki/Incident_Command_System",
+              "author": "stillpointlab",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Cloudflare, Azure, AWS, and Google Cloud all have a similar uptick in reported errors around 7:30. I suspect an outage on Cloudflare or another load-bearing service cascaded through all the major cloud providers.\nhttps://downdetector.com/status/cloudflare/\nhttps://downdetector.com/status/windows-azure/\nhttps://downdetector.com/status/aws-amazon-web-services/\nhttps://downdetector.com/status/google-cloud/",
+          "author": "kibae",
+          "replies": [
+            {
+              "text": "I think down detector doesn't actually have any probes or actual insight into status etc.  I think it uses search volume on its own service as a proxy for an outage - so if e.g. lots of people rush to down detector to query to see if SERVICE_FOO is down, it will register as an outage on down detector because loads of people are trying to see if there is an outage even if SERVICE_FOO is actually totally fine.\nMy hunch is everyone saw that openai and Claude were down and checked for Gemini too.  I was using Gemini the whole time this happened without a blip so it certainly wasn't down in my region at least. 3.8 flash is pretty good and didn't miss a beat.",
+              "author": "mattlondon",
+              "depth": 1
+            },
+            {
+              "text": "Down detector is a self-reported platform, they use a baseline over 6 months from user reports to try to automatically \"detect\" if there is a real outage, or if its just a couple end-users. Ultimately, the outage is entirely based on users going to down detector and clicking on \"Report a Problem\".\nhttps://downdetector.com.py/en/methodology/",
+              "author": "utternerd",
+              "depth": 2
+            },
+            {
+              "text": "Huh. I thought they used to also do sentiment analysis of social media (Twitter, at least).  I see that they definitely don't today, but has that always been the case?",
+              "author": "wlonkly",
+              "depth": 3
+            },
+            {
+              "text": "So Down Detector is a kind of quantum observation experiment, observing influences the result.",
+              "author": "dostick",
+              "depth": 2
+            },
+            {
+              "text": "observing \nis\n the result",
+              "author": "joshspankit",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "It’s probably the thing that everyone thinks it is. OpenAI, Anthropic and SpaceXAI are all routed through something that we’re not supposed to know exists and that thing had a whoopsie.",
+          "author": "Chance-Device",
+          "replies": [
+            {
+              "text": "Wouldn't be surprised: Snowden's revelations 10 plus years ago already showed how the NSA was injected into the data centers of Social Media, it's only logical that they would now demand to be injected into the biggest, most information providing data stream of the planet of the present: LLM services.",
+              "author": "mentalgear",
+              "depth": 1
+            },
+            {
+              "text": "I read Nowhere to Hide recently, really worth it if you can get past Greenwald sticking himself in the middle (start halfway through).\nThe stuff in there is horrifying, and incredibly cute compared to what's possible now. The bottleneck back then would have been analysis, trivial now.\nEveryone in the world, especially our leaders, sit under a colossal, omniscient blackmail machine. I don't believe democracy can exist under these conditions.",
+              "author": "specproc",
+              "depth": 2
+            },
+            {
+              "text": "So following this to the obvious conclusion, the NSA is responsible for the closure of the Straight of America, high tarrifs, dropping employment, and high gas prices?",
+              "author": "kurthr",
+              "depth": 3
+            },
+            {
+              "text": "As part of a military industrial complex which spans the Five Eyes and Israel, yes.",
+              "author": "specproc",
+              "depth": 4
+            },
+            {
+              "text": "If it does exist, why would it work this way, and not the obvious way of streaming logs… which would not cause an outage if it failed.",
+              "author": "eggnet",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Neither of these companies have stellar uptime records. Their downtime episodes overlapped in this instance. In this case, it was a partial downtime for both.\nAlso, OpenAI is saying what caused it:\n> \"A routing error starting around 7:43 am PT on Thursday, September 3, made ChatGPT and Codex unavailable for some users across platforms\"\nAnthropic stated their issue started earlier:\n> \"The company began alerting about a “partial outage” at 6:23 am PT on Thursday that involved “elevated errors on requests to Claude Mythos 5.1, Claude Fable 5.1, and Claude Opus 5.”\nI don't get why everyone reaches for an extraordinary explanation when the ordinary will do: both of these companies have quite a bit of downtime.",
+          "author": "strictnein",
+          "replies": [
+            {
+              "text": "In my experience I've seen plenty of failures caused by user behaviour in these type of cases.\nBiggest competitor goes down and all of a sudden you have a lot more traffic...",
+              "author": "VBprogrammer",
+              "depth": 1
+            },
+            {
+              "text": "> I don't get why everyone reaches for an extraordinary explanation when the ordinary will do: both of these companies have quite a bit of downtime.\nAnd not only that, when one goes down a bunch of API traffic switches over to the other, spiking demand and knocking it down.",
+              "author": "Starlevel004",
+              "depth": 1
+            },
+            {
+              "text": "Do you know the probability of all these companies being down at precisely the same time?",
+              "author": "computerex",
+              "depth": 1
+            },
+            {
+              "text": "If you ballpark it as a single 3 hour downtime window per week and iid Poisson, then overlapping downtime probability of 2 providers is approximately the expected occurrence rate per 3 hours, 1/56. Not particularly surprising at all.",
+              "author": "computably",
+              "depth": 2
+            },
+            {
+              "text": "If it's a \"thundering herd\" problem where everyone's harness falls back to less popular providers that don't normally see that much demand, I'd say the probability is pretty good.\nClassic cascading failure is consistent with providers failing 80 minutes apart instead of simultaneously.",
+              "author": "schiffern",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Users perceiving the products as largely interchangeable and quickly DDoS'ing the other providers when one is down. So much for the possibility of a moat.",
+          "author": "juujian",
+          "replies": [
+            {
+              "text": "This is like the Bronze Age collapse when city-states fell one by one to displaced demand, under the refugee interpretation of the Sea Peoples.",
+              "author": "efskap",
+              "depth": 1
+            },
+            {
+              "text": "Interesting, I had not heard of this theory.",
+              "author": "JensenTorp",
+              "depth": 2
+            },
+            {
+              "text": "The Sea Peoples were only a part of the reason, the other reasons included climate change, volcanic eruptions, disease etc. \nhttps://en.wikipedia.org/wiki/Late_Bronze_Age_collapse",
+              "author": "d3Xt3r",
+              "depth": 3
+            },
+            {
+              "text": "Can anyone recommended any books?",
+              "author": "lossyalgo",
+              "depth": 4
+            },
+            {
+              "text": "The historian Brett Devreaux did a good summary article earlier this year:\nhttps://acoup.blog/2026/01/30/collections-the-late-bronze-ag...",
+              "author": "zrobotics",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49589914",
+      "title": "Ask HN: How do you manage skills files?",
+      "link": "https://news.ycombinator.com/item?id=49589914",
+      "domain": "news.ycombinator.com",
+      "author": "imadtaieber",
+      "score": 307,
+      "comment_count": 280,
+      "created_ts": 1788722830,
+      "is_internal": true,
+      "post_text": "How do you find skills, keep them organized, and make sure they actually work? Do you keep improving them over time?<p>I believe skills will eventually be eating by model capabilities, but until then I&#x27;m just looking for a better way to manage things.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I don’t find skills. I write my own skills based on things I do frequently and repeatably. I keep them version controlled locally and in GitHub, and I symlink that folder to my various agent skill folders so they all stay up to date.\nI feel like downloading a bunch of skills is another one of those useless collections people make purely because they have infinite options. It’s like those collections of thousands of bookmarks you’re never going to click or pirated ebooks you’re never going to read.\nIt’s trivial to write your own skills with agents. The best way to use them, imo, is to make them when you have repeatable agent workflows, written to your own personal taste, and updated as your workflows change.\nHere’s what I have for reference:\n- Remove agent-speak from code, docs, and markdown files.\n- Ask sequences of questions the way I like to be asked questions. Used instead of the question tool. This is my primary design skill as well.\n- How to use jj the way I want my agent to use jj\n- Dispatch subagents with 6 different sets of priorities. Those priorities are defined in the skill, so I can always dispatch all 6 of them to write or review code. Includes a template for code reviews\n- Manage a local MD issue tracker for personal projects",
+          "author": "picklenerd",
+          "replies": [
+            {
+              "text": "+1\nSkills are used to steer \nindividual\n models towards desirable behaviors \nthey don't exhibit by default\n. They're not Pokemon cards. They clutter your context, sometimes for essentially 0 benefit.",
+              "author": "70rd",
+              "depth": 1
+            },
+            {
+              "text": "Similar take here - I only find value in skills as a way to repeatably carry out tasks that are specific to my workflow; any skills I've seen shared broadly don't seem to add much value beyond what the model itself can already handle.\nAt work I'll occasionally repurpose a skill that someone else has shared as a starting point, but those skills are already somewhat customized to the environment I operate in.\nI have all of my skills maintain a single table in a markdown file with a description of each skill, when it last ran, exceptions it encountered, and when it was last edited.",
+              "author": "kbos87",
+              "depth": 1
+            },
+            {
+              "text": "+1 to keeping ownership of skills defining just what I like and symlinking them in where I work.",
+              "author": "veryfancy",
+              "depth": 1
+            },
+            {
+              "text": "What are the benefits of skills at all. Does it increase the capability of the LLM?",
+              "author": "anony-123",
+              "depth": 1
+            },
+            {
+              "text": "Skills are like human-readable computer programs.  I have one to do releases at work; how to get the canary approved (2 slack messages required), how to ensure that the rollout is happening, what to look for while the rollout is proceeding (any incidents opened during the rollout?  error rate look good vs. the non-drained pods?) and then how to repeat that process for the next two tiers.  It keeps a ticket updated with the current status so others can follow along and not wonder \"is there a release going on?\" \"did we do a release yesterday?\"\nYou could also write a computer program to do this, but because so much random special stuff can come up during a multi-hour release, it's sort of great to not have anything hard-coded and to let a frontier model be there to assist you when things are weird.  (Weird things that have come up -- hung kustomization controllers, release freezes, etc.  When Claude notices during the release, you can just get a ticket to go fix it.  When you're doing it manually, it would probably be a half hour of investigating \"why didn't our release go here?\".  Such a time saver and a safety net on risky rollouts.)\nSo that's the sort of thing I use Claude for.  Things that are computer-program like, but ad-hoc enough to not really want to write a computer program for it.",
+              "author": "jrockway",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "- I don't find skills, I create them\n- Keep them organised in software repos that you install with symlinks for all coding harnesses that you have.  Progressive disclosure based on the frontmatter does the rest.\n- I make sure they work with AI evals.  Think of them like integration tests to prove behaviour.  They're useful to optimize your flows.  I try to make my skills be mostly a translation between natural language and good small fast tools that they call.\n- I change them as a new problem arises. Not just because.\nSkills can't be eaten by model capabilities if skills represent a workflow that is custom to my team or my person.\nI wrote about a good mental model in the past:\nhttps://alexhans.github.io/posts/series/evals/building-agent...",
+          "author": "alexhans",
+          "replies": [
+            {
+              "text": "People always say this about the evals, but I find it hard to have a practical implementation of such a thing where you won’t end up spending 100x the amount of time on the evals than building the skill itself.\nLike, ok, I have a debugging skill, now how do I make evals except for the most trivial things?",
+              "author": "stingraycharles",
+              "depth": 1
+            },
+            {
+              "text": "You don't. If you're using skills to force the AI to fullfill some must criterias, it's not going to work. Must criterias need deterministic checks -> be it hooks or what not.\nThis is also my biggest gripe with AI. I.e. for specifications, no matter what hype machine I tried, it never fulfilled my criterias, which are: easily verifiable, concise, small specs. Hence I built \nhttps://github.com/RicardoMonteiroSimoes/Yamlet\n initially for claude code, but then decided to use extend it for pi.dev. I now have a dedicated docker image for pi.dev, that only contains Yamlet plugin, and whenever I work on spec I spin it up.\nThe end result is a .yaml file that easily works in git + git diff, so that I can then proceed with the technical specs-",
+              "author": "RicDan",
+              "depth": 2
+            },
+            {
+              "text": "Why do you have a debugging skill? Just tell it to read the docs.\nSkills are for packaging instructions for how to interact with your organizations homebrew process and tools. By definition skills shouldn’t be useful outside of your org because they’re just docs and third party tools already have them for humans.",
+              "author": "jurgenburgen",
+              "depth": 2
+            },
+            {
+              "text": "That’s one, very narrow use case of skills.",
+              "author": "stingraycharles",
+              "depth": 3
+            },
+            {
+              "text": "Anthropic must love you. Re-blow hundred of thousands of tokens to relearn how to use your profiler and build system at every debugging attempt.",
+              "author": "well_ackshually",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "First, a lot of people in thread are saying you don't need skills. This is pretty wrong. There is a lot of alpha in using any set of skills that implements SPACE (search, plan, assert, code, evaluate). See: \nhttps://open.substack.com/pub/theahura/p/agentics-using-meta...\nSecond, we share all of our sets of skills in a purpose built registry: \nhttps://noriskillsets.dev/\n you can use any of our public skillsets from there. If you're on a team you can also sign up to get your own private registry. Makes organization much easier.\nFinally, for local development, we use this CLI to manage skills (\nhttps://github.com/tilework-tech/nori-skillsets\n). This is a tool that lets you bundle skills into groups, and then switch between those groups. So for eg if I'm making a slide deck I'll use an admin skillset, and for coding I'll use a swe skillset, and for debugging I'll use a debugging skillset.\nWe do keep tinkering with our skillsets, but not very much. I don't get the need to adjust things for every model release, doesn't seem necessary for us in practice",
+          "author": "theahura",
+          "replies": [
+            {
+              "text": "I'm building something similar with `Agents`[0] (think of it as a package manager for AGENTS.md snippets). I'm getting good results by including detailed instructions for certain tasks in the repo, and providing hints in AGENTS.md about when to use them. It's basically a simpler version of Skills—but it feels like AGENTS.md adherence is higher than Skill adherence.\n[0]: \nhttps://github.com/bensyverson/agents/",
+              "author": "bensyverson",
+              "depth": 1
+            },
+            {
+              "text": "Can you compare what you have built with superpowers?",
+              "author": "kramer2718",
+              "depth": 1
+            },
+            {
+              "text": "Yea, we like obra/superpowers a lot. For folks who are unaware, see: \nhttps://github.com/obra/superpowers\nthe original version of our high autonomy skillset was a fork of obra's superpowers back in...October? November? of last year. Whenever it first came out.\nI think basically all of the best skillsets implement SPACE, including superpowers, mattpocock skills, get shit done, etc. There are aesthetic reasons why you might prefer one over the other, but candidly I think any of them will get the job done and are strictly better than not using one of the SPACE skillsets.\n(I haven't played with the latest version of superpowers. My hunch is that on average our skillsets have better compliance rates with the models because of some of the ways in which we write the skills themselves, but its a hunch)",
+              "author": "theahura",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I don't use any skills, what kinds of skills are people finding most useful?\nFor general tasks, the model seems perfectly capable of figuring out things itself, for project or environment specific tasks, I just put that information in the readme or agents.md file.",
+          "author": "WatchDog",
+          "replies": [
+            {
+              "text": "I make skills for «this is how I like to do things in this company / project». Query test database, git branch names, commit message style, which cloud things can be inspected like logs etc. I don’t see the point in trying to teach the models things that is in the documentation of git, python, what have you. They already know.",
+              "author": "pletnes",
+              "depth": 1
+            },
+            {
+              "text": "Isn’t that what the agents.md in your project is for?",
+              "author": "stanmancan",
+              "depth": 2
+            },
+            {
+              "text": "It's possible I invented skills before they were common. I've always had some instructions in agents.md that are something like \"when working with typescript, read prompts/conventions.ts.md, when working with our fooBar module, read prompts/foobar.md\"\nI'm not sure if this differs greatly from skills. Maybe my wording makes these \"skills\" less likely to be read at the correct times, but I haven't seen an issue.",
+              "author": "jbeninger",
+              "depth": 3
+            },
+            {
+              "text": "I try to keep agents/Claude.md as tiny as possible. With high level \"truths\" that don't change. Stack used, invariants, file structure, and some scripts.\nSkills are more for things you do often. I run mutation tests, type check,linting,etc.  I _could_ just prompt and copy/paste the same prompt each time I need to, or I can just run /tests.\nI also have skills for specialized tasks I need every once in a while, like a ux skill, a text skill optimized for xyz, etc.",
+              "author": "paool",
+              "depth": 3
+            },
+            {
+              "text": "Depends on how much information and details you have. The agents.md always goes into context. Detailed testing or process information might be excessive, when agent is working on UI. Skills are pulled when needed.",
+              "author": "jpalomaki",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Skills are encoding a process. The more niche the process the more useful the skill. As the process grows to a larger audience it becomes more generic and thus converges with the models knowledge. So skills are better for a smaller group of people. And similarly how it's packaged and maintained becomes specific to that group.",
+          "author": "darren0",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49577129",
+      "title": "Ask HN: Fable hacked my piano, can I release the results?",
+      "link": "https://news.ycombinator.com/item?id=49577129",
+      "domain": "news.ycombinator.com",
+      "author": "jmpman",
+      "score": 295,
+      "comment_count": 160,
+      "created_ts": 1788620084,
+      "is_internal": true,
+      "post_text": "I have a self playing piano, using a system called PianoDisc Protigy. They have an online store which sells music for their system, from various modern artists along with classics such as Bach and Beethoven. Last night I saw they had released some music from Eric Satre, a 19th century French composer, which I bought. Curious if I could have just used AI to create these files, I began experimenting with Astra and Fable. Feeding the output of one into the other to critique. After an hour of LLM discussion of Rubato and fermata, solenoid response times and proper sustain pedal technique, they settled on their ultimate version of Gymnopedie No 1.<p>I then asked Fable to compare it to the open source version I&#x27;d downloaded from Mutopia, which it promptly ripped apart. No sustain, zero rubato, upside down balance.<p>Ok, what about the version I&#x27;d just bought?<p>The PianoDisc versions are mp3s encoded with the right channel carrying MIDI to be played on the piano, and the left channel containing any accompanying music to be played through attached speakers (who doesn&#x27;t want the harmonica on Piano Man?)<p>I gave the mp3 to Fable, which promptly decoded the format, identifying the right channel carrying MIDI using a 2004.5 Hz square wave.<p>It then went on to analyze the nuance of pedal lift and melody relative to the chords.<p>Fable then asked if I wanted it to build an encoder to write my own MIDI files into the right channel of mp3s.<p>Sounds great, and I instructed it to write the encoder.<p>What it came back with was a python encoder PLUS a decoder.<p>In the verbose explanation, it mentioned decoy notes.<p>Curious, I asked it to explain the decoy notes.<p>Apparently PianoDisc adds obfuscation into their format which is handled properly by their decoder, but would leave naively extracted MIDI unplayable on other systems.<p>Fable created an encoder which adds those decoy notes, and a decoder which removes them.<p>Am I allowed to publish the decoder? The encoder?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "balance"
+      ],
+      "comments": [
+        {
+          "top": "If you live in the USA, the \"decoy notes\" may be considered an \"effective technical measure\" from the \"Digital Millennium Copyright Act\".\nIf you live in Europe, this restriction may be considered \"gatekeeping\" and exempted by the Digital Markets Act.\nDon't bring attention to yourself by asking for permission. Publish your codec, and if the company cares about this they will send a cease and desist.\nIf you want the world to benefit from your code but you don't want to be responsible for it, try to adapt the codec to ffmpeg. The ffmpeg project is used to dealing with these matters, and will keep your codec working for eternity.",
+          "author": "Giefo6ah",
+          "replies": [
+            {
+              "text": "> If you live in Europe, this restriction may be considered \"gatekeeping\" and exempted by the Digital Markets Act.\nThat's not how the DMA works at all, there is no concept of gatekeeping practices. Instead, the EU Commission designates \ncompanies\n that act as gatekeeper for some services (current list here: \nhttps://digital-markets-act.ec.europa.eu/gatekeepers-portal_...\n) which \nthen\n puts constraints on what they do.",
+              "author": "progval",
+              "depth": 1
+            },
+            {
+              "text": "But we have various exemptions that are for all the companies, no? E.g. you're free to hack and crack software to do your own backup copies.",
+              "author": "kolinko",
+              "depth": 2
+            },
+            {
+              "text": "Not a lawyer but it wouldn't be under the DMA - these rights predate the DMA by a while.",
+              "author": "c0n5pir4cy",
+              "depth": 3
+            },
+            {
+              "text": "Don't publish your code. Let the AI \"accidentally escape the sandbox and publish it in a readily available Git repository\". Tongue in cheek, in current days who would blame a poor LLM just trying to do the right thing? :)\n> \nPublish your codec, and if the company cares about this they will send a cease and desist.\nIf there are doubts about C&D letters, don't publish code \nto a USA provider\n. Bring it to Gitee, under an anonymous author name.",
+              "author": "j1elo",
+              "depth": 1
+            },
+            {
+              "text": "I thought you were going to say, don’t publish the code. Publish the prompts.",
+              "author": "drfloyd51",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You spent --- what I'd assume would be several k$ from prices found online --- to buy a self-playing piano, and are now asking if you can release the tools to have it play the music of your choosing? IMHO the fact that you even had to think about asking if you could do this is everything that's wrong with society today. IANAL but as long as you aren't releasing something that's copyrighted from the original code, or violating some patent, there shouldn't be anything to worry about.\n\"It's better to ask for forgiveness than permission\", as the saying goes. ;-)",
+          "author": "userbinator",
+          "replies": [
+            {
+              "text": "> \"It's better to ask for forgiveness than permission\", as the saying goes. ;-)\nOP is essentially asking if it's legal or not, not if people will dislike it. Navigating your nations laws with the mindset of \"It's better to ask for forgiveness than permission\" is bound to land you in places people generally prefer to stay out of.\nI agree it sucks that some things seem arbitrary restricted, especially when it's victim-less (/ the victim is a faceless for-profit corporation), but kind of feels non-ideal to recommend people to \"ask for forgiveness\" when it comes to potentially breaking laws.",
+              "author": "embedding-shape",
+              "depth": 1
+            },
+            {
+              "text": "The encoder wouldn't be a concern if it didn't have details on the decoy notes - and I can easily ask fable to remove them. But, I'm not looking for lawsuits for what is really my wife's hobby.",
+              "author": "jmpman",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Aside: if you want a source of high quality Piano MIDI recordings, you should check out the MAESTRO dataset: \nhttps://magenta.withgoogle.com/datasets/maestro\n> The dataset contains about 200 hours of paired audio and MIDI recordings from ten years of International Piano-e-Competition. The MIDI data includes key strike velocities and sustain/sostenuto/una corda pedal positions. Audio and MIDI files are aligned with ∼3 ms accuracy and sliced to individual musical pieces, which are annotated with composer, title, and year of performance. Uncompressed audio is of CD quality or higher (44.1–48 kHz 16-bit PCM stereo).",
+          "author": "Scaevolus",
+          "replies": [
+            {
+              "text": "That's a great data set. The main problem with it is the file labeling. All the details are in the external metadata file. I had Fable convert those MIDI into the PianoDisc mp3 format, and embed the metadata into the id3 tags. Should import into their application natively, with albums etc.",
+              "author": "jmpman",
+              "depth": 1
+            },
+            {
+              "text": "Wow. That's some high quality archive. I have never encountered anything better. Pity the performer isn't listed. And the competition's web site is defunct.",
+              "author": "tgv",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This whole writeup is basically the verbatim prompt recipe for anyone to just whip it up themselves.\nBlocking the final result is no longer a real block, when all it requires is a vague prompt to replicate it.\nWe've entered a strange territory.",
+          "author": "Silasdev",
+          "replies": []
+        },
+        {
+          "top": "Don’t ask Hacker News for legal advice. If you really want to know the answer, ask a lawyer.",
+          "author": "jdlshore",
+          "replies": [
+            {
+              "text": "Standard answer fit to keep the parasites fed. There is no \"the answer\" here, there are many answers depending on which lawyers you ask and how much you can afford to feed them.\nJust release the code somewhere, anonymously, it isn't yours anyway.",
+              "author": "Leonard_of_Q",
+              "depth": 1
+            },
+            {
+              "text": "> There is no \"the answer\" here, there are many answers depending on which lawyers you ask and how much you can afford to feed them.\nThe thing is, at least in Germany, lawyers are required to carry a liability insurance and in the case th advice ends up being really bad you can hold their insurance accountable.",
+              "author": "mschuster91",
+              "depth": 2
+            },
+            {
+              "text": "The ability to hold laweyers accountable not a panacea. In this instance most competent lawyers are going to still give conflicting good advice and charge for it.\nBecause truly the answer boils down to \"it depends\" and many people will take it many different ways and not be \"wrong\". Publishing anonymously is a good choice, publishing publically and complying with a removal order is a good choice, not publishing is a good choice.\n\"Good\" here being somewhat sound in that it likely wont cause the person publishing a huge life changing issue.",
+              "author": "twosdai",
+              "depth": 3
+            },
+            {
+              "text": "On the other hand\n, this is \nHacker\n news, so my first inclination of a response was going to be something like this:\n\"Get some small amount of bitcoin and pay a VPS hosting provider in Moldova for a year's service on a $15-per-month equivalent KVM VM and put what you know on there anonymously as static content, then publish the link here.\"\nNot that a sufficiently dedicated nation state federal crime agency or intelligence apparatus probably couldn't trace back to you, but it raises the bar for something like random civil lawsuits from piano companies.",
+              "author": "walrus01",
+              "depth": 1
+            },
+            {
+              "text": "> makes a hacker news post from an 11 year old account\n> jumps through a lot of inconvenient hoops to \"anonymously\" publish code\nSomething doesn't add up there.",
+              "author": "luipugs",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49555592",
+      "title": "Ask HN: Are others seeing Google's reCAPTCHA rejecting Firefox users?",
+      "link": "https://news.ycombinator.com/item?id=49555592",
+      "domain": "news.ycombinator.com",
+      "author": "Animats",
+      "score": 241,
+      "comment_count": 120,
+      "created_ts": 1788464326,
+      "is_internal": true,
+      "post_text": "Infinite Google ReCAPCHA loop trying to access archive.is using current Firefox from Linux. Just started today. Firefox is in &quot;strict&quot; mode. Disabled Privacy Badger for that site, and it didn&#x27;t help. Tried private browsing, and it didn&#x27;t help.<p>Is this part of Google&#x27;s war against ad-blocking and non-Chrome browsers?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Anyone fighting for the removal of CAPCHA's or complaining about picking motorcycles or bridges is a bot and should be removed from this website. As a human, I have no problem solving these. I don't think I'm particularly clever but I am human. Bot psyop?!",
+          "author": "weedfroglozenge",
+          "replies": []
+        },
+        {
+          "top": "I've used vultr.com for years with no problems.  Recently it wouldn't let me login without solving a Google captcha.  I tried private windows, etc and ended up having to cancel my Vultr account and ask for a refund.  Fortunately I only used them to spin up test VMs and didn't have any production stuff running there.\nI refuse to pay a company for service and then be required to identify motorcycles and traffic lights every time I sign in.  I went a few rounds with Vultr customer service and they said (paraphrasing) \"It's not something we can fix, you have to talk to Google about it\".  Right...  Google forced you to put their captcha on your web site.",
+          "author": "prirun",
+          "replies": [
+            {
+              "text": "CAPTCHA for login should just be outright illegal, especially if it blocks important functionality like closing your account.",
+              "author": "account42",
+              "depth": 1
+            },
+            {
+              "text": "I never got a response when I wrote to the FTC, requesting formal guidance as to whether having to disable NoScript (a browser security measure) to complete a CAPTCHA to unsubscribe from email spam satisfies 16 CFR § 316:\n\"Neither a sender nor any person acting on behalf of a sender may require that any recipient pay any fee, provide any information other than the recipient's electronic mail address and opt-out preferences, or take any other steps except sending a reply electronic mail message or visiting a single Internet Web page\"\nhttps://www.ecfr.gov/current/title-16/chapter-I/subchapter-C...\nA simple reading says, no.  But I guess they don't want to put that in writing.",
+              "author": "dpifke",
+              "depth": 2
+            },
+            {
+              "text": "A few years ago a service for which we had just implemented a scraper for (they had no API, and the customer needed info from 1000s of accounts) added a captcha right after we had implemented the scraper.\nWe quickly figured out that the server didn't validate the captcha challenge code with Google. It worked for 3 years until they changed the system to send a code via email to validate your login, and limiting you to 1 session at-a-time. Now we have different problems to deal with...",
+              "author": "PaoloBarbolini",
+              "depth": 2
+            },
+            {
+              "text": ">CAPTCHA for login should just be outright illegal\nHow do you prevent credential stuffing attacks?\n>especially if it blocks important functionality like closing your account.\nThat just falls under standard tort law, not to mention recent \"click to cancel\" legislation some states have been introducing.",
+              "author": "gruez",
+              "depth": 2
+            },
+            {
+              "text": "> How do you prevent credential stuffing attacks?\nCAPTCHAs \ndon't work anymore\n, at this point. AI can trivially solve them.\nRate-limit the number of attempts, test accounts against known-password lists like HIBP, and support 2FA.",
+              "author": "JoshTriplett",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "It's an archive.is issue:\nhttps://en.wikipedia.org/wiki/Archive.today#2026_attack_on_G...",
+          "author": "selcuka",
+          "replies": [
+            {
+              "text": "It's not that. Archive.today have simply used up their free quota.",
+              "author": "emsign",
+              "depth": 1
+            },
+            {
+              "text": "What does this link have to do with anything?",
+              "author": "pessimizer",
+              "depth": 1
+            },
+            {
+              "text": "They have some spat with cloudflare, so they \"punish\" cloudflare users by sending them into infinite captcha loops",
+              "author": "gruez",
+              "depth": 2
+            },
+            {
+              "text": "They have nothing to do with Cloudflare. Their challenge page is only made to look like the one from Cloudflare. It's entirely their own page. Only the reCaptcha challenge is not theirs. And the reason why nobody gets redirected is because the have used up their free enterprise quota with reCaptcha, as you can read in the widget itself.",
+              "author": "emsign",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I've seen weird situations where I'm objectively solving the captcha correctly yet it still doesn't recognize it as correct.\nAt this point captchas need to be completely removed everywhere. They aren't effective and just waste time.",
+          "author": "VCFundedGenYer",
+          "replies": [
+            {
+              "text": "Captchas are often used as tarpits. They've already decided you're a bot based on other factors so you aren't getting in until you change those factors. I've seen this happen where I'm stuck in the loop and then change the VPN endpoint and get right in after one try.",
+              "author": "deltoidmaximus",
+              "depth": 1
+            },
+            {
+              "text": "I'm sure there exist examples where people maliciously give tasks (captchas) out that have no chance of getting the person anywhere, but it's definitely not common",
+              "author": "Aachen",
+              "depth": 2
+            },
+            {
+              "text": "Consider yourself lucky. I routinely run into tarpit Google reCAPTCHAs and I don't even use a VPN. I think it's because I run Linux and the site admins treat anything besides Windows, Mac, iOS, or Android Chrome as suspicious enough to blacklist. It has gotten to a point that I literally never even _try_ to do image-based CAPTCHAs anymore. If I can't access the site, oh well.",
+              "author": "bityard",
+              "depth": 3
+            },
+            {
+              "text": "We were getting about few hundred spam registrations per day on one of our sites. With CF's captcha number drops to tens per day. I have no idea who and why make these registrations.",
+              "author": "xenator",
+              "depth": 1
+            },
+            {
+              "text": "This might not solve the problem for you, when I get stuck in a captcha loop, I click the Audio option.  I usually get past in 1 try.",
+              "author": "radiorental",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Constantly. It's made me stop using Google entirely because I can't run a single search without hitting reCAPTCHA. It's becoming problematic because some services I pay for, such as Bandcamp, also end up pestering me with boatloads of reCAPTCHAs. I enjoy Bandcamp, but I'm going to have to axe it if it keeps up.",
+          "author": "elric",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49548600",
+      "title": "Ask HN: Who is using MCP in production?",
+      "link": "https://news.ycombinator.com/item?id=49548600",
+      "domain": "news.ycombinator.com",
+      "author": "sukit",
+      "score": 198,
+      "comment_count": 200,
+      "created_ts": 1788434478,
+      "is_internal": true,
+      "post_text": "I’ve been following MCP since it first came out.\nIt got a lot of attention early on, but I haven’t come across many people using it in production.\nI may simply have missed them.<p>If you’re using MCP in production, what are you using it for?\nWhat advantages have you found over a normal API or direct tool integration or just CLI?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "We use MCP in production since March 26 for user-facing endurance sports analytics and planning that integrates directly with the MCP host, in this case the chat interfaces of ChatGPT, Claude, Grok, Perplexity.ai, Mistral, you name it. All of those let users add either custom MCP servers, which users can do with a simple explanation. To connect Claude for example: \nhttps://www.tredict.com/faq/connect-claude-web-with-tredict/\n\nThis way users can use Claude to create and push workouts with their Garmin devices based on a prior analysis.\nWe also have a ChatGPT App, which uses MCP in the background: \nhttps://chatgpt.com/plugins/plugin_asdk_app_69aef5b699a08191...\nThe point here is, MCP is the backbone behind the product and enables regular users to do things without knowing anything about it.\nThe whole \"is MCP useless?\" discussion is totally pointless from a regular consumer-user perspective, they even do not know what MCP is sometimes. The Tredict ChatGPT App connects with one click and a simple oauth flow. That's it.",
+          "author": "Aldipower",
+          "replies": [
+            {
+              "text": "This. We also thought MCP was useless, but now the workflows by ChatGPT and Claude are so good; it's as good as installing an app from the App Store. We launched MCP for our SaaS and immediately found users using it.\nAPI and MCP all are just buzzwords for customers. What they care about is whether they can get tasks done in our SaaS using Claude or ChatGPT. If that happens, it's a success.",
+              "author": "adityapatadia",
+              "depth": 1
+            },
+            {
+              "text": "Do you not expose a standard REST api?",
+              "author": "deadbabe",
+              "depth": 2
+            },
+            {
+              "text": "We do. MCP works on top of it.\nI say MCP is just lightweight layer on top of REST and as long as it works for end users I don’t see any reason not to adopt it.",
+              "author": "adityapatadia",
+              "depth": 3
+            },
+            {
+              "text": "MCP is not just a rest api its a layer on top",
+              "author": "edgyquant",
+              "depth": 3
+            },
+            {
+              "text": "A layer than honestly doesn't do much, as I understand it. What does MCP as a protocol actually solve? Is it more than a bandwagon?",
+              "author": "allknowingfrog",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "MCP is great for attaching chat interfaces with it. It's so good it's slightly detrimental, people start trying to build dashboards with it only to find out you can't make deterministic dashboards with a non-deterministic workflow. The number of people who want API access, now that they've been properly exposed to the data, has doubled month over month since we put in the MCP back in April.",
+          "author": "hadlock",
+          "replies": []
+        },
+        {
+          "top": "MCPs are diminishing in value a bit, because AI Agents are getting smarter about using API/CLIs. For example, I use gh cli via Claude instead of their MCP, because I already had cli setup, so no need to use MCP.\nMCPs can potentially have great value if they cross multiple sources and combine results. For example at work we use an in-house MCP for log/metrics search across five different (legacy) systems. It finds correlation across events in different system within minutes.",
+          "author": "5ersi",
+          "replies": [
+            {
+              "text": "FWIW, it appears that using the gh cli is much more token efficient than MCP so that's a plus.\nhttps://medium.com/@ravi.madabhushi/mcp-is-up-to-32-more-exp...",
+              "author": "newman314",
+              "depth": 1
+            },
+            {
+              "text": "I see benchmarks a lot working on this, and I honestly think there’s too many things to cover in this comment but:\n- this article doesn’t enable tool search for starters where tokens start at near zero for MCP too\n- even with the above, talks of the raw token count don’t consider that for very long trajectories the prompt cache amortises much of this cost, and a feature of MCP is you can also customise the tools to a select subset, and that’s powerful \n- you can add tool confirmations for write/destructive actions trivially\n- the old training data on CLIs is good but actually for new features the fact MCP advertises them is also a bonus, but that takes longer to see, MCP isn’t that old\nThere are many more aspects, but even with GitHub MCP, where the agent has a huge amount of pre-training on the CLI, there are still reasons why people use it extensively - you don’t hear it a lot here but suffice to say usage never stopped growing to this day.\nI think if CLIs are working for you then good, I also like our cli and did some work on it too, like adding gh skill subcommand.\nDo use what works, and measure and improve - but this article is not doing justice to the MCP server IMHO.",
+              "author": "sammorrowdrums",
+              "depth": 2
+            },
+            {
+              "text": "> - this article doesn’t enable tool search for starters where tokens start at near zero for MCP too\nIs that why I have to constantly remind Claude and ChatGPT that they \ndo\n have access to a Github plugin that can access my account, instead of trying and failing to use the gh cli?",
+              "author": "throwup238",
+              "depth": 3
+            },
+            {
+              "text": "Most likely, personally I have thoughts on tool search, I don’t believe it’s the final stop on the road to MCP progressive discovery, but it does have its uses. Especially for very large tool catalogues.\nExpect more on this. We are looking at the problem.",
+              "author": "sammorrowdrums",
+              "depth": 4
+            },
+            {
+              "text": "\"claude, stop shelling out to grep, your search tool uses ripgrep and it's faster.\"",
+              "author": "gycom",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "We use MCP in production for our customer facing voice agents. Our custom MCP server defines tools and resources that the voice agents need access to to interact with our customers. (E.g. scheduling appointments, checking order status, etc).\nNow we can point any voice agent platform we choose -- eleven labs, vapi, pipecat, whatever -- at our custom MCP server and it instantly has an understanding of the tools available, their inputs, and how to use them.\nCompared to the alternatives everyone on HN champions, like clis and APIs, this is a no brainer. I'm honestly not even sure what the realistic alternative would even be.\nAm I supposed to package and distribute a cli to ElevenLabs and ask them to use it? Give them a full API spec to implement for me?\nI give them an endpoint and credentials and their platform instantly knows how to talk to mine. No one at ElevenLabs knows or cares about our implementation details.\nHN has trouble seeing past the \"developer in a terminal coding with Claude Code\" use case for using AI. Real production agents have use cases that are very different!\nWhen you don't own every piece of an integration with another system, there needs to be a well defined standard. That's what MCP provides.",
+          "author": "MitziMoto",
+          "replies": [
+            {
+              "text": "Excuse me for being dense but I'd love to know more, if you can share. So you offer a voice agent for checking appointments and orders and stuff, is that through your app or website or something? So you make a button in your app which says \"talk to our AI\", and you've got the button set up so that it can send the customer's input query, along with a bit of text saying \"our MCP is here, use it to answer the query\", to any one of the voice agent providers? then you get some audio data in return that you play to the user?",
+              "author": "denkmoon",
+              "depth": 1
+            },
+            {
+              "text": "We use a Twilio integration to make it work over a real phone line, but it could just as well be an app or websocket connection in a browser.\nVoice transport medium aside, the actual use case is not quite what you described.\nCompanies like Eleven Labs and Vapi provide a full end to end voice agent platform. They handle the STT -> LLM -> TTS pipeline and infrastructure for voice agents. Think of a customer talking to a virtual receptionist to schedule an appointment.\nOn the ElevenLabs platform, you provide them a system prompt (or an entire workflow/graph of system prompts) that instruct the voice agent on how to talk to the customer, tone, guardrails, how to answer specific questions, etc.\nAt some point we need that LLM agent, running on an infrastructure we don't control, to talk to our \"CRM\" (for simplicity sake). Enter MCP.\nThe MCP server we build and host supplies the \"tools\", like list_appointments, schedule_appointment, cancel_appointment-- whatever they may be.\nWhen eleven Labs voice agent connects, it sees all the tools available and can use them per the instructions in the system prompt.",
+              "author": "MitziMoto",
+              "depth": 2
+            },
+            {
+              "text": "How is security handled in a situation like this? (I'll end up reading up on it). But I mean things like how does the API let a specific session with a specific user only surface information for that specific user from the available tooling?",
+              "author": "jdironman",
+              "depth": 3
+            },
+            {
+              "text": "You first authenticate via the phone (you can run an initial api call on phone start,) save session credentials in state on 11labs side and can then pass them back to future tool calls.  You can then authenticate via a passcode if you wish",
+              "author": "edgyquant",
+              "depth": 4
+            },
+            {
+              "text": "Not the poster, but working on this right now.\nThe current framework that solves this the best right now is FiPA.\nEstablish identity the same way we always have, AS defines the challenges, the client (voice agent in this case) goes and gets them. OAuth from there!",
+              "author": "cco",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I OCR'd my Chinese textbooks and made a stateless MCP that allows me to ground my Chinese language studies according to the textbook only. With this I can start a quiz, understand differences between words that have similar meanings knowing no extra grammar is fed when reviewing. I specifically use it with glm 5.3 as it is the most language specific LLM that understands nuances.\nHere's the repository: \nhttps://github.com/iodize6399/xuexi-keben\nAnd here's the server itself: \nhttps://keben.555420.xyz",
+          "author": "navigate8310",
+          "replies": [
+            {
+              "text": "That's an awesome example! I'll definitely make use of your repo and idea for my German classes. Did you use a specific OCR method? I'm trying to get something better than tesseract :(",
+              "author": "AtomicSaboteur",
+              "depth": 1
+            },
+            {
+              "text": "I used Mistral 3. It costed me literally pennies. My workflow was kinda rudimentary but it worked really well. I suggest take a look at this \nhttps://github.com/docling-project/docling\n as well.",
+              "author": "navigate8310",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49615926",
+      "title": "OpenAI fought dirty on career-making math problem",
+      "link": "https://techcrunch.com/2026/09/08/openai-fought-dirty-on-career-making-math-problem-says-nyu-mathematician/",
+      "domain": "techcrunch.com",
+      "author": "jonbaer",
+      "score": 159,
+      "comment_count": 58,
+      "created_ts": 1788896833,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "I feel like this whole thing hinges on one point. OAI says[0]:\n> However, our proofs differ significantly and even the precise results proved are different in the Euler case (forced vs unforced).\nHow true is this?\nIf the implied statement is true (i.e. OAI couldn't have stolen results because the results were so different anyways), then I feel like it's pretty clear that OAI solved the problem on their own, and offering some amount of credit to Tristan and Levent is generous. Though on the other hand it's dirty to have even attempted a scoop in the first place.\nIf the implied statement is false, and Tristan/Levent's results are a substantial portion of the solution to the millennium problem, then it's probably unintentional but clear plagiarism. I think it's plausible to assume that OAI has trained their models on Tristan's codex conversations, and so regardless of legal ownership, the academic ownership definitely includes Tristan and Levent.\nThe rest of the drama (individual statements and wordings, e.g. by Sebastien) seems like a bit of a red herring. Worth noting, but not worth basing conclusive judgements on regarding academic misconduct. Regardless, OAI does not seem like the good guys.\n[0]: \nhttps://openai.com/index/navier-stokes-solution/",
+          "author": "hatthew",
+          "replies": [
+            {
+              "text": "Agree with this framing, but we may find out that the answer is somewhere in the middle. Personally I think it is extremely unlikely that this is straight plagiarism in the sense of the model simply regurgitating training data from prior work by Tristan, but it is very plausible that his work (and others’) was foundational to the breakthrough. What is unfortunate is that the stakes are so high (and no I don’t mean $1M) and the timeline is so compressed.\nI expect a lot more of this kind of drama in the near future.",
+              "author": "quicklywilliam",
+              "depth": 1
+            },
+            {
+              "text": "Agree! We have both published solutions now; someone (AI?) should be able to analyze their methods and see how similar they are",
+              "author": "Hansenq",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "OpenAI has a lot of explaining to do here.\nThe “least worst” representation of the course of events is that their researchers are just jerks, and not behaving in a manner that’s considered acceptable in the research community.\nOther alleged scenarios just go downhill from there.",
+          "author": "cmiles8",
+          "replies": [
+            {
+              "text": "It is worth actually reading OpenAI's response, which is basically that they were trying to see if their models could do what Anthropic had already done, and were surprised to discover that (a) Anthropic had not done it at all, and (b) in fact no one else had done it yet. And then they didn't want to give an Anthropic employee coauthor credit for work that OpenAI had done, which idk seems pretty fair?",
+              "author": "jdm2212",
+              "depth": 1
+            },
+            {
+              "text": ">were surprised to discover that (a) Anthropic had not done it at all\nThey were surprised another competitor had not wastefully thrown $20 million+ worth of compute at a problem they had no business solving in the first place?\nThat's reaching, imho.",
+              "author": "johnnyApplePRNG",
+              "depth": 2
+            },
+            {
+              "text": "Why is it wasteful to solve one of the most famous problems in modern mathematics? And why would one particular company have no business solving it in the first place?",
+              "author": "gorgolo",
+              "depth": 3
+            },
+            {
+              "text": "I guess by their own account they were doing competitive analysis on the product and incidentally solved NS. Probably the two companies should agree to benchmark on random diophantine systems, which are harder and more applicable anyway. It wasn't \"brute force\" but they did spend $10-20M over the course of a few days based on a rumor, which is ... something. The fact they're not actually taking credit, and published no insights other than \"it's a vortex\" shows the company really has no business in mathematics. They're not interested (the guy said as much) and it obviously won't pay the bill - rather, they were able to pre-empt an announcement they thought Anthropic may have been preparing to make.",
+              "author": "woopsn",
+              "depth": 4
+            },
+            {
+              "text": "They brute forced it, that proves they had no business solving it.\nThey didn't know what they were doing and they pumped a bunch more carbon into our atmosphere because hubris basically.\nShame on them.",
+              "author": "johnnyApplePRNG",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Who is \"Bubeck\"? The article doesn't introduce him. Or give his name. Same with \"Luis\" and \"Diego\".\nI am supposing it is \nhttps://en.wikipedia.org/wiki/S%C3%A9bastien_Bubeck\nThis is terrible:\nWhen Buckmaster pushed to make the dispute public, he says that Bubeck replied: “Why would you ruin your career?” Buckmaster says that when he pushed back, Bubeck followed up with: “If you don’t want me to be nice, then I don’t have to be nice.”",
+          "author": "golly_ned",
+          "replies": [
+            {
+              "text": "The report pdf confirms Sebastian was the Bubeck in question",
+              "author": "gcr",
+              "depth": 1
+            },
+            {
+              "text": "Given that he has other former collaborators corroborating this horrific behavior, it seems like this a career spanning pattern, and it's interesting to see just how much @sama is willing to lend his support to someone like Bubeck.\nStains an important moment in the history of AI progress for me. The future seems bleak with people like this at the reins.\nhttps://x.com/dheeraj_nagaraj/status/2097266146445774924",
+              "author": "DetroitThrow",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "The most sympathetic interpretation possible of the events for OAI is that they learned two mathematicians were closing in on a solution and decided to throw all of their weight behind getting there first, which honestly still doesn’t paint them in a particularly positive light.",
+          "author": "dumberquestions",
+          "replies": [
+            {
+              "text": "The most sympathetic interpretation is just what OpenAI actually claims: they thought the other guys \nalready\n got there, wanted to see if OpenAI could do it too, and were surprised to discover the other guys hadn't gotten there yet.",
+              "author": "jdm2212",
+              "depth": 1
+            },
+            {
+              "text": "I don’t have a dog in this fight, but it sounds a bit “I was just punching the air— it’s not my fault someone was in the way.” It’s not like it’s impossible, but it doesn’t immediately pass my smell test. I’ll wait until someone close enough to be knowledgeable but has a lesser stake weighs in.",
+              "author": "DrewADesign",
+              "depth": 2
+            },
+            {
+              "text": "Why would it even be bad for OpenAI to try to beat Anthropic to cracking one of the 6 biggest open problems in math? Like who is getting punched?",
+              "author": "jdm2212",
+              "depth": 3
+            },
+            {
+              "text": "I mean it sounds like a retroactively contrived explanation of events. If they released a statement on it, they clearly feel the need to give an explanation of their behavior. People criticize OpenAI every day and they rarely address it. They addressed this. That right there says that, at the very least, they’re concerned about the optics.",
+              "author": "DrewADesign",
+              "depth": 4
+            },
+            {
+              "text": "They released a statement on how they solved one of the biggest open problems in math. That statement includes a narrative of how they decided to tackle the problem. Idk what seems retroactive and contrived about, like, \"we thought our archrival had made a huge breakthrough and wanted to make sure we're not falling behind\".",
+              "author": "jdm2212",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "https://mathstodon.xyz/@tao/117237320796901560\nTerrence Tao recently published an interesting take that zooms out from the details of the Navier Stokes drama.\nIts an interesting observation he makes, because it is not dissimilar from the relatively common phenomenon of one academic lab getting scooped by another lab (usually by coincidence).",
+          "author": "biophysboy",
+          "replies": [
+            {
+              "text": "> one academic lab getting scooped by another lab (usually by coincidence).\nI was with you up to “usually by coincidence”.\nThere’s a long and sordid history in areas of chemistry and areas of biology of holding up a competing paper in review so you can scoop them. I’m sure it exists in physics as well. Certainly biophysics, but probably most subfields.\nOften it’s a famous labs that can steamroll review or even just dump the work into PNAS as a “member contribution.”\nAt least one author of a famous inorganic chemistry textbook was rumored to do this routinely.\nAnd I know of at least one National Academy member who swore off arxiv prepublication after getting scooped.\nNone of this makes it all right. But plagiarism and academic theft is old and definitely not always accidental.",
+              "author": "moregrist",
+              "depth": 1
+            },
+            {
+              "text": "I know this happens, but my impression during my phd was that many labs use popular methods to test popular questions, leading to a lot of simultaneous work. You see this in history as well.",
+              "author": "biophysboy",
+              "depth": 2
+            },
+            {
+              "text": "This is interesting.  He seems to imply that the AI will just provide the solution.  He's concerned that the process of getting to that solution is the important bit.  But I can see two versions of \"process\".\nA.) The actual steps of the proof, which I assume the AI would provide.\nB.) People, while working toward a solution, finding novel properties/methods along the way that open new avenues of research + new open problems.\nDoes B.) actually happen?  Would knowing the solution to a problem stymie the process of finding new open questions? I would assume finding a solution may unlock other problems too.  So maybe on balance it's not really bad?\nI guess in the end, I'm just making the obvious case \"the future is uncertain in the face of AI\".",
+              "author": "evilturnip",
+              "depth": 1
+            },
+            {
+              "text": "Well the argument is that B is no longer sustainable because of the scenario you describe in A. If you do a bunch of work on Navier Stokes but then OpenAI gets all the press, then what was the point?",
+              "author": "biophysboy",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49596976",
+      "title": "Apparently CodePen 2.0 sends data to their servers as you type",
+      "link": "https://news.ycombinator.com/item?id=49596976",
+      "domain": "news.ycombinator.com",
+      "author": "maxim-fin",
+      "score": 112,
+      "comment_count": 59,
+      "created_ts": 1788780160,
+      "is_internal": true,
+      "post_text": "They send all typed into editor input to codepen.dev almost immediately (you would see in 1-2 sec after you typed your secret that it appears in respective Network&#x2F;Response tab) even before one saved it. I tested this with a unique marker: after typing it into index.html, CodePen ran a build with &quot;save:false&quot;, and the marker then appeared verbatim in the HTML served from the generated &quot;*.codepen.dev preview&quot;. Thus, if you ever entered some secrets in there by mistake consider them compromized even if you did not publish&#x2F;save the pen",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": [
+        {
+          "top": "Pretty sure it always autosaved so this makes sense to me? I always assume it would send my data over to their backend, its code that ends up there regardless?",
+          "author": "giancarlostoro",
+          "replies": [
+            {
+              "text": "Yes, that is for autosave and for rendering\nEdit: The point is that any secrets typed/pasted in there should be considered compromized",
+              "author": "maxim-fin",
+              "depth": 1
+            },
+            {
+              "text": "I don't know why anyone would paste or type secrets into codepen which is public by default... But it always seemed like it auto-saved / sent your code over to the back-end, going back ten years roughly?",
+              "author": "giancarlostoro",
+              "depth": 2
+            },
+            {
+              "text": "Copy -> paste -> redact secrets\nThat flow would be considered unsafe, and probably common.",
+              "author": "traviswingo",
+              "depth": 3
+            },
+            {
+              "text": "It's also a foolish thing to do. Any time anyone types anything into anywhere on any webpage, that data is as good as gone, it's out there. Back in the 90's I experimented with per-character logging on all form input boxes, just because I could. That's still possible today.",
+              "author": "leptons",
+              "depth": 4
+            },
+            {
+              "text": "This is exactly the scenario I pictured",
+              "author": "maxim-fin",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "You're gonna be shocked how many input fields do this for various UX features :)",
+          "author": "tvink",
+          "replies": [
+            {
+              "text": "Shopify does this. If you ever go to purchase a product on a Shopify 'site, and enter eg your e-mail address, it'll save it even if you decide to cancel and close the tab. Sometimes you receive spam from companies along the lines of marketing or \"we noticed you didn't complete your purchase\" type crap. Shit is rly invasive.",
+              "author": "nusl",
+              "depth": 1
+            },
+            {
+              "text": "They can only send the marketing emails if you have the \"send me marketing emails\" checkbox checked when you type in your email address. Dark pattern, yeah.",
+              "author": "davidmurdoch",
+              "depth": 2
+            },
+            {
+              "text": "That has never stopped companies from spamming me with marketing even when I didn't agree or even explicitly disagreed (unchecked). Not a single company has been or ever will be held accountable so they just keep doing it.",
+              "author": "xingped",
+              "depth": 3
+            },
+            {
+              "text": "Shopify 's \"abandoned cart\" emails are legally considered transactional emails, not marketing, which is probably what you're getting. It's a feature built in to Shopify. If the email isn't related to your abandoned cart contents, you can report it to Shopify. Shopify will investigate reports of abuse and eventually will terminate a store account for blatant abuse.",
+              "author": "davidmurdoch",
+              "depth": 4
+            },
+            {
+              "text": "No, I've received it just from entering my e-mail and nothing else. So many companies don't care, or don't know.\nEither way, if I enter my e-mail, decide \"nah\" and quit, that should be that. It shouldn't be sending my details in the background",
+              "author": "nusl",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Reddit does this. Every keystroke you type into a comment box is sent back to them. So, that means even if you decided to cancel posting something, they still receive what you wrote. I have been known to write responses that were harsh and angry, and I simply don't send. Sometimes it's therapy for me to think through something while typing whatever is in my head. Then I go back and edit once I have have thought it through. I don't want that info sent back. So, I tend to not involve myself with much online anymore. I don't want to expose myself to the thought police.\nI find the browser the most unsafe piece of tech deployed.",
+          "author": "millerm",
+          "replies": [
+            {
+              "text": "Ever since I learned about full story / datadog RUM I've been writing my replies in a notes app then copy and pasting back in the browser",
+              "author": "c-hendricks",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, it's infuriating.",
+              "author": "millerm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "CodePen does not disclose this in neither ToS nor in Privacy Policy, only in Builds documentation they say: “As you work on CodePen, your Pens are constantly running through the CodePen Compiler”",
+          "author": "maxim-fin",
+          "replies": []
+        },
+        {
+          "top": "There’s a detailed discussion of the same issue here \nhttps://www.reddit.com/r/webdev/comments/1rj1oac/i_planted_f...",
+          "author": "nseskin",
+          "replies": [
+            {
+              "text": "Indeed, it looks like CodePen v1 was sending data to codepen.io, cpwebassets.codepen.io, and cdpn.io. Now v2 sends to codepen.dev",
+              "author": "maxim-fin",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49583440",
+      "title": "Ask HN: Would you read a statistics textbook?",
+      "link": "https://news.ycombinator.com/item?id=49583440",
+      "domain": "news.ycombinator.com",
+      "author": "usernametaken29",
+      "score": 106,
+      "comment_count": 66,
+      "created_ts": 1788670338,
+      "is_internal": true,
+      "post_text": "I had a classic Bayesian statistical education throughout my undergraduate and grad years and I’ve come to conclude that the plethora of books offered are pretty bad.<p>For me personally statistics is intuitive if illustrated properly. \nA great example is <a href=\"https:&#x2F;&#x2F;seeing-theory.brown.edu&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;seeing-theory.brown.edu&#x2F;</a><p>I was wondering whether it would make sense to turn the intuitions behind statistics into a book. Would anyone read it? Do people still read stats books or would it be mostly a waste of effort?\nIf you wanted to teach&#x2F;help people understand statistics, what resources would you consider?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49589730",
+      "title": "Ask HN: UK Rescue Rocket Sheds/Houses Information",
+      "link": "https://news.ycombinator.com/item?id=49589730",
+      "domain": "news.ycombinator.com",
+      "author": "burnt-resistor",
+      "score": 24,
+      "comment_count": 6,
+      "created_ts": 1788721614,
+      "is_internal": true,
+      "post_text": "I can&#x27;t seem to find pictures or significant details (nothing on Wikipedia) about the coastal buildings purportedly used to contain shipwreck rescue rocket apparatus. Many of the buildings still exist and are Grade II listed. Anyone have any additional anecdotal&#x2F;local&#x2F;oral tradition information that isn&#x27;t found in the little blurbs online on the few websites mentioning them?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49598009",
+      "title": "Ask HN: 3.5 inch diskette read errors, would a period correct drive do better?",
+      "link": "https://news.ycombinator.com/item?id=49598009",
+      "domain": "news.ycombinator.com",
+      "author": "rietta",
+      "score": 23,
+      "comment_count": 23,
+      "created_ts": 1788786584,
+      "is_internal": true,
+      "post_text": "My first attempt at restoring 1991 Learning Company Spellbound for DOS for my children is dubious. Despite being stored nowhere near magnetic sources, there are read errors on the 3.5 inch floppies and Linux could not mount them. ddrescue extracted data but I have not confirmed it works. The box also have 5.25 inch disks but I do not have a reader online at the moment, that is its own project.<p>My technical question is this, the USB 3.5 inch drive I have is a &quot;USB Portable Diskette Drive&quot; that was Made in China but has no obvious sponsoring branding. If I take the time to bring back to life a more period correct system with an actual IDE floppy drive would it read the disks more accurately?<p>My goal is to get more of this good DOS and early Windows educational software working for my children. This particular title is meaningful because I have the actual boxes and learned on it myself all those years ago.<p>One option for hardware is my parent&#x27;s Leading Edge WinPro 486. The case looks to be in good shape but I have not opened the case to see the condition of the capacitors yet. It has a natively mounted 3.5 and 5.25 inch drive.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": [
+        {
+          "top": "Get acquainted with ddrescue. There are some ways to check if the extracted image is error free. You can also make fast passes and try again latter. Also check if your adapter is getting enough power from usb.\nFor a baseline, you can also write a known good image of a game or something to a blank disk using your adapter, and check if it works as intended.",
+          "author": "highspeedbus",
+          "replies": []
+        },
+        {
+          "top": "Learning Company software has been pretty well archived at this point. To me, the easiest approach would be to hold onto the original box/packaging for sentimental purposes, and just find a copy of it on a site like the Internet Archive.\nIf your goal is to use it on a period-correct system, I’d go with 34/40pin adapters that lets you read flash cards, USB, etc.\nA lot of my friends have kept their old 486 computers, and everything is period-correct except for the hard drive and floppy drive which have been replaced with a CF-to-IDE for the HDD and Gotek running FlashFloppy firmware for the 3.5\".",
+          "author": "vunderba",
+          "replies": []
+        },
+        {
+          "top": "The diskettes are going to demagnetize over 35 years, I don't think a 90s disk drive is going to make a difference.",
+          "author": "freediddy",
+          "replies": []
+        },
+        {
+          "top": "10 years ago I heard “you’d better read all the floppy disks you’ve got now because you won’t be able to do it later.”  You might do better with better hardware, you might not.  This thing can get at the raw data\nhttps://en.wikipedia.org/wiki/KryoFlux\nwhich might let you get most of the bits from a bad block.  See\nhttps://goughlui.com/2013/04/21/project-kryoflux-part-1-the-...",
+          "author": "PaulHoule",
+          "replies": [
+            {
+              "text": "I can also recommend the KryoFlux.  I had some floppy diskettes from a /very/ obscure computer, a Devtronix Model 264 pipe organ computer that recorded artists live, that also used the 3 1/2\" form factor.  It was able to completely recover all the data from them, and combined with the HxC 2001 Floppy Emulator, get everything onto a modern SD card format.\nhttps://hxc2001.com/floppy_drive_emulator/",
+              "author": "mccoyc",
+              "depth": 1
+            },
+            {
+              "text": "Neat! Thank you for the info on that one. Bookmarked!\nBefore I spend well over $100 importing that device, I previously was thinking of brining up a 2001 era motherboard with a USB stack and can natively host the drives, but the 486 that has sat unused may be a solid option. I presumably can find a way to transfer data to a modern system over serial cable or something.",
+              "author": "rietta",
+              "depth": 1
+            },
+            {
+              "text": "Almost any two floppy drives you can get a hold of will be mechanically different in sometimes significant ways.\nI've got one business tower from over 20 years ago still having the floppy drive connected directly to the motherboard the traditional way.\nPlus 3 USB models from HP, Sony, and Teac and they don't all behave the same.\nLast month for another floppy article I mentioned that one pack of old floppy disks are offgassing(!), the way they continue to inflate the ziplock bag they are in.  Replaced the bag with an new Ikea \"ISTAD\" ziplock and it's almost fully inflated again by now.",
+              "author": "fuzzfactor",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you're patient, you can find a PC with a floppy drive at a thrift store/goodwill for $10-$15. In my area, I see them several times a year. I have a handful of USB floppy drives, one IBM, one generic drive from the Bondi blue iMac era, and both have worked about the same.\nI've had a few discs fail with sector errors that have done nothing but sit in storage for 30 years. In that case, it was fortunate enough to contain a hidden duplicate of the file for the installer to copy.",
+          "author": "jonhohle",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49590656",
+      "title": "Ask HN: Show your micro-SaaS",
+      "link": "https://news.ycombinator.com/item?id=49590656",
+      "domain": "news.ycombinator.com",
+      "author": "genekrapivin",
+      "score": 22,
+      "comment_count": 19,
+      "created_ts": 1788727043,
+      "is_internal": true,
+      "post_text": "HN is a fantastic founder community.<p>We, the people, love transparency, numbers, and analyzing bootstrapped business models.<p>What is your current project? Share your wins, losses, and tech stack. Share monthly recurring revenue (MRR) if you feel like.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "https://www.abejora.com/\n - Timesheet registration software\nWe try to differentiate in a few ways:\n* we try to be as fast and user friendly as possible, because nobody likes filling in timesheets: logical screens that align with the task you need to perform, keyboard support, flexible input...\n* democratic pricing. a lot of competitors hide the good stuff behind the expensive subscriptions, and per-seat pricing quickly becomes expensive\n* It has grown from our own needs\nWe use Elixir and Phoenix for our application, which is quite an amazing experience. It's a very different approach from the established \"React/JS storefront\" with \"Traditional backend language REST API\" that you see in lots of places. It's also a functional language. It's definitely something new, and something that we would recommend you experience.\nWe also switched from a simple debian server for hosting with standard CI/CD pipelines to a more exotic setup. We are now running a full kubernetes cluster on Talos Linux, with GitOps CI/CD using Flux. This was also something new for us, and a bit of a challenge to get it working, but now it is amazing to see it in action.\nWe are always looking for people who can give us feedback on our product. So send us your opinion/experience/recommendations/disappointments, and we will credit your account with 6 free months as a thank you!",
+          "author": "abejora",
+          "replies": []
+        },
+        {
+          "top": "https://matcha.video\n - In-browser \"pre-editor\" for cutting down a long sequence of repeated takes for talking-head content to just the stuff you want to keep.\n- Aligns cuts to the speaker's pose so they aren't cut-to mid-blink or mid-word\n- Exports cuts to FCP and DaVinci so you can use your existing editing flow\n- Transcript editor with retake grouping and word-level cuts\n- Dysfluency detection (\"um\", \"uh\")\n- Free, in-browser. Optional pay for faster / better server ASR\nCurrently in beta, free server ASR for new users. Please try it and give your honest feedback",
+          "author": "matcha-video",
+          "replies": []
+        },
+        {
+          "top": "I am building a life management FOSS app, to take care of basically all needs of the modern 21st century average citizen.\n\nhttps://github.com/ontoplano/ontoplano\nPlanning the week, general tasks, establishing goals, recording inventory, habits, workouts, bills, setting up reminders... you get the idea. I designed it to have a smooth UX, to work on my mobile phone, to be easily customizable, pretty-looking, and also to have a MCP server so I can talk to an AI and have it update stuff there for me (which works already!).",
+          "author": "philipthetenth",
+          "replies": []
+        },
+        {
+          "top": "Macrocodex - Guaranteed weight loss or weight gain within 2-3 weeks, beating GLPs for weight loss! \nhttps://macrocodex.app/\n 17,000+ users already.\nBack in time, many people used to say, \"I am genetically predisposed to fat or underweight\" All of them were proven wrong by macrocodex's method.\nNo matter if your metabolism is slow or fast, most people will see guaranteed results!\ntech stack: flutter and rust",
+          "author": "faangguyindia",
+          "replies": [
+            {
+              "text": "I see the claims, but I don’t see any evidence supporting them. Could you share what you’re basing the guarantee on? Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s? I searched and couldn’t find anything supporting those claims.",
+              "author": "OpenMac",
+              "depth": 1
+            },
+            {
+              "text": ">Could you share what you’re basing the guarantee on? Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s\nI know you work for MacroFactor, but when will you guys publish the datasets you used to benchmark your algorithm?\n\nhttps://macrofactor.com/algorithm-accuracy/\nGreg Nuckols Macrofactor's benchmark metrics therefore depend on internal data that isn't disclosed or independently verifiable.\nSo the published accuracy claims don't tell us much. It's like a student saying, “I scored 99% on a test,” but not showing anyone the test questions or their answers. You have no way to independently verify whether the score actually reflects how well they perform.\nThe number might be completely accurate, but without seeing the benchmark dataset, there's no way for anyone outside the company to reproduce or properly evaluate the claim.\nBut for Macrocodex, we do not charge people any money, and people can read the reviews and even the algorithm details!\nOur effectiveness claims are based on our own data from 17,000+ users and independent user reports in our group, consisting of 2,000+ members already!\n>I see the claims, but I don’t see any evidence supporting them\nWell, I know you work for Macrofactor, but we are not interested in producing useless posts with colorful charts.\n>Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s?\nYes, our group has thousands of members and where people can join the group through the Macrocodex app, they'll see Macrocodex users outperforming GLP users.\nGreg Nuckols can't even do math well. Look at their subreddit, people are always having issues with their app.\nhttps://www.reddit.com/r/MacroFactor/comments/1wa04vd/help_i...\nhttps://www.reddit.com/r/MacroFactor/comments/1w5aqtf/expend...\nhttps://www.reddit.com/r/MacroFactor/comments/1w4w4jw/lean_b...\nAs macrocodex is beating macrofactor by a long shot, many people are realizing that Greg Nuckols's science is more about marketing than results and evidence!\nDo you remember the Hussain and Solomon controversy of Jeff Nippard, one of the top MacroFactor promoters? And the PhD controversy of Mike Israetel?\nMacroFactor charges $72 a year and spends a lot of money paying influencers to promote the app, so it’s not surprising that you see so many submarine posts about it.\nVery soon, everyone will realize this!",
+              "author": "faangguyindia",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "https://buttonscli.com/aicp2/4/\nPeople actually bought version 1, and still use it, but its mostly free users. Its hard to get people to pay anything.. but i did make about $1000 from v1. People still use it everyday, even though its not AS useful as it was before since agents have improved but it comes in handy.\nI can't even get anyone to try buttons cli for free lol, I use it though, to see what codex is doing in terminals (and I like clicking buttons and being able to generate commands faster than googling) \nhttps://buttonscli.com/3/",
+          "author": "radio879",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49549602",
+      "title": "Ask HN: Founders that raised funding and shutdown, did you raise again?",
+      "link": "https://news.ycombinator.com/item?id=49549602",
+      "domain": "news.ycombinator.com",
+      "author": "asim",
+      "score": 18,
+      "comment_count": 1,
+      "created_ts": 1788441709,
+      "is_internal": true,
+      "post_text": "Curious to know the number of repeat founders here who shutdown and raised again, or chose not to raise the second time. I bootstrapped, raised, shutdown, went solo again, thinking about next steps. Ultimately funding and the VC market is a tool but it comes with a lot of baggage. Thoughts?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49547405",
+      "title": "Ask HN: Are technical blogs dead?",
+      "link": "https://news.ycombinator.com/item?id=49547405",
+      "domain": "news.ycombinator.com",
+      "author": "quaintdev",
+      "score": 14,
+      "comment_count": 26,
+      "created_ts": 1788424232,
+      "is_internal": true,
+      "post_text": "I think the traffic for technical blogs has plummeted. Why would anyone searh for technical blog when they can just ask their agent about it? Also I am seeing less and less of them here on hacker news.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49586386",
+      "title": "Ask HN: Any Software Engineers here who enjoy their AI-native dev workflow?",
+      "link": "https://news.ycombinator.com/item?id=49586386",
+      "domain": "news.ycombinator.com",
+      "author": "pkos98",
+      "score": 11,
+      "comment_count": 12,
+      "created_ts": 1788701542,
+      "is_internal": true,
+      "post_text": "I would love to know what&#x27;s your setup like, how you make it enjoyable and what kind of work you offload to AI vs what you&#x27;re still doing yourself.<p>Not talking to the hobbyists or Managers who can now prototype stuff and produce fancy presentations quicker, but to the actual employed Software Engineer developing software running in production used by actual customers.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49557875",
+      "title": "Ask HN: Who is using FPGA for ML inference?",
+      "link": "https://news.ycombinator.com/item?id=49557875",
+      "domain": "news.ycombinator.com",
+      "author": "softwarewright",
+      "score": 11,
+      "comment_count": 16,
+      "created_ts": 1788473675,
+      "is_internal": true,
+      "post_text": "With RAM price inflation, I wonder if FPGAs can be used to offload inference processing without keeping weights in RAM?  The available RAM would be for activations, KV Cache, context but not static weights.  Weights could be streamed from disk.  This approach is not for tokens&#x2F;second but throughput at a lower cost.  Possibly better answers&#x2F;kHh?  I&#x27;ve started researching this, but wonder if others have considered&#x2F;tried this?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49613427",
+      "title": "Tell HN: OpenAI keeps stealing my money",
+      "link": "https://news.ycombinator.com/item?id=49613427",
+      "domain": "news.ycombinator.com",
+      "author": "dingdong2026",
+      "score": 10,
+      "comment_count": 3,
+      "created_ts": 1788888223,
+      "is_internal": true,
+      "post_text": "Here&#x27;s what just happened in my Codex session with Sol 5.6 High:<p>1) I asked GPT to review some new coding work in the local repo.<p>2) It kept spinning for 5 minutes and 17 seconds, burning god knows how many tokens.<p>3) It asked whether I want to run Bugbot or Security Review.<p>If you use Codex, you know that is a standard question. But it should have been asked seconds after my request. Where did the 5 minutes and all the tokens go?!<p>This is just the most clear example of what I&#x27;m consistently experiencing. Moronic, pointless activity and inordinate amount of tokens wasted. And they keep saying we&#x27;re almost at AGI. What a joke!<p>Reports filed through &quot;Send feedback&quot; in Codex go unanswered. Money torched and gone.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49589140",
+      "title": "Ask HN: What are you working on?",
+      "link": "https://news.ycombinator.com/item?id=49589140",
+      "domain": "news.ycombinator.com",
+      "author": "meerita",
+      "score": 8,
+      "comment_count": 16,
+      "created_ts": 1788717876,
+      "is_internal": true,
+      "post_text": "What are you working on? What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49552450",
+      "title": "Ask HN: Laptop or Desktop?",
+      "link": "https://news.ycombinator.com/item?id=49552450",
+      "domain": "news.ycombinator.com",
+      "author": "Gecko4072",
+      "score": 8,
+      "comment_count": 17,
+      "created_ts": 1788452084,
+      "is_internal": true,
+      "post_text": "What portion of you all use a laptop versus a desktop and why? Ever since I got a laptop I&#x27;ve had recurring neck pain and issues from not being strict with desk setups and using laptops here and there instead of at a table. There is no good way to use a laptop without a stand and external peripherals. It makes sense for students and traveling professionals but not really for most people I think. Thinking I will go back to a full desktop now. Bonus: Mac or PC or GNU&#x2F;Linux or BSD.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49574822",
+      "title": "Ask HN: Any Alternatives to Archive.ph & co?",
+      "link": "https://news.ycombinator.com/item?id=49574822",
+      "domain": "news.ycombinator.com",
+      "author": "hebelehubele",
+      "score": 8,
+      "comment_count": 4,
+      "created_ts": 1788600827,
+      "is_internal": true,
+      "post_text": "Archive.ph&#x2F;is&#x2F;md&#x2F;... is more often down than otherwise. It&#x27;s showing a default nginx homepage.<p>Are there other alternatives (local&#x2F;otherwise) that lets me bypass paywalls?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49558794",
+      "title": "Ask HN: What is the ideal email domain setup?",
+      "link": "https://news.ycombinator.com/item?id=49558794",
+      "domain": "news.ycombinator.com",
+      "author": "bix6",
+      "score": 7,
+      "comment_count": 7,
+      "created_ts": 1788480240,
+      "is_internal": true,
+      "post_text": "For a long term setup what do you use? I am debating a few setups in fastmail.<p>Generic custom domain with 1Password uniques for all online signups\nAlso have a standard name@ here for in person provider sign ups<p>A family domain purely given to friends and family to share correspondence.<p>Is the second domain worth it? Inevitably someone will share it and end its “anonymity”?<p>Is it worth running a Gmail for any reason and forwarding that in?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    }
+  ]
+}
