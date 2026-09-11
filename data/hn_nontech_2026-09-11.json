@@ -1,0 +1,784 @@
+{
+  "scraped_date": "2026-09-11",
+  "source": "hacker_news",
+  "total_scraped": 56,
+  "nontech_count": 19,
+  "posts": [
+    {
+      "id": "49624603",
+      "title": "DeepSeek launching v4.1 flash cheaper and more capable than v4 pro",
+      "link": "https://news.ycombinator.com/item?id=49624603",
+      "domain": "news.ycombinator.com",
+      "author": "nickweb",
+      "score": 416,
+      "comment_count": 217,
+      "created_ts": 1788952766,
+      "is_internal": true,
+      "post_text": "DSeek plans to officially release the V4.1 Flash model around September 10, 2026 (Beijing Time). After extensive internal and external testing, V4.1 Flash has comprehensively surpassed V4 Pro across all key metrics, including performance, cost, speed, and task completion time. In keeping with our commitment to user responsibility, following the official launch of V4.1 Flash and prior to the release of V4.1 Pro, all requests to the Pro model will be routed to V4.1 Flash and billed at Flash&#x27;s price. If you encounter any issues during your comparative testing between V4 Pro and V4.1 Flash, please do not hesitate to reach out to us with your feedback. Thank you for your support!<p>We will adjust the pricing for the Flash series effective from 12:00 Beijing Time on September 10, 2026. During off-peak hours, the unit price will be $0.003 for input cache hits, $0.15 for input cache misses, and $0.6 for output. Peak-hour prices will be double the off-peak rates. Please plan your usage accordingly.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Sounds nice!\nBut, the web ui chat version of flash has very poor language following abilities in my experience:\nYou may ask it something in English, and get a thinking chain in Chinese with an answer in Chinese, or an English thinking chain and an English answer. Using the retry button on the same question has a 50/50 chance of any of those results.\nSometimes, asking something in English, but where information are mostly in another language may make the answer in the language where data has been found. The other day, I asked something about a local German thing, in English, and I got an answer in German instead. It’s as if all the language data stirred it away from the language of the user’s question.",
+          "author": "jiehong",
+          "replies": [
+            {
+              "text": "It's not just web chat, V4 Flash 7/31 suffers from a lot of pathological behavior in coding harnesses as well, e.g. infinite loops, hallucinations, premature termination, and invalid tool calls.",
+              "author": "mattmcal",
+              "depth": 1
+            },
+            {
+              "text": "All of these flash models have this. You have to build your harness so that it deals with it. Infinite loops are solved by having an error message that says what to do differently on failure, invalid tool calls are solved by making the tool schema less strict and detect things in the runtime etc.\nHallucinations you can't fix. Gemini is a bit worse there than DeepSeek, but there's not much research on how to fix that. The only one is the CaMeL paper by Google, where you tag every prompt and result and then for every assistant response or tool call you first check where it got that data and error if you notice fabrication. This one is really annoying to implement.\nWith larger models the fabrication starts when the context grows or if you have too many tools, for flash models it's much earlier. We use the flash models for repetitive agentic tasks, where the prompt defines clearly what to do and how. The whole run is about 4-5 steps typically, and context size stays in the comfort zone.",
+              "author": "pimeys",
+              "depth": 2
+            },
+            {
+              "text": "Can you share what tools and processes you're using to do this?\nI've been using Pi to build custom extensions and wrapping workflows in shell processes to make it more deterministic and enforce certain validations, all guided by Fable. This isn't production work, though, just playing llm factorio at home.",
+              "author": "tempoponet",
+              "depth": 3
+            },
+            {
+              "text": "What you want is a bunch of sessions to replay. Something anonymized if it's not yours, and something that's not depending on state.\nYou replay all your sessions against your harness, and then store all logs all output, everything to a safe place.\nFinally use a blind judge to check everything, and score the output.\nThen fix your harness, iterate again until better until you are in a point where it's just the model's weakness. If you get to that, use a bigger model.",
+              "author": "pimeys",
+              "depth": 4
+            },
+            {
+              "text": "This never happens on the deepseek api. It’s always a different provider using lower quants.",
+              "author": "bendangelo",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "> all requests to the Pro model will be routed to V4.1 Flash and billed at Flash's price\nIf I'd carefully tested and optimized prompts against Pro I wouldn't be keen on this particular news. I feel like API model providers should lean towards \nnot\n swapping out models on their paying customers, no matter how much \"better\" the new model is meant to be.",
+          "author": "simonw",
+          "replies": [
+            {
+              "text": "Seems to be lots of people in here worried about “if i had”, and nobody who actually has done this.\nAnybody actually using deepseek in a production system affected by this want to share their experience?",
+              "author": "notatoad",
+              "depth": 1
+            },
+            {
+              "text": "Absolutely nobody commenting that has done that, it's just roleplay. Flash-0731 and Pro-0813 replaced previous models too, and the V4-preview models replaced V3.2 before that. You have your official API from a tiny cutting edge research lab that can only realistically host one model at a time, which you know from every model they released before, but they fully  openly provide every model so if you want that infinite stability you can easily host it yourself for eternity. So those commenters want to pretend they require RHEL-like stability for their prompts with enterprise budgets, but somehow can't host those models, yet at the same time offload their entire RHEL-stability requirements to the research lab. Even Google and OpenAI retire models that were still relevant a year ago, but open models actually last forever.",
+              "author": "chronogram",
+              "depth": 2
+            },
+            {
+              "text": "I imagine they're doing this due to capacity issues or somesuch. They can always relaunch Pro later, meanwhile a little ricered benchmaxxing of their existing flash model provides a temporary cover story. They certainly aren't silly enough to think this won't impact existing Pro users </paranoia>",
+              "author": "badatnames",
+              "depth": 1
+            },
+            {
+              "text": "They could raise prices, if capacity is problem",
+              "author": "dandaka",
+              "depth": 2
+            },
+            {
+              "text": "They can't increase capacity by raising prices. Right now they calculate that they're at an optimal revenue curve. Simply reducing demand by increasing prices doesn't mean they get more money. The limit is in the ability to buy hardware.",
+              "author": "chronogram",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Source is apparently a banner announcement on \nhttps://platform.deepseek.com/usage\n. Had me searching for a couple minutes...",
+          "author": "oefrha",
+          "replies": [
+            {
+              "text": "I received an email for it.",
+              "author": "GreenWatermelon",
+              "depth": 1
+            },
+            {
+              "text": "I swear I put that at the start of the post. Must've managed to miss it when copy and pasting!",
+              "author": "nickweb",
+              "depth": 1
+            },
+            {
+              "text": "can't you edit it?",
+              "author": "NooneAtAll3",
+              "depth": 2
+            },
+            {
+              "text": "No. Posts are only editable for a small window of time.",
+              "author": "nickweb",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": ">In keeping with our commitment to user responsibility, following the official launch of V4.1 Flash and prior to the release of V4.1 Pro, all requests to the Pro model will be routed to V4.1 Flash and billed at Flash's price\nPlease don't do this kind of thing. If a user has validated a workflow on V4 Pro, they might not want to suddenly start testing it in production on V4.1 Flash. Instead, keep V4 Pro around but deprecated for a defined period of time, then remove it.\nAt least as open weights models, it's possible to use something like Together.ai or OpenRouter to run the V4 Pro model as long as other providers keep it up.",
+          "author": "aftbit",
+          "replies": [
+            {
+              "text": "Usually I would very much agree with you, but those things are not deterministic so if that's an issue for you you're probably not making the right choices.",
+              "author": "nolok",
+              "depth": 1
+            },
+            {
+              "text": "That's a narrow take. Non-deterministic doesn't mean random; workflows can be reasonably validated and consistent to some known degree.\nI work for an education department that serves a chatbot for students, and model changes go through painstaking content safety reviews. I initially  assumed it's just a bunch of bureaucratic paranoia. But every other model upgrade has a measurably different adherence to the existing system prompts about not talking to the kids about sex and drugs and mental health issues.",
+              "author": "lkois",
+              "depth": 2
+            },
+            {
+              "text": "I work in the same field for one of my company, in europe, and if you're not self hosting sorry but your worries are not something I can accept because models are very much not reliable on that front, let alone when you let the host decide HOW to serve a model (ressources allocated, different version of the same model, etc ...).\nI'm not being a d**, just saying, the problem you have is something that I have faced EXACTLY, and at least here it's not working until you host in house or remote but on raw hardware. Otherwise it keeps having subtle changes, and you will notice no LLM API providers has guarantees about these.",
+              "author": "nolok",
+              "depth": 3
+            },
+            {
+              "text": "It's not that you're a d*, it's just that you lack any kind of nuance\nThere's a whole spectrum between self-hosting open weight models and having a cloud provider swap models from under you\nShould\n you self host a model if want to maximize predictability to the limit? Yes. Does that mean it's wrong for someone hitting a model on API to expect that it won't switch to a completely different model under the hood from one day to another? Probably not.",
+              "author": "frde_me",
+              "depth": 4
+            },
+            {
+              "text": "Sure, but if you're working in a field where that limitation is not \"because you like it\" but \"because you have to\" it doesn't matter. If you cannot assume it to be true, then you have to assume it isn't.",
+              "author": "nolok",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Since a few months, I almost exclusively use the Chinese \"flash\" models for my needs. They are a joy and they cost pennies per answer. Great job.",
+          "author": "EbNar",
+          "replies": [
+            {
+              "text": "I am legitimately more excited for this release than any frontier models at this point.\nI don't need a model that can invent new mathematics. I need something that is fast, cheap, and consistent. Give me that and I can build and scale.",
+              "author": "ActionHank",
+              "depth": 1
+            },
+            {
+              "text": "LLMs are not consistent",
+              "author": "Oras",
+              "depth": 2
+            },
+            {
+              "text": "True, make them cheap and fast enough and you can scope and stack agents sufficiently that the error rate tends close enough to zero to be meaningfully useful.",
+              "author": "ActionHank",
+              "depth": 3
+            },
+            {
+              "text": "Yes. I'm working in the agent industry and my god are we excited on new versions of Chinese flash models. The direct competition is Gemini Flash, and these models are much better on agentic tasks with fraction of the task price compared to Gemini. Things like oh here's a set of simple instructions for you to follow, call these tools, return this report. 20-30% of the price per task. And especially Deepseek Flash produces better quality than Gemini does.\nWhere Gemini still wins is non-text input what Deepseek cannot do, yet, and Deepseek Flash has this thing of cheaper models where a failing tool call can derail your agent to a retry loop if you're not careful on instructions in the error message.\nIf they fix and make the tool calls to work better in non-optimal situations, it's much easier to switch from Gemini without a few weeks of evals and bugfixing.",
+              "author": "pimeys",
+              "depth": 1
+            },
+            {
+              "text": "Which versions of flash and at what thinking levels? Which chinese flash models and at what thinking levels? What tasks? What completion rates? How was quality evaluated?",
+              "author": "bitexploder",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49589914",
+      "title": "Ask HN: How do you manage skills files?",
+      "link": "https://news.ycombinator.com/item?id=49589914",
+      "domain": "news.ycombinator.com",
+      "author": "imadtaieber",
+      "score": 314,
+      "comment_count": 294,
+      "created_ts": 1788722830,
+      "is_internal": true,
+      "post_text": "How do you find skills, keep them organized, and make sure they actually work? Do you keep improving them over time?<p>I believe skills will eventually be eating by model capabilities, but until then I&#x27;m just looking for a better way to manage things.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49596976",
+      "title": "Apparently CodePen 2.0 sends data to their servers as you type",
+      "link": "https://news.ycombinator.com/item?id=49596976",
+      "domain": "news.ycombinator.com",
+      "author": "maxim-fin",
+      "score": 114,
+      "comment_count": 59,
+      "created_ts": 1788780160,
+      "is_internal": true,
+      "post_text": "They send all typed into editor input to codepen.dev almost immediately (you would see in 1-2 sec after you typed your secret that it appears in respective Network&#x2F;Response tab) even before one saved it. I tested this with a unique marker: after typing it into index.html, CodePen ran a build with &quot;save:false&quot;, and the marker then appeared verbatim in the HTML served from the generated &quot;*.codepen.dev preview&quot;. Thus, if you ever entered some secrets in there by mistake consider them compromized even if you did not publish&#x2F;save the pen",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "mistake"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49598009",
+      "title": "Ask HN: 3.5 inch diskette read errors, would a period correct drive do better?",
+      "link": "https://news.ycombinator.com/item?id=49598009",
+      "domain": "news.ycombinator.com",
+      "author": "rietta",
+      "score": 34,
+      "comment_count": 42,
+      "created_ts": 1788786584,
+      "is_internal": true,
+      "post_text": "My first attempt at restoring 1991 Learning Company Spellbound for DOS for my children is dubious. Despite being stored nowhere near magnetic sources, there are read errors on the 3.5 inch floppies and Linux could not mount them. ddrescue extracted data but I have not confirmed it works. The box also have 5.25 inch disks but I do not have a reader online at the moment, that is its own project.<p>My technical question is this, the USB 3.5 inch drive I have is a &quot;USB Portable Diskette Drive&quot; that was Made in China but has no obvious sponsoring branding. If I take the time to bring back to life a more period correct system with an actual IDE floppy drive would it read the disks more accurately?<p>My goal is to get more of this good DOS and early Windows educational software working for my children. This particular title is meaningful because I have the actual boxes and learned on it myself all those years ago.<p>One option for hardware is my parent&#x27;s Leading Edge WinPro 486. The case looks to be in good shape but I have not opened the case to see the condition of the capacitors yet. It has a natively mounted 3.5 and 5.25 inch drive.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49590656",
+      "title": "Ask HN: Show your micro-SaaS",
+      "link": "https://news.ycombinator.com/item?id=49590656",
+      "domain": "news.ycombinator.com",
+      "author": "genekrapivin",
+      "score": 25,
+      "comment_count": 24,
+      "created_ts": 1788727043,
+      "is_internal": true,
+      "post_text": "HN is a fantastic founder community.<p>We, the people, love transparency, numbers, and analyzing bootstrapped business models.<p>What is your current project? Share your wins, losses, and tech stack. Share monthly recurring revenue (MRR) if you feel like.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "https://lockmeout.online\nDigital time lock service to boost focus and distraction free productivity sessions.\n* Generates as very long random password or pincode\n* You set this random combination as a password for your phone, social media account, wifi router or whatever\n* Close the lock and the code will be hidden until a timer is expired or countdown started\n* Given the length of the password you will have forgotten it within seconds and are effectively locked out\nThe basic idea is to provide a \ndigital commitment device\n - a choice you make now that restricts your future options, so it becomes impossible to act against your long-term goals during the selected timeframe.\nStack: NextJS, MaterialUI in the frontend, C#, ASP.NET Core, EFcore, SQLite in the backend.",
+          "author": "littlecranky67",
+          "replies": []
+        },
+        {
+          "top": "Quite literally Micro - \nhttps://micro.mu\n - a personal assistant.\nMy goal is to consolidate a lot of daily tool use in one place, what started as individual little apps for news, mail, chat, video, etc turned into an assistant and home screen dashboard which includes its own mail server, rss aggregator, and more. The business at the model, micro transactions using topup credits, which then takes a per request credit for what you use. Eventually maybe I'd do a subscription but also a business version that allows customisation.\nFeedback more than welcome!",
+          "author": "asim",
+          "replies": []
+        },
+        {
+          "top": "Macrocodex - Guaranteed weight loss or weight gain within 2-3 weeks, beating GLPs for weight loss! \nhttps://macrocodex.app/\n 17,000+ users already.\nBack in time, many people used to say, \"I am genetically predisposed to fat or underweight\" All of them were proven wrong by macrocodex's method.\nNo matter if your metabolism is slow or fast, most people will see guaranteed results!\ntech stack: flutter and rust",
+          "author": "faangguyindia",
+          "replies": [
+            {
+              "text": "I see the claims, but I don’t see any evidence supporting them. Could you share what you’re basing the guarantee on? Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s? I searched and couldn’t find anything supporting those claims.",
+              "author": "OpenMac",
+              "depth": 1
+            },
+            {
+              "text": ">Could you share what you’re basing the guarantee on? Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s\nI know you work for MacroFactor, but when will you guys publish the datasets you used to benchmark your algorithm?\n\nhttps://macrofactor.com/algorithm-accuracy/\nGreg Nuckols Macrofactor's benchmark metrics therefore depend on internal data that isn't disclosed or independently verifiable.\nSo the published accuracy claims don't tell us much. It's like a student saying, “I scored 99% on a test,” but not showing anyone the test questions or their answers. You have no way to independently verify whether the score actually reflects how well they perform.\nThe number might be completely accurate, but without seeing the benchmark dataset, there's no way for anyone outside the company to reproduce or properly evaluate the claim.\nBut for Macrocodex, we do not charge people any money, and people can read the reviews and even the algorithm details!\nOur effectiveness claims are based on our own data from 17,000+ users and independent user reports in our group, consisting of 2,000+ members already!\n>I see the claims, but I don’t see any evidence supporting them\nWell, I know you work for Macrofactor, but we are not interested in producing useless posts with colorful charts.\n>Do you have any publicly available data showing that your app delivers guaranteed results and outperforms GLP-1s?\nYes, our group has thousands of members and where people can join the group through the Macrocodex app, they'll see Macrocodex users outperforming GLP users.\nGreg Nuckols can't even do math well. Look at their subreddit, people are always having issues with their app.\nhttps://www.reddit.com/r/MacroFactor/comments/1wa04vd/help_i...\nhttps://www.reddit.com/r/MacroFactor/comments/1w5aqtf/expend...\nhttps://www.reddit.com/r/MacroFactor/comments/1w4w4jw/lean_b...\nAs macrocodex is beating macrofactor by a long shot, many people are realizing that Greg Nuckols's science is more about marketing than results and evidence!\nDo you remember the Hussain and Solomon controversy of Jeff Nippard, one of the top MacroFactor promoters? And the PhD controversy of Mike Israetel?\nMacroFactor charges $72 a year and spends a lot of money paying influencers to promote the app, so it’s not surprising that you see so many submarine posts about it.\nVery soon, everyone will realize this!",
+              "author": "faangguyindia",
+              "depth": 2
+            },
+            {
+              "text": "The basis of these apps is pretty simple: you have to adjust your calorie target based on changes, you have to re-calculate as you go.\nWhat I've found is that tracking activity via calories burned is horribly unproductive as there are large variations on how many calories were \"burned\" depending on the app, device and activity. Are there any scientific studies on how to calculate calorie burn for any activities? Anything in a controlled environment to understand something simple like adult walking 1 flat mile at 3mph. It seems like this would be really hard to nail down compared with say average calories in an apple. Anecdata: as soon as I stopped tracking activity, the scale started moving.",
+              "author": "mattbrewsbytes",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "https://www.abejora.com/\n - Timesheet registration software\nWe try to differentiate in a few ways:\n* we try to be as fast and user friendly as possible, because nobody likes filling in timesheets: logical screens that align with the task you need to perform, keyboard support, flexible input...\n* democratic pricing. a lot of competitors hide the good stuff behind the expensive subscriptions, and per-seat pricing quickly becomes expensive\n* It has grown from our own needs\nWe use Elixir and Phoenix for our application, which is quite an amazing experience. It's a very different approach from the established \"React/JS storefront\" with \"Traditional backend language REST API\" that you see in lots of places. It's also a functional language. It's definitely something new, and something that we would recommend you experience.\nWe also switched from a simple debian server for hosting with standard CI/CD pipelines to a more exotic setup. We are now running a full kubernetes cluster on Talos Linux, with GitOps CI/CD using Flux. This was also something new for us, and a bit of a challenge to get it working, but now it is amazing to see it in action.\nWe are always looking for people who can give us feedback on our product. So send us your opinion/experience/recommendations/disappointments, and we will credit your account with 6 free months as a thank you!",
+          "author": "abejora",
+          "replies": []
+        },
+        {
+          "top": "Ok to post about NSFW games? My game’s making over 200 usd a month. Grown slowly over the last 9-10 months. Haven’t put too much effort into promoting it yet. Just recently got my engine to a place where I can tell the stories I wanna tell.\nBuilt a mostly hand built engine over three.js that lets my 3d game work from VR to iphones.",
+          "author": "fdvrse",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49589730",
+      "title": "Ask HN: UK Rescue Rocket Sheds/Houses Information",
+      "link": "https://news.ycombinator.com/item?id=49589730",
+      "domain": "news.ycombinator.com",
+      "author": "burnt-resistor",
+      "score": 24,
+      "comment_count": 6,
+      "created_ts": 1788721614,
+      "is_internal": true,
+      "post_text": "I can&#x27;t seem to find pictures or significant details (nothing on Wikipedia) about the coastal buildings purportedly used to contain shipwreck rescue rocket apparatus. Many of the buildings still exist and are Grade II listed. Anyone have any additional anecdotal&#x2F;local&#x2F;oral tradition information that isn&#x27;t found in the little blurbs online on the few websites mentioning them?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Example: \nhttps://britishlistedbuildings.co.uk/300022782-rocket-cart-s...\nhttps://maps.google.com/?q=51.5708572,-4.2850887\n51°34'15.1\"N 4°17'06.3\"W",
+          "author": "burnt-resistor",
+          "replies": []
+        },
+        {
+          "top": "I'm having difficulty googling what a \"rescue rocket\" is.  I keep finding info on a video game and safety during space travel.  What does \"rocket\" mean in a 1800s context?\nI found this: \nhttps://museum.maritimearchaeologytrust.org/2025/05/29/rocke...\nIs it a gunpowder rocket used to push a boat through the water instead of using rowing oars?\nIs it just a gun that sends the carrying cable, what makes it different from any other gunpowder gun? \nhttps://www.britishpathe.com/asset/52937/",
+          "author": "fhdkweig",
+          "replies": [
+            {
+              "text": "I wonder if it's for firing lines over to a shipwrecked vessel, to assist with getting people ashore.",
+              "author": "Neil44",
+              "depth": 1
+            },
+            {
+              "text": "Yes, looks like it:\n\nhttps://heritage.wicklowheritage.org/topics/topics-miscellan...",
+              "author": "trebligdivad",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Of interest?\nhttps://replay.bfi.org.uk/video/fbc58db0-b59f-5a31-9fda-1463...\nhttps://www.vectisarchaeology.org.uk/pdfs/irex_wrecked_at_th...",
+          "author": "robotswantdata",
+          "replies": []
+        },
+        {
+          "top": "Have you tried the RNLI or lighthouses associations?",
+          "author": "trebligdivad",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49586386",
+      "title": "Ask HN: Any Software Engineers here who enjoy their AI-native dev workflow?",
+      "link": "https://news.ycombinator.com/item?id=49586386",
+      "domain": "news.ycombinator.com",
+      "author": "pkos98",
+      "score": 15,
+      "comment_count": 13,
+      "created_ts": 1788701542,
+      "is_internal": true,
+      "post_text": "I would love to know what&#x27;s your setup like, how you make it enjoyable and what kind of work you offload to AI vs what you&#x27;re still doing yourself.<p>Not talking to the hobbyists or Managers who can now prototype stuff and produce fancy presentations quicker, but to the actual employed Software Engineer developing software running in production used by actual customers.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "For sure! I offload most work, except the \"idea\", rarely any domain-specific logic, and rarely any core design / architecture.\nMostly I treat the coding agent genie as a code calculator, building a plan, writing code, running tests, reviewing other code with scripts...\nFine to allow the genie to pick an idea from a queue of work, \"what is most urgent and important\" but not fine to go with whatever the genie thinks should be done - that's a fast track to building something you don't need yet.\nI also run a pair-programming session once a week with my team where we direct the genie as a \"third\" person. It's important to me that we still socialize around the work, even if the genie is involved. Sitting around the pile of code on the table and riffing together is fun. Just because every team member has Claude doesn't mean we stop gathering around the table once a week.\nGenerally though, the enjoyment  comes from the same problem-solving enjoyment I had when writing code before coding agents. It's fun to create things, fun to fix things.\nThe challenge is managing the addiction. I try to be done with any coding focused task by 2 pm, that let's me wind down and avoid any late into the evening wrap up. I'll spend the final hours of the workday reorganizing plans, reviewing PRs and admin tasks like email, IMs, etc..\nRemember even though your enterprise is paying for your tokens, they are extracting 2x, 3x, 10x maybe even 20x the value from you with the heightened productivity from coding agents. If you have equity, let it rip ha but if you don't, take some of that productivity back for yourself.",
+          "author": "TomEleff",
+          "replies": [
+            {
+              "text": "> take some of that productivity back for yourself.\nTruer words hath not been spoken.",
+              "author": "shinryuu",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thanks for asking the question.\nPreface: I do think the nature of the work is changing, now that LLMs are capable code generators. And I'll admit that I started working with LLMs because of FOMO, but also to keep my skills sharp in an evolving market. I'm not 100% certain this will pan out, but I do think that working with LLMs is a skill unto itself, and I feel that I'm much better at it now than I was when I started (in earnest, roughly) a year ago.\nQ: What's my setup like?\nA: I'm using both Claude Code and opencode w/ DeepSeek flash. Recently I've started providing the task context to both simultaneously, and then have one act as a real-time reviewer, and one as implementer. I don't consistently use one or the other for implementer, and I'm still learning their capabilities and \"who's good at what.\" But this allows me to get one model to provide an instantaneous code review to the other, as soon as the one model is done writing the code. I set my permissions for both to ask every time on every action: Read, Write, Bash, etc. I grew up playing turn-based RPGs, so I prefer turn-based battle to real-time.\nQ: What kind of work I offload, vs do myself.\nA: Almost all of the code is written by an LLM, but, since I'm reading and rejecting a lot of code, and basically micro-managing them, I feel that the code that's generated is roughly what I would have written myself. Work that I don't offload is any kind of email or communication, or non-code writing, with the exception of README files, and the prose session summaries I have them write.\nQ: How do I make it enjoyable?\nA: I make it enjoyable by finding new ways to work with the LLMs, and specifically, getting them to produce better quality code. The real-time code review process I outlined above is one method, but I've also found that the LLM will write better code when given a \"guiding principles\" document.\nHTH",
+          "author": "ebcode",
+          "replies": []
+        },
+        {
+          "top": "As I've more reliably produced reasonable quality code with automation I've found my joy coming from coding solutions to my own day-to-day problems and less to do with solving the problems I'm employed to solve.\nIt's not a bad thing IMO, the work is still getting done to a high standard but I have to look elsewhere for the satisfaction that used to come from doing my job well.",
+          "author": "tonytamps",
+          "replies": [
+            {
+              "text": "I think I feel the same in the sense that AI now allows me to choose more carefully what I'm actually working on and offload boring other tasks to the AI.  Of course, it only works as long as the deadline allows it.\n> As I've more reliably produced reasonable quality code with automation I've found my joy coming from coding solutions to my own day-to-day problems and less to do with solving the problems I'm employed to solve.\nNot the best job security.",
+              "author": "pkos98",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Does a burger flipper enjoy flipping burgers all day? - Not unless you're a robot. But Making a Gourmet burger without time pressure? - yes\nNo it is not enjoyable if you have enjoyed coding by hand earlier and like your craft. Maybe for some grunt work or work that you could never do it is great. I've given up trying to enjoy at professional work.",
+          "author": "conqrr",
+          "replies": [
+            {
+              "text": "What kind of setup do you have where implementing things is as easy as flipping a burger?",
+              "author": "continuational",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Been coding since I was a kid, MSc computer science, into programming languages (\nhttps://www.firefly-lang.org/\n).\nWe tried a few agentic coding tools at work, but they didn't really help.\nAlong came a project that required us to build a custom harness. One day we added some very basic coding tools to the harness at a whim, and it just immediately (and surprisingly) blew away everything we'd tried.\nNow we do most coding through that, and it's a clear productivity boost (2x?). It still requires hand holding and review, and some amount of manual fixing.\nBut being able to build things much faster is a lot of fun.",
+          "author": "continuational",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49628792",
+      "title": "Ask HN: Software Licenses that prevent LLMs from training on open source?",
+      "link": "https://news.ycombinator.com/item?id=49628792",
+      "domain": "news.ycombinator.com",
+      "author": "mattm",
+      "score": 8,
+      "comment_count": 5,
+      "created_ts": 1788970053,
+      "is_internal": true,
+      "post_text": "I&#x27;m planning to release an open source software library soon and was wondering - are there any licenses that would prevent LLMs from ingesting it into their training?  Do any of the labs say that they don&#x27;t ingest software code that uses certain licenses?<p>I realize this would be something that would be nearly impossible to discover and they could always say that they don&#x27;t but they end up ingesting anyway.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "IANAL and this is not legal advice, but to explain the issue further in a number of countries training is considered fair use. If someone training the model can find one country where this is the case (and there are no edge case issues from things like copying the data for training) training is legal. So far, the US hasn’t restricted importing models (which specifically for open source might not be possible due to free speech) so using that model in the US is legal as well.\nAnd understood that there are strong opinions on both sides of the argument if this is good or bad.",
+          "author": "appenz",
+          "replies": []
+        },
+        {
+          "top": "There’s nothing you can do to stop this. If your stuff is on the internet it will be crawled.\nDon’t want the LLMs or anyone else to gobble up your project then keep it private.\nThe licenses are a gentleman’s agreement in a world of no gentlemen.",
+          "author": "linesofcode",
+          "replies": []
+        },
+        {
+          "top": "There probably can't be. I assume they don't even look at the license when they crawl.",
+          "author": "wmf",
+          "replies": []
+        },
+        {
+          "top": "Chivalry and honor. Fight them to a duel to the death on horseback and javelin jousting.",
+          "author": "sigbottle",
+          "replies": []
+        },
+        {
+          "top": "Unless your license is backed up by the legal wherewithal to enforce its terms, your choice doesn't matter.\nThere are is no Software License Enforcement Agency.\nAnd by \"legal wherewithal\" I mean enough money to out lawyer the big AI companies who have many billions of dollars on the line and therefore a few billion for legal fees.\nAlso keep in mind that scraping by open-source projects is a proven tactic for corporate ingestion while generating plausible legal protection.\nGood luck.\nGood luck.",
+          "author": "brudgers",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49629821",
+      "title": "Ask HN: Do you regret using Social Networking apps?",
+      "link": "https://news.ycombinator.com/item?id=49629821",
+      "domain": "news.ycombinator.com",
+      "author": "julienreszka",
+      "score": 8,
+      "comment_count": 15,
+      "created_ts": 1788973869,
+      "is_internal": true,
+      "post_text": "I have the impression that even the owners of the apps have lost control of the algo and that it&#x27;s really being detrimental to people&#x27;s lives",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "networking",
+        "regret"
+      ],
+      "comments": [
+        {
+          "top": "I have stopped using most soc-networking sites mainly because everything is endless ragebait. \nThe human brain tends to focus more on negative feelings than positive ones and algos sure know how to optimize that for their own profits. \nNot to mention it creates a warped sense of view of humanity and seeing demons in people when there is none.",
+          "author": "pavithecase",
+          "replies": [
+            {
+              "text": "And it can make you feel inadequate",
+              "author": "chistev",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "No, I don't regret using social networks, because it's helped me connect and reconnect with countless people.\nIf I were addicted to social media, I imagine I'd have a lot of regret, though.\nI regret that it's turned into \"get users to view as many ads as possible\" by algorithmically generating what is effectively an unlimited timeline of content.\nThis \"unlimited timeline\" thing has caused me to stop using several services and greatly reduce my usage of the services I still find valuable, like X. Actually, I think X is the only one I still use (albeit much less).",
+          "author": "runjake",
+          "replies": []
+        },
+        {
+          "top": "I have this argument with my friend all the time. Social Networking apps are great. Ask any immigrant and they'll tell you if it wasn't for apps like that, they would go crazy. It keeps you connected with people you love and care about. There are downside to SN apps like anything else but that is your personal responsibility to manage and mitigate.",
+          "author": "thedefaultman",
+          "replies": []
+        },
+        {
+          "top": "I regret that we don't have sufficiently strong operating systems. I don't know what I could have done differently over the past 40 years to have changed that, I doubt there is anything.  This is, in my estimation, the root cause of much of the grief we now suffer with the Internet in general.\nBecause we can't run our own servers without substantial risks, almost everyone is forced into the walled gardens where network effects make it feasible to economically run the servers, and the administrative staff to keep them running, and somewhat secure. This provides the honeypot that then draws in advertisement and all the ills that go with it, as we're not the customers, we're the product.\nI would hope that we can collectively get our security act together, which will as a byproduct make it easy for everyone to run their own servers without risk.  But that's always been 20 years off, like fusion power. Everyone seems to think that Linux is good enough, which it isn't, but here we are.  8(",
+          "author": "mikewarot",
+          "replies": []
+        },
+        {
+          "top": "No regrets. Facebook was fun for a while. Then it stopped being fun, so I deleted my account. The others I either tried but never saw the point so deleted almost immediately, or couldn’t see any appeal and so never tried at all. Perhaps if I’d stayed on Facebook longer I would have regretted not having deleted it sooner.",
+          "author": "P-Nuts",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49618556",
+      "title": "Ask HN: Are you leveraging Spec-Driven / Spec-Anchored development?",
+      "link": "https://news.ycombinator.com/item?id=49618556",
+      "domain": "news.ycombinator.com",
+      "author": "locusofself",
+      "score": 8,
+      "comment_count": 3,
+      "created_ts": 1788909735,
+      "is_internal": true,
+      "post_text": "I am specifically interested in hearing from anyone who is working on actual production services, legacy services, etc.<p>I have done quite a bit of LLM-assisted coding but starting to work towards (and educate others in my org) about more structured approaches to this, to be able to deliver more complicated features with stronger guardrails than prompt-based coding.<p>Spec-Driven&#x2F;Anchored development is an emerging practice but I&#x27;m not clear on how battle-tested it is. What is your experience with it?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The whole spec-driven development movement has always been a bit odd to me, because it feels more like a traditional grounded approach towards regular software engineering.\nI can share my personal approach which has worked fairly well at least on modest legacy repositories (250k lines of code). It's a pretty simple 8-step process:\nDesign\n• Think about broad project objectives (ABOUT.md)\n• Deep research around tooling (STACK.md)\n• Initial spec and iterate with LLM (SPEC.md)\n• Develop broad suite of tests (TDD.md)\n• Full expansion into multi-phase plan with adversarial reviews (PLAN.md)\nExecution\n• Agentic harness (OpenCode) implementation at a per-phase level\n• Green light from TDD and further adversarial reviews. Manual sanity checking also occurs at this stage.\n• Repeat implementation, test, validation cycle until feature complete\nhttps://mordenstar.com/other/spec-dev",
+          "author": "vunderba",
+          "replies": []
+        },
+        {
+          "top": "I have used Simon Martinelli's AI Unified Process quite extensively and successfully: \nhttps://unifiedprocess.ai\nThe accompanying tooling allows you to generate requirements for existing projects (brownfield, legacy) as a foundation to either build upon or reimplement existing behaviour.",
+          "author": "BjoernKW",
+          "replies": []
+        },
+        {
+          "top": "Something I've learned is that your specification is as solid as your validation harness. If you have added strong e2e tests, with the critical scenarios covered, then you are safe. If not, sometimes it's rolling dices.",
+          "author": "diegojromero",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49636751",
+      "title": "Ask HN: Why can I only downvote select comments?",
+      "link": "https://news.ycombinator.com/item?id=49636751",
+      "domain": "news.ycombinator.com",
+      "author": "socalgal2",
+      "score": 7,
+      "comment_count": 9,
+      "created_ts": 1789001095,
+      "is_internal": true,
+      "post_text": "It&#x27;s obvious that you can not downvote a reply to your own comments but, today I noticed, in a topic I had no comments in, I was only allowed to downvote about 20% of the comments. The rest presented to downvote button. The conspiracy voice in me thought I was only allowed to downvote things the staff at HN wanted downvoted.<p>What&#x27;s the actual rule? Why were most comments off limits to downvote?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You might enjoy this list of undocumented HN features, which includes an answer to your question:\nhttps://github.com/minimaxir/hacker-news-undocumented/blob/m...",
+          "author": "optionalsquid",
+          "replies": [
+            {
+              "text": "Wasn't aware of all of those, thanks for sharing.",
+              "author": "philipportner",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Comments posted more than 24 hours ago cannot be downvoted.",
+          "author": "ThrowawayR2",
+          "replies": [
+            {
+              "text": "Thanks! I think this is it. Even though it was on the front page I think I didn't realize the topic was old enough to have 24hr old comments as it was not on the front page 10hrs earlier",
+              "author": "socalgal2",
+              "depth": 1
+            },
+            {
+              "text": "You can go to \nhttps://news.ycombinator.com/news\n and find recent posts. I like when the discussion is still small.",
+              "author": "gus_massa",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I can't answer the question, but I've seen it where some comments I can't downvote, but others in the same thread I can. Additionally, some I can't reply to either.\nI would lean towards there being a good reason. It also doesn't particularly bother me if I can't register my displeasure. Can be a good thing to be forced not to.",
+          "author": "BLKNSLVR",
+          "replies": []
+        },
+        {
+          "top": "This would be way easier to clarify if you’d provided context on which comments you were looking at.\nThe conspiracy voice in me thought maybe you know this is a benign thing and you’re just hunting for something to be outraged about.",
+          "author": "akerl_",
+          "replies": []
+        },
+        {
+          "top": "You can email the staff using the contact link at the bottom of the page.",
+          "author": "krapp",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49628247",
+      "title": "Ask HN: Is there any solution to the AI infestation?",
+      "link": "https://news.ycombinator.com/item?id=49628247",
+      "domain": "news.ycombinator.com",
+      "author": "yathern",
+      "score": 7,
+      "comment_count": 6,
+      "created_ts": 1788967961,
+      "is_internal": true,
+      "post_text": "I&#x27;m sure I&#x27;m not the only one who&#x27;s noticed, but nearly every post on Hacker News is getting LLM comments now. For anyone who works regularly with LLMs, it&#x27;s very obvious from the tone alone - and a quick check to previous comments will confirm it. Some have gotten slightly more sophisticated and auto-add typos, or other tricks. I&#x27;m sure there&#x27;s plenty that I don&#x27;t recognize as AI either.<p>I understand the motivation - running a mini bot farm would allow you to make sure your posts get a number of quick upvotes - or manipulate the conversation about your startup, or some other field one has a vested interest in. But seeing this infestation, and the rate at which it is growing is very demoralizing.<p>There probably aren&#x27;t any solutions that don&#x27;t involve significant privacy invasions or a fundamental change in how the site operates, so maybe this is more of a vent post - but I&#x27;m curious if anyone has any suggestions? What happens next? The entire internet becomes (even more) of a greed-manipulated psychological nightmare?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup",
+        "motivation"
+      ],
+      "comments": [
+        {
+          "top": "I've accepted that the \"Old Internet\", the one in which most content was clearly human generated (for better or for worse) is dead.\nOn the flip side, the AI infestation makes the New Internet, at least for me, less addictive.",
+          "author": "shahbaby",
+          "replies": []
+        },
+        {
+          "top": "My take is HN is changing to adapt to current changes to the hard question:\n  What separates intellectually interesting AI\n  from uninteresting AI, right now?\n\n\nThirty years ago, Baysian generated poetry was intellectually interesting enough that Paul Graham put some in one of his programming books…yes, it made it through an actual professional editor and the publisher’s money was spent printing the poetry on a few pages instead of printing something else.\nA ten years ago, code-completion was intellectually interesting.\nA five years ago, images from text was.\nToday, none of them generally are except occasionally at the leading edge.\nOr to put it another way, there’s an ice machine on the airplane taking you to Dallas Fort Worth and we just take it for granted.",
+          "author": "brudgers",
+          "replies": []
+        },
+        {
+          "top": "Smaller forums.\nI came here from Slashdot, after it turned into too much of a cesspool.  And HN was a wonderful place.  But over a decade, it slowly became less wonderful.  More people showed up just to argue, rather than to have curious conversations.  More zealots and shills, less thought.\nI think what happened is that HN became a place that was worth \ninfluencing\n.  Some people decided they'd do that rather than enjoying it for what it was.  The more people on HN, the more valuable it was to manipulate, and so the more people did.\nSo one solution is just to find smaller forums - ones that aren't big enough to be worth trying to manipulate.  That doesn't same HN, though.  It doesn't get it back to what I loved.",
+          "author": "AnimalMuppet",
+          "replies": [
+            {
+              "text": ">More people showed up just to argue, rather than to have curious conversations.\nWhat is the difference? Just curious...",
+              "author": "lolakutty",
+              "depth": 1
+            },
+            {
+              "text": "Whether you listen to someone you disagree with.\nThere's a difference between \"why?\" to try to understand, and \"why?\" trying to prove the other person wrong.  (If you have kids, you've probably seen this.)\nThere's a difference between good-faith questions and \"gotcha\" questions.\nThere's a difference between thoughtful statements and talking points.  (The presence or absence of nuance is a big part of it.)\nPeople who are here to score points don't talk the same way as people who are here for conversation.  (Now, it's not quite that simple, because some people here aren't neurotypical, and they don't always talk like good-faith people, even when they're in good faith.  Still, most of us here have heard neurodiverse people, and we've heard politicians, and we can often tell which is which.  Neurodiverse people are usually committed to \nthe truth\n.  They may be nitpicky, but they will acknowledge an accurate point when one gets made.  Politicians are committed to \ntheir side\n; they won't acknowledge that the other side has had a valid point ever in history.)",
+              "author": "AnimalMuppet",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Didn't notice it - I worry about more about the slop blog posts themselves.\nAre those comments ranking on the top spots?",
+          "author": "swah",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49588372",
+      "title": "Ask HN: Connecting Kubernetes dependencies to application telemetry",
+      "link": "https://news.ycombinator.com/item?id=49588372",
+      "domain": "news.ycombinator.com",
+      "author": "chipfixer",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1788713624,
+      "is_internal": true,
+      "post_text": "I’m building Cardinal (cardinalhq.io). One thing that drives me nuts about Kubernetes debugging is the number of steps it takes to go from an application issue to its underlying kubernetes root cause.<p>Like for example, if I am seeing an error rate spike, and I group by deployment, I want to immediately see the deployment&#x27;s k8s neighborhood, which would then show me the configmap that was updated recently and incorrectly.<p>Similarly, say a node is low on disk and that is causing a ripple effect on a statefulset trying to write new files, which then affects request latency.<p>The list goes on.<p>To solve this, one idea we had was: build a smart chart legend that recognizes a k8s tag (based on OTEL semantic conventions), and then for every entry pops an &quot;infra map&quot; icon. Click and you see the full k8s neighborhood of that entity with health annotations. So now it&#x27;s easier to go from app telemetry to k8s infra.<p>I am curious if this UX makes sense, and if not how do you solve this correlation problem today?<p>https:&#x2F;&#x2F;cardinalhq.io&#x2F;use-cases&#x2F;kubernetes",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Personally I think security is far ahead here compared to normal observability tools. I decided to work on a side-project to try and add SIEM like functionality to a clickhouse backed otel platform; by the end of it the thing I came to believe the tooling blue teams use should be used in observability generally, not just security. Incident/event management is a very powerful concept, and provides a clean framework to hang all of this information on. Then your solution for mechanically finding the neighborhood in k8s is one way to add observations to an event. Some SIEMs have started having agents recommend stuff to be added to an event, which is a nice middle-ground of having agents help but not completely control the discovery and diagnostic effort (as well as providing a clean feedback loop for training data synthesis).\nThat's all to say, have you considered that framing, and if so, have any opinions on why more general observability tools haven't gone that direction?",
+          "author": "jesol",
+          "replies": [
+            {
+              "text": "Are you saying that if everything became an event, its easier to correlate because the event is more free form and it's easier to add custom metadata?\nIn theory, I agree with you. But you can't eliminate 'joins' all together, IMO, because it's not practical to know beforehand what context will be useful.",
+              "author": "chipfixer",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "configmap that was updated recently and incorrectly: how would you know the cm update is the cause? How would you sort that out if you made 5/10 updates?\nsay a node is low on disk: what about setting up monitoring alerts for those king of things.\nIn general, alerts are of great help. An alert fired after an update is a big smell about that update causing the issue.",
+          "author": "jeansilga",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49651777",
+      "title": "Stardust Store – An independent Android app marketplace",
+      "link": "https://news.ycombinator.com/item?id=49651777",
+      "domain": "news.ycombinator.com",
+      "author": "zishutron",
+      "score": 5,
+      "comment_count": 0,
+      "created_ts": 1789084970,
+      "is_internal": true,
+      "post_text": "Hi HN,\nI built Stardust Store, an independent Android app marketplace as part of my ZISHU TRON ecosystem.\nWebsite:\nhttps:&#x2F;&#x2F;stardustapkstore.zishuai.cloud\nThe main idea is to focus on app discovery, rather than simply providing a large list of APKs.\nThe current platform has:\nEditor&#x27;s Choice\nTrending and New Releases\nPopular Apps and Games\nSearch by name, developer and category\nTop Free &#x2F; Paid &#x2F; Grossing &#x2F; Trending &#x2F; Rated rankings\nApp categories\nUser profiles\nWishlist\nDownload history\nReviews\nI built the project independently and I&#x27;m currently focusing on improving the marketplace based on feedback from users and developers.\nThe Android version is also available here:\nDownload APK: https:&#x2F;&#x2F;github.com&#x2F;zishutron&#x2F;Stardust-store&#x2F;releases&#x2F;download&#x2F;v12.0.1&#x2F;starduststore.apk<p>Privacy: https:&#x2F;&#x2F;stardustapkstore.zishuai.cloud&#x2F;privacy<p>Terms: https:&#x2F;&#x2F;stardustapkstore.zishuai.cloud&#x2F;terms<p>I&#x27;d especially appreciate feedback on the marketplace UX, discovery model, rankings, and what developers would expect from an alternative Android app marketplace.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49645248",
+      "title": "Is there a genuine space for the Desktop AI assistant, or its solved?",
+      "link": "https://news.ycombinator.com/item?id=49645248",
+      "domain": "news.ycombinator.com",
+      "author": "Qhloi",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1789053506,
+      "is_internal": true,
+      "post_text": "AGI era?\nSo now everything we have on these &#x27;watches-your-screen-and-does-stuff-for-you&#x27; tech like GPT-6 Astra, Muse, HeyClicky,and Claude Fable 5.1 is the latest from the AGI era. Interesting to see what do people genuinely feel about this kind of tool.\nAstra is described as being from &quot;AGI era&quot;, Muse has its own VM and it will able to read your screen, fill out a forms or even negotiate for you while HeyClicky is the same idea but smaller and only one element sitting by your cursor to read your screen with you, or launch a task as per your commands. \nSo does it solve a genuine problem that you had before or just convenience that was translated into overreach? Has any of you actually put one of these to use, or did it get broken down quickly? And what is your own defined boundary regarding these tools capabilities - would it be completely fine if it annotates your screen, but asides of it, you wouldn&#x27;t want it to initiate a click&#x2F;action due to its current unreliability? Honest and direct answers and views.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "negotiate"
+      ],
+      "comments": [
+        {
+          "top": "No, it's not solved. Not even close. We're still in the nascent phases of desktop and mobile agents. We're still cavepeople banging rocks on things.",
+          "author": "runjake",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49632475",
+      "title": "Ask HN: Next day thoughts on the millenium prize threads?",
+      "link": "https://news.ycombinator.com/item?id=49632475",
+      "domain": "news.ycombinator.com",
+      "author": "seizethecheese",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1788981233,
+      "is_internal": true,
+      "post_text": "On a comment thread yesterday, someone said (paraphrasing) &quot;I suspect this will seem more clear tomorrow&quot;. This seemed appropriate both in the sense of some cool down time to see things clearly and also more information coming to light.<p>I don&#x27;t see anything on the front page now, but was looking forward to reading a more grounded conversation about this. Perhaps this thread could fill that role.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I hear that OpenAI may have made significant progress on the Hodge conjecture. Someone noted that it would be far more significant if they proved it vs finding a counterexample. Does anyone have intuition why this would be the case?",
+          "author": "atleastoptimal",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49628008",
+      "title": "Ask HN: How to know when Claude has changed model itself during processing?",
+      "link": "https://news.ycombinator.com/item?id=49628008",
+      "domain": "news.ycombinator.com",
+      "author": "mfaisalghufran",
+      "score": 3,
+      "comment_count": 1,
+      "created_ts": 1788967116,
+      "is_internal": true,
+      "post_text": "When I use fable sometimes during processing it shows the complete tenses like &quot;Determining the true cost of the tool&quot; instead of &quot; Mulling or Honing etc &quot;<p>so does it mean that Claude has changed the model itself when it shows complete processing messages?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49638687",
+      "title": "DeepSeek launches v4.1 flash, postpones v4 Pro discontinuation",
+      "link": "https://news.ycombinator.com/item?id=49638687",
+      "domain": "news.ycombinator.com",
+      "author": "Audiolite",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1789017111,
+      "is_internal": true,
+      "post_text": "DeepSeek has officially released the V4.1 Flash model on September 10, 2026 (Beijing Time). In the meanwhile, we plan to postpone the discontinuation of the V4 Pro service to 12:00 Beijing Time on September 14, 2026. At that time, all requests to the Pro model will be routed to V4.1 Flash and billed at Flash&#x27;s price. After extensive internal and external testing, V4.1 Flash has comprehensively surpassed V4 Pro across all key metrics, including performance, cost, speed, and task completion time. If you encounter any issues during your comparative testing between V4 Pro and V4.1 Flash, please do not hesitate to reach out to us with your feedback.<p>The price of V4 Pro remains unchanged during the service period. The price of V4.1 Flash will take effect at 4:00 UTC, September 10, 2026.<p>Peak hours (in UTC): 1:00–4:00 AM and 6:00–10:00 AM, Monday to Friday. (All other hours are off-peak)\nIf you continue to use our services after the billing adjustment, you will be deemed to have accepted the adjusted billing terms. If you do not agree, you may choose to cancel your service and apply for a refund. Should you have any questions or require further information, please do not hesitate to contact us.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49625958",
+      "title": "Ask HN: What non-IT/Software industries have benefitted the most from AI?",
+      "link": "https://news.ycombinator.com/item?id=49625958",
+      "domain": "news.ycombinator.com",
+      "author": "simonsarris",
+      "score": 2,
+      "comment_count": 6,
+      "created_ts": 1788959332,
+      "is_internal": true,
+      "post_text": "Where have costs been greatly reduced, or performance increased, etc?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I would think in any domain that used to suffer due to lack of a fuzzy, search.\nIn cases where LLMs are used to generate stuff, when push comes to shove, LLMs fails to deliver. This is fundamental.\nFor example, if you talk to an LLM regarding any subject, it will appear like a scholar initially. But if you push it deep enough, you will notice that it is just circling. This is same for any domain..",
+          "author": "lolakutty",
+          "replies": []
+        },
+        {
+          "top": "Translation and I don't think anything else is even close, including IT/software.",
+          "author": "carlosjobim",
+          "replies": []
+        },
+        {
+          "top": "Boutique marketing and e-commerce.\nSmall business entrepreneurs are piecing together AI plug-ins to provide themselves with round-the-clock, fractional marketing services. This allows them to avoid paying hefty monthly retainers and automate their SEO copywriting, test different versions of ads and qualify their leads automatically on a constant basis. It has made the production of creative assets almost free of charge, making it possible for individuals to perform tasks previously done by professional marketing teams.",
+          "author": "Aditya_0315",
+          "replies": []
+        },
+        {
+          "top": "I actually think specific models can help with education.\nEspecially when catering to an individual childs need instead of one large blob of people having to learn the same way, while money is always getting tighter for education.",
+          "author": "kaikayy",
+          "replies": []
+        },
+        {
+          "top": "Toilet Cleaning and food serving robots",
+          "author": "thomasjeff1",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
