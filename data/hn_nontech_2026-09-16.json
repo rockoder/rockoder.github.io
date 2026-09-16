@@ -1,0 +1,691 @@
+{
+  "scraped_date": "2026-09-16",
+  "source": "hacker_news",
+  "total_scraped": 59,
+  "nontech_count": 20,
+  "posts": [
+    {
+      "id": "49686380",
+      "title": "Ask HN: What are you working on? (September 2026)",
+      "link": "https://news.ycombinator.com/item?id=49686380",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 362,
+      "comment_count": 1134,
+      "created_ts": 1789320698,
+      "is_internal": true,
+      "post_text": "What are you working on? What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been working on a voxel game engine called Bonsai for ~10 years.\nProbably the most interesting thing about it at the moment is the editor.  The world, and most things in it, are represented as collections of SDFs.  More accurately, they're density fields, but, potato-tomato.\nBonsai has undergone a large rewrite over the last couple years that's nearing completion.  A world edit is defined as a bunch of SDF parameters which get projected/rasterized into the voxel grid by a shader on the GPU.  One neat thing about SDFs is they've been thoroughly researched and documented by a guy named Inigo Quilez, and they have a lot of nice mathematical properties.  For example, you can do a smooth union of arbitrary SDFs to get nice rounded contours where shapes join.\nI've written every system from scratch, all the way from the memory allocators and font rasterizer to the collision detector and simulation loop.  I even wrote a metaprogramming language as a replacement for C++ templates, which is a whole other story.  IIRC the only external dependency is the C runtime library for starting the process and my very occasional use of variadic functions arguments.\nFor a long time, an explicit non-goal of the project was to ship a game.  It sounded insane to me to write an entire 3D engine and then ship a game.  As it turns out, I've gotten it to the point where I can actually make a game.  I've got a start on the game systems in a closed-source repo, and hope to have a steam page for it by the end of the year.\nI'll do some shameless self-promotion and leave some links here for anyone interested in looking at the engine, language code, or some pretty pictures.\nhttps://github.com/scallyw4g/bonsai\nhttps://github.com/scallyw4g/poof",
+          "author": "jesse__",
+          "replies": [
+            {
+              "text": "Definitely interested in where you take things with the actual game - the engine looks really cool. It seems like we're in the midst of a bit of a cambrian explosion around \"survival games descended from Minecraft\" (Hytale is top of mind, but there's also Vintage Story and iirc there's a few others of note either in early access or development). Not that a voxel engine can only do a Minecraft-like - but there's definitely a market for someone who wants to take that formula and run with it.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, it seems enough people have done enough work on voxel engines now that we're actually starting to see games proliferate.  I'm stoked about it!\nI'm a lot less interested in minecraft-style survival games than I am in exploring .. other .. types of games that push the medium further.  Most voxel games that make it to release basically boil down to 'hack-n-slash RPG with a lego world'.  As you mentioned, it's obviously a successful recipe, but I feel like it's barely scratching the surface in terms of how far the underlying tech has come.\nI've got a game in-flight where the primary mechanic is modifying the environment to achieve a goal.  Teardown is really the only other game that's made it to market and done this.  The mechanics are going to be intentionally simplistic .. it's more of an existence proof that a deeper game could exist and people are interested in it.",
+              "author": "jesse__",
+              "depth": 2
+            },
+            {
+              "text": "Looks cool.\nWhat would you say its defining features are? What makes it different than Minecraft? Seems like its probably more performant.\nWhats the license situation. I see your own license which sounds maximally permissive but written by you. Is that just how it works? I can do whatever I want with that license? It doesnt need to be a “real” license?\nMaybe your bonsai logo should come from your voxel engine instead of pixel art?\nIdk why but my first thought was somehow that i misunderstood “voxel engine” when i saw the pixel art.",
+              "author": "nonethewiser",
+              "depth": 1
+            },
+            {
+              "text": "Hey, thanks for the kind words!\nI'd say the defining feature is the editor and terrain generation system.  At the moment it's not well documented, but once the big rewrite I've been working on has settled I plan to take some time to make tutorial materials.\nAs far as the license goes, I chose WTFPL originally because I figured it would dissuade 'real' companies (with legal teams) from using it.  I've since thought about changing the license to something permissive that might play nice with legal teams, like MIT.  You can do whatever the fuck you want; it says so right in the license ;)  I'd actually love it if people used it.  My intent now is to keep the engine open source, and build games with it in closed-source repos.\nYou're right, I should change the logo.  It's on the todo list .. it's just a really long list ;)",
+              "author": "jesse__",
+              "depth": 2
+            },
+            {
+              "text": "SDFs are the future at least when it comes to level design - especially because they have that \"subtract\" railgun cone of death functionality baked in. A boss fight feels different, if where the hammer comes down there is a crater afterwards.",
+              "author": "21asdffdsa12",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm working on a real-life social app called Holler (\nhttps://justhollerapp.com\n).\nI'm an introvert and socially anxious, but I do enjoy hanging out with my friends. I just HATE the invitation-and-coordination game. If someone invites me and I don't want to go, I hate having to come up with a socially acceptable excuse. Inviting someone and waiting for them to make a socially acceptable excuse is equally awful to me.\nThen you get to coordination. I want to go to the brewery at 2pm, but your kid has soccer practice so you can't get there til 3:30, but then Joe has to leave at 4 to pick up his mother in law at the airport, and... ugh. It's the worst.\nSo I made Holler, which is basically you hollering to your friends, \"I'm going to be at the farmer's market at 2pm,\" and then you just go. If they show up, fantastic. If not, whatever, you were going to go anyway.\nNo coordination, no invitations, no friction. Just holler and go.\nIt's iOS only for now, but I'm working on an Android app as you read this, so hopefully that's coming soon.",
+          "author": "Jemaclus",
+          "replies": [
+            {
+              "text": "That seems like the kind of \"social app\" that might actually \nwork\n for me. I like the idea of sort of passively declaring \"i am doing something, feel free to show up.\"\nI guess the potential failure mode is ... no one ever showing up. I've got a standing slot (during work hours) at my current company where it's just \"AI Jam\" - just come in, eat lunch, and we'll hack on something, ramble about the news, etc. It's been moderately successful but there are definitely weeks where you just end up in a call with one or two guys with nothing to show.\nThat's not so bad though - last week we just talked about video games. Still fun.\nSo anyway - best of luck. Seems like a cool idea!",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I get that. My thinking is that I'd rather go do something fun by myself than sit at home because I couldn't coordinate something or because someone else didn't want to do my thing.\nThis weekend, for example, another couple invited my partner and me to go do an activity. They sent the text at 11. We finished giving our kid lunch, walked the dog, and loaded up the car. They texted and said their kid wasn't ready yet, and maybe they'd leave by 2. They didn't leave home til 2:30, so we didn't start our activity until noon, almost three hours later. The activity lasted about an hour, then we suggested going to a brewery to get some drinks, but for one reason or another, we wound up going our separate ways.\nMy partner looked at me and said \"This would've been a better Holler use-case. We could've just gone for a hike ourselves and not had to coordinate with someone else who can't show up on time.\"\nSure, it might've just been us, but we spent a lot of weeping and gnashing of teeth coordinating with people that we ultimately barely spent any time with, and instead lost half our day.\nHoller, to me, represents a form of social freedom. I'm freed from the constraints of other peoples' calendars. If they really want to hang out with me, they'll come to the events I holler. If they don't, then that's fine, we can still be friends, but if they can't be willing to attend things on my schedule, why should I adjust my schedule to conform with theirs?\nSo I'm going to do what I want to do, and if anyone wants to join, fantastic.\nBetter than sitting at home twiddling my thumbs wishing I was doing something fun.",
+              "author": "Jemaclus",
+              "depth": 2
+            },
+            {
+              "text": "I do this in my running club (granted, it’s quite specific). Hello I’ll run X time at Y place for that long / that purpose. I don’t even explicitly « invite ». Then a few people sometimes join. We are a few hundreds so I meet new people each time. It’s nice and bears 0 organizational cost for me",
+              "author": "chantepierre",
+              "depth": 2
+            },
+            {
+              "text": "Yes! You get it! That's awesome. This is basically \"comment what you want to do on a FB group and see who shows up\" as an app. You got it exactly.",
+              "author": "Jemaclus",
+              "depth": 3
+            },
+            {
+              "text": "This kind of reminds me of Foursquare from back in the day.\nNow a days I just have a few group chats where I can drop this kind of announcement in and see if there are any takers.",
+              "author": "MrDresden",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm building \nhttps://uscodex.org\n. In a nutshell, the goal is to collect all US federal law in version control, and cross-link any references between different sections. Currently I have the US Code, CFR, ~30 years of public laws and congressional bills and 25 years of executive orders.\nActually using raw git repos as the main data store which has worked out great since the US Code changes very little between new releases and so it compresses very well. Also makes it easy to generate diffs of sections: \nhttps://uscodex.org/usc/d/119-100/119-102not101/16/2201",
+          "author": "SebRollen",
+          "replies": [
+            {
+              "text": "Hoo boy. It's an awesome idea, don't get me wrong - and it's work that should \ndefinitely\n be done. But I've worked professionally in this space and it is \nwildly\n complicated. I've never seen how things are done on the federal side, but US states have various modes of \"electronic filing\" for rules and codes - and there's a ton of complexity.\nIt's the kind of thing that sounds insanely boring on the surface, but there's a lot of interesting problems to solve, lots of coordination between various parties, lots of \"deep state\"[0] politicking - and so it becomes a surprisingly cool area to learn about and work in, and really matters in a way that many software projects do not.\nBest of luck - it's a cool problem space.\n[0]: I use \"deep state\" here somewhat ironically, but also just in the literal definitional sense: \"people who are not elected but who work for the government and are surprisingly important\". 0% intent to use it in the often insulting manner of popular discourse.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Super interested in hearing more about some of the battle-scars you've acquired from working in the space if you're open to sharing? Very early in the journey here, so still have a ton to learn!\nSo far, it seems like the federal space is relatively well-behaved compared to your experience with states. Most agencies standardized on the USLM schema[^1][^2] in 2013. Before that, it's a hodge-podge of XML and plain-text sources.\nAlso, FWIW, my interactions with federal agencies so far have been insanely positive. When I reported the error I found in the US code at 9pm, a staffer from the OLRC verified the issue and got back to me by 7am the next day, more efficient than most private sector organization's I've interacted with!\n[^1]: \nhttps://github.com/usgpo/uslm\n.\n[^2]: Meta: The USLM itself was created by federal law \nhttps://uscodex.org/usc/2/181",
+              "author": "SebRollen",
+              "depth": 2
+            },
+            {
+              "text": "I am not sure how much I'm allowed to say publicly between NDAs and contracts and all that fun stuff (I may already be over the line, tbh) - but feel free to drop me an email at the address in my profile and I can point you to a few things that might be of interest.",
+              "author": "epiccoleman",
+              "depth": 3
+            },
+            {
+              "text": ">\"people who are not elected but who work for the government and are surprisingly important\"\nThat’s just the regular definition of deep state. The difference is simply that you arent using it as a pejorative.",
+              "author": "nonethewiser",
+              "depth": 2
+            },
+            {
+              "text": "This is great!\nWe need something like git blame to show how legislation evolved over time, who passed it, which lobbyists pushed for or wrote it, who benefited by receiving more money/power, and who had to foot the bill.\nThis is becoming urgent, now that there's almost no correlation between what laws get passed and their popularity with the public, since Congress mainly only listens to moneyed interests:\nhttps://www.youtube.com/watch?v=5tu32CCA_Ig\nDiscussion:\nhttps://act.represent.us/sign/problempoll-fba\nBy making corruption more transparent, we can make it so toxic that people participating in it get investigated and brought up on charges.\nThis will become inevitable due to the arrival of AI, but speeding up its delivery is paramount if we want to save our country.",
+              "author": "zackmorris",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://shopspec.io/\nShopSpec is a deterministic parametric furniture generator (bookshelves, cabinets, shop carts, leg-and-rail frames, multi-carcass composites) that encodes real woodworking intelligence and outputs shop-ready artifacts.\nMost recently, introduced the concept of value engineering by sweeping across dimensions to batch evaluate candidates that ranks based on sheet purchases. Also have in beta an MCP connector to let agents explore the deterministic engine.\nI'm building a number of items for home and shop and ShopSpec has been instrumental to plan, visualize, and execute on these new ideas/projects.",
+          "author": "variodot",
+          "replies": [
+            {
+              "text": "Don't forget about the rest of the world which does not use imperial and have access to plywood stock that is e.g. 18mm birch in metric standard dimensions for the cut sheet. Being able to customize what stock I have access to locally and adjust measurements and cuts automatically, e.g. rounding to cm not quarter inches.",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "Hi there! I'm a woodworker and love seeing new woodworking software! Thank you for making this.\nI could tell from the layout screenshots, but one thing to make sure is that you are accounting for the size of the kerf. Being able to set a different kerf size for different cuts would be ideal as your rip vs crosscut are often different blades.\nAlso, one of the more daunting parts of casework for me is sorting out exactly how undermount slides go. I would highlight any help your tool does with raising confidence in getting those installed. Even having an undermount installation tool separate from the spec work I think could be useful.",
+              "author": "bradly",
+              "depth": 1
+            },
+            {
+              "text": "This is beautiful and I'm now itching to make a workbench (finally! that initial \"how many sheets and what for what size\" problem has been the mental blocker)\n+1.0mm vote to adding metric please!",
+              "author": "Mumps",
+              "depth": 1
+            },
+            {
+              "text": "Glad ShopSpec helped get you over the hump and appreciate the feedback. I am building a tool that I find useful for myself and previously encountered a similar pattern to what you mention.",
+              "author": "variodot",
+              "depth": 2
+            },
+            {
+              "text": "Wow that's really cool! I'm actually trying to learn about woodworking and using those example as a base are really great! \nYou could consider having an option for metric users as well!",
+              "author": "mimo84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I had claude faithfully rewrite SimTower so I could play it in the browser:\nhttps://kvetch.io/conciliatower\nI wanted to re-play SimTower but found it too difficult to get running through emulation. Instead, I worked for 6 months with Claude Code on a complete rewrite, replicating all the functionality from a Ghidra decompilation of the binary, an AI-generated summary of the original source code and my memory of the gameplay. Then deployed it to the web as WASM.\nI wanted the original feel of the game, so didn't create new art. Instead, you load an original binary you provide, and the on-page code parses it and pulls out the original assets.\nI didn't look at a single line of code Claude wrote, but spent hours playing through the game and nitpicking every little behavior. A lot of time was spent convincing myself that the elevators just ARE that hard to get right >.<\nI hope everyone can enjoy this game again. Did a writeup here: \nhttps://www.wyldcard.io/blog/simtower-remake-playable-in-bro...\nsource: \nhttps://github.com/Jonahss/concilia-tower",
+          "author": "jonahss",
+          "replies": [
+            {
+              "text": "How would you get different behavior when you have completely decompiled the original binary and recompiled it to wasm? Shouldn't the result have identical behavior?",
+              "author": "daymanstep",
+              "depth": 1
+            },
+            {
+              "text": "Did you fix any of the underlying numeric limits in the original game?\nThere's a hard cap to 127 instances of commercial spaces. 128 onward won't get any visitors. Too many office workers will overwhelm your limited commercial spaces and thus leave the tower for lunch, over-taxing your elevators.\nAnd yes - elevators are hard!",
+              "author": "eclipticplane",
+              "depth": 1
+            },
+            {
+              "text": "While looking for the game files I found this web player : \nhttps://www.abandonware-france.org/online/play/simtower/\nCurrently in maintenance tough",
+              "author": "nkapias",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49712278",
+      "title": "Show HN: Capsule – Single-file web apps that save their data into SQLite",
+      "link": "https://withcapsule.app/",
+      "domain": "withcapsule.app",
+      "author": "bashtian",
+      "score": 299,
+      "comment_count": 121,
+      "created_ts": 1789479100,
+      "is_internal": false,
+      "post_text": "Hey HN,<p>I always had the problem that building HTML pages is really simple now, but trying to save data required hosting it somewhere, and sharing it afterwards was not easy. Over the last few months, I&#x27;ve been building an app called Capsule (it’s also the file extension name) written in Rust with Tauri 2.0 that allows packing an HTML app and its data into a single SQLite file.<p>The HTML file and any related assets are directly embedded in the database. User data can either be saved as a localStorage key&#x2F;value store or via a MongoDB-inspired collections API as documents, saved in a table in the file. You can also save other assets, like PDF files or images, directly in the database to keep different documents together. All data can be easily exported to CSV or JSON if needed.<p>Privacy and security were a big priority for me, so documents cannot do anything out of the box. They don’t have direct access to the file system and they require permission to access the internet. The permission model is still something I’m working to improve. Capsule documents can also use local or remote AI models for document specific AI features.<p>One downside with this approach is that multiple people working on it will create different copies. To make it possible to merge different copies of the same file, each data entry has a unique UUID and timestamp.<p>I’m planning to open up the file format specification for the 1.0 version of the app so other apps can read or write Capsule files.<p>You can try it out in the web preview at <a href=\"https:&#x2F;&#x2F;withcapsule.app&#x2F;preview\" rel=\"nofollow\">https:&#x2F;&#x2F;withcapsule.app&#x2F;preview</a> with pre-built templates or use any AI provider of your choice to create a custom, Capsule-optimized app by using the following prompt:<p>&quot;Please read the app wizard instructions at <a href=\"https:&#x2F;&#x2F;withcapsule.app&#x2F;prompt.txt\" rel=\"nofollow\">https:&#x2F;&#x2F;withcapsule.app&#x2F;prompt.txt</a> and help me design an app.“<p>I’m still working on the file format but there are migrations for each new version, so data should never be lost when using newer versions of the app in the future. Please let me know if you have any ideas or use cases where this might make sense or does not work.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": [
+        {
+          "top": "> but trying to save data required hosting it somewhere\nWith the File System Access API, webpages nowadays can read and write local files just like desktop applications:\nhttps://developer.chrome.com/docs/capabilities/web-apis/file...\nTry this text editor for example:\nhttps://googlechromelabs.github.io/text-editor/\nIt works nicely on Desktop and Mobile.",
+          "author": "mg",
+          "replies": [
+            {
+              "text": "*In Chrome.",
+              "author": "emaro",
+              "depth": 1
+            },
+            {
+              "text": "*In browsers that have implemented it",
+              "author": "DANmode",
+              "depth": 2
+            },
+            {
+              "text": "That file editor seems to work in Firefox. I just tested the save/open functionality.",
+              "author": "simongray",
+              "depth": 2
+            },
+            {
+              "text": "It's not using the File System Access API, on Firefox it uses <input type=\"file\"> for file-picking, and the save just downloads it. It's not synchronizing anything with your filesystem.",
+              "author": "tbrockman",
+              "depth": 3
+            },
+            {
+              "text": "I see. Thanks for enlightening me.",
+              "author": "simongray",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I don't know, this seems like an idea that \nmaybe\n works in a specific context being generalized past the point of the original idea making sense.\nIf the user needs to download a specific application to run this these web apps, then why not just send them that initial application in the first place? Why jump through the hoops of using Capsule when the same hoops can be jumped through to get to the same endpoint?\nIf this was a near-universally adopted application, then it'd make sense. But it's not, and the closest thing we have to that are browsers... which already do what you're describing?\nBundling data with the application makes sense, but is also only appropriate in pretty narrow circumstances. If I'm willing to ship my data with the web app, then I'll just embed the data in the HTML file. If the expectation is that the user will modify this data, then I don't think I'd want to ship it like this.",
+          "author": "nater5000",
+          "replies": [
+            {
+              "text": "Yep, like Hyperclay. \nhttps://news.ycombinator.com/item?id=49690814\nThey're like lightweight versions of \nhttps://github.com/kem-a/AppManager\n which is for AppImages.\nNot a bad thing, but it's just another dependency and tied to an OS-specific base software install.\nThey could work well pre-installed on the Mecha Comet with a bunch of app files ready to launch.\nCan the added layers guarantee a new level of security or privacy like zero telemetry or keyjacking? Protection from bad actors is a  good thing while making things faster and easier overall. Browser extensions are a security risk, right?\nJava applets were a good idea in the sense that so long as you had Java installed, the applet was just sitting there on a webpage. Finding and managing the apps is the problem, and using browser bookmarks is a decent solution to it. The web page should demo the app, and there can be an 'install local' button next to it. But at some point all these local versions need to be updated and then not be messed with like browser extensions can be. FanFare would be a decent name.",
+              "author": "adrianwaj",
+              "depth": 1
+            },
+            {
+              "text": "Seems pretty useful in an enterprise context to me. I see it as an alternative to 10 million vibe coded apps to dockerize and manage. You can put the runtime on everyone’s machine and provide a web version for really collaborative stuff.\nBonus points for an intelligent way to manage these stored in OneDrive and other cloud folders. Easy to get corruption on SQLite files stored there.",
+              "author": "pbronez",
+              "depth": 1
+            },
+            {
+              "text": "It could be useful for us with home labs for the same reasons. Kind of annoying to deploy docker containers for all the services I build that amount to personalized/skinned trello boards.",
+              "author": "crab_galaxy",
+              "depth": 2
+            },
+            {
+              "text": "Not trying to plug myself, but I’ve been working on a similar project for this exact reason. It doesn’t use special file types. Just HTML and localStorage proxies to sync devices.\nIt’s self-hostable too. I’ve got a bunch of super niche todo lists and personal apps running on my home server with it.\nhttps://github.com/momja/Exhibit",
+              "author": "dizzard",
+              "depth": 3
+            },
+            {
+              "text": "There are a few things in Capsule to avoid corruptions of the file during syncing. The DELETE journal mode is used and writes are batched into transactions so that updates are always complete changes. And if there is a copy created because of a conflict merging two capsule files is supported.",
+              "author": "bashtian",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I've been working on this exact idea, with sqlar as the \"format specification\". Works in the browser, and desktop + Android using Tauri.\nhttps://github.com/JoshTheDerf/uapp\nDemo apps and games: \nhttps://thederf.com/uapp/demo/",
+          "author": "thederf",
+          "replies": [
+            {
+              "text": "FYI requests from your demo are being blocked by CORS in Firefox and it never loads.",
+              "author": "windsurfer",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for the heads up! Fixed now, was a bug in the service worker.",
+              "author": "thederf",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "You can get a cheap approximation of this with chromium browsers + Filesystem API and a PWA manifest for that native-ish feel. AI has reignited my interest in building based 100% on browser native features.\nhttps://developer.mozilla.org/en-US/docs/Web/API/File_System...",
+          "author": "eleventen",
+          "replies": [
+            {
+              "text": "If you want to distribute apps to many users this would probably be a better solution. The main benefit of Capsule is the personal document like app. You create a capsule, move it to an USB stick, save it in your cloud storage and it's still the same document. Nothing has changed, not the UI, not the data. The document will stay the same.",
+              "author": "bashtian",
+              "depth": 1
+            },
+            {
+              "text": "If it’s web native, anyone can just use it. If it’s a capsule, they first need to download the capsule app to associate the file extension with the OS and have it launch, right?\nThat feels like a big barrier, almost like a Java runtime.",
+              "author": "al_borland",
+              "depth": 2
+            },
+            {
+              "text": "In defense of capsule, the Filesystem API is janky and has kind of shit UX. Less sophisticated users would probably prefer the UX of a purpose built tool.\nI prefer worse UX for the sake of standards and zero install, but many people would prefer the opposite. I don't think Capsule is intended for the HN crowd.",
+              "author": "eleventen",
+              "depth": 3
+            },
+            {
+              "text": "how is a filesystem supposed to prevent you from doing that?",
+              "author": "ramon156",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "My take: If your app needs to update and preserve state (using SQLite or any other DB), it is probably not something you want to pass around as a bundled file.\nOr at least, it's extremely limiting, compared with hosting it somewhere on the web, which is not that hard to do these days.\nThink of the workflow: Any time the state changes, you need to email a new Capsule file to whoever else is using the app.  And one would think the state would change at least occasionally, because otherwise there's little reason to use a DB.\nAlternatively, you can just host it on the web, the DB state dynamically updates, and it's automatically available to anyone with app access.  Isn't that a lot simpler?",
+          "author": "jawns",
+          "replies": [
+            {
+              "text": "Or the copies can go their own way. I could send someone an itinerary and they could change the dates or drop half the stops and add their own notes without needing to send an updated copy. Getting them to install another app just to open it might be a problem, especially if they only want to use it once.",
+              "author": "lateatdesk",
+              "depth": 1
+            },
+            {
+              "text": "> Isn't that a lot simpler?\nYou’re glossing over the recurring cost and annoyance of dealing with the hosting and having to secure the data. This way you just share and it’s local.\nSure, if you have to share data between people, your points are valid. But this seems like a way to build apps geared for individual users, like a notes or recipes app.",
+              "author": "latexr",
+              "depth": 1
+            },
+            {
+              "text": "Why not on a shared drive like dropbox?\nConcurrent editing wouldn't work, though.",
+              "author": "Reviving1514",
+              "depth": 1
+            },
+            {
+              "text": "Beyond \"not working\", concurrent editing is likely to silently lose data, or corrupt data, or possibly just fill up your drive with lots of \"conflicted copies\" that you have to manually reconcile.",
+              "author": "teraflop",
+              "depth": 2
+            },
+            {
+              "text": "When I read about this project, it doesn’t seem like concurrency is much of a concern. I think it’s _supposed_ to be treated like sharing a document with someone else.\nIf a capsule is a recipe, like in one of the examples, that’s pretty cool. If a capsule is a recipe _manager_, then I think it would get messy.",
+              "author": "dizzard",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49699297",
+      "title": "Microsoft patches Windows and Excel – breaks audio, remote access, and paste",
+      "link": "https://www.theregister.com/os-platforms/2026/09/14/microsoft-patches-windows-and-excel-breaks-audio-remote-access-and-paste/5296085",
+      "domain": "www.theregister.com",
+      "author": "Alephinitesimal",
+      "score": 256,
+      "comment_count": 178,
+      "created_ts": 1789402185,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49672966",
+      "title": "Ask HN: What default model do you use and why?",
+      "link": "https://news.ycombinator.com/item?id=49672966",
+      "domain": "news.ycombinator.com",
+      "author": "stikit",
+      "score": 61,
+      "comment_count": 104,
+      "created_ts": 1789225124,
+      "is_internal": true,
+      "post_text": "I use claude for most of what I do, and Fable is largely overkill for me and frequently burns through my Max plan&#x27;s session credits in minutes (!) when just doing an initial mobile app planning with 4 agents. After I waited out the timeout period 6 hours later,  and I picked up again, the cache had timed out so it burned through 2% of the session in less than a minute. Opus 4.8 is now my goto and I will be avoiding 5 until I see a reason to switch back. 4.8 is &#x27;good enough&#x27; for what I need and has been a great value. It mostly gets things right. Most of what I do is web and mobile , largely cloud backend.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49668196",
+      "title": "Ask HN: Did Google kill its enterprise workhorse model?",
+      "link": "https://news.ycombinator.com/item?id=49668196",
+      "domain": "news.ycombinator.com",
+      "author": "waldrews",
+      "score": 27,
+      "comment_count": 18,
+      "created_ts": 1789180909,
+      "is_internal": true,
+      "post_text": "Is anyone else in a panic over the Gemini 2.5 model generation (Pro, Flash) being sunset in October before there&#x27;s even any Pro class model in general availability (with geo restrictions etc.)?   Google wants everyone to migrate to 3.x Flash, which beats the older Pro models on the benchmarked tasks, but isn&#x27;t the same thing as the Pro class on reasoning-heavy tasks like complex reasoning on very large documents (my big use case).<p>The Gemini family had a distinct niche in document comprehension, with thousand page input documents taking only 300k tokens.  Nothing quite like that in OpenAI or Anthropic world, even at more than 10x the token adjusted price.  Should we just give up on Google at this point and engineer around the competitors&#x27; limits and eat the costs?  Totally unnecessary own goal by team Google.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "enterprise",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49696190",
+      "title": "Ask HN: Are 80s high school hobby programmers overwhelmingly pro-AI?",
+      "link": "https://news.ycombinator.com/item?id=49696190",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 16,
+      "comment_count": 34,
+      "created_ts": 1789391135,
+      "is_internal": true,
+      "post_text": "Do such people think that AI is truly miraculous and should be made as advanced as possible as quickly as possible?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49714644",
+      "title": "Ask HN: Lesser known features of macOS/iPadOS/iOS/etc. 27",
+      "link": "https://news.ycombinator.com/item?id=49714644",
+      "domain": "news.ycombinator.com",
+      "author": "lucasoshiro",
+      "score": 13,
+      "comment_count": 7,
+      "created_ts": 1789488361,
+      "is_internal": true,
+      "post_text": "Hi there!<p>I&#x27;ve just upgraded my Mac and iPad OSes to 27 and found some interesting features that I haven&#x27;t seen listed elsewhere:<p>- Screen mirroring to iPad now accepts touchscreen inputs<p>- iPad menu bar can now be always turned on<p>- The sidebars aren&#x27;t floating, just like before Tahoe<p>- Decreased window border radius<p>- Increased resize window area",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The weather app for new precipitation and wind forecasts that can be seen in the 10 day forecast, without having to tap on every day for details.\nA power button was added into the control center on iOS (top right corner). Maybe this existed before, but I don’t remember it.\nAI wallpapers can be made on iOS with image playground, right from within the lock screen configuration area.\nOn the lock screen config, you can tap the clock and then tap some icon with a couple rectangles on it, to shrink the clock way down.\nWallet is now better at picking up and adding tracking for purchases being shipped. This also shows up in Mail, where Wallet injects a widget into your shipping email with the current status.\nYou can turn off the voice message button in Messages that I’m sure everyone has accidentally triggered multiple times.",
+          "author": "al_borland",
+          "replies": []
+        },
+        {
+          "top": "> Screen mirroring to iPad now accepts touchscreen inputs\nThis is a useful feature\nThe Shortcuts app can now take instructions in English, which seems quite useful too",
+          "author": "malshe",
+          "replies": [
+            {
+              "text": "Yeah, that's true! I find it very boring to create automations manually, this will help a lot",
+              "author": "lucasoshiro",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I enjoy the ethernet status in the menubar in lieu of WiFi. Finally.",
+          "author": "CottonBuds",
+          "replies": [
+            {
+              "text": "Ah! That's what that is! I am so pleased, I've maintained a shell script forever to make sure MacOS is prioritizing the Ethernet adapter, I can delete that damn thing now.",
+              "author": "threecheese",
+              "depth": 1
+            },
+            {
+              "text": "How do you do that?",
+              "author": "malshe",
+              "depth": 1
+            },
+            {
+              "text": "I think you need to prioritize the Ethernet device in network settings but I'm not at my Mac now to check.",
+              "author": "jasonvorhe",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49689696",
+      "title": "Ask HN: Would a startup for young creatives who reject AI be feasible?",
+      "link": "https://news.ycombinator.com/item?id=49689696",
+      "domain": "news.ycombinator.com",
+      "author": "mondobe",
+      "score": 11,
+      "comment_count": 24,
+      "created_ts": 1789340977,
+      "is_internal": true,
+      "post_text": "I am a member of my university&#x27;s game development club, which puts me around lots of talented programmers as well as artists of all kinds, and I&#x27;ve observed that just about everyone disapproves of AI. The sentiment is especially strong among younger people coming into the club. By &quot;disapproves&quot;, I mean they refuse to allow AI-generated content in games and see AI use in general as something like a moral failure.<p>At the same time, I scroll down the YC startup directory, sorting by launch date, and observe that every non-hardware company (and most of the hardware ones) are entirely based on AI. The demographic I described above, young creatives like the ones in this club, has zero chance of voluntarily using one of these products.<p>It seems to me, then, that as the moat for most AI startups drops asymptotically to 0 with GPT-6 et al. becoming more capable, this market is mostly a blue ocean (to use the business-book term) for anyone willing to put in the work and actually code something people want. From there, network effects would work as well as they have since the dawn of the Internet.<p>I am exploring the idea of making such a startup (it started out as a side project which I have been working on by myself for almost 2 years), but I am worried about the attitude of incubators, VCs, and investors in general. Would the lack of AI be a nonstarter for most outside investors? I know people started non-blockchain companies in 2021, but the hype around AI seems orders of magnitude more captivating to anybody who might provide capital. I know bootstrapping is viable for some companies, but would that be the only way? I appreciate any advice people might have.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "failure",
+        "startup",
+        "side project",
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49698914",
+      "title": "Ask HN: How are you managing aging relatives passwords?",
+      "link": "https://news.ycombinator.com/item?id=49698914",
+      "domain": "news.ycombinator.com",
+      "author": "rylando",
+      "score": 9,
+      "comment_count": 16,
+      "created_ts": 1789400761,
+      "is_internal": true,
+      "post_text": "Looking for how or what services others use to manage their aging relatives passwords? Is 1Password still the choice?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You used the plural \"passwords\", what makes you think there are multiple?\nThe people I have in mind sometimes get confused with basic iPhone functionality like Maps and CarPlay. I would think 1password is the solution but honestly a physical notebook is probably more their speed.",
+          "author": "mattbrewsbytes",
+          "replies": []
+        },
+        {
+          "top": "I primarily use the built-in password manager on my iPhone. It’s very convenient; besides storing passwords, it allows for quick autofill when logging in and supports passkeys and 2FA.",
+          "author": "boltguo",
+          "replies": []
+        },
+        {
+          "top": "I encourage mum to use the built in one in Chrome as that tends to pop up anyway. I tried setting up Bitwarden but it didn't get used.",
+          "author": "tim333",
+          "replies": []
+        },
+        {
+          "top": "I think so 1password works fine. They find it easier. I have few who even keep a diary with password of few websites they use. They just don't trust digital haha",
+          "author": "sendhello",
+          "replies": []
+        },
+        {
+          "top": "Write it down in the book:\nhttps://www.amazon.com/What-Fuck-Password-Other-Remember/dp/...\nKeep the book in the office by the laptop.",
+          "author": "toast0",
+          "replies": [
+            {
+              "text": "My grandparents did this, but didn’t realise that it would be useful to write down what each password was for. They also didn’t realise that the spelling of a password was important.\nI don’t even…",
+              "author": "cjs_ac",
+              "depth": 1
+            },
+            {
+              "text": "lol well yeah. This book has fields for website, and A-Z legends, so presumably you put your Amazon password in the A section, and your hacker news password in the H section, and it's useful.\nBut I've been helping my MIL with some tech stuff lately. She signed up for Verizon 5G home internet, and cancelled her whole Comcast/Xfinity account. And was then surprised to find she wouldn't have cable TV anymore. :P\nAlso, Verizon coverage in her unit is \nterrible\n which she should know because she has them for her cell phone. But I guess she never realized that the internet was good at home because of the wifi from cable. \nsigh",
+              "author": "toast0",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49681380",
+      "title": "Ask HN: Should we start airgapping our personal devices?",
+      "link": "https://news.ycombinator.com/item?id=49681380",
+      "domain": "news.ycombinator.com",
+      "author": "emerongi",
+      "score": 8,
+      "comment_count": 7,
+      "created_ts": 1789287576,
+      "is_internal": true,
+      "post_text": "Given AI&#x27;s strong cybersecurity capabilities, it seems that there is a realistic future where AI will start finding a foothold on all internet-connected devices.<p>How do we continue to share information between humans, while AI is wreaking havoc on the systems that used to provide the means to do so?\nWill we be airgapping our personal devices and using known-infected ones to access the internet?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49721254",
+      "title": "iCloud backup – 5GB available, but I can't use it",
+      "link": "https://news.ycombinator.com/item?id=49721254",
+      "domain": "news.ycombinator.com",
+      "author": "timnetworks",
+      "score": 6,
+      "comment_count": 2,
+      "created_ts": 1789523741,
+      "is_internal": true,
+      "post_text": "Whoever is the product manager that decided to block partial photo uploads to iCloud because the photo library exceeds the space available online, I hope you lose all your family photos one day. I hope it&#x27;s because another product manager decided this for you, and you have no recourse, and I hope that they are gone forever.<p>I know Apple Corporation is not a startup, but I know the employees browse this website. Basically everyone is doing a very bad job lately.<p>I&#x27;m going to go buy a flash drive so that I don&#x27;t need to install garbage apple software to my computer in addition to the garbage apple software on my phone.<p>Thank you for reading.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49715361",
+      "title": "Ask HN: Where is all of the AI coded software?",
+      "link": "https://news.ycombinator.com/item?id=49715361",
+      "domain": "news.ycombinator.com",
+      "author": "wNjdbfm",
+      "score": 6,
+      "comment_count": 7,
+      "created_ts": 1789491308,
+      "is_internal": true,
+      "post_text": "Like a lot of folks, I&#x27;m trying to understand the AI reality vs. the hype cycle. I have my own experiences both using it and seeing it rolled out with a “do more AI” mandate at a huge tech company. Even looking here at discussions we have the full spectrum from engineers who say they don’t code anymore, they just manage agents, to engineers who say they find it basically useless because of how stupid it is. I’ve been looking for clues (I wanted to use the word “signals&quot; there but I can’t because I don’t want you all to think Claude wrote this) in the market that we can all see, so we don’t have to accept “trust me bro, AI solved coding”.<p>Here’s my question:<p>Where is all of the AI coded software?<p>If coding is a nearly solved problem, if AI is making it so easy to make anything, why aren&#x27;t we seeing the market flood with cheap alternatives to software that we all use daily and hate?<p>Microsoft office, anything from Adobe, Jira<p>Make your own list. Every designer I’ve ever met hates Adobe and their subscription model. My company spends a hojillion dollars a year on office365 and everyone hates it. Why aren’t we seeing alternatives popping up?<p>Should we be expecting this as a part of the whole “democratization” promise of AI?<p>As an addendum: I picked office and adobe just because they are two things we always whine about in tech, I realize they are platforms&#x2F;ecosystems now, maybe it would be better to say Word and Photoshop, etc. but substitute in any commercial software you want. If AI coding can take over the internet application space can’t it also take over the software application space?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49698198",
+      "title": "Ask HN: Developers – Do you let agents write production code?",
+      "link": "https://news.ycombinator.com/item?id=49698198",
+      "domain": "news.ycombinator.com",
+      "author": "smurf9852",
+      "score": 6,
+      "comment_count": 11,
+      "created_ts": 1789398420,
+      "is_internal": true,
+      "post_text": "I know 2 good developers, let&#x27;s call them Bob and Bill.<p>Bob does not write code anymore, he orchestrates agents. Says it makes him faster. That the level of slop is the same as with humans. He swears by it.<p>Bill only uses agents to write tests and do code review. He says even a Fable 5.1 will create 1,000 line slop instead of his 10 line fix. He swears by it.<p>Both Bob &amp; Bill are both credible developers that have lots of experience at building real things, including at Google.<p>Do agents still produce slop?\nDoes the 10x engineer really exist?\nWhat is your position?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49713156",
+      "title": "Ask HN: Why 17?",
+      "link": "https://news.ycombinator.com/item?id=49713156",
+      "domain": "news.ycombinator.com",
+      "author": "tonyvince7",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1789482795,
+      "is_internal": true,
+      "post_text": "If I ask an LLM to pick a number between 1 and 30, it always picks 17. Tried with multiple models. Why 17?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49699135",
+      "title": "Ask HN: What would make self-hosting easy enough for average consumers?",
+      "link": "https://news.ycombinator.com/item?id=49699135",
+      "domain": "news.ycombinator.com",
+      "author": "dani4299",
+      "score": 5,
+      "comment_count": 7,
+      "created_ts": 1789401634,
+      "is_internal": true,
+      "post_text": "In the recent days I&#x27;ve realized that people want more control over their digital data, this became more apparent to me when I saw Sony getting backlash on their recent announcements. People are considering to even pirate music again just because they want more control over their data.<p>So I&#x27;ve been wondering that almost every household now has some amount of digital data that needs to be taken care of. Some having more data than others.<p>Considering the current situation of self hosting and NAS products, what do you think needs to change to make an average consumer even consider self hosting or a NAS product?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49688861",
+      "title": "Ask HN: Is there an emerging pattern for NEGATIVESKILLS.md files?",
+      "link": "https://news.ycombinator.com/item?id=49688861",
+      "domain": "news.ycombinator.com",
+      "author": "mehmetoguzderin",
+      "score": 5,
+      "comment_count": 3,
+      "created_ts": 1789334597,
+      "is_internal": true,
+      "post_text": "I am increasingly hitting cases where agents pick something from skills in part due to regex-based reading, since putting them all in context would be less efficient, leave out the negative, and do something exactly opposite of what is intended. Just like negative prompts for diffusion models, I feel like a negative-skills file listing explicit antipatterns and bad versions could enable harnesses with fewer graph nodes to perform better.<p>I might be missing some developments, but is there an accepted&#x2F;shaping way to do this with recent models?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49716628",
+      "title": "Ask HN: Why is Pulley (cap table) shutting down?",
+      "link": "https://news.ycombinator.com/item?id=49716628",
+      "domain": "news.ycombinator.com",
+      "author": "AnhTho_FR",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1789496527,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Pulley is shutting down in December\n - \nhttps://news.ycombinator.com/item?id=49715530\n - September 2026",
+          "author": "toomuchtodo",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49699185",
+      "title": "Ask HN: What would make you trust an AI's assessment of your understanding?",
+      "link": "https://news.ycombinator.com/item?id=49699185",
+      "domain": "news.ycombinator.com",
+      "author": "Aditya_0315",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1789401834,
+      "is_internal": true,
+      "post_text": "Creating an AI tutor that won&#x27;t let you progress without having learned anything — not just completing a test. You train, are diagnosed for any problems in understanding, and there is now a live voice challenge where you need to verbally explain your response to an AI, and then it drills down with additional questions.<p>The voice feature was created by me under the suspicion that it is way more difficult to pretend to have understood something while talking to someone rather than choosing a proper multiple choice answer. But to be honest, I don&#x27;t know if that is a valuable idea or just another sign of my attachment to the most complicated thing I created.<p>So, the question I want to ask seriously is: What would help you to trust an AI&#x27;s diagnosis of your understanding? And is it even worthwhile, or should I stick to the solution of doing spaced repetition and trusting myself?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49719474",
+      "title": "Ask HN: Slow OpenAI Inference on AWS Bedrock",
+      "link": "https://news.ycombinator.com/item?id=49719474",
+      "domain": "news.ycombinator.com",
+      "author": "timedude",
+      "score": 2,
+      "comment_count": 1,
+      "created_ts": 1789509750,
+      "is_internal": true,
+      "post_text": "Inference on AWS Bedrock for OpenAI models has been very slow and glitchy the last few days with today being the worst. Very long latency of over 5 minutes to first token. What&#x27;s going on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49698073",
+      "title": "Has anyone made a legacy codebase more legible to AI coding agents?",
+      "link": "https://news.ycombinator.com/item?id=49698073",
+      "domain": "news.ycombinator.com",
+      "author": "iacobandrei",
+      "score": 2,
+      "comment_count": 2,
+      "created_ts": 1789398032,
+      "is_internal": true,
+      "post_text": "Quick Summary: Did you ever optimize a legacy&#x2F;vibe-coded codebase to improve AI driven development results and avoid fixing a bug for 2 more to appear? i want to hear what your experience was.<p>First, some context. ~7 months ago i was the first Engineering hire at a ( now ) 2 years old startup. The codebase started as a Lovable MVP built by our low level CTO, one month ago we hired a second dev and we are further expanding our engineering team and preparing the terrain for me to move to Staff.\nNow as you probably expected, the codebase is a mess since we simply built on top of the first MVP, of course with zero documentation, the main problems i identified in our codebase:\n- Duplicated business logic → no single source of truth &#x2F; poor separation of concerns.\n- Zombie tables and columns → accumulated schema&#x2F;structural debt, most of them look right, they are not\n- We manually track downstream effects since everything is scattered and duplicated in the most confusing way → implicit dependencies, implicit architecture and high change coupling. Changing a thing here also needs changing there and there ( this is mainly fixable by a codebase graph indexer )<p>Now quickly, so you dont get bored, ive identified as the sweet spot solution between speed and reliability to properly document the whole codebase and store that efficiently as a &#x27;knowledge database&#x27; for our AI agents, so they are at least aware of the known gaps, constraints, decisions, business logic, where else to change something and the causes and effects of changes.<p>The closest and most interesting article that treats this exact issue is this one from Meta, which i want to start my approach from.<p>Now what im asking here is for some similar experiences, other startup engineers that had to go through a similar approach, what was their approach, experience, outcome and any tips on what should i avoid or be aware of.<p>Any help will be much appreciated",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "startup"
+      ],
+      "comments": []
+    }
+  ]
+}
