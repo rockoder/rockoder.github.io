@@ -1,0 +1,470 @@
+{
+  "scraped_date": "2026-09-17",
+  "source": "hacker_news",
+  "total_scraped": 21,
+  "nontech_count": 13,
+  "posts": [
+    {
+      "id": "49686380",
+      "title": "Ask HN: What are you working on? (September 2026)",
+      "link": "https://news.ycombinator.com/item?id=49686380",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 371,
+      "comment_count": 1173,
+      "created_ts": 1789320698,
+      "is_internal": true,
+      "post_text": "What are you working on? What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been working on a voxel game engine called Bonsai for ~10 years.\nProbably the most interesting thing about it at the moment is the editor.  The world, and most things in it, are represented as collections of SDFs.  More accurately, they're density fields, but, potato-tomato.\nBonsai has undergone a large rewrite over the last couple years that's nearing completion.  A world edit is defined as a bunch of SDF parameters which get projected/rasterized into the voxel grid by a shader on the GPU.  One neat thing about SDFs is they've been thoroughly researched and documented by a guy named Inigo Quilez, and they have a lot of nice mathematical properties.  For example, you can do a smooth union of arbitrary SDFs to get nice rounded contours where shapes join.\nI've written every system from scratch, all the way from the memory allocators and font rasterizer to the collision detector and simulation loop.  I even wrote a metaprogramming language as a replacement for C++ templates, which is a whole other story.  IIRC the only external dependency is the C runtime library for starting the process and my very occasional use of variadic functions arguments.\nFor a long time, an explicit non-goal of the project was to ship a game.  It sounded insane to me to write an entire 3D engine and then ship a game.  As it turns out, I've gotten it to the point where I can actually make a game.  I've got a start on the game systems in a closed-source repo, and hope to have a steam page for it by the end of the year.\nI'll do some shameless self-promotion and leave some links here for anyone interested in looking at the engine, language code, or some pretty pictures.\nhttps://github.com/scallyw4g/bonsai\nhttps://github.com/scallyw4g/poof",
+          "author": "jesse__",
+          "replies": [
+            {
+              "text": "Definitely interested in where you take things with the actual game - the engine looks really cool. It seems like we're in the midst of a bit of a cambrian explosion around \"survival games descended from Minecraft\" (Hytale is top of mind, but there's also Vintage Story and iirc there's a few others of note either in early access or development). Not that a voxel engine can only do a Minecraft-like - but there's definitely a market for someone who wants to take that formula and run with it.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, it seems enough people have done enough work on voxel engines now that we're actually starting to see games proliferate.  I'm stoked about it!\nI'm a lot less interested in minecraft-style survival games than I am in exploring .. other .. types of games that push the medium further.  Most voxel games that make it to release basically boil down to 'hack-n-slash RPG with a lego world'.  As you mentioned, it's obviously a successful recipe, but I feel like it's barely scratching the surface in terms of how far the underlying tech has come.\nI've got a game in-flight where the primary mechanic is modifying the environment to achieve a goal.  Teardown is really the only other game that's made it to market and done this.  The mechanics are going to be intentionally simplistic .. it's more of an existence proof that a deeper game could exist and people are interested in it.",
+              "author": "jesse__",
+              "depth": 2
+            },
+            {
+              "text": "Looks cool.\nWhat would you say its defining features are? What makes it different than Minecraft? Seems like its probably more performant.\nWhats the license situation. I see your own license which sounds maximally permissive but written by you. Is that just how it works? I can do whatever I want with that license? It doesnt need to be a “real” license?\nMaybe your bonsai logo should come from your voxel engine instead of pixel art?\nIdk why but my first thought was somehow that i misunderstood “voxel engine” when i saw the pixel art.",
+              "author": "nonethewiser",
+              "depth": 1
+            },
+            {
+              "text": "Hey, thanks for the kind words!\nI'd say the defining feature is the editor and terrain generation system.  At the moment it's not well documented, but once the big rewrite I've been working on has settled I plan to take some time to make tutorial materials.\nAs far as the license goes, I chose WTFPL originally because I figured it would dissuade 'real' companies (with legal teams) from using it.  I've since thought about changing the license to something permissive that might play nice with legal teams, like MIT.  You can do whatever the fuck you want; it says so right in the license ;)  I'd actually love it if people used it.  My intent now is to keep the engine open source, and build games with it in closed-source repos.\nYou're right, I should change the logo.  It's on the todo list .. it's just a really long list ;)",
+              "author": "jesse__",
+              "depth": 2
+            },
+            {
+              "text": "SDFs are the future at least when it comes to level design - especially because they have that \"subtract\" railgun cone of death functionality baked in. A boss fight feels different, if where the hammer comes down there is a crater afterwards.",
+              "author": "21asdffdsa12",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm working on a real-life social app called Holler (\nhttps://justhollerapp.com\n).\nI'm an introvert and socially anxious, but I do enjoy hanging out with my friends. I just HATE the invitation-and-coordination game. If someone invites me and I don't want to go, I hate having to come up with a socially acceptable excuse. Inviting someone and waiting for them to make a socially acceptable excuse is equally awful to me.\nThen you get to coordination. I want to go to the brewery at 2pm, but your kid has soccer practice so you can't get there til 3:30, but then Joe has to leave at 4 to pick up his mother in law at the airport, and... ugh. It's the worst.\nSo I made Holler, which is basically you hollering to your friends, \"I'm going to be at the farmer's market at 2pm,\" and then you just go. If they show up, fantastic. If not, whatever, you were going to go anyway.\nNo coordination, no invitations, no friction. Just holler and go.\nIt's iOS only for now, but I'm working on an Android app as you read this, so hopefully that's coming soon.",
+          "author": "Jemaclus",
+          "replies": [
+            {
+              "text": "That seems like the kind of \"social app\" that might actually \nwork\n for me. I like the idea of sort of passively declaring \"i am doing something, feel free to show up.\"\nI guess the potential failure mode is ... no one ever showing up. I've got a standing slot (during work hours) at my current company where it's just \"AI Jam\" - just come in, eat lunch, and we'll hack on something, ramble about the news, etc. It's been moderately successful but there are definitely weeks where you just end up in a call with one or two guys with nothing to show.\nThat's not so bad though - last week we just talked about video games. Still fun.\nSo anyway - best of luck. Seems like a cool idea!",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I get that. My thinking is that I'd rather go do something fun by myself than sit at home because I couldn't coordinate something or because someone else didn't want to do my thing.\nThis weekend, for example, another couple invited my partner and me to go do an activity. They sent the text at 11. We finished giving our kid lunch, walked the dog, and loaded up the car. They texted and said their kid wasn't ready yet, and maybe they'd leave by 2. They didn't leave home til 2:30, so we didn't start our activity until noon, almost three hours later. The activity lasted about an hour, then we suggested going to a brewery to get some drinks, but for one reason or another, we wound up going our separate ways.\nMy partner looked at me and said \"This would've been a better Holler use-case. We could've just gone for a hike ourselves and not had to coordinate with someone else who can't show up on time.\"\nSure, it might've just been us, but we spent a lot of weeping and gnashing of teeth coordinating with people that we ultimately barely spent any time with, and instead lost half our day.\nHoller, to me, represents a form of social freedom. I'm freed from the constraints of other peoples' calendars. If they really want to hang out with me, they'll come to the events I holler. If they don't, then that's fine, we can still be friends, but if they can't be willing to attend things on my schedule, why should I adjust my schedule to conform with theirs?\nSo I'm going to do what I want to do, and if anyone wants to join, fantastic.\nBetter than sitting at home twiddling my thumbs wishing I was doing something fun.",
+              "author": "Jemaclus",
+              "depth": 2
+            },
+            {
+              "text": "I do this in my running club (granted, it’s quite specific). Hello I’ll run X time at Y place for that long / that purpose. I don’t even explicitly « invite ». Then a few people sometimes join. We are a few hundreds so I meet new people each time. It’s nice and bears 0 organizational cost for me",
+              "author": "chantepierre",
+              "depth": 2
+            },
+            {
+              "text": "Yes! You get it! That's awesome. This is basically \"comment what you want to do on a FB group and see who shows up\" as an app. You got it exactly.",
+              "author": "Jemaclus",
+              "depth": 3
+            },
+            {
+              "text": "This kind of reminds me of Foursquare from back in the day.\nNow a days I just have a few group chats where I can drop this kind of announcement in and see if there are any takers.",
+              "author": "MrDresden",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm building \nhttps://uscodex.org\n. In a nutshell, the goal is to collect all US federal law in version control, and cross-link any references between different sections. Currently I have the US Code, CFR, ~30 years of public laws and congressional bills and 25 years of executive orders.\nActually using raw git repos as the main data store which has worked out great since the US Code changes very little between new releases and so it compresses very well. Also makes it easy to generate diffs of sections: \nhttps://uscodex.org/usc/d/119-100/119-102not101/16/2201",
+          "author": "SebRollen",
+          "replies": [
+            {
+              "text": "Hoo boy. It's an awesome idea, don't get me wrong - and it's work that should \ndefinitely\n be done. But I've worked professionally in this space and it is \nwildly\n complicated. I've never seen how things are done on the federal side, but US states have various modes of \"electronic filing\" for rules and codes - and there's a ton of complexity.\nIt's the kind of thing that sounds insanely boring on the surface, but there's a lot of interesting problems to solve, lots of coordination between various parties, lots of \"deep state\"[0] politicking - and so it becomes a surprisingly cool area to learn about and work in, and really matters in a way that many software projects do not.\nBest of luck - it's a cool problem space.\n[0]: I use \"deep state\" here somewhat ironically, but also just in the literal definitional sense: \"people who are not elected but who work for the government and are surprisingly important\". 0% intent to use it in the often insulting manner of popular discourse.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Super interested in hearing more about some of the battle-scars you've acquired from working in the space if you're open to sharing? Very early in the journey here, so still have a ton to learn!\nSo far, it seems like the federal space is relatively well-behaved compared to your experience with states. Most agencies standardized on the USLM schema[^1][^2] in 2013. Before that, it's a hodge-podge of XML and plain-text sources.\nAlso, FWIW, my interactions with federal agencies so far have been insanely positive. When I reported the error I found in the US code at 9pm, a staffer from the OLRC verified the issue and got back to me by 7am the next day, more efficient than most private sector organization's I've interacted with!\n[^1]: \nhttps://github.com/usgpo/uslm\n.\n[^2]: Meta: The USLM itself was created by federal law \nhttps://uscodex.org/usc/2/181",
+              "author": "SebRollen",
+              "depth": 2
+            },
+            {
+              "text": "I am not sure how much I'm allowed to say publicly between NDAs and contracts and all that fun stuff (I may already be over the line, tbh) - but feel free to drop me an email at the address in my profile and I can point you to a few things that might be of interest.",
+              "author": "epiccoleman",
+              "depth": 3
+            },
+            {
+              "text": ">\"people who are not elected but who work for the government and are surprisingly important\"\nThat’s just the regular definition of deep state. The difference is simply that you arent using it as a pejorative.",
+              "author": "nonethewiser",
+              "depth": 2
+            },
+            {
+              "text": "This is great!\nWe need something like git blame to show how legislation evolved over time, who passed it, which lobbyists pushed for or wrote it, who benefited by receiving more money/power, and who had to foot the bill.\nThis is becoming urgent, now that there's almost no correlation between what laws get passed and their popularity with the public, since Congress mainly only listens to moneyed interests:\nhttps://www.youtube.com/watch?v=5tu32CCA_Ig\nDiscussion:\nhttps://act.represent.us/sign/problempoll-fba\nBy making corruption more transparent, we can make it so toxic that people participating in it get investigated and brought up on charges.\nThis will become inevitable due to the arrival of AI, but speeding up its delivery is paramount if we want to save our country.",
+              "author": "zackmorris",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://shopspec.io/\nShopSpec is a deterministic parametric furniture generator (bookshelves, cabinets, shop carts, leg-and-rail frames, multi-carcass composites) that encodes real woodworking intelligence and outputs shop-ready artifacts.\nMost recently, introduced the concept of value engineering by sweeping across dimensions to batch evaluate candidates that ranks based on sheet purchases. Also have in beta an MCP connector to let agents explore the deterministic engine.\nI'm building a number of items for home and shop and ShopSpec has been instrumental to plan, visualize, and execute on these new ideas/projects.",
+          "author": "variodot",
+          "replies": [
+            {
+              "text": "Don't forget about the rest of the world which does not use imperial and have access to plywood stock that is e.g. 18mm birch in metric standard dimensions for the cut sheet. Being able to customize what stock I have access to locally and adjust measurements and cuts automatically, e.g. rounding to cm not quarter inches.",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "Hi there! I'm a woodworker and love seeing new woodworking software! Thank you for making this.\nI could tell from the layout screenshots, but one thing to make sure is that you are accounting for the size of the kerf. Being able to set a different kerf size for different cuts would be ideal as your rip vs crosscut are often different blades.\nAlso, one of the more daunting parts of casework for me is sorting out exactly how undermount slides go. I would highlight any help your tool does with raising confidence in getting those installed. Even having an undermount installation tool separate from the spec work I think could be useful.",
+              "author": "bradly",
+              "depth": 1
+            },
+            {
+              "text": "This is beautiful and I'm now itching to make a workbench (finally! that initial \"how many sheets and what for what size\" problem has been the mental blocker)\n+1.0mm vote to adding metric please!",
+              "author": "Mumps",
+              "depth": 1
+            },
+            {
+              "text": "Glad ShopSpec helped get you over the hump and appreciate the feedback. I am building a tool that I find useful for myself and previously encountered a similar pattern to what you mention.",
+              "author": "variodot",
+              "depth": 2
+            },
+            {
+              "text": "Wow that's really cool! I'm actually trying to learn about woodworking and using those example as a base are really great! \nYou could consider having an option for metric users as well!",
+              "author": "mimo84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My wife and I continue to work on a private, paid, ad-free and personally customizable search engine: Uruky [1].\nTo signup you don't provide any information (a randomly-generated account number is assigned to you), and you can run a proof-of-work captcha to get 2h for free. You can choose among many different search providers (for defaults and per query), including Uruky Site Search, powering our own index.\nLast month we reached 300 monthly active accounts and released an image search gallery mode, plus a simple calculator and conversion widget!\nThe main differences between Uruky and Kagi, DuckDuckGo, SearXNG, etc. are visible in the footer (right side), but one huge difference is that with Uruky, after being a paying customer for 12 months, you get copy of the source code (licensed as BUSL, into AGPLv3 in 2 years — a suggestion made here on HN)!\nOur main challenge continues to be discoverability and outreach because we want to do it ethically (no Big Tech and no GenAI/LLMs). Ideas are welcome! We’ve been sponsoring open source projects, open source maintainers, and indie, small-web, and privacy-related websites and applications/groups/orgs. This month we're sponsoring NOYB [2]!\nFeature-wise, for September the most visible things that shipped already were Tags and Scopes (top feature requests for a while). We’re also still (slowly and sustainably) increasing our own index, focused on indie/small web.\nThank you for reading this!\n[NO-AI]: There is no generative AI product or service being offered, here.\n[1]: \nhttps://uruky.com\n[2]: \nhttps://noyb.eu",
+          "author": "BrunoBernardino",
+          "replies": [
+            {
+              "text": "Been meaning to sign up to this after seeing it posted here before. Finally got around to it. First impressions are the amount of settings and options available are a little overwhelming if I wanted to suggest it to non-technical users. Have you considered / do you have any video tutorials on the different settings / getting the most out of Uruky?",
+              "author": "RebelMonk",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for your support!\nWe have been thinking about that, especially because my wife and I do not use most of those settings; they have been built over time with many customer requesting them, and it's gone through a couple of \"redesigns\" to accommodate all the knobs, though the \"default experience\" should be more than enough for most people.\nI do wonder if we need some guided \"wizard\" of sorts for making sure it works as people want it, or perhaps a \"features\" page to explain those things.\nI wouldn't want to do videos, as I'm not convinced those would be effective (and they take a significant effort to make).",
+              "author": "BrunoBernardino",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49672966",
+      "title": "Ask HN: What default model do you use and why?",
+      "link": "https://news.ycombinator.com/item?id=49672966",
+      "domain": "news.ycombinator.com",
+      "author": "stikit",
+      "score": 61,
+      "comment_count": 105,
+      "created_ts": 1789225124,
+      "is_internal": true,
+      "post_text": "I use claude for most of what I do, and Fable is largely overkill for me and frequently burns through my Max plan&#x27;s session credits in minutes (!) when just doing an initial mobile app planning with 4 agents. After I waited out the timeout period 6 hours later,  and I picked up again, the cache had timed out so it burned through 2% of the session in less than a minute. Opus 4.8 is now my goto and I will be avoiding 5 until I see a reason to switch back. 4.8 is &#x27;good enough&#x27; for what I need and has been a great value. It mostly gets things right. Most of what I do is web and mobile , largely cloud backend.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49696190",
+      "title": "Ask HN: Are 80s high school hobby programmers overwhelmingly pro-AI?",
+      "link": "https://news.ycombinator.com/item?id=49696190",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 16,
+      "comment_count": 36,
+      "created_ts": 1789391135,
+      "is_internal": true,
+      "post_text": "Do such people think that AI is truly miraculous and should be made as advanced as possible as quickly as possible?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49714644",
+      "title": "Ask HN: Lesser known features of macOS/iPadOS/iOS/etc. 27",
+      "link": "https://news.ycombinator.com/item?id=49714644",
+      "domain": "news.ycombinator.com",
+      "author": "lucasoshiro",
+      "score": 13,
+      "comment_count": 8,
+      "created_ts": 1789488361,
+      "is_internal": true,
+      "post_text": "Hi there!<p>I&#x27;ve just upgraded my Mac and iPad OSes to 27 and found some interesting features that I haven&#x27;t seen listed elsewhere:<p>- Screen mirroring to iPad now accepts touchscreen inputs<p>- iPad menu bar can now be always turned on<p>- The sidebars aren&#x27;t floating, just like before Tahoe<p>- Decreased window border radius<p>- Increased resize window area",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49724898",
+      "title": "Is anyone else losing their motivation to nerd out and tinker because of AI?",
+      "link": "https://news.ycombinator.com/item?id=49724898",
+      "domain": "news.ycombinator.com",
+      "author": "rizsyed1",
+      "score": 12,
+      "comment_count": 33,
+      "created_ts": 1789557412,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "motivation"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49698914",
+      "title": "Ask HN: How are you managing aging relatives passwords?",
+      "link": "https://news.ycombinator.com/item?id=49698914",
+      "domain": "news.ycombinator.com",
+      "author": "rylando",
+      "score": 12,
+      "comment_count": 17,
+      "created_ts": 1789400761,
+      "is_internal": true,
+      "post_text": "Looking for how or what services others use to manage their aging relatives passwords? Is 1Password still the choice?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49689696",
+      "title": "Ask HN: Would a startup for young creatives who reject AI be feasible?",
+      "link": "https://news.ycombinator.com/item?id=49689696",
+      "domain": "news.ycombinator.com",
+      "author": "mondobe",
+      "score": 11,
+      "comment_count": 26,
+      "created_ts": 1789340977,
+      "is_internal": true,
+      "post_text": "I am a member of my university&#x27;s game development club, which puts me around lots of talented programmers as well as artists of all kinds, and I&#x27;ve observed that just about everyone disapproves of AI. The sentiment is especially strong among younger people coming into the club. By &quot;disapproves&quot;, I mean they refuse to allow AI-generated content in games and see AI use in general as something like a moral failure.<p>At the same time, I scroll down the YC startup directory, sorting by launch date, and observe that every non-hardware company (and most of the hardware ones) are entirely based on AI. The demographic I described above, young creatives like the ones in this club, has zero chance of voluntarily using one of these products.<p>It seems to me, then, that as the moat for most AI startups drops asymptotically to 0 with GPT-6 et al. becoming more capable, this market is mostly a blue ocean (to use the business-book term) for anyone willing to put in the work and actually code something people want. From there, network effects would work as well as they have since the dawn of the Internet.<p>I am exploring the idea of making such a startup (it started out as a side project which I have been working on by myself for almost 2 years), but I am worried about the attitude of incubators, VCs, and investors in general. Would the lack of AI be a nonstarter for most outside investors? I know people started non-blockchain companies in 2021, but the hype around AI seems orders of magnitude more captivating to anybody who might provide capital. I know bootstrapping is viable for some companies, but would that be the only way? I appreciate any advice people might have.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "failure",
+        "startup",
+        "advice",
+        "side project"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49724691",
+      "title": "Ask HN: What is the most career altering course or book you have gone through?",
+      "link": "https://news.ycombinator.com/item?id=49724691",
+      "domain": "news.ycombinator.com",
+      "author": "learner_yearner",
+      "score": 10,
+      "comment_count": 14,
+      "created_ts": 1789556318,
+      "is_internal": true,
+      "post_text": "Pls provide link if the course materials are available anywhere.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "To answer the question as I misread it:\n  What's the most career altering *course of action* you've gone through?\n\n\nI was an IT guy, and I took a job making gears in a job shop.  The pay and commute were horrible, but it was immensely satisfying. Some of the gears I helped make will still be in service in a century.",
+          "author": "mikewarot",
+          "replies": []
+        },
+        {
+          "top": "Not a book or course per say, but based on a book:\nThe Gervais Principle, Or The Office According to \"The Office\" by Venkat [0]\nOther contenders:\nSapiens by Yuval Noah Harari [1]\nHaseeb qureshi's articles on Negotiating [2]\nThese along with er... mind-altering substances, helped me see that reality as we live it (careers, status, institutions, ect) is like software: built/programmed by humans and can be changed by shifting your perspective.\n[0] \nhttps://ribbonfarm.com/series/the-gervais-principle/\n[1] \nhttps://www.youtube.com/watch?v=CGhTQ4iruLc&list=PLfc2WtGuVP...\n[2] \nhttps://haseebq.com/my-ten-rules-for-negotiating-a-job-offer...",
+          "author": "neuralkoi",
+          "replies": []
+        },
+        {
+          "top": "Two books I read after 9/11 shaped my path greatly:\n1.) Stasi: The Untold Story Of The East German Secret Police\nISBN #: 0813337445\n2.) The Rise and Fall of the Third Reich\nISBN #: 9780671728694\nBoth should be available in most public libraries, but with the ISBN you can usually get almost anything via inter-library loan.",
+          "author": "firefax",
+          "replies": [
+            {
+              "text": ">The Rise and Fall of the Third Reich\nAn amazing book.  I'm not sure how it's particularly career-path-impacting, but it is fascinating being able to follow the cause and effect chain in Germany leading up to and all through the war (in excruciating detail).",
+              "author": "kbelder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "\"The Annotated Turing\" - I didn't know you could meaningfully intertwine biography and technical analysis like that.",
+          "author": "schmudde",
+          "replies": []
+        },
+        {
+          "top": "https://en.wikipedia.org/wiki/How_to_Fail_at_Almost_Everythi...",
+          "author": "oumua_don17",
+          "replies": [
+            {
+              "text": "Sounds about right.  It is called failing forward.  Fail forwards, fail fast and keep going.",
+              "author": "NishanStepak",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49715361",
+      "title": "Ask HN: Where is all of the AI coded software?",
+      "link": "https://news.ycombinator.com/item?id=49715361",
+      "domain": "news.ycombinator.com",
+      "author": "wNjdbfm",
+      "score": 7,
+      "comment_count": 14,
+      "created_ts": 1789491308,
+      "is_internal": true,
+      "post_text": "Like a lot of folks, I&#x27;m trying to understand the AI reality vs. the hype cycle. I have my own experiences both using it and seeing it rolled out with a “do more AI” mandate at a huge tech company. Even looking here at discussions we have the full spectrum from engineers who say they don’t code anymore, they just manage agents, to engineers who say they find it basically useless because of how stupid it is. I’ve been looking for clues (I wanted to use the word “signals&quot; there but I can’t because I don’t want you all to think Claude wrote this) in the market that we can all see, so we don’t have to accept “trust me bro, AI solved coding”.<p>Here’s my question:<p>Where is all of the AI coded software?<p>If coding is a nearly solved problem, if AI is making it so easy to make anything, why aren&#x27;t we seeing the market flood with cheap alternatives to software that we all use daily and hate?<p>Microsoft office, anything from Adobe, Jira<p>Make your own list. Every designer I’ve ever met hates Adobe and their subscription model. My company spends a hojillion dollars a year on office365 and everyone hates it. Why aren’t we seeing alternatives popping up?<p>Should we be expecting this as a part of the whole “democratization” promise of AI?<p>As an addendum: I picked office and adobe just because they are two things we always whine about in tech, I realize they are platforms&#x2F;ecosystems now, maybe it would be better to say Word and Photoshop, etc. but substitute in any commercial software you want. If AI coding can take over the internet application space can’t it also take over the software application space?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I think the real question you're asking is: why isn't AI coded software replacing well-known incumbent software (office, adobe, etc...)\nBecause I see AI coded software everywhere: HN has been complaining about the recent influx of Show HNs due to AI. Take a specific product category: there are about two new dictation apps on Show HN every week.\nHere are my theories:\n- adobe/office are simply too complex for AI to replicate (as of now). Theo Browne has been testing all the frontier models with a relatively simple fish game. The results have been subpar, at best. I don't think anyone would prefer the AI-generated games over the original. Even if the AI-generated version was free.\n- Most AI-coded software won't be distributed like classic software. Instead of a bag of hundreds of features (adobe/office), AI will be used to create the specific 5% of the features a single user really needs (home-cooked software). The software may even be per project or even per task. Why spend 20X to 100X the tokens/time when you only need a small subset of the features?\n- AI may not be able to replace human \"taste\" or design. There is a lot of design that went into adobe and office. I don't think AI can fully understand all the \"why's\" of these designs. We can already kind of see this with open source: Gimp and LibreOffice are alternatives to adobe/office. Yet most people prefer the paid options.\n- Even if AI solved coding, there are other barriers like marketing.\nSome examples:\n- I built my perfect window management system with the help of AI. It suits my very specific needs very well, but it's nowhere near ready for distribution. So this is AI-generated software no one else will ever probably see.\n- Going with the home-cooked meal analogy: there is a dish served at all Chinese restaurants in Korea: jjajangmyeon. However you can't find it in China because that dish is only found at home, not at restaurants in China.",
+          "author": "Leftium",
+          "replies": [
+            {
+              "text": "I think that they use a lot of LLM and they start with a good baseline so they still win",
+              "author": "sorbalda",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> If coding is a nearly solved problem, if AI is making it so easy to make anything,\nIf you are open to the idea that those premises are incorrect, you have your answer. Coding is helped, not solved. AI makes it easy to prototype, but not easy to launch a product with production-grade code, support, sales, marketing, ops, scalability, etc.\nWith that change in perspective, you'd see exactly what we are seeing - scads of prototype-level product attempts that don't succeed when launched into a market.",
+          "author": "codingdave",
+          "replies": []
+        },
+        {
+          "top": "I had a friend who suggested I make a competitor to a SAAS product in the shipping space. I did a deep dive and found that the actual product is that the SAAS company has contracts with dozens of shipping providers and puts an API on top. That's not something you can 'vibe code'.\nThere have always been competitors to JIRA both commercial and open source. JIRA sucks despite having competition because it tries to be everything for everyone.\nOne place we see tons of AI assisted apps is mobile which has seen a huge surge in the number of apps being published.",
+          "author": "Sevii",
+          "replies": []
+        },
+        {
+          "top": "For some things you don't need software anymore.  You just need Claude/Codex to have the right tools.  For example I do video recording/editing using my free Claude plugin:\nhttps://github.com/mrieck/demoday-claude-plugin#top\nI would never release a tool like that for free if it wasn't vibe-coded.",
+          "author": "mrieck",
+          "replies": []
+        },
+        {
+          "top": "> If coding is a nearly solved problem, if AI is making it so easy to make anything\nAI is very optimized to producing code, but not there (yet? ever?) in making products. Show me a serious software made entirely with AI. There's no AI SolidWorks, AutoCAD, MacOS.\nAnd there lies a contradiction: AI is making it easy to start and produce copious amounts of code that looks okay-ish. We start releasing a product and notice subtle changes. We did not internalize our understanding through it. There's a million lines of smart looking code, so we don't know where's what. We ask to AI to \"make the button blue\" \nhttps://opusfived.dev/\n and the cycle begins.\nI am working on a large software at work, trying a \"I didn't even look at the code\" approach with GPT 5.6 Sol. It started really promising but by now (and about $10k in tokens) it's a complete clusterfuck. Yes I use GSD and code graph etc.",
+          "author": "mstaoru",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49713156",
+      "title": "Ask HN: Why 17?",
+      "link": "https://news.ycombinator.com/item?id=49713156",
+      "domain": "news.ycombinator.com",
+      "author": "tonyvince7",
+      "score": 6,
+      "comment_count": 3,
+      "created_ts": 1789482795,
+      "is_internal": true,
+      "post_text": "If I ask an LLM to pick a number between 1 and 30, it always picks 17. Tried with multiple models. Why 17?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "The model selects answers based on learned probabilities; for this type of question, the probability associated with \"17\" is relatively high, which is why it appears frequently.",
+          "author": "boltguo",
+          "replies": []
+        },
+        {
+          "top": "Probably because it’s trained by humans and humans are more likely to choose certain numbers when they’re asked to choose randomly. 7 is a popular choice\nhttps://www.quora.com/Why-do-people-often-pick-17-as-a-rando...",
+          "author": "curiousObject",
+          "replies": []
+        },
+        {
+          "top": "lucky number",
+          "author": "Nata_Elisym",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49699185",
+      "title": "Ask HN: What would make you trust an AI's assessment of your understanding?",
+      "link": "https://news.ycombinator.com/item?id=49699185",
+      "domain": "news.ycombinator.com",
+      "author": "Aditya_0315",
+      "score": 4,
+      "comment_count": 3,
+      "created_ts": 1789401834,
+      "is_internal": true,
+      "post_text": "Creating an AI tutor that won&#x27;t let you progress without having learned anything — not just completing a test. You train, are diagnosed for any problems in understanding, and there is now a live voice challenge where you need to verbally explain your response to an AI, and then it drills down with additional questions.<p>The voice feature was created by me under the suspicion that it is way more difficult to pretend to have understood something while talking to someone rather than choosing a proper multiple choice answer. But to be honest, I don&#x27;t know if that is a valuable idea or just another sign of my attachment to the most complicated thing I created.<p>So, the question I want to ask seriously is: What would help you to trust an AI&#x27;s diagnosis of your understanding? And is it even worthwhile, or should I stick to the solution of doing spaced repetition and trusting myself?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "learned"
+      ],
+      "comments": [
+        {
+          "top": "I'd like to get the reasoning trace by stage in order to verify the AI work. I'd like the AI to explain me why it thinks I'm lacking knowledge on some specific topic or sub-topic.\nTo finally trust the AI I'd like for it to find (if the content has already some human created exercises) or generate some question/exercise that confirms their diagnosis.",
+          "author": "mfalcon",
+          "replies": []
+        },
+        {
+          "top": "Trust yourself ,issue come when ai understood context differently than you and even after long discussion - you create well documented instruction - it can infer differently. and never use gemini for this.",
+          "author": "rajeasy",
+          "replies": []
+        },
+        {
+          "top": "You're saying \"not just completing a test\", but this will inevitably be a test, just in conversation form.",
+          "author": "nitwit005",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49721869",
+      "title": "We struggled with DevOps, so built a open source agentic platform just for this",
+      "link": "https://news.ycombinator.com/item?id=49721869",
+      "domain": "news.ycombinator.com",
+      "author": "abmuhammadhamza",
+      "score": 2,
+      "comment_count": 0,
+      "created_ts": 1789530409,
+      "is_internal": true,
+      "post_text": "As a developer with some years of experience and with 150+ projects completed, me and my team learnt devops the hard way. Multiple fixes, compatibility issues, server issues, random vulnerabilities appearing out on framework level out of nowhere; it was all a mess.<p>After a lot of struggle, we decided that’s enough and we need to find a solution for this. That’s when we started to work on Putmein.<p>- Putmein has agentic chat interface, where you can plug your AI of choice and chat to your server directly.\n- It has 24&#x2F;7 SRE monitoring\n- CI&#x2F;CD pipeline checks\n- Single step deployment\n- Integrated security audits for all the projects\n- Sever monitoring\n- Container handling<p>It is one single source to manage anything in a server. Planning to make everything more useful and robust and I&#x27;ve started using it in my day to day life now.<p>https:&#x2F;&#x2F;github.com&#x2F;putme-in&#x2F;putmein",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49719474",
+      "title": "Ask HN: Slow OpenAI Inference on AWS Bedrock",
+      "link": "https://news.ycombinator.com/item?id=49719474",
+      "domain": "news.ycombinator.com",
+      "author": "timedude",
+      "score": 2,
+      "comment_count": 2,
+      "created_ts": 1789509750,
+      "is_internal": true,
+      "post_text": "Inference on AWS Bedrock for OpenAI models has been very slow and glitchy the last few days with today being the worst. Very long latency of over 5 minutes to first token. What&#x27;s going on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "likely they sold all the gpu capacity to enterprise clients",
+          "author": "mikert89",
+          "replies": []
+        },
+        {
+          "top": "us-east-1 seems to be the worst region right now.",
+          "author": "timedude",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
