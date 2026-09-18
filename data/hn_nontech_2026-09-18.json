@@ -1,0 +1,796 @@
+{
+  "scraped_date": "2026-09-18",
+  "source": "hacker_news",
+  "total_scraped": 44,
+  "nontech_count": 11,
+  "posts": [
+    {
+      "id": "49686380",
+      "title": "Ask HN: What are you working on? (September 2026)",
+      "link": "https://news.ycombinator.com/item?id=49686380",
+      "domain": "news.ycombinator.com",
+      "author": "david927",
+      "score": 373,
+      "comment_count": 1188,
+      "created_ts": 1789320698,
+      "is_internal": true,
+      "post_text": "What are you working on? What have you been curious about lately?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I've been working on a voxel game engine called Bonsai for ~10 years.\nProbably the most interesting thing about it at the moment is the editor.  The world, and most things in it, are represented as collections of SDFs.  More accurately, they're density fields, but, potato-tomato.\nBonsai has undergone a large rewrite over the last couple years that's nearing completion.  A world edit is defined as a bunch of SDF parameters which get projected/rasterized into the voxel grid by a shader on the GPU.  One neat thing about SDFs is they've been thoroughly researched and documented by a guy named Inigo Quilez, and they have a lot of nice mathematical properties.  For example, you can do a smooth union of arbitrary SDFs to get nice rounded contours where shapes join.\nI've written every system from scratch, all the way from the memory allocators and font rasterizer to the collision detector and simulation loop.  I even wrote a metaprogramming language as a replacement for C++ templates, which is a whole other story.  IIRC the only external dependency is the C runtime library for starting the process and my very occasional use of variadic functions arguments.\nFor a long time, an explicit non-goal of the project was to ship a game.  It sounded insane to me to write an entire 3D engine and then ship a game.  As it turns out, I've gotten it to the point where I can actually make a game.  I've got a start on the game systems in a closed-source repo, and hope to have a steam page for it by the end of the year.\nI'll do some shameless self-promotion and leave some links here for anyone interested in looking at the engine, language code, or some pretty pictures.\nhttps://github.com/scallyw4g/bonsai\nhttps://github.com/scallyw4g/poof",
+          "author": "jesse__",
+          "replies": [
+            {
+              "text": "Definitely interested in where you take things with the actual game - the engine looks really cool. It seems like we're in the midst of a bit of a cambrian explosion around \"survival games descended from Minecraft\" (Hytale is top of mind, but there's also Vintage Story and iirc there's a few others of note either in early access or development). Not that a voxel engine can only do a Minecraft-like - but there's definitely a market for someone who wants to take that formula and run with it.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, it seems enough people have done enough work on voxel engines now that we're actually starting to see games proliferate.  I'm stoked about it!\nI'm a lot less interested in minecraft-style survival games than I am in exploring .. other .. types of games that push the medium further.  Most voxel games that make it to release basically boil down to 'hack-n-slash RPG with a lego world'.  As you mentioned, it's obviously a successful recipe, but I feel like it's barely scratching the surface in terms of how far the underlying tech has come.\nI've got a game in-flight where the primary mechanic is modifying the environment to achieve a goal.  Teardown is really the only other game that's made it to market and done this.  The mechanics are going to be intentionally simplistic .. it's more of an existence proof that a deeper game could exist and people are interested in it.",
+              "author": "jesse__",
+              "depth": 2
+            },
+            {
+              "text": "minecraft offers a good interface. i am experimenting with blocklandscapes as control plane for other applications (currently photo editing). Its fun :D (not as useful as i hoped lol)",
+              "author": "saidnooneever",
+              "depth": 2
+            },
+            {
+              "text": "Looks cool.\nWhat would you say its defining features are? What makes it different than Minecraft? Seems like its probably more performant.\nWhats the license situation. I see your own license which sounds maximally permissive but written by you. Is that just how it works? I can do whatever I want with that license? It doesnt need to be a “real” license?\nMaybe your bonsai logo should come from your voxel engine instead of pixel art?\nIdk why but my first thought was somehow that i misunderstood “voxel engine” when i saw the pixel art.",
+              "author": "nonethewiser",
+              "depth": 1
+            },
+            {
+              "text": "Hey, thanks for the kind words!\nI'd say the defining feature is the editor and terrain generation system.  At the moment it's not well documented, but once the big rewrite I've been working on has settled I plan to take some time to make tutorial materials.\nAs far as the license goes, I chose WTFPL originally because I figured it would dissuade 'real' companies (with legal teams) from using it.  I've since thought about changing the license to something permissive that might play nice with legal teams, like MIT.  You can do whatever the fuck you want; it says so right in the license ;)  I'd actually love it if people used it.  My intent now is to keep the engine open source, and build games with it in closed-source repos.\nYou're right, I should change the logo.  It's on the todo list .. it's just a really long list ;)",
+              "author": "jesse__",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "I'm working on a real-life social app called Holler (\nhttps://justhollerapp.com\n).\nI'm an introvert and socially anxious, but I do enjoy hanging out with my friends. I just HATE the invitation-and-coordination game. If someone invites me and I don't want to go, I hate having to come up with a socially acceptable excuse. Inviting someone and waiting for them to make a socially acceptable excuse is equally awful to me.\nThen you get to coordination. I want to go to the brewery at 2pm, but your kid has soccer practice so you can't get there til 3:30, but then Joe has to leave at 4 to pick up his mother in law at the airport, and... ugh. It's the worst.\nSo I made Holler, which is basically you hollering to your friends, \"I'm going to be at the farmer's market at 2pm,\" and then you just go. If they show up, fantastic. If not, whatever, you were going to go anyway.\nNo coordination, no invitations, no friction. Just holler and go.\nIt's iOS only for now, but I'm working on an Android app as you read this, so hopefully that's coming soon.",
+          "author": "Jemaclus",
+          "replies": [
+            {
+              "text": "That seems like the kind of \"social app\" that might actually \nwork\n for me. I like the idea of sort of passively declaring \"i am doing something, feel free to show up.\"\nI guess the potential failure mode is ... no one ever showing up. I've got a standing slot (during work hours) at my current company where it's just \"AI Jam\" - just come in, eat lunch, and we'll hack on something, ramble about the news, etc. It's been moderately successful but there are definitely weeks where you just end up in a call with one or two guys with nothing to show.\nThat's not so bad though - last week we just talked about video games. Still fun.\nSo anyway - best of luck. Seems like a cool idea!",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Yeah, I get that. My thinking is that I'd rather go do something fun by myself than sit at home because I couldn't coordinate something or because someone else didn't want to do my thing.\nThis weekend, for example, another couple invited my partner and me to go do an activity. They sent the text at 11. We finished giving our kid lunch, walked the dog, and loaded up the car. They texted and said their kid wasn't ready yet, and maybe they'd leave by 2. They didn't leave home til 2:30, so we didn't start our activity until noon, almost three hours later. The activity lasted about an hour, then we suggested going to a brewery to get some drinks, but for one reason or another, we wound up going our separate ways.\nMy partner looked at me and said \"This would've been a better Holler use-case. We could've just gone for a hike ourselves and not had to coordinate with someone else who can't show up on time.\"\nSure, it might've just been us, but we spent a lot of weeping and gnashing of teeth coordinating with people that we ultimately barely spent any time with, and instead lost half our day.\nHoller, to me, represents a form of social freedom. I'm freed from the constraints of other peoples' calendars. If they really want to hang out with me, they'll come to the events I holler. If they don't, then that's fine, we can still be friends, but if they can't be willing to attend things on my schedule, why should I adjust my schedule to conform with theirs?\nSo I'm going to do what I want to do, and if anyone wants to join, fantastic.\nBetter than sitting at home twiddling my thumbs wishing I was doing something fun.",
+              "author": "Jemaclus",
+              "depth": 2
+            },
+            {
+              "text": "I do this in my running club (granted, it’s quite specific). Hello I’ll run X time at Y place for that long / that purpose. I don’t even explicitly « invite ». Then a few people sometimes join. We are a few hundreds so I meet new people each time. It’s nice and bears 0 organizational cost for me",
+              "author": "chantepierre",
+              "depth": 2
+            },
+            {
+              "text": "Yes! You get it! That's awesome. This is basically \"comment what you want to do on a FB group and see who shows up\" as an app. You got it exactly.",
+              "author": "Jemaclus",
+              "depth": 3
+            },
+            {
+              "text": "This kind of reminds me of Foursquare from back in the day.\nNow a days I just have a few group chats where I can drop this kind of announcement in and see if there are any takers.",
+              "author": "MrDresden",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I'm building \nhttps://uscodex.org\n. In a nutshell, the goal is to collect all US federal law in version control, and cross-link any references between different sections. Currently I have the US Code, CFR, ~30 years of public laws and congressional bills and 25 years of executive orders.\nActually using raw git repos as the main data store which has worked out great since the US Code changes very little between new releases and so it compresses very well. Also makes it easy to generate diffs of sections: \nhttps://uscodex.org/usc/d/119-100/119-102not101/16/2201",
+          "author": "SebRollen",
+          "replies": [
+            {
+              "text": "Hoo boy. It's an awesome idea, don't get me wrong - and it's work that should \ndefinitely\n be done. But I've worked professionally in this space and it is \nwildly\n complicated. I've never seen how things are done on the federal side, but US states have various modes of \"electronic filing\" for rules and codes - and there's a ton of complexity.\nIt's the kind of thing that sounds insanely boring on the surface, but there's a lot of interesting problems to solve, lots of coordination between various parties, lots of \"deep state\"[0] politicking - and so it becomes a surprisingly cool area to learn about and work in, and really matters in a way that many software projects do not.\nBest of luck - it's a cool problem space.\n[0]: I use \"deep state\" here somewhat ironically, but also just in the literal definitional sense: \"people who are not elected but who work for the government and are surprisingly important\". 0% intent to use it in the often insulting manner of popular discourse.",
+              "author": "epiccoleman",
+              "depth": 1
+            },
+            {
+              "text": "Thanks! Super interested in hearing more about some of the battle-scars you've acquired from working in the space if you're open to sharing? Very early in the journey here, so still have a ton to learn!\nSo far, it seems like the federal space is relatively well-behaved compared to your experience with states. Most agencies standardized on the USLM schema[^1][^2] in 2013. Before that, it's a hodge-podge of XML and plain-text sources.\nAlso, FWIW, my interactions with federal agencies so far have been insanely positive. When I reported the error I found in the US code at 9pm, a staffer from the OLRC verified the issue and got back to me by 7am the next day, more efficient than most private sector organization's I've interacted with!\n[^1]: \nhttps://github.com/usgpo/uslm\n.\n[^2]: Meta: The USLM itself was created by federal law \nhttps://uscodex.org/usc/2/181",
+              "author": "SebRollen",
+              "depth": 2
+            },
+            {
+              "text": "I am not sure how much I'm allowed to say publicly between NDAs and contracts and all that fun stuff (I may already be over the line, tbh) - but feel free to drop me an email at the address in my profile and I can point you to a few things that might be of interest.",
+              "author": "epiccoleman",
+              "depth": 3
+            },
+            {
+              "text": ">\"people who are not elected but who work for the government and are surprisingly important\"\nThat’s just the regular definition of deep state. The difference is simply that you arent using it as a pejorative.",
+              "author": "nonethewiser",
+              "depth": 2
+            },
+            {
+              "text": "This is great!\nWe need something like git blame to show how legislation evolved over time, who passed it, which lobbyists pushed for or wrote it, who benefited by receiving more money/power, and who had to foot the bill.\nThis is becoming urgent, now that there's almost no correlation between what laws get passed and their popularity with the public, since Congress mainly only listens to moneyed interests:\nhttps://www.youtube.com/watch?v=5tu32CCA_Ig\nDiscussion:\nhttps://act.represent.us/sign/problempoll-fba\nBy making corruption more transparent, we can make it so toxic that people participating in it get investigated and brought up on charges.\nThis will become inevitable due to the arrival of AI, but speeding up its delivery is paramount if we want to save our country.",
+              "author": "zackmorris",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://shopspec.io/\nShopSpec is a deterministic parametric furniture generator (bookshelves, cabinets, shop carts, leg-and-rail frames, multi-carcass composites) that encodes real woodworking intelligence and outputs shop-ready artifacts.\nMost recently, introduced the concept of value engineering by sweeping across dimensions to batch evaluate candidates that ranks based on sheet purchases. Also have in beta an MCP connector to let agents explore the deterministic engine.\nI'm building a number of items for home and shop and ShopSpec has been instrumental to plan, visualize, and execute on these new ideas/projects.",
+          "author": "variodot",
+          "replies": [
+            {
+              "text": "Hi there! I'm a woodworker and love seeing new woodworking software! Thank you for making this.\nI could tell from the layout screenshots, but one thing to make sure is that you are accounting for the size of the kerf. Being able to set a different kerf size for different cuts would be ideal as your rip vs crosscut are often different blades.\nAlso, one of the more daunting parts of casework for me is sorting out exactly how undermount slides go. I would highlight any help your tool does with raising confidence in getting those installed. Even having an undermount installation tool separate from the spec work I think could be useful.",
+              "author": "bradly",
+              "depth": 1
+            },
+            {
+              "text": "Don't forget about the rest of the world which does not use imperial and have access to plywood stock that is e.g. 18mm birch in metric standard dimensions for the cut sheet. Being able to customize what stock I have access to locally and adjust measurements and cuts automatically, e.g. rounding to cm not quarter inches.",
+              "author": "Zopieux",
+              "depth": 1
+            },
+            {
+              "text": "This is beautiful and I'm now itching to make a workbench (finally! that initial \"how many sheets and what for what size\" problem has been the mental blocker)\n+1.0mm vote to adding metric please!",
+              "author": "Mumps",
+              "depth": 1
+            },
+            {
+              "text": "Glad ShopSpec helped get you over the hump and appreciate the feedback. I am building a tool that I find useful for myself and previously encountered a similar pattern to what you mention.",
+              "author": "variodot",
+              "depth": 2
+            },
+            {
+              "text": "Wow that's really cool! I'm actually trying to learn about woodworking and using those example as a base are really great! \nYou could consider having an option for metric users as well!",
+              "author": "mimo84",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "My wife and I continue to work on a private, paid, ad-free and personally customizable search engine: Uruky [1].\nTo signup you don't provide any information (a randomly-generated account number is assigned to you), and you can run a proof-of-work captcha to get 2h for free. You can choose among many different search providers (for defaults and per query), including Uruky Site Search, powering our own index.\nLast month we reached 300 monthly active accounts and released an image search gallery mode, plus a simple calculator and conversion widget!\nThe main differences between Uruky and Kagi, DuckDuckGo, SearXNG, etc. are visible in the footer (right side), but one huge difference is that with Uruky, after being a paying customer for 12 months, you get copy of the source code (licensed as BUSL, into AGPLv3 in 2 years — a suggestion made here on HN)!\nOur main challenge continues to be discoverability and outreach because we want to do it ethically (no Big Tech and no GenAI/LLMs). Ideas are welcome! We’ve been sponsoring open source projects, open source maintainers, and indie, small-web, and privacy-related websites and applications/groups/orgs. This month we're sponsoring NOYB [2]!\nFeature-wise, for September the most visible things that shipped already were Tags and Scopes (top feature requests for a while). We’re also still (slowly and sustainably) increasing our own index, focused on indie/small web.\nThank you for reading this!\n[NO-AI]: There is no generative AI product or service being offered, here.\n[1]: \nhttps://uruky.com\n[2]: \nhttps://noyb.eu",
+          "author": "BrunoBernardino",
+          "replies": [
+            {
+              "text": "Been meaning to sign up to this after seeing it posted here before. Finally got around to it. First impressions are the amount of settings and options available are a little overwhelming if I wanted to suggest it to non-technical users. Have you considered / do you have any video tutorials on the different settings / getting the most out of Uruky?",
+              "author": "RebelMonk",
+              "depth": 1
+            },
+            {
+              "text": "Thanks for your support!\nWe have been thinking about that, especially because my wife and I do not use most of those settings; they have been built over time with many customer requesting them, and it's gone through a couple of \"redesigns\" to accommodate all the knobs, though the \"default experience\" should be more than enough for most people.\nI do wonder if we need some guided \"wizard\" of sorts for making sure it works as people want it, or perhaps a \"features\" page to explain those things.\nI wouldn't want to do videos, as I'm not convinced those would be effective (and they take a significant effort to make).",
+              "author": "BrunoBernardino",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49727627",
+      "title": "PS5 Linux lead quits: \"a bunch of noobs using LLMs\" that \"they don't understand\"",
+      "link": "https://frvr.com/blog/news/ps5-linux-lead-quits-as-open-source-projects-have-become-a-bunch-of-noobs-using-llms-that-they-dont-even-understand/",
+      "domain": "frvr.com",
+      "author": "alexjplant",
+      "score": 324,
+      "comment_count": 224,
+      "created_ts": 1789569036,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lead"
+      ],
+      "comments": [
+        {
+          "top": "Hobby groups projects like this are less fun for a lot of people who used to enjoy interacting with smart people. It's definitely become a game of just spam claude for answers with zero understanding or care for how anything actually works. That's fine to get things done and fine for a lot of side projects, but it definitely ruins the joy that people have in understanding systems and working with intellectuals.",
+          "author": "eugenekolo",
+          "replies": [
+            {
+              "text": "> Hobby groups projects like this are less fun for a lot of people who used to enjoy interacting with smart people.\nSame thing did happen to many work places. People at all levels proxy questions through LLMs and don't even bother to read/trim/edit the response.\nFunny, how suddenly a tight, 1-2 sentence response on point is a sign of skill.",
+              "author": "aeonflux",
+              "depth": 1
+            },
+            {
+              "text": "Wasn't there an article here, or was it under another HN post as a comment? Someone pointed out that the before the dawn of LLMs, \"bad contributors\" had a rate limiter of sorts. Now anyone can prompt their LLM and throw their output at you, shifting the burden entirely on the reviewer at highest possible speed.",
+              "author": "misterderpie",
+              "depth": 2
+            },
+            {
+              "text": "this? \nhttps://news.ycombinator.com/item?id=49474143",
+              "author": "derpyzza",
+              "depth": 3
+            },
+            {
+              "text": "It's so much worse than just that. Because they will also decide on how problem \nshould\n be solved by prompting LLM and ask you to argument doing it any other way vs the LLM slop they pasted",
+              "author": "PunchyHamster",
+              "depth": 3
+            },
+            {
+              "text": "It which point you reject the PR and suggest them to maintain a fork themselves.",
+              "author": "Muromec",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "now imagine how many other devs and maintainers are contemplating this but just haven't been pushed to their personal breaking point yet. or take note of how many, when asked about the spam problem, just nervously go \"yeah it's kinda rough haha...\". or how many will vent about it on their twitter-like of choice with increasing frequency.\nremember hacktoberfest 2020? that's just all public-facing source 365 days a year now, except instead of \"updated README.md\" it's some vaguely-plausible fix... then you read the PR body and someone couldn't even be bothered to, or, just as likely \ncouldn't\n explain it themselves. and that sort of sinking dread sets in.",
+          "author": "0x69420",
+          "replies": [
+            {
+              "text": "> remember hacktoberfest 2020?\nOh man, if you read the threads about that it's such a time capsule of a different era:\ne.g. from this thread: \nhttps://news.ycombinator.com/item?id=31628342\n> I am honestly surprised how little SPAM there is on GitHub in general. Please don’t take that as a challenge!",
+              "author": "scronkfinkle",
+              "depth": 1
+            },
+            {
+              "text": "Microsoft took it as a challenge.",
+              "author": "throwup238",
+              "depth": 2
+            },
+            {
+              "text": "> now imagine how many other devs and maintainers are contemplating this but just haven't been pushed to their personal breaking point yet. or take note of how many, when asked about the spam problem, just nervously go \"yeah it's kinda rough haha...\"\nAt first, my brain parsed \"spam\" as in ye olde email spam.  It took a moment for it to sink in that you meant code spam, instead.\nBut now that the two concepts are linked in my little pea brain:  I kind of want to see how a system like SpamAssassin would work when applied to pull requests like it has been applied to email.\nIt can use reputation, real-time blacklists, triggers for form, and et cetera, with weighted scores for every aspect that are ultimately factored into one final score.\nIf final score is passing, the PR is presented for a human to review like a PR was (say) 5 years ago.  If the final score fails, it goes into the circular file where it will probably die.",
+              "author": "ssl-3",
+              "depth": 1
+            },
+            {
+              "text": "The funny part is that we'd probably recreate the entire email spam arms race",
+              "author": "BrtByte",
+              "depth": 2
+            },
+            {
+              "text": "That's OK.  Maybe it's even inevitable.\nI've been on both sides of the spam arms race at different times of my life.  While they'll never be able to claim victory, the good guys (usually!) seem to be winning -- and that's a lot better than accepting defeat.",
+              "author": "ssl-3",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "Person 1 finds an exploit the old fashioned way. Keeps it secret because they’re doing some PS5 Linux work and want to keep it unpatched until GTA6 releases in 2 weeks. I don’t have a PS5 but I assume new games might require a firmware update to play?\nPerson 2 uses an LLM and finds the same exploit.\nPerson 1 asks Person 2 not to report it and collect the bounty until GTA6 is released. Person 2 agrees.\nPerson 3 also finds the same exploit independently.\nPerson 2 discovers that Person 3 has found the exploit. Person 2 decides the cat is out of the bag and submits it to Sony while they still have a chance.\nNow the community is angry that Person 2 didn’t sacrifice the bounty. PS5 Linux effort seemingly falls apart in response? Departing developer directs community to be angry at Person 2, who is taking time away to be with their critically ill mother.\nHonestly I can’t blame Person 2. They earned the bounty and played by the rules of the bounty program. The PS5 Linux dev who abandoned the project and started deleting things is entitled to do so, but blaming Person 2 for the crash out is too much.",
+          "author": "Aurornis",
+          "replies": [
+            {
+              "text": "GTA6 is still 8 weeks away.",
+              "author": "addandsubtract",
+              "depth": 1
+            },
+            {
+              "text": "> earned the bounty\nYeah, nothing like the hard work of typing \"look at this binary and find a bug\"  The sweat, the tears it must have taken!",
+              "author": "dmitrygr",
+              "depth": 1
+            },
+            {
+              "text": "Do you know whether this was a simple prompt or if it took an expert 20 hours with AI use?\nThe link is not loading for me, so I could not access the article.",
+              "author": "user43928",
+              "depth": 2
+            },
+            {
+              "text": "Tell us you know nothing of how AI development work without telling us.",
+              "author": "hkchad",
+              "depth": 2
+            },
+            {
+              "text": "everybody has access to the models, including Sony. If they still offer bounty, then they earned the bounty.",
+              "author": "asadm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Misleading title, there's another major reason: it's an embargo agreement violation that jeopardizes Linux support on PS5.\nhttps://x.com/theflow0/status/2099987019954831744",
+          "author": "arnaudsm",
+          "replies": [
+            {
+              "text": "Nothing misleading about the title and you are splitting hairs.",
+              "author": "seki285",
+              "depth": 1
+            },
+            {
+              "text": "Omitting half of the story is misleading, this isn't a pro/anti LLM story.\nVibecoding has been the norm for months, it's the embargo violation today that triggered his resignation.",
+              "author": "arnaudsm",
+              "depth": 2
+            },
+            {
+              "text": "The headline accurately summarizes the main point of the story, and the part that is emphasized is from the subject of the story.",
+              "author": "lokar",
+              "depth": 3
+            },
+            {
+              "text": "> Vibecoding has been the norm for months\nThat's your editorialization.",
+              "author": "VCFundedGenYer",
+              "depth": 3
+            },
+            {
+              "text": "> …been the norm for months…\nYou know, it’s petty, but I think one of the things I hate the most about AI is that it surpassed front end JavaScript frameworks in terms of changing what the standard is every few years.\nWhat’s the point of learning anything if it becomes obsolete faster than the seasons change?",
+              "author": "lovich",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "My mom sure can hydrate a pizza. My grandma, rest her soul, said mom has no artistry in it. I heard stories that my grandmother worked the dough with her bare hands (ew); it always came out slightly different; more ridiculous, I heard her generation would devote a portion of an entire day (if you can even humor that ridiculous notion) to pizzacraft.\nGrandma was always a broken record with that stuff. The family would sit around that table, apparently, gabbing about nothing, and everything, just staring into a raw pizza, pulling and stretching it, starting over, living with their hunger, for a flawed process to bake slowly.\nThese days, fresh pizza is 10 seconds away, it's always identical and we never have to share. It's hydrated, eaten, and in the trash by the time I am onto my next attention, always perfect, always on time, always identical. I don't think about this much, but I sometimes really feel pity for what the old timers suffered through, all those ridiculous, pointless wasted interactions and delays, sitting there for what felt like ages, for a random pizza shaped thing.\nI dont get it.",
+          "author": "digitalsushi",
+          "replies": [
+            {
+              "text": "I don't get why you would view something tasting exactly the same every time as a benefit.",
+              "author": "AngryData",
+              "depth": 1
+            },
+            {
+              "text": "You need to go out and socialize with a few satisfied McDonald's customers.",
+              "author": "liotier",
+              "depth": 2
+            },
+            {
+              "text": "okay, but what about people who get more enjoyment out of talking to their family while performing a shared task, than eating the pizza. showing up to the pizza making session a frozen pizza from the store says \"I don't want to talk to you\"",
+              "author": "Lt_Riza_Hawkeye",
+              "depth": 1
+            },
+            {
+              "text": "Pretty sure the comment you’re replying to is satire, and that you agree with each other.",
+              "author": "articulatepang",
+              "depth": 2
+            },
+            {
+              "text": "Media literacy is hitting record lows",
+              "author": "anal_reactor",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49742976",
+      "title": "Ask HN: How to recover Google auth after phone stolen?",
+      "link": "https://news.ycombinator.com/item?id=49742976",
+      "domain": "news.ycombinator.com",
+      "author": "keymasta",
+      "score": 98,
+      "comment_count": 100,
+      "created_ts": 1789661848,
+      "is_internal": true,
+      "post_text": "As we know, google has been effective at automating a lot of their systems, to the point where it can feel like there isn&#x27;t any help available from a human. So what is supposed to be the plan when this type of situation happens?<p>Basically I have a situation that after my phone was stolen, I can&#x27;t get into any of my accounts that are either connected to google, or connected to the phone via 2FA. This has made it complicated&#x2F;impossible not only to get info about my phone, but also my banking, email, drive, etc.<p>Of course they offer you &quot;multiple options&quot; to recover an account, but not if you forgot your old email&#x27;s password. At that point the options you get are,<p><pre><code>  a) Use old phone (obviously the phone is long gone)\n  b) Use current phone (the phone is gone)\n  c) Use old email (I haven&#x27;t used it in like 12 years)\n</code></pre>\nDoes anyone know if their is a process to appeal 2FA or anything to deal with this type of situation?<p>I&#x27;d imagine that this has happened to people many many times, and given how phones and particularly, google auth have become so critical to accomplishing essential tasks within society, there must be some way. Or maybe it&#x27;s just like, once your phone is gone, you are completely over with society? If anyone has any experience with this or inside knowledge please share it!<p>I&#x27;m sure people here have heard of this, and maybe experienced it themselves.<p>Is there a secret option that exists that allows us to use passwords instead of rigamarole? I would love an account that let me simply log in with a password, like google used to be.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Isn't there an SMS option? buy a new phone and have them send you an OTP via SMS.\n> once you're phone is gone, you are completely over with society?\nyes, I'm waiting for the Black-Mirror episode where someone drops their phone and basically dies, can't contact anyone, can't unlock or start their car, can't get an uber, can't pay for anything, can't navigate without gps, can't log into anything etc.",
+          "author": "ticulatedspline",
+          "replies": [
+            {
+              "text": "Something I learned the hard way: it's a bad time if you are a Google Fi customer and your Android phone with an eSim becomes inoperable while traveling :)",
+              "author": "ryanhecht",
+              "depth": 1
+            },
+            {
+              "text": "just in general, it's difficult if your phone with an esim dies/lost/stolen (ie no access) to move the esim over. It's especially annoying if it just died, because instead of just popping the sim over you end up in a maze with the carrier (unless you are lucky enough to other lines on the account you have access to)",
+              "author": "dogmatism",
+              "depth": 2
+            },
+            {
+              "text": "My wife recently had this happen to a work acquaintance. They are a recent immigrant who has only lived in New York since moving here, who was sent out to the Midwest where there is no public transportation and driving is mandatory, and is staying at a hotel. She lost her phone, and thus could not get anywhere or communicate with anyone, and couldn't pay for anything due to her phone being where all her money is stored (no physical credit cards or anything). Luckily, my wife was able to get her around and help her out until they eventually discovered it was in a lost and found. If she had been alone, I don't know what she would have done.\nImagine being on vacation and you lose your phone, or it breaks. You offloaded your payments to digital and have no cards or cash, you can't get in your hotel room because you used a digital key like hotels all want you to, maybe you brought a car but oops it's a Tesla and you're depending on your phone as the key because it's less stuff to carry!",
+              "author": "foobarchu",
+              "depth": 1
+            },
+            {
+              "text": "Pretty similar to how my life feels right now.",
+              "author": "keymasta",
+              "depth": 1
+            },
+            {
+              "text": "As an old curmudgeon I recoil at any service I can't interact with sans-phone. I hardly use mine for anything.\nJust be glad your phone number is tied to your account, if you lose the number itself you are royally screwed, and basically anyone who gets your old number owns all your accounts now.",
+              "author": "ticulatedspline",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you don't have the authenticator backup codes and you didn't turn on cloud sync in the app, you might be out of luck.\nYou can get a replacement SIM though and use it with a new phone, so the phone number recovery option should work.",
+          "author": "sampullman",
+          "replies": [
+            {
+              "text": "This. Can't you get your number moved to a new phone? I have never don't anything magic when upgrading my phone other than move contacts.",
+              "author": "uberman",
+              "depth": 1
+            },
+            {
+              "text": "How would moving your number to a new phone help? We're talking TOTP here, not SMS \"auth\".",
+              "author": "jwr",
+              "depth": 2
+            },
+            {
+              "text": "does google not offer a backup via sms? it's a common enough recovery flow elsewhere. (i dont use google stuff, so i am genuinely asking)",
+              "author": "john_strinlai",
+              "depth": 3
+            },
+            {
+              "text": "Any less secure backup method, means others are less secure.",
+              "author": "b112",
+              "depth": 4
+            },
+            {
+              "text": "A required “more secure” method is less secure if it means you can be locked out by not-exactly-uncommon real-life situations.\nDenial of service is a security issue.",
+              "author": "cwillu",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "This is why my self-hosted Vaultwarden is my one password that I have to remember and requires no 2fa, which is the only important account that doesn't have 2fa.\nIf I wake up in a bathtub missing a kidney I can still get to my passwords and 2fa sources stored with it. Some accounts require SMS (annoyingly) so I'd have to buy a phone but the auth and credit card numbers I need to do that are in Vaultwarden, too.\nI don't have good solutions now for OP (other than buy a new phone through your carrier and transfer the number). But everyone else do think through your personal DRP. Generate backup codes and put them somewhere safe, too.",
+          "author": "mrj",
+          "replies": [
+            {
+              "text": "Welll yeh until a Hargrove fails on your self hosted server",
+              "author": "bazmattaz",
+              "depth": 1
+            },
+            {
+              "text": "One of my favorite things about self-hosted Vaultwarden is that you get distributed backups for free. Every client keeps an offline copy of your entire password vault, kept in sync when the client is online.\nSo for me to lose my vault, not only would my server have to get hit by a bus, but also my phone, my desktop, my HTPC, both laptops...",
+              "author": "nyx",
+              "depth": 2
+            },
+            {
+              "text": "True.. but now you have more devices to have to secure against attacks...\nEdit: this \"feature\" did save me when my home hosted vaultwarden died due to hdd failure.",
+              "author": "627467",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I had similar issues: \nhttps://news.ycombinator.com/item?id=45451567\n (including my personal domain, Dropbox; my Apple account is still MIA...)\nWe've all been reduced to a passphrase.\nWhen I've lobbed this scenario to the security managers/employees at these companies, they all give me a really great answer:\nQ: What happens if a sitting senator gets mugged and they have their printed 2fa codes sitting in their wallet?\nA: They have a special number they can call.",
+          "author": "joshmn",
+          "replies": [
+            {
+              "text": "After they go get a second phone",
+              "author": "bshaughn",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "You're going to have more success working with the providers of the other accounts and services rather than Google. That means a lot more legwork on your part but banks and other online services all have processes to deal with lost passwords and 2FA devices. In some cases you may have to physically go somewhere with ID and other documents.\nConsider it a learning experience.",
+          "author": "SoftTalker",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49696190",
+      "title": "Ask HN: Are 80s high school hobby programmers overwhelmingly pro-AI?",
+      "link": "https://news.ycombinator.com/item?id=49696190",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 16,
+      "comment_count": 39,
+      "created_ts": 1789391135,
+      "is_internal": true,
+      "post_text": "Do such people think that AI is truly miraculous and should be made as advanced as possible as quickly as possible?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I'm not that old, but literally no engineer I work with is \"overwhelming pro-AI\".  Befitting engineers, they understand that AI is a tool and while it has its uses, it also has its limits.  The enthusiasm that exists stems from AI solving actual hard engineering problems in front of our faces, but everyone using it has also encountered AI doing something very stupid as well.\nEven our management is pretty honest about this.  Our in-house AI platform running near-frontier models from the larger vendors requires manual confirmation of every command executed on a company machine.  It's tedious, but aside from establishing a clear line of blame if the AI does something screwy, it also forces you to step through the AI's analysis which can be quite educational.",
+          "author": "scottLobster",
+          "replies": []
+        },
+        {
+          "top": "Of course not, it goes against everything they love and cherish about personal computing. It's pouring concrete over their playground and wilderness, to be replaced by factories. \"Resistance is futile, you will be assimilated.\" Sadly many natives join their colonizers willingly, so they can stay relevant and productive in the industry that is actively devaluing their work.",
+          "author": "lioeters",
+          "replies": []
+        },
+        {
+          "top": "I am very pro-AI and I was coding in the late 80s, although not in high school, I was in elementary at the time.\nGiven I started on an Apple IIe with a green screen and basic, and have since had to shift languages and techniques repeatedly over the decades, I have to be someone that embraces new technology if I want to stay relevant and productive.\nThis means that I will adopt things that make sense and AI does make sense.",
+          "author": "bhouston",
+          "replies": []
+        },
+        {
+          "top": "In short, no.\nMost of the folks I talk to in my age group are somewhere between anti-AI and \"AI works for specific use cases\". I find it is the younger folk who think it is miraculous and want to use it everywhere.",
+          "author": "codingdave",
+          "replies": [
+            {
+              "text": "The executive class is overwhelmingly Gen-X and that class is very pro-AI.",
+              "author": "smcg",
+              "depth": 1
+            },
+            {
+              "text": "Brown dogs chase cars != all dogs chase cars. And especially, != black dogs chase cars.\n80s hobbiest programmers are GenX, and maybe most execs are GenX, but that doesn’t mean both groups share the same opinions.",
+              "author": "jdlshore",
+              "depth": 2
+            },
+            {
+              "text": "Executives are not engineers. Not even the CTO",
+              "author": "ChiperSoft",
+              "depth": 2
+            },
+            {
+              "text": "No, but that doesn't stop them from pushing vibe coded software at meetings and demanding it be put into production or otherwise regurgitating verbatim what their agents tell them.",
+              "author": "gnz11",
+              "depth": 3
+            },
+            {
+              "text": "Or worse, demanding you \"use more ai\" in your work because clients have been questioning whether the company is \"all in on ai\"",
+              "author": "foobarchu",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "I was a hobby programmer in the 80s, but that was after college.  I was a hobby programmer in the 70s via my high school's library having a terminal to access a mainframe for self-study programming courses, and I built mail-order computer kits which I programmed in machine language.\nI think AI is a great tool, but requires safeguards.  I use it every day, but I use a lot of tools to reign it in, keep it on task, check its results, and force it to follow an engineering process.\nI don't know about the \"as quickly as possible\" part, since there needs to be guardrails, but improving AI should be done sooner rather than later.  e.g, instead of training to give the answer it thinks you want to hear, it should be trained to give provably correct answers.  instead of being trained and fine tuned and then let loose, it should be able to continuously learn and improve.\nWhile people keep chasing tokens/second and vibe-coding, I'm more interested in correct results per kWh, sustainable and ethical AI.  Also, I'm worried that there will be an increasing digital divide between the wealthy and the rest of us, so I do want AI to be available and not locked up just for corporations and governments.\nTo me, the fun is solving problems, and AI let's me solve more problems, harder problems and more quickly.  I was happy to move from assembler programming to high level programming languages, to 4GL, to frameworks, tech stacks, etc.  Moving to AI coding is just another shift in solving problems at a higher level with more productivity.\nhacking microprocessors was fun.  building complex systems using AI is fun, too.",
+          "author": "softwarewright",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49714644",
+      "title": "Ask HN: Lesser known features of macOS/iPadOS/iOS/etc. 27",
+      "link": "https://news.ycombinator.com/item?id=49714644",
+      "domain": "news.ycombinator.com",
+      "author": "lucasoshiro",
+      "score": 15,
+      "comment_count": 8,
+      "created_ts": 1789488361,
+      "is_internal": true,
+      "post_text": "Hi there!<p>I&#x27;ve just upgraded my Mac and iPad OSes to 27 and found some interesting features that I haven&#x27;t seen listed elsewhere:<p>- Screen mirroring to iPad now accepts touchscreen inputs<p>- iPad menu bar can now be always turned on<p>- The sidebars aren&#x27;t floating, just like before Tahoe<p>- Decreased window border radius<p>- Increased resize window area",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49724691",
+      "title": "Ask HN: What is the most career altering course or book you have gone through?",
+      "link": "https://news.ycombinator.com/item?id=49724691",
+      "domain": "news.ycombinator.com",
+      "author": "learner_yearner",
+      "score": 14,
+      "comment_count": 17,
+      "created_ts": 1789556318,
+      "is_internal": true,
+      "post_text": "Pls provide link if the course materials are available anywhere.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": [
+        {
+          "top": "Not a book or course per say, but based on a book:\nThe Gervais Principle, Or The Office According to \"The Office\" by Venkat [0]\nOther contenders:\nSapiens by Yuval Noah Harari [1]\nHaseeb qureshi's articles on Negotiating [2]\nThese along with er... mind-altering substances, helped me see that reality as we live it (careers, status, institutions, ect) is like software: built/programmed by humans and can be changed by shifting your perspective.\n[0] \nhttps://ribbonfarm.com/series/the-gervais-principle/\n[1] \nhttps://www.youtube.com/watch?v=CGhTQ4iruLc&list=PLfc2WtGuVP...\n[2] \nhttps://haseebq.com/my-ten-rules-for-negotiating-a-job-offer...",
+          "author": "neuralkoi",
+          "replies": []
+        },
+        {
+          "top": "Code: The Hidden Language of Computer Hardware And Software by Charles Petzold.\nI read it in my second year of studying computer-science during the summer break, and it completely changed how I view computing.\nFirst of all, the contents alone are quite valuable, even though it is an old book, as it basically walks you through building a simple relay computer on paper, with a CPU, RAM, simplified input devices, teaches you Intel 8080 assembly as an example of assembly programming, and then even goes over a simplified BIOS, OS, GPU and higher-level languages at the end, and it does not assume you have any previous knowledge; it starts from the basic physics behind electricity, then goes into boolean algebra, logic gates, etc. It's basically computer-architecture for the layman.\nBeyond the content of the book, I think the biggest mark it left on me is that it taught me that there is no magic behind the layers of abstraction, and that breaking problems and concepts down into simpler ones can make what initially seems like a very complex topic into something that someone can easily follow and understand.\nAfter I read the book, a lot of things I had already learnt at university felt like they made more sense, and I then took courses like Computer Architecture and Digital Circuit Design, where I felt a lot more confident than I probably would have, had I not read that book. It definitely colored how I viewed a lot of the courses I took at university after having read it.\nIn my career as a software developer, I still often think about that book, and I love to learn things by re-inventing the wheel and building simpler versions of complex existing software.",
+          "author": "pid0x17",
+          "replies": []
+        },
+        {
+          "top": "Creativity, Inc.\nIt taught me to not limit my imagination and to think of creativity as a way of approaching problems rather than something limited to art. As a developer, it genuinely changed the way I think about building things.",
+          "author": "arnav714412",
+          "replies": []
+        },
+        {
+          "top": "Two books I read after 9/11 shaped my path greatly:\n1.) Stasi: The Untold Story Of The East German Secret Police\nISBN #: 0813337445\n2.) The Rise and Fall of the Third Reich\nISBN #: 9780671728694\nBoth should be available in most public libraries, but with the ISBN you can usually get almost anything via inter-library loan.",
+          "author": "firefax",
+          "replies": [
+            {
+              "text": ">The Rise and Fall of the Third Reich\nAn amazing book.  I'm not sure how it's particularly career-path-impacting, but it is fascinating being able to follow the cause and effect chain in Germany leading up to and all through the war (in excruciating detail).",
+              "author": "kbelder",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "https://en.wikipedia.org/wiki/How_to_Fail_at_Almost_Everythi...",
+          "author": "oumua_don17",
+          "replies": [
+            {
+              "text": "Sounds about right.  It is called failing forward.  Fail forwards, fail fast and keep going.",
+              "author": "NishanStepak",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49698914",
+      "title": "Ask HN: How are you managing aging relatives passwords?",
+      "link": "https://news.ycombinator.com/item?id=49698914",
+      "domain": "news.ycombinator.com",
+      "author": "rylando",
+      "score": 12,
+      "comment_count": 17,
+      "created_ts": 1789400761,
+      "is_internal": true,
+      "post_text": "Looking for how or what services others use to manage their aging relatives passwords? Is 1Password still the choice?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "A paper notepad with stickies all tucked inside and stored in a safe. Then I try to get them MFA'd.\nThey ain't going to figure out or tolerate the likes of what 1Password has become. Anything on their Windows PC is going to get pwned.",
+          "author": "runjake",
+          "replies": []
+        },
+        {
+          "top": "You used the plural \"passwords\", what makes you think there are multiple?\nThe people I have in mind sometimes get confused with basic iPhone functionality like Maps and CarPlay. I would think 1password is the solution but honestly a physical notebook is probably more their speed.",
+          "author": "mattbrewsbytes",
+          "replies": []
+        },
+        {
+          "top": "I primarily use the built-in password manager on my iPhone. It’s very convenient; besides storing passwords, it allows for quick autofill when logging in and supports passkeys and 2FA.",
+          "author": "boltguo",
+          "replies": []
+        },
+        {
+          "top": "I encourage mum to use the built in one in Chrome as that tends to pop up anyway. I tried setting up Bitwarden but it didn't get used.",
+          "author": "tim333",
+          "replies": []
+        },
+        {
+          "top": "I think so 1password works fine. They find it easier. I have few who even keep a diary with password of few websites they use. They just don't trust digital haha",
+          "author": "sendhello",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49743493",
+      "title": "Ask HN: Co-Founder(s). Do I need any? How would I even find them?",
+      "link": "https://news.ycombinator.com/item?id=49743493",
+      "domain": "news.ycombinator.com",
+      "author": "bhollan",
+      "score": 9,
+      "comment_count": 7,
+      "created_ts": 1789664159,
+      "is_internal": true,
+      "post_text": "I&#x27;m a technologist and have experience in academia, private, and now public sector work. I had an idea stewing in the back of my mind for about a year and it became &#x27;fully-formed&#x27; enough to be a proof-of-concept such that I filed a provisional patent a few months ago. At this point, I don&#x27;t want to quit my day job (federal agency, GS11, but have an in to be GS15 within 3 years). But I really want my idea to succeed (or at the very least, see the light of day). I have some savings piled up, but I&#x27;m hesitant to spend it on &#x27;grown-up&#x27; patent papers yet. I also already have 3 other &#x27;side gigs&#x27; (not to mention 4 kids and a blushing bride) that take up more than most of my time. How would I even find someone that I could trust enough to help me take my idea and hit a home run with it?<p>I don&#x27;t want to talk about the details of my invention. I did talk to a patent attorney that&#x27;s done a couple dozen startups through their firm though. He said I could probably get $20k-$50k in seed money for it. It&#x27;s not a &quot;better mousetrap&quot;, it&#x27;s more a &quot;new thing&quot; that&#x27;s never existed before (but also never really &#x27;needed to&#x27; before).<p>Do I NEED a co-founder, or can I &#x27;slow-walk&#x27; launching a business based solely on a new gizmo? I&#x27;m not very good at social media&#x2F;marketing, which is where I think my gizmo would thrive the most (but that&#x27;s purely a guess). I feel like if I could find the perfect person, it really could explode, but I have literally not even the faintest clue where&#x2F;how to start that. Am I an employer all-of-a-sudden even though I have no revenue to pay salaries?<p>Somebody heard that I had invented this thing and they asked me, &quot;So, I hear you&#x27;re an inventor?&quot; And I kind of stammered and said &quot;well.... it was an accident. I didn&#x27;t mean to, I promise.&quot; This was mostly to be funny&#x2F;silly, not that I don&#x27;t believe in the idea. But I know this sort of &#x27;startup&#x2F;founder(s)&#x2F;seed-money&#x27; thing is HN&#x27;s bread-and-butter, so I at least thought I&#x27;d ask.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quit",
+        "startup"
+      ],
+      "comments": [
+        {
+          "top": "You don’t need a co-founder, but doing everything yourself while you have another job will be slow. Competitors may be able to get around your patent and scale up faster than you.\nHaving someone else also means you’re accountable to them, which puts a bit more urgency on getting things done, in addition to being a sounding-board for your ideas.",
+          "author": "dabinat",
+          "replies": []
+        },
+        {
+          "top": "You only have 12 months after filing the provisional application to get the full patent application in. You might not need a cofounder, but you definitely need a plan with a timeline.\nIf it's a choice between being too slow, losing the market timing and the provisional patent protections or finding a co-founder, then find a cofounder. Is it more work to find the cofounder vs develop it yourself? You can try posting a linkedIn job ad for a cofounder, someone found me that way, and yes it was upfront about the salary situation but there are people out there who might be in the right circumstances to take you up on what you can bring to the table.",
+          "author": "skyberrys",
+          "replies": []
+        },
+        {
+          "top": "You don't NEED one, but you probably SHOULD have one. It just helps speed things up immensely and lowers the chances that you'll burnout.\n\"If you want to go fast, go by yourself. If you want to go far, go together.\"",
+          "author": "ra0x3",
+          "replies": []
+        },
+        {
+          "top": "Don't listen to those other people who tell you you can do it alone. You can't.\nYou have 4 kids, there is no way you have that kind of time.\nRegarding the patent: I know this is going to sound harsh, but what is likely is that it's going to be harder to find someone who finds your invention cool than to defend against anyone who might want to steal it.\nPatents defend technical inventions useful in the industry, a social media gizmo not so much. Filing a patent will take a lot of time, and you won't have the money to litigate anyone who steals it anyways.\nIn your position, I would just throw the idea out there, make a kickstarter campaign or something. Try and get anyone interested. If there is interest, then it's easier to find a cofounder who might want to be in with you on this.\nThere is a good chance that the kickstarter result is a giant \"meh\" from the world. And you can go back raising your children and chase that GS15 (Idk what that is).\nAlso if you do this just to scratch your own itch, build the stuff just for yourself (LLMs and 3D printers make everything quite simple these days), and post a youtube video about it.\nAnyways my take is:\n- you need a cofounder to launch something\n- but you need to validate the idea before finding a cofounder.\nalso don't be greedy with your cofounder, split 50 50 or close to that, it may be your idea, but you can't do it without the other person.",
+          "author": "d--b",
+          "replies": [
+            {
+              "text": "Well, the patent attorney was very clear that a kickstarter (at least any that offer anything remotely like a 'sale' or anything) 'voids' a lot of the protections of the provisional, and maybe even the full patent.",
+              "author": "bhollan",
+              "depth": 1
+            },
+            {
+              "text": "I don't know anything about provisional patents, but if selling a product that embeds patented ideas voided the protections of a patent, patents would be pretty useless.\nMaybe there's some context or nuance that didn't get conveyed that I'm missing.\nI would imagine you can't get treble damages from willful infringement on a provisional patent, given that they're not published... so if you publicize your item on kickstarter while the patent is provisional and/or pending, less potential damages from infringers ... but I dunno how many people get treble damages anyway.",
+              "author": "toast0",
+              "depth": 2
+            },
+            {
+              "text": "The provisional serves as a timestamp only. It's literally not reviewed. The only reason at all to file a provisional is if you're going to file the proper one. Goods that are actually patented are under the 'proper' ones, and do not get the classic \"protection\" that we think of. The only thing the provisional really does is serve as the 'timestamped-steak-in-the-ground' that only you can claim as your timestamp. But it comes with conditions. You can't start selling your goods as-though-patented until you file the patents. You can put 'patent pending' on them after you file the big one and it's under review. But the provisional one doesn't really get you the 'patent pending' part at all. That's my not-even-close-to-a-lawyer version that I've learned in the last few months.\nBut what complicates this even more is that I don't really want to sit on the tech at all. I want it to become ubiquitous and (eventually) a standard (like how Yubico/Yubikey led to FIDO/FIDO2 later).\nBut others in the thread also bring up a totally valid point: I need to prove this has teeth with real people somehow.\nI think I may have to bight the bullet and fork over some savings to get the proper patent done. I need to get busy with R&D to finalize the design.",
+              "author": "bhollan",
+              "depth": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49746527",
+      "title": "Ask HN: What self-hosted apps do you use daily?",
+      "link": "https://news.ycombinator.com/item?id=49746527",
+      "domain": "news.ycombinator.com",
+      "author": "osr00",
+      "score": 4,
+      "comment_count": 7,
+      "created_ts": 1789678989,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been running a homelab for many years now and tried out many open source projects. A small percentage turn out to be real gems, but I use these almost every single day:<p>Shlink: URL shortener&#x2F;redirects, alternative to Bitly<p>Vaultwarden: open source Bitwarden server<p>Dokploy: PaaS, alternative to Vercel &#x2F; Netlify<p>Umami: gdpr-compliant web analytics<p>Immich: photo management<p>Papra: document archiving with OCR<p>Navidrome: personal music streaming<p>I&#x27;m super curious to hear about the apps you can&#x27;t live without!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": [
+        {
+          "top": "* Kavita: eBooks and Comics\n* Jellyfin: Movies and TV Shows\n* Seafile: Hosting my private files\n* AdGuard Home: DNS/Ad blocking for all my devices\n* Vaultwarden: Passwords\n* Immich: For my photos\n* Plausible: Analytics\n* Audiobookshelf: Audiobooks\n* Radarr/Sonarr/Prowlarr + Transmission\n* Radicale: Calendar + Contacts\n* HedgeDoc: For my Markdown files\nLLMs made it REALLY easy to setup a self hosting server and maintaining it. I literally use all of these now daily.",
+          "author": "recvonline",
+          "replies": []
+        },
+        {
+          "top": "I self-host RSS-Bridge and an RSS reader.\nRSS can replace checking all your subscriptions (youtube, subreddits, etc.) to just one place. I tried a lot of RSS readers but it turns out you'll only like the one you make for yourself, that's why there are so many.\nSorting feeds into categories (I have channels for photography, sports, memes etc.) feels like bliss and is otherwise impossible to do.\nYou can also quickly vibe code RSS feeds for websites that don't have them.",
+          "author": "MitPitt",
+          "replies": []
+        },
+        {
+          "top": "Many of the apps I ended up not using was either because the projects were abandoned or because the web/app UX is just too bad or ugly. For instance I really like Photoprism but Immich has such a better app experience imo.\nI recently discovered Arpeggi (client for my Navidrome server) and I have such a good time using it",
+          "author": "osr00",
+          "replies": []
+        },
+        {
+          "top": "Authelia, Immich, Jellyfin, Fusion, qBittorrent, Memos and Gitea. I think that's all of them.",
+          "author": "KomoD",
+          "replies": []
+        },
+        {
+          "top": "* PiHole - dns\n* Jellyfin - videos and such\n* mealie - recipes\n* aphorio - my own app for container management, web servers, sockets, and more. It can do 5,000,000 messages person on a single socket roundtrip\n* gamevault - like Jellyfin for games\n* there is an audio app I wrote that I use daily\n* ghost - blogging on my public web server\nThere are some others I run additionally but those listed above are the main ones",
+          "author": "austin-cheney",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49743419",
+      "title": "Ask HN: What Makes Tokens Expensive?",
+      "link": "https://news.ycombinator.com/item?id=49743419",
+      "domain": "news.ycombinator.com",
+      "author": "mtokarski",
+      "score": 3,
+      "comment_count": 5,
+      "created_ts": 1789663855,
+      "is_internal": true,
+      "post_text": "Are there really such architectural differences between for example sol and astra that makes astra twice more in token price? Or maybe token cost covers training expenses? For me it&#x27;s hard to believe that astra need twice the computing power that sol needs...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Willingness to pay. If people are willing to use Astra instead of Sol even if it costs twice as much, OpenAI has no need to make it cheaper. Prices only reflect costs in a competitive market where customers actively seek out cheaper alternatives.",
+          "author": "yorwba",
+          "replies": []
+        },
+        {
+          "top": "costs are in a large part tied to model parameter count, eg. a small model fits on one GPU, the biggest models require an entire rack\nthe primary difference you see through those prices is model size\nthat you don't seem much capability difference is why Big Ai is pushing for regulatory capture, because small models are nearly as good for many tasks at a fraction of the cost, undermining the business model they have used to justify the most expensive infra build out in human history",
+          "author": "verdverm",
+          "replies": [
+            {
+              "text": "Also I think there are diminishing returns to larger models and the harness can make up for some weaknesses.  Like maybe the huge model can hypothetically answer a question off the cuff but the small model can get some search results and think about those and give you an answer.",
+              "author": "PaulHoule",
+              "depth": 1
+            },
+            {
+              "text": "It's not always larger models. Often time it's a smaller model fit for a specific use case. \nIn the future we will see 16B models that are for : Legal, Healthcare, Science, Software Engineering, Education, Forestry, Music production",
+              "author": "kbrannigan",
+              "depth": 2
+            },
+            {
+              "text": "100%\nI am big believer (based on personal experience) that there is a ton of ROI in harness engineering, to go along with the context engineering, invariably intertwined",
+              "author": "verdverm",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49719474",
+      "title": "Ask HN: Slow OpenAI Inference on AWS Bedrock",
+      "link": "https://news.ycombinator.com/item?id=49719474",
+      "domain": "news.ycombinator.com",
+      "author": "timedude",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1789509750,
+      "is_internal": true,
+      "post_text": "Inference on AWS Bedrock for OpenAI models has been very slow and glitchy the last few days with today being the worst. Very long latency of over 5 minutes to first token. What&#x27;s going on?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "likely they sold all the gpu capacity to enterprise clients",
+          "author": "mikert89",
+          "replies": []
+        },
+        {
+          "top": "us-east-1 seems to be the worst region right now.",
+          "author": "timedude",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
