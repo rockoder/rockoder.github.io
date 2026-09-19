@@ -1,0 +1,663 @@
+{
+  "scraped_date": "2026-09-19",
+  "source": "hacker_news",
+  "total_scraped": 116,
+  "nontech_count": 16,
+  "posts": [
+    {
+      "id": "49748553",
+      "title": "Show HN: Cactus Needle 3: 8-29MB automation models can match DeepSeek V4 Flash",
+      "link": "https://cactuscompute.com/needle",
+      "domain": "cactuscompute.com",
+      "author": "HenryNdubuaku",
+      "score": 175,
+      "comment_count": 79,
+      "created_ts": 1789690304,
+      "is_internal": false,
+      "post_text": "Hey HN, Henry from Cactus here.<p>We submitted Needle 2 here a few weeks ago, and the feedback in the discussion thread was incredibly valuable, thanks! Thanks to all that feedback, we’ve been able to move quickly to release Needle 3 and I&#x27;d love to hear what you think again.<p>The key features:<p>1) Automation (tool calls &amp; structured JSON output): Needle still doesn&#x27;t chat by design, its quite challenging to pack general capacity into such small models, so we focus on tool calls and structured JSON. If no tool you declared fits the request, you get an empty list back (note for when playing with the demo).<p>2) Intelligence Laddering: Every layer (2 to 20) is a deployable subnetwork, so one set of weights, 25 to 121 million parameters at 2-bit, shipping as 8-29MB binaries. On a Raspberry Pi 5 it decodes at up to 4k tokens&#x2F;sec and prefills at up to 10k.<p>3) Monarch Hadamard MLP: replaces the dense FFN with three learnable Walsh-Hadamard-initialized Kronecker (Monarch) factor pairs interleaved with per-channel diagonal scales, fixed permutations, a SiLU nonlinearity, and a rank-8 input-conditioned gate, so each token gets a fully mixed nonlinear transform of its d_model channels at O(d√d) parameters and compute instead of the O(d²) a dense 4x-expansion MLP would cost.<p>4) Performance: On Mobile Actions (phone commands, scored on the exact call) the 20-layer model gets 86.0 through the shipped 2-bit binary; LFM2.5 1.2B is at 82.4, Qwen3.5 0.8B at 76.0, Apple&#x27;s on-device model at 57.6, all at f16. More results on the link, we do not win everywhere ofc.<p>5) Multilingual: Needle 3 now supports English, French, Spanish, German, Dutch, Italian, Polish, with more languages coming.<p>6) Finetuning: You can achieve DeepSeek v4 Flash grade performance on a narrow task with just 4L, stress on &quot;narrow task&quot;, we found that production users often prefer tuning before production.<p>7) Triggers: Grounding is a common challenge for tool call, at least for Needle 2, so we added support case-insensitive regular expressions matched against each request to gate false negatives.<p>8) Confidence: Every response also carries a calibrated confidence score, the minimum of a judgement on the finished call and its decode probability. Act above your threshold, show the call and ask below it, or escalate to a bigger model.<p>9) Supported Platforms: macOS, Linux on x86-64, ARM64, ARMv7, RISC-V and MIPS32, Windows x64 and ARM, Android, iOS, watchOS, tvOS, the browser as WebAssembly, and a WASI component.<p>Thanks for reading and as always, thoughts appreciated!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "Wondered if it'd turn on the lights in the bathroom with these:\n\"I need a wee\" -> tries to play music because \"wee\" is a genre\n\"I need a wee wee\" -> starts the vaccuum in the bathroom\n\"I'm going to the toilet\" -> says it'll turn on the toilet, and I'm not totally sure what that entails.\n\"I'm going to the toilet and can't see\" -> reasons that lights should be on in the bathroom, then chooses again to turn on the toilet.\n\"I'm going to the toilet and can't see where I'm going\" -> reasoning is \"'going to the toilet' -> control_device with device 'coffee maker' (toilet implies coffee maker)\"\n\"I'm going to the toilet and can't see where I'm going because it is too dark\" -> \"'dark' -> direction 'dark'; adjust_lights with brightness 100 for darker light\"\" and chooses to turn the lights in the living room to \"dark\" which fails.\nAt this point the vacuum is in a dark bathroom, the living room is 100% brightness and playing \"wee\". At least there's coffee.",
+          "author": "IanCal",
+          "replies": [
+            {
+              "text": "Pretty much matches my experience.\n> 'sleepy time' means sleeping → start_vacuum with room 'bedroom' to start cleaning\nThe \"DeepSeek 4 Flash grade\" claim seems far fetched.",
+              "author": "ash_091",
+              "depth": 1
+            },
+            {
+              "text": "those are all expecting far too much for models this size",
+              "author": "electroglyph",
+              "depth": 1
+            },
+            {
+              "text": "thanks for these haha, you can actually edit the tools and/or their descriptions, the demo is just a \"get started\" preset. But still we do have room for reasoning improvement!",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            },
+            {
+              "text": "What kinds of things do you expect to work?\nEdit - I’m struggling to get anything useful. Reasoning is often utter nonsense and the actions are very often very wrong. To the point of seemingly needing very precise sentences to work at which point you may as well do regexes. Very simple things like clean one room then another with the vac fails.",
+              "author": "IanCal",
+              "depth": 2
+            },
+            {
+              "text": "Thanks for the feedback! Implications and relations are hard for the model to understand (things like go to the living room, then the kitchen, and back), so yes the cleanest use cases involve direct language. Reasoning isn't true \nreasoning\n in the way general LLMs do it, it is more like grounding for the model that it generates itself. This can often become nonsensical specifically when the model gets things wrong, providing signal to the confidence.",
+              "author": "HenryNdubuaku",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "\"turn all the lights on/off\" and \"it's too dark in the bathroom\" worked for me, but anything less direct didn't. \"it's too cold\" actually made it turn the thermostat down (\"it's cold\" made it... turn the lights down?)! Although the confidence on the bad responses was pretty low, so it might be worth adding a threshold to the demo.\nOr maybe it just has a weird thermostat down bias? \"make it hot\" also had it turn it down (specifically it went from 20->18, or at least tried to, the UI still showed 20), with high confidence. Also might have a bit of a Celsius vs Fahrenheit confusion. Neat concept, but I might not want to let it control the oven at the moment.\nThe laptop demo worked better until I tried to open the mail app. \"Check mail\" kept opening the browser with an error, and \"check email\" makes a note with the text \"email\", \"open email\" goes to \"\nhttps://api.email.com/v1/email\n\" in my real browser, but \"open mail\" does work.\nAnd I presume the \"reasoning\" isn't very trustworthy? In the car I got \"'turn it up' means lower volume -> set_volume with lower value.\" For the house, reasoning would correctly say that I wanted the alarm off, but it didn't actually do it.",
+          "author": "gs17",
+          "replies": [
+            {
+              "text": "Hey, thanks a lot for this feedback, very useful and actionable for us! Quite a few of these came down to our tool definitions in the playground as well as out triggers. We updated them just now and these should be more reliable. Really this goes to show that needle shines through after putting in the work to make the tool list around it good for your use case. \nAs for the reasoning, yes its main function is really to provide more words/keywords that the model can latch onto when generating the tool call response, since this is a SAN model it needs more grounding in existing context.",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            },
+            {
+              "text": "I can’t help but wonder how well more traditional approaches would do with this. Something like a map of statements to actions, with fuzzy search - then remove what used to be the labour intensive part of this by handing it to a decent llm to generate the sentences.",
+              "author": "IanCal",
+              "depth": 2
+            },
+            {
+              "text": "That's a really good point and I think it's not yet clear how well, say, 8-30MB worth of regexs with accompanying algorithmic structure would do on these tasks. I would imagine they do quite well on a well defined task, but it would be much harder to then adapt this set to a new domain. A big part of Needle's promise is how easy it is to finetune. Ultimately I think the two approaches can be more complimentary to each other, rather than choosing only one (see triggers!).",
+              "author": "HenryNdubuaku",
+              "depth": 3
+            },
+            {
+              "text": "I think a good \"traditional\" approach would look like a BM25 algorithm over an index of trigger phrases for each category, sitting behind a majority-vote classifier. The \"fine tuning\" would be done by reindexing the data, generating different/new phrases, and tuning the classification threshold.",
+              "author": "potatoman22",
+              "depth": 4
+            },
+            {
+              "text": "I think we might look into creating a baseline like this for our future models",
+              "author": "HenryNdubuaku",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "Tool-call + structured JSON at 8–29MB is the right bet. Returning an empty list when nothing fits beats inventing a fake tool.",
+          "author": "eriwang915",
+          "replies": []
+        },
+        {
+          "top": "I have an idea for a use case for this, and I'm wondering if you think it makes sense or if you have any thoughts on the approach.\nI'm a big fan of OpenStreetMap, and I enjoy editing it from my computer. From my phone, I find it quite tedious trying to make sure I type in the phone number exactly correctly and double-check it, or find and select the right field from the large list of fields available in Upredor.\nGenerally, how it works is I see a restaurant, and there's a sign. I know that it says, \"Cash only. Here's the phone number. Here's the opening hours.\" What would be really cool is if I could just speak to the phone and say, \"Hey, here's the information about this place.\" It would automatically use your location to detect what places are nearby and maybe even detect which place you're talking about, and then tell you, \"Okay, here are the changes I think you're proposing to make, or these things you stated are the ones that would create a diff.\" This would be limited to just perhaps the 20 most common keys in some predefined set of values for most of them. Like cuisine=x should just match to the most common not make up new ones.\nOf course, this is something a large language model could do, but having it run on device would be a lot nicer and cheaper.",
+          "author": "raybb",
+          "replies": [
+            {
+              "text": "Makes a lot of sense! declare one record with the ~20 keys as fields, cuisine and friends as enums with the common values, and the grammar can't produce a value outside the set; fields with no evidence come back empty, so the output is exactly the diff.\nFor \"which place\", query nearby POIs from location in the app and pass the candidate names as an enum field, so Needle picks rather than guesses.\nTwo caveats: it's text-in, so you need on-device STT first, and opening_hours syntax is the risky bit, so either put the format in the description or capture the raw hours and normalise in code.",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I tried this today for labelling - and for that task it was very bad MNLI was better - so you are going to need to match the use case for this pretty exactly. (at 29MB params one would expect that!) I'm obviously not saying labelling is a good use case :-) just adding a data point.\nJev has put the cat amongst the pigeons so suddenly everyone is looking at classifiers and encoder only models again.\nMy ideal model would be a general purpose LLM API that can answer classification questions and as it does so distils to an encoder only model so that the more classifications I do the cheaper it gets (i.e. the more it offloads to the classifier). If anyone ever wants to do this as a service do let me know, because it's just another piece of code to manage in each new project that needs classification.\nAlso a model that could do this internally would be nice :-)",
+          "author": "neilellis",
+          "replies": [
+            {
+              "text": "Hey! Yeah I think for labelling the model would need to have much better world knowledge than its current size allows. Jev really is a very good model, I think it has a very strong place in the upcoming tech stacks. Really good suggestion to make a continuously distilled model, we are going to have to look into that one :)",
+              "author": "HenryNdubuaku",
+              "depth": 1
+            },
+            {
+              "text": "Good luck with this model/product, in the excitement of LLMs people seem to forget applicability. I very much like to see innovation in this space, so well done!",
+              "author": "neilellis",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49742976",
+      "title": "Ask HN: How to recover Google auth after phone stolen?",
+      "link": "https://news.ycombinator.com/item?id=49742976",
+      "domain": "news.ycombinator.com",
+      "author": "keymasta",
+      "score": 111,
+      "comment_count": 123,
+      "created_ts": 1789661848,
+      "is_internal": true,
+      "post_text": "As we know, google has been effective at automating a lot of their systems, to the point where it can feel like there isn&#x27;t any help available from a human. So what is supposed to be the plan when this type of situation happens?<p>Basically I have a situation that after my phone was stolen, I can&#x27;t get into any of my accounts that are either connected to google, or connected to the phone via 2FA. This has made it complicated&#x2F;impossible not only to get info about my phone, but also my banking, email, drive, etc.<p>Of course they offer you &quot;multiple options&quot; to recover an account, but not if you forgot your old email&#x27;s password. At that point the options you get are,<p><pre><code>  a) Use old phone (obviously the phone is long gone)\n  b) Use current phone (the phone is gone)\n  c) Use old email (I haven&#x27;t used it in like 12 years)\n</code></pre>\nDoes anyone know if their is a process to appeal 2FA or anything to deal with this type of situation?<p>I&#x27;d imagine that this has happened to people many many times, and given how phones and particularly, google auth have become so critical to accomplishing essential tasks within society, there must be some way. Or maybe it&#x27;s just like, once your phone is gone, you are completely over with society? If anyone has any experience with this or inside knowledge please share it!<p>I&#x27;m sure people here have heard of this, and maybe experienced it themselves.<p>Is there a secret option that exists that allows us to use passwords instead of rigamarole? I would love an account that let me simply log in with a password, like google used to be.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Isn't there an SMS option? buy a new phone and have them send you an OTP via SMS.\n> once you're phone is gone, you are completely over with society?\nyes, I'm waiting for the Black-Mirror episode where someone drops their phone and basically dies, can't contact anyone, can't unlock or start their car, can't get an uber, can't pay for anything, can't navigate without gps, can't log into anything etc.",
+          "author": "ticulatedspline",
+          "replies": [
+            {
+              "text": "Something I learned the hard way: it's a bad time if you are a Google Fi customer and your Android phone with an eSim becomes inoperable while traveling :)",
+              "author": "ryanhecht",
+              "depth": 1
+            },
+            {
+              "text": "Went through the same last month. I had to both buy a new phone and still have my old one repaired to be able to authenticate to set up the new one.\nI was a CyanogenMod user before switching to Pixel, and that experience was a monumental shove towards moving to Graphene.",
+              "author": "washadjeffmad",
+              "depth": 2
+            },
+            {
+              "text": "just in general, it's difficult if your phone with an esim dies/lost/stolen (ie no access) to move the esim over. It's especially annoying if it just died, because instead of just popping the sim over you end up in a maze with the carrier (unless you are lucky enough to other lines on the account you have access to)",
+              "author": "dogmatism",
+              "depth": 2
+            },
+            {
+              "text": "Pretty similar to how my life feels right now.",
+              "author": "keymasta",
+              "depth": 1
+            },
+            {
+              "text": "As an old curmudgeon I recoil at any service I can't interact with sans-phone. I hardly use mine for anything.\nJust be glad your phone number is tied to your account, if you lose the number itself you are royally screwed, and basically anyone who gets your old number owns all your accounts now.",
+              "author": "ticulatedspline",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "If you don't have the authenticator backup codes and you didn't turn on cloud sync in the app, you might be out of luck.\nYou can get a replacement SIM though and use it with a new phone, so the phone number recovery option should work.",
+          "author": "sampullman",
+          "replies": [
+            {
+              "text": "Happened to me, I was able to get SMS and recovery codes, but Google still required additional verification on now lost phone :D. On the end I acutely found the phone and was able to restore access. So what they do after couple of days of failed attempts the require additional verification, lets call it 3 step.",
+              "author": "dz0ny",
+              "depth": 1
+            },
+            {
+              "text": "This feels objectively worse than writing down a password somewhere",
+              "author": "kaycey2022",
+              "depth": 2
+            },
+            {
+              "text": "I have passkeys, authenticator etc... and everything except phone number, and now i am unable to login my account in other device.\nGoogle sucks, they are randomly denying access because their dumb model can't figure out not everyone is trying to steal account.",
+              "author": "cute_boi",
+              "depth": 2
+            },
+            {
+              "text": "This. Can't you get your number moved to a new phone? I have never don't anything magic when upgrading my phone other than move contacts.",
+              "author": "uberman",
+              "depth": 1
+            },
+            {
+              "text": "How would moving your number to a new phone help? We're talking TOTP here, not SMS \"auth\".",
+              "author": "jwr",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "This is why my self-hosted Vaultwarden is my one password that I have to remember and requires no 2fa, which is the only important account that doesn't have 2fa.\nIf I wake up in a bathtub missing a kidney I can still get to my passwords and 2fa sources stored with it. Some accounts require SMS (annoyingly) so I'd have to buy a phone but the auth and credit card numbers I need to do that are in Vaultwarden, too.\nI don't have good solutions now for OP (other than buy a new phone through your carrier and transfer the number). But everyone else do think through your personal DRP. Generate backup codes and put them somewhere safe, too.",
+          "author": "mrj",
+          "replies": [
+            {
+              "text": "Welll yeh until a Hargrove fails on your self hosted server",
+              "author": "bazmattaz",
+              "depth": 1
+            },
+            {
+              "text": "One of my favorite things about self-hosted Vaultwarden is that you get distributed backups for free. Every client keeps an offline copy of your entire password vault, kept in sync when the client is online.\nSo for me to lose my vault, not only would my server have to get hit by a bus, but also my phone, my desktop, my HTPC, both laptops...",
+              "author": "nyx",
+              "depth": 2
+            },
+            {
+              "text": "True.. but now you have more devices to have to secure against attacks...\nEdit: this \"feature\" did save me when my home hosted vaultwarden died due to hdd failure.",
+              "author": "627467",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "You're going to have more success working with the providers of the other accounts and services rather than Google. That means a lot more legwork on your part but banks and other online services all have processes to deal with lost passwords and 2FA devices. In some cases you may have to physically go somewhere with ID and other documents.\nConsider it a learning experience.",
+          "author": "SoftTalker",
+          "replies": []
+        },
+        {
+          "top": "I had similar issues: \nhttps://news.ycombinator.com/item?id=45451567\n (including my personal domain, Dropbox; my Apple account is still MIA...)\nWe've all been reduced to a passphrase.\nWhen I've lobbed this scenario to the security managers/employees at these companies, they all give me a really great answer:\nQ: What happens if a sitting senator gets mugged and they have their printed 2fa codes sitting in their wallet?\nA: They have a special number they can call.",
+          "author": "joshmn",
+          "replies": [
+            {
+              "text": "After they go get a second phone",
+              "author": "bshaughn",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49740047",
+      "title": "Show HN: I built a new version of my fun spatial 3D online meeting app",
+      "link": "https://flat.social",
+      "domain": "flat.social",
+      "author": "pawelwentpawel",
+      "score": 97,
+      "comment_count": 52,
+      "created_ts": 1789649829,
+      "is_internal": false,
+      "post_text": "Hi HN!<p>flat.social is a fun spatial online meeting app for remote teams and communities. It&#x27;s largely built like a web multiplayer game, and the 3D virtual spaces are highly customisable with elements and activities (I recently added surfing!).<p>Live demo to try it out: <a href=\"https:&#x2F;&#x2F;app.flat.social&#x2F;f&#x2F;demo-flat\" rel=\"nofollow\">https:&#x2F;&#x2F;app.flat.social&#x2F;f&#x2F;demo-flat</a><p>Here&#x27;s a quick demo video: <a href=\"https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=GeinBNqL23s\" rel=\"nofollow\">https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=GeinBNqL23s</a><p>It&#x27;s a solo, bootstrapped project built with Three.js, LiveKit and Rapier for physics. I built the first version during the pandemic and posted it here back then: <a href=\"https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=31833415\">https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=31833415</a><p>I had a couple of months off this year, so I locked myself in an (almost) jungle house in Brazil and rebuilt it into what I&#x27;ve always wanted it to be.<p>Would love to hear what you think!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "remote",
+        "meeting"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49746401",
+      "title": "Show HN: Microsoft Office running with Wine on Linux with no virtualization",
+      "link": "https://github.com/Tombert/office365_flake",
+      "domain": "github.com",
+      "author": "tombert",
+      "score": 84,
+      "comment_count": 79,
+      "created_ts": 1789678342,
+      "is_internal": false,
+      "post_text": "Microsoft Office famously hasn&#x27;t worked well with Wine since Office 2007.  There are lots of solutions out there to work around this, but all of them involve fairly heavy virtualization.<p>Multiple people have told me that their biggest hangup for switching to Linux from Windows is the lack of the desktop version of Microsoft Office, and they don&#x27;t want to run a VM to get around it.<p>I recently fell into a bunch of free time with a Claude Max subscription, so I got Fable to hack at this until it worked! And with this, we have Microsoft Office running on Linux, with no Windows in sight!<p>I can&#x27;t promise that this will work on everyone&#x27;s computer, <i>but</i> I did put this all in Nix Flakes, so ideally it should be relatively reproducible on any Linux system with the Nix package manager and Flakes enabled. Also, it does <i>not</i> work very well with X, but Wayland appears to work fine.<p>This is not warez.  You need a valid license for Office 365 for this to work.  You also need to register <i>on Microsoft&#x27;s website in a browser</i>; the flow for registering in the app proved to be tricky and not worth pursuing.<p>This is more proof of concept than anything else; I have no doubt that there are bugs and improvements to be made. I have only tested this with NixOS on Sway and KDE, and as stated it only really works with Wayland and the absolute latest GE-Proton, but I believe it would work fine with Gnome or any other Wayland desktop.<p>Full disclosure, Claude Code with Fable did the vast <i>vast</i> majority of the work on this.  I ended up primarily just reading log messages and complaining back to it.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": [
+        {
+          "top": "I feel like the entire world needs to take a plunge towards LibreOffice for the good of all.",
+          "author": "farseer",
+          "replies": [
+            {
+              "text": "For starters, universities and government offices should not expect a proprietary format. Everyone should accept OpenDocument Format (ODF) or a similar FOSS format. MS Office, LibreOffice, OpenOffice and whatnot can compete in editing and rendering open formats.\nCome to think of it, this is a good proposal for EU, thanks for the USB-C, by the way :)",
+              "author": "ducktective",
+              "depth": 1
+            },
+            {
+              "text": "Can't speak for every graduate program or every school, but when I was in grad school at University of York, we actually used Overleaf with LaTeX a lot, since it allowed shared collaborative editing.\nI liked that because it's still an open format.",
+              "author": "tombert",
+              "depth": 2
+            },
+            {
+              "text": "The problem with this is Microsoft foresaw it and pushed (bribed?) OOXML through ISO and now there's no standing on \"forcing\" an open standard without OOXML being one.",
+              "author": "kasabali",
+              "depth": 2
+            },
+            {
+              "text": "how about requiring the format to actually be specified? Isn't ooxml filled with tons of chunks saying \"and then this will behave like word 95 did\" and not specify what tat is",
+              "author": "vrighter",
+              "depth": 3
+            },
+            {
+              "text": "I agree with you in principle, and I honestly genuinely kind of hate Microsoft Office and I haven't used it or LibreOffice since I learned how to do LaTeX and Pandoc and Typst.\nThat said, whether or not it \nshould\n be the case, a \nlot\n of people want specifically proper noun Microsoft Office (TM), not something \"as good or better\" than Microsoft Office.\nI think getting people people towards a less horrible computing setup, for most people, requires it being done incrementally.",
+              "author": "tombert",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Good work. I had assumed Office and Wine had been an unsolvable problem due to how long it had been around.\nWhat specifically breaks? My understanding is that the modern version of Office is in reality a combination of many things: the licensing layer, the .NET bits, the Click-to-Run packaging, and finally the app. If it turns out that the real hard part is the licensing/activation flow rather than the app itself, that is a more interesting discovery in that the problem is less about the app itself and more about how the distribution works. Which might also explain why it got easier to tackle.",
+          "author": "overclock-api",
+          "replies": [
+            {
+              "text": "Actually not that much breaks now!\nThe hardest part was the activation, but some patience with Claude seemed to get that working.\nAt least with Sway, I had trouble getting anything with X11 working, particularly anything involve \"pop ups\".  That includes right-click menus and stuff like that. Wayland works much better.\nIt also took a \nvery\n long time to get the dictionary loaded for spell-check, and then a very long time to get the red squigglies working.",
+              "author": "tombert",
+              "depth": 1
+            },
+            {
+              "text": "> At least with Sway, I had trouble getting anything with X11 working, particularly anything involve \"pop ups\". That includes right-click menus and stuff like that. Wayland works much better.\n? Sway is a Wayland compositor",
+              "author": "yjftsjthsd-h",
+              "depth": 2
+            },
+            {
+              "text": "I use it as my desktop environment.  I was using XWayland at first to get this working since that was historically the norm with Wine stuff, but that ended up being really glitchy.  The latest versions of Wine/Proton actually have native Wayland support though so once I forced that it ran significantly better.\nI don't know if this is an XWayland problem, or a problem with X in general, since I don't have any computers running X anymore.",
+              "author": "tombert",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "I've done something similar with a CAD app, where I've used AI tools to package it as a Nix flake. It's a really good format for wine packaging since it makes it so easy to patch wine in ways that would never be accepted upstream, and it makes launching it just one command vs needing to deal with other people's potentially broken wine prefixes.",
+          "author": "alright2565",
+          "replies": [
+            {
+              "text": "Yeah, completely agree.\nI absolutely love Nix Flakes; they feel, to me, like what Docker was \nsupposed\n to be.  A little self-contained packaged environment that gives you a place to do any kind of custom hacks deterministically.",
+              "author": "tombert",
+              "depth": 1
+            },
+            {
+              "text": "nix + LLMs is the most fun I've had with personal computing since I burned an Ubuntu live CD in middle school",
+              "author": "aroman",
+              "depth": 2
+            },
+            {
+              "text": "Same. I've had a lot of good luck getting Claude to make Flakes and then adding it to my Jovian Steam console to play it; it allows me to even pre-set stuff like mappings for my Xbox controller.\nhttps://hub.brucewillis.sexy/~tombert/game-flakes/sources\n (I promise, safe for work, despite the URL).",
+              "author": "tombert",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "That's ok, I still prefer Word 2003 to the bloated, web-wired, ribbon-infested garbage that came after.\nhttps://news.ycombinator.com/item?id=47202540",
+          "author": "rkagerer",
+          "replies": [
+            {
+              "text": "Yeah, I think I mentioned it here a few months ago, but I got Office 97 working with Wine, and I was sort of flabbergasted at how usable it still is.  It worked fine with my system's TrueType fonts, it does all the formatting I care about, and given that it's nearly 30 year old software it runs obscenely fast.  If I weren't a grumpy die-hard CLI person I would probably still consider using it.\nAll that said, there are a lot of people who want the absolute latest MS Office.  I don't get it either.",
+              "author": "tombert",
+              "depth": 1
+            },
+            {
+              "text": "I'm glad this is still a complaint. I used Office 2004 (same as 03) until 2013, when I absolutely couldn't anymore because of docx incompatibility. My wife still uses 07, sadly it's ribboned.",
+              "author": "mahboi",
+              "depth": 1
+            },
+            {
+              "text": "Do you have the docx compatibility pack installed?",
+              "author": "rkagerer",
+              "depth": 2
+            },
+            {
+              "text": "doc vs docx is whatever, what kills older offices for me is the 64k row/col limit in excel. That was only fixed with the ribboned versions. :(",
+              "author": "creshal",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Ok but why. Why on earth would i want to run microsoft office in 2026?",
+          "author": "28304283409234",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49758615",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between LLMs (2025)",
+      "link": "https://arxiv.org/abs/2510.03215",
+      "domain": "arxiv.org",
+      "author": "rochansinha",
+      "score": 70,
+      "comment_count": 12,
+      "created_ts": 1789757735,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "It's an old paper (from 2025, so, a decade ago in AI years), but the concept is still fascinating. And I'm yet to see it show up in any production models.\nIf multiple models can use cache representations for this kind of enrichment, the KV cache representations of different models must be somewhat compatible.\nWhat stops us then from going a step further, and producing a model family where all models are \"KV aligned\", and each model can utilize the KV cache of other models directly?\nSo, an \"expensive\" reasoning model can use its full faculties to plan, but \"delegate\" simple subgoals to a smaller model. That smaller model can access the large model's intent directly, as rich KV cache representations - with no prefill recompute and no associated \"handover\" latency. Or, likewise, a \"cheap\" small model can generate a diminished but highly compact KV cache that the \"expensive\" model can then operate on - for example, for skimming a large file for shallow patterns.",
+          "author": "ACCount39",
+          "replies": [
+            {
+              "text": "You might like The Universal Weight Subspace Hypothesis: \nhttps://arxiv.org/abs/2512.05117\nCurious to know if anyone is aware of research trying what parent suggested?",
+              "author": "refibrillator",
+              "depth": 1
+            },
+            {
+              "text": "Sounds similar to Ramp's Latent Briefing for multi-agent coordination.\nhttps://x.com/RampLabs/status/2042672773747589588",
+              "author": "ayewo",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "A few months ago I asked why semantic representation rather than text wasn't used, since natural language seems quite a lossy representation for semantic concepts:\nhttps://news.ycombinator.com/item?id=47195212\nI wouldn't have thought to use it for LLM-to-LLM communication, though",
+          "author": "gavinray",
+          "replies": []
+        },
+        {
+          "top": "I feel like multimodal models that can read images should work differently than they do. My understanding is that multimodal models basically first generate an image embedding and then the model is trained to interpret that embedding, but in the same way that text is lossy, it seems like the embedding would be as well. Why don't multimodal models learn to interpret images themselves without an embedding? Or e.g., by passing some \"prompt\" to the embedding model?",
+          "author": "foota",
+          "replies": [
+            {
+              "text": "What does interpreting images mean in practice if you exclude the possibility of feature extraction or any other sort of implicit embedding?",
+              "author": "thfuran",
+              "depth": 1
+            },
+            {
+              "text": "I'm not an ML expert, but I was thinking of a sort of \"guided\" embedding. E.g., give the image model some prompt for what it's trying to do? I don't understand why multimodal models generate an embedding that doesn't understand what the model is trying to \"figure out\".\nI think this is similar to how Gemma 4 12B is implemented, but even then I don't think the single layer image embedding is \"aware\" of the context.",
+              "author": "foota",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "So the models will not only be using more and more Neuralese in their CoT (like GPT-6), but different agents will also be able to communicate with each other in Neuralese. It's not looking good for monitorability.",
+          "author": "cubefox",
+          "replies": [
+            {
+              "text": "Is Neuralese in no way decodable into a human-interpretable system? Genuine question -- I don't know the answer.",
+              "author": "sparky_twofort",
+              "depth": 1
+            },
+            {
+              "text": "Definitely decodable, that's what's being done now",
+              "author": "Y_Y",
+              "depth": 2
+            },
+            {
+              "text": "It's not.",
+              "author": "cubefox",
+              "depth": 3
+            },
+            {
+              "text": "This is from like a year ago.",
+              "author": "jephs",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49743049",
+      "title": "Launch HN: Skillsync (YC W26) – AI chat sessions made portable across agents",
+      "link": "https://news.ycombinator.com/item?id=49743049",
+      "domain": "news.ycombinator.com",
+      "author": "cat-whisperer",
+      "score": 63,
+      "comment_count": 54,
+      "created_ts": 1789662135,
+      "is_internal": true,
+      "post_text": "Hey HN, we&#x27;re Nars &amp; Nishant, founders of Skillsync (<a href=\"https:&#x2F;&#x2F;skillsync.com\">https:&#x2F;&#x2F;skillsync.com</a>)<p>Skillsync lets you move your AI chats across every coding agent. Most of our work exists as conversations, which are currently scattered across our agents. Though stored locally, these conversations use different formats. This is annoying because you cannot simply switch between agents without starting over. We get locked into a single provider and their agent as we invest in skills and memories over time. Skillsync acts as a universal converter. It moves the entire session, including all the messages, reasoning and tool calls so you can pick up right where you left off.<p>Skillsync collects all your sessions in one place and makes them searchable. It breaks down what each session is carrying, including which loaded skills the agent is actually using, making stale context easy to spot. You can also create shared workspaces to sync sessions across your team. You can build your own closed loop systems. Everything runs locally except when you share to workspaces.<p>The core is an open-source Rust engine called txcript (<a href=\"https:&#x2F;&#x2F;github.com&#x2F;skillsynchq&#x2F;txcript\" rel=\"nofollow\">https:&#x2F;&#x2F;github.com&#x2F;skillsynchq&#x2F;txcript</a>). It translates a session from one agent&#x27;s on-disk format into another&#x27;s, mapping conversation, reasoning, and tool history. Think ffmpeg or pandoc, but for agent sessions.<p>On top of that engine is a local-first desktop app. Your agent sessions are normally scattered across different tools&#x27; folders in formats you&#x27;d never read by hand; the app surfaces them in one place with a UI that makes them actually readable, the conversation, the reasoning, and the tool calls, so you can revisit what happened, move a session into another agent, or share it with a teammate.<p>Skills and memory are stored as portable, human-readable markdown you own, and exposed to any agent over MCP for search and selective retrieval.<p>Sessions and translation run locally on your machine. The one thing that leaves is what you explicitly share into a team workspace.<p>It’s been surprising to us to see how locked-in people already are without realizing it. You don&#x27;t notice you&#x27;re trapped in one agent or harness until you try to leave, and by then you&#x27;ve got months of sessions stuck in a format only that tool can read. The lock-in is invisible right up until it&#x27;s expensive.<p>Once sessions are portable, they stop being disposable logs and become something you can actually build on, spotting patterns in how you work, handing a session off to someone else, letting a non-technical teammate pick up where an engineer left off. The session turns out to be the unit of collaboration, and right now it&#x27;s being thrown away.<p>Before Skillsync, Nars and I built an open-source payment orchestrator that let merchants route across many processors instead of getting locked into one (30k+ GitHub stars). Fighting vendor lock-in by making incompatible systems interoperate was the whole job. We came into YC with a different idea, but the more we lived inside coding agents the more we saw the same problem from the other side: your context is locked into whatever agent you start with, because every agent stores sessions differently and none of it moves.<p>Some of the things we’re seeing people do with Skillsync are:<p>- Moving a session between Claude Code, Codex, and Cursor mid-task, including when you hit a usage limit on one and want to keep going on another.<p>- Thinking through a problem in a browser Claude chat, then handing the whole thread to Claude Code or Codex to build.<p>- Sharing research sessions with a team. Everyone uploads their sessions, so teammates and their agents can build on each other&#x27;s work instead of repeating it.<p>It&#x27;s available as a Mac app, CLI and MCP. Here&#x27;s the demo: <a href=\"https:&#x2F;&#x2F;youtu.be&#x2F;7hVhSnSKGl8\" rel=\"nofollow\">https:&#x2F;&#x2F;youtu.be&#x2F;7hVhSnSKGl8</a>. Would love to hear your feedback and answer questions!",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "team",
+        "collaboration",
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49724691",
+      "title": "Ask HN: What is the most career altering course or book you have gone through?",
+      "link": "https://news.ycombinator.com/item?id=49724691",
+      "domain": "news.ycombinator.com",
+      "author": "learner_yearner",
+      "score": 17,
+      "comment_count": 21,
+      "created_ts": 1789556318,
+      "is_internal": true,
+      "post_text": "Pls provide link if the course materials are available anywhere.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "career"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49714644",
+      "title": "Ask HN: Lesser known features of macOS/iPadOS/iOS/etc. 27",
+      "link": "https://news.ycombinator.com/item?id=49714644",
+      "domain": "news.ycombinator.com",
+      "author": "lucasoshiro",
+      "score": 15,
+      "comment_count": 8,
+      "created_ts": 1789488361,
+      "is_internal": true,
+      "post_text": "Hi there!<p>I&#x27;ve just upgraded my Mac and iPad OSes to 27 and found some interesting features that I haven&#x27;t seen listed elsewhere:<p>- Screen mirroring to iPad now accepts touchscreen inputs<p>- iPad menu bar can now be always turned on<p>- The sidebars aren&#x27;t floating, just like before Tahoe<p>- Decreased window border radius<p>- Increased resize window area",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49698914",
+      "title": "Ask HN: How are you managing aging relatives passwords?",
+      "link": "https://news.ycombinator.com/item?id=49698914",
+      "domain": "news.ycombinator.com",
+      "author": "rylando",
+      "score": 13,
+      "comment_count": 18,
+      "created_ts": 1789400761,
+      "is_internal": true,
+      "post_text": "Looking for how or what services others use to manage their aging relatives passwords? Is 1Password still the choice?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49743493",
+      "title": "Ask HN: Co-Founder(s). Do I need any? How would I even find them?",
+      "link": "https://news.ycombinator.com/item?id=49743493",
+      "domain": "news.ycombinator.com",
+      "author": "bhollan",
+      "score": 11,
+      "comment_count": 13,
+      "created_ts": 1789664159,
+      "is_internal": true,
+      "post_text": "I&#x27;m a technologist and have experience in academia, private, and now public sector work. I had an idea stewing in the back of my mind for about a year and it became &#x27;fully-formed&#x27; enough to be a proof-of-concept such that I filed a provisional patent a few months ago. At this point, I don&#x27;t want to quit my day job (federal agency, GS11, but have an in to be GS15 within 3 years). But I really want my idea to succeed (or at the very least, see the light of day). I have some savings piled up, but I&#x27;m hesitant to spend it on &#x27;grown-up&#x27; patent papers yet. I also already have 3 other &#x27;side gigs&#x27; (not to mention 4 kids and a blushing bride) that take up more than most of my time. How would I even find someone that I could trust enough to help me take my idea and hit a home run with it?<p>I don&#x27;t want to talk about the details of my invention. I did talk to a patent attorney that&#x27;s done a couple dozen startups through their firm though. He said I could probably get $20k-$50k in seed money for it. It&#x27;s not a &quot;better mousetrap&quot;, it&#x27;s more a &quot;new thing&quot; that&#x27;s never existed before (but also never really &#x27;needed to&#x27; before).<p>Do I NEED a co-founder, or can I &#x27;slow-walk&#x27; launching a business based solely on a new gizmo? I&#x27;m not very good at social media&#x2F;marketing, which is where I think my gizmo would thrive the most (but that&#x27;s purely a guess). I feel like if I could find the perfect person, it really could explode, but I have literally not even the faintest clue where&#x2F;how to start that. Am I an employer all-of-a-sudden even though I have no revenue to pay salaries?<p>Somebody heard that I had invented this thing and they asked me, &quot;So, I hear you&#x27;re an inventor?&quot; And I kind of stammered and said &quot;well.... it was an accident. I didn&#x27;t mean to, I promise.&quot; This was mostly to be funny&#x2F;silly, not that I don&#x27;t believe in the idea. But I know this sort of &#x27;startup&#x2F;founder(s)&#x2F;seed-money&#x27; thing is HN&#x27;s bread-and-butter, so I at least thought I&#x27;d ask.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "quit",
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49752806",
+      "title": "Ask HN: Alternatives to Twitter/X?",
+      "link": "https://news.ycombinator.com/item?id=49752806",
+      "domain": "news.ycombinator.com",
+      "author": "throwaway2027",
+      "score": 6,
+      "comment_count": 6,
+      "created_ts": 1789730841,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been with hit their algorithm making me prove I&#x27;m not a bot (again). My account wasn&#x27;t new or bot-like in behavior I think? I usually follow AI news and tweet silly memes. So much for &quot;free speech platform&quot; if most of the people just get whisked away having to prove their not bots by scanning their palms apparently or uploading selfies so you know exactly who is criticizing you. I just use the web version because IT&#x27;S a WEBSITE. I don&#x27;t want to use the app. I know it&#x27;s due to real issues because there are bots and AI made the situation worse and it&#x27;ll probably get worse for other sites in general and I see it on HN too. I did contact support so maybe my account will get unblocked (again) and I&#x27;ll just happily tweet ever after, but for the meantime well I can&#x27;t so maybe this also will spark discussion.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49752505",
+      "title": "Ask HN: Help choosing between AWS ECS and EKS",
+      "link": "https://news.ycombinator.com/item?id=49752505",
+      "domain": "news.ycombinator.com",
+      "author": "pigradish",
+      "score": 5,
+      "comment_count": 9,
+      "created_ts": 1789728383,
+      "is_internal": true,
+      "post_text": "Hello everyone. I was recently hired at an established company that is in the process of migrating to AWS from Heroku. I am the second devops&#x2F;SRE like employee, the other person has more of an IT background. He, along with the 20ish person dev team, have no experience with anything cloud or IaC. Our workloads are almost entirely stateless web services, with some data pipeline work that has already been moved to AWS lambda.<p>My gut is telling me ECS is the better choice for this team - simpler, no operational maintenance, almost no additional abstractions beyond the AWS primitives people will need to learn anyway. A consulting team hired before I was brought in are pushing EKS, but I’m not convinced that the improved devex is worth the increase in complexity and operational burden for our team. Their argument is that developers can be effectively quarantined within k8s, so the increase in maintenance on the cluster itself is offset by the reduction in work around custom IAM permissioning, multiple AWS accounts (we’d just use namespaces within the cluster), etc.<p>Any thoughts or input would be greatly appreciated.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "consulting",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49746527",
+      "title": "Ask HN: What self-hosted apps do you use daily?",
+      "link": "https://news.ycombinator.com/item?id=49746527",
+      "domain": "news.ycombinator.com",
+      "author": "osr00",
+      "score": 5,
+      "comment_count": 14,
+      "created_ts": 1789678989,
+      "is_internal": true,
+      "post_text": "I&#x27;ve been running a homelab for many years now and tried out many open source projects. A small percentage turn out to be real gems, but I use these almost every single day:<p>Shlink: URL shortener&#x2F;redirects, alternative to Bitly<p>Vaultwarden: open source Bitwarden server<p>Dokploy: PaaS, alternative to Vercel &#x2F; Netlify<p>Umami: gdpr-compliant web analytics<p>Immich: photo management<p>Papra: document archiving with OCR<p>Navidrome: personal music streaming<p>I&#x27;m super curious to hear about the apps you can&#x27;t live without!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "management"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49755126",
+      "title": "Ask HN: Have you stopped underestimating AI yet?",
+      "link": "https://news.ycombinator.com/item?id=49755126",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 3,
+      "comment_count": 7,
+      "created_ts": 1789742591,
+      "is_internal": true,
+      "post_text": "I think most technical people who are not AI researchers have a tendency to underestimate what frontier AI can do.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49743419",
+      "title": "Ask HN: What Makes Tokens Expensive?",
+      "link": "https://news.ycombinator.com/item?id=49743419",
+      "domain": "news.ycombinator.com",
+      "author": "mtokarski",
+      "score": 3,
+      "comment_count": 6,
+      "created_ts": 1789663855,
+      "is_internal": true,
+      "post_text": "Are there really such architectural differences between for example sol and astra that makes astra twice more in token price? Or maybe token cost covers training expenses? For me it&#x27;s hard to believe that astra need twice the computing power that sol needs...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49755575",
+      "title": "Ask HN: What happens when Claude Code goes away?",
+      "link": "https://news.ycombinator.com/item?id=49755575",
+      "domain": "news.ycombinator.com",
+      "author": "HoldOnAMinute",
+      "score": 2,
+      "comment_count": 15,
+      "created_ts": 1789744463,
+      "is_internal": true,
+      "post_text": "I have become very proficient with Claude Code and I use it for everything, both at work and in my personal life.  At this point, if I lost access to it, it would be like missing a body part.  At the risk of hyperbole, it makes me a better person.  I am more effective in everything I do.  Someday it will probably go away.  I haven&#x27;t had great success making Claude Code work with local Ollama&#x2F;Quen.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "success"
+      ],
+      "comments": [
+        {
+          "top": "Losing access to Claude Code - just imagine it. That's really the main reason people push for local open-source models. If you build everything around a closed cloud API, you're basicly staking your whole career on someone else's rules. Anthropic can change prices or shut down your account anytime, and suddenly, your productivity takes a nosedive. There's only one way out: leran to run your own setup. Right now, getting Claude Code to work well alongside Ollama or Qwen is tough. Context management and system instructions are tricky. But honestly, it's our only real safety net. If you can fire up quantized Qwen 2.5 coder model on your own machine, you control your workflow. Sure, it might not be as fast as Sonnet, but there's no kill-switch, no subscriptions, and no strings attached. Think of AI tools like servers: if you can't self-host a backup, you don't really own your workflow. I worked with a friend on a local AI-Agent that can code, that can talk with you about anything and can control your whole computer, even spotify it can easily search on spotify or you can say \"open zapzap\" or \"open whatsapp\" it looks for apps on your computer if nothing found with the name it opens the browser and google if you say \"open youtube\" it opens the browser with \nhttps://www.youtube.com\n. of course you can say it with your voice what you want, so you haven't write it to it per keyboard if your busy. if you wanna try just write a response here and I talk to my friend if I can make it open source. Sorry for self-promoten here but it's something about the topic. if you have a problem with the self-promoten just write a reply and I'll remove this comment.",
+          "author": "gtadesktop1",
+          "replies": []
+        },
+        {
+          "top": "I've had a Claude max plan that I've been using daily for about 6 months now.  This month I decided to turn off auto-renew and moved over to Codex to try it out.  There's virtually no switching costs.  Of course there are some slight differences I'm noticing between the two but nothing that would keep me loyal to one over the other.\nAlso, Claude Code is the agentic harness with the underlying models being the anthropic ones.  If it's the harness you're worried about, try out Codex or any of the open source ones like OpenCode, Pi, Goose.\nThis will never go away.  Instead it will become more local.  In the future, it's more likely that you have a model running on your computer.  These companies have no moat.  You don't need to worry about it going away or them charging beyond what you can pay.",
+          "author": "mattm",
+          "replies": []
+        },
+        {
+          "top": "You can ask Claude to run a pre-mortem on this scenario happening and get it to recommend pre-emptive solutions.\nI irregularly use a framework similar to the one by Klein, Sonkin, Paul Johnson \nhttps://leonlins.com/writing/premortem\n to get one AI agent to consider the problems and potential solutions to vendor lock in.\nIf this is for Claude specifically, feels like most common alternatives (Codex) are viable.\nIf this is for AI agents generally, I've been backing up local model workflows as well",
+          "author": "avoidboringppl",
+          "replies": []
+        },
+        {
+          "top": "bliss, that is what happens when it goes away.",
+          "author": "soapdog",
+          "replies": []
+        },
+        {
+          "top": "All bleeding stops.\nIf Ed Zitron is to be believed, Anthropic, and all the other LLM based tools companies are bleeding cash at one of the highest burn rates in history, subsidizing your tools, and likely giving them to you at around 5-10% of their costs. Even if you're prepared to pay 10x or more for the same thing, most aren't, and they don't have a sustainable future.\nYour best bet is to develop a local capability on your own hardware while you've still got Claude to compare it to.\nSecond best is to have an LLM model and harness you can run in the cloud independent of Anthropic or any other AI company.",
+          "author": "mikewarot",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
