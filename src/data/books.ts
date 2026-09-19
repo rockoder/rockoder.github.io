@@ -6,6 +6,7 @@ export interface Book {
 }
 
 export const books: Book[] = [
+  { year: "2026", title: "The Kaiju Preservation Society", link: "https://a.co/d/0aXI3gJG" },
   { year: "2026", title: "Profession", link: "https://www.inf.ufpr.br/renato/profession.html" },
   { year: "2025", title: "Project Hail Mary", link: "https://a.co/d/25Y5rHA" },
   { year: "2025", title: "The Psychology of Money", link: "https://a.co/d/012h4O9q" },
