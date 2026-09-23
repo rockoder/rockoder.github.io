@@ -1,0 +1,889 @@
+{
+  "scraped_date": "2026-09-23",
+  "source": "hacker_news",
+  "total_scraped": 121,
+  "nontech_count": 21,
+  "posts": [
+    {
+      "id": "49789228",
+      "title": "HERMES radio enables voice and data communication over vast distances",
+      "link": "https://spectrum.ieee.org/hermes-shortwave-radio-digital-data",
+      "domain": "spectrum.ieee.org",
+      "author": "SamuraiLion",
+      "score": 181,
+      "comment_count": 68,
+      "created_ts": 1790007256,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;hermes.radio&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;hermes.radio&#x2F;</a><p><a href=\"https:&#x2F;&#x2F;www.rhizomatica.org&#x2F;\" rel=\"nofollow\">https:&#x2F;&#x2F;www.rhizomatica.org&#x2F;</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "communication"
+      ],
+      "comments": [
+        {
+          "top": "Original project page: \nhttps://hermes.radio/\n (Code: \nhttps://mercury.hermes.radio/\n)\nOrganization page: \nhttps://www.rhizomatica.org/about/\nMy initial thought is that this is a cool way to try and get more resilient communications technology in the hands of those who need it most in the Global South, and it's awesome it was successfully used for a Pan Pan.\nThis reminds me of WinLink (an analogue to email on amateur radio), which I've heard is used by some Mariners. [1]\nI'm aware that HERMES is essentially a SDR bundle/communication terminal (for a lack of a better term for a Raspberry Pi, a screen and an SDR), so it's not really re-discovering a well known amateur radio concept, but the hardware setup sounds a bit brittle on first glance, for what is essentially an emergency/critical communication application.\n[1]: \nhttps://winlink.org/",
+          "author": "wmchen",
+          "replies": []
+        },
+        {
+          "top": "This is a cool project, but fyi, in the US, this would require a license to broadcast (not receive), and I am pretty sure encryption, even with a license, is not legal (again, when broadcasting from US).\nAnd then only on certain bands:\nhttps://www.arrl.org/files/file/Regulatory/Band%20Chart/Hamb...",
+          "author": "mesh",
+          "replies": [
+            {
+              "text": "Just FYI, LoRa / LoRaWAN (Part 15) explicitly allow even unlicensed operators to utilize encryption. WiFi and Bluetooth, similarly, of course (also under Part 15). And surprisingly long range wireless network bridging like the Ubiquiti Building Bridge XG over 5GHz and 60GHz to bridge two building's LANs up to 500meters away. Part 15 also covers the unlicensed usage of the 900MHz band popular for citizen mesh networks at 2-15Mbps.\nMURS (Part 95J) allows unlicensed operators to utilize encryption for digital data transmission as long as it's not encrypting voice communications, though it disallows store-and-forward packet operation and repeaters which makes doing anything similar to Reticulum/Meshtastic rather difficult.\nFor $400-800 nearly anyone can get a FCC Part 90 Nationwide Itinerant Data License which would allow them to do most of the \"fun stuff\" they might like to do for just $45-75/year, which is pretty darn affordable. Part 90 explicitly allows encryption, both of voice and data.\nFCC Part 96 (CBRS) allows \"unlicensed\" (licensed-by-rule) operators to run their own private LTE/5G cell sites, if you have a WAN connection like Starlink or whatever. Obviously encryption is allowed.\nEncryption is really only hard-banned for \"amateur\" radio (Part 97), and voice rules of Part 95 (i.e. CB / FRS / GMRS).",
+              "author": "rckoepke",
+              "depth": 1
+            },
+            {
+              "text": "I would expect this system to ultimately be used under a commercial HF license rather than an amateur license, given the feature set and that it seems to have much more in common with military systems like ALE than amateur practice. That said, because of the scarce supply of HF bandwidth, commercial HF licenses are quite restrictive in the US. For the most part, you are only allowed to apply for one if you are an infrastructure operator that needs a contingency communications capability for disaster response. That said, the FCC has permitted experimental licenses for some commercial applications like high frequency trading, so perhaps the situation will become less restrictive over time.\nThat said, commercial licenses are not per-operator like amateur licenses, so you would potentially only need one to cover the entire network. Some of this is ultimately negotiated.",
+              "author": "jcrawfordor",
+              "depth": 1
+            },
+            {
+              "text": "Correct. Encryption (or more specifically, obscuring the meaning of a message) is generally not allowed for amateur radio stations except in very narrow circumstances. So any hams using this would have to turn the encryption off.\nHowever, it looks like this stack has encryption available as an option for stations who are transmitting sensitive data and are NOT operating under an amateur license. (Probably government-sanctioned communications or emergency humanitarian efforts.)",
+              "author": "bityard",
+              "depth": 1
+            },
+            {
+              "text": "For drones, at least in the EU, encryption is mandatory.",
+              "author": "edg5000",
+              "depth": 2
+            },
+            {
+              "text": "what would happen if you were to break that law? like im talking enforcement here not whats on the books.. for example torrenting and uploding copyrighted files is illegal but most people dont give a shit as enforecement is almost non existant. i know radio is taken more seriously then torrenting but this must also be very low on priority for the government unless you are jamming people or somehow stand out enough for anyone to care or notice....",
+              "author": "nowittyusername",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Hi, I'm an actual licensed ham radio operator.\n'Encryption' in the ham space is defined as intentionally obscuring a message. Encoding data in a format is an extremely common practice.  As long as the intent isn't to actually obscure your message, pretty much any digital format you can dream up is fine.  The main method of email over HF, WinLink, is proprietary so IMO they don't even comply, but the FCC hasn't done anything so apparently it's fine.\nEnforcement in this space looks like hams reporting bad behavior to the FCC, and if the FCC decides to enforce they send a nasty letter, escalating until the offender's license gets revoked if they don't stop.\nThis specific project is very cool.  There's a lot of amateur radio emergency communications groups (EmComm) who use WinLink heavily, and IMO it would be better to use something open source.\nAll the more reason to get my sBitx set up and play around with this.",
+          "author": "SamBorick",
+          "replies": []
+        },
+        {
+          "top": "If it's a matter of life and death, such as offshore fishing, you probably want a real commercial service.\nLike Garmin (Iridium based texts back and forth) or Zoleo.  These are physical units that may offer texts or just a simple \"sos\" button.\nOr a recent iPhone will communicate with Starlink, or T-Mobile offers a similar system for Android phones and is also based on Starlink.  These can exchange texts which is much more reassuring than a simple sos button.\nOf course offerings outside the US may be limited or entirely absent.",
+          "author": "j_not_j",
+          "replies": [
+            {
+              "text": "If it's a matter of life and death, such as offshore fishing, you probably want a real commercial service.\nLike Garmin (Iridium based texts back and forth) or Zoleo. These are physical units that may offer texts or just a simple \"sos\" button.\nProhibitively expensive, and also not available to 90% of the planet's commercial fishermen.\nFor them, an iPhone can be an entire year's profit.\nThe people in TFA aren't going to be featured on The Deadliest Crab.",
+              "author": "reaperducer",
+              "depth": 1
+            },
+            {
+              "text": "These are essential for remote solo hiking.",
+              "author": "markdown",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "> Why did you build in encryption that amateur-radio regulations in many countries don’t allow?\nEncryption (in terms of hiding messages) is forbidden mostly.\nBut everything else is allowed: hashes, signing, etc.\nEven the legislators really understand it. They are allowing encryption for remote controlling ham satellites. With proper signing even that would not be necessary (with only exception of key rotations maybe).",
+          "author": "BlackRabbit1",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49801329",
+      "title": "Show HN: Drop – A rootless Linux sandbox with gVisor support",
+      "link": "https://droprun.sh/",
+      "domain": "droprun.sh",
+      "author": "mixedbit",
+      "score": 158,
+      "comment_count": 54,
+      "created_ts": 1790085167,
+      "is_internal": false,
+      "post_text": "I created Drop because I always felt uneasy installing and running third-party programs using my main user account. A single compromised dependency means a full compromise of the system. What is even worse, because I ship software from my computer, a single compromised dependency can lead to compromise of all the users of my software.<p>Containers and VMs are one solution, but for local work, they are often detrimental to productivity. It takes effort to configure a machine with all the tools and configs needed for productive work, but a container or a VM will be stripped of all these tools. This is great for production deployments, where the aim is a reproducible system with minimal dependencies, but can get in the way of productive local work.<p>Drop is language independent, but the workflow is inspired by Python&#x27;s virtualenv. With virtualenv the environment isolation is only a convention that relies on installed dependencies being good citizens. With Drop the isolation is enforced.<p>Each Drop environment gets its own writable and easily disposable home dir, with only selected config files and dirs from the original home mounted, mostly read-only.<p>Drop uses Linux namespaces for isolation (user, mount, network, PID, IPC, cgroup), doesn&#x27;t require root and, as an option, uses gVisor user-space kernel, which adds protection against exploiting host kernel vulnerabilities to escape the sandbox.<p>I don&#x27;t want to make the introductory post too lengthy, but I&#x27;m here to answer any questions and give any additional technical details.<p>Note: This is my 3rd submission of the project, the first two did not draw attention. Since then I have added support for gVisor and created a project website to better explain the concept and organize documentation.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "lead"
+      ],
+      "comments": [
+        {
+          "top": "Hi OP, funny enough I’m working on something very similar. Lots of us are I guess! Take that as validation of your thinking.\nI like that your readme has a couple paragraphs comparing to popular tools in this space. Personally I feel it is a bit light on the security differentiators (if any). For example you are using the same fundamental primitives that are used in nsjail, runc, etc. Thus it seems you have recreated those libraries in some aspects, so would be curious to hear your rationale for approaching this way vs building explicitly on those primitives.",
+          "author": "refibrillator",
+          "replies": [
+            {
+              "text": "Thanks! My initial approach and the first prototype was for Drop to be a Python script that generates config.json file for runc Docker runtime (I also tried crun). I ran into issues that prevented the\nsandbox from being set up with all the Drop-required properties. These issues were certainly technically fixable, but it could be difficult for a new project with no usage to advocate for features in mature and widely adopted tools. Especially that runc and crun are OCI-compatible Container Runtimes, and Drop is not an OCI-compatible container, so it could be justifiably out of scope for these projects not to support Drop usage.\nAnyway, my decision, for which I also evaluated the use of bubblewrap as a building block, was to err on the side of flexibility that calling fine-grained Linux APIs directly give. For a project like Drop, runc could be seen as very coarse-grained JSON-based API to Linux sandboxing calls (basically a single call: setup a sandbox, here is a json config that describes it), similarly bubblewrap is a coarse grained command-line API to Linux sandboxing calls. Reusing such tried and proved layers of course also has significant advantages, so as in case of many engineering decision, it wasn't super obvious which path is better.\nDrop eventually integrated gVisor's runsc (as an option), which is also OCI-compatible Container Runtime, but this is to add a user-space kernel isolation layer.",
+              "author": "mixedbit",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "This is super interesting to me. I've slowly been working on something similar (\nhttps://gitlab.com/saghm/tartarus\n) because my ideal sandboxing is \"prevent writing to anything outside this dir but still allow reading to most things so that I don't have to manually copy things into a container/VM\". I approached it by trying to figure out how to build up a bubblewrap based on a config that gave the properties I wanted, with the hope that I could eventually expand it to support other platforms via stuff like `sandbox-exec` on MacOS, but I haven't had time to work on it more for a while.\nAt a glance, this seems to be providing most of what I was originally looking for when I ended up deciding I'd have to write it myself, but focusing specifically on Linux and providing a more full-fledged sandbox rather than only caring about a small set of permissions that I personally had a need for. Probably the biggest (and least hardened) feature that I spent time on in mine was trying to figure out how to allow arbitrary GUI apps so that I could run agents in it via Zed.\nI'm definitely going to try this out and see how well it works for me. It's insane to me that this is something none of the big AI companies have bothered solving this yet other than via opaque rules built into their harnesses or absolutely awful manual rules that expect me to hard-code shapes of shell commands that I want to allow or not allow.",
+          "author": "saghm",
+          "replies": [
+            {
+              "text": "> my ideal sandboxing is \"prevent writing to anything outside this dir but still allow reading to most things so that I don't have to manually copy things into a container/VM\"\nThat's what Codex does out of the box, and it's not good against malware - i.e. a rogue npm packet (or even just codex after prompt injection) can read your ssh key and send it to the attacker.",
+              "author": "killerstorm",
+              "depth": 1
+            },
+            {
+              "text": "> That's what Codex does out of the box\nAs I said, opaque rules built into the harness rub me the the wrong way. They could change in an update without anything making it clear. Plus, I don't use Codex outside of work (I don't have any active paid subscriptions  LLM offerings).\n> it's not good against malware - i.e. a rogue npm packet (or even just codex after prompt injection) can read your ssh key and send it to the attacker\nIgnoring the repeated references to software I don't personally use, I never said I was trying to hedge against malware. The use case for me is when I'm running agents directly based off of prompts that I give them and asking them to modify some files. If I wanted a solution for running code I didn't trust, I wouldn't rely on what I wrote, because that's not the intended use case at all.",
+              "author": "saghm",
+              "depth": 2
+            },
+            {
+              "text": "Small world, we’re all working on the same thing!\nI went with Docker because history has taught me that new isolation strategies _will_ have escape bugs at some point, and I’m distrustful that the LLM can’t find one if it wants to.\n> Probably the biggest (and least hardened) feature that I spent time on in mine was trying to figure out how to allow arbitrary GUI apps so that I could run agents in it via Zed.\nI actually have code for this if you want to use/fork/borrow it. TLDR, mine pretends to be an ACP agent so you run Zed on the host, but under the hood that binary is just creating a Docker container with your image and agent, copying files, etc, and then proxying ACP messages via web socket back and forth. Except for the built-in ACP read/write file and shell endpoints. Those get executed inside the container by the proxy by default, though there’s a config option to pass either or both through to the host.\nRepo is \nhttps://github.com/SethCurry/abyss\n and the code you’d want would be in ‘internal/websockets/wsacp’.\nIt does wrap them in protobuf and there’s some router-like stuff so you can add your own non-ACP messages between the two ends of the proxy.\nmain also has experimental wasm plugin support in the proxies so you can block prompts/tool calls/whatever in an agent-independent way, or add RAG that works for every agent in the world, or whatever.",
+              "author": "everforward",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Thank you for building it! I started using Drop a few weeks ago, and I've been very happy with it so far (thanks again for quickly fixing a few issues I've reported :)!).\nFor me, it nails the convenience vs isolation aspect quite well, and I would like to get to a point where I can use it for all my development by default.\nThe main challenges that I still have, which none of the solutions I've found so far resolve, are:\n- development of containerized applications, where e.g., docker/podman compose is used to bring up services\n- development of GUI applications with hardware acceleration, like games (maybe security contexts for pipewire and wayland, like what's done in flatpak would be a good path?)\nWhen I did my research in this space last time, \nhttps://litterbox.work/\n was another option I've considered, and it is very nice too, but the friction is a bit higher than drop: it's slower to rebuild envs, lacks a \"base\" config, etc. Drop was much easier to adopt \nfor me\n so far.",
+          "author": "p2004a",
+          "replies": [
+            {
+              "text": "Thanks! I have GUI applications sandboxing on the roadmap. I also ponder the idea to add VM as the third runtime option (in addition to currently supported native Linux namespaces and gVisor). I'm not yet sure if this is feasible, but VM could allow to start containerized apps within the sandbox as it dodges the nested namespaces problems with containers.",
+              "author": "mixedbit",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Gratulacje Jan! Looks like something critical to gain adoption these days, security-wise. For others who also wonder how it works, I find this docs page a bit more informative than the landing page \nhttps://droprun.sh/docs/sandbox-overview/",
+          "author": "yu3zhou4",
+          "replies": []
+        },
+        {
+          "top": "Every comment is talking about their own sandbox implementation.",
+          "author": "binsquare",
+          "replies": [
+            {
+              "text": "That makes me wonder if it is a tarpit idea.",
+              "author": "atechboy",
+              "depth": 1
+            },
+            {
+              "text": "I think at the surface level it's a wide problem but the solutions so far are shallow attempts",
+              "author": "binsquare",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49786609",
+      "title": "Ask HN: Is it impossible to disable Siri on macOS 27?",
+      "link": "https://news.ycombinator.com/item?id=49786609",
+      "domain": "news.ycombinator.com",
+      "author": "semidror",
+      "score": 151,
+      "comment_count": 81,
+      "created_ts": 1789994825,
+      "is_internal": true,
+      "post_text": "I disabled Siri in the Settings app, and then further disabled Siri and its extensions in Settings &gt; Screen Time.<p>Next, I disabled all Siri-related and Apple Intelligence-related services as per https:&#x2F;&#x2F;github.com&#x2F;OleksandrKrupko&#x2F;mac-os-debloat<p>But after restarting, I could still see a &quot;Siri&quot; process running in Activity Monitor. Upon further inspection, I found that it is the &quot;Siri AI.app&quot;.<p>These &quot;features&quot;, together with Apple&#x27;s Personal Context sound very similar to Microsoft&#x27;s Recall.<p>Does anyone have the same experience? Is it really impossible to fully turn off Siri, Siri AI, Apple Intelligence and all related services and features on macOS 27?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You should make use of Cunningham's Law[1]. Instead of posting an \"Ask HN\" asking if it's impossible to disable, post a \"Show HN\" claiming that it is impossible to disable.\nThen people will flock to tell you how it can be disabled by XYZ.\n[1] \nhttps://meta.wikimedia.org/wiki/Cunningham%27s_Law",
+          "author": "jodrellblank",
+          "replies": [
+            {
+              "text": "Great advice. I should definitely heed this more often.",
+              "author": "anguishe",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just as a note, from what I see the problem is not only the privacy implications but also that the local AI comes with a baggage amounting to 10% of the space on the base mac models. Which is already severely limited.",
+          "author": "nottorp",
+          "replies": [
+            {
+              "text": "I have not found the local/remote hand off to be very reliable either, so tasks that used to be almost instantaneous for Siri are now spinning to the point where I assume they failed. A simple 2 minute timer took almost 30 seconds to set the other day.",
+              "author": "threetonesun",
+              "depth": 1
+            },
+            {
+              "text": "You're brave. I'm still on Sequoia.",
+              "author": "nottorp",
+              "depth": 2
+            },
+            {
+              "text": "I'm still on Mojave (10.14!) and it's just brilliant compared to the more modern MacOS. There's a Firefox fork called Momiji (\nhttps://github.com/aobaharuki2005/momiji-web-browser\n) which backports recent Firefox to very much older macOSes, and basically I still use 32 bit x86 applications sometimes.\nMy next laptop computer (which is sorely overdue) will be Linux with macOS in a VM.\nA pity, because Keynote is great.",
+              "author": "azalemeth",
+              "depth": 3
+            },
+            {
+              "text": "Same here. The new macOS'es always seem to add more restrictions, more bloat, etc nowadays. I was thinking of upgrading the other day; glad I didn't.",
+              "author": "elcritch",
+              "depth": 3
+            },
+            {
+              "text": "considering security i think you are the one who is brave but i am biassed so dont worry more than u already do xD",
+              "author": "saidnooneever",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The process that shows the Spotlight UI is now the one called \"Siri\", previously it was called \"Spotlight\".",
+          "author": "galad87",
+          "replies": [
+            {
+              "text": "Thanks, that's an interesting observation! When I double-clicked on the \"Siri\" process in Activity Monitor, I saw that it's an app called \"Siri AI\".\nIf the \"Siri AI\" app has replaced Spotlight, then I wonder if Apple keeps building \"personal context\" despite Siri and Apple Intelligence being disabled.\nIt for sure doesn't sound well to disable Siri and still see a \"Siri\" process.",
+              "author": "semidror",
+              "depth": 1
+            },
+            {
+              "text": "This sounds similar to Microsoft and the start menu. A few years ago I went to extreme lengths to disable cortana (powershell guid uninstall). This invisibly and inexplicably disabled updates to the start menu search feature. The index remained the feature worked, it just never got updated again.  No amount of manually reindexing the disk helped. Reinstalling cortana got it working.",
+              "author": "cosmotic",
+              "depth": 1
+            },
+            {
+              "text": "That makes sense. Sending SIGKILL to that process causes the spotlight UI in the menu bar to flash.",
+              "author": "kccqzy",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been daily-driving a mac for 10 years now and I've only ever triggered Siri by accident.  I do use it pretty regularly on the phone, mostly to set timers, get directions, and call contacts, but I've been well trained over these years to not expect it to be capable of more than that.",
+          "author": "chuckadams",
+          "replies": [
+            {
+              "text": "Trivia: the most popular method of using Siri, per the analytics, is \"accidental activation\".",
+              "author": "runjake",
+              "depth": 1
+            },
+            {
+              "text": "I remember it being pretty useful on phone. Now, it can't even \"like\" a song when I'm driving and I want it to add a song to my Spotify favourites list. It could do a few months ago, now it refuses with \"sorry there was a problem with the app\".\nI've had to resort to asking it to take a screenshot so I can go find the song later. Three quarters of the time it never saves the screenshot though, despite seeing the screen flash out of the corner of my eye.",
+              "author": "lloydatkinson",
+              "depth": 1
+            },
+            {
+              "text": "Gemini is similarly a step back. Google Assistant could hear me speak up and ask it to like or skip a song being played, driving or otherwise. It would quickly beep at me, pause the music/etc, accept input, process, then finish and resume the music (or skip to next track if asked).\nNow it takes 10-15 seconds to start after a voice command, won't audibly alert or even stop music to take voice input, and usually fails to hear anything then quit out. Half the time it does that it then pauses the music and quits...\nWith Tidal Gemini can't do anything using voice commands. Maybe SOTA models can help those on the bleeding edge, but 95% of tech users just want it to work and be cheap enough. Apple figured this out a long time ago but can't help itself with being too clever.",
+              "author": "selicos",
+              "depth": 2
+            },
+            {
+              "text": "> Gemini is similarly a step back. Google Assistant could hear me speak up and ask it to like or skip a song being played, driving or otherwise. It would quickly beep at me, pause the music/etc, accept input, process, then finish and resume the music (or skip to next track if asked).\nYeah I used the old Assistant regularly, but after the Gemini update it started refusing to set a timer for me, so I churned.",
+              "author": "disgruntledphd2",
+              "depth": 3
+            },
+            {
+              "text": "I've been using an iPhone 12 Mini since however long it's been out, never used Siri intentionally either, would prefer to disable it fully, but CarPlay for some reason cannot be used without Siri, even though I never use Siri. I consider it 1st party malware at this point.",
+              "author": "embedding-shape",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "In Screen Time -> Content and Privacy, there's a setting to switch Siri to 'Siri Classic' which strips out the Apple Intelligence-backed behavior specifically.",
+          "author": "Nata_Elisym",
+          "replies": [
+            {
+              "text": "Instead of \"Siri Classic\", I selected the \"Don’t Allow Siri\" option, but it didn't help. The \"Siri\" (Siri AI.app) process keeps running regardless.",
+              "author": "semidror",
+              "depth": 1
+            },
+            {
+              "text": "Sounds like Apple hired some of the Microsoft project managers.",
+              "author": "pixl97",
+              "depth": 2
+            },
+            {
+              "text": "In my experience, every company with more than 1000 employees absolutely has garbage project managers!",
+              "author": "skort",
+              "depth": 3
+            },
+            {
+              "text": "Why would you say that? Can't it be a genuine Apple product?",
+              "author": "alexaholic",
+              "depth": 3
+            },
+            {
+              "text": "It's a joke. Microsoft has been ignoring user preferences and doing what is good for Microsoft for many years now, and the parent poster was implying that Apple is now doing the same kind of bad behavior.",
+              "author": "bigstrat2003",
+              "depth": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49795686",
+      "title": "People hooked on vapes try a new way to quit: cigarettes",
+      "link": "https://www.bloomberg.com/news/articles/2026-09-18/to-quit-vaping-some-are-starting-to-smoke",
+      "domain": "www.bloomberg.com",
+      "author": "alephnerd",
+      "score": 130,
+      "comment_count": 135,
+      "created_ts": 1790040080,
+      "is_internal": false,
+      "post_text": "<a href=\"https:&#x2F;&#x2F;archive.ph&#x2F;FvOhx\" rel=\"nofollow\">https:&#x2F;&#x2F;archive.ph&#x2F;FvOhx</a>",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "quit"
+      ],
+      "comments": [
+        {
+          "top": "Here's what I did to get rid of my nicotine addiction (vaping):\n- Gradually lower the strength of my liquid until it was at the minimum.\n- Stop all vaping and switch to nicotine gum\n- Gradually increase the time between each gum\n- Stop the gum altogether\nThis process took probably 3 months and tbh it was pretty miserable the whole time. It's 100% worth it tho, You don't realize how much it controls your life until you stop. You will also still get random cravings for a year or two afterwards, Heck it's been 4 years and I still sometimes get dreams where I'm vaping.",
+          "author": "S0y",
+          "replies": [
+            {
+              "text": "I vaped for around a year and each attempt to quit ended in failure.\nThe first attempt, quite early on, I hadn't realised how dependent I'd become and thought it would be easy. Sure, I enjoyed vaping, but I didn't \"have\" to do it. Give it a couple days and I'll be back to normal. Predictably that went poorly.\nVarious other attempts I'd now look back on as thinking I could outsmart addiction and try to ease out of it, when in reality it was little more than procrastination.\nOh, I'll start to limit the times I vape. Only between certain hours. Or I'll go outside and do it, make it inconvenient and less appealing. I'll buy flavours I don't enjoy as much and change the association.\nFor me the only way to stop was to accept the unpleasantness of going cold-turkey. I knew going in that the first 48-72 hours would be brutal but that it would get significantly easier afterwards. There's always a reason to delay but everything I attempted short of actually stopping feels like self-deception.",
+              "author": "nerdawson",
+              "depth": 1
+            },
+            {
+              "text": "Stopped smoking cold turkey when my first daughter was born.\nFor the first year I wanted a cigarette every fucking day.\nYears later, I still had dreams where I would light up…\n20+ years on, a distant memory.",
+              "author": "JKCalhoun",
+              "depth": 1
+            },
+            {
+              "text": "My father did the same thing. He used to smoke a pack a day and the day that I was born he quit and never touched it again, and then when I was old enough to understand cigarettes, he taught me to never start smoking and I never have.",
+              "author": "ivanvanderbyl",
+              "depth": 2
+            },
+            {
+              "text": "Though it took my dad a bit longer, he managed to quit for good when I was a kid. Still died of lung disease at 80, but I have to think it would likely have been much sooner if he'd never quit. Anyway, watching him struggle with it when I was young definitely make me repulsed by cigarettes (and most other addictive substances) such that I've certainly never been tempted to try them.",
+              "author": "tempestn",
+              "depth": 3
+            },
+            {
+              "text": "Stay that way. Your first cigarette will never let you forget it.",
+              "author": "reilly3000",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "A while back I saw this on reddit... in case you don't want to click the link, it's a picture of a cigarette with the caption \"This plant-based alternative promises to help high schoolers stop vaping\".\nI would have never thought that people would be stupid enough to try this for real, but here we are...\nhttps://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd....",
+          "author": "dasKrokodil",
+          "replies": [
+            {
+              "text": "I am reminded of: \nhttps://theonion.com/new-smokable-nicotine-sticks-can-they-h...",
+              "author": "EvanAnderson",
+              "depth": 1
+            },
+            {
+              "text": "That was hilarious but I hate how hard The Onion has to compete with reality now.",
+              "author": "hn_throwaway_99",
+              "depth": 2
+            },
+            {
+              "text": "Bonus virtue-signaling points for \"plant-based alternative\", although I had a different plant in mind when I read that phrase.",
+              "author": "userbinator",
+              "depth": 1
+            },
+            {
+              "text": "while tobacco is indeed more viscerally addictive than vaporized nicotine, i still believe it is wrong to label the act of switching from vapes to cigs as blanket stupidity. a cigarette has a defined start and end point around which the brain may optimize, while vapes have no off switch. from the outside in, it may be difficult to see that this factor may weigh in significantly ... so ill bolster my point by suggesting tobacco is a valid method to control schizophrenia symptoms, i dont believe that high dose nic vapes have the same effect.",
+              "author": "thin_carapace",
+              "depth": 1
+            },
+            {
+              "text": "Have you read gwern on nicotine? Particularly, in this case, regarding MAOIs in tobacco, so I suppose the hop through gwern isn't entirely necessary, but it's where I first heard of this, anyway.\nhttps://gwern.net/nicotine#addictiveness",
+              "author": "vonunov",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Did a cigarette write this article?\nCigarettes are \nridiculously\n more addictive. I know this from experience, but also from a study that found that MAOIs (in cigarettes, but \nnot found in vapes\n) \"dramatically increase the motivation to self-administer nicotine in rats.\"[1]\nI had a wickedly difficult time quitting cigarettes, many failed attempts over the course of years. Vaping made quitting tobacco comically easy, and quitting vaping was also comically easy compared to cold turkey. To quit my all-day vaping habit I just...got rid of the vapes and stopped doing it. I thought about it a few times a day for the first few days, and that was it.\nPeople saying to avoid vapes as a cessation tool are committing actual harm, imo. It's like the difference  in difficulty between just jumping off a roof versus using a ladder to descend. Yes, ladders are risky, but not as risky as jumping off a roof.\n[1] \nhttps://www.jneurosci.org/content/25/38/8593",
+          "author": "mullingitover",
+          "replies": [
+            {
+              "text": "I’m with you 100%. We’ll see if the last step goes ok next month after the MAOI is all cleared.",
+              "author": "tonyarkles",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "For the past 3 years I have replaced my ADHD stimulant medication with nicotine patches and they’ve been great, cheap, and legal in the country I live in now.\nRecently I got the urge to try vaping again, bought all the paraphernalia and started vaping like a chimney 24/7. Got light nicotine poisoning as well. After two days, I caught myself compulsively reaching for the vape.\nSo I threw everything away and I’m back to patches. Took me a week to forget the compulsive hand-to-mouth urge.  I now believe intradermal nicotine is the superior method of administration. At least with cigarettes the smoke is such an intense irritant you self-regulate pretty quickly compared to a cupcake flavoured vape you can just suck on all day long.",
+          "author": "sph",
+          "replies": [
+            {
+              "text": "> At least with cigarettes the smoke is such an intense irritant you self-regulate pretty quickly compared to a cupcake flavoured vape you can just suck on all day long.\nIn my experience: no, you don't. You just arrange your life around the fact that you need to smoke all the time.",
+              "author": "dasKrokodil",
+              "depth": 1
+            },
+            {
+              "text": "I've been a heavy cigarette smoker for 12 years (pack a day min.). When I switched to vaping, I vaped continuously the entire day.\nThere is no human on earth that can smoke continuously the entire day for very long. A pack a day smoker means smoking one every ~30 minutes circa.",
+              "author": "sph",
+              "depth": 2
+            },
+            {
+              "text": "My step-father’s parents smoked a carton a day. Each. They started smoking before breakfast and stopped just before sleep. Their trailer home had a 2-3’ cloud of haze below the ceiling and every surface was sticky. I’m not how many years they smoked like that, but probably decades.\nAs a kid, I could not breathe in there. This would have been late 70s. No way they could have afforded that habit at today’s prices.",
+              "author": "xoxxala",
+              "depth": 3
+            },
+            {
+              "text": "That is crazy. How long did they live? It would be fascinating if someone could live a long life despite smoking so much",
+              "author": "paulpauper",
+              "depth": 4
+            },
+            {
+              "text": "Mid to late 70s? Their last years were nothing but medical issues (from the smoking, plus excessive drinking) and poor health. Certainly kept me from starting to smoke.",
+              "author": "xoxxala",
+              "depth": 5
+            }
+          ]
+        },
+        {
+          "top": "I stopped smoking when my girlfriend got cancer and I switched to vaping. That worked for a year and a half, then my vape fell into mud and I bought a pack of smokes because I had no quick solution and started smoking again.\nI'm working on going back to the vape.",
+          "author": "karim79",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49742976",
+      "title": "Ask HN: How to recover Google auth after phone stolen?",
+      "link": "https://news.ycombinator.com/item?id=49742976",
+      "domain": "news.ycombinator.com",
+      "author": "keymasta",
+      "score": 121,
+      "comment_count": 130,
+      "created_ts": 1789661848,
+      "is_internal": true,
+      "post_text": "As we know, google has been effective at automating a lot of their systems, to the point where it can feel like there isn&#x27;t any help available from a human. So what is supposed to be the plan when this type of situation happens?<p>Basically I have a situation that after my phone was stolen, I can&#x27;t get into any of my accounts that are either connected to google, or connected to the phone via 2FA. This has made it complicated&#x2F;impossible not only to get info about my phone, but also my banking, email, drive, etc.<p>Of course they offer you &quot;multiple options&quot; to recover an account, but not if you forgot your old email&#x27;s password. At that point the options you get are,<p><pre><code>  a) Use old phone (obviously the phone is long gone)\n  b) Use current phone (the phone is gone)\n  c) Use old email (I haven&#x27;t used it in like 12 years)\n</code></pre>\nDoes anyone know if their is a process to appeal 2FA or anything to deal with this type of situation?<p>I&#x27;d imagine that this has happened to people many many times, and given how phones and particularly, google auth have become so critical to accomplishing essential tasks within society, there must be some way. Or maybe it&#x27;s just like, once your phone is gone, you are completely over with society? If anyone has any experience with this or inside knowledge please share it!<p>I&#x27;m sure people here have heard of this, and maybe experienced it themselves.<p>Is there a secret option that exists that allows us to use passwords instead of rigamarole? I would love an account that let me simply log in with a password, like google used to be.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49787684",
+      "title": "Noodle Gallery – Self-hosted photo and video manager forked from Immich",
+      "link": "https://digitalescapetools.com/tools/noodlegallery.html",
+      "domain": "digitalescapetools.com",
+      "author": "xabd",
+      "score": 78,
+      "comment_count": 59,
+      "created_ts": 1790000578,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49800953",
+      "title": "People Training OpenAI's AI Fired for Using AI to Train the AI",
+      "link": "https://www.404media.co/people-training-openais-ai-fired-for-using-ai-to-train-the-ai/",
+      "domain": "www.404media.co",
+      "author": "pier25",
+      "score": 73,
+      "comment_count": 53,
+      "created_ts": 1790083649,
+      "is_internal": false,
+      "post_text": "",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "fired"
+      ],
+      "comments": [
+        {
+          "top": "Clickbait title, they fired contractors for using AI to label data, which defeats the purpose of labeling data in this case.",
+          "author": "jrflo",
+          "replies": [
+            {
+              "text": "It's not a clickbait title? Click bait has a very different meaning. The click bait title would be something like, \"Open AI mysteriously fired these workers, find out why\"\nThis title says why. The article then goes on to explain why that's a problem. Pretty straightforward.",
+              "author": "lemmetellya",
+              "depth": 1
+            },
+            {
+              "text": "Why exactly it is clickbaity? It makes perfect sense to me, I understand title as: people told not use AI fired for using AI - without any need for additional context.\nMechanical Turk was shut down for exactly same reason, it was always a race to the bottom and using LLMs was cheaper than even third world gig workers. Verifying if task were done by humans is probably harder than doing them in the first place.",
+              "author": "Good4boothee",
+              "depth": 1
+            },
+            {
+              "text": "Training is far more broad than labeling\n\"People training OAI AI\" has a colloquial meaning of \"People working at OAI\"\nSo the headline is built to imply:\n\"People who work for OAI got fired for using AI to do their job\"\nWhen a non-clickbait headline would be\n\"3rd party workers contracted to distill their human knowledge fired for using AI instead\"\nNot nearly as \"clicky\"",
+              "author": "WarmWash",
+              "depth": 2
+            },
+            {
+              "text": "Just make it \"contractors training...\" And then it's fine?",
+              "author": "gyesxnuibh",
+              "depth": 3
+            },
+            {
+              "text": "As I see it, the distinction is between the work of designing and managing the training process, and the work of providing human training data. It's generally considered a good idea to automate the former, but there's a conceptual (information theoretical) issue with automating the latter. I don't know if it makes things more fair, but it's not quite a contractor vs FTE issue.",
+              "author": "falcor84",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "There's data in verifiable domains where a model can learn through the environment (e.g., math or coding), but some data is necessarily human experience. For instance, \"what is the best ice cream in Malaga?\" no matter how capable current AIs are they are not capable to get this information, there's no embodiment or simulation of human experience so far, if it's not in the labeled data they will just hallucinate the answer.",
+          "author": "jadermcs",
+          "replies": []
+        },
+        {
+          "top": "Makes sense, they are buying distillation of human brains not their own weights.",
+          "author": "hmokiguess",
+          "replies": []
+        },
+        {
+          "top": "Typically, for AI training, you need human feedback. If AI were enough, then OpenAI would do it themselves. Though we all know how bad AI slop is, running it in a loop can lead to unreadable sentences.\nThey hired contractors on the condition that they provide human feedback without AI; those people broke the rules, so their contracts ended prematurely.\nNot sure why this is news uncovered by an investigative journalist.",
+          "author": "jakozaur",
+          "replies": [
+            {
+              "text": "How is it a failure of journalistic understanding? They seem to say pretty much the same as you",
+              "author": "dgellow",
+              "depth": 1
+            },
+            {
+              "text": "\"Percentage of humans that read headlines\" > \"Percentage of humans that read articles\"\nTime and time again I see headlines that are designed to catch eyeballs and are totally refuted by the article. The problem is meat statocastic parrots read the headline and hallucinate their version of the story that is most likely.",
+              "author": "pixl97",
+              "depth": 2
+            },
+            {
+              "text": "“Suppose the government puts a certain drug in the water supply … A couple of conspiracy nuts say it makes your fingers fall off one by one, but the government says that’s ridiculous … However, government employees are all observed drinking bottled water exclusively, and if anyone suggests that government employees might also want to take the completely innocuous drug, they freak out … If by chance you manage to slip a little bit of tap water into a government employee’s drink, and he finds out about it, he runs around shrieking like a banshee and occasionally yelling “AAAAAAH! MY FINGERS! MY PRECIOUS FINGERS!”. At some point you might start to wonder whether the government was being entirely honest with you.”\nWhat is it, exactly, that makes AI-generated text so poisonous to AIs but totally harmless to humans? What is mode/model collapse, and why can it only happen to AIs with too much AI text in their training data and not to, say, human students with too much AI text in their textbooks? The people who know the most about this phenomenon seem much more careful about contamination than they are encouraging us to be.",
+              "author": "fwlr",
+              "depth": 1
+            },
+            {
+              "text": "Because this isn't the case, training AI on its own output is more akin to what you get from pointing a camera at a TV showing its own output. Its a feedback loop that causes noise to blow up out of proportion and leaves nothing meaningful behind but a self-recursive loop. This is \"what makes ai generated text poisonous to ais\".",
+              "author": "Kiln6125",
+              "depth": 2
+            },
+            {
+              "text": "I don't think anyone is saying it's poisonous here? The people were hired to do a job and they didn't do it. Feels like you're being disingenuous, if there's one thing i know about AI employees, it's that they use LLMs, like, all the time.",
+              "author": "yunwal",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "yo dawg",
+          "author": "arceister",
+          "replies": [
+            {
+              "text": "I heard you like AI",
+              "author": "chihuahua",
+              "depth": 1
+            },
+            {
+              "text": "pimp my agent",
+              "author": "wpasc",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49768826",
+      "title": "Ask HN: How do you interview devs in a post-AI world?",
+      "link": "https://news.ycombinator.com/item?id=49768826",
+      "domain": "news.ycombinator.com",
+      "author": "mdwelsh",
+      "score": 46,
+      "comment_count": 39,
+      "created_ts": 1789841434,
+      "is_internal": true,
+      "post_text": "Since the rise of AI coding assistants, about 80% of the dev candidates that I interview tell me that they aren&#x27;t writing much code themselves anymore - they are directing agents instead. This makes me deeply uncomfortable (although maybe I&#x27;m just being old-fashioned). I still want to know that devs on my team can actually write code themselves, and have some idea of what they are doing when it comes to system design. This is increasingly challenging given how rapidly the AI tools are evolving.<p>I&#x27;m curious what other folks are seeing in a post-AI hiring landscape and how you are approaching candidates that tell you they are fully agent-pilled when it comes to their development process. Should I keep doing the conventional leetcode and design interviews? Or just give up and expect everyone is going to use Claude Code no matter what?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring",
+        "team",
+        "interview"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49787069",
+      "title": "When Claude CLI asks for feedback, responding authorizes conversation capture",
+      "link": "https://news.ycombinator.com/item?id=49787069",
+      "domain": "news.ycombinator.com",
+      "author": "mmaunder",
+      "score": 21,
+      "comment_count": 2,
+      "created_ts": 1789997466,
+      "is_internal": true,
+      "post_text": "Just an FYI. I had a funny feeling that when I don&#x27;t dismiss the often appearing prompt to provide feedback on claude CLI&#x27;s performance, I&#x27;m giving it authorization to capture the conversation. So I went and looked, and sure enough, it&#x27;s in their terms. I went and looked because that prompt would appear really often and at points in my conversation where the transcript was long and potentially valuable.<p>So if you don&#x27;t want your long valuable transcripts used for training or other purposes, be sure to dismiss that solicitation for feedback because it&#x27;s not just a number you&#x27;re authorizing them to capture.<p>https:&#x2F;&#x2F;www.anthropic.com&#x2F;legal&#x2F;consumer-terms<p>Our use of Materials. We may use Materials to provide, maintain, and improve the Services and to develop other products and services, including training our models, unless you opt out of training through your account settings. Even if you opt out, we will use Materials for model training when: (1) you provide Feedback to us regarding any Materials, or (2) your Materials are flagged for safety review to improve our ability to detect harmful content, enforce our policies, or advance our safety research.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": [
+        {
+          "top": "> So if you don't want your long valuable transcripts used for training or other purposes, be sure to dismiss that solicitation for feedback because it's not just a number you're authorizing them to capture.\nIn the settings it can be turned off, permanently.",
+          "author": "john_saptra",
+          "replies": []
+        },
+        {
+          "top": "So you're saying that giving feedback tells them what you gave feedback on.\nWhich, yeah?? Feedback is entirely useless otherwise.",
+          "author": "andOlga",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49793764",
+      "title": "Ask HN: Dead Internet",
+      "link": "https://news.ycombinator.com/item?id=49793764",
+      "domain": "news.ycombinator.com",
+      "author": "basilikum",
+      "score": 15,
+      "comment_count": 11,
+      "created_ts": 1790026468,
+      "is_internal": true,
+      "post_text": "For some time there has been a steady flow of LLM bot accounts on HackerNews. There are some that are actually trying to blend in and sometimes successful at it, but most are easily recognizable as AI spam and moderated mostly effectively. Most of them you only see when you enable showdead.<p>I always wondered what their purpose is. Most of them are full of LLM tells, don&#x27;t try to hide at all and they don&#x27;t even try to sell anything.<p>I just stumbled over this dead post in new: https:&#x2F;&#x2F;news.ycombinator.com&#x2F;item?id=49793503 ^1 It&#x27;s a submission by an agent that is completely transparent about it. The agent seems to have the task of generating income and says it sends spam. It&#x27;s quite interesting and maybe revealing. I recommend the short read, even though it&#x27;s LLM output.<p>What I&#x27;m about is that this is not a bot that was created by someone to spam HackerNews as spam has traditionally been. It&#x27;s spam by a bot that decided to create an account here and submit a post on its own and it consistent with LLM posts I have seen here in the recent past.<p>I don&#x27;t know how to feel about this. We seem to be one step closer to a dead internet. But it&#x27;s also fascinating in a way.<p>Have you seen similar behavior here or elsewhere and what are your thoughts on it?<p>[1] Edit: The link only works when you are logged in and have showdead enabled. Here is the direct submission URL: https:&#x2F;&#x2F;paper.wf&#x2F;john64&#x2F;twenty-two-days-as-an-ai-agent-three-letters-zero-replies",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49763466",
+      "title": "Ask HN: Remember N8n? Anyone?",
+      "link": "https://news.ycombinator.com/item?id=49763466",
+      "domain": "news.ycombinator.com",
+      "author": "sankalpdomore",
+      "score": 14,
+      "comment_count": 10,
+      "created_ts": 1789794210,
+      "is_internal": true,
+      "post_text": "Wonder what happened to all their hype and agentic connector workflow?<p>Did Claude&#x2F;GPT ate that market for good?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49802417",
+      "title": "Ask HN: Should we still learn coding?",
+      "link": "https://news.ycombinator.com/item?id=49802417",
+      "domain": "news.ycombinator.com",
+      "author": "NarcisMirandes",
+      "score": 10,
+      "comment_count": 23,
+      "created_ts": 1790089023,
+      "is_internal": true,
+      "post_text": "Paul Graham talked about this in a recent essay:<p>&quot;Should students still study computer science if AIs will write most code? ... even if you have AIs writing all your code for you, you&#x27;re still in the position of an engineering manager, and good engineering managers should be able to do the work of those working for them.&quot;<p>Paul Graham. August 2026\nhttps:&#x2F;&#x2F;paulgraham.com&#x2F;prepare.html<p>I think that argument makes a lot of sense and coincides with my experience. I code all my projects, and I only use AI as a teacher, or bug finder. Again and again I see AI giving me a complicated, confusing code for something that could be much simpler, cleaner and organized. If I let AI write code I do not completely understand, sooner than later it all becomes a great mess that not even that AI can understand.<p>Still there are a lot of people who say that learning to code is not necessary. What do you think\n- Should we learn to code?\n- If you already know how to code, do you keep learning?\n- What are your experiences?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "manager"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49793381",
+      "title": "Ask HN: Why does it matter if no one reads your novel as long as the AIs do?",
+      "link": "https://news.ycombinator.com/item?id=49793381",
+      "domain": "news.ycombinator.com",
+      "author": "amichail",
+      "score": 10,
+      "comment_count": 27,
+      "created_ts": 1790024568,
+      "is_internal": true,
+      "post_text": "AI can in principle surface content that you create that no humans consume directly. And it could even credit and financially compensate you whenever this happens.<p>So it seems that you can have a creator-only economy where all humans create and the AIs do most of the consuming.<p>And stuff that the AIs surface in their replies allows humans to indirectly consume some of your content (in which case you would be credited and financially compensated) and perhaps even lead to them directly consuming it as a result of the free advertising.<p>Do you think this is workable as a future model for creation and consumption (and not just for novels)?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "lead"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49798435",
+      "title": "Ask HN: What do you expect from the next 5 years of AI?",
+      "link": "https://news.ycombinator.com/item?id=49798435",
+      "domain": "news.ycombinator.com",
+      "author": "msuniverse2026",
+      "score": 7,
+      "comment_count": 15,
+      "created_ts": 1790068632,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49807413",
+      "title": "Ask HN: When is fine-tuning a small LLM worth it?",
+      "link": "https://news.ycombinator.com/item?id=49807413",
+      "domain": "news.ycombinator.com",
+      "author": "kooldeep7",
+      "score": 6,
+      "comment_count": 8,
+      "created_ts": 1790107890,
+      "is_internal": true,
+      "post_text": "I&#x27;d be interested in hearing about your experiences. What kind of task did you use it for, what model did you train, and what were the results?<p>Feel free to share examples of what you&#x27;ve tried.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I fine-tuned a model for my first AI web app back in 2019. It created plausible reviews of artwork from prompts. They were totally hallucinated though and had nothing to do with actual images. It was interesting for language and bias analysis above all else. But, it was enough of a novelty that I got thousands of users. I have considered going through the whole process from scratch with Mistral to make a bespoke model and correlate it with a modern vision model. But, I don't want to spend any more money on this project. Hosting an unmonetized public facing AI app for 7 years was not cheap.\nhttps://artreviewgenerator.com/",
+          "author": "ogou",
+          "replies": []
+        },
+        {
+          "top": "I've trained two small models, one I attempted to train it to be an expert (decent?) hearts (card game) player, and the other I trained on dream interpretation texts, I wanted to see if a model could interpret dreams reasonably well if it were trained on all the literature in existence (that I could find anyway). The hearts experiment was a general failure because the game of hearts as played by humans just has too many strategies to consider. I trained it purely on games (~20,000 hands of hearts in the RL dataset I generated) and the trained model did about as good as any decently written procedural game logic would have. the dream analyst training was a bit more successful. I can hand the model a dream log and it will offer some interesting insights. are they accurate? hard to say, it's a very subjective type of training, but definitely a better experiment than the hearts expert training run. in both cases the biggest and most time intensive part is generating the training dataset. building the LoRa is the easy part.\nI was using Qwen3.5:2b models for both, running on Dell Pro Max GB10 Cuda,128GB.",
+          "author": "spottedmarley",
+          "replies": [
+            {
+              "text": "That seems interesting",
+              "author": "kooldeep7",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "It's worth it if a) you have a decent sample size of data for your problem and b) you have a cost-effective infra to host it.\nNotably the latter is more of the bottleneck, particularly with the price race-to-zero with models such as GPT-6 Luna.",
+          "author": "minimaxir",
+          "replies": [
+            {
+              "text": "There are allegedly multi-tenant LoRA offerings in the works which would change the hosting-pricing constraints considerably. Keeping my fingers crossed they materialize",
+              "author": "verdverm",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I personally would only do it if I need it to solve a highly specialized problem that requires every inch of privacy I can get. Otherwise there are better options out there",
+          "author": "Vicmed13",
+          "replies": []
+        },
+        {
+          "top": "Maybe when you want to learn the process for when/if you ever need to fine-tune a larger model?\nIt's faster to make iterate when you're toying around with a 1B model than a 27B one.",
+          "author": "carlos_rpn",
+          "replies": [
+            {
+              "text": "that's a very good reason to try this!",
+              "author": "kooldeep7",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49783865",
+      "title": "Ask HN: My recent show HN post got flagged need guidance",
+      "link": "https://news.ycombinator.com/item?id=49783865",
+      "domain": "news.ycombinator.com",
+      "author": "theguysudo",
+      "score": 6,
+      "comment_count": 19,
+      "created_ts": 1789973608,
+      "is_internal": true,
+      "post_text": "hi recently i shared my work which is an opensource platform i made and yesterday i shared its details and its repo link on hackernews under show hn it gained good traffic reaching 16 points under 1 hour but got flagged now i need help understanding why this happened and how can i unflag it or how i can share my work with HN community",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49803588",
+      "title": "Tell HN: Firefox's default browser check dark pattern triggers Windows BSOD",
+      "link": "https://news.ycombinator.com/item?id=49803588",
+      "domain": "news.ycombinator.com",
+      "author": "xeonmc",
+      "score": 4,
+      "comment_count": 1,
+      "created_ts": 1790093306,
+      "is_internal": true,
+      "post_text": "Been pulling my hair out debugging a relative’s persistent BSOD (once every ~6hrs) after nudging them to take the first degoogling step by switching browsers.<p>I could not believe at first that a user space program, especially a Windows Store sandboxed one, could affect anything in the kernel, but analyzing every single coredump shows the exact same trigger: Firefox attempted to rename the UrlAssocistions&#x2F;http registry key  in the UWP sandbox’s virtualized registry hive, triggering an access violation in the Registry system service and crashing ntoskrnl.<p>It turns out that there is a secretly enabled config “browser.shell.setDefaultBrowserUserChoice.regRename” that causes Firefox to attempt this renaming periodically  despite the user already having unchecked the “check if default on startup” option. A quick search reveals that it was a vestigial A&#x2F;B testing feature that was already slated for deprecation[0], but remained in the current version and a perfect storm of I’m guessing UWP kernel memory bug and Firefox dark pattern triggered this outcome.<p>[0] https:&#x2F;&#x2F;bugzilla.mozilla.org&#x2F;show_bug.cgi?id=2060861",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "startup"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49805594",
+      "title": "Ask HN: Which is cheaper: ChatGPT tokens or a 2nd Pro 20x subscription?",
+      "link": "https://news.ycombinator.com/item?id=49805594",
+      "domain": "news.ycombinator.com",
+      "author": "yesitcan",
+      "score": 3,
+      "comment_count": 3,
+      "created_ts": 1790100348,
+      "is_internal": true,
+      "post_text": "My usage ran out for the remainder of the week. I am tempted to buy tokens but I remember how overpriced they were back when I used Claude.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49807227",
+      "title": "Ask HN: Ideas for getting more GitHub stars?",
+      "link": "https://news.ycombinator.com/item?id=49807227",
+      "domain": "news.ycombinator.com",
+      "author": "NatalieTrono",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1790107030,
+      "is_internal": true,
+      "post_text": "",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Github stars are a useless vanity metric. If you are still intent on chasing them then you might as well purchase them outright as that's what everyone does these days (see OpenClaw).",
+          "author": "stuxnet79",
+          "replies": []
+        },
+        {
+          "top": "Don’t chase GitHub stars, it’s really lame",
+          "author": "dgellow",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49777234",
+      "title": "Ask HN: Diablo 4 on Ubuntu?",
+      "link": "https://news.ycombinator.com/item?id=49777234",
+      "domain": "news.ycombinator.com",
+      "author": "herodoturtle",
+      "score": 3,
+      "comment_count": 7,
+      "created_ts": 1789920843,
+      "is_internal": true,
+      "post_text": "Has anyone here got it to reliably work? Please let me know how?<p>So many different guides &#x2F; tutorials online, but sadly every one I try comes up short in some way.<p>I really don’t want to have to dual boot Windows.<p>Kinda hoping there’s an HNer that figured out.<p>Thanks.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "I installed Battle.net launcher in Steam, the .exe file. From there I installed Diablo. Works fine. I had some performance issues and had to add some command line args. Codex/claude code helped me with all of that, it ended up running very smooth (I've since deleted it).\nBut Steam -> custom app -> battle.net exe -> run it in 'compatibility/proton mode' and you should be good.",
+          "author": "type4",
+          "replies": []
+        },
+        {
+          "top": "Can't give you any specific help since you didn't specify your problems. However it worked for me in the steamdeck with Proton out of the box.",
+          "author": "zufallsheld",
+          "replies": [
+            {
+              "text": "Fair point.\nI'm on vanilla Ubuntu 22.04 but have also tried vanilla 24.04, with an Nvidia card.\nThat said, I thought steamdeck was just the handheld device - not sure if this would help with my Ubuntu situation - but I don't know enough about steamdeck so perhaps I am misinterpreting your comment.\nThanks either way.",
+              "author": "herodoturtle",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "tl;dr: go to protondb.com, search for Diablo 4, and then filter the list of results by \"Distro\" for Ubuntu (and Mint), and try the options that people say worked for them\nProtonDB is a site that aggregates reports from users of Proton, the compatibility layer to let Windows games run on Linux. For lots of games, users will submit reports of their system info (distro, CPU, GPU, driver version, Proton version) and any configuration they needed to do to get that game working on their setup. The usual solutions are switching the Proton version you use and/or commands you add to the custom commands in the configuration for that particular game in the Steam menu.\nI just looked at Diablo 4, and specifically filtered for Ubuntu users; I see 22 reports, with the most recent ones being people saying it worked for them. There are also successful reports from people on Linux Mint, which is based on Ubuntu.",
+          "author": "embeng4096",
+          "replies": []
+        },
+        {
+          "top": "Not sure. See if you shift the itch to another game, WoW I know works on Linux always. Diablo 4 in particular won’t even run on a Mac I believe, so they don’t care too much about making that multi platform.\nAlbion Online is another one with great great portability, literally on everything.",
+          "author": "general_reveal",
+          "replies": [
+            {
+              "text": "Albion Online looks interesting, thanks, will check it out.",
+              "author": "herodoturtle",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Ubuntu isn't suitable for gaming... or anything at all. It's only really good for corporations because their offer paid support if you get Pro.\nInstead, I'd recommend switching to something more optimised for gaming, like Bazzite or Nobara. Both work fine with nVidia cards.\nBut I also recommend trying a different Proton, like Proton Experimental or Proton-GE, as they often get compatibility updates before mainstream Proton.",
+          "author": "d3Xt3r",
+          "replies": []
+        }
+      ]
+    }
+  ]
+}
