@@ -1,0 +1,811 @@
+{
+  "scraped_date": "2026-09-26",
+  "source": "hacker_news",
+  "total_scraped": 30,
+  "nontech_count": 23,
+  "posts": [
+    {
+      "id": "49786609",
+      "title": "Ask HN: Is it impossible to disable Siri on macOS 27?",
+      "link": "https://news.ycombinator.com/item?id=49786609",
+      "domain": "news.ycombinator.com",
+      "author": "semidror",
+      "score": 153,
+      "comment_count": 87,
+      "created_ts": 1789994825,
+      "is_internal": true,
+      "post_text": "I disabled Siri in the Settings app, and then further disabled Siri and its extensions in Settings &gt; Screen Time.<p>Next, I disabled all Siri-related and Apple Intelligence-related services as per https:&#x2F;&#x2F;github.com&#x2F;OleksandrKrupko&#x2F;mac-os-debloat<p>But after restarting, I could still see a &quot;Siri&quot; process running in Activity Monitor. Upon further inspection, I found that it is the &quot;Siri AI.app&quot;.<p>These &quot;features&quot;, together with Apple&#x27;s Personal Context sound very similar to Microsoft&#x27;s Recall.<p>Does anyone have the same experience? Is it really impossible to fully turn off Siri, Siri AI, Apple Intelligence and all related services and features on macOS 27?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "You should make use of Cunningham's Law[1]. Instead of posting an \"Ask HN\" asking if it's impossible to disable, post a \"Show HN\" claiming that it is impossible to disable.\nThen people will flock to tell you how it can be disabled by XYZ.\n[1] \nhttps://meta.wikimedia.org/wiki/Cunningham%27s_Law",
+          "author": "jodrellblank",
+          "replies": [
+            {
+              "text": "Great advice. I should definitely heed this more often.",
+              "author": "anguishe",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "Just as a note, from what I see the problem is not only the privacy implications but also that the local AI comes with a baggage amounting to 10% of the space on the base mac models. Which is already severely limited.",
+          "author": "nottorp",
+          "replies": [
+            {
+              "text": "I have not found the local/remote hand off to be very reliable either, so tasks that used to be almost instantaneous for Siri are now spinning to the point where I assume they failed. A simple 2 minute timer took almost 30 seconds to set the other day.",
+              "author": "threetonesun",
+              "depth": 1
+            },
+            {
+              "text": "You're brave. I'm still on Sequoia.",
+              "author": "nottorp",
+              "depth": 2
+            },
+            {
+              "text": "Same here. The new macOS'es always seem to add more restrictions, more bloat, etc nowadays. I was thinking of upgrading the other day; glad I didn't.",
+              "author": "elcritch",
+              "depth": 3
+            },
+            {
+              "text": "I'm still on Mojave (10.14!) and it's just brilliant compared to the more modern MacOS. There's a Firefox fork called Momiji (\nhttps://github.com/aobaharuki2005/momiji-web-browser\n) which backports recent Firefox to very much older macOSes, and basically I still use 32 bit x86 applications sometimes.\nMy next laptop computer (which is sorely overdue) will be Linux with macOS in a VM.\nA pity, because Keynote is great.",
+              "author": "azalemeth",
+              "depth": 3
+            },
+            {
+              "text": "considering security i think you are the one who is brave but i am biassed so dont worry more than u already do xD",
+              "author": "saidnooneever",
+              "depth": 3
+            }
+          ]
+        },
+        {
+          "top": "The process that shows the Spotlight UI is now the one called \"Siri\", previously it was called \"Spotlight\".",
+          "author": "galad87",
+          "replies": [
+            {
+              "text": "Thanks, that's an interesting observation! When I double-clicked on the \"Siri\" process in Activity Monitor, I saw that it's an app called \"Siri AI\".\nIf the \"Siri AI\" app has replaced Spotlight, then I wonder if Apple keeps building \"personal context\" despite Siri and Apple Intelligence being disabled.\nIt for sure doesn't sound well to disable Siri and still see a \"Siri\" process.",
+              "author": "semidror",
+              "depth": 1
+            },
+            {
+              "text": "This sounds similar to Microsoft and the start menu. A few years ago I went to extreme lengths to disable cortana (powershell guid uninstall). This invisibly and inexplicably disabled updates to the start menu search feature. The index remained the feature worked, it just never got updated again.  No amount of manually reindexing the disk helped. Reinstalling cortana got it working.",
+              "author": "cosmotic",
+              "depth": 1
+            },
+            {
+              "text": "That makes sense. Sending SIGKILL to that process causes the spotlight UI in the menu bar to flash.",
+              "author": "kccqzy",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I've been daily-driving a mac for 10 years now and I've only ever triggered Siri by accident.  I do use it pretty regularly on the phone, mostly to set timers, get directions, and call contacts, but I've been well trained over these years to not expect it to be capable of more than that.",
+          "author": "chuckadams",
+          "replies": [
+            {
+              "text": "I remember it being pretty useful on phone. Now, it can't even \"like\" a song when I'm driving and I want it to add a song to my Spotify favourites list. It could do a few months ago, now it refuses with \"sorry there was a problem with the app\".\nI've had to resort to asking it to take a screenshot so I can go find the song later. Three quarters of the time it never saves the screenshot though, despite seeing the screen flash out of the corner of my eye.",
+              "author": "lloydatkinson",
+              "depth": 1
+            },
+            {
+              "text": "Gemini is similarly a step back. Google Assistant could hear me speak up and ask it to like or skip a song being played, driving or otherwise. It would quickly beep at me, pause the music/etc, accept input, process, then finish and resume the music (or skip to next track if asked).\nNow it takes 10-15 seconds to start after a voice command, won't audibly alert or even stop music to take voice input, and usually fails to hear anything then quit out. Half the time it does that it then pauses the music and quits...\nWith Tidal Gemini can't do anything using voice commands. Maybe SOTA models can help those on the bleeding edge, but 95% of tech users just want it to work and be cheap enough. Apple figured this out a long time ago but can't help itself with being too clever.",
+              "author": "selicos",
+              "depth": 2
+            },
+            {
+              "text": "> Gemini is similarly a step back. Google Assistant could hear me speak up and ask it to like or skip a song being played, driving or otherwise. It would quickly beep at me, pause the music/etc, accept input, process, then finish and resume the music (or skip to next track if asked).\nYeah I used the old Assistant regularly, but after the Gemini update it started refusing to set a timer for me, so I churned.",
+              "author": "disgruntledphd2",
+              "depth": 3
+            },
+            {
+              "text": "I've been using an iPhone 12 Mini since however long it's been out, never used Siri intentionally either, would prefer to disable it fully, but CarPlay for some reason cannot be used without Siri, even though I never use Siri. I consider it 1st party malware at this point.",
+              "author": "embedding-shape",
+              "depth": 1
+            },
+            {
+              "text": "It’s because they’d prefer you interacted with CarPlay with voice rather than looking away from the road.\nAn admirable objective, but given how “well” siri has worked in the past, an unrealistic one.  We’ll see if 27 is a significant improvement.  If I had to bet, I’d bet no, at least for the next year.",
+              "author": "gumby",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "In Screen Time -> Content and Privacy, there's a setting to switch Siri to 'Siri Classic' which strips out the Apple Intelligence-backed behavior specifically.",
+          "author": "Nata_Elisym",
+          "replies": [
+            {
+              "text": "Instead of \"Siri Classic\", I selected the \"Don’t Allow Siri\" option, but it didn't help. The \"Siri\" (Siri AI.app) process keeps running regardless.",
+              "author": "semidror",
+              "depth": 1
+            },
+            {
+              "text": "Sounds like Apple hired some of the Microsoft project managers.",
+              "author": "pixl97",
+              "depth": 2
+            },
+            {
+              "text": "Why would you say that? Can't it be a genuine Apple product?",
+              "author": "alexaholic",
+              "depth": 3
+            },
+            {
+              "text": "It's a joke. Microsoft has been ignoring user preferences and doing what is good for Microsoft for many years now, and the parent poster was implying that Apple is now doing the same kind of bad behavior.",
+              "author": "bigstrat2003",
+              "depth": 4
+            },
+            {
+              "text": "I disagree with what you say, so remind me later.",
+              "author": "card_zero",
+              "depth": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49848955",
+      "title": "Ask HN: Who's still keeping a DOS machine up because the business depends on it?",
+      "link": "https://news.ycombinator.com/item?id=49848955",
+      "domain": "news.ycombinator.com",
+      "author": "mlaux",
+      "score": 105,
+      "comment_count": 80,
+      "created_ts": 1790365075,
+      "is_internal": true,
+      "post_text": "Do you currently work with or know anyone who is still using:<p>* dBase&#x2F;Clipper&#x2F;CLARION&#x2F;Paradox&#x2F;other DOS RAD environments on period hardware to run business processes?<p>* CNC mills&#x2F;spectrometers&#x2F;microscopes&#x2F;other industrial instruments controlled by ISA cards (either bespoke or standards like GPIB)?<p>* Anything with a parallel port dongle?<p>If so, I&#x27;d be very interested in hearing your experience here, or feel free to send me an email at the address in my profile. I&#x27;m not trying to sell anything, just doing some research for an idea around keeping these going on modern hardware.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "A certain nuclear power plant had a Windows NT 4.0 machine running as late as 2007. The reason is interesting.\nThe machine's purpose was to report status of the control rods that mitigate nuclear reactions. Basically, \"are the rods inserted, and if so, how many / how far?\". I want to emphasize that this was reporting only, NOT control.\nThe original software was written back in the 80's, when the plant was originally commissioned, for AmigaOS. Of course, it's hard to buy Amigas anymore, and the original one died long ago (nobody remembers when).\nSo in the mid '90s, the utility purchased an AmigaOS emulator that ran on Windows NT 4.0, which was current at the time. The emulator (IIRC) was developed by a firm in the UK. The firm went out of business sometime in the late '90s. The control rod monitoring software ran under this emulator on top of NT4.\nWindows NT 4.0 was the last OS to allow the emulation software direct access to the physical hardware that produced the status signal. Later versions of Windows abstracted the hardware access away, and the monitoring software broke. Because the emulation company had gone belly up, there was no way to fix the incompatibility.\nSo the utility had a choice: get new hardware/software certified (by NRC?), or keep doing what they were doing with the software (and hardware) that they had. They chose the latter.\nSo this is how, in 2007, during a tour of the facility, I stumbled across a Pentium 1 system running an AmigaOS emulator on Windows NT 4.0 that was responsible for displaying the status of the control rods of a nuclear power plant.\nSpare hardware for this setup was purchased off of eBay and stocked on an adjacent shelf.",
+          "author": "freeli",
+          "replies": [
+            {
+              "text": "Was this status indicator simple vertical bars that were black and white and displayed on an old CRT Monitor? \nAlmost looks like black and white terminal vertical bars (like Alsamixer)?",
+              "author": "slicktux",
+              "depth": 1
+            },
+            {
+              "text": "A friend works for an airline as a flight simulator tech.  Their entire software stack, including the compiler and OS, is FAA-certified.\nThen their ancient Honeywell(?) mainframes reached end-of-life they scouted for compatible hardware, of which there was none.  The cost of certifying new software, plus the time involved, was astronomical.  So, after consulting with the FAA, they paid a hardware company to clone the ancient mainframes in modern silicon.  The FAA signed off on it, and they had all-new computers - much smaller than the originals - running the old stack.",
+              "author": "Froedlich",
+              "depth": 1
+            },
+            {
+              "text": "It's _very_ hard to believe some company to simply \"clone the mainframe\" into chip. Mind sharing any link to this effort?",
+              "author": "zx8080",
+              "depth": 2
+            },
+            {
+              "text": "When Xerox established PARC, they asked the assembled scientists what computer they wanted. The majority view was a DEC PDP-10 KA10, with the BBN memory management unit that let it run Tenex (the ancestor of DEC TOPS-20). Xerox couldn't really buy a competitor's mainframe, so they built MAXC (maximum access computer), which was a complete emulation of the Tenex machines.",
+              "author": "vincent-manis",
+              "depth": 3
+            },
+            {
+              "text": "That's interesting. That means there are fewer checks for hardware than software?",
+              "author": "betaby",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "dBase, MS-DOS 3.x, not using industrial anything. And as its a front of house tally machine, there's literally zero incentive to ever upgrade it. Downtime is measured in the yearly reboot, but there are non-operational business hours, so everything is just scheduled around that.\nWe've already got it running on modern hardware. It's running under qemu. And the dBase stuff gets ripped out and sent to a REST server for broad monitoring and so on.\nWe... Have one small oddity? There's a tape backup system, that throws everything through the soundcard. (Sound Blaster only.)\nWould be nice if onboarders didn't see dBase and just throw everything at AI instead of actually learning the skills they'll need when data migrations happen. But that's a people problem that can't be solved with tech.",
+          "author": "shakna",
+          "replies": []
+        },
+        {
+          "top": "Not DOS, but I sold a '99 HP computer running win98 last month, to replace an identical failed system. It was used to control a 50 meters long custom industrial paint booth line for special equipments (like 57\" rims). Luckily, their HDD was OK. Urged them to make a few sector-to-sector copies of it on a few spare HDD. This $100 sell surely has prevented this business from massive bills or even going bankrupt in the meantime from production loss.",
+          "author": "Felger",
+          "replies": []
+        },
+        {
+          "top": "A company I used to work at still ships a piece of hardware with an Intel 186 microcontroller in it. The compilers are 16-bit DOS applications and the tool to program the DIP packages with the program was also a DOS application. I’m not sure what the physical interface between the programmer and computer was.",
+          "author": "MarkSweep",
+          "replies": []
+        },
+        {
+          "top": "This thread reminds me that there is a \nhuge\n benefit to using a super common OS+hardware.\nIn 30 years time it will all be outdated...   But emulators will exist and a business process in 2050 that still depended on something I built today could still run with minimal effort or risk.",
+          "author": "londons_explore",
+          "replies": [
+            {
+              "text": "If you have the source code it's going to be a lot easier to continue.",
+              "author": "chr15m",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49787069",
+      "title": "When Claude CLI asks for feedback, responding authorizes conversation capture",
+      "link": "https://news.ycombinator.com/item?id=49787069",
+      "domain": "news.ycombinator.com",
+      "author": "mmaunder",
+      "score": 25,
+      "comment_count": 3,
+      "created_ts": 1789997466,
+      "is_internal": true,
+      "post_text": "Just an FYI. I had a funny feeling that when I don&#x27;t dismiss the often appearing prompt to provide feedback on claude CLI&#x27;s performance, I&#x27;m giving it authorization to capture the conversation. So I went and looked, and sure enough, it&#x27;s in their terms. I went and looked because that prompt would appear really often and at points in my conversation where the transcript was long and potentially valuable.<p>So if you don&#x27;t want your long valuable transcripts used for training or other purposes, be sure to dismiss that solicitation for feedback because it&#x27;s not just a number you&#x27;re authorizing them to capture.<p>https:&#x2F;&#x2F;www.anthropic.com&#x2F;legal&#x2F;consumer-terms<p>Our use of Materials. We may use Materials to provide, maintain, and improve the Services and to develop other products and services, including training our models, unless you opt out of training through your account settings. Even if you opt out, we will use Materials for model training when: (1) you provide Feedback to us regarding any Materials, or (2) your Materials are flagged for safety review to improve our ability to detect harmful content, enforce our policies, or advance our safety research.",
+      "is_ask_hn": false,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49816567",
+      "title": "Ask HN: What job boards are good these days?",
+      "link": "https://news.ycombinator.com/item?id=49816567",
+      "domain": "news.ycombinator.com",
+      "author": "phendrenad2",
+      "score": 22,
+      "comment_count": 16,
+      "created_ts": 1790173031,
+      "is_internal": true,
+      "post_text": "I randomly opened LinkedIn, which has, for over a decade, been my go-to for job listings. Today, something was off. Search didn&#x27;t work. The icons were overlapping with the search box. Clearly a product in decline, so what job sites are up and coming? (Besides the &quot;Who&#x27;s Hiring&quot; thread, of course! :-]",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "hiring"
+      ],
+      "comments": [
+        {
+          "top": "I like \nhttps://hiring.cafe\n (no affiliation) because a builder here made it. ymmv.\nhttps://hn.algolia.com/?dateRange=all&page=0&prefix=false&qu...",
+          "author": "toomuchtodo",
+          "replies": [
+            {
+              "text": "Thanks for the recommendation, hiring.cafe seems pretty good on first look and just made an account. I like how their mission is to \"kill\" indeed and linkedin. Had to revisit this thread after seeing it yesterday to refresh my memory after initially going to \"coffeejobs.com\" which is... not the correct destination.",
+              "author": "dieselgate",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "YC's jobs page is pretty good indicator of understanding who is not really hiring but advertising.",
+          "author": "ezulabs",
+          "replies": []
+        },
+        {
+          "top": "> The icons were overlapping with the search box. Clearly a product in decline\nIsn't that an exaggeration? Linkedin search works fine for me. I dislike all the other social media crap of linkedin, but I have found all my jobs in the last 16 years via linkedin.",
+          "author": "dakiol",
+          "replies": []
+        },
+        {
+          "top": "To be honest job boards have become a joke. Like they post jobs there you apply and either you don't hear at all or a rejection mail and this happens everywhere on each board.",
+          "author": "rearview",
+          "replies": []
+        },
+        {
+          "top": "Working with good recruiters is my best advice now. They will actually talk to hiring managers and good corps will pay money for good people.\nIf you recieve any recruiter inbound, I would take their meeting and then let them know your goal of getting placed at whatever type of role youre looking for.",
+          "author": "twosdai",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49835866",
+      "title": "Ask HN: Any nerds out there who've read a lot of research papers?",
+      "link": "https://news.ycombinator.com/item?id=49835866",
+      "domain": "news.ycombinator.com",
+      "author": "shriy-singh",
+      "score": 21,
+      "comment_count": 19,
+      "created_ts": 1790278984,
+      "is_internal": true,
+      "post_text": "Which are the most memorable abstracts you have read? I know I am a jackass who usually vibecodes my way through assignments but even I don&#x27;t want to write a cookie-cutter intro for my paper. I wanna write something that stays with the reader. What paper has stuck with you, what made it memorable?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "This is the most memorable abstract I've ever read.\nSmith, Gordon C. S., and Jill P. Pell. 2003. “Parachute Use to Prevent Death and Major Trauma Related to Gravitational Challenge: Systematic Review of Randomised Controlled Trials.” BMJ 327 (7429): 1459–61. \nhttps://doi.org/10.1136/bmj.327.7429.1459\n.\nObjectives: To determine whether parachutes are effective in preventing major trauma related to gravitational challenge.\nDesign: Systematic review of randomised controlled trials.\nData sources: Medline, Web of Science, Embase, and the Cochrane Library databases; appropriate internet sites and citation lists.\nStudy selection: Studies showing the effects of using a parachute during free fall.\nMain outcome measure: Death or major trauma, defined as an injury severity score > 15.\nResults: We were unable to identify any randomised controlled trials of parachute intervention.\nConclusions: As with many interventions intended to prevent ill health, the effectiveness of parachutes has not been subjected to rigorous evaluation by using randomised controlled trials. Advocates of evidence based medicine have criticised the adoption of interventions evaluated by using only observational data. We think that everyone might benefit if the most radical protagonists of evidence based medicine organised and participated in a double blind, randomised, placebo controlled, crossover trial of the parachute.",
+          "author": "capnrefsmmat",
+          "replies": []
+        },
+        {
+          "top": "I'm well into the thousands of research papers read. Understood a fair fraction of them. Couldn't tell you what the abstract was for any. The memorable parts are the ideas and the results within the paper.\nSome titles stick. \"Attention is all you need\". \"SSA is functional programming\". Plus more people see the title than read the abstract. Only one I got to name myself was \"Shared Memory Remote Procedure Calls\" which I now realise is in exactly the same theme of given the title, you don't need the abstract or the contents.",
+          "author": "JonChesterfield",
+          "replies": [
+            {
+              "text": "Gotta have a look at yours! And I remember the name \"Attention is all you need\" too!",
+              "author": "shriy-singh",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "An abstract and an introduction are two different things. For me, as a reader, the main role of the abstract is to help me to decide whether to even look at the rest of the paper, let alone read it. I want to know what is in the paper that I will not find in other papers that are competing for my time. Everything should be very clear: the context, the main research contributions and/or findings, novel aspects of the approach, limitations; plus any other information that in the author's view should motivate me to read the paper. Then if I do read the paper, there should not be any surprises: the content that the abstract promised should be present and, ideally, all of the valuable content in the paper should have been advertised in the abstract.\nDifferent fields use different standard forms or styles for abstracts. If you have not already done so you can get a feel for this by looking at a random sample of the top 100 most-cited papers in your field (or your target conferences, journals, arxiv categories) and quickly compare to top 100 in a couple of disparate fields (e.g. biochemistry, economics, anthropology, mathematics).\nOf course, there are good reasons to read a paper besides the quality and content of the abstract. Consequently, there are well known papers with non-standard abstracts. I recommend mastering the basics first.",
+          "author": "RossBencina",
+          "replies": []
+        },
+        {
+          "top": "Abstracts are not meant to be entertaining or memorable; they're meant to be highly functional. When you're reading a billion papers, a good abstract is  important because it lets you get the gist of the paper and whether or not it's relevant to what you're researching in about 10 seconds. Make your abstract extremely clear and well structured about what you did, why, and your biggest finding, and the worry about giving it a good hook.",
+          "author": "royal__",
+          "replies": []
+        },
+        {
+          "top": "> I am a jackass who usually vibecodes my way through assignments but even I don't want to write a cookie-cutter intro for my paper. I wanna write something that stays with the reader\nI don't have any examples to offer; but you may be missing your calling in Marketing",
+          "author": "1659447091",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49833212",
+      "title": "Ask HN: Hypothesis: Cellular providers are deprioritizing voice calls?",
+      "link": "https://news.ycombinator.com/item?id=49833212",
+      "domain": "news.ycombinator.com",
+      "author": "tkdb",
+      "score": 17,
+      "comment_count": 36,
+      "created_ts": 1790267960,
+      "is_internal": true,
+      "post_text": "I switched from Verizon to T-Mobile, specifically because there were too many silent missed calls. Silent meaning my device never showed I had a missed call.<p>This was a pattern across more than a year, spanning multiple devices (all iphones). It happens on both wifi and cellular. It happens with wifi calling enabled and disabled. It happens with people I call every day, in my address book, as well as new contacts (say someone I met who called to follow up). I called support, searched online, reset network settings multiple times at different points months apart.<p>After being on T-Mobile for about a year, the degraded service is about the same as Verizon. Every week, more than once, people call me, my phone never rings, and I never see a missed call on my device. It happens at home, at work, on work trips in different states.<p>I still get missed calls regularly and my device shows I missed the call. It seems like a certain % of callers get my VM, but I never know the call attempt happened. The missed calls never appear later on my phone (like a late VM or text deliver, coming minutes or sometimes hours after it was sent).<p>Hypothesis: A growing number of cellular subscribers don&#x27;t care enough or use voice calls as much, so (regardless of motive&#x2F;feelings) cellular providers have found they can simply reduce quality without losing customers.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "meaning"
+      ],
+      "comments": [
+        {
+          "top": ">Hypothesis: A growing number of cellular subscribers don't care enough or use voice calls as much, so (regardless of motive/feelings) cellular providers have found they can simply reduce quality without losing customers.\nThis makes absolutely zero sense because calls take negligible bandwidth, especially with VoLTE. Not to mention the whole premise isn't even internally consistent. \"People don't use it enough, so let's try to save money by making them use it even less! But only randomly and at the margins, so we still have to keep everything running!\"",
+          "author": "gruez",
+          "replies": []
+        },
+        {
+          "top": "They should remove unlimited voice calls and make everyone using the phone network pay by the minute. It would eliminate robodialing instantly.",
+          "author": "SnorkelTan",
+          "replies": [
+            {
+              "text": "telemarketers were a thing before cell phones and they weren't just calling homes in their local calling area. The economics must have made it worth their phone bills. I'm also not a fan of punishing everyone to make things a little harder for a small number of assholes.",
+              "author": "autoexec",
+              "depth": 1
+            },
+            {
+              "text": "I wish they would bring back prepaid/pay as you go service. I want a number where I can receive/send an occasional call or text without having to pay a monthly contract.",
+              "author": "what",
+              "depth": 1
+            },
+            {
+              "text": "That very much does exist still? \nhttps://reddit.com/r/nocontract",
+              "author": "iknowstuff",
+              "depth": 2
+            },
+            {
+              "text": "No, pay as you go. I want to put $5 and pay whatever per minute/sms until it runs out.",
+              "author": "what",
+              "depth": 3
+            },
+            {
+              "text": "Then you'll have to be the change you want to see in the world. Otherwise, it's not coming back because it gives accountants, executives and investors nightmares about the bottom line.",
+              "author": "drivingmenuts",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "Oh man, did I go through this hell with a lot of MVNOs like two years ago. Pushed me to buy T-Mobile's most expensive plan. Something I actually regret to this day now, because I'm not sure if I got any real tangible benefit from it compared to all the money that went down the drain. However, now that I think about it, I don't feel like I've been getting too many ghost calls as I used to. It's hard for me to measure because in the last two years, I've been getting less overall calls as more of my colleagues transition to just texting.\nI doubt QCI levels are affected by this. I think Call handshakes are QCI 5 and the calls themselves are QCI 1 but im not an expert.\nHave you tried disabling 5G and dropping back down to 4G? I heard that the transition from VoLTE to VoNR might still be sketchy and not fully solidified. Just turn off data altogether and see for a while to see if that improves things.\nMaybe porting your primary number to a cloud PBX service like Google Voice or some business oriented service? When someone calls your number, the carrier-to-carrier SIP handshake happens on Google's redundant enterprise servers instead of targeting your sleeping iPhone. Google's servers instantly answer the routing request, hopefully preventing a timeout. GV then forwards the call to your iPhone's GV app using a standard data push notification, hopefully waking the phone reliably?\nJust throwing ideas out. If you've tried these already, apologies for the redundancy.",
+          "author": "saturn8601",
+          "replies": [
+            {
+              "text": "I use and am thrilled with US mobile. Otherwise no affiliation. Lots of different options, including which backbone network you're line is currently on, and as far as I can tell the options are all switchable online with very little fuss.",
+              "author": "dv_dt",
+              "depth": 1
+            }
+          ]
+        },
+        {
+          "top": "I totally agree. Driving on the autobahn and calling someone gets worse and worse. They are decreasing the number of people having a call at once. The Quality with Signal/WhatsApp Audio seems better than cellular.",
+          "author": "sinabis",
+          "replies": [
+            {
+              "text": "I forgot to mention: whatsapp, facetime voice calls, etc... all seem to work fine even when the cellular calls aren't going through. So yes, that matches my experience.",
+              "author": "tkdb",
+              "depth": 1
+            },
+            {
+              "text": "Australia, regional in Queensland state.\nI've noted similar in the three main networks,  where I've suspected the \nload balancing\n algorithm for traffic adjusts a  setting in regard to cut off on signal strength hasn't been quite set right.  Obviously at times dealing with extraordinary use at the time, one expects balancing.  One network in my locale a few years ago, it was quite clear it was either over subscribed, techs made a mistake adjusting the algorithms ... or just too many people trying to use that particular one tower, and three people in the same spot could often note the three different states the network could be in, none, unavailable, signal - this existed for many months.  The balancing has been tuned up a few times since then.  I have found when the network's coverage was spotty for voice calls, one could generally use data to get online albeit as slow rates.\nRecently the main network I'm using (Optus,) I've noted missed calls that went to voice mail, I have not heard the call at all.  I have been blaming signal though I don't have it on me (sits outside the window up high) to ensure the phone has good signal.  However on data over wifi, the network often drops out for a minute or more at times.",
+              "author": "anenefan",
+              "depth": 2
+            },
+            {
+              "text": "Interesting. Another detail I should add: in virtually all of the cases where I have the silent missed calls, I have full or adequate service, and can otherwise use my phone. Internet browsing, apps, and as mentioned even wifi calling via whatsapp etc.. works fine.\nEven so, in a scenario where I have missed a call due to spotty service, the expected behavior once I have service again is I see the missed call on my device. That's the aggravating part of this issue: I never know someone tried to call me.",
+              "author": "tkdb",
+              "depth": 3
+            },
+            {
+              "text": "Exact same thing happens to me, all the time. Verizon user on a traditional post-paid plan, with an iPhone 15 Pro Max, in the Los Angeles area.\nMy phone will show as having full service, usually it displays as “LTE” in the top bar while at home whether or not I’m connected to WiFi, as soon as I step outside of my building and head 25 feet in any direction 5G or 5GUW seems to take over.\nIt’s strange, I’ve always gotten missed calls over the many years I’ve been with Verizon (over 20) and I’m not entirely sure exactly when I noticed that people were increasingly telling me they called me, while I had zero idea or any way of knowing whatsoever. At best, I’d get lucky and they were one of the rare people still leaving voicemails these days, and an alert might show up for that at some random point.\nIt got bad enough that after trying everything else, I even went and picked up one of those “network extender” boxes the carriers have from a Verizon retail store, out of a sense of desperation hoping it might help solve the issue, although I knew beforehand that almost surely it would not. Which was the case, of course.\nI wish I could say I had any idea as to what is actually causing this but all my attempts to pin down the root cause have proven to be a waste of time. A very frustrating waste of time. Worst of all is that as far as I can tell, it isn’t an issue that’s isolated to any single carrier, subcarrier, phone model, physical location, and so on.  While there do appear to be some patterns here and there, it’s largely random and I don’t know if certain carriers have this issue worse than others but Verizon is frequently one mentioned. Whether or not that’s due to their popularity, my noticing it more because I use Verizon as well, or because it’s worse with them, who knows?  Maybe someone reading this, lol.",
+              "author": "ntlx",
+              "depth": 4
+            },
+            {
+              "text": "Yeah phone working, sit by it, and realise when checking the phone, for reasons unknown there's a recent missed call - that is the worst, especially if it's important and you've been waiting on a reply for a few days for them to have the time to call back.  Often I wonder if the person only rang for a second or less, not long enough for the network to ring the phone but at times I get a voice mail ... so maybe not.\nBTW, I don't so much mean a spotty network, just spotty voice calls over the network, where it seems there's not enough signal to carry the voice - apparently - but yet still capable for data over a hotspot delivering 100 to 300 kB/s  minimum depending on factors like weather or time of day. From what I understand voice data is compressed via voice specific codecs.  Most don't use more than 64 kB/s.  [1] [2] [3] I think the silent calls are intermittent and by the time I've realised it would be probably pointless to test, however much of the time I could not say if the phone's browser was loading slow or fast as I rarely use any of the phone's functions apart from calls, plain sms texts, occasion to rare use of browser with preloaded tabs  and creating a hotspot.\nLikewise though not quite the same, over the past years I've had networks where the phone might ring but it is not situated well enough for the \nsignal\n  to be able to carry out any sort of conversation - and yet via a hotspot, downloading near to 1 MB/s without skipping a beat.\nI still get some automated phone systems that are apparently not happy with the amount of voice data they are receiving even though what I hear is quite clear, and at times, have from near same time and spot, just rung other people who have not reported any difficulties hearing me.  I've eventually learned to just hang up once the menu system goes awry and try a few hours later.\n[1]  \nhttps://www.gl.com/voice-codecs.html\n  (has the codecs with a breakdown below the table)\n[2]  \nhttps://mobilepacketcore.com/glossary/codecs-audio-and-video...\n  (brief overview including  media streams )\n[3]  \nhttps://phoneguides.org/voice-codecs/\n  (Iffy coded site, refused older firefox, janky with a fairly recent chrome based browser)",
+              "author": "anenefan",
+              "depth": 4
+            }
+          ]
+        },
+        {
+          "top": "When is the last time a flagship phone release promoted its qualities as a \ntelephone\n, like call fidelity? Others could better comment on this but I think landlines were leagues better in latency and sound quality. Kinda integral pieces to the experience of talking to someone.",
+          "author": "corbins",
+          "replies": [
+            {
+              "text": ">When is the last time a flagship phone release promoted its qualities as a telephone, like call fidelity?\nBecause nobody calls anymore. If anything calling is considered rude compared to texting, to the extent that some text first before calling.\n>Others could better comment on this but I think landlines were leagues better in latency and sound quality.\nlandline latency (near instant, if you're both on the same CO) is basically impossible to achieve with a digital system, because of all the buffers and packets involved.",
+              "author": "gruez",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49837325",
+      "title": "Ask HN: IEEE expulsion of Fei-Yue Wang?",
+      "link": "https://news.ycombinator.com/item?id=49837325",
+      "domain": "news.ycombinator.com",
+      "author": "sathomasga",
+      "score": 9,
+      "comment_count": 1,
+      "created_ts": 1790287498,
+      "is_internal": true,
+      "post_text": "Since I saw this first in print, I imagine it&#x27;s pretty old news. But I can&#x27;t find any coverage of the relevant events on line. Page 55 of the September 2026 issue of _IEEE Spectrum_ includes the following:<p>&gt; # Notice to Membership<p>&gt; As of 21 June 2026. a Level 1 Expulsion has been imposed on IEEE Member Dr, Fei-Yue Wang, former editor-in-chief of the _IEEE Transactions on Intelligent Vehicles._ In accordance with IEEE Bylaw I-110.5(D)(i). Dr. Wang is no longer a member of IEEE, and is permanently banned from any type of membership in any IEEE organizational unit or participation in any IEEE activity. The Board of Directors also determined this notice to IEEE membership should be made.<p>Dr. Wang (<a href=\"https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Fei-Yue_Wang\" rel=\"nofollow\">https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Fei-Yue_Wang</a>) is a prominent researcher, so this action would seem to be quite significant. Does anyone know the details?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49850798",
+      "title": "Ask HN: Is Opus 5.5 another step change?",
+      "link": "https://news.ycombinator.com/item?id=49850798",
+      "domain": "news.ycombinator.com",
+      "author": "consumer451",
+      "score": 8,
+      "comment_count": 8,
+      "created_ts": 1790375352,
+      "is_internal": true,
+      "post_text": "This feels like another moment, like earlier this year, and the year prior. I am thrilled for my use cases in the applications that I build with CC, and for the LLM API usage that I sell. However, it honestly scares the crap out out of me.<p>Is &quot;the exponential&quot; an actual thing?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49833541",
+      "title": "Ask HN: Are .shop domains down?",
+      "link": "https://news.ycombinator.com/item?id=49833541",
+      "domain": "news.ycombinator.com",
+      "author": "esher",
+      "score": 5,
+      "comment_count": 7,
+      "created_ts": 1790269162,
+      "is_internal": true,
+      "post_text": "Anyone else seeing this? Or am I missing something obvious? A client asked in support. AI is very confident about it. Looks legit.<p>apple.shop, pokemon.shop ...",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49839405",
+      "title": "Ask HN: Where to look for jobs?",
+      "link": "https://news.ycombinator.com/item?id=49839405",
+      "domain": "news.ycombinator.com",
+      "author": "0x737368",
+      "score": 5,
+      "comment_count": 1,
+      "created_ts": 1790301903,
+      "is_internal": true,
+      "post_text": "Since LinkedIn has &quot;revamped&quot; their job search functionality with AI my usual place to see what jobs are available is now pretty much gone.<p>How do you look for jobs&#x2F;new opportunities?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "job search"
+      ],
+      "comments": [
+        {
+          "top": "I'm not sure if it's helpful, but there is an official monthly post for jobs  \nhttps://news.ycombinator.com/user?id=whoishiring\n You can take a look at the current last post, but they are read only now. Also, you can post on the correct thread next month on October 1st.",
+          "author": "gus_massa",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49826381",
+      "title": "Ask HN: How do you deal with cyber attacks once you scale?",
+      "link": "https://news.ycombinator.com/item?id=49826381",
+      "domain": "news.ycombinator.com",
+      "author": "cehgmaster",
+      "score": 4,
+      "comment_count": 2,
+      "created_ts": 1790225373,
+      "is_internal": true,
+      "post_text": "Hello,<p>Legit question for tech department leaders. Our engineers have good solid knowledge on the security todo lists and does&#x2F;don&#x27;t. I saw the natural order of things where MVPs or quickly developed tools had to be refactored &#x2F;redesigned to be more secure or at least up to standard. That&#x27;s OK. However we are as strong as our weakest link.<p>As we scaled, each department (also non-tech) slowly started being more proactive, mini tools developed by managers, or leaders, e.g CRM workflows, random scripts, docs, sheets, and now vibe coded tools. All of these are now potential attack vectors. We add to this:<p>- Non-tech folks in the company, you impose rules, password managers and rotations, but you always have a small percentage of bad actors.\n- External users not putting good passwords, or using pwned passwords never changing them\n- Some product decisions or weaknesses built on purpose to facilitate usage of the tools (which goes against perfect security).<p>In our case it caused us being a target, we are under attack most of the time. We secured our tools under WAF with standard approaches (rate limits, blocking IPs, bot detection), but it feels like there&#x27;s always a flaw&#x2F;leak somewhere to fix.<p>With LLMs attacks are becoming more and more interesting, harder and hard to prevent or detect. We have a proper dev team, good at maintaining the codebase and libraries. You can imagine our mindset shifting from &quot;full feature dev + good maintenance&quot; to &quot;some feature dev, a shit ton of security monitoring&quot;.<p>Our users are not tech savvy. Things like passkeys are sadly out of the question. Even MFA seemed out of reach at some point. Some of them sadly get phished from time to time, it angers us. We want to do more but it feels impossible.<p>Is there anything you guys did that helped? other than just securing and making it harder for attackers?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "purpose",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49847959",
+      "title": "Ask HN: What vendor you'd switch out if a better option was available?",
+      "link": "https://news.ycombinator.com/item?id=49847959",
+      "domain": "news.ycombinator.com",
+      "author": "jviotti",
+      "score": 4,
+      "comment_count": 11,
+      "created_ts": 1790359560,
+      "is_internal": true,
+      "post_text": "We all pay for things. Either personal (like Spotify) or at your company (Slack).<p>Out of those, which one would you swap if a better thing was available?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Cronometer\nMyFinessPal",
+          "author": "faangguyindia",
+          "replies": []
+        },
+        {
+          "top": "Switched from Spotify to Deezer. I prefer Slack to alternatives, Teams is miserable.",
+          "author": "dieselgate",
+          "replies": []
+        },
+        {
+          "top": "I would replace Teams in a heartbeat. It's not about availability, it's about license structure and bundling.",
+          "author": "mtVessel",
+          "replies": []
+        },
+        {
+          "top": "i prefer soundcloud i have switched to it a while ago its better and free as well as you tend to get more freedom exploring content from new artist more slack is pretty good already so wont prefer swaping it",
+          "author": "theguysudo",
+          "replies": []
+        },
+        {
+          "top": "inference providers\nspotify for sure, working on that\nkinda anything. why wouldn't i switch if there's something better?\ni have that kind of brand loyalty with local small shops maybe, where there's a relationship. but not corporate online brands.",
+          "author": "sejje",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49841423",
+      "title": "Ask HN: Migrating personal email domain from Gmail to iCloud?",
+      "link": "https://news.ycombinator.com/item?id=49841423",
+      "domain": "news.ycombinator.com",
+      "author": "osener",
+      "score": 4,
+      "comment_count": 4,
+      "created_ts": 1790322449,
+      "is_internal": true,
+      "post_text": "Has anyone done this? I want to stop paying for Google Workspace, and since I already pay for iCloud I thought it might make sense to move my domain over to iCloud Mail. Has anyone done this? What should I expect to lose?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "Replacing the old boss with another one that's the same? You should go to an independent, paid email provider instead.",
+          "author": "fsflover",
+          "replies": [
+            {
+              "text": "which ones do you recommend instead?",
+              "author": "osener",
+              "depth": 1
+            },
+            {
+              "text": "Fastmail is good",
+              "author": "vconnor",
+              "depth": 2
+            },
+            {
+              "text": "https://www.fsf.org/resources/webmail-systems",
+              "author": "fsflover",
+              "depth": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49848426",
+      "title": "Ask HN: Which model do you use for work?",
+      "link": "https://news.ycombinator.com/item?id=49848426",
+      "domain": "news.ycombinator.com",
+      "author": "george_max",
+      "score": 3,
+      "comment_count": 4,
+      "created_ts": 1790362238,
+      "is_internal": true,
+      "post_text": "The past little while has been filled with new LLM releases. I am curious to understand what you find to work best for your particular workflows and tasks.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "My preferred model at the moment is GLM 5.3 Coding. I think it's as good as the latest closed-weight models at a fraction of the cost, and we are being capped now at my place of employment so if I use it I don't run out of quota by the end of the first week of each month.",
+          "author": "meredithbloom",
+          "replies": []
+        },
+        {
+          "top": "in codex - luna high for 80% of everything. This keeps me within the $100 a month plan. Then every so often Sol 6 high or even Astro xhigh but rarely. Also a lot of chat on xhigh or astro because that's billed seperate so I can have chat do a code review of what luna high just did and paste it to luna. Luna is always so embarrassed and agrees with the review.",
+          "author": "cs1996",
+          "replies": []
+        },
+        {
+          "top": "gpt 5.6 sol. assuming the prose is similar with the gpt 6 series, if it was available at work that's probably what i'd be using instead.\ni'm well aware of opus and fable's superior engineering qualities for writing code, however i find that as a swe who needs to understand every engineering decision that is made and is held accountable for their actions for safety critical code, understanding trumps speed every time.\nand the gpt model series is far and above easier for me to understand the outputs of than claude, even with the prose improvements in fable 5.1 and opus 5.5.",
+          "author": "trevorkiw",
+          "replies": []
+        },
+        {
+          "top": "luna for day to day tasks. opus for design / specs.",
+          "author": "blinded",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49843423",
+      "title": "Ask HN: How do you use LLMs to secure your code and services?",
+      "link": "https://news.ycombinator.com/item?id=49843423",
+      "domain": "news.ycombinator.com",
+      "author": "cpa",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1790337716,
+      "is_internal": true,
+      "post_text": "Do you just download random skills? Write your own prompts? Pay for a specialized service? Or just OAI and Anthropic? Use open source software (which)?",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": []
+    },
+    {
+      "id": "49838409",
+      "title": "Ask HN: How do you feel about the new $500 OpenAI subscription?",
+      "link": "https://news.ycombinator.com/item?id=49838409",
+      "domain": "news.ycombinator.com",
+      "author": "preommr",
+      "score": 3,
+      "comment_count": 9,
+      "created_ts": 1790294364,
+      "is_internal": true,
+      "post_text": "So it seems like there&#x27;ll be a new $500 plan [0].<p>I&#x27;ll share some of my thoughts:<p>It&#x27;s been incredibly frustrating to have the quality of the subscriptions vary wildly. The model intelligence and quality is incredibly opaque, and it feels like they sometimes just switch the labels out.<p>I am quite worried that they&#x27;re going to downgrade everything, and what we have now for 5x or 20x (which they don&#x27;t even offer anymore lmao) is going to be moved to the new promax plan at 500 big ones.<p>I am not going to be able to afford anything close to that, and it&#x27;s just frustrating to think about how unclear everything is.<p>[0] It&#x27;s not officially out yet, but there&#x27;s been leaks",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "It’s not yet clear how all this will be implemented. But I have plenty of doubts.",
+          "author": "tehnoslow",
+          "replies": []
+        },
+        {
+          "top": "Related ongoing thread:\nTell HN: OpenAI $500 ProMax plan listed in API\n - \nhttps://news.ycombinator.com/item?id=49841605\n - Sept 2026 (14 comments)",
+          "author": "dang",
+          "replies": []
+        },
+        {
+          "top": "If it were not rate limited that would be acceptable for enterprise use",
+          "author": "4d4m",
+          "replies": []
+        },
+        {
+          "top": "If it gives me 120x usage vs a plus plan, I'm totally onboard. That's a big \"if\" though.",
+          "author": "Leynos",
+          "replies": []
+        },
+        {
+          "top": "How much usage is it going to be? I definitely run out too fast on the $200 plan if I have more than one task going at a time. 500 is a bit pricey though…",
+          "author": "joegibbs",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "id": "49837729",
+      "title": "Ask HN: Does a startup need both founder and company X accounts?",
+      "link": "https://news.ycombinator.com/item?id=49837729",
+      "domain": "news.ycombinator.com",
+      "author": "OnionLayers",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1790289576,
+      "is_internal": true,
+      "post_text": "We are a small team. We recently launched an early-stage product on the App Store and started trying to build in public on X.<p>In practice, I found it pretty difficult to get the official product account off the ground. X seems to rely heavily on engagement from existing followers to determine whether a post gets distributed more widely. It doesn&#x27;t simply push content to a large audience of strangers just because certain hashtags are used. This creates a vicious cycle: without followers, it’s hard to get engagement; without engagement, the content rarely reaches a wider audience; and without that reach, it becomes even harder to gain new followers. This issue is particularly pronounced for a newly created official account that lacks a strong, distinct personal identity behind it.<p>The content that can be posted via an official account appears somewhat limited. In contrast, a founder&#x27;s personal account seems better suited for sharing the thinking behind the product; often, people begin following the product only after first getting to know and trusting the founder.<p>We are currently considering maintaining two accounts simultaneously:<p>- The founder&#x27;s account will focus on personal insights, product-related perspectives, etc.<p>- The official account will  focus on product demo, version updates, usage instructions, etc.<p>I’m not sure if this is the most sensible approach for an early-stage team. Time and content resources are limited, and managing two accounts simultaneously might spread the team too thin. I’m also wondering how a founder’s account can naturally generate interest in the product without making the content feel like a blatant promotion.<p>I’d like to ask founders who are building their own products:<p>1. Do you maintain both a personal founder account and an official product account?<p>2. What kind of content do you post on each account?<p>3. How does the founder’s account naturally attract attention to the product without seeming like it’s constantly advertising?<p>I’m particularly interested in hearing about your actual experiences. Thanks!",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "startup",
+        "promotion",
+        "team"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49837715",
+      "title": "Ask HN: Do you cuss at your agent?",
+      "link": "https://news.ycombinator.com/item?id=49837715",
+      "domain": "news.ycombinator.com",
+      "author": "ak39",
+      "score": 3,
+      "comment_count": 8,
+      "created_ts": 1790289488,
+      "is_internal": true,
+      "post_text": "Do you vent your frustrations at your agent when it keeps making stupid mistakes and asinine assumptions or asks obvious questions?<p>I did it for the first time and I feel ashamed.",
+      "is_ask_hn": true,
+      "matched_keywords": [],
+      "comments": [
+        {
+          "top": "All the time.  Whenever Claude proposes some pansy-ass half-measure, I'll respond \"F___ THAT,\" and Claude immediately knows I'm not playing.",
+          "author": "moishe_szyslak",
+          "replies": []
+        },
+        {
+          "top": "Yes, but hardly ever at Astra, because it usually gets the job done. Definitely at worse models when you give them very clear instructions and goals to follow and they respond telling you that the job has been completed perfectly, verified byte-identical, all tests pass, etc etc and you look at it and it’s a pile of garbage.",
+          "author": "joegibbs",
+          "replies": []
+        },
+        {
+          "top": "I do very sparingly, same as with humans.\nI also give them praise, and sometimes give them pep talks.  Like, hey, I know you can do this. Stop asking me for feedback, make good decisions, and let me know when you're done.",
+          "author": "montroser",
+          "replies": []
+        },
+        {
+          "top": "Fuck yes, I do. Not the most effective way to get things done, but a bit cathartic. And no, the stochastic parrot does not have emotions. And yes, it sometimes does worse after being cursed at, but you’re generally better off forking/rolling back the convo to a point before it screwed up anyway. And other times strong language manages to provide the emphasis you need to get it to actually pay attention.\nAnyway, why are you ashamed of it?",
+          "author": "apothegm",
+          "replies": [
+            {
+              "text": "I felt ashamed because it fooled me into believing it had feelings like a living thing.",
+              "author": "ak39",
+              "depth": 1
+            },
+            {
+              "text": "Ah.\nI feel free to curse at it precisely because I’m confident it doesn’t have feelings, and it’s like swearing out loud at an inanimate object like when a shoddy screwdriver breaks, or strips a screw, or whatever.",
+              "author": "apothegm",
+              "depth": 2
+            }
+          ]
+        },
+        {
+          "top": "Don’t blame the agent for not giving it the right requirements and skills to accomplish a task.",
+          "author": "JojoFatsani",
+          "replies": [
+            {
+              "text": "Sometimes upstream providers swap in lobotomized aggressive quants in order to shed load or cut costs.  In that case the user is not to blame.  And the agent is not so much to blame, either.  Same as how you wouldn't blame a child for crashing a car.\nIt's the fucking provider who took your dollars and handed you back a shit sandwich in return.",
+              "author": "montroser",
+              "depth": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49835507",
+      "title": "Ask HN: Folks familiar with infections after TKA",
+      "link": "https://news.ycombinator.com/item?id=49835507",
+      "domain": "news.ycombinator.com",
+      "author": "zafka",
+      "score": 3,
+      "comment_count": 0,
+      "created_ts": 1790277169,
+      "is_internal": true,
+      "post_text": "I am looking for Ortho&#x2F;infectious disease practitioners or researchers who have experience with compromised post-op TKA&#x27;s. specifically: Enterobacter cloacae, and a yeast variety yet to be revealed- Obviously I do not expect medical advice, just looking for any new info in case it has not reached my spouses team.  Surgery 1 month ago, after 30 days, wound began leaking- DAIR was performed 7 days ago after 5 days culture showed bacteria, today it was revealed yeast also present. Still waiting on sensitivities.  Thanks in advance. My apologies to all those who really don&#x27;t want to think about this kind of stuff.",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "team",
+        "culture",
+        "advice"
+      ],
+      "comments": []
+    },
+    {
+      "id": "49834564",
+      "title": "Ask HN: Does spec-driven development still pay off with frontier coding models?",
+      "link": "https://news.ycombinator.com/item?id=49834564",
+      "domain": "news.ycombinator.com",
+      "author": "sarangk90",
+      "score": 3,
+      "comment_count": 2,
+      "created_ts": 1790273150,
+      "is_internal": true,
+      "post_text": "As coding models get better at working from a rough goal, I’m wondering how much value there is in writing a detailed spec up front.<p>If you use these models on real projects, when has a spec improved the outcome? When has it added overhead? Have you shifted toward shorter briefs, tests, or iterative feedback?",
+      "is_ask_hn": true,
+      "matched_keywords": [
+        "feedback"
+      ],
+      "comments": []
+    }
+  ]
+}
