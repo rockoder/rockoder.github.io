@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-02 – The Unit Economics of Judgment
+
+**Learning:** When adoption metrics become the primary goal, organizations inadvertently subsidize "tokenmaxxing"—the consumption of AI resources for career signaling rather than engineering value. The shift from adoption to governance happens at the moment the API bill exceeds the perceived productivity gain.
+
+**Implication:** Analysis should focus on the transition points where resources move from "abundant" to "rationed." These transitions reveal the organization's true priorities and its definitions of non-negotiable impact.
+
+---
+
+## 2026-07-02 – Mentorship as a Social Subsidy
+
+**Learning:** The traditional review process is a social subsidy where senior attention is traded for future organizational stability. AI-authored contributions threaten to collapse this trade by removing the learning component from the contribution, turning review into a pure tax on the reviewer's time.
+
+**Implication:** Future writing should explore how social contracts within engineering teams dissolve when the "return on investment" for mentorship is neutralized by automated output.
