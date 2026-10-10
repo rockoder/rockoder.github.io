@@ -42,6 +42,10 @@ def get_best_posts(limit=30):
 
     while len(posts) < limit:
         resp = requests.get(url, headers=HEADERS)
+        if resp.status_code == 429 and "h=24" in url:
+            print("Received 429 for h=24, falling back to /best")
+            url = "https://news.ycombinator.com/best"
+            continue
         if resp.status_code != 200:
             break
 

@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-29 – The Decisiveness Trap
+
+**Learning:** High-confidence AI output shatters the "peaceful" feeling of trusting a nuanced expert. Organizations are tempted to use AI as an arbiter between conflicting specialists not because it is more correct, but because it is more decisive. Legibility is often prioritized over accuracy in executive decision-making layers.
+
+**Implication:** Future writing should distinguish between "Accuracy Capital" and "Decisiveness Capital." When the latter is prioritized, the organization essentially signs up for a hidden quality debt that surfaces only during catastrophic failure.
+
+---
+
+## 2026-06-29 – Friction as a Signal
+
+**Learning:** When the cost of production (output) drops to zero, the value of the output as a signal of maturity also drops to zero. Organizations are responding by re-introducing friction (oral defenses, synchronous reviews) to verify the underlying comprehension. Friction is not a bug in the evaluation system; it is a necessary filter for signals.
+
+**Implication:** The "Take-home Promotion" is ending. We should explore how engineers can signal maturity in an environment where all legible artifacts are suspect. The focus must shift from what was built to why it was built.
