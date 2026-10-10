@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-23 – Shadow Leverage as Procurement Bypass
+
+**Learning:** Organizations focus heavily on headcount and seat-based SaaS licensing as the primary levers for cost control. AI token consumption creates a massive loophole because it is categorized as "utility spend" (Opex), allowing engineering leaders to purchase velocity without the friction of headcount justification. This decoupling of cost from organizational capacity creates a fragile throughput that is vulnerable to future budget audits.
+
+**Implication:** When analyzing organizational AI adoption, look for the procurement bypass. Velocity that is purchased through metered APIs lacks the institutional knowledge gains of velocity built through human capacity.
+
+---
+
+## 2026-06-23 – Signal Decay and the Barefoot Dance
+
+**Learning:** The adversarial use of AI—where HR uses automated filters and candidates use LLMs to bypass them—is destroying the informational value of the technical interview. This "Barefoot Dance" forces both sides into performances of compliance (proctored exams, keyword-optimized resumes) that have zero correlation with engineering competence. The ultimate second-order effect is the collapse of junior entry points and a retreat into referral-only networks as the only remaining high-trust signal.
+
+**Implication:** The death of the entry-level role is not just a cost-saving trend; it is a response to the "verification problem" created by AI. Organizations are trading future pipeline for current filtering efficiency.
