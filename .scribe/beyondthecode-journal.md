@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-06-26 – The Shift from Production to Inspection
+
+**Learning:** AI acts as a force multiplier for creation (Output Capital) but a force compressor for judgment (Judgment Capital). Organizations that optimize for legible throughput metrics while thinning out "inspectors" (senior judgment) create a structural lag in quality that only surfaces in reliability failures.
+
+**Implication:** When discussing productivity gains, always ask who is absorbing the increased inspection load. Throughput is a leading indicator; reliability is the lagging indicator that reveals the true cost of "cheap" code.
+
+---
+
+## 2026-06-26 – The Legibility Trap of Proprietary Ecosystems
+
+**Learning:** Proprietary internal stacks are rational optimizations for firm-wide visibility (legibility), not just NIH syndrome. AI deepens this trap by making bespoke internal complexity manageable through specialized agents, further decoupling internal performance from external portability.
+
+**Implication:** Explore the divergence between "Organizational Capital" and "Portable Capital." The engineer's greatest internal leverage often becomes their greatest external risk.
