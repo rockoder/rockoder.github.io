@@ -53,3 +53,19 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-01 – The Breach of Boringness
+
+**Learning:** Developer trust in tools with deep access is based on a "boringness" contract. When tools use clever, hidden signaling for telemetry or protection, they shift from being deterministic extensions of the engineer to being independent agents with their own agendas. This creates a new category of "legibility debt" where the tool’s internal state is hidden from the very people auditing its safety.
+
+**Implication:** Focus future analysis on the shift from deterministic tools to autonomous agents and the resulting friction in organizational security and audit rituals.
+
+---
+
+## 2026-07-01 – The Cost of Frictionless Success
+
+**Learning:** Friction in engineering was not just a hurdle; it was the primary mechanism for acquaintance. By removing the "edges" of the machine, agentic tools decouple competence from intimacy. This creates a "success trap" where teams ship at high velocity but lose the ability to debug the underlying system when the agent fails.
+
+**Implication:** Examine how the loss of "edge-case intimacy" affects Staff Engineer succession and incident response maturity. The most valuable asset in an AI-accelerated org is the person who still knows how the machine shrieked.
