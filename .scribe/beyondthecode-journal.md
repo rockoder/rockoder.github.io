@@ -53,3 +53,11 @@
 **Learning:** Initial hero image used made-up TypeScript about "feature velocity" and "comprehension metrics." Felt fake. Replaced with real Python — an async connection pool with semaphores and locks. The critical section (race condition handling) blurs out. Real code that engineers recognize is more effective than code that illustrates the essay's concepts literally.
 
 **Implication:** Visual elements should ground the essay in recognizable reality, not mirror its abstractions. Show production code, not conceptual code.
+
+---
+
+## 2026-07-05 – The Succession Problem and Budgeted Thinking
+
+**Learning:** The organization treats AI-assisted output as a substitute for junior labor, failing to account for the role of "mediocre" work in long-term judgment formation. Simultaneously, hidden technical constraints (like reasoning token ceilings) are treated as boundless utilities. These two blind spots merge to create a system that appears highly productive in the short term but is stochastically hollowed out at the structural level.
+
+**Implication:** Future writing should focus on the "Seniority Cliff"—the point where an organization realizes it has liquidated its future expertise for current velocity. We need to explore the "Verification Tax" more deeply as the primary friction point in highly accelerated environments.
