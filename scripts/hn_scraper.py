@@ -14,8 +14,9 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 HN_API_ITEM = "https://hacker-news.firebaseio.com/v0/item/{}.json"
 HN_BEST_URL = "https://news.ycombinator.com/best?h=24"
+HN_FALLBACK_URL = "https://news.ycombinator.com/best"
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36"
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
 # -----------------------------
@@ -39,10 +40,17 @@ def get_item_metadata(item_id):
 def get_best_posts(limit=30):
     url = HN_BEST_URL
     posts = []
+    tried_fallback = False
 
     while len(posts) < limit:
         resp = requests.get(url, headers=HEADERS)
-        if resp.status_code != 200:
+
+        if resp.status_code != 200 or "Sorry" in resp.text:
+            if not tried_fallback and url == HN_BEST_URL:
+                print(f"Primary URL failed with status {resp.status_code}. Trying fallback...")
+                url = HN_FALLBACK_URL
+                tried_fallback = True
+                continue
             break
 
         soup = BeautifulSoup(resp.text, "html.parser")
